@@ -35,7 +35,7 @@ var g = svg.append("g");
 svg.style("cursor","move");
 
 
-d3.json("data/lastFullGraph2.json", function(error, graph) {
+d3.json("data/GIS_RS.json", function(error, graph) {
     var linkedByIndex = {};
     graph.links.forEach(function(d) {
         linkedByIndex[d.source + "," + d.target] = true;

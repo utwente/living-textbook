@@ -16,7 +16,7 @@ var graph = (function () {
     $.ajax({
         'async': false,
         'global': false,
-        'url': "data/lastFullGraph2.json",
+        'url': "data/GIS_RS.json",
         'dataType': "json",
         'success': function (data) {
             json = data;
