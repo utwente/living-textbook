@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="data/vaficon.png" />
+<style>
+    body {
+        overflow-y:scroll;
+        margin:0;
+    }
+
+    #wrapper{
+        width: 100%;
+        height: 1600px;
+        position: relative;
+    }
+    
+    iframe{
+        overflow-y:scroll;
+        width: 100%;
+        height: 100%;
+    }
+
+    #graph_container{
+        visibility: hidden;
+        position: fixed;
+        margin: 10px;
+        padding: 5px;
+        bottom: 2%;
+        right: 0;
+        width: 55%;
+        height: 90%;
+        border: 1px solid;
+        border-color: #d3d3d3;
+        border-radius: 4px;
+        background-color: white;
+    }
+
+    #showButton_container{
+        position: fixed;
+        bottom: 50%;
+        right: 0;
+        width: auto;
+        height: auto;
+    }
+
+    .ui-widget{
+        position: relative;
+        float: right;
+        margin: 0%;
+        margin-right: 0%;
+        width: 100%;
+        background-color: transparent;
+        z-index: 10;
+    }
+
+    #showbutton{
+        height: 4em;
+        width: 10em;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: #fff;
+        border-color: #ccc;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size:12px;
+        font-weight: bold;
+        color: #5e5e5e;
+    }
+
+    #showbutton:hover{
+        background-color: #e6e6e6;
+    }
+
+    #search, #closebutton, #readmebutton{
+        height: 90%;
+        font-size: 10px;
+        padding: 1px;
+        margin: 1px;
+    }
+
+    #search{
+        float: left;
+    }
+
+    #search{
+        width: 20%;
+    }
+
+    #closebutton, #readmebutton {
+        float: right;
+        width: auto;
+    }
+
+    svg{
+        position: absolute;
+        width: 98%;
+        height: 98%;
+        z-index: 1;
+    }
+
+    text {
+        font-family: sans-serif;
+        pointer-events: none;
+
+    }
+    .nodeLabel {
+        text-shadow: 0 0 0.2em #ffffff;
+    }
+    .linklabel {
+        font-size: 0.8em;
+        -webkit-text-stroke: 2px white;
+    }
+
+    ul.ui-autocomplete.ui-menu{
+        width: auto;
+        font-size: 11px;
+    }
+    .vertical_text{
+        transform: rotate(90deg);
+    }
+
+    input.watermark {
+        color: #999;
+    }
+
+    input{
+        padding: 2px;
+    }
+
+</style>
+<style type="text/css">
+</style>
+<body>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<div id="wrapper">
+    <iframe id="iframe" src="https://itc-giscience.utwente.nl/doku.php"> </iframe>
+    <div id="graph_container">
+        <div class="ui-widget">
+            <input id="search">
+            <button id="closebutton" onclick="closeGraph()"> Close </button>
+            <button id="readmebutton" onclick="popup()"> Read me </button>
+        </div>
+    </div>
+    <div id="showButton_container" class="vertical_text">
+        <button class="ui-corner-all" id="showbutton" type="button" onclick="showGraph()"> Show <br> concept map </button>
+    </div>
+</div>
+
+ <!-- moved scripts to top of DOM -->
+<script src="JS/forced_graph.js"></script>
+<script src="JS/info.js"></script>
+<script src="JS/Search.js"></script>
+<script src="JS/iframe.js"></script>
+<script src="JS/showhideGraph.js"></script>
+
+</body>
