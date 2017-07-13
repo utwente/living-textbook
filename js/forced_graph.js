@@ -79,9 +79,13 @@ d3.json("data/GIS_RS.json", function(error, graph) {
             .duration(2000)
             .attr("transform", "translate("+ dcx + "," + dcy  + ")scale(" + zoom.scale() + ")");
     });
-    node.on("click", function(d){
 
-        callIframe(d);});
+    // Notify other screen of click
+    node.on("click", function(d){
+      if (d.link !== false) {
+        crosstab.broadcast('wiki_update', d.link);
+      }
+    });
 
 
     var tocolor = "fill";

@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+}
+
+#graph_container {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.ui-widget {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  z-index: 100;
+}
+
+#search, #readmebutton {
+  height: 30px;
+  font-size: 10px;
+  padding: 1px;
+  margin: 1px;
+}
+
+#search {
+  float: left;
+  width: 20%;
+}
+
+#readmebutton {
+  float: right;
+  width: 20%;
+}
+
+text {
+  font-family: sans-serif;
+  pointer-events: none;
+}
+
+.nodeLabel {
+  text-shadow: 0 0 0.2em #ffffff;
+}
+
+.linklabel {
+  font-size: 0.8em;
+  -webkit-text-stroke: 2px white;
+}
+
+ul.ui-autocomplete.ui-menu {
+  background-color: white;
+  width: auto;
+  font-size: 11px;
+}
+
+.vertical_text {
+  transform: rotate(90deg);
+}
+
+input.watermark {
+  color: #999;
+}
+
+input {
+  padding: 2px;
+}

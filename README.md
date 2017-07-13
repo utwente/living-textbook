@@ -1,17 +1,18 @@
 # The-Living-Textbook
 
-
 ### Project essentials 
  
- * The project can be run locally as it is. You need just to clone it and run "index.html". In this case you use data embedded in the project. 
- * To create new data, you need to run "Sparql_to_JSON.html" and use a query to generate JSON you want. For this, you need a running triple store with some data. See the description bellow on how to get Parliament Triplestore up and running.
+ * The project can be run locally after installation of the bower dependencies. You just need to clone it, run `bower install` and open `index.html`. In this case you use data embedded in the project. 
+ * To create new data, you need to run `Sparql_to_JSON.html` and use a query to generate JSON you want. For this, you need a running triple store with some data. See the description bellow on how to get Parliament Triplestore up and running.
 
 ### Running the Living Textbook.
 
-* Clone/download the repository and run "index.html" to see the page and the concept map.
+* Clone/download the repository 
+* Run `bower install` (if you do not know bower, check it's [documentation](https://bower.io/)).
+* Open `index.html` to see the page and the concept map.
 
 ### Triplestore
-The repository contains "Sparql_to_JSON.html". If you run it you will have a simple interface/form to create and execute SPARQL queries. The response will be transformed into a proper JSON to build a concept map.    
+The repository contains `Sparql_to_JSON.html`. If you run it you will have a simple interface/form to create and execute SPARQL queries. The response will be transformed into a proper JSON to build a concept map.    
 Before you start playing with the code install some software: 
 
 * You need the **Parliament Triple Store** (ver. 2.7.10) running locally. It can be downloaded [here](http://semwebcentral.org/frs/?group_id=159). This will be your backend. You can access the Administrator interface on [http://localhost:8089/parliament/](http://localhost:8089/parliament/) .

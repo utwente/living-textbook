@@ -1,0 +1,25 @@
+{
+  "name": "the-living-textbook",
+  "homepage": "https://github.com/GIP-ITC-UniversityTwente/The-Living-Textbook",
+  "authors": [
+    "ITC",
+    "Bob van de Vijver (bob@drenso.nl)"
+  ],
+  "description": "Living textbook project of the ITC",
+  "main": "index.html",
+  "license": "MIT/BSD3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "crosstab": "^0.2.12",
+    "d3": "<4.0",
+    "jquery": "^3.2.1",
+    "jquery-ui": "jqueryui#^1.12.1"
+  }
+}
