@@ -50,8 +50,15 @@ text {
 
 ul.ui-autocomplete.ui-menu {
   background-color: white;
-  width: auto;
   font-size: 11px;
+  width: auto;
+  list-style-type: none;
+  padding: 0 4px;
+}
+
+li.ui-menu-item > div {
+  padding: 2px;
+  margin: 3px 5px;
 }
 
 .vertical_text {
