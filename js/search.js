@@ -1,16 +1,19 @@
+// Watermark the search field
 var watermark = "Search";
-$("#search").val(watermark).addClass("watermark")
+$("#search")
+    .val(watermark).addClass("watermark")
     .blur(function () {
-      if ($(this).val().length == 0) {
+      if ($(this).val().length === 0) {
         $(this).val(watermark).addClass("watermark");
       }
     })
     .focus(function () {
-      if ($(this).val() == watermark) {
+      if ($(this).val() === watermark) {
         $(this).val("").removeClass("watermark");
       }
     });
 
+// Get graph data
 var graph = (function () {
   var json = null;
   $.ajax({
@@ -24,15 +27,16 @@ var graph = (function () {
   });
   return json;
 })();
-
-
 console.log(graph);
 
+// Create search source
 var optArray = [];
-for (var i = 0; i < graph.nodes.length - 1; i++) {
+for (var i = 0; i < graph.nodes.length; i++) {
   optArray.push(graph.nodes[i].label);
 }
 optArray = optArray.sort();
+
+// Create search functionality, which is a jquery-ui autocomplete
 $(function () {
   $("#search").autocomplete(
       {
@@ -47,49 +51,61 @@ $(function () {
   )
 });
 
+/**
+ * Finds the node selected by the autocomplete search tool
+ */
 function searchNode() {
-  //find the node
-  var selectedVal = document.getElementById('search').value;
+  var selectedVal = $('#search').val();
+
+  // Get all nodes
   var node = g.selectAll(".node");
+
+  // Check if something was selected, if not, clear the stroke styles
+  if (selectedVal === "none") {
+    node.style("stroke", "white").style("stroke-width", "1");
+    return;
+  }
+
+  // Get all link, linklabels and text
   var link = svg.selectAll(".link");
   var linklabel = svg.selectAll(".linklabel");
   var text = svg.selectAll("text");
-  if (selectedVal == "none") {
-    node.style("stroke", "white").style("stroke-width", "1");
-  } else {
-    var selectedNode = node.filter(function (d, i) {
-      return d.label != selectedVal;
-    });
-    var selectedLabel = text.filter(function (d, i) {
-      return d.label != selectedVal;
-    });
-    var focusNode = node.filter(function (d, i) {
-      if (d.label == selectedVal) {
-        return d;
-      }
-    });
 
-    console.log(focusNode);
-    var focusNodeX = focusNode["0"]["0"].__data__.px;
-    var focusNodeY = focusNode["0"]["0"].__data__.py;
-    var cont_width = document.getElementById("graph_container").offsetWidth / 2;
-    var cont_height = document.getElementById("graph_container").offsetHeight / 2;
-    var tr_x = cont_width - focusNodeX;
-    var tr_y = cont_height - focusNodeY;
+  // Find the nodes and label that are not selected
+  var selectedNode = node.filter(function (d) {
+    return d.label !== selectedVal;
+  });
+  var selectedLabel = text.filter(function (d) {
+    return d.label !== selectedVal;
+  });
 
-    g.transition()
-        .duration(3000)
-        .attr("transform", "translate (" + tr_x + "," + tr_y + ")");
+  // Find the selected node
+  var focusNode = node.filter(function (d) {
+    return d.label === selectedVal;
+  });
+  console.log(focusNode);
 
-    selectedNode.style("opacity", "0.2");
-    selectedLabel.style("opacity", "0.2");
-    link.style("opacity", "0.2");
-    linklabel.style("opacity", "0.2");
-    d3.selectAll(".node, .link, .linklabel, text").transition()
-        .duration(7000)
-        .style("opacity", 1);
+  // Find location in screen
+  var graphContainer = $("#graph_container");
+  var tr_x = graphContainer.width() / 2 - focusNode["0"]["0"].__data__.px;
+  var tr_y = graphContainer.height() / 2 - focusNode["0"]["0"].__data__.py;
 
-    zoom.translate([tr_x, tr_y]);
-    zoom.scale(1);
-  }
+  // Transition the SVG in a 3 second transform to the correct location
+  g.transition()
+      .duration(3000)
+      .attr("transform", "translate (" + tr_x + "," + tr_y + ")");
+
+  // Set the opacity of all non-selected nodes, links and labels to 0.2
+  selectedNode.style("opacity", "0.2");
+  selectedLabel.style("opacity", "0.2");
+  link.style("opacity", "0.2");
+  linklabel.style("opacity", "0.2");
+
+  // Reset the opacity to zero with a 7 second transition
+  svg.selectAll(".node, .link, .linklabel, text").transition()
+      .duration(7000)
+      .style("opacity", 1);
+
+  zoom.translate([tr_x, tr_y]);
+  zoom.scale(1);
 }

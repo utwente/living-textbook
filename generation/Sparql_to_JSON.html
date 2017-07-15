@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.css"/>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="JS/d3sparql.js"></script>
-    <script>
+<head>
+  <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <script src="../bower_components/d3/d3.min.js"></script>
+  <script src="js/d3sparql.js"></script>
+  <script>
     function exec() {
-      var endpoint = d3.select("#endpoint").property("value")
-      var sparql = d3.select("#sparql").property("value")
+      var endpoint = d3.select("#endpoint").property("value");
+      var sparql = d3.select("#sparql").property("value");
       d3sparql.query(endpoint, sparql, render)
     }
     function render(json) {
@@ -17,29 +17,29 @@
         "distance": 40,
         "width": 1200,
         "height": 700,
-		"radius": 6,
+        "radius": 6,
         "selector": "#result"
-      }
+      };
       d3sparql.forcegraph(json, config)
     }
 
     function toggle() {
       d3sparql.toggle()
     }
-    </script>
-  </head>
-  <body>
-    <div id="query" style="margin: 10px">
-      <h1>d3forcegraph</h1>
-      <form class="form-inline">
-        <label>SPARQL endpoint:</label>
-        <div class="input-append">
-          <input id="endpoint" class="span5" value="http://localhost:8089/parliament/sparql" type="text">
-          <button class="btn" type="button" onclick="exec()">Query</button>
-          <button class="btn" type="button" onclick="toggle()"><i id="button" class="icon-chevron-up"></i></button>
-        </div>
-      </form>
-      <textarea id="sparql" class="span9" rows=15>
+  </script>
+</head>
+<body>
+<div id="query" style="margin: 10px">
+  <h1>d3forcegraph</h1>
+  <form class="form-inline">
+    <label>SPARQL endpoint:</label>
+    <div class="input-append">
+      <input id="endpoint" title="endpoint" class="span5" value="http://localhost:8089/parliament/sparql" type="text">
+      <button class="btn" type="button" onclick="exec()">Query</button>
+      <button class="btn" type="button" onclick="toggle()"><i id="button" class="icon-chevron-up"></i></button>
+    </div>
+  </form>
+  <textarea id="sparql" title=sparql" class="span9" rows=15>
 Prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 Prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 Prefix owl: <http://www.w3.org/2002/07/owl#>
@@ -76,7 +76,7 @@ Filter (isBlank(?node2URI) = false)
 
 
       </textarea>
-    </div>
-    <div id="result"></div>
-  </body>
+</div>
+<div id="result"></div>
+</body>
 </html>
