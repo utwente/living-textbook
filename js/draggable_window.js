@@ -27,12 +27,12 @@ button.doDrag = function (e) {
 
   button.doResize(e.pageX)
 };
-button.stopDrag = function (e) {
+button.stopDrag = function () {
   invisibleFrame.style.zIndex = -1;
   button.removeEventListener('mousemove', button.doDrag);
   button.removeEventListener('mouseup', button.stopDrag);
 };
-button.onmousedown = function (e) {
+button.onmousedown = function () {
   try {
     document.documentElement.addEventListener('mousemove', button.doDrag);
     document.documentElement.addEventListener('mouseup', button.stopDrag);
@@ -43,4 +43,4 @@ button.onmousedown = function (e) {
 
 window.onresize = function () {
   button.doResize(lastX);
-}
+};
