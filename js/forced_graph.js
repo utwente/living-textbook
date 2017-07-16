@@ -8,7 +8,8 @@ var h = graphContainer.height();
 /******************************************************************************************************
  * Configuration variables
  *****************************************************************************************************/
-var focus_node = null, highlight_node = null;
+var focus_node = null;
+var highlight_node = null;
 var text_center = false;
 var outline = false;
 var min_score = 0;
@@ -79,57 +80,64 @@ function setFocus(d) {
  * @param d
  */
 function setHighlight(d) {
+
+  // Update SVG style
   svg.style("cursor", "pointer");
 
+  // Check whether we should use the focus node
   if (focus_node !== null) d = focus_node;
+
+  // Check if the node is already highlighted
+  if (highlight_node !== null && highlight_node.index === d.index) return;
   highlight_node = d;
-  if (highlight_color !== "white") {
 
-    circle
-        .style(toWhite, function (o) {
-          return isConnected(d, o) ? highlight_color : "white";
-        })
-        .style("opacity", function (o) {
-          return isConnected(d, o) ? 1 : 0.3
-        });
+  // If the focus color is set to white, do nothing
+  if (highlight_color === "white") return;
 
-    text
-        .style("font-weight", function (o) {
-          return isConnected(d, o) ? "bold" : "normal";
-        })
-        .style("opacity", function (o) {
-          return isConnected(d, o) ? 1 : 0.3
-        });
+  circle
+      .style(toWhite, function (o) {
+        return isConnected(d, o) ? highlight_color : "white";
+      })
+      .style("opacity", function (o) {
+        return isConnected(d, o) ? 1 : 0.3
+      });
 
-    link
-        .style("stroke", function (o) {
-          return o.source.index === d.index || o.target.index === d.index ? highlight_color : default_link_color;
-        })
-        .style("opacity", function (o) {
-          return o.source.index === d.index || o.target.index === d.index ? 1 : 0.3
-        })
-        .attr('marker-end', function (o) {
-          return o.source.index === d.index || o.target.index === d.index ? 'url(#arrowheadSelected)' : 'url(#arrowhead)'
-        });
+  text
+      .style("font-weight", function (o) {
+        return isConnected(d, o) ? "bold" : "normal";
+      })
+      .style("opacity", function (o) {
+        return isConnected(d, o) ? 1 : 0.3
+      });
 
-    linklabels
-        .append('textPath')
-        .attr('xlink:href', function (d, i) {
-          return '#linkpath' + i
-        })
-        .style("pointer-events", "none")
-        .text(function (d) {
-          return d.relationName
-        })
-        .style("visibility", function (o) {
-          if (o.source.index === d.index || o.target.index === d.index) {
-            return "visible";
-          }
-          else {
-            return "hidden";
-          }
-        });
-  }
+  link
+      .style("stroke", function (o) {
+        return o.source.index === d.index || o.target.index === d.index ? highlight_color : default_link_color;
+      })
+      .style("opacity", function (o) {
+        return o.source.index === d.index || o.target.index === d.index ? 1 : 0.3
+      })
+      .attr('marker-end', function (o) {
+        return o.source.index === d.index || o.target.index === d.index ? 'url(#arrowheadSelected)' : 'url(#arrowhead)'
+      });
+
+  linklabels
+      .append('textPath')
+      .attr('xlink:href', function (d, i) {
+        return '#linkpath' + i
+      })
+      .style("pointer-events", "none")
+      .text(function (d) {
+        return d.relationName
+      })
+      .style("visibility", function (o) {
+        if (o.source.index === d.index || o.target.index === d.index) {
+          return "visible";
+        }
+        else {
+          return "hidden";
+        }
+      });
 }
 
 /**
@@ -139,6 +147,7 @@ function exitHighlight() {
   highlight_node = null;
   if (focus_node === null) {
     svg.style("cursor", "move");
+
     if (highlight_color !== "white") {
       circle
           .style(toWhite, "white")
@@ -323,7 +332,9 @@ function onNodeMouseDown(d) {
  */
 function onNodeMouseOut() {
   // When the mouse is no longer over the node, clear the highlight
-  exitHighlight();
+  if (focus_node === null) {
+    exitHighlight();
+  }
 }
 
 /**
@@ -338,9 +349,9 @@ function onWindowMouseUp() {
       text.style("opacity", 1);
       link.style("opacity", 1);
     }
-  }
 
-  if (highlight_node === null) exitHighlight();
+    if (highlight_node !== null) exitHighlight();
+  }
 }
 
 /**
