@@ -19,7 +19,7 @@ var graph = (function () {
   $.ajax({
     'async': false,
     'global': false,
-    'url': "data/GIS_RS.json",
+    'url': data_source,
     'dataType': "json",
     'success': function (data) {
       json = data;

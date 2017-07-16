@@ -573,7 +573,7 @@ svg.style("cursor", "move");
  * Load actual graph
  *****************************************************************************************************/
 
-d3.json("data/GIS_RS.json", function (error, graph) {
+d3.json(data_source, function (error, graph) {
   // Save every existing link in a lookup table
   graph.links.forEach(function (d) {
     linkedByIndex[d.source + "," + d.target] = true;
