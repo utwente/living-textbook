@@ -10,14 +10,20 @@
     localStorage.clear();
   </script>
 
+  <!-- Jquery -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/theme.css">
+
   <!-- Crosstab library -->
   <script type="text/javascript" src="bower_components/crosstab/src/crosstab.js"></script>
   <script type="text/javascript">
     // Install handler to update src
     crosstab.PING_TIMEOUT = 10000;
-    crosstab.on('wiki_update', function(message){
+    crosstab.on('wiki_update', function (message) {
       document.getElementById("iframe_left").src = message.data;
     });
+
   </script>
 </head>
 <body>
@@ -26,6 +32,11 @@
   <div id="invisible_frame">
   </div>
   <div id="container_left">
+    <div id="open_button_container" class="ui-widget">
+      <button id="open_button">
+        <span>Open concept map</span>
+      </button>
+    </div>
     <iframe id="iframe_left" src="https://itc-giscience.utwente.nl/doku.php"></iframe>
   </div>
   <div id="move_containers">
@@ -40,6 +51,19 @@
   <div id="container_right">
     <iframe id="iframe_right" src="d3.html"></iframe>
   </div>
+  <div id="right_button_container">
+    <div id="full_screen_button_container" class="ui-widget">
+      <button id="full_screen_button" class="d3-button">
+        <span>Open full screen</span>
+      </button>
+    </div>
+    <div id="close_button_container" class="ui-widget">
+      <button id="close_button" class="d3-button">
+        <span>Close concept map</span>
+      </button>
+    </div>
+  </div>
+
 </div>
 
 <!-- Load draggable window script after page load -->

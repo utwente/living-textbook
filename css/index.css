@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 #container_left, #container_right, #move_containers {
@@ -11,11 +12,12 @@ body {
   z-index: 10;
 }
 
-#container_left, #container_right {
-  width: calc(50% - 9px);
+#container_left {
+  width: 100%;
 }
 
-#container_left {
+#container_right {
+  width: 0;
 }
 
 #move_containers {
@@ -104,4 +106,51 @@ iframe {
   height: 100%;
   width: 100%;
   z-index: -1;
+}
+
+#open_button_container {
+  position: absolute;
+  right: 20px;
+  top: calc(50% - 100px);
+}
+
+#open_button {
+  height: 200px;
+}
+
+#open_button > span {
+  writing-mode: vertical-lr;
+  padding: 10px 0;
+}
+
+#right_button_container {
+  position: absolute;
+  right: 0;
+  width: 0;
+  bottom: 0;
+  overflow: visible !important;
+}
+
+.ui-widget button.d3-button {
+  height: 30px;
+  font-size: 10px;
+  padding: 1px;
+  margin: 1px;
+  /*display: none;*/
+  width: 100%;
+}
+
+#close_button_container, #full_screen_button_container {
+  position: absolute;
+  bottom: 0;
+  width: 40%;
+  max-width: 300px;
+}
+
+#close_button_container {
+  right: 2px;
+}
+
+#full_screen_button_container {
+  left: 0;
 }

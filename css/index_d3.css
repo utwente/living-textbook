@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  overflow: hidden;
 }
 
 #graph_container {
@@ -17,21 +18,21 @@ body {
   z-index: 100;
 }
 
-#search, #readmebutton {
+#search, #readme-button {
   height: 30px;
   font-size: 10px;
   padding: 1px;
   margin: 1px;
+  width: 40%;
+  max-width: 300px;
 }
 
 #search {
   float: left;
-  width: 20%;
 }
 
-#readmebutton {
+#readme-button {
   float: right;
-  width: 20%;
 }
 
 text {
