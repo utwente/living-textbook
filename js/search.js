@@ -1,3 +1,6 @@
+/* globals data_source */
+/* globals svg: true, g: true, zoom: true */
+
 // Watermark the search field
 var watermark = "Search";
 $("#search")
@@ -48,7 +51,7 @@ $(function () {
           searchNode();
         }
       }
-  )
+  );
 });
 
 /**

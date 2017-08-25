@@ -1,3 +1,5 @@
+/* globals data_source */
+
 /******************************************************************************************************
  * Window information
  *****************************************************************************************************/
@@ -99,7 +101,7 @@ function setHighlight(d) {
         return isConnected(d, o) ? highlight_color : "white";
       })
       .style("opacity", function (o) {
-        return isConnected(d, o) ? 1 : 0.3
+        return isConnected(d, o) ? 1 : 0.3;
       });
 
   text
@@ -107,7 +109,7 @@ function setHighlight(d) {
         return isConnected(d, o) ? "bold" : "normal";
       })
       .style("opacity", function (o) {
-        return isConnected(d, o) ? 1 : 0.3
+        return isConnected(d, o) ? 1 : 0.3;
       });
 
   link
@@ -115,20 +117,20 @@ function setHighlight(d) {
         return o.source.index === d.index || o.target.index === d.index ? highlight_color : default_link_color;
       })
       .style("opacity", function (o) {
-        return o.source.index === d.index || o.target.index === d.index ? 1 : 0.3
+        return o.source.index === d.index || o.target.index === d.index ? 1 : 0.3;
       })
       .attr('marker-end', function (o) {
-        return o.source.index === d.index || o.target.index === d.index ? 'url(#arrowheadSelected)' : 'url(#arrowhead)'
+        return o.source.index === d.index || o.target.index === d.index ? 'url(#arrowheadSelected)' : 'url(#arrowhead)';
       });
 
   linklabels
       .append('textPath')
       .attr('xlink:href', function (d, i) {
-        return '#linkpath' + i
+        return '#linkpath' + i;
       })
       .style("pointer-events", "none")
       .text(function (d) {
-        return d.relationName
+        return d.relationName;
       })
       .style("visibility", function (o) {
         if (o.source.index === d.index || o.target.index === d.index) {
@@ -159,14 +161,14 @@ function exitHighlight() {
 
       link
           .style("stroke", function (o) {
-            return (isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color
+            return (isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color;
           })
           .style("opacity", 1)
           .attr('marker-end', 'url(#arrowhead)');
 
       linklabels
           .text(function () {
-            return ""
+            return "";
           });
     }
   }
@@ -191,6 +193,7 @@ function isConnected(a, b) {
  */
 function hasConnections(a) {
   for (var property in linkedByIndex) {
+    if (!linkedByIndex.hasOwnProperty(property)) continue;
     var s = property.split(",");
     if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) return true;
   }
@@ -635,13 +638,13 @@ d3.json(data_source, function (error, graph) {
       .append('path')
       .attr({
         'd': function (d) {
-          return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y
+          return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
         },
         'class': 'linkpath',
         'fill-opacity': 0,
         'stroke-opacity': 0,
         'id': function (d, i) {
-          return 'linkpath' + i
+          return 'linkpath' + i;
         }
       })
       .style("pointer-events", "none");
@@ -680,7 +683,7 @@ d3.json(data_source, function (error, graph) {
       .attr({
         'class': 'linklabel',
         'id': function (d, i) {
-          return 'linklabel' + i
+          return 'linklabel' + i;
         },
         'dx': 30,
         'dy': -3,

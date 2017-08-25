@@ -143,7 +143,7 @@ dragButton.doDrag = function (e) {
   }
 
   invisibleFrame.css('z-index', 15);
-  dragButton.doResize(e.pageX)
+  dragButton.doResize(e.pageX);
 };
 /**
  * Handler that registers the stop drag event
