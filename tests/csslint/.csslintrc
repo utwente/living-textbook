@@ -1,0 +1,3 @@
+--errors=zero-units,selector-newline,empty-rules
+--ignore=ids,important,overqualified-elements,adjoining-classes,fallback-colors,regex-selectors,box-sizing,order-alphabetical
+
