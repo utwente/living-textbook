@@ -95,14 +95,14 @@ dragButton.doResize = function (x, minWidth, animate, callback) {
   callback = typeof callback !== 'undefined' ? callback : function () {
   };
 
+  // Set the last x value
+  lastX = x - (centerWidth / 2) < minWidth ? minWidth : x;
+
   // Calculate new widths
   var leftWidth = x - (centerWidth / 2);
   leftWidth = Math.min(leftWidth, clientWidth - minWidth);
   leftWidth = Math.max(leftWidth, minWidth);
   var rightWidth = clientWidth - leftWidth - centerWidth;
-
-  // Set the last x value
-  lastX = x;
 
   // Move the window (with or without animation
   if (animate) {
