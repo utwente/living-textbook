@@ -29,4 +29,7 @@ jQuery(function () {
       crosstab.broadcast('cb_update', $element.html().trim());
     }
   });
+
+  // Notify of page load
+  crosstab.broadcast('wiki_load', window.location.href);
 });

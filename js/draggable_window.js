@@ -185,3 +185,12 @@ dragButton.on('mousedown', function () {
 window.onresize = function () {
   dragButton.doResize(lastX);
 };
+
+/**
+ * Open the concept browser on cb link
+ */
+crosstab.on('cb_update', function () {
+  if (!opened) {
+    openButton.click();
+  }
+});

@@ -17,13 +17,7 @@
 
   <!-- Crosstab library -->
   <script type="text/javascript" src="bower_components/crosstab/src/crosstab.js"></script>
-  <script type="text/javascript">
-    // Install handler to update src
-    crosstab.PING_TIMEOUT = 10000;
-    crosstab.on('wiki_update', function (message) {
-      document.getElementById("iframe_left").src = message.data;
-    });
-  </script>
+  <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
 
@@ -36,7 +30,7 @@
         <span>Open concept map</span>
       </button>
     </div>
-    <iframe id="iframe_left" src="https://itc-giscience.utwente.nl/doku.php"></iframe>
+    <iframe id="iframe_left"></iframe>
   </div>
   <div id="move_containers">
     <div id="move_containers_inner">
