@@ -27,7 +27,7 @@ js-analysis:
   before_script:
     - cp tests/jshint/.jshintignore .
   script:
-    - docker run --rm -v $(pwd):/lint hyzual/jshint js --verbose --config tests/jshint/config
+    - docker run --rm -v $(pwd):/lint hyzual/jshint js dokuwiki --verbose --config tests/jshint/config
 
 css-analysis:
   stage: static
@@ -37,4 +37,4 @@ css-analysis:
   before_script:
     - cp tests/csslint/.csslintrc .
   script:
-    - csslint css
+    - csslint css dokuwiki

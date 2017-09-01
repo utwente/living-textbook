@@ -1,2 +1,5 @@
 .idea
 bower_components
+
+# File loaded by bower
+dokuwiki/conceptbrowserlinker/scripts/crosstab.js
