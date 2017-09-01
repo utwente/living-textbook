@@ -24,8 +24,14 @@ var lastX = document.body.clientWidth / 2;
 openButton.openWindow = function () {
   if (opened) return;
   opened = true;
-  dragButton.doResize(openedX !== 0 ? openedX : (768 + ($('#move_containers_inner').innerWidth() / 2) - 1), 0, true, function () {
-  });
+  if (fullScreen) {
+    dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
+    });
+    moveContainersInner.fadeOut();
+  } else {
+    dragButton.doResize(openedX !== 0 ? openedX : (768 + ($('#move_containers_inner').innerWidth() / 2) - 1), undefined, undefined, true, function () {
+    });
+  }
   openButton.fadeOut();
 };
 
@@ -35,12 +41,10 @@ openButton.openWindow = function () {
 closeButton.closeWindow = function () {
   if (!opened) return;
   opened = false;
-  fullScreen = false;
   openedX = lastX;
 
-  dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, true, function () {
+  dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), true, function () {
     openButton.fadeIn();
-    $('#full_screen_button').find('span').html("Open full screen");
   });
   moveContainersInner.fadeIn();
 };
@@ -48,14 +52,14 @@ closeButton.closeWindow = function () {
 fullScreenButton.fullScreenWindow = function () {
   if (fullScreen) {
     // Close full screen
-    dragButton.doResize(fullScreenX, 0, true, function () {
+    dragButton.doResize(fullScreenX, 0, undefined, true, function () {
       $('#full_screen_button').find('span').html("Open full screen");
     });
     moveContainersInner.fadeIn();
   } else {
     // Open full screen
     fullScreenX = lastX;
-    dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), true, function () {
+    dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
       $('#full_screen_button').find('span').html("Close full screen");
     });
     moveContainersInner.fadeOut();
@@ -78,10 +82,11 @@ fullScreenButton.click(fullScreenButton.fullScreenWindow);
  * Handler executed to resize the iframes
  * @param x
  * @param minWidth
+ * @param maxWidth
  * @param animate
  * @param callback
  */
-dragButton.doResize = function (x, minWidth, animate, callback) {
+dragButton.doResize = function (x, minWidth, maxWidth, animate, callback) {
   // Check for double call
   if (x === lastX) return;
 
@@ -91,6 +96,7 @@ dragButton.doResize = function (x, minWidth, animate, callback) {
 
   // Check input
   minWidth = typeof minWidth !== 'undefined' ? minWidth : 0.25 * clientWidth;
+  maxWidth = typeof maxWidth !== 'undefined' ? maxWidth : 0.75 * clientWidth;
   animate = typeof animate !== 'undefined' ? animate : false;
   callback = typeof callback !== 'undefined' ? callback : function () {
   };
@@ -100,7 +106,7 @@ dragButton.doResize = function (x, minWidth, animate, callback) {
 
   // Calculate new widths
   var leftWidth = x - (centerWidth / 2);
-  leftWidth = Math.min(leftWidth, clientWidth - minWidth);
+  leftWidth = Math.min(leftWidth, maxWidth);
   leftWidth = Math.max(leftWidth, minWidth);
   var rightWidth = clientWidth - leftWidth - centerWidth;
 

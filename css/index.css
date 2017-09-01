@@ -110,8 +110,16 @@ iframe {
 
 #open_button_container {
   position: absolute;
-  right: 20px;
+  right: 2px;
   top: calc(50% - 100px);
+}
+
+@media (min-width: 1200px) {
+  #open_button_container {
+    position: absolute;
+    left: calc(50% + 600px);
+    top: calc(50% - 100px);
+  }
 }
 
 #open_button {
