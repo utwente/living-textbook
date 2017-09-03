@@ -17,7 +17,6 @@
     "tests"
   ],
   "dependencies": {
-    "crosstab": "^0.2.12",
     "d3": "<4.0",
     "jquery": "^3.2.1",
     "jquery-ui": "jqueryui#^1.12.1",

@@ -1,5 +1,5 @@
-var dokuwikiUrl = 'https://itc-giscience.utwente.nl/doku.php';
-crosstab.PING_TIMEOUT = 10000;
+// var dokuwikiUrl = 'https://itc-giscience.utwente.nl/doku.php';
+var dokuwikiUrl = 'https://living-textbook.drenso.nl:60130/doku/doku.php';
 
 $(function () {
 
@@ -35,26 +35,29 @@ $(function () {
   // Open the requested wiki page
   updateDokuwikiFrame(getParameterByName('doku'));
 
-  // Install handler to update src
-  crosstab.on('wiki_update', function (message) {
-    if (message.data.startsWith(dokuwikiUrl)) {
-      var params = getUrlParams(message);
-      updateDokuwikiFrame(params);
-    } else {
-      document.getElementById("iframe_left").src = message.data;
+  // Install message handler
+  window.addEventListener('message', function (event) {
+    var message = event.data;
+    console.log(message);
+
+    // Update url handler
+    if (event.data.type === 'wiki_load') {
+      updatePageUrl(getUrlParams(event.data));
+      return;
     }
+
+    // Update dokuwiki frame src handler
+    if (event.data.type === 'wiki_update'){
+      if (message.data.startsWith(dokuwikiUrl)) {
+        var params = getUrlParams(message);
+        updateDokuwikiFrame(params);
+      } else {
+        document.getElementById("iframe_left").src = message.data;
+      }
+    }
+
+    // Forward to other frames
+    document.getElementById("iframe_left").contentWindow.postMessage(message, '*');
+    document.getElementById("iframe_right").contentWindow.postMessage(message, '*');
   });
-
-  // Whenever a wiki page is loaded, update our url
-  crosstab.on('wiki_load', function (message) {
-    updatePageUrl(getUrlParams(message));
-  });
-});
-
-
-$(window).on('unload', function() {
-  window.localStorage.removeItem('crosstab.MESSAGE_KEY');
-  window.localStorage.removeItem('crosstab.TABS_KEY');
-  window.localStorage.removeItem('crosstab.SUPPORTED');
-  window.localStorage.removeItem('crosstab.FROZEN_TAB_ENVIRONMENT');
 });

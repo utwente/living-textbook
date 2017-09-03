@@ -21,15 +21,25 @@ var lastX = document.body.clientWidth / 2;
 /**
  * Handler for the open cm window action
  */
-openButton.openWindow = function () {
-  if (opened) return;
+openButton.openWindow = function (readyHandler) {
+  // Check if already opened
+  if (opened) {
+    readyHandler();
+    return;
+  }
+
+  // Setup variables
   opened = true;
+  readyHandler = typeof readyHandler !== 'undefined' ? readyHandler : function(){};
+
   if (fullScreen) {
     dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
+      readyHandler();
     });
     moveContainersInner.fadeOut();
   } else {
     dragButton.doResize(openedX !== 0 ? openedX : (768 + ($('#move_containers_inner').innerWidth() / 2) - 1), undefined, undefined, true, function () {
+      readyHandler();
     });
   }
   openButton.fadeOut();
@@ -189,8 +199,11 @@ window.onresize = function () {
 /**
  * Open the concept browser on cb link
  */
-crosstab.on('cb_update', function () {
-  if (!opened) {
-    openButton.click();
+window.addEventListener('message', function(event){
+  var message = event.data;
+  if (message.type === 'cb_update'){
+    openButton.openWindow(function(){
+      document.getElementById("iframe_right").contentWindow.postMessage({'type': 'cb_update_opened', 'data': message.data}, '*');
+    });
   }
 });

@@ -87,7 +87,6 @@
 
     // Custom Globals
     "globals"       : {
-      "d3": false,
-      "crosstab" : false
+      "d3": false
     }
 }

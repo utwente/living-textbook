@@ -1,5 +1,3 @@
-/* DOKUWIKI:include_once scripts/crosstab.js */
-
 /**
  * Register a toolbar button to insert a new concept browser link
  */
@@ -24,12 +22,12 @@ jQuery(function () {
     e.preventDefault();
     var $element = jQuery(this);
     if ($element.data('cbLink') !== ""){
-      crosstab.broadcast('cb_update', $element.data('cbLink'));
+      parent.postMessage({'type': 'cb_update', 'data': $element.data('cbLink')}, "*");
     } else {
-      crosstab.broadcast('cb_update', $element.html().trim());
+      parent.postMessage({'type': 'cb_update', 'data': $element.html().trim()}, "*");
     }
   });
 
   // Notify of page load
-  crosstab.broadcast('wiki_load', window.location.href);
+  parent.postMessage({'type': 'wiki_load', 'data': window.location.href}, "*");
 });

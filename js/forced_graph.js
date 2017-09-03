@@ -272,7 +272,7 @@ function updateLinks() {
  */
 function onNodeSingleClick(d) {
   if (d.link !== false) {
-    crosstab.broadcast('wiki_update', d.link);
+    parent.postMessage({'type': 'wiki_update', 'data': d.link}, "*");
   }
 }
 
@@ -609,7 +609,7 @@ function searchNode(selectedVal) {
   });
 
   // Check if the node is found
-  if (focusNode['0'].length <= 0){
+  if (focusNode['0'].length <= 0) {
     alert("Node not found");
     return;
   }
@@ -824,6 +824,10 @@ d3.json(data_source, function (error, graph) {
  * Load crosstab handler
  *****************************************************************************************************/
 
-crosstab.on('cb_update', function (message) {
-  searchNode(message.data);
+window.addEventListener('message', function (event) {
+  console.log(event);
+  var message = event.data;
+  if (message.type === 'cb_update_opened') {
+    searchNode(message.data);
+  }
 });
