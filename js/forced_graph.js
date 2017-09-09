@@ -1,833 +1,651 @@
-/* globals data_source */
-/* globals svg: true, g: true, zoom: true */
-
-/******************************************************************************************************
- * Window information
- *****************************************************************************************************/
-var graphContainer = $('#graph_container');
-var w = graphContainer.width();
-var h = graphContainer.height();
-
-/******************************************************************************************************
- * Configuration variables
- *****************************************************************************************************/
-var focus_node = null;
-var highlight_node = null;
-var text_center = false;
-var outline = false;
-var min_score = 0;
-var max_score = 1;
-var highlight_color = "blue";
-var highlight_trans = 0.1;
-var default_node_color = "#b1ded2";
-var default_link_color = "#696969";
-var nominal_base_node_size = 10;
-var nominal_text_size = 12;
-var max_text_size = 24;
-var nominal_stroke = 1.5;
-var max_stroke = 4.5;
-var max_base_node_size = 36;
-var min_zoom = 0.15;
-var max_zoom = 2;
-
-/******************************************************************************************************
- * Initialize variables
- *****************************************************************************************************/
-var keyC = true, keyS = true, keyT = true, keyR = true, keyX = true, keyD = true, keyL = true, keyM = true, keyH = true,
-    key1 = true, key2 = true, key3 = true, key0 = true;
-var linkedByIndex = {};
-var color = d3.scale.linear()
-    .domain([min_score, (min_score + max_score) / 2, max_score])
-    .range(["lime", "yellow", "red"]);
-var size = d3.scale.pow().exponent(1)
-    .domain([1, 100])
-    .range([10, 24]);
-var force = d3.layout.force()
-    .linkDistance(20)
-    .charge(-3000)
-    .size([w, h]);
-var toColor = outline === true ? "stroke" : "fill";
-var toWhite = outline === true ? "fill" : "stroke";
-
-
-var circle, link, linklabels, linkpaths, node, text;
-
-/******************************************************************************************************
- * Node functions
- *****************************************************************************************************/
-
 /**
- * Set node focus
- *
- * @param d
+ * Register cb namespace for usage
  */
-function setFocus(d) {
-  if (highlight_trans < 1) {
-    circle.style("opacity", function (o) {
-      return isConnected(d, o) ? 1 : highlight_trans;
-    });
+(function (cb, $, d3, undefined) {
 
-    text.style("opacity", function (o) {
-      return isConnected(d, o) ? 1 : highlight_trans;
-    });
+  /******************************************************************************************************
+   * Data source
+   *****************************************************************************************************/
+  // cb.data_source = "data/GIS_RS.json";
+  // cb.data_source = "data/GIS_RS_REDUCED.json";
+  cb.data_source = "data/GIS_RS_link_count.json";
 
-    link.style("opacity", function (o) {
-      return o.source.index === d.index || o.target.index === d.index ? 1 : highlight_trans;
-    });
-  }
-}
+  /******************************************************************************************************
+   * Configuration variables
+   *****************************************************************************************************/
+  cb.baseNodeRadius = 5; // Node base radius
+  cb.boundMargin = 100;
 
-/**
- * Set node highlight
- *
- * @param d
- */
-function setHighlight(d) {
+  // Node styles
+  cb.nodeLineWidth = 2;
+  cb.defaultNodeFillStyle = '#b1ded2';
+  cb.defaultNodeStrokeStyle = '#fff';
+  cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+  cb.draggedNodeStrokeStyle = '#2359ff';
+  cb.fadedNodeFillStyle = '#E6ECE4';
+  cb.fadedNodeStrokeStyle = '#fff';
+  cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+  cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
-  // Update SVG style
-  svg.style("cursor", "pointer");
+  // Link styles
+  cb.defaultLinkStrokeStyle = '#696969';
+  cb.draggedLinkStrokeStyle = '#333';
+  cb.fadedLinksStrokeStyle = '#E0E0E0';
+  cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
 
-  // Check whether we should use the focus node
-  if (focus_node !== null) d = focus_node;
+  // Node label styles
+  cb.defaultNodeLabelColor = '#000';
+  cb.defaultNodeLabelFont = '10px san-serif';
+  cb.draggedNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
+  cb.highlightedNodeLabelFont = cb.draggedNodeLabelFont;
 
-  // Check if the node is already highlighted
-  if (highlight_node !== null && highlight_node.index === d.index) return;
-  highlight_node = d;
+  cb.drawGrid = false;
+  cb.zoomExtent = [0.5, 8]; // [min,max] zoom
 
-  // If the focus color is set to white, do nothing
-  if (highlight_color === "white") return;
-
-  circle
-      .style(toWhite, function (o) {
-        return isConnected(d, o) ? highlight_color : "white";
-      })
-      .style("opacity", function (o) {
-        return isConnected(d, o) ? 1 : 0.3;
-      });
-
-  text
-      .style("font-weight", function (o) {
-        return isConnected(d, o) ? "bold" : "normal";
-      })
-      .style("opacity", function (o) {
-        return isConnected(d, o) ? 1 : 0.3;
-      });
-
-  link
-      .style("stroke", function (o) {
-        return o.source.index === d.index || o.target.index === d.index ? highlight_color : default_link_color;
-      })
-      .style("opacity", function (o) {
-        return o.source.index === d.index || o.target.index === d.index ? 1 : 0.3;
-      })
-      .attr('marker-end', function (o) {
-        return o.source.index === d.index || o.target.index === d.index ? 'url(#arrowheadSelected)' : 'url(#arrowhead)';
-      });
-
-  linklabels
-      .append('textPath')
-      .attr('xlink:href', function (d, i) {
-        return '#linkpath' + i;
-      })
-      .style("pointer-events", "none")
-      .text(function (d) {
-        return d.relationName;
-      })
-      .style("visibility", function (o) {
-        if (o.source.index === d.index || o.target.index === d.index) {
-          return "visible";
-        }
-        else {
-          return "hidden";
-        }
-      });
-}
-
-/**
- * Remove highlight
- */
-function exitHighlight() {
-  highlight_node = null;
-  if (focus_node === null) {
-    svg.style("cursor", "move");
-
-    if (highlight_color !== "white") {
-      circle
-          .style(toWhite, "white")
-          .style("opacity", 1);
-
-      text
-          .style("font-weight", "normal")
-          .style("opacity", 1);
-
-      link
-          .style("stroke", function (o) {
-            return (isNumber(o.score) && o.score >= 0) ? color(o.score) : default_link_color;
-          })
-          .style("opacity", 1)
-          .attr('marker-end', 'url(#arrowhead)');
-
-      linklabels
-          .text(function () {
-            return "";
-          });
-    }
-  }
-}
-
-/**
- * Check whether node a and b are connected
- *
- * @param a
- * @param b
- * @returns {*|boolean}
- */
-function isConnected(a, b) {
-  return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index === b.index;
-}
-
-/**
- * Check whether or not the ndode has any connections
- *
- * @param a
- * @returns {boolean}
- */
-function hasConnections(a) {
-  for (var property in linkedByIndex) {
-    if (!linkedByIndex.hasOwnProperty(property)) continue;
-    var s = property.split(",");
-    if ((s[0] === a.index || s[1] === a.index) && linkedByIndex[property]) return true;
-  }
-  return false;
-}
-
-/******************************************************************************************************
- * Graph functions
- *****************************************************************************************************/
-
-/**
- * Update the links
- */
-function updateLinks() {
-  node
-      .attr("transform", function (d) {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
-  text
-      .attr("transform", function (d) {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
-
-  link
-      .attr("x1", function (d) {
-        return d.source.x;
-      })
-      .attr("y1", function (d) {
-        return d.source.y;
-      })
-      .attr("x2", function (d) {
-        return d.target.x;
-      })
-      .attr("y2", function (d) {
-        return d.target.y;
-      });
-
-  node
-      .attr("cx", function (d) {
-        return d.x;
-      })
-      .attr("cy", function (d) {
-        return d.y;
-      });
-
-  linkpaths
-      .attr('d', function (d) {
-        // Return the path
-        return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
-      });
-
-  linklabels
-      .attr('transform', function (d) {
-        if (d.target.x < d.source.x) {
-          var bbox = this.getBBox();
-          var rx = bbox.x + bbox.width / 2;
-          var ry = bbox.y + bbox.height / 2;
-          return 'rotate(180 ' + rx + ' ' + ry + ')';
-        }
-        else {
-          return 'rotate(0)';
-        }
-      });
-}
-
-/******************************************************************************************************
- * Event handlers
- *****************************************************************************************************/
-
-/**
- * On node single click event handler.
- * Notifies listeners of node click
- *
- * @param d
- */
-function onNodeSingleClick(d) {
-  if (d.link !== false) {
-    parent.postMessage({'type': 'wiki_update', 'data': d.link}, "*");
-  }
-}
-
-/**
- * On node double click event handler
- * Moves the clicked node to the center of the screen
- *
- * @param d
- */
-function onNodeDoubleClick(d) {
-  d3.event.stopPropagation();
-  var dcx = graphContainer.width() / 2 - d.x * zoom.scale();
-  var dcy = graphContainer.height() / 2 - d.y * zoom.scale();
-  zoom.translate([dcx, dcy]);
-  g.transition()
-      .duration(2000)
-      .attr("transform", "translate(" + dcx + "," + dcy + ")scale(" + zoom.scale() + ")");
-}
-
-/**
- * On node context menu handler
- * Disables any response on node right click
- *
- * @param d
- */
-function onNodeContextMenu(d) {
-  d3.event.preventDefault();
-  d.fixed = true;
-}
-
-/**
- * On node mouse over event handler
- *
- *
- * @param d
- */
-function onNodeMouseOver(d) {
-  // When the mouse is over the node, set the highlight
-  setHighlight(d);
-}
-
-/**
- * On node mouse down event handler
- * Set the node focus and highlight
- *
- * @param d
- */
-function onNodeMouseDown(d) {
-  // On mousedown, set the focus on the node.
-  d3.event.stopPropagation();
-  focus_node = d;
-  setFocus(d);
-
-  // Set the highlight if not already set
-  if (highlight_node === null) setHighlight(d);
-}
-
-/**
- * On node mouse out event handler
- * Exit the highlight state when leaving a node
- */
-function onNodeMouseOut() {
-  // When the mouse is no longer over the node, clear the highlight
-  if (focus_node === null) {
-    exitHighlight();
-  }
-}
-
-/**
- * On window mouseup event handler
- * Check whether a node is focused or highlighted, and exit if so
- */
-function onWindowMouseUp() {
-  if (focus_node !== null) {
-    focus_node = null;
-    if (highlight_trans < 1) {
-      circle.style("opacity", 1);
-      text.style("opacity", 1);
-      link.style("opacity", 1);
-    }
-
-    if (highlight_node !== null) exitHighlight();
-  }
-}
-
-/**
- * On resize event handler
- */
-function onResize() {
-  var width = graphContainer.width(),
-      height = graphContainer.height();
-  svg.attr("width", width).attr("height", height);
-
-  force.size([force.size()[0] + (width - w) / zoom.scale(), force.size()[1] + (height - h) / zoom.scale()]).resume();
-  w = width;
-  h = height;
-}
-
-/**
- * On keydown event handler
- */
-function onKeyDown() {
-  // Force movement stop with spacebar
-  if (d3.event.keyCode === 32) {
-    force.stop();
-  }
-
-  // Check other keycodes for show/hide actions
-  // @note Currenlty not functional, except for the 0 key
-  else if (d3.event.keyCode >= 48 && d3.event.keyCode <= 90 && !d3.event.ctrlKey && !d3.event.altKey && !d3.event.metaKey) {
-    switch (String.fromCharCode(d3.event.keyCode)) {
-
-        // Display node based on type
-      case "C":
-        keyC = !keyC;
-        break;
-      case "S":
-        keyS = !keyS;
-        break;
-      case "T":
-        keyT = !keyT;
-        break;
-      case "R":
-        keyR = !keyR;
-        break;
-      case "X":
-        keyX = !keyX;
-        break;
-      case "D":
-        keyD = !keyD;
-        break;
-
-        // Display node by score
-      case "L":
-        keyL = !keyL;
-        break;
-      case "M":
-        keyM = !keyM;
-        break;
-      case "H":
-        keyH = !keyH;
-        break;
-
-        // Display links by score
-      case "1":
-        key1 = !key1;
-        break;
-      case "2":
-        key2 = !key2;
-        break;
-      case "3":
-        key3 = !key3;
-        break;
-
-        // Display node/node text
-      case "0":
-        key0 = !key0;
-        break;
-    }
-
-    // Hide/show links based on types and scores
-    link.style("display", function (d) {
-      var flag = visibleByType(d.source.type) && visibleByType(d.target.type) && visibleByNodeScore(d.source.score) && visibleByNodeScore(d.target.score) && visibleByLinkScore(d.score);
-      linkedByIndex[d.source.index + "," + d.target.index] = flag;
-      return flag ? "inline" : "none";
-    });
-
-    // Hide/show node and node text based on the 0 key
-    node.style("display", function (d) {
-      return (key0 || hasConnections(d)) && visibleByType(d.type) && visibleByNodeScore(d.score) ? "inline" : "none";
-    });
-    text.style("display", function (d) {
-      return (key0 || hasConnections(d)) && visibleByType(d.type) && visibleByNodeScore(d.score) ? "inline" : "none";
-    });
-
-    // Check highlight state
-    if (highlight_node !== null) {
-      if ((key0 || hasConnections(highlight_node)) && visibleByType(highlight_node.type) && visibleByNodeScore(highlight_node.score)) {
-        if (focus_node !== null) setFocus(focus_node);
-        setHighlight(highlight_node);
+  /******************************************************************************************************
+   * Data types
+   *****************************************************************************************************/
+  var Types = {};
+  Types.DataType = {
+    "nodes": [
+      {
+        "nodeName": "string",
+        "label": "string",
+        "link": "string",
+        "numberOfLinks": 1
       }
-      else {
-        exitHighlight();
+    ],
+    "links": [
+      {
+        "source": 1,
+        "target": 1,
+        "relationName": "string"
+      }
+    ]
+  };
+  Types.NodeType = {
+    "index": 0,
+    "x": 0,
+    "y": 0,
+    "vx": 0,
+    "vy": 0,
+    "fx": 0,
+    "fy": 0,
+    "radius": 0,
+    "nodeName": "",
+    "label": "",
+    "link": "",
+    "numberOfLinks": 0,
+    "dragged": false,
+    "highlighted": false
+  };
+  Types.LinkType = {
+    "source": 0,
+    "target": 0,
+    "relationName": ""
+  };
+
+  /******************************************************************************************************
+   * Internal variables
+   *****************************************************************************************************/
+  var canvas, context, screenWidth, screenHeight, canvasWidth, canvasHeight;
+  var cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
+  var dragPosY, dragPosX, isDragging = false;
+  var highlightedNode = null, mouseMoveDisabled = false;
+
+  // Initialize the graph object
+  cbGraph = {"nodes": [], "links": []};
+
+  /******************************************************************************************************
+   * External functions
+   *****************************************************************************************************/
+  cb.getCurrentTransform = function () {
+    return cbTransform;
+  };
+
+  cb.getSimulation = function () {
+    return cbSimulation;
+  };
+
+  cb.searchNode = function (nodeName) {
+    // Find the node by label
+    var nodes = cbGraph.nodes.filter(function (node) {
+      return node.label === nodeName;
+    });
+
+    // If found, move to it
+    if (nodes.length > 0) {
+      moveToNode(nodes[0]);
+      setNodeAsHighlight(nodes[0]);
+    }
+  };
+
+  /******************************************************************************************************
+   * Utility functions
+   *****************************************************************************************************/
+
+  /**
+   * Resize the canvas
+   */
+  function resizeCanvas() {
+    // Get container sizes
+    var container = $('#graph_container_div');
+    screenWidth = container.innerWidth();
+    screenHeight = container.innerHeight();
+
+    // Resize canvas @todo adjust
+    canvas.width = canvasWidth = screenWidth;
+    canvas.height = canvasHeight = screenHeight;
+
+    // Get context if not available
+    if (context === undefined) {
+      context = canvas.getContext('2d');
+    }
+  }
+
+  /**
+   * Retrieve the node radius
+   * @param {Types.NodeType.} node
+   * @returns {number}
+   */
+  function getNodeRadius(node) {
+    node.radius = cb.baseNodeRadius + 2 * (node.numberOfLinks ? node.numberOfLinks : 1);
+    return node.radius;
+  }
+
+  /**
+   * @param {Types.NodeType.} node
+   */
+  function limitNode(node) {
+    node.x = Math.max(node.radius, Math.min(canvasWidth - node.radius, node.x));
+    node.y = Math.max(node.radius, Math.min(canvasHeight - node.radius, node.y));
+
+    return node;
+  }
+
+  function setNodeAsDragged(node) {
+    isDragging = true;
+    node.dragged = true;
+    clearNodeHighlight();
+    setHighlightsByNode(node);
+  }
+
+  function clearNodeAsDragged(node) {
+    isDragging = false;
+    node.dragged = false;
+    clearHighlightsByNode(node);
+  }
+
+  function setNodeAsHighlight(node) {
+    // Check if node the same
+    if (highlightedNode && highlightedNode.index === node.index) return;
+
+    // Check for previous highlight
+    clearNodeHighlight();
+
+    highlightedNode = node;
+    node.highlighted = true;
+    setHighlightsByNode(node);
+  }
+
+  function clearNodeHighlight() {
+    if (highlightedNode !== null) {
+      highlightedNode.highlighted = false;
+      clearHighlightsByNode(highlightedNode);
+      highlightedNode = null;
+    }
+  }
+
+  function setHighlightsByNode(node) {
+    cbGraph.links.forEach(function (link) {
+      if (link.target.index === node.index) link.source.highlighted = true;
+      if (link.source.index === node.index) link.target.highlighted = true;
+    });
+  }
+
+  function clearHighlightsByNode(node) {
+    cbGraph.links.forEach(function (link) {
+      if (link.target.index === node.index) link.source.highlighted = false;
+      if (link.source.index === node.index) link.target.highlighted = false;
+    });
+  }
+
+  /**
+   * Retrieve the link minimum length
+   * @param {Types.LinkType.} link
+   * @returns {number}
+   */
+  function getLinkDistance(link) {
+    return getNodeRadius(link.source) + getNodeRadius(link.target) + 20;
+  }
+
+  /**
+   * @param loc
+   */
+  function transformLocation(loc) {
+    return {
+      'x': (loc.x - cbTransform.x) / cbTransform.k,
+      "y": (loc.y - cbTransform.y) / cbTransform.k
+    };
+  }
+
+  /******************************************************************************************************
+   * Event handlers
+   *****************************************************************************************************/
+
+  function selectNode() {
+    var transformed = transformLocation(d3.event);
+    return cbSimulation.find(transformed.x, transformed.y, 20);
+  }
+
+  function onDragStarted() {
+    if (!d3.event.active) cbSimulation.alphaTarget(0.3).restart();
+    d3.event.subject.fx = dragPosX = d3.event.subject.x;
+    d3.event.subject.fy = dragPosY = d3.event.subject.y;
+
+    setNodeAsDragged(d3.event.subject);
+  }
+
+  function onDragged() {
+    dragPosX += d3.event.dx / cbTransform.k;
+    dragPosY += d3.event.dy / cbTransform.k;
+    d3.event.subject.fx = Math.max(0, Math.min(canvasWidth, dragPosX));
+    d3.event.subject.fy = Math.max(0, Math.min(canvasHeight, dragPosY));
+  }
+
+  function onDragEnded() {
+    if (!d3.event.active) cbSimulation.alphaTarget(0);
+    d3.event.subject.fx = null;
+    d3.event.subject.fy = null;
+
+    clearNodeAsDragged(d3.event.subject);
+  }
+
+  function onMouseMove() {
+    if (mouseMoveDisabled) return;
+    highlightNode();
+  }
+
+  function onClick() {
+    var node = selectNode();
+
+    if (node !== undefined) {
+      if (node.link !== false) {
+        parent.postMessage({'type': 'wiki_update', 'data': node.link}, "*");
       }
     }
   }
-}
 
-/**
- * On zoom event handler
- */
-function onZoom() {
-  var stroke = nominal_stroke;
-  if (nominal_stroke * zoom.scale() > max_stroke) stroke = max_stroke / zoom.scale();
-  link.style("stroke-width", stroke);
-  circle.style("stroke-width", stroke);
-
-  var base_radius = nominal_base_node_size;
-  if (nominal_base_node_size * zoom.scale() > max_base_node_size) base_radius = max_base_node_size / zoom.scale();
-  circle
-      .attr("d", d3.svg.symbol()
-          .size(function (d) {
-            return Math.PI * Math.pow(size(d.size) * base_radius / nominal_base_node_size || base_radius, 2);
-          })
-          .type(function (d) {
-            return d.type;
-          }));
-
-  //circle.attr("r", function(d) { return (size(d.size)*base_radius/nominal_base_node_size||base_radius); })
-  if (!text_center) text.attr("dx", function (d) {
-    return (size(d.size) * base_radius / nominal_base_node_size || base_radius);
-  });
-
-  var text_size = nominal_text_size;
-  if (nominal_text_size * zoom.scale() > max_text_size) text_size = max_text_size / zoom.scale();
-  text.style("font-size", text_size + "px");
-  g.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-}
-
-/******************************************************************************************************
- * Utility functions
- *****************************************************************************************************/
-
-/**
- * Return whether or not the type should be visible.
- * Is based on the state of the C/S/T/R/X/D keys
- *
- * @param type
- * @returns {boolean}
- */
-function visibleByType(type) {
-  // Check if undefined
-  if (type === undefined) {
-    return true;
+  function onDoubleClick() {
+    moveToNode();
   }
 
-  switch (type) {
-    case "circle":
-      return keyC;
-    case "square":
-      return keyS;
-    case "triangle-up":
-      return keyT;
-    case "diamond":
-      return keyR;
-    case "cross":
-      return keyX;
-    case "triangle-down":
-      return keyD;
-    default:
-      return true;
-  }
-}
+  function highlightNode() {
+    var node = selectNode();
 
-/**
- * Return whether or not the node should be visible
- * Is based on the state of the H/M/L keys
- *
- * @param score
- * @returns {boolean}
- */
-function visibleByNodeScore(score) {
-  // Check score if it is a number
-  if (isNumber(score)) {
-    if (score >= 0.666) return keyH;
-    else if (score >= 0.333) return keyM;
-    else if (score >= 0) return keyL;
+    if (node) {
+      setNodeAsHighlight(node);
+    } else {
+      clearNodeHighlight();
+    }
+
+    // Check if the event loop is running, if not, restart
+    if (!d3.event.active) cbSimulation.restart();
   }
 
-  return true;
-}
+  function moveToNode(node) {
+    // If necessary, transform the event location and find a corresponding node
+    node = typeof(node) !== "undefined" ? node : selectNode();
 
-/**
- * Return whether or not the link should be visible
- * Is based on the state of the 1/2/3 keys
- *
- * @param score
- * @returns {boolean}
- */
-function visibleByLinkScore(score) {
-  // Check score if it is a number
-  if (isNumber(score)) {
-    if (score >= 0.666) return key3;
-    else if (score >= 0.333) return key2;
-    else if (score >= 0) return key1;
-  }
+    // Check for node existence
+    if (node === undefined) return;
 
-  return true;
-}
+    // Stop simulation for now to prevent node walking
+    mouseMoveDisabled = true;
+    cbSimulation.stop();
 
-/**
- * Check whether the given parameter is a valid number
- * @param n
- * @returns {boolean}
- */
-function isNumber(n) {
-  // Check for undefined first
-  if (n === undefined) return false;
+    // Calculate zoom identify
+    var transform = d3.zoomIdentity
+        .translate(canvasWidth / 2, canvasHeight / 2)
+        .scale(3)
+        .translate(-node.x, -node.y);
 
-  // Try to parse the number
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-/**
- * Find the given node ans focus on it
- * @param selectedVal
- */
-function searchNode(selectedVal) {
-  // Get all nodes
-  var node = g.selectAll(".node");
-
-  // Check if something was selected, if not, clear the stroke styles
-  if (selectedVal === "none") {
-    node.style("stroke", "white").style("stroke-width", "1");
-    return;
-  }
-
-  // Get all link, linklabels and text
-  var link = svg.selectAll(".link");
-  var linklabel = svg.selectAll(".linklabel");
-  var text = svg.selectAll("text");
-
-  // Find the nodes and label that are not selected
-  var selectedNode = node.filter(function (d) {
-    return d.label !== selectedVal;
-  });
-  var selectedLabel = text.filter(function (d) {
-    return d.label !== selectedVal;
-  });
-
-  // Find the selected node
-  var focusNode = node.filter(function (d) {
-    return d.label === selectedVal;
-  });
-
-  // Check if the node is found
-  if (focusNode['0'].length <= 0) {
-    alert("Node not found");
-    return;
-  }
-
-  // Find location in screen
-  var graphContainer = $("#graph_container");
-  var tr_x = graphContainer.width() / 2 - focusNode["0"]["0"].__data__.px;
-  var tr_y = graphContainer.height() / 2 - focusNode["0"]["0"].__data__.py;
-
-  // Transition the SVG in a 3 second transform to the correct location
-  g.transition()
-      .duration(3000)
-      .attr("transform", "translate (" + tr_x + "," + tr_y + ")");
-
-  // Set the opacity of all non-selected nodes, links and labels to 0.2
-  selectedNode.style("opacity", "0.2");
-  selectedLabel.style("opacity", "0.2");
-  link.style("opacity", "0.2");
-  linklabel.style("opacity", "0.2");
-
-  // Reset the opacity to zero with a 7 second transition
-  svg.selectAll(".node, .link, .linklabel, text").transition()
-      .duration(7000)
-      .style("opacity", 1);
-
-  zoom.translate([tr_x, tr_y]);
-  zoom.scale(1);
-}
-
-/******************************************************************************************************
- * Create the svg image containing the graph
- *****************************************************************************************************/
-var svg = d3.select("#graph_container").append("svg");
-var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom]);
-var g = svg.append("g");
-svg.style("cursor", "move");
-
-/******************************************************************************************************
- * Load actual graph
- *****************************************************************************************************/
-
-d3.json(data_source, function (error, graph) {
-  // Save every existing link in a lookup table
-  graph.links.forEach(function (d) {
-    linkedByIndex[d.source + "," + d.target] = true;
-  });
-
-  force
-      .nodes(graph.nodes)
-      .links(graph.links)
-      .start();
-
-  link = g.selectAll(".link")
-      .data(graph.links)
-      .enter().append("line")
-      .attr("class", "link")
-      .style("pointer-events", "none")
-      .attr('marker-end', 'url(#arrowhead)')
-      .style("stroke-width", nominal_stroke)
-      .style("stroke", default_link_color);
-
-  node = g.selectAll(".node")
-      .data(graph.nodes)
-      .enter().append("g")
-      .attr("class", "node")
-      .call(force.drag);
-
-  circle = node
-      .append("path")
-      .attr("d", d3.svg.symbol()
-          .size(function (d) {
-            return Math.PI * Math.pow(size(d.size) || nominal_base_node_size, 2);
-          })
-          .type(function (d) {
-            return d.type;
-          }))
-
-      .style(toColor, function (d) {
-        if (isNumber(d.score) && d.score >= 0) return color(d.score);
-        else return default_node_color;
-      })
-      //.attr("r", function(d) { return size(d.size)||nominal_base_node_size; })
-      .style("stroke-width", nominal_stroke)
-      .style(toWhite, "white");
-
-  linkpaths = g
-      .selectAll(".linkpath")
-      .data(graph.links)
-      .enter()
-      .append('path')
-      .attr({
-        'd': function (d) {
-          return 'M ' + d.source.x + ' ' + d.source.y + ' L ' + d.target.x + ' ' + d.target.y;
-        },
-        'class': 'linkpath',
-        'fill-opacity': 0,
-        'stroke-opacity': 0,
-        'id': function (d, i) {
-          return 'linkpath' + i;
-        }
-      })
-      .style("pointer-events", "none");
-
-  text = g
-      .selectAll(".text")
-      .data(graph.nodes)
-      .enter().append("text")
-      .attr("dy", ".35em")
-      .attr("class", "nodeLabel")
-      .style("font-size", nominal_text_size + "px");
-
-  // Center text
-  if (text_center) {
-    text
-        .text(function (d) {
-          return d.label;
-        })
-        .style("text-anchor", "middle");
-  } else {
-    text
-        .attr("dx", function (d) {
-          return (size(d.size) || nominal_base_node_size);
-        })
-        .text(function (d) {
-          return '\u2002' + d.label;
+    // Move to it
+    cbCanvas
+        .transition()
+        .duration(3000)
+        .call(cbZoom.transform, transform)
+        .on('end', function () {
+          mouseMoveDisabled = false;
         });
   }
 
-  linklabels = g
-      .selectAll(".linklabel")
-      .data(graph.links)
-      .enter()
-      .append('text')
-      .style("pointer-events", "none")
-      .attr({
-        'class': 'linklabel',
-        'id': function (d, i) {
-          return 'linklabel' + i;
-        },
-        'dx': 30,
-        'dy': -3,
-        'font-size': 10,
-        'fill': '#100c14'
-      });
-
-  svg
-      .append('defs')
-      .append('marker')
-      .attr({
-        'id': 'arrowhead',
-        'viewBox': '-0 -5 10 10',
-        'refX': 23,
-        'refY': 0,
-        'orient': 'auto',
-        'markerWidth': 5,
-        'markerHeight': 5,
-        'xoverflow': 'visible'
-      })
-      .append('path')
-      .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-      .attr('fill', '#696969')
-      .attr('stroke', '#696969');
-
-  svg
-      .append('defs')
-      .append('marker')
-      .attr({
-        'id': 'arrowheadSelected',
-        'viewBox': '-0 -5 10 10',
-        'refX': 23,
-        'refY': 0,
-        //'markerUnits':'strokeWidth',
-        'orient': 'auto',
-        'markerWidth': 5,
-        'markerHeight': 5,
-        'xoverflow': 'visible'
-      })
-      .append('path')
-      .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-      .attr('fill', 'blue')
-      .attr('stroke', 'blue');
-
-  // Bind node events
-  node
-      .on("click", onNodeSingleClick)
-      .on("dblclick.zoom", onNodeDoubleClick)
-      .on("mouseover", onNodeMouseOver)
-      .on("mousedown", onNodeMouseDown)
-      .on("mouseout", onNodeMouseOut)
-      .on("contextmenu", onNodeContextMenu);
-
-  // On zoom
-  zoom.on("zoom", onZoom);
-
-  svg.call(zoom);
-  svg.on("mouseover", updateLinks);
-
-  // Resize window
-  onResize();
-
-  // Bind window handlers
-  d3.select(window)
-      .on("mouseup", onWindowMouseUp)
-      .on("resize", onResize)
-      .on("keydown", onKeyDown);
-
-  // Force link update on tick
-  force.on("tick", updateLinks);
-});
-
-/******************************************************************************************************
- * Load crosstab handler
- *****************************************************************************************************/
-
-window.addEventListener('message', function (event) {
-  console.log(event);
-  var message = event.data;
-  if (message.type === 'cb_update_opened') {
-    searchNode(message.data);
+  function zoomGraph() {
+    cbTransform = d3.event.transform;
+    drawGraph();
   }
-});
+
+  /******************************************************************************************************
+   * Canvas draw methods
+   *****************************************************************************************************/
+
+  /**
+   * @note Order in this function is important!
+   */
+  function drawGraph() {
+    // Limit the nodes
+    cbGraph.nodes.forEach(limitNode);
+
+    // Save state
+    context.save();
+
+    // Clear canvas
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // Adjust scaling
+    context.translate(cbTransform.x, cbTransform.y);
+    context.scale(cbTransform.k, cbTransform.k);
+
+    // Draw normal links
+    context.beginPath();
+    context.strokeStyle = isDragging ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    cbGraph.links.forEach(drawNormalLink);
+    context.stroke();
+
+    // Draw dragged links
+    if (isDragging) {
+      context.beginPath();
+      context.strokeStyle = cb.draggedLinkStrokeStyle;
+      cbGraph.links.forEach(drawDraggedLink);
+      context.stroke();
+    }
+
+    // Draw highlighted links
+    if (highlightedNode !== null) {
+      context.beginPath();
+      context.strokeStyle = cb.highlightedLinkStrokeStyle;
+      cbGraph.links.forEach(drawHighlightedLink);
+      context.stroke();
+    }
+
+    // Draw normal nodes
+    context.beginPath();
+    context.lineWidth = cb.nodeLineWidth;
+    context.fillStyle = isDragging ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
+    context.strokeStyle = isDragging ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
+    cbGraph.nodes.forEach(drawNormalNode);
+    context.fill();
+    context.stroke();
+
+    // Draw dragged nodes
+    if (isDragging) {
+      context.beginPath();
+      context.lineWidth = cb.nodeLineWidth;
+      context.fillStyle = cb.draggedNodeFillStyle;
+      context.strokeStyle = cb.draggedNodeStrokeStyle;
+      cbGraph.nodes.forEach(drawDraggedNode);
+      context.fill();
+      context.stroke();
+    }
+
+    // Draw highlighted nodes
+    context.beginPath();
+    context.lineWidth = cb.nodeLineWidth;
+    context.fillStyle = cb.highlightedNodeFillStyle;
+    context.strokeStyle = cb.highlightedNodeStrokeStyle;
+    cbGraph.nodes.forEach(drawHighlightedNode);
+    context.fill();
+    context.stroke();
+
+
+    // Draw normal link arrows
+    context.fillStyle = isDragging ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    cbGraph.links.forEach(drawNormalLinkArrow);
+
+    // Draw dragged link arrows
+    if (isDragging) {
+      context.fillStyle = cb.draggedLinkStrokeStyle;
+      cbGraph.links.forEach(drawDraggedLinkArrow);
+    }
+
+    // Draw highlighted link arrows
+    if (highlightedNode !== null) {
+      context.fillStyle = cb.highlightedLinkStrokeStyle;
+      cbGraph.links.forEach(drawHighlightedLinkArrow);
+    }
+
+    // Draw node labels
+    context.fillStyle = cb.defaultNodeLabelColor;
+    context.font = cb.defaultNodeLabelFont;
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+    cbGraph.nodes.forEach(drawNodeText);
+
+    // Draw link labels
+    if (isDragging || highlightedNode !== null) {
+      context.fillStyle = cb.defaultNodeLabelColor;
+      context.font = cb.defaultNodeLabelFont;
+      context.textBaseline = 'top';
+      cbGraph.links.forEach(drawLinkText);
+    }
+
+    // Draw grid lines
+    if (cb.drawGrid) {
+      for (var i = 100; i < 2000; i += 100) {
+        context.beginPath();
+        context.moveTo(i, 0);
+        context.lineTo(i, canvasHeight);
+        if (i < canvasHeight) {
+          context.moveTo(0, i);
+          context.lineTo(canvasWidth, i);
+        }
+        context.strokeStyle = "black";
+        context.stroke();
+      }
+    }
+
+    // Restore state
+    context.restore();
+  }
+
+  function drawLink(link) {
+    context.moveTo(link.target.x, link.target.y);
+    context.lineTo(link.source.x, link.source.y);
+  }
+
+  function drawNormalLink(link) {
+    if (link.source.dragged || link.target.dragged) return;
+    drawLink(link);
+  }
+
+  function drawDraggedLink(link) {
+    if (link.source.dragged || link.target.dragged) drawLink(link);
+  }
+
+  function drawHighlightedLink(link) {
+    if (link.source.highlighted && link.target.highlighted) drawLink(link);
+  }
+
+  function drawLinkText(link) {
+    if ((link.source.highlighted && link.target.highlighted) || (link.source.dragged || link.target.dragged)) {
+      if (link.relationName) {
+        // Calculate angle of label
+        var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
+        startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
+
+        context.save();
+        context.translate(link.source.x, link.source.y);
+        context.rotate(startRadians);
+
+        // Check rotation and add extra if required
+        if ((startRadians * 2) > Math.PI) {
+          context.rotate(Math.PI);
+          context.textAlign = 'right';
+          context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0);
+        } else {
+          context.textAlign = 'left';
+          context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0);
+        }
+
+        // Restore context
+        context.restore();
+      }
+    }
+  }
+
+  function drawLinkArrow(link) {
+    var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
+    startRadians += ((link.source.x >= link.target.x) ? -1 : 1) * Math.PI / 2;
+
+    context.save();
+    context.beginPath();
+    context.translate(link.target.x, link.target.y);
+    context.rotate(startRadians);
+    context.moveTo(0, link.target.radius);
+    context.lineTo(2, 5 + link.target.radius);
+    context.lineTo(-2, 5 + link.target.radius);
+    context.closePath();
+    context.restore();
+    context.fill();
+  }
+
+  function drawNormalLinkArrow(link) {
+    if (link.target.dragged || link.source.dragged || link.target.highlighted) return;
+    drawLinkArrow(link);
+  }
+
+  function drawDraggedLinkArrow(link) {
+    if (link.target.dragged || link.source.dragged) drawLinkArrow(link);
+  }
+
+  function drawHighlightedLinkArrow(link) {
+    if (link.target.highlighted) drawLinkArrow(link);
+  }
+
+  function drawNode(node) {
+    context.moveTo(node.x + node.radius, node.y);
+    context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
+  }
+
+  function drawNormalNode(node) {
+    if (node.highlighted || node.dragged) return;
+    drawNode(node);
+  }
+
+  function drawDraggedNode(node) {
+    if (node.dragged) drawNode(node);
+  }
+
+  function drawHighlightedNode(node) {
+    if (node.highlighted) drawNode(node);
+  }
+
+  function drawNodeText(node) {
+    if (isDragging && node.dragged) {
+      context.font = cb.draggedNodeLabelFont;
+      context.fillText(node.label, node.x, node.y);
+      return;
+    }
+    if ((highlightedNode !== null || isDragging) && node.highlighted) {
+      context.font = cb.highlightedNodeLabelFont;
+      context.fillText(node.label, node.x, node.y);
+      return;
+    }
+
+    if (!isDragging && highlightedNode === null) context.fillText(node.label, node.x, node.y);
+  }
+
+  /******************************************************************************************************
+   * Force functions
+   *****************************************************************************************************/
+  function keepInBoxForce(alpha) {
+    for (var i = 0, n = cbGraph.nodes.length, node, k = alpha * 0.6; i < n; ++i) {
+      // Set variables
+      node = cbGraph.nodes[i];
+
+      // Calculate forces
+      node.vx += (node.x < cb.boundMargin) ? Math.abs(cb.boundMargin - node.x) * k : 0;
+      node.vy += (node.y < cb.boundMargin) ? Math.abs(cb.boundMargin - node.y) * k : 0;
+      node.vx -= ((canvasWidth - node.x) < cb.boundMargin) ? Math.abs(canvasWidth - cb.boundMargin - node.x) * k : 0;
+      node.vy -= ((canvasHeight - node.y) < cb.boundMargin) ? Math.abs(canvasHeight - cb.boundMargin - node.y) * k : 0;
+    }
+  }
+
+  /******************************************************************************************************
+   * Start execution after DOM load
+   *****************************************************************************************************/
+  $(function () {
+
+    /******************************************************************************************************
+     * Initialize canvas
+     *****************************************************************************************************/
+    canvas = document.getElementById('graph_container_canvas');
+    resizeCanvas();
+
+    /******************************************************************************************************
+     * Start simulation
+     *****************************************************************************************************/
+
+    cbSimulation = d3.forceSimulation()
+        .force("sidedetection", keepInBoxForce)
+        .force("charge", d3.forceManyBody().distanceMin(20).strength(-60))
+        .force("collide", d3.forceCollide().radius(getNodeRadius).strength(0.99).iterations(2))
+        .force("link", d3.forceLink().distance(getLinkDistance))
+        .force("center", d3.forceCenter(canvasWidth / 2, canvasHeight / 2));
+
+    d3.json(cb.data_source, function (error, data) {
+      if (error) throw error;
+
+      // Set graph global
+      cbGraph = data;
+
+      cbGraph.nodes.forEach(getNodeRadius);
+
+      // Load data
+      cbSimulation.nodes(cbGraph.nodes);
+      cbSimulation.force("link").links(cbGraph.links);
+
+      // Load handlers
+      cbSimulation.on("tick", drawGraph);
+
+      // Create zoom handler
+      cbZoom = d3.zoom()
+          .scaleExtent(cb.zoomExtent)
+          .on("zoom", zoomGraph);
+
+      // Create drag handler
+      cbDrag = d3.drag()
+          .container(canvas)
+          .subject(selectNode)
+          .on("start", onDragStarted)
+          .on("drag", onDragged)
+          .on("end", onDragEnded);
+
+      cbCanvas = d3.select(canvas);
+      cbCanvas
+          .call(cbDrag)
+          .call(cbZoom)
+          .on('mousemove', onMouseMove)
+          .on('click', onClick)
+          .on("dblclick.zoom", onDoubleClick)
+          .on('contextmenu', function () {
+            d3.event.preventDefault();
+            d3.event.stopPropagation();
+          });
+    });
+
+    window.addEventListener('message', function (event) {
+      console.log(event);
+      var message = event.data;
+      if (message.type === 'cb_update_opened') {
+        cb.searchNode(message.data);
+      }
+    });
+
+  });
+
+}(window.cb = window.cb || {}, jQuery, d3));
+
+
+
+

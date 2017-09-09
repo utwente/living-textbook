@@ -11,26 +11,26 @@
   <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/theme.css">
 
-  <script type="text/javascript">
-//    var data_source = "data/GIS_RS.json";
-    var data_source = "data/GIS_RS_REDUCED.json";
-  </script>
+  <!-- Concept map scripts -->
+  <script src="js/forced_graph.js"></script>
+  <script src="js/search.js"></script>
 
   <!-- Custom styles-->
   <link rel="stylesheet" type="text/css" href="css/index_d3.css">
 </head>
 <body>
 
-<div id="graph_container"></div>
-
-<div class="ui-widget">
-  <input id="search" title="Search" class="left-button">
-  <button id="readme-button" onclick="window.open('readme.html', 'Readme', 'location=no,status=no,width=500,height=500,top=100,left=100');">Read me</button>
+<div id="graph_container_div">
+  <canvas id="graph_container_canvas"></canvas>
 </div>
 
-<!-- moved scripts to top of DOM -->
-<script src="js/forced_graph.js"></script>
-<script src="js/search.js"></script>
+<div id="search-div" class="ui-widget">
+  <input id="search" title="Search">
+</div>
+
+<div id="readme-button-div" class="ui-widget">
+  <button id="readme-button" onclick="window.open('readme.html', 'Readme', 'location=no,status=no,width=500,height=500,top=100,left=100');">Read me</button>
+</div>
 
 </body>
 </html>
