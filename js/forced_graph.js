@@ -107,6 +107,10 @@
     return cbSimulation;
   };
 
+  cb.getGraph = function () {
+    return cbGraph;
+  };
+
   cb.searchNode = function (nodeName) {
     // Find the node by label
     var nodes = cbGraph.nodes.filter(function (node) {
@@ -149,7 +153,7 @@
    * @returns {number}
    */
   function getNodeRadius(node) {
-    node.radius = cb.baseNodeRadius + 2 * (node.numberOfLinks ? node.numberOfLinks : 1);
+    node.radius = cb.baseNodeRadius + 2 * (node.numberOfLinks ? parseInt(node.numberOfLinks) : 1);
     return node.radius;
   }
 
@@ -216,7 +220,13 @@
    * @returns {number}
    */
   function getLinkDistance(link) {
-    return getNodeRadius(link.source) + getNodeRadius(link.target) + 20;
+    return getNodeRadius(link.source) +
+        getNodeRadius(link.target) +
+        getLinkLabelLength(link);
+  }
+
+  function getLinkLabelLength(link) {
+    return link.relationName.length * 5 + 10;
   }
 
   /**
@@ -467,7 +477,8 @@
   }
 
   function drawLinkText(link) {
-    if ((link.source.highlighted && link.target.highlighted) || (link.source.dragged || link.target.dragged)) {
+    if ((!isDragging && link.source.highlighted && link.target.highlighted) ||
+        (link.source.dragged || link.target.dragged)) {
       if (link.relationName) {
         // Calculate angle of label
         var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
@@ -481,10 +492,10 @@
         if ((startRadians * 2) > Math.PI) {
           context.rotate(Math.PI);
           context.textAlign = 'right';
-          context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0);
+          context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
         } else {
           context.textAlign = 'left';
-          context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0);
+          context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
         }
 
         // Restore context
@@ -590,7 +601,7 @@
         .force("sidedetection", keepInBoxForce)
         .force("charge", d3.forceManyBody().distanceMin(20).strength(-60))
         .force("collide", d3.forceCollide().radius(getNodeRadius).strength(0.99).iterations(2))
-        .force("link", d3.forceLink().distance(getLinkDistance))
+        .force("link", d3.forceLink().distance(getLinkDistance).strength(0.99))
         .force("center", d3.forceCenter(canvasWidth / 2, canvasHeight / 2));
 
     d3.json(cb.data_source, function (error, data) {
