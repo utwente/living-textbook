@@ -16,8 +16,8 @@
   // Display settings
   cb.mapWidth = 3000;
   cb.mapWidthDragMargin = cb.mapWidth / 30;
-  cb.mapHeight = 1500;
-  cb.mapHeightDragMargin = cb.mapHeight / 15;
+  cb.mapHeight = 2000;
+  cb.mapHeightDragMargin = cb.mapHeight / 20;
 
   // Force settings
   cb.collideStrength = 0.6;
@@ -31,7 +31,8 @@
   cb.nodeRadiusMargin = 10;
 
   // Node styles
-  cb.baseNodeRadius = 5; // Node base radius
+  cb.baseNodeRadius = 8; // Node base radius
+  cb.extendNodeRatio = 3;
   cb.nodeLineWidth = 2;
   cb.defaultNodeFillStyle = '#b1ded2';
   cb.defaultNodeStrokeStyle = '#fff';
@@ -53,9 +54,10 @@
   cb.minCharCount = 12;
   cb.defaultNodeLabelColor = '#000';
   cb.defaultNodeLabelFontSize = 10;
-  cb.defaultNodeLabelFont = cb.defaultNodeLabelFontSize + 'px san-serif';
-  cb.draggedNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
-  cb.highlightedNodeLabelFont = cb.draggedNodeLabelFont;
+  cb.defaultNodeLabelFont = cb.defaultNodeLabelFontSize + 'px';
+  cb.activeNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
+  cb.activeNodeLabelStrokeStyle = "#fff";
+  cb.activeNodeLabelLineWidth = 1.5;
 
   // General settings
   cb.drawGrid = false;
@@ -185,7 +187,7 @@
       return cb.linkNodeRadius;
     }
 
-    node.radius = cb.baseNodeRadius + 2 * (node.numberOfLinks ? parseInt(node.numberOfLinks) : 1);
+    node.radius = cb.baseNodeRadius + cb.extendNodeRatio * (node.numberOfLinks ? parseInt(node.numberOfLinks) : 1);
     return node.radius + cb.nodeRadiusMargin;
   }
 
@@ -323,15 +325,15 @@
 
   function onClick() {
     var node = selectNode();
-    if (!mouseMoveDisabled) {
+    if (node && !mouseMoveDisabled) {
       setNodeAsHighlight(node);
     }
     mouseMoveDisabled = !mouseMoveDisabled;
 
     if (!clickSend && node !== undefined) {
-      if (node.link !== false) {
-        //noinspection JSCheckFunctionSignatures
+      if (typeof node.link !== 'undefined' && node.link !== "") {
         clickSend = true;
+        //noinspection JSCheckFunctionSignatures
         parent.postMessage({'type': 'wiki_update', 'data': node.link}, "*");
         setTimeout(function () {
           clickSend = false;
@@ -551,20 +553,28 @@
     // LABELS           //
     //////////////////////
 
-    // Draw node labels
-    context.fillStyle = cb.defaultNodeLabelColor;
-    context.font = cb.defaultNodeLabelFont;
-    context.textBaseline = 'middle';
-    context.textAlign = 'center';
-    cbGraph.nodes.forEach(drawNodeText);
+    // Set this higher to prevent horns on M/W letters
+    // https://github.com/CreateJS/EaselJS/issues/781
+    context.miterLimit = 2.5;
 
     // Draw link labels
     if (isDragging || highlightedNode !== null) {
       context.fillStyle = cb.defaultNodeLabelColor;
       context.font = cb.defaultNodeLabelFont;
       context.textBaseline = 'top';
+      context.lineWidth = cb.activeNodeLabelLineWidth;
+      context.strokeStyle = cb.activeNodeLabelStrokeStyle;
       cbGraph.links.forEach(drawLinkText);
     }
+
+    // Draw node labels
+    context.fillStyle = cb.defaultNodeLabelColor;
+    context.font = cb.defaultNodeLabelFont;
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+    context.lineWidth = cb.activeNodeLabelLineWidth;
+    context.strokeStyle = cb.activeNodeLabelStrokeStyle;
+    cbGraph.nodes.forEach(drawNodeText);
 
     // Restore state
     context.restore();
@@ -605,9 +615,11 @@
       if ((startRadians * 2) > Math.PI) {
         context.rotate(Math.PI);
         context.textAlign = 'right';
+        context.strokeText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
         context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
       } else {
         context.textAlign = 'left';
+        context.strokeText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
         context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
       }
 
@@ -665,16 +677,15 @@
 
   function drawNodeText(node) {
     // Adjust font if necessary, or skip if not
-    if (isDragging && node.dragged) {
-      context.font = cb.draggedNodeLabelFont;
-    } else if ((highlightedNode !== null || isDragging) && node.highlighted) {
-      context.font = cb.highlightedNodeLabelFont;
+    if ((isDragging && node.dragged) || ((highlightedNode !== null || isDragging) && node.highlighted)){
+      context.font = cb.activeNodeLabelFont;
     } else {
       if (isDragging || highlightedNode !== null) return;
     }
 
     var yStart = node.y - node.expandedLabelStart;
     node.expandedLabel.forEach(function (line) {
+      if (node.dragged || node.highlighted) context.strokeText(line, node.x, yStart);
       context.fillText(line, node.x, yStart);
       yStart += cb.defaultNodeLabelFontSize;
     });
