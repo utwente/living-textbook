@@ -13,11 +13,22 @@
   /******************************************************************************************************
    * Configuration variables
    *****************************************************************************************************/
+  // Display settings
   cb.mapWidth = 3000;
   cb.mapWidthDragMargin = cb.mapWidth / 30;
   cb.mapHeight = 1500;
   cb.mapHeightDragMargin = cb.mapHeight / 15;
-  cb.boundForceStrenght = 40;
+
+  // Force settings
+  cb.collideStrength = 0.6;
+  cb.collideIterations = 1;
+  cb.linkStrength = 0.9;
+  cb.manyBodyStrength = -70;
+  cb.manyBodyDistanceMin = 20;
+  cb.manyBodyDistanceMax = 1500;
+  cb.boundForceStrenght = 80;
+  cb.linkNodeRadius = 20;
+  cb.nodeRadiusMargin = 10;
 
   // Node styles
   cb.baseNodeRadius = 5; // Node base radius
@@ -46,7 +57,9 @@
   cb.draggedNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
   cb.highlightedNodeLabelFont = cb.draggedNodeLabelFont;
 
+  // General settings
   cb.drawGrid = false;
+  cb.drawLinkNodes = false;
   cb.zoomExtent = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
 
   /******************************************************************************************************
@@ -86,7 +99,8 @@
     "link": "",
     "numberOfLinks": 0,
     "dragged": false,
-    "highlighted": false
+    "highlighted": false,
+    "linkNode": false
   };
   Types.LinkType = {
     "source": 0,
@@ -105,7 +119,7 @@
   var clickSend = false;
 
   // Initialize the graph object
-  cbGraph = {"nodes": [], "links": []};
+  cbGraph = {nodes: [], links: [], linkNodes: []};
 
   /******************************************************************************************************
    * External functions
@@ -165,8 +179,14 @@
    * @returns {number}
    */
   function getNodeRadius(node) {
+    // Check whether link node
+    if (node.linkNode === true) {
+      node.radius = 1;
+      return cb.linkNodeRadius;
+    }
+
     node.radius = cb.baseNodeRadius + 2 * (node.numberOfLinks ? parseInt(node.numberOfLinks) : 1);
-    return node.radius;
+    return node.radius + cb.nodeRadiusMargin;
   }
 
   function limitNode(node) {
@@ -454,6 +474,17 @@
     context.fill();
     context.stroke();
 
+    // Draw link nodes
+    if (cb.drawLinkNodes) {
+      context.beginPath();
+      context.lineWidth = cb.nodeLineWidth;
+      context.fillStyle = cb.fadedNodeFillStyle;
+      context.strokeStyle = cb.fadedNodeStrokeStyle;
+      cbGraph.linkNodes.forEach(drawNormalNode);
+      context.fill();
+      context.stroke();
+    }
+
     // Draw normal link arrows
     context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
     cbGraph.links.forEach(drawNormalLinkArrow);
@@ -683,9 +714,17 @@
 
     cbSimulation = d3.forceSimulation()
         .force("sidedetection", keepInBoxForce)
-        .force("charge", d3.forceManyBody().distanceMin(20).strength(-90))
-        .force("collide", d3.forceCollide().radius(getNodeRadius).strength(0.99).iterations(2))
-        .force("link", d3.forceLink().distance(getLinkDistance).strength(0.5))
+        .force("charge", d3.forceManyBody()
+            .distanceMin(cb.manyBodyDistanceMin)
+            .distanceMax(cb.manyBodyDistanceMax)
+            .strength(cb.manyBodyStrength))
+        .force("collide", d3.forceCollide()
+            .radius(getNodeRadius)
+            .strength(cb.collideStrength)
+            .iterations(cb.collideIterations))
+        .force("link", d3.forceLink()
+            .distance(getLinkDistance)
+            .strength(cb.linkStrength))
         .force("center", d3.forceCenter(cb.mapWidth / 2, cb.mapHeight / 2));
 
     d3.json(cb.data_source, function (error, data) {
@@ -704,7 +743,7 @@
         // Calculate lines
         var lines = node.label.split(" ");
 
-        if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)){
+        if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)) {
           node.expandedLabel = lines;
         } else {
           // Check if next line can be combined with the last line
@@ -722,12 +761,33 @@
         node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * cb.defaultNodeLabelFontSize);
       });
 
+      // Create linkNodes to avoid overlap
+      cbGraph.linkNodes = [];
+      cbGraph.links.forEach(function (link) {
+        cbGraph.linkNodes.push({
+          source: cbGraph.nodes[link.source],
+          target: cbGraph.nodes[link.target],
+          linkNode: true
+        });
+      });
+
       // Load data
-      cbSimulation.nodes(cbGraph.nodes);
+      cbSimulation.nodes(cbGraph.nodes.concat(cbGraph.linkNodes));
+      // cbSimulation.nodes(cbGraph.nodes);
       cbSimulation.force("link").links(cbGraph.links);
 
       // Load handlers
-      cbSimulation.on("tick", drawGraph);
+      cbSimulation.on("tick", function () {
+
+        // Update link node positions
+        cbGraph.linkNodes.forEach(function (linkNode) {
+          linkNode.x = (linkNode.source.x + linkNode.target.x) * 0.5;
+          linkNode.y = (linkNode.source.y + linkNode.target.y) * 0.5;
+        });
+
+        // Draw graph
+        drawGraph();
+      });
 
       // Create zoom handler
       cbZoom = d3.zoom()
