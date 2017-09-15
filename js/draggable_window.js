@@ -30,7 +30,8 @@ openButton.openWindow = function (readyHandler) {
 
   // Setup variables
   opened = true;
-  readyHandler = typeof readyHandler === 'function' ? readyHandler : function(){};
+  readyHandler = typeof readyHandler === 'function' ? readyHandler : function () {
+  };
 
   if (fullScreen) {
     dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
@@ -199,11 +200,18 @@ window.onresize = function () {
 /**
  * Open the concept browser on cb link
  */
-window.addEventListener('message', function(event){
+window.addEventListener('message', function (event) {
   var message = event.data;
-  if (message.type === 'cb_update'){
-    openButton.openWindow(function(){
-      document.getElementById("iframe_right").contentWindow.postMessage({'type': 'cb_update_opened', 'data': message.data}, '*');
+  if (message.type === 'cb_update') {
+    openButton.openWindow(function () {
+      document.getElementById("iframe_right").contentWindow.postMessage({
+        'type': 'cb_update_opened',
+        'data': message.data
+      }, '*');
     });
+  }
+
+  if (message.type === 'wiki_update') {
+    fullScreenButton.fullScreenWindow();
   }
 });

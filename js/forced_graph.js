@@ -43,7 +43,7 @@
   cb.draggedNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
   cb.highlightedNodeLabelFont = cb.draggedNodeLabelFont;
 
-  cb.drawGrid = true;
+  cb.drawGrid = false;
   cb.zoomExtent = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
 
   /******************************************************************************************************
@@ -97,6 +97,7 @@
   var cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
   var dragPosY, dragPosX, isDragging = false;
   var highlightedNode = null, mouseMoveDisabled = false;
+  var clickSend = false;
 
   // Initialize the graph object
   cbGraph = {"nodes": [], "links": []};
@@ -270,6 +271,7 @@
     d3.event.subject.fx = dragPosX = d3.event.subject.x;
     d3.event.subject.fy = dragPosY = d3.event.subject.y;
 
+    mouseMoveDisabled = false;
     setNodeAsDragged(d3.event.subject);
   }
 
@@ -295,17 +297,32 @@
 
   function onClick() {
     var node = selectNode();
+    if (!mouseMoveDisabled) {
+      setNodeAsHighlight(node);
+    }
+    mouseMoveDisabled = !mouseMoveDisabled;
 
-    if (node !== undefined) {
+    if (!clickSend && node !== undefined) {
       if (node.link !== false) {
         //noinspection JSCheckFunctionSignatures
+        clickSend = true;
         parent.postMessage({'type': 'wiki_update', 'data': node.link}, "*");
+        setTimeout(function () {
+          clickSend = false;
+        }, 250);
       }
     }
   }
 
   function onDoubleClick() {
     moveToNode();
+  }
+
+  function onKeyDown() {
+    // Force movement stop with spacebar
+    if (d3.event.keyCode === 32) {
+      cbSimulation.stop();
+    }
   }
 
   function highlightNode() {
@@ -332,20 +349,33 @@
     mouseMoveDisabled = true;
     cbSimulation.stop();
 
+    // Set clicked node as highlighted
+    setNodeAsHighlight(node);
+
+    // Find current locations of highlighted nodes
+    var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
+    cbGraph.nodes.forEach(function (node) {
+      if (!node.highlighted) return;
+      minX = Math.min(minX, node.x - node.radius);
+      maxX = Math.max(maxX, node.x + node.radius);
+      minY = Math.min(minY, node.y - node.radius);
+      maxY = Math.max(maxY, node.y + node.radius);
+    });
+
+    // Calculate scale
+    var scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
+
     // Calculate zoom identify
     var transform = d3.zoomIdentity
         .translate(halfCanvasWidth, halfCanvasHeight)
-        .scale(3)
-        .translate(-node.x, -node.y);
+        .scale(scale)
+        .translate(-(minX + maxX) / 2, -(minY + maxY) / 2);
 
     // Move to it
     cbCanvas
         .transition()
         .duration(3000)
-        .call(cbZoom.transform, transform)
-        .on('end', function () {
-          mouseMoveDisabled = false;
-        });
+        .call(cbZoom.transform, transform);
   }
 
   function zoomGraph() {
@@ -400,7 +430,7 @@
 
     // Draw normal links
     context.beginPath();
-    context.strokeStyle = isDragging ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
     cbGraph.links.forEach(drawNormalLink);
     context.stroke();
 
@@ -423,8 +453,8 @@
     // Draw normal nodes
     context.beginPath();
     context.lineWidth = cb.nodeLineWidth;
-    context.fillStyle = isDragging ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
-    context.strokeStyle = isDragging ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
+    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
+    context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
     cbGraph.nodes.forEach(drawNormalNode);
     context.fill();
     context.stroke();
@@ -451,7 +481,7 @@
 
 
     // Draw normal link arrows
-    context.fillStyle = isDragging ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
     cbGraph.links.forEach(drawNormalLinkArrow);
 
     // Draw dragged link arrows
@@ -674,7 +704,8 @@
 
       // Add window handler
       d3.select(window)
-          .on("resize", resizeCanvas);
+          .on("resize", resizeCanvas)
+          .on("keydown", onKeyDown);
     });
 
     window.addEventListener('message', function (event) {
