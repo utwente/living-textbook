@@ -4,7 +4,11 @@ var dokuwikiUrl = 'https://living-textbook.drenso.nl:60130/doku/doku.php';
 $(function () {
 
   function updateDokuwikiFrame(params) {
-    document.getElementById("iframe_left").src = dokuwikiUrl + '?' + params;
+    var url = dokuwikiUrl;
+    if (params !== null && params !== '') {
+      url += '?' + params;
+    }
+    document.getElementById("iframe_left").src = url;
   }
 
   function getParameterByName(name, url) {
@@ -18,11 +22,17 @@ $(function () {
   }
 
   function getUrlParams(message) {
-    return message.data.substring(message.data.indexOf('?') + 1);
+    var indexOf = message.data.indexOf('?');
+    if (indexOf === -1) return '';
+    return message.data.substring(indexOf + 1);
   }
 
   function updatePageUrl(params) {
-    window.history.replaceState({}, "", pageUrl + '?doku=' + encodeURIComponent(params));
+    var url = pageUrl;
+    if (params !== null && params !== '') {
+      url += '?doku=' + encodeURIComponent(params);
+    }
+    window.history.replaceState({}, "", url);
   }
 
   // Get page url
@@ -47,7 +57,7 @@ $(function () {
     }
 
     // Update dokuwiki frame src handler
-    if (event.data.type === 'wiki_update'){
+    if (event.data.type === 'wiki_update') {
       if (message.data.startsWith(dokuwikiUrl)) {
         var params = getUrlParams(message);
         updateDokuwikiFrame(params);

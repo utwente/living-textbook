@@ -30,7 +30,7 @@ openButton.openWindow = function (readyHandler) {
 
   // Setup variables
   opened = true;
-  readyHandler = typeof readyHandler !== 'undefined' ? readyHandler : function(){};
+  readyHandler = typeof readyHandler === 'function' ? readyHandler : function(){};
 
   if (fullScreen) {
     dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
@@ -95,10 +95,11 @@ fullScreenButton.click(fullScreenButton.fullScreenWindow);
  * @param maxWidth
  * @param animate
  * @param callback
+ * @param force
  */
-dragButton.doResize = function (x, minWidth, maxWidth, animate, callback) {
+dragButton.doResize = function (x, minWidth, maxWidth, animate, callback, force) {
   // Check for double call
-  if (x === lastX) return;
+  if (force !== true && x === lastX) return;
 
   // Get information
   var centerWidth = $('#move_containers_inner').innerWidth();
@@ -165,7 +166,6 @@ dragButton.doDrag = function (e) {
  * Handler that registers the stop drag event
  */
 dragButton.stopDrag = function () {
-  console.log("stop drag");
   invisibleFrame.css('z-index', -1);
 
   // Remove event listeners
@@ -193,7 +193,7 @@ dragButton.on('mousedown', function () {
  * Also resize the view after window resize
  */
 window.onresize = function () {
-  dragButton.doResize(lastX);
+  dragButton.doResize(lastX, undefined, undefined, undefined, undefined, true);
 };
 
 /**

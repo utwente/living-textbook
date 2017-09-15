@@ -13,8 +13,12 @@
   /******************************************************************************************************
    * Configuration variables
    *****************************************************************************************************/
+  cb.mapWidth = 3000;
+  cb.mapWidthDragMargin = cb.mapWidth / 30;
+  cb.mapHeight = 1500;
+  cb.mapHeightDragMargin = cb.mapHeight / 15;
   cb.baseNodeRadius = 5; // Node base radius
-  cb.boundMargin = 100;
+  cb.boundForceStrenght = 40;
 
   // Node styles
   cb.nodeLineWidth = 2;
@@ -39,8 +43,8 @@
   cb.draggedNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
   cb.highlightedNodeLabelFont = cb.draggedNodeLabelFont;
 
-  cb.drawGrid = false;
-  cb.zoomExtent = [0.5, 8]; // [min,max] zoom
+  cb.drawGrid = true;
+  cb.zoomExtent = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
 
   /******************************************************************************************************
    * Data types
@@ -88,7 +92,8 @@
   /******************************************************************************************************
    * Internal variables
    *****************************************************************************************************/
-  var canvas, context, screenWidth, screenHeight, canvasWidth, canvasHeight;
+  var canvas, context, canvasWidth, canvasHeight, halfCanvasWidth, halfCanvasHeight;
+  var halfMapWidth = cb.mapWidth / 2, halfMapHeight = cb.mapHeight / 2;
   var cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
   var dragPosY, dragPosX, isDragging = false;
   var highlightedNode = null, mouseMoveDisabled = false;
@@ -132,24 +137,25 @@
    * Resize the canvas
    */
   function resizeCanvas() {
-    // Get container sizes
+    // Get container size, and set sizes and zoom extent
     var container = $('#graph_container_div');
-    screenWidth = container.innerWidth();
-    screenHeight = container.innerHeight();
-
-    // Resize canvas @todo adjust
-    canvas.width = canvasWidth = screenWidth;
-    canvas.height = canvasHeight = screenHeight;
+    canvas.width = canvasWidth = container.innerWidth();
+    canvas.height = canvasHeight = container.innerHeight();
+    halfCanvasWidth = canvasWidth / 2;
+    halfCanvasHeight = canvasHeight / 2;
+    cb.zoomExtent[0] = Math.max(canvasWidth / cb.mapWidth, canvasHeight / cb.mapHeight, 0.1);
 
     // Get context if not available
     if (context === undefined) {
       context = canvas.getContext('2d');
     }
+
+    // Check if the event loop is running, if not, restart
+    if (d3.event && !d3.event.active) cbSimulation.restart();
   }
 
   /**
    * Retrieve the node radius
-   * @param {Types.NodeType.} node
    * @returns {number}
    */
   function getNodeRadius(node) {
@@ -157,14 +163,25 @@
     return node.radius;
   }
 
-  /**
-   * @param {Types.NodeType.} node
-   */
   function limitNode(node) {
-    node.x = Math.max(node.radius, Math.min(canvasWidth - node.radius, node.x));
-    node.y = Math.max(node.radius, Math.min(canvasHeight - node.radius, node.y));
+    node.x = Math.max(node.radius, Math.min(cb.mapWidth - node.radius, node.x));
+    node.y = Math.max(node.radius, Math.min(cb.mapHeight - node.radius, node.y));
+  }
 
-    return node;
+  /**
+   * Limits the transformation struct, by the map size with a small white margin
+   * @param transform
+   * @returns {*}
+   */
+  function limitTransform(transform) {
+    transform.x =
+        Math.max(-(((cb.mapWidth + cb.mapWidthDragMargin) * transform.k) - canvasWidth),
+            Math.min(cb.mapWidthDragMargin * transform.k, transform.x));
+    transform.y =
+        Math.max(-(((cb.mapHeight + cb.mapHeightDragMargin) * transform.k) - canvasHeight),
+            Math.min(cb.mapHeightDragMargin * transform.k, transform.y));
+
+    return transform;
   }
 
   function setNodeAsDragged(node) {
@@ -259,8 +276,8 @@
   function onDragged() {
     dragPosX += d3.event.dx / cbTransform.k;
     dragPosY += d3.event.dy / cbTransform.k;
-    d3.event.subject.fx = Math.max(0, Math.min(canvasWidth, dragPosX));
-    d3.event.subject.fy = Math.max(0, Math.min(canvasHeight, dragPosY));
+    d3.event.subject.fx = Math.max(0, Math.min(cb.mapWidth, dragPosX));
+    d3.event.subject.fy = Math.max(0, Math.min(cb.mapHeight, dragPosY));
   }
 
   function onDragEnded() {
@@ -281,6 +298,7 @@
 
     if (node !== undefined) {
       if (node.link !== false) {
+        //noinspection JSCheckFunctionSignatures
         parent.postMessage({'type': 'wiki_update', 'data': node.link}, "*");
       }
     }
@@ -316,7 +334,7 @@
 
     // Calculate zoom identify
     var transform = d3.zoomIdentity
-        .translate(canvasWidth / 2, canvasHeight / 2)
+        .translate(halfCanvasWidth, halfCanvasHeight)
         .scale(3)
         .translate(-node.x, -node.y);
 
@@ -331,7 +349,7 @@
   }
 
   function zoomGraph() {
-    cbTransform = d3.event.transform;
+    cbTransform = limitTransform(d3.event.transform);
     drawGraph();
   }
 
@@ -355,6 +373,30 @@
     // Adjust scaling
     context.translate(cbTransform.x, cbTransform.y);
     context.scale(cbTransform.k, cbTransform.k);
+
+    // Draw grid lines
+    if (cb.drawGrid) {
+      context.beginPath();
+      for (var i = 0; i <= cb.mapWidth; i += 100) {
+        context.moveTo(i, 0);
+        context.lineTo(i, cb.mapHeight);
+      }
+      for (var j = 0; j <= cb.mapHeight; j += 100) {
+        context.moveTo(0, j);
+        context.lineTo(cb.mapWidth, j);
+      }
+      context.strokeStyle = "black";
+      context.stroke();
+
+      context.beginPath();
+      context.moveTo(0, 0);
+      context.lineTo(canvasWidth, 0);
+      context.lineTo(canvasWidth, canvasHeight);
+      context.lineTo(0, canvasHeight);
+      context.lineTo(0, 0);
+      context.strokeStyle = "blue";
+      context.stroke();
+    }
 
     // Draw normal links
     context.beginPath();
@@ -437,21 +479,6 @@
       context.font = cb.defaultNodeLabelFont;
       context.textBaseline = 'top';
       cbGraph.links.forEach(drawLinkText);
-    }
-
-    // Draw grid lines
-    if (cb.drawGrid) {
-      for (var i = 100; i < 2000; i += 100) {
-        context.beginPath();
-        context.moveTo(i, 0);
-        context.lineTo(i, canvasHeight);
-        if (i < canvasHeight) {
-          context.moveTo(0, i);
-          context.lineTo(canvasWidth, i);
-        }
-        context.strokeStyle = "black";
-        context.stroke();
-      }
     }
 
     // Restore state
@@ -570,15 +597,15 @@
    * Force functions
    *****************************************************************************************************/
   function keepInBoxForce(alpha) {
-    for (var i = 0, n = cbGraph.nodes.length, node, k = alpha * 0.6; i < n; ++i) {
+    for (var i = 0, n = cbGraph.nodes.length,
+             node, kx = (alpha * cb.boundForceStrenght) / cb.mapWidth,
+             ky = (alpha * cb.boundForceStrenght) / cb.mapHeight; i < n; ++i) {
       // Set variables
       node = cbGraph.nodes[i];
 
       // Calculate forces
-      node.vx += (node.x < cb.boundMargin) ? Math.abs(cb.boundMargin - node.x) * k : 0;
-      node.vy += (node.y < cb.boundMargin) ? Math.abs(cb.boundMargin - node.y) * k : 0;
-      node.vx -= ((canvasWidth - node.x) < cb.boundMargin) ? Math.abs(canvasWidth - cb.boundMargin - node.x) * k : 0;
-      node.vy -= ((canvasHeight - node.y) < cb.boundMargin) ? Math.abs(canvasHeight - cb.boundMargin - node.y) * k : 0;
+      node.vx -= (node.x - halfMapWidth) * kx;
+      node.vy -= (node.y - halfMapHeight) * ky;
     }
   }
 
@@ -599,10 +626,10 @@
 
     cbSimulation = d3.forceSimulation()
         .force("sidedetection", keepInBoxForce)
-        .force("charge", d3.forceManyBody().distanceMin(20).strength(-60))
+        .force("charge", d3.forceManyBody().distanceMin(20).strength(-90))
         .force("collide", d3.forceCollide().radius(getNodeRadius).strength(0.99).iterations(2))
-        .force("link", d3.forceLink().distance(getLinkDistance).strength(0.99))
-        .force("center", d3.forceCenter(canvasWidth / 2, canvasHeight / 2));
+        .force("link", d3.forceLink().distance(getLinkDistance).strength(0.5))
+        .force("center", d3.forceCenter(cb.mapWidth / 2, cb.mapHeight / 2));
 
     d3.json(cb.data_source, function (error, data) {
       if (error) throw error;
@@ -632,6 +659,7 @@
           .on("drag", onDragged)
           .on("end", onDragEnded);
 
+      // Add handlers to canvas
       cbCanvas = d3.select(canvas);
       cbCanvas
           .call(cbDrag)
@@ -643,11 +671,15 @@
             d3.event.preventDefault();
             d3.event.stopPropagation();
           });
+
+      // Add window handler
+      d3.select(window)
+          .on("resize", resizeCanvas);
     });
 
     window.addEventListener('message', function (event) {
-      console.log(event);
       var message = event.data;
+      console.log(message);
       if (message.type === 'cb_update_opened') {
         cb.searchNode(message.data);
       }
@@ -656,7 +688,3 @@
   });
 
 }(window.cb = window.cb || {}, jQuery, d3));
-
-
-
-
