@@ -17,10 +17,10 @@
   cb.mapWidthDragMargin = cb.mapWidth / 30;
   cb.mapHeight = 1500;
   cb.mapHeightDragMargin = cb.mapHeight / 15;
-  cb.baseNodeRadius = 5; // Node base radius
   cb.boundForceStrenght = 40;
 
   // Node styles
+  cb.baseNodeRadius = 5; // Node base radius
   cb.nodeLineWidth = 2;
   cb.defaultNodeFillStyle = '#b1ded2';
   cb.defaultNodeStrokeStyle = '#fff';
@@ -32,14 +32,17 @@
   cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
   // Link styles
+  cb.linkLineWidth = 1;
   cb.defaultLinkStrokeStyle = '#696969';
   cb.draggedLinkStrokeStyle = '#333';
   cb.fadedLinksStrokeStyle = '#E0E0E0';
   cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
 
   // Node label styles
+  cb.minCharCount = 12;
   cb.defaultNodeLabelColor = '#000';
-  cb.defaultNodeLabelFont = '10px san-serif';
+  cb.defaultNodeLabelFontSize = 10;
+  cb.defaultNodeLabelFont = cb.defaultNodeLabelFontSize + 'px san-serif';
   cb.draggedNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
   cb.highlightedNodeLabelFont = cb.draggedNodeLabelFont;
 
@@ -78,6 +81,8 @@
     "radius": 0,
     "nodeName": "",
     "label": "",
+    "expandedLabel": [],
+    "expandedLabelStart": 0,
     "link": "",
     "numberOfLinks": 0,
     "dragged": false,
@@ -205,6 +210,7 @@
     // Check for previous highlight
     clearNodeHighlight();
 
+    if (node === undefined) return;
     highlightedNode = node;
     node.highlighted = true;
     setHighlightsByNode(node);
@@ -428,27 +434,16 @@
       context.stroke();
     }
 
+    //////////////////////
+    // NORMAL           //
+    //////////////////////
+
     // Draw normal links
     context.beginPath();
+    context.lineWidth = cb.linkLineWidth;
     context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
     cbGraph.links.forEach(drawNormalLink);
     context.stroke();
-
-    // Draw dragged links
-    if (isDragging) {
-      context.beginPath();
-      context.strokeStyle = cb.draggedLinkStrokeStyle;
-      cbGraph.links.forEach(drawDraggedLink);
-      context.stroke();
-    }
-
-    // Draw highlighted links
-    if (highlightedNode !== null) {
-      context.beginPath();
-      context.strokeStyle = cb.highlightedLinkStrokeStyle;
-      cbGraph.links.forEach(drawHighlightedLink);
-      context.stroke();
-    }
 
     // Draw normal nodes
     context.beginPath();
@@ -458,6 +453,23 @@
     cbGraph.nodes.forEach(drawNormalNode);
     context.fill();
     context.stroke();
+
+    // Draw normal link arrows
+    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    cbGraph.links.forEach(drawNormalLinkArrow);
+
+    //////////////////////
+    // DRAGGED          //
+    //////////////////////
+
+    // Draw dragged links
+    if (isDragging) {
+      context.beginPath();
+      context.lineWidth = cb.linkLineWidth;
+      context.strokeStyle = cb.draggedLinkStrokeStyle;
+      cbGraph.links.forEach(drawDraggedLink);
+      context.stroke();
+    }
 
     // Draw dragged nodes
     if (isDragging) {
@@ -470,6 +482,25 @@
       context.stroke();
     }
 
+    // Draw dragged link arrows
+    if (isDragging) {
+      context.fillStyle = cb.draggedLinkStrokeStyle;
+      cbGraph.links.forEach(drawDraggedLinkArrow);
+    }
+
+    //////////////////////
+    // HIGHLIGHT        //
+    //////////////////////
+
+    // Draw highlighted links
+    if (highlightedNode !== null) {
+      context.beginPath();
+      context.lineWidth = cb.linkLineWidth;
+      context.strokeStyle = cb.highlightedLinkStrokeStyle;
+      cbGraph.links.forEach(drawHighlightedLink);
+      context.stroke();
+    }
+
     // Draw highlighted nodes
     context.beginPath();
     context.lineWidth = cb.nodeLineWidth;
@@ -479,22 +510,15 @@
     context.fill();
     context.stroke();
 
-
-    // Draw normal link arrows
-    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
-    cbGraph.links.forEach(drawNormalLinkArrow);
-
-    // Draw dragged link arrows
-    if (isDragging) {
-      context.fillStyle = cb.draggedLinkStrokeStyle;
-      cbGraph.links.forEach(drawDraggedLinkArrow);
-    }
-
     // Draw highlighted link arrows
     if (highlightedNode !== null) {
       context.fillStyle = cb.highlightedLinkStrokeStyle;
       cbGraph.links.forEach(drawHighlightedLinkArrow);
     }
+
+    //////////////////////
+    // LABELS           //
+    //////////////////////
 
     // Draw node labels
     context.fillStyle = cb.defaultNodeLabelColor;
@@ -530,34 +554,34 @@
   }
 
   function drawHighlightedLink(link) {
-    if (link.source.highlighted && link.target.highlighted) drawLink(link);
+    if (link.source.index === highlightedNode.index || link.target.index === highlightedNode.index) drawLink(link);
   }
 
   function drawLinkText(link) {
-    if ((!isDragging && link.source.highlighted && link.target.highlighted) ||
+    if (link.relationName &&
+        (!isDragging && (link.source.index === highlightedNode.index || link.target.index === highlightedNode.index)) ||
         (link.source.dragged || link.target.dragged)) {
-      if (link.relationName) {
-        // Calculate angle of label
-        var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
-        startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
 
-        context.save();
-        context.translate(link.source.x, link.source.y);
-        context.rotate(startRadians);
+      // Calculate angle of label
+      var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
+      startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
 
-        // Check rotation and add extra if required
-        if ((startRadians * 2) > Math.PI) {
-          context.rotate(Math.PI);
-          context.textAlign = 'right';
-          context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
-        } else {
-          context.textAlign = 'left';
-          context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
-        }
+      context.save();
+      context.translate(link.source.x, link.source.y);
+      context.rotate(startRadians);
 
-        // Restore context
-        context.restore();
+      // Check rotation and add extra if required
+      if ((startRadians * 2) > Math.PI) {
+        context.rotate(Math.PI);
+        context.textAlign = 'right';
+        context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
+      } else {
+        context.textAlign = 'left';
+        context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
       }
+
+      // Restore context
+      context.restore();
     }
   }
 
@@ -587,7 +611,7 @@
   }
 
   function drawHighlightedLinkArrow(link) {
-    if (link.target.highlighted) drawLinkArrow(link);
+    if (link.target.index === highlightedNode.index || link.source.index === highlightedNode.index) drawLinkArrow(link);
   }
 
   function drawNode(node) {
@@ -609,18 +633,21 @@
   }
 
   function drawNodeText(node) {
+    // Adjust font if necessary, or skip if not
     if (isDragging && node.dragged) {
       context.font = cb.draggedNodeLabelFont;
-      context.fillText(node.label, node.x, node.y);
-      return;
-    }
-    if ((highlightedNode !== null || isDragging) && node.highlighted) {
+    } else if ((highlightedNode !== null || isDragging) && node.highlighted) {
       context.font = cb.highlightedNodeLabelFont;
-      context.fillText(node.label, node.x, node.y);
-      return;
+    } else {
+      if (isDragging || highlightedNode !== null) return;
     }
 
-    if (!isDragging && highlightedNode === null) context.fillText(node.label, node.x, node.y);
+    var yStart = node.y - node.expandedLabelStart;
+    node.expandedLabel.forEach(function (line) {
+      context.fillText(line, node.x, yStart);
+      yStart += cb.defaultNodeLabelFontSize;
+    });
+
   }
 
   /******************************************************************************************************
@@ -667,7 +694,33 @@
       // Set graph global
       cbGraph = data;
 
+      // Calculate some values for rendering
       cbGraph.nodes.forEach(getNodeRadius);
+      cbGraph.nodes.forEach(function (node) {
+        node.expandedLabelStart = 0;
+        node.expandedLabel = [];
+        if (node.label === "") return;
+
+        // Calculate lines
+        var lines = node.label.split(" ");
+
+        if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)){
+          node.expandedLabel = lines;
+        } else {
+          // Check if next line can be combined with the last line
+          node.expandedLabel.push(lines[0]);
+          for (var i = 1; i < lines.length; i++) {
+            if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= cb.minCharCount) {
+              node.expandedLabel[node.expandedLabel.length - 1] += " " + lines[i];
+            } else {
+              node.expandedLabel.push(lines[i]);
+            }
+          }
+        }
+
+        // Calculate offset for the amount of lines
+        node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * cb.defaultNodeLabelFontSize);
+      });
 
       // Load data
       cbSimulation.nodes(cbGraph.nodes);
