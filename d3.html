@@ -8,8 +8,10 @@
 
   <!-- Jquery for search field -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/theme.css">
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <script src="bower_components/bootstrap3-typeahead/bootstrap3-typeahead.min.js"></script>
 
   <!-- Concept map scripts -->
   <script src="js/forced_graph.js"></script>
@@ -24,12 +26,15 @@
   <canvas id="graph_container_canvas"></canvas>
 </div>
 
-<div id="search-div" class="ui-widget">
-  <input id="search" title="Search">
+<div id="search-div" class="button-container">
+  <input id="search" title="Search" class="form-control" autocomplete="off">
 </div>
 
-<div id="readme-button-div" class="ui-widget">
-  <button id="readme-button" onclick="window.open('readme.html', 'Readme', 'location=no,status=no,width=500,height=500,top=100,left=100');">Read me</button>
+<div id="readme-button-div" class="button-container">
+  <button id="readme-button" class="btn"
+          onclick="window.open('readme.html', 'Readme', 'location=no,status=no,width=500,height=500,top=100,left=100');">
+    Read me
+  </button>
 </div>
 
 </body>

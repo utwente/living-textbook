@@ -291,7 +291,8 @@
 
   function selectNode() {
     var transformed = transformLocation(d3.event);
-    return cbSimulation.find(transformed.x, transformed.y, 20);
+    var node = cbSimulation.find(transformed.x, transformed.y, 20);
+    return node && node.linkNode !== true ? node : undefined;
   }
 
   function onDragStarted() {
@@ -677,7 +678,7 @@
 
   function drawNodeText(node) {
     // Adjust font if necessary, or skip if not
-    if ((isDragging && node.dragged) || ((highlightedNode !== null || isDragging) && node.highlighted)){
+    if ((isDragging && node.dragged) || ((highlightedNode !== null || isDragging) && node.highlighted)) {
       context.font = cb.activeNodeLabelFont;
     } else {
       if (isDragging || highlightedNode !== null) return;

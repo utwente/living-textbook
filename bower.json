@@ -19,7 +19,7 @@
   "dependencies": {
     "d3": "^4.10 < 5.0",
     "jquery": "^3.2.1",
-    "jquery-ui": "jqueryui#^1.12.1",
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "bootstrap3-typeahead": "^4.0.2"
   }
 }

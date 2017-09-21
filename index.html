@@ -3,13 +3,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="data/vaficon.png"/>
-  <link rel="stylesheet" type="text/css" href="css/index.css">
 
   <!-- Jquery -->
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/theme.css">
 
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+  <!-- Custom -->
+  <link rel="stylesheet" type="text/css" href="css/index.css">
   <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
@@ -19,7 +21,7 @@
   </div>
   <div id="container_left">
     <div id="open_button_container" class="ui-widget">
-      <button id="open_button">
+      <button id="open_button" class="btn">
         <span>Open concept map</span>
       </button>
     </div>
@@ -38,13 +40,13 @@
     <iframe id="iframe_right" src="d3.html"></iframe>
   </div>
   <div id="right_button_container">
-    <div id="full_screen_button_container" class="ui-widget">
-      <button id="full_screen_button" class="d3-button">
+    <div id="full_screen_button_container" class="button-container">
+      <button id="full_screen_button" class="btn d3-button">
         <span>Open full screen</span>
       </button>
     </div>
-    <div id="close_button_container" class="ui-widget">
-      <button id="close_button" class="d3-button">
+    <div id="close_button_container" class="button-container">
+      <button id="close_button" class="btn d3-button">
         <span>Close concept map</span>
       </button>
     </div>

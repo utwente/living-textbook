@@ -42,16 +42,18 @@ $(function () {
   }
   optArray = optArray.sort();
 
-  // Create search functionality, which is a jquery-ui auto complete
-  $search.autocomplete(
-      {
-        source: optArray
-      },
-      {
-        select: function (e, ui) {
-          $("#search").val(ui.item.label);
-          cb.searchNode(ui.item.label);
-        }
-      }
-  );
+  // Create search functionality, which is a bootstrap type ahead
+  $search.typeahead({
+    source: optArray,
+    minLength: 0,
+    items: 10,
+    fitToElement: true,
+    showHintOnFocus: true
+  });
+  $search.change(function () {
+    var current = $search.typeahead("getActive");
+    if (current === $search.val()) {
+      cb.searchNode(current);
+    }
+  });
 });

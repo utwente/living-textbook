@@ -139,9 +139,9 @@ iframe {
   overflow: visible !important;
 }
 
-.ui-widget button.d3-button {
+.button-container button.d3-button {
   height: 30px;
-  font-size: 10px;
+  font-size: 12px;
   padding: 1px;
   margin: 1px;
   /*display: none;*/
