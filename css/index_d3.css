@@ -1,6 +1,7 @@
 body {
   margin: 0;
   overflow: hidden;
+  background-color: #edeff1;
 }
 
 #graph_container_div {

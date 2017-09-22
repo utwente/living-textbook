@@ -30,39 +30,174 @@
   cb.linkNodeRadius = 20;
   cb.nodeRadiusMargin = 10;
 
-  // Node styles
-  cb.baseNodeRadius = 8; // Node base radius
-  cb.extendNodeRatio = 3;
-  cb.nodeLineWidth = 2;
-  cb.defaultNodeFillStyle = '#b1ded2';
-  cb.defaultNodeStrokeStyle = '#fff';
-  cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-  cb.draggedNodeStrokeStyle = '#2359ff';
-  cb.fadedNodeFillStyle = '#E6ECE4';
-  cb.fadedNodeStrokeStyle = '#fff';
-  cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-  cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-  // Link styles
-  cb.linkLineWidth = 1;
-  cb.defaultLinkStrokeStyle = '#696969';
-  cb.draggedLinkStrokeStyle = '#333';
-  cb.fadedLinksStrokeStyle = '#E0E0E0';
-  cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-  // Node label styles
-  cb.minCharCount = 12;
-  cb.defaultNodeLabelColor = '#000';
-  cb.defaultNodeLabelFontSize = 10;
-  cb.defaultNodeLabelFont = cb.defaultNodeLabelFontSize + 'px';
-  cb.activeNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
-  cb.activeNodeLabelStrokeStyle = "#fff";
-  cb.activeNodeLabelLineWidth = 1.5;
-
   // General settings
   cb.drawGrid = false;
   cb.drawLinkNodes = false;
   cb.zoomExtent = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
+
+  /******************************************************************************************************
+   * Style configuration variables
+   *****************************************************************************************************/
+  // Fixed node layout
+  cb.baseNodeRadius = 8; // Node base radius
+  cb.extendNodeRatio = 3;
+  cb.nodeLineWidth = 2;
+
+  // Fixed link styles
+  cb.linkLineWidth = 1;
+
+  // Fixed node label layout
+  cb.minCharCount = 12;
+  cb.defaultNodeLabelFontSize = 10;
+  cb.activeNodeLabelLineWidth = 1.5;
+  cb.defaultNodeLabelFont = cb.defaultNodeLabelFontSize + 'px';
+  cb.activeNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
+
+  // Node styles
+  cb.defaultNodeFillStyle = '';
+  cb.defaultNodeStrokeStyle = '';
+  cb.draggedNodeFillStyle = '';
+  cb.draggedNodeStrokeStyle = '';
+  cb.fadedNodeFillStyle = '';
+  cb.fadedNodeStrokeStyle = '';
+  cb.highlightedNodeFillStyle = '';
+  cb.highlightedNodeStrokeStyle = '';
+
+  // Link styles
+  cb.defaultLinkStrokeStyle = '';
+  cb.draggedLinkStrokeStyle = '';
+  cb.fadedLinksStrokeStyle = '';
+  cb.highlightedLinkStrokeStyle = '';
+
+  // Node label styles
+  cb.defaultNodeLabelColor = '';
+  cb.activeNodeLabelStrokeStyle = "";
+
+  cb.applyStyle = function (style) {
+    switch (style) {
+      case 'orange': {
+        // Node styles
+        cb.defaultNodeFillStyle = '#deaf6c';
+        cb.defaultNodeStrokeStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#ff5d00';
+        cb.fadedNodeFillStyle = '#bcac9b';
+        cb.fadedNodeStrokeStyle = cb.fadedNodeFillStyle;
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        // Link styles
+        cb.linkLineWidth = 1;
+        cb.defaultLinkStrokeStyle = '#d3c2b6';
+        cb.draggedLinkStrokeStyle = '#222222';
+        cb.fadedLinksStrokeStyle = '#E0E0E0';
+        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
+
+        // Node label styles
+        cb.defaultNodeLabelColor = '#222222';
+        cb.activeNodeLabelStrokeStyle = "#fff";
+        break;
+      }
+      case 'red':{
+        // Node styles
+        cb.defaultNodeFillStyle = '#de5356';
+        cb.defaultNodeStrokeStyle = '#fff';
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#ff2340';
+        cb.fadedNodeFillStyle = '#bc6d73';
+        cb.fadedNodeStrokeStyle = '#fff';
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        // Link styles
+        cb.linkLineWidth = 1;
+        cb.defaultLinkStrokeStyle = '#d39a96';
+        cb.draggedLinkStrokeStyle = '#222222';
+        cb.fadedLinksStrokeStyle = '#E0E0E0';
+        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
+
+        // Node label styles
+        cb.defaultNodeLabelColor = '#222222';
+        cb.activeNodeLabelStrokeStyle = "#fff";
+        break;
+      }
+      case 'blue':{
+        // Node styles
+        cb.defaultNodeFillStyle = '#a4a5fe';
+        cb.defaultNodeStrokeStyle = '#fff';
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#1513ff';
+        cb.fadedNodeFillStyle = '#55557a';
+        cb.fadedNodeStrokeStyle = '#fff';
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        // Link styles
+        cb.linkLineWidth = 1;
+        cb.defaultLinkStrokeStyle = '#c6c5d3';
+        cb.draggedLinkStrokeStyle = '#222222';
+        cb.fadedLinksStrokeStyle = '#E0E0E0';
+        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
+
+        // Node label styles
+        cb.defaultNodeLabelColor = '#222222';
+        cb.activeNodeLabelStrokeStyle = "#fff";
+        break;
+      }
+      case 'green':{
+        // Node styles
+        cb.defaultNodeFillStyle = '#75de79';
+        cb.defaultNodeStrokeStyle = '#c4ffd9';
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#1ac321';
+        cb.fadedNodeFillStyle = '#9ebc9d';
+        cb.fadedNodeStrokeStyle = cb.fadedNodeFillStyle;
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        // Link styles
+        cb.linkLineWidth = 1;
+        cb.defaultLinkStrokeStyle = '#c0d3be';
+        cb.draggedLinkStrokeStyle = '#222222';
+        cb.fadedLinksStrokeStyle = '#E0E0E0';
+        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
+
+        // Node label styles
+        cb.defaultNodeLabelColor = '#222222';
+        cb.activeNodeLabelStrokeStyle = "#fff";
+        break;
+      }
+      case 'itc':
+      default: {
+        // Node styles
+        cb.defaultNodeFillStyle = '#b1ded2';
+        cb.defaultNodeStrokeStyle = '#fff';
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#2359ff';
+        cb.fadedNodeFillStyle = '#E6ECE4';
+        cb.fadedNodeStrokeStyle = '#fff';
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        // Link styles
+        cb.linkLineWidth = 1;
+        cb.defaultLinkStrokeStyle = '#696969';
+        cb.draggedLinkStrokeStyle = '#333';
+        cb.fadedLinksStrokeStyle = '#E0E0E0';
+        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
+
+        // Node label styles
+        cb.defaultNodeLabelColor = '#000';
+        cb.activeNodeLabelStrokeStyle = "#fff";
+
+        break;
+      }
+    }
+
+    if (d3.event && !d3.event.active) cbSimulation.restart();
+  };
+
+  cb.applyStyle('itc');
 
   /******************************************************************************************************
    * Data types
@@ -340,6 +475,15 @@
           clickSend = false;
         }, 250);
       }
+    }
+  }
+
+  function onRightClick() {
+    d3.event.preventDefault();
+
+    var node = selectNode();
+    if (node === undefined) {
+      $('#graph_container_div').contextMenu({x: d3.event.clientX, y: d3.event.clientY});
     }
   }
 
@@ -822,10 +966,7 @@
           .on('mousemove', onMouseMove)
           .on('click', onClick)
           .on("dblclick.zoom", onDoubleClick)
-          .on('contextmenu', function () {
-            d3.event.preventDefault();
-            d3.event.stopPropagation();
-          });
+          .on('contextmenu', onRightClick);
 
       // Add window handler
       d3.select(window)
@@ -833,11 +974,38 @@
           .on("keydown", onKeyDown);
     });
 
+    // Add message handler
     window.addEventListener('message', function (event) {
       var message = event.data;
       console.log(message);
       if (message.type === 'cb_update_opened') {
         cb.searchNode(message.data);
+      }
+    });
+
+    // Define context menu
+    //noinspection JSUnusedGlobalSymbols
+    $.contextMenu({
+      selector: '#graph_container_div',
+      trigger: 'none',
+      callback: function (key) {
+        if (key === "quit") return;
+        if (key.startsWith('style')) cb.applyStyle(key.substr(6));
+      },
+      items: {
+        "styles": {
+          name: "Change style",
+          icon: "edit",
+          items: {
+            "style-itc": {name: "ITC"},
+            "style-orange": {name: "Orange"},
+            "style-blue": {name: "Blue"},
+            "style-red": {name: "Red"},
+            "style-green": {name: "Green"}
+          }
+        },
+        "sep1": "---------",
+        "quit": {name: "Close", icon: 'quit'}
       }
     });
 
