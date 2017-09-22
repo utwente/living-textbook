@@ -13,6 +13,7 @@ var moveContainersInner = $('#move_containers_inner');
 var animation = 0;
 var invisibleFrame = $('#invisible_frame');
 var lastX = document.body.clientWidth / 2;
+var firstOpen = true;
 
 ////////////////////////////////
 // Layout handlers
@@ -31,16 +32,22 @@ openButton.openWindow = function (readyHandler) {
   // Setup variables
   opened = true;
   readyHandler = typeof readyHandler === 'function' ? readyHandler : function () {
+    if (!firstOpen) return;
+    document.getElementById("iframe_right").contentWindow.postMessage({
+      'type': 'cb_opened'
+    }, '*');
   };
 
   if (fullScreen) {
     dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
       readyHandler();
+      firstOpen = false;
     });
     moveContainersInner.fadeOut();
   } else {
     dragButton.doResize(openedX !== 0 ? openedX : (768 + ($('#move_containers_inner').innerWidth() / 2) - 1), undefined, undefined, true, function () {
       readyHandler();
+      firstOpen = false;
     });
   }
   openButton.fadeOut();
@@ -209,9 +216,5 @@ window.addEventListener('message', function (event) {
         'data': message.data
       }, '*');
     });
-  }
-
-  if (message.type === 'wiki_update') {
-    fullScreenButton.fullScreenWindow();
   }
 });

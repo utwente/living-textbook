@@ -98,7 +98,7 @@
         cb.activeNodeLabelStrokeStyle = "#fff";
         break;
       }
-      case 'red':{
+      case 'red': {
         // Node styles
         cb.defaultNodeFillStyle = '#de5356';
         cb.defaultNodeStrokeStyle = '#fff';
@@ -121,7 +121,7 @@
         cb.activeNodeLabelStrokeStyle = "#fff";
         break;
       }
-      case 'blue':{
+      case 'blue': {
         // Node styles
         cb.defaultNodeFillStyle = '#a4a5fe';
         cb.defaultNodeStrokeStyle = '#fff';
@@ -144,7 +144,7 @@
         cb.activeNodeLabelStrokeStyle = "#fff";
         break;
       }
-      case 'green':{
+      case 'green': {
         // Node styles
         cb.defaultNodeFillStyle = '#75de79';
         cb.defaultNodeStrokeStyle = '#c4ffd9';
@@ -168,6 +168,7 @@
         break;
       }
       case 'itc':
+        /* falls through */
       default: {
         // Node styles
         cb.defaultNodeFillStyle = '#b1ded2';
@@ -284,6 +285,19 @@
       moveToNode(nodes[0]);
       setNodeAsHighlight(nodes[0]);
     }
+  };
+
+  cb.centerView = function (duration) {
+    // Find current locations of all nodes, and select max
+    var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
+    cbGraph.nodes.forEach(function (node) {
+      minX = Math.min(minX, node.x - node.radius);
+      maxX = Math.max(maxX, node.x + node.radius);
+      minY = Math.min(minY, node.y - node.radius);
+      maxY = Math.max(maxY, node.y + node.radius);
+    });
+
+    moveToPosition(minX, maxX, minY, maxY, duration);
   };
 
   /******************************************************************************************************
@@ -535,8 +549,16 @@
       maxY = Math.max(maxY, node.y + node.radius);
     });
 
+    moveToPosition(minX, maxX, minY, maxY);
+  }
+
+  function moveToPosition(minX, maxX, minY, maxY, duration) {
+    // Check duration
+    duration = typeof duration !== "undefined" ? duration : 3000;
+
     // Calculate scale
     var scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
+    scale = Math.min(cb.zoomExtent[1], Math.max(cb.zoomExtent[0], scale));
 
     // Calculate zoom identify
     var transform = d3.zoomIdentity
@@ -547,7 +569,7 @@
     // Move to it
     cbCanvas
         .transition()
-        .duration(3000)
+        .duration(duration)
         .call(cbZoom.transform, transform);
   }
 
@@ -978,6 +1000,9 @@
     window.addEventListener('message', function (event) {
       var message = event.data;
       console.log(message);
+      if (message.type === 'cb_opened') {
+        cb.centerView(500);
+      }
       if (message.type === 'cb_update_opened') {
         cb.searchNode(message.data);
       }
@@ -989,13 +1014,13 @@
       selector: '#graph_container_div',
       trigger: 'none',
       callback: function (key) {
-        if (key === "quit") return;
+        if (key === 'quit') return;
         if (key.startsWith('style')) cb.applyStyle(key.substr(6));
+        if (key === 'center') cb.centerView();
       },
       items: {
         "styles": {
           name: "Change style",
-          icon: "edit",
           items: {
             "style-itc": {name: "ITC"},
             "style-orange": {name: "Orange"},
@@ -1005,6 +1030,8 @@
           }
         },
         "sep1": "---------",
+        "center": {name: "Back to center"},
+        "sep2": "---------",
         "quit": {name: "Close", icon: 'quit'}
       }
     });
