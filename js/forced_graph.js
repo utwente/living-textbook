@@ -462,7 +462,7 @@
    */
   function findNode() {
     var transformed;
-    if (d3.event instanceof KeyboardEvent) {
+    if (typeof d3.event.x === 'undefined' || typeof d3.event.y === 'undefined') {
       transformed = lastTransformed;
     } else {
       transformed = lastTransformed = transformLocation(d3.event);
@@ -1048,7 +1048,7 @@
    */
   function filterNodeOnColor(color) {
     return function (node) {
-      return node.color === color
+      return node.color === color;
     };
   }
 
@@ -1070,7 +1070,7 @@
    */
   function resetNodeColors() {
     cbGraph.nodes.map(function (node) {
-      node.color = 0
+      node.color = 0;
     });
 
     // Clear local storage
@@ -1271,7 +1271,7 @@
             cbSimulation.restart();
           },
           items: getContextMenuItems()
-        }
+        };
       }
     });
   });
