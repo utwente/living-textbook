@@ -671,7 +671,7 @@
 
     // Calculate scale
     var scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
-    scale = Math.min(cb.zoomExtent[1], Math.max(cb.zoomExtent[0], scale));
+    scale = Math.min(cb.zoomExtent[1], Math.max(1, scale));
 
     // Calculate zoom identify
     var transform = d3.zoomIdentity
@@ -950,9 +950,9 @@
     context.beginPath();
     context.translate(link.target.x, link.target.y);
     context.rotate(startRadians);
-    context.moveTo(0, link.target.radius);
-    context.lineTo(2, 5 + link.target.radius);
-    context.lineTo(-2, 5 + link.target.radius);
+    context.moveTo(0, link.target.radius - 1);
+    context.lineTo(3, 9 + link.target.radius);
+    context.lineTo(-3, 9 + link.target.radius);
     context.closePath();
     context.restore();
     context.fill();
