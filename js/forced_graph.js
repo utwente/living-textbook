@@ -880,7 +880,7 @@
    * @param link
    */
   function drawNormalLink(link) {
-    if (link.source.dragged || link.target.dragged) return;
+    if ((link.target.dragged && link.source.dragged) || (link.target.highlighted && link.source.highlighted)) return;
     drawLink(link);
   }
 
@@ -963,7 +963,7 @@
    * @param link
    */
   function drawNormalLinkArrow(link) {
-    if (link.target.dragged || link.source.dragged || link.target.highlighted) return;
+    if ((link.target.dragged && link.source.dragged) || (link.target.highlighted && link.source.highlighted)) return;
     drawLinkArrow(link);
   }
 
