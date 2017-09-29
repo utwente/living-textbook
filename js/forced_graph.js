@@ -570,31 +570,31 @@
       case 73: // I
         /* falls through */
       case 48: // 0
-        if (node !== undefined) node.color = 0;
+        if (node !== undefined) colorNode(node, 0);
         break;
 
       case 82: // R
         /* falls through */
       case 49: // 1
-        if (node !== undefined) node.color = 1;
+        if (node !== undefined) colorNode(node, 1);
         break;
 
       case 71: // G
         /* falls through */
       case 50: // 2
-        if (node !== undefined) node.color = 2;
+        if (node !== undefined) colorNode(node, 2);
         break;
 
       case 66: // B
         /* falls through */
       case 51: // 3
-        if (node !== undefined) node.color = 3;
+        if (node !== undefined) colorNode(node, 3);
         break;
 
       case 79: // O
         /* falls through */
       case 52: // 4
-        if (node !== undefined) node.color = 4;
+        if (node !== undefined) colorNode(node, 4);
         break;
     }
 
@@ -866,17 +866,6 @@
   }
 
   /**
-   * Function to filter nodes on a given color index
-   * @param color
-   * @returns {Function}
-   */
-  function filterNodeOnColor(color) {
-    return function (node) {
-      return node.color === color
-    };
-  }
-
-  /**
    * Draw the link line
    * @param link
    */
@@ -1049,6 +1038,61 @@
   }
 
   /******************************************************************************************************
+   * Color functions
+   *****************************************************************************************************/
+
+  /**
+   * Function to filter nodes on a given color index
+   * @param color
+   * @returns {Function}
+   */
+  function filterNodeOnColor(color) {
+    return function (node) {
+      return node.color === color
+    };
+  }
+
+  /**
+   * Color the given node and save in the local storage
+   * @param node
+   * @param color
+   */
+  function colorNode(node, color) {
+    node.color = color;
+
+    if (typeof(Storage) !== "undefined") {
+      localStorage.setItem("nodeColor." + node.label, color);
+    }
+  }
+
+  /**
+   * Resets all node colors and clears the local storage
+   */
+  function resetNodeColors() {
+    cbGraph.nodes.map(function (node) {
+      node.color = 0
+    });
+
+    // Clear local storage
+    if (typeof(Storage) !== "undefined") {
+      localStorage.clear();
+    }
+  }
+
+  /**
+   * Load node colors from the local storage
+   */
+  function loadNodeColor(node) {
+    node.color = 0;
+    if (typeof(Storage) !== "undefined") {
+      var color = localStorage.getItem("nodeColor." + node.label);
+      if (color !== null) {
+        node.color = parseInt(color);
+      }
+    }
+  }
+
+  /******************************************************************************************************
    * Force functions
    *****************************************************************************************************/
 
@@ -1110,10 +1154,9 @@
       cbGraph = data;
 
       // Calculate some one-time values before rendering starts
-      cbGraph.nodes.map(getNodeRadius);
       cbGraph.nodes.map(function (node) {
-        // Set default node color
-        node.color = 0;
+        getNodeRadius(node);
+        loadNodeColor(node);
 
         // Set default label values
         node.expandedLabelStart = 0;
@@ -1222,10 +1265,8 @@
         return {
           callback: function (key) {
             if (key === 'quit') return;
-            if (key.startsWith('style')) contextMenuNode.color = parseInt(key.substr(6));
-            if (key === 'reset') cbGraph.nodes.map(function (node) {
-              node.color = 0
-            });
+            if (key.startsWith('style')) colorNode(contextMenuNode, parseInt(key.substr(6)));
+            if (key === 'reset') resetNodeColors();
             if (key === 'center') cb.centerView();
             cbSimulation.restart();
           },
