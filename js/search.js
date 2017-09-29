@@ -8,6 +8,7 @@ $(function () {
   var watermark = "Search";
   var $search = $("#search");
 
+  // Add "Search" watermark to the search box
   $search.val(watermark).addClass("watermark")
       .blur(function () {
         if ($(this).val().length === 0) {
@@ -20,7 +21,7 @@ $(function () {
         }
       });
 
-  // Get graph data
+  // Get graph data for search
   var graph = (function () {
     var json = null;
     $.ajax({
@@ -42,7 +43,7 @@ $(function () {
   }
   optArray = optArray.sort();
 
-  // Create search functionality, which is a bootstrap type ahead
+  // Create the actual search functionality, which is a bootstrap type ahead
   $search.typeahead({
     source: optArray,
     minLength: 0,
@@ -50,6 +51,8 @@ $(function () {
     fitToElement: true,
     showHintOnFocus: true
   });
+
+  // Bind search result changed handler
   $search.change(function () {
     var current = $search.typeahead("getActive");
     if (current === $search.val()) {

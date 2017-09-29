@@ -38,6 +38,7 @@ openButton.openWindow = function (readyHandler) {
     }, '*');
   };
 
+  // Check for full screen, and adjust resize accordingly
   if (fullScreen) {
     dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
       readyHandler();
@@ -50,23 +51,29 @@ openButton.openWindow = function (readyHandler) {
       firstOpen = false;
     });
   }
+
+  // Fade out the open button
   openButton.fadeOut();
 };
 
 /**
- * Handler for the close window action
+ * Handler for the close window button
  */
 closeButton.closeWindow = function () {
   if (!opened) return;
   opened = false;
   openedX = lastX;
 
+  // Resize the window in order to close it
   dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), true, function () {
     openButton.fadeIn();
   });
   moveContainersInner.fadeIn();
 };
 
+/**
+ * Handler for the full screen button
+ */
 fullScreenButton.fullScreenWindow = function () {
   if (fullScreen) {
     // Close full screen
@@ -129,7 +136,7 @@ dragButton.doResize = function (x, minWidth, maxWidth, animate, callback, force)
   leftWidth = Math.max(leftWidth, minWidth);
   var rightWidth = clientWidth - leftWidth - centerWidth;
 
-  // Move the window (with or without animation
+  // Move the window (with or without animation)
   if (animate) {
     animation = 3;
     leftFrame.animate({
@@ -155,6 +162,7 @@ dragButton.doResize = function (x, minWidth, maxWidth, animate, callback, force)
     callback();
   }
 };
+
 /**
  * Handler that registers the drag event.
  * @param e
@@ -170,6 +178,7 @@ dragButton.doDrag = function (e) {
   invisibleFrame.css('z-index', 15);
   dragButton.doResize(e.pageX);
 };
+
 /**
  * Handler that registers the stop drag event
  */
@@ -180,6 +189,7 @@ dragButton.stopDrag = function () {
   document.documentElement.removeEventListener('mousemove', dragButton.doDrag);
   document.documentElement.removeEventListener('mouseup', dragButton.stopDrag);
 };
+
 /**
  * Handler that registers the drag and stop drag handles on mouse click
  */

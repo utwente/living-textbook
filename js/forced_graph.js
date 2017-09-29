@@ -6,6 +6,7 @@
   /******************************************************************************************************
    * Data source
    *****************************************************************************************************/
+
   // cb.data_source = "data/GIS_RS.json";
   // cb.data_source = "data/GIS_RS_REDUCED.json";
   cb.data_source = "data/GIS_RS_link_count.json";
@@ -13,6 +14,7 @@
   /******************************************************************************************************
    * Configuration variables
    *****************************************************************************************************/
+
   // Display settings
   cb.mapWidth = 3000;
   cb.mapWidthDragMargin = cb.mapWidth / 30;
@@ -38,6 +40,7 @@
   /******************************************************************************************************
    * Style configuration variables
    *****************************************************************************************************/
+
   // Fixed node layout
   cb.baseNodeRadius = 8; // Node base radius
   cb.extendNodeRatio = 3;
@@ -198,12 +201,19 @@
     if (d3.event && !d3.event.active) cbSimulation.restart();
   };
 
+  // Apply the default style on load
   cb.applyStyle('itc');
 
   /******************************************************************************************************
    * Data types
+   * Required for JS-hinting
    *****************************************************************************************************/
   var Types = {};
+
+  /**
+   * Data type description
+   * @type {{nodes: [*], links: [*]}}
+   */
   Types.DataType = {
     "nodes": [
       {
@@ -221,6 +231,11 @@
       }
     ]
   };
+
+  /**
+   * Node type description
+   * @type {{index: number, x: number, y: number, vx: number, vy: number, fx: number, fy: number, radius: number, nodeName: string, label: string, expandedLabel: Array, expandedLabelStart: number, link: string, numberOfLinks: number, dragged: boolean, highlighted: boolean, linkNode: boolean}}
+   */
   Types.NodeType = {
     "index": 0,
     "x": 0,
@@ -240,6 +255,11 @@
     "highlighted": false,
     "linkNode": false
   };
+
+  /**
+   * Link type description
+   * @type {{source: number, target: number, relationName: string}}
+   */
   Types.LinkType = {
     "source": 0,
     "target": 0,
@@ -249,6 +269,7 @@
   /******************************************************************************************************
    * Internal variables
    *****************************************************************************************************/
+
   var canvas, context, canvasWidth, canvasHeight, halfCanvasWidth, halfCanvasHeight;
   var halfMapWidth = cb.mapWidth / 2, halfMapHeight = cb.mapHeight / 2;
   var cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
@@ -260,8 +281,9 @@
   cbGraph = {nodes: [], links: [], linkNodes: []};
 
   /******************************************************************************************************
-   * External functions
+   * Exposed functionality (for easy debugging purposes)
    *****************************************************************************************************/
+
   cb.getCurrentTransform = function () {
     return cbTransform;
   };
@@ -274,6 +296,14 @@
     return cbGraph;
   };
 
+  /******************************************************************************************************
+   * Exposed functionality
+   *****************************************************************************************************/
+
+  /**
+   * Search and focus on a node based on its name
+   * @param nodeName
+   */
   cb.searchNode = function (nodeName) {
     // Find the node by label
     var nodes = cbGraph.nodes.filter(function (node) {
@@ -287,6 +317,10 @@
     }
   };
 
+  /**
+   * Recenter the viewport
+   * @param duration
+   */
   cb.centerView = function (duration) {
     // Find current locations of all nodes, and select max
     var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
@@ -305,7 +339,8 @@
    *****************************************************************************************************/
 
   /**
-   * Resize the canvas
+   * Resize the canvas (draw area)
+   * This should be done on draggable window size changes, or browser window changes
    */
   function resizeCanvas() {
     // Get container size, and set sizes and zoom extent
@@ -340,6 +375,10 @@
     return node.radius + cb.nodeRadiusMargin;
   }
 
+  /**
+   * Limit the node position based on the map dimensions
+   * @param node
+   */
   function limitNode(node) {
     node.x = Math.max(node.radius, Math.min(cb.mapWidth - node.radius, node.x));
     node.y = Math.max(node.radius, Math.min(cb.mapHeight - node.radius, node.y));
@@ -361,6 +400,10 @@
     return transform;
   }
 
+  /**
+   * Mark the given node as being dragged
+   * @param node
+   */
   function setNodeAsDragged(node) {
     isDragging = true;
     node.dragged = true;
@@ -368,12 +411,20 @@
     setHighlightsByNode(node);
   }
 
+  /**
+   * Unmark the given node as being dragged
+   * @param node
+   */
   function clearNodeAsDragged(node) {
     isDragging = false;
     node.dragged = false;
     clearHighlightsByNode(node);
   }
 
+  /**
+   * Mark the given node as being highlighted
+   * @param node
+   */
   function setNodeAsHighlight(node) {
     // Check if node the same
     if (highlightedNode && highlightedNode.index === node.index) return;
@@ -381,12 +432,16 @@
     // Check for previous highlight
     clearNodeHighlight();
 
+    // Set as highlighted
     if (node === undefined) return;
     highlightedNode = node;
     node.highlighted = true;
     setHighlightsByNode(node);
   }
 
+  /**
+   * Unmark the given node as being highlighted
+   */
   function clearNodeHighlight() {
     if (highlightedNode !== null) {
       highlightedNode.highlighted = false;
@@ -395,6 +450,10 @@
     }
   }
 
+  /**
+   * Mark relations of the given node as highlighted
+   * @param node
+   */
   function setHighlightsByNode(node) {
     cbGraph.links.forEach(function (link) {
       if (link.target.index === node.index) link.source.highlighted = true;
@@ -402,6 +461,10 @@
     });
   }
 
+  /**
+   * Unmark relations of the given node as highlighted
+   * @param node
+   */
   function clearHighlightsByNode(node) {
     cbGraph.links.forEach(function (link) {
       if (link.target.index === node.index) link.source.highlighted = false;
@@ -420,11 +483,17 @@
         getLinkLabelLength(link);
   }
 
+  /**
+   * Estimate the length of the link label
+   * @param link
+   * @returns {number}
+   */
   function getLinkLabelLength(link) {
     return link.relationName.length * 5 + 10;
   }
 
   /**
+   * Transform a location with the current transformation
    * @param loc
    */
   function transformLocation(loc) {
@@ -438,12 +507,19 @@
    * Event handlers
    *****************************************************************************************************/
 
-  function selectNode() {
+  /**
+   * Find a node based on the event location
+   * @returns {undefined}
+   */
+  function findNode() {
     var transformed = transformLocation(d3.event);
     var node = cbSimulation.find(transformed.x, transformed.y, 20);
     return node && node.linkNode !== true ? node : undefined;
   }
 
+  /**
+   * Event fired when the drag action starts
+   */
   function onDragStarted() {
     if (!d3.event.active) cbSimulation.alphaTarget(0.3).restart();
     d3.event.subject.fx = dragPosX = d3.event.subject.x;
@@ -453,6 +529,9 @@
     setNodeAsDragged(d3.event.subject);
   }
 
+  /**
+   * Event fired during dragging progress
+   */
   function onDragged() {
     dragPosX += d3.event.dx / cbTransform.k;
     dragPosY += d3.event.dy / cbTransform.k;
@@ -460,6 +539,9 @@
     d3.event.subject.fy = Math.max(0, Math.min(cb.mapHeight, dragPosY));
   }
 
+  /**
+   * Event fired when the drag action stops
+   */
   function onDragEnded() {
     if (!d3.event.active) cbSimulation.alphaTarget(0);
     d3.event.subject.fx = null;
@@ -468,13 +550,20 @@
     clearNodeAsDragged(d3.event.subject);
   }
 
+  /**
+   * Event for mouse move, to select a node to highlight
+   */
   function onMouseMove() {
     if (mouseMoveDisabled) return;
-    highlightNode();
+    highlightNode(findNode());
   }
 
+  /**
+   * Left mouse button click, in order to fix node highlight
+   * Communicates with the wiki in order to open the correct page
+   */
   function onClick() {
-    var node = selectNode();
+    var node = findNode();
     if (node && !mouseMoveDisabled) {
       setNodeAsHighlight(node);
     }
@@ -492,29 +581,42 @@
     }
   }
 
+  /**
+   * Right click event.
+   * On empty space, shows context menu for styling
+   */
   function onRightClick() {
     d3.event.preventDefault();
 
-    var node = selectNode();
+    var node = findNode();
     if (node === undefined) {
       $('#graph_container_div').contextMenu({x: d3.event.clientX, y: d3.event.clientY});
     }
   }
 
+  /**
+   * Double click event, move to the clicked node
+   */
   function onDoubleClick() {
-    moveToNode();
+    moveToNode(findNode());
   }
 
+  /**
+   * Keyboard event handler
+   * space -> Stop simulation
+   */
   function onKeyDown() {
-    // Force movement stop with spacebar
     if (d3.event.keyCode === 32) {
+      // Force movement stop with space bar
       cbSimulation.stop();
     }
   }
 
-  function highlightNode() {
-    var node = selectNode();
-
+  /**
+   * Highlight the current event location node
+   * @param node
+   */
+  function highlightNode(node) {
     if (node) {
       setNodeAsHighlight(node);
     } else {
@@ -525,10 +627,12 @@
     if (!d3.event.active) cbSimulation.restart();
   }
 
+  /**
+   * Move the view to the given node
+   * It keeps the relations inside the view
+   * @param node
+   */
   function moveToNode(node) {
-    // If necessary, transform the event location and find a corresponding node
-    node = typeof(node) !== "undefined" ? node : selectNode();
-
     // Check for node existence
     if (node === undefined) return;
 
@@ -549,9 +653,18 @@
       maxY = Math.max(maxY, node.y + node.radius);
     });
 
+    // Do the actual move
     moveToPosition(minX, maxX, minY, maxY);
   }
 
+  /**
+   * Move the view to the given view bounds
+   * @param minX
+   * @param maxX
+   * @param minY
+   * @param maxY
+   * @param duration
+   */
   function moveToPosition(minX, maxX, minY, maxY, duration) {
     // Check duration
     duration = typeof duration !== "undefined" ? duration : 3000;
@@ -573,6 +686,10 @@
         .call(cbZoom.transform, transform);
   }
 
+  /**
+   * Zoom event handler
+   * Limits the transformation and calls the draw function
+   */
   function zoomGraph() {
     cbTransform = limitTransform(d3.event.transform);
     drawGraph();
@@ -583,6 +700,7 @@
    *****************************************************************************************************/
 
   /**
+   * Draws the complete concept browser, refreshes the view on every iteration
    * @note Order in this function is important!
    */
   function drawGraph() {
@@ -613,6 +731,7 @@
       context.strokeStyle = "black";
       context.stroke();
 
+      // Draw canvas size rectangle
       context.beginPath();
       context.moveTo(0, 0);
       context.lineTo(canvasWidth, 0);
@@ -720,7 +839,7 @@
     // LABELS           //
     //////////////////////
 
-    // Set this higher to prevent horns on M/W letters
+    // Set this lower to prevent horns on M/W letters
     // https://github.com/CreateJS/EaselJS/issues/781
     context.miterLimit = 2.5;
 
@@ -747,25 +866,46 @@
     context.restore();
   }
 
+  /**
+   * Draw the link line
+   * @param link
+   */
   function drawLink(link) {
     context.moveTo(link.target.x, link.target.y);
     context.lineTo(link.source.x, link.source.y);
   }
 
+  /**
+   * Draw a link when in normal state
+   * @param link
+   */
   function drawNormalLink(link) {
     if (link.source.dragged || link.target.dragged) return;
     drawLink(link);
   }
 
+  /**
+   * Draw a link when in dragged state
+   * @param link
+   */
   function drawDraggedLink(link) {
     if (link.source.dragged || link.target.dragged) drawLink(link);
   }
 
+  /**
+   * Draw a link when in highlight state
+   * @param link
+   */
   function drawHighlightedLink(link) {
     if (link.source.index === highlightedNode.index || link.target.index === highlightedNode.index) drawLink(link);
   }
 
+  /**
+   * Draw the link text
+   * @param link
+   */
   function drawLinkText(link) {
+    // Only draw the text when the link is active
     if (link.relationName &&
         (!isDragging && (link.source.index === highlightedNode.index || link.target.index === highlightedNode.index)) ||
         (link.source.dragged || link.target.dragged)) {
@@ -774,6 +914,7 @@
       var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
       startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
 
+      // Transform the context
       context.save();
       context.translate(link.source.x, link.source.y);
       context.rotate(startRadians);
@@ -795,10 +936,16 @@
     }
   }
 
+  /**
+   * Draw the link arrow
+   * @param link
+   */
   function drawLinkArrow(link) {
+    // Calculate head rotation
     var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
     startRadians += ((link.source.x >= link.target.x) ? -1 : 1) * Math.PI / 2;
 
+    // Draw the triangle
     context.save();
     context.beginPath();
     context.translate(link.target.x, link.target.y);
@@ -811,37 +958,69 @@
     context.fill();
   }
 
+  /**
+   * Draw a link arrow when in normal state
+   * @param link
+   */
   function drawNormalLinkArrow(link) {
     if (link.target.dragged || link.source.dragged || link.target.highlighted) return;
     drawLinkArrow(link);
   }
 
+  /**
+   * Draw a link arrow when in dragged state
+   * @param link
+   */
   function drawDraggedLinkArrow(link) {
     if (link.target.dragged || link.source.dragged) drawLinkArrow(link);
   }
 
+  /**
+   * Draw a link arrow when in highlighted state
+   * @param link
+   */
   function drawHighlightedLinkArrow(link) {
     if (link.target.index === highlightedNode.index || link.source.index === highlightedNode.index) drawLinkArrow(link);
   }
 
+  /**
+   * Draw the node
+   * @param node
+   */
   function drawNode(node) {
     context.moveTo(node.x + node.radius, node.y);
     context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
   }
 
+  /**
+   * Draw a node when in normal state
+   * @param node
+   */
   function drawNormalNode(node) {
     if (node.highlighted || node.dragged) return;
     drawNode(node);
   }
 
+  /**
+   * Draw a node when in dragged state
+   * @param node
+   */
   function drawDraggedNode(node) {
     if (node.dragged) drawNode(node);
   }
 
+  /**
+   * Draw a node when in highlighted state
+   * @param node
+   */
   function drawHighlightedNode(node) {
     if (node.highlighted) drawNode(node);
   }
 
+  /**
+   * Draw the node text
+   * @param node
+   */
   function drawNodeText(node) {
     // Adjust font if necessary, or skip if not
     if ((isDragging && node.dragged) || ((highlightedNode !== null || isDragging) && node.highlighted)) {
@@ -850,18 +1029,23 @@
       if (isDragging || highlightedNode !== null) return;
     }
 
+    // Draw the actual text (which can be multiple lines)
     var yStart = node.y - node.expandedLabelStart;
     node.expandedLabel.forEach(function (line) {
       if (node.dragged || node.highlighted) context.strokeText(line, node.x, yStart);
       context.fillText(line, node.x, yStart);
       yStart += cb.defaultNodeLabelFontSize;
     });
-
   }
 
   /******************************************************************************************************
    * Force functions
    *****************************************************************************************************/
+
+  /**
+   * Force to keep the nodes inside the map box
+   * @param alpha
+   */
   function keepInBoxForce(alpha) {
     for (var i = 0, n = cbGraph.nodes.length,
              node, kx = (alpha * cb.boundForceStrenght) / cb.mapWidth,
@@ -878,11 +1062,13 @@
   /******************************************************************************************************
    * Start execution after DOM load
    *****************************************************************************************************/
+
   $(function () {
 
     /******************************************************************************************************
      * Initialize canvas
      *****************************************************************************************************/
+
     canvas = document.getElementById('graph_container_canvas');
     resizeCanvas();
 
@@ -891,36 +1077,37 @@
      *****************************************************************************************************/
 
     cbSimulation = d3.forceSimulation()
-        .force("sidedetection", keepInBoxForce)
-        .force("charge", d3.forceManyBody()
+        .force("sidedetection", keepInBoxForce)     // To keep nodes in the map view
+        .force("charge", d3.forceManyBody()         // To keep nodes grouped
             .distanceMin(cb.manyBodyDistanceMin)
             .distanceMax(cb.manyBodyDistanceMax)
             .strength(cb.manyBodyStrength))
-        .force("collide", d3.forceCollide()
+        .force("collide", d3.forceCollide()         // To prevent nodes from overlapping
             .radius(getNodeRadius)
             .strength(cb.collideStrength)
             .iterations(cb.collideIterations))
-        .force("link", d3.forceLink()
+        .force("link", d3.forceLink()               // To force a certain link distance
             .distance(getLinkDistance)
             .strength(cb.linkStrength))
-        .force("center", d3.forceCenter(cb.mapWidth / 2, cb.mapHeight / 2));
+        .force("center",                            // To force the node to move around the map center
+            d3.forceCenter(cb.mapWidth / 2, cb.mapHeight / 2));
 
+    // Retrieve the node data
     d3.json(cb.data_source, function (error, data) {
       if (error) throw error;
 
       // Set graph global
       cbGraph = data;
 
-      // Calculate some values for rendering
+      // Calculate some one-time values before rendering starts
       cbGraph.nodes.forEach(getNodeRadius);
       cbGraph.nodes.forEach(function (node) {
         node.expandedLabelStart = 0;
         node.expandedLabel = [];
         if (node.label === "") return;
 
-        // Calculate lines
+        // Calculate node text lines
         var lines = node.label.split(" ");
-
         if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)) {
           node.expandedLabel = lines;
         } else {
@@ -939,7 +1126,7 @@
         node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * cb.defaultNodeLabelFontSize);
       });
 
-      // Create linkNodes to avoid overlap
+      // Create linkNodes to avoid overlap (http://bl.ocks.org/couchand/7190660)
       cbGraph.linkNodes = [];
       cbGraph.links.forEach(function (link) {
         cbGraph.linkNodes.push({
@@ -949,12 +1136,11 @@
         });
       });
 
-      // Load data
+      // Load data (nodes and links)
       cbSimulation.nodes(cbGraph.nodes.concat(cbGraph.linkNodes));
-      // cbSimulation.nodes(cbGraph.nodes);
       cbSimulation.force("link").links(cbGraph.links);
 
-      // Load handlers
+      // Load handlers for the tick event
       cbSimulation.on("tick", function () {
 
         // Update link node positions
@@ -963,7 +1149,7 @@
           linkNode.y = (linkNode.source.y + linkNode.target.y) * 0.5;
         });
 
-        // Draw graph
+        // Draw the actual graph
         drawGraph();
       });
 
@@ -972,10 +1158,10 @@
           .scaleExtent(cb.zoomExtent)
           .on("zoom", zoomGraph);
 
-      // Create drag handler
+      // Create drag handlers
       cbDrag = d3.drag()
           .container(canvas)
-          .subject(selectNode)
+          .subject(findNode)
           .on("start", onDragStarted)
           .on("drag", onDragged)
           .on("end", onDragEnded);
@@ -990,7 +1176,7 @@
           .on("dblclick.zoom", onDoubleClick)
           .on('contextmenu', onRightClick);
 
-      // Add window handler
+      // Add window handlers
       d3.select(window)
           .on("resize", resizeCanvas)
           .on("keydown", onKeyDown);
@@ -1000,9 +1186,13 @@
     window.addEventListener('message', function (event) {
       var message = event.data;
       console.log(message);
+
+      // When the map is opened, make sure to center the view
       if (message.type === 'cb_opened') {
         cb.centerView(500);
       }
+
+      // Search a node due to wiki interaction
       if (message.type === 'cb_update_opened') {
         cb.searchNode(message.data);
       }
