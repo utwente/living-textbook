@@ -324,7 +324,7 @@
   cb.centerView = function (duration) {
     // Find current locations of all nodes, and select max
     var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
-    cbGraph.nodes.forEach(function (node) {
+    cbGraph.nodes.map(function (node) {
       minX = Math.min(minX, node.x - node.radius);
       maxX = Math.max(maxX, node.x + node.radius);
       minY = Math.min(minY, node.y - node.radius);
@@ -455,7 +455,7 @@
    * @param node
    */
   function setHighlightsByNode(node) {
-    cbGraph.links.forEach(function (link) {
+    cbGraph.links.map(function (link) {
       if (link.target.index === node.index) link.source.highlighted = true;
       if (link.source.index === node.index) link.target.highlighted = true;
     });
@@ -466,7 +466,7 @@
    * @param node
    */
   function clearHighlightsByNode(node) {
-    cbGraph.links.forEach(function (link) {
+    cbGraph.links.map(function (link) {
       if (link.target.index === node.index) link.source.highlighted = false;
       if (link.source.index === node.index) link.target.highlighted = false;
     });
@@ -645,7 +645,7 @@
 
     // Find current locations of highlighted nodes
     var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
-    cbGraph.nodes.forEach(function (node) {
+    cbGraph.nodes.map(function (node) {
       if (!node.highlighted) return;
       minX = Math.min(minX, node.x - node.radius);
       maxX = Math.max(maxX, node.x + node.radius);
@@ -705,7 +705,7 @@
    */
   function drawGraph() {
     // Limit the nodes
-    cbGraph.nodes.forEach(limitNode);
+    cbGraph.nodes.map(limitNode);
 
     // Save state
     context.save();
@@ -750,7 +750,7 @@
     context.beginPath();
     context.lineWidth = cb.linkLineWidth;
     context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
-    cbGraph.links.forEach(drawNormalLink);
+    cbGraph.links.map(drawNormalLink);
     context.stroke();
 
     // Draw normal nodes
@@ -758,7 +758,7 @@
     context.lineWidth = cb.nodeLineWidth;
     context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
     context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
-    cbGraph.nodes.forEach(drawNormalNode);
+    cbGraph.nodes.map(drawNormalNode);
     context.fill();
     context.stroke();
 
@@ -768,14 +768,14 @@
       context.lineWidth = cb.nodeLineWidth;
       context.fillStyle = cb.fadedNodeFillStyle;
       context.strokeStyle = cb.fadedNodeStrokeStyle;
-      cbGraph.linkNodes.forEach(drawNormalNode);
+      cbGraph.linkNodes.map(drawNormalNode);
       context.fill();
       context.stroke();
     }
 
     // Draw normal link arrows
     context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
-    cbGraph.links.forEach(drawNormalLinkArrow);
+    cbGraph.links.map(drawNormalLinkArrow);
 
     //////////////////////
     // DRAGGED          //
@@ -786,7 +786,7 @@
       context.beginPath();
       context.lineWidth = cb.linkLineWidth;
       context.strokeStyle = cb.draggedLinkStrokeStyle;
-      cbGraph.links.forEach(drawDraggedLink);
+      cbGraph.links.map(drawDraggedLink);
       context.stroke();
     }
 
@@ -796,7 +796,7 @@
       context.lineWidth = cb.nodeLineWidth;
       context.fillStyle = cb.draggedNodeFillStyle;
       context.strokeStyle = cb.draggedNodeStrokeStyle;
-      cbGraph.nodes.forEach(drawDraggedNode);
+      cbGraph.nodes.map(drawDraggedNode);
       context.fill();
       context.stroke();
     }
@@ -804,7 +804,7 @@
     // Draw dragged link arrows
     if (isDragging) {
       context.fillStyle = cb.draggedLinkStrokeStyle;
-      cbGraph.links.forEach(drawDraggedLinkArrow);
+      cbGraph.links.map(drawDraggedLinkArrow);
     }
 
     //////////////////////
@@ -816,7 +816,7 @@
       context.beginPath();
       context.lineWidth = cb.linkLineWidth;
       context.strokeStyle = cb.highlightedLinkStrokeStyle;
-      cbGraph.links.forEach(drawHighlightedLink);
+      cbGraph.links.map(drawHighlightedLink);
       context.stroke();
     }
 
@@ -825,14 +825,14 @@
     context.lineWidth = cb.nodeLineWidth;
     context.fillStyle = cb.highlightedNodeFillStyle;
     context.strokeStyle = cb.highlightedNodeStrokeStyle;
-    cbGraph.nodes.forEach(drawHighlightedNode);
+    cbGraph.nodes.map(drawHighlightedNode);
     context.fill();
     context.stroke();
 
     // Draw highlighted link arrows
     if (highlightedNode !== null) {
       context.fillStyle = cb.highlightedLinkStrokeStyle;
-      cbGraph.links.forEach(drawHighlightedLinkArrow);
+      cbGraph.links.map(drawHighlightedLinkArrow);
     }
 
     //////////////////////
@@ -850,7 +850,7 @@
       context.textBaseline = 'top';
       context.lineWidth = cb.activeNodeLabelLineWidth;
       context.strokeStyle = cb.activeNodeLabelStrokeStyle;
-      cbGraph.links.forEach(drawLinkText);
+      cbGraph.links.map(drawLinkText);
     }
 
     // Draw node labels
@@ -860,7 +860,7 @@
     context.textAlign = 'center';
     context.lineWidth = cb.activeNodeLabelLineWidth;
     context.strokeStyle = cb.activeNodeLabelStrokeStyle;
-    cbGraph.nodes.forEach(drawNodeText);
+    cbGraph.nodes.map(drawNodeText);
 
     // Restore state
     context.restore();
@@ -1031,7 +1031,7 @@
 
     // Draw the actual text (which can be multiple lines)
     var yStart = node.y - node.expandedLabelStart;
-    node.expandedLabel.forEach(function (line) {
+    node.expandedLabel.map(function (line) {
       if (node.dragged || node.highlighted) context.strokeText(line, node.x, yStart);
       context.fillText(line, node.x, yStart);
       yStart += cb.defaultNodeLabelFontSize;
@@ -1100,8 +1100,8 @@
       cbGraph = data;
 
       // Calculate some one-time values before rendering starts
-      cbGraph.nodes.forEach(getNodeRadius);
-      cbGraph.nodes.forEach(function (node) {
+      cbGraph.nodes.map(getNodeRadius);
+      cbGraph.nodes.map(function (node) {
         node.expandedLabelStart = 0;
         node.expandedLabel = [];
         if (node.label === "") return;
@@ -1128,7 +1128,7 @@
 
       // Create linkNodes to avoid overlap (http://bl.ocks.org/couchand/7190660)
       cbGraph.linkNodes = [];
-      cbGraph.links.forEach(function (link) {
+      cbGraph.links.map(function (link) {
         cbGraph.linkNodes.push({
           source: cbGraph.nodes[link.source],
           target: cbGraph.nodes[link.target],
@@ -1144,7 +1144,7 @@
       cbSimulation.on("tick", function () {
 
         // Update link node positions
-        cbGraph.linkNodes.forEach(function (linkNode) {
+        cbGraph.linkNodes.map(function (linkNode) {
           linkNode.x = (linkNode.source.x + linkNode.target.x) * 0.5;
           linkNode.y = (linkNode.source.y + linkNode.target.y) * 0.5;
         });
