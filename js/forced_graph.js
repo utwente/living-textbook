@@ -67,41 +67,19 @@
   cb.highlightedNodeStrokeStyle = '';
 
   // Link styles
-  cb.defaultLinkStrokeStyle = '';
-  cb.draggedLinkStrokeStyle = '';
-  cb.fadedLinksStrokeStyle = '';
-  cb.highlightedLinkStrokeStyle = '';
+  cb.linkLineWidth = 1;
+  cb.defaultLinkStrokeStyle = '#696969';
+  cb.draggedLinkStrokeStyle = '#333';
+  cb.fadedLinksStrokeStyle = '#E0E0E0';
+  cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
 
   // Node label styles
-  cb.defaultNodeLabelColor = '';
-  cb.activeNodeLabelStrokeStyle = "";
+  cb.defaultNodeLabelColor = '#000';
+  cb.activeNodeLabelStrokeStyle = "#fff";
 
   cb.applyStyle = function (style) {
     switch (style) {
-      case 'orange': {
-        // Node styles
-        cb.defaultNodeFillStyle = '#deaf6c';
-        cb.defaultNodeStrokeStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#ff5d00';
-        cb.fadedNodeFillStyle = '#bcac9b';
-        cb.fadedNodeStrokeStyle = cb.fadedNodeFillStyle;
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        // Link styles
-        cb.linkLineWidth = 1;
-        cb.defaultLinkStrokeStyle = '#d3c2b6';
-        cb.draggedLinkStrokeStyle = '#222222';
-        cb.fadedLinksStrokeStyle = '#E0E0E0';
-        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-        // Node label styles
-        cb.defaultNodeLabelColor = '#222222';
-        cb.activeNodeLabelStrokeStyle = "#fff";
-        break;
-      }
-      case 'red': {
+      case 1: {
         // Node styles
         cb.defaultNodeFillStyle = '#de5356';
         cb.defaultNodeStrokeStyle = '#fff';
@@ -112,19 +90,22 @@
         cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
         cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
-        // Link styles
-        cb.linkLineWidth = 1;
-        cb.defaultLinkStrokeStyle = '#d39a96';
-        cb.draggedLinkStrokeStyle = '#222222';
-        cb.fadedLinksStrokeStyle = '#E0E0E0';
-        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-        // Node label styles
-        cb.defaultNodeLabelColor = '#222222';
-        cb.activeNodeLabelStrokeStyle = "#fff";
         break;
       }
-      case 'blue': {
+      case 2: {
+        // Node styles
+        cb.defaultNodeFillStyle = '#75de79';
+        cb.defaultNodeStrokeStyle = '#fff';
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#1ac321';
+        cb.fadedNodeFillStyle = '#9ebc9d';
+        cb.fadedNodeStrokeStyle = '#fff';
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        break;
+      }
+      case 3: {
         // Node styles
         cb.defaultNodeFillStyle = '#a4a5fe';
         cb.defaultNodeStrokeStyle = '#fff';
@@ -135,42 +116,22 @@
         cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
         cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
-        // Link styles
-        cb.linkLineWidth = 1;
-        cb.defaultLinkStrokeStyle = '#c6c5d3';
-        cb.draggedLinkStrokeStyle = '#222222';
-        cb.fadedLinksStrokeStyle = '#E0E0E0';
-        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-        // Node label styles
-        cb.defaultNodeLabelColor = '#222222';
-        cb.activeNodeLabelStrokeStyle = "#fff";
         break;
       }
-      case 'green': {
+      case 4: {
         // Node styles
-        cb.defaultNodeFillStyle = '#75de79';
-        cb.defaultNodeStrokeStyle = '#c4ffd9';
+        cb.defaultNodeFillStyle = '#deaf6c';
+        cb.defaultNodeStrokeStyle = '#fff';
         cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#1ac321';
-        cb.fadedNodeFillStyle = '#9ebc9d';
+        cb.draggedNodeStrokeStyle = '#ff5d00';
+        cb.fadedNodeFillStyle = '#bcac9b';
         cb.fadedNodeStrokeStyle = cb.fadedNodeFillStyle;
         cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
         cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
-        // Link styles
-        cb.linkLineWidth = 1;
-        cb.defaultLinkStrokeStyle = '#c0d3be';
-        cb.draggedLinkStrokeStyle = '#222222';
-        cb.fadedLinksStrokeStyle = '#E0E0E0';
-        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-        // Node label styles
-        cb.defaultNodeLabelColor = '#222222';
-        cb.activeNodeLabelStrokeStyle = "#fff";
         break;
       }
-      case 'itc':
+      case 0:
         /* falls through */
       default: {
         // Node styles
@@ -183,26 +144,12 @@
         cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
         cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
-        // Link styles
-        cb.linkLineWidth = 1;
-        cb.defaultLinkStrokeStyle = '#696969';
-        cb.draggedLinkStrokeStyle = '#333';
-        cb.fadedLinksStrokeStyle = '#E0E0E0';
-        cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-        // Node label styles
-        cb.defaultNodeLabelColor = '#000';
-        cb.activeNodeLabelStrokeStyle = "#fff";
-
         break;
       }
     }
 
     if (d3.event && !d3.event.active) cbSimulation.restart();
   };
-
-  // Apply the default style on load
-  cb.applyStyle('itc');
 
   /******************************************************************************************************
    * Data types
@@ -244,6 +191,7 @@
     "vy": 0,
     "fx": 0,
     "fy": 0,
+    "color": 0,
     "radius": 0,
     "nodeName": "",
     "label": "",
@@ -276,6 +224,7 @@
   var dragPosY, dragPosX, isDragging = false;
   var highlightedNode = null, mouseMoveDisabled = false;
   var clickSend = false;
+  var contextMenuNode = null, lastTransformed;
 
   // Initialize the graph object
   cbGraph = {nodes: [], links: [], linkNodes: []};
@@ -498,8 +447,8 @@
    */
   function transformLocation(loc) {
     return {
-      'x': (loc.x - cbTransform.x) / cbTransform.k,
-      "y": (loc.y - cbTransform.y) / cbTransform.k
+      x: (loc.x - cbTransform.x) / cbTransform.k,
+      y: (loc.y - cbTransform.y) / cbTransform.k
     };
   }
 
@@ -512,7 +461,12 @@
    * @returns {undefined}
    */
   function findNode() {
-    var transformed = transformLocation(d3.event);
+    var transformed;
+    if (d3.event instanceof KeyboardEvent) {
+      transformed = lastTransformed;
+    } else {
+      transformed = lastTransformed = transformLocation(d3.event);
+    }
     var node = cbSimulation.find(transformed.x, transformed.y, 20);
     return node && node.linkNode !== true ? node : undefined;
   }
@@ -589,9 +543,8 @@
     d3.event.preventDefault();
 
     var node = findNode();
-    if (node === undefined) {
-      $('#graph_container_div').contextMenu({x: d3.event.clientX, y: d3.event.clientY});
-    }
+    contextMenuNode = typeof node !== 'undefined' ? node : null;
+    $('#graph_container_div').contextMenu({x: d3.event.clientX, y: d3.event.clientY});
   }
 
   /**
@@ -606,10 +559,47 @@
    * space -> Stop simulation
    */
   function onKeyDown() {
-    if (d3.event.keyCode === 32) {
-      // Force movement stop with space bar
-      cbSimulation.stop();
+    var node = findNode();
+
+    switch (d3.event.keyCode) {
+      case 32: // Space
+        // Force movement stop with space bar
+        cbSimulation.stop();
+        return;
+
+      case 73: // I
+        /* falls through */
+      case 48: // 0
+        if (node !== undefined) node.color = 0;
+        break;
+
+      case 82: // R
+        /* falls through */
+      case 49: // 1
+        if (node !== undefined) node.color = 1;
+        break;
+
+      case 71: // G
+        /* falls through */
+      case 50: // 2
+        if (node !== undefined) node.color = 2;
+        break;
+
+      case 66: // B
+        /* falls through */
+      case 51: // 3
+        if (node !== undefined) node.color = 3;
+        break;
+
+      case 79: // O
+        /* falls through */
+      case 52: // 4
+        if (node !== undefined) node.color = 4;
+        break;
     }
+
+    // Check if the event loop is running, if not, restart
+    if (!d3.event.active) cbSimulation.restart();
   }
 
   /**
@@ -754,13 +744,16 @@
     context.stroke();
 
     // Draw normal nodes
-    context.beginPath();
-    context.lineWidth = cb.nodeLineWidth;
-    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
-    context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
-    cbGraph.nodes.map(drawNormalNode);
-    context.fill();
-    context.stroke();
+    for (var nn = 0; nn <= 4; nn++) {
+      cb.applyStyle(nn);
+      context.beginPath();
+      context.lineWidth = cb.nodeLineWidth;
+      context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
+      context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
+      cbGraph.nodes.filter(filterNodeOnColor(nn)).map(drawNormalNode);
+      context.fill();
+      context.stroke();
+    }
 
     // Draw link nodes
     if (cb.drawLinkNodes) {
@@ -792,13 +785,16 @@
 
     // Draw dragged nodes
     if (isDragging) {
-      context.beginPath();
-      context.lineWidth = cb.nodeLineWidth;
-      context.fillStyle = cb.draggedNodeFillStyle;
-      context.strokeStyle = cb.draggedNodeStrokeStyle;
-      cbGraph.nodes.map(drawDraggedNode);
-      context.fill();
-      context.stroke();
+      for (var dn = 0; dn <= 4; dn++) {
+        cb.applyStyle(dn);
+        context.beginPath();
+        context.lineWidth = cb.nodeLineWidth;
+        context.fillStyle = cb.draggedNodeFillStyle;
+        context.strokeStyle = cb.draggedNodeStrokeStyle;
+        cbGraph.nodes.filter(filterNodeOnColor(dn)).map(drawDraggedNode);
+        context.fill();
+        context.stroke();
+      }
     }
 
     // Draw dragged link arrows
@@ -821,13 +817,16 @@
     }
 
     // Draw highlighted nodes
-    context.beginPath();
-    context.lineWidth = cb.nodeLineWidth;
-    context.fillStyle = cb.highlightedNodeFillStyle;
-    context.strokeStyle = cb.highlightedNodeStrokeStyle;
-    cbGraph.nodes.map(drawHighlightedNode);
-    context.fill();
-    context.stroke();
+    for (var hn = 0; hn <= 4; hn++) {
+      cb.applyStyle(hn);
+      context.beginPath();
+      context.lineWidth = cb.nodeLineWidth;
+      context.fillStyle = cb.highlightedNodeFillStyle;
+      context.strokeStyle = cb.highlightedNodeStrokeStyle;
+      cbGraph.nodes.filter(filterNodeOnColor(hn)).map(drawHighlightedNode);
+      context.fill();
+      context.stroke();
+    }
 
     // Draw highlighted link arrows
     if (highlightedNode !== null) {
@@ -864,6 +863,17 @@
 
     // Restore state
     context.restore();
+  }
+
+  /**
+   * Function to filter nodes on a given color index
+   * @param color
+   * @returns {Function}
+   */
+  function filterNodeOnColor(color) {
+    return function (node) {
+      return node.color === color
+    };
   }
 
   /**
@@ -1102,6 +1112,10 @@
       // Calculate some one-time values before rendering starts
       cbGraph.nodes.map(getNodeRadius);
       cbGraph.nodes.map(function (node) {
+        // Set default node color
+        node.color = 0;
+
+        // Set default label values
         node.expandedLabelStart = 0;
         node.expandedLabel = [];
         if (node.label === "") return;
@@ -1203,29 +1217,56 @@
     $.contextMenu({
       selector: '#graph_container_div',
       trigger: 'none',
-      callback: function (key) {
-        if (key === 'quit') return;
-        if (key.startsWith('style')) cb.applyStyle(key.substr(6));
-        if (key === 'center') cb.centerView();
-      },
-      items: {
-        "styles": {
-          name: "Change style",
-          items: {
-            "style-itc": {name: "ITC"},
-            "style-orange": {name: "Orange"},
-            "style-blue": {name: "Blue"},
-            "style-red": {name: "Red"},
-            "style-green": {name: "Green"}
-          }
-        },
-        "sep1": "---------",
-        "center": {name: "Back to center"},
-        "sep2": "---------",
-        "quit": {name: "Close", icon: 'quit'}
+      build: function () {
+        //noinspection JSUnusedGlobalSymbols
+        return {
+          callback: function (key) {
+            if (key === 'quit') return;
+            if (key.startsWith('style')) contextMenuNode.color = parseInt(key.substr(6));
+            if (key === 'reset') cbGraph.nodes.map(function (node) {
+              node.color = 0
+            });
+            if (key === 'center') cb.centerView();
+            cbSimulation.restart();
+          },
+          items: getContextMenuItems()
+        }
       }
     });
-
   });
+
+  /**
+   * Context menu builder
+   * @returns {*}
+   */
+  function getContextMenuItems() {
+    if (contextMenuNode === null) {
+      // Global
+      return {
+        "reset": {name: "Reset node colors", icon: 'fa-undo'},
+        "sep1": "---------",
+        "center": {name: "Back to center", icon: 'fa-sign-in'},
+        "sep2": "---------",
+        "quit": {name: "Close", icon: 'fa-times'}
+      };
+    } else {
+      // Node
+      return {
+        "styles": {
+          name: "Change color",
+          items: {
+            "style-1": {name: "Red", icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
+            "style-2": {name: "Green", icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
+            "style-3": {name: "Blue", icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
+            "style-4": {name: "Orange", icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
+            "sep1": "---------",
+            "style-0": {name: "Default", icon: contextMenuNode.color === 0 ? 'fa-check' : 'fa-undo'}
+          }
+        },
+        "sep2": "---------",
+        "quit": {name: "Close", icon: 'quit'}
+      };
+    }
+  }
 
 }(window.cb = window.cb || {}, jQuery, d3));
