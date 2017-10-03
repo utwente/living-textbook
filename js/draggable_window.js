@@ -211,7 +211,11 @@ dragButton.on('mousedown', function () {
  * Also resize the view after window resize
  */
 window.onresize = function () {
-  dragButton.doResize(lastX, undefined, undefined, undefined, undefined, true);
+  if (opened) {
+    dragButton.doResize(lastX, undefined, undefined, undefined, undefined, true);
+  } else {
+    dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), undefined, undefined, true);
+  }
 };
 
 /**

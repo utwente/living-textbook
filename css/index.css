@@ -114,7 +114,7 @@ iframe {
   top: calc(50% - 100px);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
   #open_button_container {
     position: absolute;
     left: calc(50% + 600px);
@@ -124,6 +124,7 @@ iframe {
 
 #open_button {
   height: 200px;
+  width: 50px;
 }
 
 #open_button > span {
