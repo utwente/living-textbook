@@ -1,5 +1,5 @@
 /**
- * Register cb namespace for usage
+ * Register cb (concept browser) namespace for usage
  */
 (function (cb, $, d3, undefined) {
 
@@ -447,8 +447,8 @@
    */
   function transformLocation(loc) {
     return {
-      x: (loc.x - cbTransform.x) / cbTransform.k,
-      y: (loc.y - cbTransform.y) / cbTransform.k
+      x: (loc.clientX - cbTransform.x) / cbTransform.k,
+      y: (loc.clientY - cbTransform.y) / cbTransform.k
     };
   }
 
@@ -462,7 +462,7 @@
    */
   function findNode() {
     var transformed;
-    if (typeof d3.event.x === 'undefined' || typeof d3.event.y === 'undefined') {
+    if (typeof d3.event.clientX === 'undefined' || typeof d3.event.clientY === 'undefined') {
       transformed = lastTransformed;
     } else {
       transformed = lastTransformed = transformLocation(d3.event);
