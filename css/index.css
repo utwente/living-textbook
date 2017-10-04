@@ -128,7 +128,7 @@ iframe {
 }
 
 #open_button > span {
-  writing-mode: vertical-lr;
+  writing-mode: tb-rl;
   padding: 10px 0;
 }
 
