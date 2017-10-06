@@ -1,0 +1,4651 @@
+{
+  "nodes": [
+    {
+      "nodeName": "http://vgibox.eu/Absolute_atmopsheric_correction",
+      "label": "Absolute atmopsheric correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "1",
+      "individuals": "Radiative transfer models"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Atmopsheric_correction",
+      "label": "Atmopsheric correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Absolute_positioning",
+      "label": "Absolute positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Satellite-based_positioning",
+      "label": "Satellite-based positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=positioning_technology",
+      "numberOfLinks": "5",
+      "individuals": "Galileo; GPS; GLONASS"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Absolute_ratio",
+      "label": "Absolute ratio",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values",
+      "numberOfLinks": "1",
+      "individuals": "Nr. of inhabitants"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Ratio_data",
+      "label": "Ratio data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=ratio",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Absorbed_radiance",
+      "label": "Absorbed radiance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Absorptance",
+      "label": "Absorptance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sources_of_em_(any_object)",
+      "label": "Sources of em (any object)",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "7"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Kirchoff_law",
+      "label": "Kirchoff law",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Accuracy",
+      "label": "Accuracy",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=accuracy&s%5B%5D=positional&s%5B%5D=data",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Perkal_band",
+      "label": "Perkal band",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=elipson_band",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/RMSE",
+      "label": "RMSE",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rmse",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Additive_colour_system",
+      "label": "Additive colour system",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Tri-stimulus_theory",
+      "label": "Tri-stimulus theory",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/RGB",
+      "label": "RGB",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Agent-Based",
+      "label": "Agent-Based",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=model_classification",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Implementation_logic",
+      "label": "Implementation logic",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=model_classification",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Airplane",
+      "label": "Airplane",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Platform",
+      "label": "Platform",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Analysis",
+      "label": "Analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=gis_analysis_processes",
+      "numberOfLinks": "9"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_data_acquisition",
+      "label": "Spatial data acquisition",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_entry_sources",
+      "numberOfLinks": "11"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Arc",
+      "label": "Arc",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector#poly_line",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Line",
+      "label": "Line",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Radiometric_correction",
+      "label": "Radiometric correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Atmospheric_windows",
+      "label": "Atmospheric windows",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Electro_magnetic_radiation",
+      "label": "Electro magnetic radiation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Atmospheric_transmittance",
+      "label": "Atmospheric transmittance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Atmospheric_absorption",
+      "label": "Atmospheric absorption",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Attribute_Query",
+      "label": "Attribute Query",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Query",
+      "label": "Query",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database&s%5B%5D=query",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Attribute_quality",
+      "label": "Attribute quality",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_quality",
+      "numberOfLinks": "9"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_Quality",
+      "label": "Data Quality",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_quality&s%5B%5D=attribute&s%5B%5D=quality",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Uncertainty",
+      "label": "Uncertainty",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=uncertainty_naturaldata",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Error_matrix",
+      "label": "Error matrix",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=attribute_accuracy",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sources_of_errors",
+      "label": "Sources of errors",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=error_types",
+      "numberOfLinks": "4",
+      "individuals": "Unknowns; Random; Instrumental; Human"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Automatic",
+      "label": "Automatic",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=automatic_classification",
+      "numberOfLinks": "1",
+      "individuals": "Equal interval; Equal frequency"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster_Reclassification",
+      "label": "Raster Reclassification",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=automatic_classification",
+      "numberOfLinks": "4",
+      "individuals": "user controlled; automatic"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Band_selection",
+      "label": "Band selection",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Image_requirement",
+      "label": "Image requirement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensors",
+      "numberOfLinks": "5",
+      "individuals": "Temporal resolution; Spectral resolution; Spectral coverage; Spatial resolution; Spatial coverage; Radiometric resolution; Dynamic range"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Base_station",
+      "label": "Base station",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=positioning_technology",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Receiver",
+      "label": "Receiver",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "7"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relative_positioning",
+      "label": "Relative positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relative_positioning",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Blackbody_object_radiance",
+      "label": "Blackbody object radiance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Emitted_radiance",
+      "label": "Emitted radiance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Planck_equation_for_blackbodies",
+      "label": "Planck equation for blackbodies",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Boundaries",
+      "label": "Boundaries",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=boundaries",
+      "numberOfLinks": "2",
+      "individuals": "Fuzzy; Crips"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Discrete_Field",
+      "label": "Discrete Field",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_fields#discrete_fields",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geographic_object",
+      "label": "Geographic object",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_objects",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Boundary_Model",
+      "label": "Boundary Model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=boundary_model",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Topological_model",
+      "label": "Topological model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=boundary_model",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Brightness_temperature",
+      "label": "Brightness temperature",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Buffer",
+      "label": "Buffer",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=buffer_zone_generation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vector_Proximity",
+      "label": "Vector Proximity",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=proximity_calculations",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/CCD",
+      "label": "CCD",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Digital_camera",
+      "label": "Digital camera",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "6",
+      "individuals": "Line/Pushbroom; Frame"
+    },
+    {
+      "nodeName": "http://vgibox.eu/CMY",
+      "label": "CMY",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Calibration",
+      "label": "Calibration",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Model_Testing",
+      "label": "Model Testing",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Camera",
+      "label": "Camera",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sensor",
+      "label": "Sensor",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "3",
+      "individuals": "OSA; MSS, ETM; HRG; DMC"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Carrier_phase_measurement",
+      "label": "Carrier phase measurement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Catchment_delineation",
+      "label": "Catchment delineation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster_based_surface_analysis",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Surface_Analysis",
+      "label": "Surface Analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster_based_surface_analysis",
+      "numberOfLinks": "6",
+      "individuals": "Slope convexity/concavity; Slope angle; Slope Aspect; Hillshade"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster_Proximity",
+      "label": "Raster Proximity",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=diffuse_calculations",
+      "numberOfLinks": "3",
+      "individuals": "Spread; Diffusion"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Cellular_Automata",
+      "label": "Cellular Automata",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Characteristic_of_time",
+      "label": "Characteristic of time",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension",
+      "numberOfLinks": "1",
+      "individuals": "Valid; Transaction; Relative; Linear; Granularity; Discrete; Cyclic; Continuous; Branching; Absolute"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Time",
+      "label": "Time",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Class_Definition",
+      "label": "Class Definition",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis#image_classification_process",
+      "numberOfLinks": "2",
+      "individuals": "Objective of classification; Classification Schemes?; Aggregation level (output)"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Digital_Image_Classification",
+      "label": "Digital Image Classification",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "7",
+      "individuals": "User of classification output; Type of sensor; Techinical requirements/knowledge; Objective of image classfication; Designing classes and mapping approach"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Class_separability",
+      "label": "Class separability",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Training",
+      "label": "Training",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "3",
+      "individuals": "Signatures; Sampling strategy; Sample size"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Classification_Algorithm",
+      "label": "Classification Algorithm",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis#classification_algorithms",
+      "numberOfLinks": "3",
+      "individuals": "Purpose of classification; Charactistics of training data; Charactistics of image data"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Clock_reading",
+      "label": "Clock reading",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Systematic_error",
+      "label": "Systematic error",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relative_positioning",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Space_segment",
+      "label": "Space segment",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Code_measurement",
+      "label": "Code measurement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Cognitive_mapping",
+      "label": "Cognitive mapping",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Colour_composite",
+      "label": "Colour composite",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/True_colour",
+      "label": "True colour",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "3",
+      "individuals": "Natural colour; False colour"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Completeness",
+      "label": "Completeness",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=completeness",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Component",
+      "label": "Component",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=model_components",
+      "numberOfLinks": "1",
+      "individuals": "Variable; Parameter; Initial condition; Forcing function; Control function; Boundary condition; Boundaries; Agent"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Systems_model",
+      "label": "Systems model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "6",
+      "individuals": "Transparency; Scale; Complexity"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Cone",
+      "label": "Cone",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Human_Vision",
+      "label": "Human Vision",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Continuous_Field",
+      "label": "Continuous Field",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_fields#discrete_fields",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geographic_field",
+      "label": "Geographic field",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_fields",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Interpolation",
+      "label": "Interpolation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=interpolation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Regular_Tessellation",
+      "label": "Regular Tessellation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=regular_tessellation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_data",
+      "label": "Spatial data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_data_layer",
+      "numberOfLinks": "10"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Control_segment",
+      "label": "Control segment",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Network_positioning",
+      "label": "Network positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_positioning",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/GNSS_Constellation",
+      "label": "GNSS Constellation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=positioning_technology",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Coordinate_system",
+      "label": "Coordinate system",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Coordinate_transformation",
+      "label": "Coordinate transformation",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20transformations/coordtrans.html",
+      "numberOfLinks": "1",
+      "individuals": "Projection change; Geographic to geocentric conversion; Geocentric to geographic conversion; 3D geographic transformations; 3D geocentric transformations; 2D Cartesian transformations"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Correction_of_imperfections_of_a_sensor",
+      "label": "Correction of imperfections of a sensor",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "1",
+      "individuals": "Random noise; Periodic line dropouts; Line striping"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Correlation",
+      "label": "Correlation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Mapping_procedure",
+      "label": "Mapping procedure",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Cost_function",
+      "label": "Cost function",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_attribute",
+      "label": "Data attribute",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "10"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Crowdsourcing",
+      "label": "Crowdsourcing",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling&s%5B%5D=acquisition#stages_of_spatial_data_handling",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data",
+      "label": "Data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling&s%5B%5D=acquisition#stages_of_spatial_data_handling",
+      "numberOfLinks": "7"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_representation",
+      "label": "Data representation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_representation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_Modelling",
+      "label": "Data Modelling",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Modelling",
+      "label": "Modelling",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_analysis",
+      "label": "Data analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_classification",
+      "label": "Data classification",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=classification_functions",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_characteristics",
+      "label": "Data characteristics",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization&s%5B%5D=data&s%5B%5D=characteristics",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_extraction",
+      "label": "Data extraction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_measurement_scale",
+      "label": "Data measurement scale",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Non-Spatial_Data",
+      "label": "Non-Spatial Data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=introduction_gis&s%5B%5D=spatial&s%5B%5D=data",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Data_storage_and_maintainance",
+      "label": "Data storage and maintainance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_database",
+      "label": "Spatial database",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_database",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Database",
+      "label": "Database",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=database",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/GIS",
+      "label": "GIS",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=introduction_gis",
+      "numberOfLinks": "7"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Database_management_system",
+      "label": "Database management system",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_management_systems",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Decrease_local_contrast",
+      "label": "Decrease local contrast",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1",
+      "individuals": "Smoothing"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Filtering",
+      "label": "Filtering",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Detection",
+      "label": "Detection",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Detector",
+      "label": "Detector",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Optical_scanner",
+      "label": "Optical scanner",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "8",
+      "individuals": "whiskbroom"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Differential_positioning",
+      "label": "Differential positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relative_positioning",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Image_analysis",
+      "label": "Image analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=image_analysis",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Digitizing",
+      "label": "Digitizing",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digitizing",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vector_Representation",
+      "label": "Vector Representation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector",
+      "numberOfLinks": "13"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Displayed_image",
+      "label": "Displayed image",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "7"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Image_enhancement",
+      "label": "Image enhancement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Distance",
+      "label": "Distance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Speed_of_light",
+      "label": "Speed of light",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Time_measurement",
+      "label": "Time measurement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Pseudorange",
+      "label": "Pseudorange",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Photon_model",
+      "label": "Photon model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Wave_model",
+      "label": "Wave model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/EM_spectrum",
+      "label": "EM spectrum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Ellipsoid",
+      "label": "Ellipsoid",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_ellipsoid_spheroid&s%5B%5D=ellipsoid",
+      "numberOfLinks": "4",
+      "individuals": "WGS84; GRS80; Clarke1880; Bessel"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Reference_surface",
+      "label": "Reference surface",
+      "link": "http://kartoweb.itc.nl/geometrics/Reference%20surfaces/refsurf.html",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Global_horizontal_datum",
+      "label": "Global horizontal datum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=global_horizontal_datum",
+      "numberOfLinks": "3",
+      "individuals": "WGS84; ITRF2008; ITRF2000; ETRS89"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Emissivity",
+      "label": "Emissivity",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Real_object_radiance",
+      "label": "Real object radiance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Planck_equation_for_real_bodies",
+      "label": "Planck equation for real bodies",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Empirical",
+      "label": "Empirical",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Energy",
+      "label": "Energy",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/FOV",
+      "label": "FOV",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Orbit_characteristic",
+      "label": "Orbit characteristic",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "3",
+      "individuals": "Repeat cycle; Period; Inclination angle; Altitude"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Feature_Space",
+      "label": "Feature Space",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "3",
+      "individuals": "Feautre space plots; Distance in feature space"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Image",
+      "label": "Image",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "10"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Supervised_Image_Classfication_Algorithm",
+      "label": "Supervised Image Classfication Algorithm",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "5",
+      "individuals": "Minimum dstance to mean classifier; Maximum Likelihood classifier; Box classfier"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Field_survey",
+      "label": "Field survey",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=field_survey",
+      "numberOfLinks": "1",
+      "individuals": "Total Station; Optical; GPS"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Terrestrial_surveys",
+      "label": "Terrestrial surveys",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=terrestrial_survey",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Fieldwork",
+      "label": "Fieldwork",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Filter_type",
+      "label": "Filter type",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Final_interpretation",
+      "label": "Final interpretation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Visual_image_interpretation",
+      "label": "Visual image interpretation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "7"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Foreign_key",
+      "label": "Foreign key",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relation_data_models_key",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geocoding",
+      "label": "Geocoding",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geocoding",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Resampling_procedure",
+      "label": "Resampling procedure",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geocoding",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geographic_Phenomenon",
+      "label": "Geographic Phenomenon",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_phenomena",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geographic_coordinate_system",
+      "label": "Geographic coordinate system",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_coordinate_system",
+      "label": "Map coordinate system",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Set_of_gcp",
+      "label": "Set of gcp",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Georeferencing",
+      "label": "Georeferencing",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "9"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geoid",
+      "label": "Geoid",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_geoid",
+      "numberOfLinks": "4",
+      "individuals": "EGM96; EGM2008"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Global_vertical_datum",
+      "label": "Global vertical datum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=reference_surfaces&s%5B%5D=vertical",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Equipotential_surface",
+      "label": "Equipotential surface",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_geoid",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Georeferenced_raster",
+      "label": "Georeferenced raster",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Global_contrast_enhancement",
+      "label": "Global contrast enhancement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Histogram_operation",
+      "label": "Histogram operation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2",
+      "individuals": "Piece wise linear; Linear; Histogram equalisation; Gamma"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Horizontal_datum",
+      "label": "Horizontal datum",
+      "link": "http://kartoweb.itc.nl/geometrics/Reference%20surfaces/refsurf.html",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geocentric_datum",
+      "label": "Geocentric datum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_coordinate_systems&s%5B%5D=geocentric",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vertical_datum",
+      "label": "Vertical datum",
+      "link": "http://kartoweb.itc.nl/geometrics/Reference%20surfaces/refsurf.html",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Grey_scale",
+      "label": "Grey scale",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Haze_correction",
+      "label": "Haze correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Height",
+      "label": "Height",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Interpretation_elements",
+      "label": "Interpretation elements",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "8"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Stereoscopic_viewing",
+      "label": "Stereoscopic viewing",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=aerial_photography",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sphere",
+      "label": "Sphere",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=coordinate_systems&s%5B%5D=sphere",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Horizontal_positioning",
+      "label": "Horizontal positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=local_horizontal_datum",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/IFOV",
+      "label": "IFOV",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/IHS",
+      "label": "IHS",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Colour_system",
+      "label": "Colour system",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Pseudo_colour",
+      "label": "Pseudo colour",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster",
+      "label": "Raster",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster",
+      "numberOfLinks": "6",
+      "individuals": "Thematic raster map; Satellite image raster"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Image_Space",
+      "label": "Image Space",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "3",
+      "individuals": "Spatial resolution; Radiometric resolution; Number of bands"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Image_characteristic",
+      "label": "Image characteristic",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensors",
+      "numberOfLinks": "6",
+      "individuals": "Temporal resolution; Spectral resolution; Spectral coverage; Spatial resolution; Spatial coverage; Radiometric resolution; Dynamic range"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_problem",
+      "label": "Spatial problem",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensors",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sensor_characteristic",
+      "label": "Sensor characteristic",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "3",
+      "individuals": "Spectral sensitivity; Spectral bands; Quantisation/ A/D conversion; Dynamic range"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Radiometric_operations",
+      "label": "Radiometric operations",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Increase_local_contrast",
+      "label": "Increase local contrast",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1",
+      "individuals": "Edge enhancement"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_Autocorrelation",
+      "label": "Spatial Autocorrelation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_autocorrelation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Interval_data",
+      "label": "Interval data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=interval",
+      "numberOfLinks": "1",
+      "individuals": "Temperature"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Quantitative_data",
+      "label": "Quantitative data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=mapping_quantiative",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Ionosphere",
+      "label": "Ionosphere",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=positioning_technology",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Medium",
+      "label": "Medium",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Irregular_Tessellation",
+      "label": "Irregular Tessellation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=irregular_tessellation",
+      "numberOfLinks": "1",
+      "individuals": "QuadTree"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Tessellation",
+      "label": "Tessellation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=tessellation",
+      "numberOfLinks": "10"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Join",
+      "label": "Join",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=join",
+      "numberOfLinks": "3",
+      "individuals": "right join; left join; full outer join; equi join"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relation",
+      "label": "Relation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Join_condition",
+      "label": "Join condition",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=join",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Logical_expression",
+      "label": "Logical expression",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Node",
+      "label": "Node",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Lineage",
+      "label": "Lineage",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=lineage",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Linear",
+      "label": "Linear",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Local_contrast_enhancement",
+      "label": "Local contrast enhancement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Local_horizontal_datum",
+      "label": "Local horizontal datum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=local_horizontal_datum&s%5B%5D=local&s%5B%5D=horizontal",
+      "numberOfLinks": "1",
+      "individuals": "Potsdam (German); Leigon (Ghana); Amersfoort (Dutch)"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Local_vertical_datum",
+      "label": "Local vertical datum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=reference_surfaces&s%5B%5D=local&s%5B%5D=vertical",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Location",
+      "label": "Location",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Logical_consitency",
+      "label": "Logical consitency",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=quality_consistency",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Logical_infeference",
+      "label": "Logical infeference",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map",
+      "label": "Map",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_type",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Model",
+      "label": "Model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Visualization",
+      "label": "Visualization",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_design",
+      "label": "Map design",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization_map_cosmetics",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Use_environment",
+      "label": "Use environment",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=use_and_users",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/User_characteristics",
+      "label": "User characteristics",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=use_and_users",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_purpose",
+      "label": "Map purpose",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization_process",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_item",
+      "label": "Map item",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization_map_cosmetics",
+      "numberOfLinks": "1",
+      "individuals": "Title; Scale bar; North arrow; Map projection; Map margin; Map image; Legend; Bibliographic information"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_projection",
+      "label": "Map projection",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "5",
+      "individuals": "Stereographic; Mercator; Albers equal-area conic"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Distortion_property",
+      "label": "Distortion property",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_projections&s%5B%5D=distortion",
+      "numberOfLinks": "1",
+      "individuals": "Other; Equivalent; Equidistant; Conformal"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Projection_class",
+      "label": "Projection class",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_projections&s%5B%5D=projection&s%5B%5D=class#map_projections",
+      "numberOfLinks": "1",
+      "individuals": "Other; Cylindrical; Conical; Azimuthal"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_symbol",
+      "label": "Map symbol",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=bertins_variables",
+      "numberOfLinks": "2",
+      "individuals": "Text; Point symbol; Line symbol; Area symbol"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Map_type",
+      "label": "Map type",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_type",
+      "numberOfLinks": "1",
+      "individuals": "Proportional point symbol map; Piechart map; Isoline map; Flowline map; Dot map; Choropleth map; Chorochromatic map; Cartogram"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Mean_sea_level",
+      "label": "Mean sea level",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=mean_seal_level&s%5B%5D=mean&s%5B%5D=sea",
+      "numberOfLinks": "2",
+      "individuals": "Oostende (Belgium); NAP (Dutch); Lagos1955"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Measurement",
+      "label": "Measurement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=measurement_functions",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Mechanical_component",
+      "label": "Mechanical component",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1",
+      "individuals": "Rotating mirror"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Mobile_GIS",
+      "label": "Mobile GIS",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=mobile_gis",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Multi_path",
+      "label": "Multi path",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Random_error",
+      "label": "Random error",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relative_positioning",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Neighbourhood_operations",
+      "label": "Neighbourhood operations",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=neighbourhood_functions",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Network",
+      "label": "Network",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis&s%5B%5D=network",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Point",
+      "label": "Point",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Network_Characteristics",
+      "label": "Network Characteristics",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=characteristics",
+      "numberOfLinks": "1",
+      "individuals": "undirected; single-modal; planar; non-planar; multi-modal; directed"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Network_Allocation",
+      "label": "Network Allocation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis#network_allocation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Network_Analysis",
+      "label": "Network Analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=analysis",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Network_Particioning",
+      "label": "Network Particioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis#network_partitioning",
+      "numberOfLinks": "1",
+      "individuals": "Tracing; Network allocation"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Nominal_data",
+      "label": "Nominal data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=nominal",
+      "numberOfLinks": "1",
+      "individuals": "Landuse"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Qualitative_data",
+      "label": "Qualitative data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=mapping_quantiative",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Non-linear",
+      "label": "Non-linear",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/North_oriented_georeferenced_raster",
+      "label": "North oriented georeferenced raster",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geocoding",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Orthogonal_raster_image",
+      "label": "Orthogonal raster image",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geocoding",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Object_based_classifcation",
+      "label": "Object based classifcation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "1",
+      "individuals": "Very high resolution imagery; Use of imge feature beyong spectral domain; Image segementation; Extracting of real-world meaningful objects; Dealing with cons of pixel based approaches"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Observation",
+      "label": "Observation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Scanner",
+      "label": "Scanner",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Optics",
+      "label": "Optics",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Optimal_Path_Finding",
+      "label": "Optimal Path Finding",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=optimal_path_finding&s%5B%5D=optimal&s%5B%5D=path",
+      "numberOfLinks": "1",
+      "individuals": "Unordered; Ordered"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Orbit",
+      "label": "Orbit",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "2",
+      "individuals": "Sun-synchronous; Polar/near-polar; Geostationary"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Satellite",
+      "label": "Satellite",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Orbit_position",
+      "label": "Orbit position",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Ordinal_data",
+      "label": "Ordinal data",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values",
+      "numberOfLinks": "1",
+      "individuals": "Road classes"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Overlay_Analysis",
+      "label": "Overlay Analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=overlay_functions",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Pattern",
+      "label": "Pattern",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Perception_property",
+      "label": "Perception property",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=bertins_variables&s%5B%5D=perception",
+      "numberOfLinks": "1",
+      "individuals": "Selective; Quantitative; Ordered; Associative"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Visual_variable",
+      "label": "Visual variable",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=bertins_variables",
+      "numberOfLinks": "3",
+      "individuals": "Value; Texture; Size; Orientation; Form; Color"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Pixel_based_classifcation",
+      "label": "Pixel based classifcation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "3",
+      "individuals": "Spectral classes; Moderate and low resolution imagery; Mixed pixel problems; Extraction of thematic classes related to"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Polygon",
+      "label": "Polygon",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Positional_quality",
+      "label": "Positional quality",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_quality",
+      "numberOfLinks": "6"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Precision",
+      "label": "Precision",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=precision",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/CPE",
+      "label": "CPE",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=accuracy_tolerance",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Preliminary_interpretation",
+      "label": "Preliminary interpretation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Preliminary_legend",
+      "label": "Preliminary legend",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Primary_key",
+      "label": "Primary key",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relation_data_models_key",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/SQL",
+      "label": "SQL",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database&s%5B%5D=sql",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Set_of_transformation_equations",
+      "label": "Set of transformation equations",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Radiometric_requirement",
+      "label": "Radiometric requirement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster_distortion",
+      "label": "Raster distortion",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster_Measurements",
+      "label": "Raster Measurements",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=measurement_functions#standard_distance_function",
+      "numberOfLinks": "2",
+      "individuals": "anchor point"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster_Overlay",
+      "label": "Raster Overlay",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_algebra",
+      "numberOfLinks": "2",
+      "individuals": "Decision table; Conditional expression; Comparison and logical operators; Arithmetic operators"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Reclassification",
+      "label": "Reclassification",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=classification_functions",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/User_segment",
+      "label": "User segment",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_satellite",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Receiver_noise",
+      "label": "Receiver noise",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Reference_receiver",
+      "label": "Reference receiver",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=positioning_technology",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Reference_set",
+      "label": "Reference set",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sample_set",
+      "label": "Sample set",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Validation_of_results",
+      "label": "Validation of results",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "2",
+      "individuals": "Samping design; Overall accuracy; Kappa; Ground reference points; Confusion matrix"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Reflectance",
+      "label": "Reflectance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Reflected_radiance",
+      "label": "Reflected radiance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relational_data_model",
+      "label": "Relational data model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Logic_and_set_theory",
+      "label": "Logic and set theory",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_selection_by_attribute_conditions&s%5B%5D=logic",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relational_database",
+      "label": "Relational database",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relationship",
+      "label": "Relationship",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relative_atmospheric_correction",
+      "label": "Relative atmospheric correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "1",
+      "individuals": "Two reflectance; Two reference surfaces"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Relative_ratio",
+      "label": "Relative ratio",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=ratio",
+      "numberOfLinks": "1",
+      "individuals": "Population density"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Remote_sensing",
+      "label": "Remote sensing",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_entry_rs",
+      "numberOfLinks": "1",
+      "individuals": "satellite; aerial"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Resolution",
+      "label": "Resolution",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=computer_representations_of_geographic_information:scale_and_resolution",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Rod",
+      "label": "Rod",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sampling_method",
+      "label": "Sampling method",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Satellite-based_augmentation_system",
+      "label": "Satellite-based augmentation system",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=positioning_technology",
+      "numberOfLinks": "1",
+      "individuals": "WAAS; MSAS; EGNOS"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Scanning",
+      "label": "Scanning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=scanning",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Selection_by_attributes",
+      "label": "Selection by attributes",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_selection_by_attribute_conditions",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Selection_condition",
+      "label": "Selection condition",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Attribute_projection",
+      "label": "Attribute projection",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=attribute_projeciton",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Selection_of_records",
+      "label": "Selection of records",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=attribute_projeciton",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Tuple_selection",
+      "label": "Tuple selection",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Tuple",
+      "label": "Tuple",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Set_of_coordinates",
+      "label": "Set of coordinates",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Shape",
+      "label": "Shape",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Size",
+      "label": "Size",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Skin_or_kinetic_temperature",
+      "label": "Skin or kinetic temperature",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_thermal",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Skyradiance_correction",
+      "label": "Skyradiance correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial-Temporal_data_model",
+      "label": "Spatial-Temporal data model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Geographical_representation",
+      "label": "Geographical representation",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_representation&s%5B%5D=computer&s%5B%5D=representation",
+      "numberOfLinks": "5"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_attribute",
+      "label": "Spatial attribute",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_selection_by_attribute_conditions",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Temporal_attribute",
+      "label": "Temporal attribute",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension#the_temporal_dimension",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Tobler's_first_law",
+      "label": "Tobler's first law",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_autocorrelation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_Query",
+      "label": "Spatial Query",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=retrieval_functions",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_Reference_System",
+      "label": "Spatial Reference System",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=introduction_to_spatial_referencing&s%5B%5D=reference",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spatial_requirement",
+      "label": "Spatial requirement",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensors",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spectral_reflectance",
+      "label": "Spectral reflectance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "5",
+      "individuals": "Water; Vegetation; Soil"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Land_cover",
+      "label": "Land cover",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spectral_signature",
+      "label": "Spectral signature",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Spontaneous_recognition",
+      "label": "Spontaneous recognition",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Statistical_parameter",
+      "label": "Statistical parameter",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "2",
+      "individuals": "SD; Min/Max; Frequency; Cummulative %"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Stefan_boltzman's_law",
+      "label": "Stefan boltzman's law",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Stratified_representativve_sampling",
+      "label": "Stratified representativve sampling",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Subtractive_colour_system",
+      "label": "Subtractive colour system",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Sunangle_correction",
+      "label": "Sunangle correction",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_atmospheric_disturbance",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Swadth_width",
+      "label": "Swadth width",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/System",
+      "label": "System",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "2",
+      "individuals": "Interactions; Emergent properties; Elements"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Dimensions",
+      "label": "Dimensions",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1",
+      "individuals": "Time; Structure; Space"
+    },
+    {
+      "nodeName": "http://vgibox.eu/System_Modelling",
+      "label": "System Modelling",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "3",
+      "individuals": "Problem Analysis; Model Implementation; Model Formulation; Conceptual Modelling; Application"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Systems_Dynamics",
+      "label": "Systems Dynamics",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/TIN",
+      "label": "TIN",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=tin",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Triangulated_Irregular_Networks",
+      "label": "Triangulated Irregular Networks",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=tin",
+      "numberOfLinks": "2",
+      "individuals": "Delaunay"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Table",
+      "label": "Table",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Temporal_accuracy",
+      "label": "Temporal accuracy",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=temporal_accuracy",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Texture",
+      "label": "Texture",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Thiessen_Polygons",
+      "label": "Thiessen Polygons",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=theissen_polygon_generation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Tone",
+      "label": "Tone",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Topological_Consistency",
+      "label": "Topological Consistency",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=topological_consistency",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Topological_relationship",
+      "label": "Topological relationship",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=topological_relationships",
+      "numberOfLinks": "3"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Topology",
+      "label": "Topology",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=topology",
+      "numberOfLinks": "3",
+      "individuals": "3-dimensional; 2-dimensional"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Training_set",
+      "label": "Training set",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "4"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Transformation_model",
+      "label": "Transformation model",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=georeferencing",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Transmittance",
+      "label": "Transmittance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Transmitted_radiance",
+      "label": "Transmitted radiance",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Troposphere",
+      "label": "Troposphere",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=absolute_positioning",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/UAV",
+      "label": "UAV",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_sensor_optical",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Unbiased_sampling_strategiesd",
+      "label": "Unbiased sampling strategiesd",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=visual_image_interpretation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Membership_functions",
+      "label": "Membership functions",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=uncertainty_naturaldata",
+      "numberOfLinks": "1",
+      "individuals": "Fuzzy; Boolean"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Uncertainty_analysis",
+      "label": "Uncertainty analysis",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1",
+      "individuals": "Sensitivity"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Unsupervised_Image_Classification_Algorithm",
+      "label": "Unsupervised Image Classification Algorithm",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=digital_image_analysis",
+      "numberOfLinks": "2",
+      "individuals": "K-mean; Isodata"
+    },
+    {
+      "nodeName": "http://vgibox.eu/User_Controlled",
+      "label": "User Controlled",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=usercontrolled_classification",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vector_Reclassification",
+      "label": "Vector Reclassification",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=classification_functions",
+      "numberOfLinks": "3",
+      "individuals": "post processing"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Validation",
+      "label": "Validation",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vector_Measurements",
+      "label": "Vector Measurements",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=measurement_functions",
+      "numberOfLinks": "2",
+      "individuals": "Centroid; Bounding box"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vector_Overlay",
+      "label": "Vector Overlay",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=overlay_functions",
+      "numberOfLinks": "2",
+      "individuals": "Overwrite; Intersect; Clip"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Verification",
+      "label": "Verification",
+      "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vertex",
+      "label": "Vertex",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Height_datum",
+      "label": "Height datum",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=reference_surfaces&s%5B%5D=height&s%5B%5D=datum",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Vertical_positioning",
+      "label": "Vertical positioning",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=local_mean_seal_level",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Visibility_analysis",
+      "label": "Visibility analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=gis_analysis_processes&s%5B%5D=viewshed",
+      "numberOfLinks": "1",
+      "individuals": "Viewshed; Line of sight"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Visible_light",
+      "label": "Visible light",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=rs_visualization",
+      "numberOfLinks": "1"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Volumetric_analysis",
+      "label": "Volumetric analysis",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster_based_surface_analysis",
+      "numberOfLinks": "1",
+      "individuals": "Cut/fill"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Wavelength_and_frequency",
+      "label": "Wavelength and frequency",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "2"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Wien's_law",
+      "label": "Wien's law",
+      "link": "https://itc-giscience.utwente.nl/doku.php?id=emradiation",
+      "numberOfLinks": "1"
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 1,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "relationName": "is part of"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "relationName": "is part of"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 10,
+      "target": 12,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "relationName": "is based on"
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "relationName": "is same as"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 18,
+      "target": 19,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 20,
+      "target": 21,
+      "relationName": "is based on"
+    },
+    {
+      "source": 22,
+      "target": 23,
+      "relationName": "is same as"
+    },
+    {
+      "source": 1,
+      "target": 24,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 25,
+      "target": 26,
+      "relationName": "is related to"
+    },
+    {
+      "source": 25,
+      "target": 27,
+      "relationName": "is based on"
+    },
+    {
+      "source": 25,
+      "target": 28,
+      "relationName": "is based on"
+    },
+    {
+      "source": 29,
+      "target": 30,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 31,
+      "target": 32,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 31,
+      "target": 33,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 31,
+      "target": 34,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 31,
+      "target": 12,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 31,
+      "target": 35,
+      "relationName": "is based on"
+    },
+    {
+      "source": 36,
+      "target": 37,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 38,
+      "target": 39,
+      "relationName": "is based on"
+    },
+    {
+      "source": 40,
+      "target": 41,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 40,
+      "target": 42,
+      "relationName": "is used by"
+    },
+    {
+      "source": 43,
+      "target": 44,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 43,
+      "target": 45,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 46,
+      "target": 47,
+      "relationName": "is used by"
+    },
+    {
+      "source": 46,
+      "target": 48,
+      "relationName": "is used by"
+    },
+    {
+      "source": 49,
+      "target": 50,
+      "relationName": "is same as"
+    },
+    {
+      "source": 51,
+      "target": 8,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 52,
+      "target": 53,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 54,
+      "target": 55,
+      "relationName": "is part of"
+    },
+    {
+      "source": 56,
+      "target": 14,
+      "relationName": "is related to"
+    },
+    {
+      "source": 57,
+      "target": 58,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 59,
+      "target": 60,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 61,
+      "target": 41,
+      "relationName": "is measured by"
+    },
+    {
+      "source": 62,
+      "target": 63,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 62,
+      "target": 64,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 65,
+      "target": 17,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 66,
+      "target": 67,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 68,
+      "target": 69,
+      "relationName": "is part of"
+    },
+    {
+      "source": 70,
+      "target": 71,
+      "relationName": "is part of"
+    },
+    {
+      "source": 72,
+      "target": 69,
+      "relationName": "is part of"
+    },
+    {
+      "source": 73,
+      "target": 74,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 73,
+      "target": 75,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 76,
+      "target": 41,
+      "relationName": "is measured by"
+    },
+    {
+      "source": 77,
+      "target": 17,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 78,
+      "target": 79,
+      "relationName": "is same as"
+    },
+    {
+      "source": 80,
+      "target": 31,
+      "relationName": "is part of"
+    },
+    {
+      "source": 81,
+      "target": 82,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 83,
+      "target": 84,
+      "relationName": "is part of"
+    },
+    {
+      "source": 85,
+      "target": 86,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 85,
+      "target": 87,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 85,
+      "target": 88,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 85,
+      "target": 89,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 90,
+      "target": 91,
+      "relationName": "is used by"
+    },
+    {
+      "source": 90,
+      "target": 92,
+      "relationName": "is part of"
+    },
+    {
+      "source": 93,
+      "target": 94,
+      "relationName": "is processed by"
+    },
+    {
+      "source": 95,
+      "target": 24,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 96,
+      "target": 97,
+      "relationName": "is part of"
+    },
+    {
+      "source": 98,
+      "target": 99,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 100,
+      "target": 21,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 101,
+      "target": 102,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 101,
+      "target": 103,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 103,
+      "target": 104,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 105,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 106,
+      "target": 107,
+      "relationName": "is based on"
+    },
+    {
+      "source": 108,
+      "target": 30,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 109,
+      "target": 107,
+      "relationName": "is part of"
+    },
+    {
+      "source": 109,
+      "target": 110,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 111,
+      "target": 112,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 113,
+      "target": 114,
+      "relationName": "is used by"
+    },
+    {
+      "source": 113,
+      "target": 115,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 116,
+      "target": 117,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 118,
+      "target": 117,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 119,
+      "target": 120,
+      "relationName": "is part of"
+    },
+    {
+      "source": 121,
+      "target": 42,
+      "relationName": "is same as"
+    },
+    {
+      "source": 69,
+      "target": 122,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 55,
+      "target": 59,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 123,
+      "target": 21,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 47,
+      "target": 86,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 47,
+      "target": 124,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 47,
+      "target": 88,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 47,
+      "target": 89,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 125,
+      "target": 126,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 125,
+      "target": 84,
+      "relationName": "is based on"
+    },
+    {
+      "source": 125,
+      "target": 38,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 127,
+      "target": 128,
+      "relationName": "is based on"
+    },
+    {
+      "source": 127,
+      "target": 129,
+      "relationName": "is based on"
+    },
+    {
+      "source": 127,
+      "target": 130,
+      "relationName": "is same as"
+    },
+    {
+      "source": 26,
+      "target": 8,
+      "relationName": "is caused by"
+    },
+    {
+      "source": 26,
+      "target": 131,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 26,
+      "target": 132,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 26,
+      "target": 45,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 26,
+      "target": 133,
+      "relationName": "is part of"
+    },
+    {
+      "source": 134,
+      "target": 135,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 134,
+      "target": 136,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 137,
+      "target": 138,
+      "relationName": "is used by"
+    },
+    {
+      "source": 137,
+      "target": 139,
+      "relationName": "is used by"
+    },
+    {
+      "source": 137,
+      "target": 7,
+      "relationName": "is same as"
+    },
+    {
+      "source": 44,
+      "target": 8,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 44,
+      "target": 9,
+      "relationName": "is part of"
+    },
+    {
+      "source": 140,
+      "target": 17,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 141,
+      "target": 45,
+      "relationName": "is measured by"
+    },
+    {
+      "source": 141,
+      "target": 131,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 142,
+      "target": 55,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 142,
+      "target": 120,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 142,
+      "target": 143,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 144,
+      "target": 145,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 144,
+      "target": 70,
+      "relationName": "is used by"
+    },
+    {
+      "source": 144,
+      "target": 146,
+      "relationName": "is used by"
+    },
+    {
+      "source": 147,
+      "target": 148,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 149,
+      "target": 97,
+      "relationName": "is part of"
+    },
+    {
+      "source": 149,
+      "target": 96,
+      "relationName": "is used by"
+    },
+    {
+      "source": 117,
+      "target": 126,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 117,
+      "target": 150,
+      "relationName": "is based on"
+    },
+    {
+      "source": 151,
+      "target": 152,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 151,
+      "target": 97,
+      "relationName": "is part of"
+    },
+    {
+      "source": 151,
+      "target": 96,
+      "relationName": "is based on"
+    },
+    {
+      "source": 153,
+      "target": 99,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 114,
+      "target": 102,
+      "relationName": "is based on"
+    },
+    {
+      "source": 114,
+      "target": 105,
+      "relationName": "is based on"
+    },
+    {
+      "source": 114,
+      "target": 111,
+      "relationName": "is based on"
+    },
+    {
+      "source": 114,
+      "target": 21,
+      "relationName": "is based on"
+    },
+    {
+      "source": 154,
+      "target": 155,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 156,
+      "target": 101,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 157,
+      "target": 93,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 157,
+      "target": 158,
+      "relationName": "is used by"
+    },
+    {
+      "source": 157,
+      "target": 159,
+      "relationName": "is used by"
+    },
+    {
+      "source": 157,
+      "target": 160,
+      "relationName": "is used by"
+    },
+    {
+      "source": 86,
+      "target": 156,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 48,
+      "target": 156,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 48,
+      "target": 124,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 48,
+      "target": 89,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 161,
+      "target": 162,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 161,
+      "target": 135,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 161,
+      "target": 134,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 161,
+      "target": 163,
+      "relationName": "is based on"
+    },
+    {
+      "source": 164,
+      "target": 160,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 160,
+      "target": 154,
+      "relationName": "is part of"
+    },
+    {
+      "source": 160,
+      "target": 155,
+      "relationName": "is used by"
+    },
+    {
+      "source": 165,
+      "target": 166,
+      "relationName": "is same as"
+    },
+    {
+      "source": 136,
+      "target": 167,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 136,
+      "target": 168,
+      "relationName": "is same as"
+    },
+    {
+      "source": 162,
+      "target": 169,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 170,
+      "target": 125,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 171,
+      "target": 1,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 172,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 172,
+      "target": 174,
+      "relationName": "is based on"
+    },
+    {
+      "source": 166,
+      "target": 126,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 167,
+      "target": 157,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 167,
+      "target": 175,
+      "relationName": "is based on"
+    },
+    {
+      "source": 167,
+      "target": 134,
+      "relationName": "is based on"
+    },
+    {
+      "source": 176,
+      "target": 148,
+      "relationName": "is used by"
+    },
+    {
+      "source": 177,
+      "target": 120,
+      "relationName": "is part of"
+    },
+    {
+      "source": 178,
+      "target": 179,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 178,
+      "target": 180,
+      "relationName": "is used by"
+    },
+    {
+      "source": 145,
+      "target": 181,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 145,
+      "target": 120,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 145,
+      "target": 55,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 145,
+      "target": 24,
+      "relationName": "is processed by"
+    },
+    {
+      "source": 145,
+      "target": 38,
+      "relationName": "is used by"
+    },
+    {
+      "source": 182,
+      "target": 183,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 182,
+      "target": 146,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 182,
+      "target": 145,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 122,
+      "target": 145,
+      "relationName": "is based on"
+    },
+    {
+      "source": 183,
+      "target": 184,
+      "relationName": "is used by"
+    },
+    {
+      "source": 183,
+      "target": 143,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 183,
+      "target": 185,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 183,
+      "target": 145,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 126,
+      "target": 186,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 126,
+      "target": 183,
+      "relationName": "is based on"
+    },
+    {
+      "source": 39,
+      "target": 184,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 187,
+      "target": 117,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 87,
+      "target": 188,
+      "relationName": "is based on"
+    },
+    {
+      "source": 173,
+      "target": 152,
+      "relationName": "is used by"
+    },
+    {
+      "source": 189,
+      "target": 190,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 191,
+      "target": 74,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 191,
+      "target": 192,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 193,
+      "target": 194,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 195,
+      "target": 196,
+      "relationName": "is based on"
+    },
+    {
+      "source": 195,
+      "target": 197,
+      "relationName": "is based on"
+    },
+    {
+      "source": 195,
+      "target": 99,
+      "relationName": "is based on"
+    },
+    {
+      "source": 197,
+      "target": 198,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 197,
+      "target": 99,
+      "relationName": "is based on"
+    },
+    {
+      "source": 9,
+      "target": 8,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 23,
+      "target": 124,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 23,
+      "target": 199,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 200,
+      "target": 31,
+      "relationName": "is part of"
+    },
+    {
+      "source": 201,
+      "target": 150,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 202,
+      "target": 117,
+      "relationName": "is same as"
+    },
+    {
+      "source": 203,
+      "target": 167,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 204,
+      "target": 169,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 205,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 206,
+      "target": 31,
+      "relationName": "is part of"
+    },
+    {
+      "source": 207,
+      "target": 152,
+      "relationName": "is used by"
+    },
+    {
+      "source": 207,
+      "target": 84,
+      "relationName": "is used by"
+    },
+    {
+      "source": 208,
+      "target": 209,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 208,
+      "target": 210,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 208,
+      "target": 211,
+      "relationName": "is based on"
+    },
+    {
+      "source": 158,
+      "target": 93,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 158,
+      "target": 159,
+      "relationName": "is used by"
+    },
+    {
+      "source": 158,
+      "target": 160,
+      "relationName": "is used by"
+    },
+    {
+      "source": 211,
+      "target": 212,
+      "relationName": "is based on"
+    },
+    {
+      "source": 211,
+      "target": 213,
+      "relationName": "is based on"
+    },
+    {
+      "source": 211,
+      "target": 214,
+      "relationName": "is based on"
+    },
+    {
+      "source": 211,
+      "target": 107,
+      "relationName": "is based on"
+    },
+    {
+      "source": 215,
+      "target": 208,
+      "relationName": "is part of"
+    },
+    {
+      "source": 216,
+      "target": 158,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 216,
+      "target": 217,
+      "relationName": "is based on"
+    },
+    {
+      "source": 216,
+      "target": 218,
+      "relationName": "is based on"
+    },
+    {
+      "source": 216,
+      "target": 167,
+      "relationName": "is based on"
+    },
+    {
+      "source": 219,
+      "target": 208,
+      "relationName": "is part of"
+    },
+    {
+      "source": 220,
+      "target": 208,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 221,
+      "target": 204,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 221,
+      "target": 135,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 222,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 223,
+      "target": 120,
+      "relationName": "is part of"
+    },
+    {
+      "source": 224,
+      "target": 148,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 209,
+      "target": 101,
+      "relationName": "is based on"
+    },
+    {
+      "source": 209,
+      "target": 21,
+      "relationName": "is used by"
+    },
+    {
+      "source": 209,
+      "target": 104,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 225,
+      "target": 226,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 227,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 228,
+      "target": 23,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 228,
+      "target": 229,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 228,
+      "target": 230,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 231,
+      "target": 232,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 232,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 232,
+      "target": 98,
+      "relationName": "is based on"
+    },
+    {
+      "source": 232,
+      "target": 228,
+      "relationName": "is based on"
+    },
+    {
+      "source": 233,
+      "target": 232,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 91,
+      "target": 3,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 234,
+      "target": 235,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 110,
+      "target": 101,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 236,
+      "target": 150,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 237,
+      "target": 238,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 237,
+      "target": 155,
+      "relationName": "is used by"
+    },
+    {
+      "source": 239,
+      "target": 69,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 240,
+      "target": 149,
+      "relationName": "is part of"
+    },
+    {
+      "source": 120,
+      "target": 241,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 242,
+      "target": 120,
+      "relationName": "is part of"
+    },
+    {
+      "source": 242,
+      "target": 55,
+      "relationName": "is part of"
+    },
+    {
+      "source": 243,
+      "target": 232,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 244,
+      "target": 245,
+      "relationName": "is used by"
+    },
+    {
+      "source": 143,
+      "target": 244,
+      "relationName": "is part of"
+    },
+    {
+      "source": 246,
+      "target": 74,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 246,
+      "target": 75,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 247,
+      "target": 235,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 238,
+      "target": 154,
+      "relationName": "is processed by"
+    },
+    {
+      "source": 248,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 249,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 250,
+      "target": 251,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 252,
+      "target": 69,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 229,
+      "target": 124,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 253,
+      "target": 124,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 254,
+      "target": 32,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 254,
+      "target": 33,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 254,
+      "target": 35,
+      "relationName": "is based on"
+    },
+    {
+      "source": 254,
+      "target": 89,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 254,
+      "target": 10,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 254,
+      "target": 255,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 255,
+      "target": 256,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 257,
+      "target": 152,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 257,
+      "target": 258,
+      "relationName": "is based on"
+    },
+    {
+      "source": 257,
+      "target": 97,
+      "relationName": "is part of"
+    },
+    {
+      "source": 257,
+      "target": 96,
+      "relationName": "is used by"
+    },
+    {
+      "source": 258,
+      "target": 97,
+      "relationName": "is part of"
+    },
+    {
+      "source": 258,
+      "target": 152,
+      "relationName": "is based on"
+    },
+    {
+      "source": 258,
+      "target": 68,
+      "relationName": "is part of"
+    },
+    {
+      "source": 259,
+      "target": 99,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 180,
+      "target": 125,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 235,
+      "target": 109,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 190,
+      "target": 109,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 30,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 30,
+      "target": 124,
+      "relationName": "is used by"
+    },
+    {
+      "source": 30,
+      "target": 260,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 15,
+      "target": 179,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 15,
+      "target": 79,
+      "relationName": "is used by"
+    },
+    {
+      "source": 15,
+      "target": 133,
+      "relationName": "is part of"
+    },
+    {
+      "source": 12,
+      "target": 261,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 12,
+      "target": 159,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 24,
+      "target": 186,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 24,
+      "target": 262,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 262,
+      "target": 39,
+      "relationName": "is part of"
+    },
+    {
+      "source": 226,
+      "target": 41,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 181,
+      "target": 194,
+      "relationName": "is same as"
+    },
+    {
+      "source": 181,
+      "target": 164,
+      "relationName": "is part of"
+    },
+    {
+      "source": 181,
+      "target": 159,
+      "relationName": "is part of"
+    },
+    {
+      "source": 181,
+      "target": 263,
+      "relationName": "is based on"
+    },
+    {
+      "source": 264,
+      "target": 222,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 264,
+      "target": 194,
+      "relationName": "is used by"
+    },
+    {
+      "source": 265,
+      "target": 248,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 265,
+      "target": 194,
+      "relationName": "is used by"
+    },
+    {
+      "source": 64,
+      "target": 227,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 64,
+      "target": 194,
+      "relationName": "is used by"
+    },
+    {
+      "source": 37,
+      "target": 266,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 37,
+      "target": 194,
+      "relationName": "is used by"
+    },
+    {
+      "source": 263,
+      "target": 160,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 5,
+      "target": 190,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 138,
+      "target": 44,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 138,
+      "target": 139,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 138,
+      "target": 51,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 41,
+      "target": 42,
+      "relationName": "is used by"
+    },
+    {
+      "source": 41,
+      "target": 2,
+      "relationName": "is used by"
+    },
+    {
+      "source": 41,
+      "target": 267,
+      "relationName": "is part of"
+    },
+    {
+      "source": 268,
+      "target": 226,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 266,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 269,
+      "target": 40,
+      "relationName": "is same as"
+    },
+    {
+      "source": 270,
+      "target": 271,
+      "relationName": "is based on"
+    },
+    {
+      "source": 270,
+      "target": 149,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 270,
+      "target": 272,
+      "relationName": "is used by"
+    },
+    {
+      "source": 273,
+      "target": 9,
+      "relationName": "is part of"
+    },
+    {
+      "source": 274,
+      "target": 273,
+      "relationName": "is part of"
+    },
+    {
+      "source": 274,
+      "target": 8,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 88,
+      "target": 194,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 196,
+      "target": 99,
+      "relationName": "is based on"
+    },
+    {
+      "source": 275,
+      "target": 103,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 275,
+      "target": 276,
+      "relationName": "is based on"
+    },
+    {
+      "source": 275,
+      "target": 277,
+      "relationName": "is used by"
+    },
+    {
+      "source": 277,
+      "target": 113,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 277,
+      "target": 278,
+      "relationName": "is based on"
+    },
+    {
+      "source": 277,
+      "target": 196,
+      "relationName": "is based on"
+    },
+    {
+      "source": 278,
+      "target": 153,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 279,
+      "target": 1,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 42,
+      "target": 3,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 280,
+      "target": 5,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 281,
+      "target": 21,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 282,
+      "target": 194,
+      "relationName": "is used by"
+    },
+    {
+      "source": 283,
+      "target": 84,
+      "relationName": "is part of"
+    },
+    {
+      "source": 271,
+      "target": 284,
+      "relationName": "is based on"
+    },
+    {
+      "source": 271,
+      "target": 149,
+      "relationName": "is used by"
+    },
+    {
+      "source": 284,
+      "target": 257,
+      "relationName": "is based on"
+    },
+    {
+      "source": 245,
+      "target": 19,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 245,
+      "target": 75,
+      "relationName": "is part of"
+    },
+    {
+      "source": 285,
+      "target": 91,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 3,
+      "target": 127,
+      "relationName": "is based on"
+    },
+    {
+      "source": 241,
+      "target": 60,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 286,
+      "target": 21,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 286,
+      "target": 123,
+      "relationName": "is used by"
+    },
+    {
+      "source": 287,
+      "target": 108,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 287,
+      "target": 288,
+      "relationName": "is based on"
+    },
+    {
+      "source": 287,
+      "target": 289,
+      "relationName": "is same as"
+    },
+    {
+      "source": 287,
+      "target": 99,
+      "relationName": "is based on"
+    },
+    {
+      "source": 288,
+      "target": 198,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 290,
+      "target": 108,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 290,
+      "target": 291,
+      "relationName": "is same as"
+    },
+    {
+      "source": 290,
+      "target": 292,
+      "relationName": "is based on"
+    },
+    {
+      "source": 290,
+      "target": 99,
+      "relationName": "is based on"
+    },
+    {
+      "source": 60,
+      "target": 19,
+      "relationName": "is part of"
+    },
+    {
+      "source": 185,
+      "target": 55,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 185,
+      "target": 120,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 293,
+      "target": 159,
+      "relationName": "is part of"
+    },
+    {
+      "source": 293,
+      "target": 3,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 159,
+      "target": 160,
+      "relationName": "is used by"
+    },
+    {
+      "source": 261,
+      "target": 160,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 294,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 295,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 296,
+      "target": 138,
+      "relationName": "is used by"
+    },
+    {
+      "source": 296,
+      "target": 43,
+      "relationName": "is used by"
+    },
+    {
+      "source": 297,
+      "target": 171,
+      "relationName": "is same as"
+    },
+    {
+      "source": 35,
+      "target": 216,
+      "relationName": "is caused by"
+    },
+    {
+      "source": 75,
+      "target": 92,
+      "relationName": "is part of"
+    },
+    {
+      "source": 298,
+      "target": 299,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 298,
+      "target": 300,
+      "relationName": "is based on"
+    },
+    {
+      "source": 298,
+      "target": 301,
+      "relationName": "is based on"
+    },
+    {
+      "source": 188,
+      "target": 302,
+      "relationName": "is same as"
+    },
+    {
+      "source": 303,
+      "target": 30,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 304,
+      "target": 299,
+      "relationName": "is used by"
+    },
+    {
+      "source": 304,
+      "target": 89,
+      "relationName": "is used by"
+    },
+    {
+      "source": 304,
+      "target": 93,
+      "relationName": "is based on"
+    },
+    {
+      "source": 300,
+      "target": 99,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 89,
+      "target": 101,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 89,
+      "target": 299,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 89,
+      "target": 114,
+      "relationName": "is processed by"
+    },
+    {
+      "source": 89,
+      "target": 21,
+      "relationName": "is based on"
+    },
+    {
+      "source": 21,
+      "target": 210,
+      "relationName": "is used by"
+    },
+    {
+      "source": 21,
+      "target": 113,
+      "relationName": "is used by"
+    },
+    {
+      "source": 112,
+      "target": 113,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 112,
+      "target": 114,
+      "relationName": "is used by"
+    },
+    {
+      "source": 305,
+      "target": 39,
+      "relationName": "is part of"
+    },
+    {
+      "source": 306,
+      "target": 307,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 306,
+      "target": 39,
+      "relationName": "is part of"
+    },
+    {
+      "source": 306,
+      "target": 273,
+      "relationName": "is caused by"
+    },
+    {
+      "source": 308,
+      "target": 306,
+      "relationName": "is same as"
+    },
+    {
+      "source": 175,
+      "target": 135,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 309,
+      "target": 152,
+      "relationName": "is used by"
+    },
+    {
+      "source": 309,
+      "target": 84,
+      "relationName": "is used by"
+    },
+    {
+      "source": 310,
+      "target": 126,
+      "relationName": "is used by"
+    },
+    {
+      "source": 310,
+      "target": 145,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 311,
+      "target": 45,
+      "relationName": "is based on"
+    },
+    {
+      "source": 312,
+      "target": 284,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 312,
+      "target": 235,
+      "relationName": "is based on"
+    },
+    {
+      "source": 313,
+      "target": 56,
+      "relationName": "is same as"
+    },
+    {
+      "source": 314,
+      "target": 1,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 146,
+      "target": 72,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 146,
+      "target": 252,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 63,
+      "target": 20,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 63,
+      "target": 194,
+      "relationName": "is used by"
+    },
+    {
+      "source": 315,
+      "target": 142,
+      "relationName": "is same as"
+    },
+    {
+      "source": 316,
+      "target": 82,
+      "relationName": "is used by"
+    },
+    {
+      "source": 316,
+      "target": 317,
+      "relationName": "is based on"
+    },
+    {
+      "source": 318,
+      "target": 104,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 318,
+      "target": 58,
+      "relationName": "is based on"
+    },
+    {
+      "source": 319,
+      "target": 17,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 82,
+      "target": 209,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 82,
+      "target": 17,
+      "relationName": "is based on"
+    },
+    {
+      "source": 82,
+      "target": 318,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 320,
+      "target": 63,
+      "relationName": "is used by"
+    },
+    {
+      "source": 320,
+      "target": 321,
+      "relationName": "is same as"
+    },
+    {
+      "source": 322,
+      "target": 196,
+      "relationName": "is same as"
+    },
+    {
+      "source": 323,
+      "target": 31,
+      "relationName": "is part of"
+    },
+    {
+      "source": 301,
+      "target": 99,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 301,
+      "target": 101,
+      "relationName": "is part of"
+    },
+    {
+      "source": 148,
+      "target": 21,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 148,
+      "target": 93,
+      "relationName": "is based on"
+    },
+    {
+      "source": 194,
+      "target": 299,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 324,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 325,
+      "target": 53,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 325,
+      "target": 320,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 67,
+      "target": 301,
+      "relationName": "is modelled by"
+    },
+    {
+      "source": 326,
+      "target": 173,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 327,
+      "target": 124,
+      "relationName": "is used by"
+    },
+    {
+      "source": 327,
+      "target": 32,
+      "relationName": "is used by"
+    },
+    {
+      "source": 50,
+      "target": 253,
+      "relationName": "is used by"
+    },
+    {
+      "source": 328,
+      "target": 89,
+      "relationName": "is used by"
+    },
+    {
+      "source": 328,
+      "target": 303,
+      "relationName": "is used by"
+    },
+    {
+      "source": 329,
+      "target": 327,
+      "relationName": "is used by"
+    },
+    {
+      "source": 329,
+      "target": 328,
+      "relationName": "is used by"
+    },
+    {
+      "source": 329,
+      "target": 50,
+      "relationName": "is used by"
+    },
+    {
+      "source": 71,
+      "target": 69,
+      "relationName": "is part of"
+    },
+    {
+      "source": 330,
+      "target": 271,
+      "relationName": "is based on"
+    },
+    {
+      "source": 330,
+      "target": 149,
+      "relationName": "is produced by"
+    },
+    {
+      "source": 330,
+      "target": 71,
+      "relationName": "is used by"
+    },
+    {
+      "source": 330,
+      "target": 146,
+      "relationName": "is used by"
+    },
+    {
+      "source": 331,
+      "target": 181,
+      "relationName": "is defined by"
+    },
+    {
+      "source": 331,
+      "target": 160,
+      "relationName": "is used by"
+    },
+    {
+      "source": 332,
+      "target": 9,
+      "relationName": "is part of"
+    },
+    {
+      "source": 333,
+      "target": 332,
+      "relationName": "is part of"
+    },
+    {
+      "source": 333,
+      "target": 8,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 14,
+      "target": 125,
+      "relationName": "is used by"
+    },
+    {
+      "source": 14,
+      "target": 83,
+      "relationName": "is based on"
+    },
+    {
+      "source": 321,
+      "target": 124,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 334,
+      "target": 74,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 334,
+      "target": 192,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 79,
+      "target": 125,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 292,
+      "target": 196,
+      "relationName": "is part of"
+    },
+    {
+      "source": 335,
+      "target": 19,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 336,
+      "target": 284,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 336,
+      "target": 190,
+      "relationName": "is based on"
+    },
+    {
+      "source": 33,
+      "target": 35,
+      "relationName": "is caused by"
+    },
+    {
+      "source": 33,
+      "target": 337,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 338,
+      "target": 58,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 339,
+      "target": 72,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 339,
+      "target": 252,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 340,
+      "target": 341,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 340,
+      "target": 37,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 267,
+      "target": 92,
+      "relationName": "is part of"
+    },
+    {
+      "source": 342,
+      "target": 58,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 272,
+      "target": 69,
+      "relationName": "is part of"
+    },
+    {
+      "source": 343,
+      "target": 222,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 343,
+      "target": 124,
+      "relationName": "is used by"
+    },
+    {
+      "source": 344,
+      "target": 248,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 344,
+      "target": 124,
+      "relationName": "is used by"
+    },
+    {
+      "source": 53,
+      "target": 227,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 53,
+      "target": 124,
+      "relationName": "is used by"
+    },
+    {
+      "source": 341,
+      "target": 266,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 341,
+      "target": 124,
+      "relationName": "is used by"
+    },
+    {
+      "source": 124,
+      "target": 299,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 345,
+      "target": 58,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 346,
+      "target": 199,
+      "relationName": "is same as"
+    },
+    {
+      "source": 169,
+      "target": 347,
+      "relationName": "is same as"
+    },
+    {
+      "source": 348,
+      "target": 148,
+      "relationName": "is used by"
+    },
+    {
+      "source": 349,
+      "target": 63,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 350,
+      "target": 133,
+      "relationName": "is part of"
+    },
+    {
+      "source": 152,
+      "target": 122,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 251,
+      "target": 109,
+      "relationName": "is based on"
+    },
+    {
+      "source": 251,
+      "target": 219,
+      "relationName": "is a property of"
+    },
+    {
+      "source": 210,
+      "target": 102,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 210,
+      "target": 82,
+      "relationName": "is used by"
+    },
+    {
+      "source": 351,
+      "target": 63,
+      "relationName": "is a kind of"
+    },
+    {
+      "source": 352,
+      "target": 306,
+      "relationName": "is used by"
+    },
+    {
+      "source": 352,
+      "target": 132,
+      "relationName": "is represented by"
+    },
+    {
+      "source": 353,
+      "target": 45,
+      "relationName": "is based on"
+    }
+  ]
+}

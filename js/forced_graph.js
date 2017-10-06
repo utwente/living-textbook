@@ -9,7 +9,8 @@
 
   // cb.data_source = "data/GIS_RS.json";
   // cb.data_source = "data/GIS_RS_REDUCED.json";
-  cb.data_source = "data/GIS_RS_link_count.json";
+  // cb.data_source = "data/GIS_RS_link_count.json";
+  cb.data_source = "data/GIS_RS_link_and_individuals.json";
 
   /******************************************************************************************************
    * Configuration variables
@@ -199,6 +200,7 @@
     "expandedLabelStart": 0,
     "link": "",
     "numberOfLinks": 0,
+    "individuals": "",
     "dragged": false,
     "highlighted": false,
     "linkNode": false
@@ -1292,7 +1294,30 @@
       };
     } else {
       // Node
-      return {
+      var individuals = {};
+
+      // Generate individuals, if any
+      if (contextMenuNode.individuals !== undefined) {
+        var individualsItems = {};
+        var individualsTextItems = contextMenuNode.individuals.split(';');
+        individualsTextItems.map(function (item) {
+          item = item.trim();
+          individualsItems['individual-' + item] = {
+            name: item
+          };
+        });
+
+        individuals = {
+          individuals: {
+            name: 'Examples',
+            items: individualsItems
+          },
+          sep1: "---------"
+        };
+      }
+
+      // Merge with default data
+      var defaultData = {
         "styles": {
           name: "Change color",
           items: {
@@ -1307,6 +1332,8 @@
         "sep2": "---------",
         "quit": {name: "Close", icon: 'quit'}
       };
+
+      return $.extend(individuals, defaultData);
     }
   }
 
