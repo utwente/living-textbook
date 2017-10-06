@@ -1,5 +1,5 @@
-// var dokuwikiUrl = 'https://itc-giscience.utwente.nl/doku.php';
-var dokuwikiUrl = 'https://living-textbook.drenso.nl:60130/doku/doku.php';
+var dokuwikiUrl = 'https://itc-giscience.utwente.nl/doku/doku.php';
+//var dokuwikiUrl = 'https://living-textbook.drenso.nl:60130/doku/doku.php';
 
 /**
  * Start executing after DOM load

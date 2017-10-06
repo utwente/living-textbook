@@ -3,137 +3,137 @@
     {
       "nodeName": "http://vgibox.eu/Absolute_ratio",
       "label": "Absolute ratio",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values"
     },
     {
       "nodeName": "http://vgibox.eu/Ratio_data",
       "label": "Ratio data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=ratio"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=ratio"
     },
     {
       "nodeName": "http://vgibox.eu/Accuracy",
       "label": "Accuracy",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=accuracy&s%5B%5D=positional&s%5B%5D=data"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=accuracy&s%5B%5D=positional&s%5B%5D=data"
     },
     {
       "nodeName": "http://vgibox.eu/Perkal_band",
       "label": "Perkal band",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=elipson_band"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=elipson_band"
     },
     {
       "nodeName": "http://vgibox.eu/RMSE",
       "label": "RMSE",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=rmse"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rmse"
     },
     {
       "nodeName": "http://vgibox.eu/Agent-Based",
       "label": "Agent-Based",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=model_classification"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=model_classification"
     },
     {
       "nodeName": "http://vgibox.eu/Implementation_logic",
       "label": "Implementation logic",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=model_classification"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=model_classification"
     },
     {
       "nodeName": "http://vgibox.eu/Analysis",
       "label": "Analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=gis_analysis_processes"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=gis_analysis_processes"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_data_acquisition",
       "label": "Spatial data acquisition",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_entry_sources"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_entry_sources"
     },
     {
       "nodeName": "http://vgibox.eu/Arc",
       "label": "Arc",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector#poly_line"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector#poly_line"
     },
     {
       "nodeName": "http://vgibox.eu/Line",
       "label": "Line",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector"
     },
     {
       "nodeName": "http://vgibox.eu/Attribute_Query",
       "label": "Attribute Query",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=querying_relational_database"
     },
     {
       "nodeName": "http://vgibox.eu/Query",
       "label": "Query",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database&s%5B%5D=query"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=querying_relational_database&s%5B%5D=query"
     },
     {
       "nodeName": "http://vgibox.eu/Attribute_quality",
       "label": "Attribute quality",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_quality"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_quality"
     },
     {
       "nodeName": "http://vgibox.eu/Data_Quality",
       "label": "Data Quality",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_quality&s%5B%5D=attribute&s%5B%5D=quality"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_quality&s%5B%5D=attribute&s%5B%5D=quality"
     },
     {
       "nodeName": "http://vgibox.eu/Uncertainty",
       "label": "Uncertainty",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=uncertainty_naturaldata"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=uncertainty_naturaldata"
     },
     {
       "nodeName": "http://vgibox.eu/Error_matrix",
       "label": "Error matrix",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=attribute_accuracy"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=attribute_accuracy"
     },
     {
       "nodeName": "http://vgibox.eu/Sources_of_errors",
       "label": "Sources of errors",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=error_types"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=error_types"
     },
     {
       "nodeName": "http://vgibox.eu/Automatic",
       "label": "Automatic",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=automatic_classification"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=automatic_classification"
     },
     {
       "nodeName": "http://vgibox.eu/Raster_Reclassification",
       "label": "Raster Reclassification",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=automatic_classification"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=automatic_classification"
     },
     {
       "nodeName": "http://vgibox.eu/Boundaries",
       "label": "Boundaries",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=boundaries"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=boundaries"
     },
     {
       "nodeName": "http://vgibox.eu/Discrete_Field",
       "label": "Discrete Field",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_fields#discrete_fields"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_fields#discrete_fields"
     },
     {
       "nodeName": "http://vgibox.eu/Geographic_object",
       "label": "Geographic object",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_objects"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_objects"
     },
     {
       "nodeName": "http://vgibox.eu/Boundary_Model",
       "label": "Boundary Model",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=boundary_model"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=boundary_model"
     },
     {
       "nodeName": "http://vgibox.eu/Topological_model",
       "label": "Topological model",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=boundary_model"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=boundary_model"
     },
     {
       "nodeName": "http://vgibox.eu/Buffer",
       "label": "Buffer",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=buffer_zone_generation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=buffer_zone_generation"
     },
     {
       "nodeName": "http://vgibox.eu/Vector_Proximity",
       "label": "Vector Proximity",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=proximity_calculations"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=proximity_calculations"
     },
     {
       "nodeName": "http://vgibox.eu/Calibration",
@@ -148,32 +148,32 @@
     {
       "nodeName": "http://vgibox.eu/Catchment_delineation",
       "label": "Catchment delineation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster_based_surface_analysis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=raster_based_surface_analysis"
     },
     {
       "nodeName": "http://vgibox.eu/Raster_Proximity",
       "label": "Raster Proximity",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=diffuse_calculations"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=diffuse_calculations"
     },
     {
       "nodeName": "http://vgibox.eu/Surface_Analysis",
       "label": "Surface Analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster_based_surface_analysis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=raster_based_surface_analysis"
     },
     {
       "nodeName": "http://vgibox.eu/Cellular_Automata",
       "label": "Cellular Automata",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Characteristic_of_time",
       "label": "Characteristic of time",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_temporal_dimension"
     },
     {
       "nodeName": "http://vgibox.eu/Time",
       "label": "Time",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_temporal_dimension"
     },
     {
       "nodeName": "http://vgibox.eu/Cognitive_mapping",
@@ -183,42 +183,42 @@
     {
       "nodeName": "http://vgibox.eu/Completeness",
       "label": "Completeness",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=completeness"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=completeness"
     },
     {
       "nodeName": "http://vgibox.eu/Component",
       "label": "Component",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=model_components"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=model_components"
     },
     {
       "nodeName": "http://vgibox.eu/Systems_model",
       "label": "Systems model",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Continuous_Field",
       "label": "Continuous Field",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_fields#discrete_fields"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_fields#discrete_fields"
     },
     {
       "nodeName": "http://vgibox.eu/Geographic_field",
       "label": "Geographic field",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_fields"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_fields"
     },
     {
       "nodeName": "http://vgibox.eu/Regular_Tessellation",
       "label": "Regular Tessellation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=regular_tessellation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=regular_tessellation"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_data",
       "label": "Spatial data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_data_layer"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_data_layer"
     },
     {
       "nodeName": "http://vgibox.eu/Interpolation",
       "label": "Interpolation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=interpolation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=interpolation"
     },
     {
       "nodeName": "http://vgibox.eu/Coordinate_system",
@@ -233,107 +233,107 @@
     {
       "nodeName": "http://vgibox.eu/Cost_function",
       "label": "Cost function",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis"
     },
     {
       "nodeName": "http://vgibox.eu/Data_attribute",
       "label": "Data attribute",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Crowdsourcing",
       "label": "Crowdsourcing",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling&s%5B%5D=acquisition#stages_of_spatial_data_handling"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=stages_spatial_handling&s%5B%5D=acquisition#stages_of_spatial_data_handling"
     },
     {
       "nodeName": "http://vgibox.eu/Data",
       "label": "Data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling&s%5B%5D=acquisition#stages_of_spatial_data_handling"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=stages_spatial_handling&s%5B%5D=acquisition#stages_of_spatial_data_handling"
     },
     {
       "nodeName": "http://vgibox.eu/Data_Modelling",
       "label": "Data Modelling",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Data_representation",
       "label": "Data representation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_representation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_representation"
     },
     {
       "nodeName": "http://vgibox.eu/Modelling",
       "label": "Modelling",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Data_analysis",
       "label": "Data analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=stages_spatial_handling"
     },
     {
       "nodeName": "http://vgibox.eu/Data_classification",
       "label": "Data classification",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=classification_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=classification_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Data_characteristics",
       "label": "Data characteristics",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization&s%5B%5D=data&s%5B%5D=characteristics"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=visualization&s%5B%5D=data&s%5B%5D=characteristics"
     },
     {
       "nodeName": "http://vgibox.eu/Data_extraction",
       "label": "Data extraction",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Data_measurement_scale",
       "label": "Data measurement scale",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values"
     },
     {
       "nodeName": "http://vgibox.eu/Non-Spatial_Data",
       "label": "Non-Spatial Data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=introduction_gis&s%5B%5D=spatial&s%5B%5D=data"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=introduction_gis&s%5B%5D=spatial&s%5B%5D=data"
     },
     {
       "nodeName": "http://vgibox.eu/Data_storage_and_maintainance",
       "label": "Data storage and maintainance",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=stages_spatial_handling"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=stages_spatial_handling"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_database",
       "label": "Spatial database",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_database"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_database"
     },
     {
       "nodeName": "http://vgibox.eu/Database",
       "label": "Database",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=database"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=database"
     },
     {
       "nodeName": "http://vgibox.eu/GIS",
       "label": "GIS",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=introduction_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=introduction_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Database_management_system",
       "label": "Database management system",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_management_systems"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_management_systems"
     },
     {
       "nodeName": "http://vgibox.eu/Digitizing",
       "label": "Digitizing",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=digitizing"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digitizing"
     },
     {
       "nodeName": "http://vgibox.eu/Vector_Representation",
       "label": "Vector Representation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector"
     },
     {
       "nodeName": "http://vgibox.eu/Ellipsoid",
       "label": "Ellipsoid",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_ellipsoid_spheroid&s%5B%5D=ellipsoid"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_ellipsoid_spheroid&s%5B%5D=ellipsoid"
     },
     {
       "nodeName": "http://vgibox.eu/Reference_surface",
@@ -348,22 +348,22 @@
     {
       "nodeName": "http://vgibox.eu/Field_survey",
       "label": "Field survey",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=field_survey"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=field_survey"
     },
     {
       "nodeName": "http://vgibox.eu/Terrestrial_surveys",
       "label": "Terrestrial surveys",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=terrestrial_survey"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=terrestrial_survey"
     },
     {
       "nodeName": "http://vgibox.eu/Foreign_key",
       "label": "Foreign key",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relation_data_models_key"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relation_data_models_key"
     },
     {
       "nodeName": "http://vgibox.eu/Geographic_Phenomenon",
       "label": "Geographic Phenomenon",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_phenomena"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_phenomena"
     },
     {
       "nodeName": "http://vgibox.eu/Geographic_coordinate_system",
@@ -373,17 +373,17 @@
     {
       "nodeName": "http://vgibox.eu/Geoid",
       "label": "Geoid",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_geoid"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_geoid"
     },
     {
       "nodeName": "http://vgibox.eu/Global_vertical_datum",
       "label": "Global vertical datum",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=reference_surfaces&s%5B%5D=vertical"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=reference_surfaces&s%5B%5D=vertical"
     },
     {
       "nodeName": "http://vgibox.eu/Global_horizontal_datum",
       "label": "Global horizontal datum",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=global_horizontal_datum"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=global_horizontal_datum"
     },
     {
       "nodeName": "http://vgibox.eu/Horizontal_datum",
@@ -393,7 +393,7 @@
     {
       "nodeName": "http://vgibox.eu/Geocentric_datum",
       "label": "Geocentric datum",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_coordinate_systems&s%5B%5D=geocentric"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_coordinate_systems&s%5B%5D=geocentric"
     },
     {
       "nodeName": "http://vgibox.eu/Vertical_datum",
@@ -403,102 +403,102 @@
     {
       "nodeName": "http://vgibox.eu/Sphere",
       "label": "Sphere",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=coordinate_systems&s%5B%5D=sphere"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=coordinate_systems&s%5B%5D=sphere"
     },
     {
       "nodeName": "http://vgibox.eu/Horizontal_positioning",
       "label": "Horizontal positioning",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=local_horizontal_datum"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=local_horizontal_datum"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_Autocorrelation",
       "label": "Spatial Autocorrelation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_autocorrelation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_autocorrelation"
     },
     {
       "nodeName": "http://vgibox.eu/Interval_data",
       "label": "Interval data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=interval"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=interval"
     },
     {
       "nodeName": "http://vgibox.eu/Quantitative_data",
       "label": "Quantitative data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=mapping_quantiative"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=mapping_quantiative"
     },
     {
       "nodeName": "http://vgibox.eu/Irregular_Tessellation",
       "label": "Irregular Tessellation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=irregular_tessellation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=irregular_tessellation"
     },
     {
       "nodeName": "http://vgibox.eu/Tessellation",
       "label": "Tessellation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=tessellation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=tessellation"
     },
     {
       "nodeName": "http://vgibox.eu/Join",
       "label": "Join",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=join"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=join"
     },
     {
       "nodeName": "http://vgibox.eu/Join_condition",
       "label": "Join condition",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=join"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=join"
     },
     {
       "nodeName": "http://vgibox.eu/Relation",
       "label": "Relation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Logical_expression",
       "label": "Logical expression",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=querying_relational_database"
     },
     {
       "nodeName": "http://vgibox.eu/Node",
       "label": "Node",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector"
     },
     {
       "nodeName": "http://vgibox.eu/Lineage",
       "label": "Lineage",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=lineage"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=lineage"
     },
     {
       "nodeName": "http://vgibox.eu/Local_horizontal_datum",
       "label": "Local horizontal datum",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=local_horizontal_datum&s%5B%5D=local&s%5B%5D=horizontal"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=local_horizontal_datum&s%5B%5D=local&s%5B%5D=horizontal"
     },
     {
       "nodeName": "http://vgibox.eu/Local_vertical_datum",
       "label": "Local vertical datum",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=reference_surfaces&s%5B%5D=local&s%5B%5D=vertical"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=reference_surfaces&s%5B%5D=local&s%5B%5D=vertical"
     },
     {
       "nodeName": "http://vgibox.eu/Logical_consitency",
       "label": "Logical consitency",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=quality_consistency"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=quality_consistency"
     },
     {
       "nodeName": "http://vgibox.eu/Map",
       "label": "Map",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_type"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_type"
     },
     {
       "nodeName": "http://vgibox.eu/Model",
       "label": "Model",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Visualization",
       "label": "Visualization",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=visualization"
     },
     {
       "nodeName": "http://vgibox.eu/Map_design",
       "label": "Map design",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization_map_cosmetics"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=visualization_map_cosmetics"
     },
     {
       "nodeName": "http://vgibox.eu/Map_coordinate_system",
@@ -508,22 +508,22 @@
     {
       "nodeName": "http://vgibox.eu/Use_environment",
       "label": "Use environment",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=use_and_users"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=use_and_users"
     },
     {
       "nodeName": "http://vgibox.eu/User_characteristics",
       "label": "User characteristics",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=use_and_users"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=use_and_users"
     },
     {
       "nodeName": "http://vgibox.eu/Map_purpose",
       "label": "Map purpose",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization_process"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=visualization_process"
     },
     {
       "nodeName": "http://vgibox.eu/Map_item",
       "label": "Map item",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=visualization_map_cosmetics"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=visualization_map_cosmetics"
     },
     {
       "nodeName": "http://vgibox.eu/Map_projection",
@@ -533,262 +533,262 @@
     {
       "nodeName": "http://vgibox.eu/Distortion_property",
       "label": "Distortion property",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_projections&s%5B%5D=distortion"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_projections&s%5B%5D=distortion"
     },
     {
       "nodeName": "http://vgibox.eu/Projection_class",
       "label": "Projection class",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_projections&s%5B%5D=projection&s%5B%5D=class#map_projections"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_projections&s%5B%5D=projection&s%5B%5D=class#map_projections"
     },
     {
       "nodeName": "http://vgibox.eu/Map_symbol",
       "label": "Map symbol",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=bertins_variables"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=bertins_variables"
     },
     {
       "nodeName": "http://vgibox.eu/Map_type",
       "label": "Map type",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_type"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_type"
     },
     {
       "nodeName": "http://vgibox.eu/Mean_sea_level",
       "label": "Mean sea level",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=mean_seal_level&s%5B%5D=mean&s%5B%5D=sea"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=mean_seal_level&s%5B%5D=mean&s%5B%5D=sea"
     },
     {
       "nodeName": "http://vgibox.eu/Measurement",
       "label": "Measurement",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=measurement_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=measurement_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Mobile_GIS",
       "label": "Mobile GIS",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=mobile_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=mobile_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Neighbourhood_operations",
       "label": "Neighbourhood operations",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=neighbourhood_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=neighbourhood_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Network",
       "label": "Network",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis&s%5B%5D=network"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis&s%5B%5D=network"
     },
     {
       "nodeName": "http://vgibox.eu/Network_Characteristics",
       "label": "Network Characteristics",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=characteristics"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=characteristics"
     },
     {
       "nodeName": "http://vgibox.eu/Point",
       "label": "Point",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector"
     },
     {
       "nodeName": "http://vgibox.eu/Network_Allocation",
       "label": "Network Allocation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis#network_allocation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis#network_allocation"
     },
     {
       "nodeName": "http://vgibox.eu/Network_Analysis",
       "label": "Network Analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=analysis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=analysis"
     },
     {
       "nodeName": "http://vgibox.eu/Network_Particioning",
       "label": "Network Particioning",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=network_analysis#network_partitioning"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis#network_partitioning"
     },
     {
       "nodeName": "http://vgibox.eu/Nominal_data",
       "label": "Nominal data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=nominal"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=nominal"
     },
     {
       "nodeName": "http://vgibox.eu/Qualitative_data",
       "label": "Qualitative data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=mapping_quantiative"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=mapping_quantiative"
     },
     {
       "nodeName": "http://vgibox.eu/Optimal_Path_Finding",
       "label": "Optimal Path Finding",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=optimal_path_finding&s%5B%5D=optimal&s%5B%5D=path"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=optimal_path_finding&s%5B%5D=optimal&s%5B%5D=path"
     },
     {
       "nodeName": "http://vgibox.eu/Ordinal_data",
       "label": "Ordinal data",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values"
     },
     {
       "nodeName": "http://vgibox.eu/Perception_property",
       "label": "Perception property",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=bertins_variables&s%5B%5D=perception"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=bertins_variables&s%5B%5D=perception"
     },
     {
       "nodeName": "http://vgibox.eu/Visual_variable",
       "label": "Visual variable",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=bertins_variables"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=bertins_variables"
     },
     {
       "nodeName": "http://vgibox.eu/Polygon",
       "label": "Polygon",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector"
     },
     {
       "nodeName": "http://vgibox.eu/Positional_quality",
       "label": "Positional quality",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_quality"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_quality"
     },
     {
       "nodeName": "http://vgibox.eu/Precision",
       "label": "Precision",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=precision"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=precision"
     },
     {
       "nodeName": "http://vgibox.eu/CPE",
       "label": "CPE",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=accuracy_tolerance"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=accuracy_tolerance"
     },
     {
       "nodeName": "http://vgibox.eu/Primary_key",
       "label": "Primary key",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relation_data_models_key"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relation_data_models_key"
     },
     {
       "nodeName": "http://vgibox.eu/SQL",
       "label": "SQL",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database&s%5B%5D=sql"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=querying_relational_database&s%5B%5D=sql"
     },
     {
       "nodeName": "http://vgibox.eu/Raster",
       "label": "Raster",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=tessellation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=tessellation"
     },
     {
       "nodeName": "http://vgibox.eu/Raster_Measurements",
       "label": "Raster Measurements",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=measurement_functions#standard_distance_function"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=measurement_functions#standard_distance_function"
     },
     {
       "nodeName": "http://vgibox.eu/Raster_Overlay",
       "label": "Raster Overlay",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=map_algebra"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_algebra"
     },
     {
       "nodeName": "http://vgibox.eu/Overlay_Analysis",
       "label": "Overlay Analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=overlay_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=overlay_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Reclassification",
       "label": "Reclassification",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=classification_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=classification_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Relational_data_model",
       "label": "Relational data model",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Logic_and_set_theory",
       "label": "Logic and set theory",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_selection_by_attribute_conditions&s%5B%5D=logic"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_selection_by_attribute_conditions&s%5B%5D=logic"
     },
     {
       "nodeName": "http://vgibox.eu/Relational_database",
       "label": "Relational database",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Relationship",
       "label": "Relationship",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Relative_ratio",
       "label": "Relative ratio",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_types_and_values&s%5B%5D=ratio"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=ratio"
     },
     {
       "nodeName": "http://vgibox.eu/Remote_sensing",
       "label": "Remote sensing",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=data_entry_rs"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_entry_rs"
     },
     {
       "nodeName": "http://vgibox.eu/Resolution",
       "label": "Resolution",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=computer_representations_of_geographic_information:scale_and_resolution"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=computer_representations_of_geographic_information:scale_and_resolution"
     },
     {
       "nodeName": "http://vgibox.eu/Scanning",
       "label": "Scanning",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=scanning"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=scanning"
     },
     {
       "nodeName": "http://vgibox.eu/Selection_by_attributes",
       "label": "Selection by attributes",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_selection_by_attribute_conditions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_selection_by_attribute_conditions"
     },
     {
       "nodeName": "http://vgibox.eu/Selection_condition",
       "label": "Selection condition",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=querying_relational_database"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=querying_relational_database"
     },
     {
       "nodeName": "http://vgibox.eu/Attribute_projection",
       "label": "Attribute projection",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=attribute_projeciton"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=attribute_projeciton"
     },
     {
       "nodeName": "http://vgibox.eu/Selection_of_records",
       "label": "Selection of records",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=attribute_projeciton"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=attribute_projeciton"
     },
     {
       "nodeName": "http://vgibox.eu/Tuple_selection",
       "label": "Tuple selection",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Tuple",
       "label": "Tuple",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial-Temporal_data_model",
       "label": "Spatial-Temporal data model",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_temporal_dimension"
     },
     {
       "nodeName": "http://vgibox.eu/Geographical_representation",
       "label": "Geographical representation",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=geographic_representation&s%5B%5D=computer&s%5B%5D=representation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=geographic_representation&s%5B%5D=computer&s%5B%5D=representation"
     },
     {
       "nodeName": "http://vgibox.eu/Temporal_attribute",
       "label": "Temporal attribute",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=the_temporal_dimension#the_temporal_dimension"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_temporal_dimension#the_temporal_dimension"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_attribute",
       "label": "Spatial attribute",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_selection_by_attribute_conditions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_selection_by_attribute_conditions"
     },
     {
       "nodeName": "http://vgibox.eu/Tobler's_first_law",
       "label": "Tobler's first law",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=spatial_autocorrelation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=spatial_autocorrelation"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_Query",
       "label": "Spatial Query",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=retrieval_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=retrieval_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_Reference_System",
       "label": "Spatial Reference System",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=introduction_to_spatial_referencing&s%5B%5D=reference"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=introduction_to_spatial_referencing&s%5B%5D=reference"
     },
     {
       "nodeName": "http://vgibox.eu/System",
@@ -803,57 +803,57 @@
     {
       "nodeName": "http://vgibox.eu/System_Modelling",
       "label": "System Modelling",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/Systems_Dynamics",
       "label": "Systems Dynamics",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=models_gis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis"
     },
     {
       "nodeName": "http://vgibox.eu/TIN",
       "label": "TIN",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=tin"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=tin"
     },
     {
       "nodeName": "http://vgibox.eu/Triangulated_Irregular_Networks",
       "label": "Triangulated Irregular Networks",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=tin"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=tin"
     },
     {
       "nodeName": "http://vgibox.eu/Table",
       "label": "Table",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=relational_data_models"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=relational_data_models"
     },
     {
       "nodeName": "http://vgibox.eu/Temporal_accuracy",
       "label": "Temporal accuracy",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=temporal_accuracy"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=temporal_accuracy"
     },
     {
       "nodeName": "http://vgibox.eu/Thiessen_Polygons",
       "label": "Thiessen Polygons",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=theissen_polygon_generation"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=theissen_polygon_generation"
     },
     {
       "nodeName": "http://vgibox.eu/Topological_Consistency",
       "label": "Topological Consistency",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=topological_consistency"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=topological_consistency"
     },
     {
       "nodeName": "http://vgibox.eu/Topological_relationship",
       "label": "Topological relationship",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=topological_relationships"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=topological_relationships"
     },
     {
       "nodeName": "http://vgibox.eu/Topology",
       "label": "Topology",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=topology"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=topology"
     },
     {
       "nodeName": "http://vgibox.eu/Membership_functions",
       "label": "Membership functions",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=uncertainty_naturaldata"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=uncertainty_naturaldata"
     },
     {
       "nodeName": "http://vgibox.eu/Uncertainty_analysis",
@@ -863,12 +863,12 @@
     {
       "nodeName": "http://vgibox.eu/User_Controlled",
       "label": "User Controlled",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=usercontrolled_classification"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=usercontrolled_classification"
     },
     {
       "nodeName": "http://vgibox.eu/Vector_Reclassification",
       "label": "Vector Reclassification",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=classification_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=classification_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Validation",
@@ -878,12 +878,12 @@
     {
       "nodeName": "http://vgibox.eu/Vector_Measurements",
       "label": "Vector Measurements",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=measurement_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=measurement_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Vector_Overlay",
       "label": "Vector Overlay",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=overlay_functions"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=overlay_functions"
     },
     {
       "nodeName": "http://vgibox.eu/Verification",
@@ -893,27 +893,27 @@
     {
       "nodeName": "http://vgibox.eu/Vertex",
       "label": "Vertex",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=vector"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=vector"
     },
     {
       "nodeName": "http://vgibox.eu/Height_datum",
       "label": "Height datum",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=reference_surfaces&s%5B%5D=height&s%5B%5D=datum"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=reference_surfaces&s%5B%5D=height&s%5B%5D=datum"
     },
     {
       "nodeName": "http://vgibox.eu/Vertical_positioning",
       "label": "Vertical positioning",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=local_mean_seal_level"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=local_mean_seal_level"
     },
     {
       "nodeName": "http://vgibox.eu/Visibility_analysis",
       "label": "Visibility analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=gis_analysis_processes&s%5B%5D=viewshed"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=gis_analysis_processes&s%5B%5D=viewshed"
     },
     {
       "nodeName": "http://vgibox.eu/Volumetric_analysis",
       "label": "Volumetric analysis",
-      "link": "https://itc-giscience.utwente.nl/doku.php?id=raster_based_surface_analysis"
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=raster_based_surface_analysis"
     }
   ],
   "links": [
