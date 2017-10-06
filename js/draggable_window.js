@@ -3,6 +3,7 @@
  */
 (function (dw, $, undefined) {
 
+  var openWidth = 760;
   var opened = false;
   var openedX = 0;
   var fullScreen = false;
@@ -51,7 +52,7 @@
       });
       moveContainersInner.fadeOut();
     } else {
-      dragButton.doResize(openedX !== 0 ? openedX : (768 + ($('#move_containers_inner').innerWidth() / 2) - 1), undefined, undefined, true, function () {
+      dragButton.doResize(openedX !== 0 ? openedX : (openWidth + ($('#move_containers_inner').innerWidth() / 2) - 1), undefined, undefined, true, function () {
         readyHandler();
         firstOpen = false;
       });
