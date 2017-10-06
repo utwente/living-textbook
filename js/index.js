@@ -15,7 +15,7 @@ $(function () {
     if (params !== null && params !== '') {
       url += '?' + params;
     }
-    document.getElementById("iframe_left").src = url;
+    document.getElementById('iframe_left').src = url;
   }
 
   /**
@@ -26,12 +26,12 @@ $(function () {
    */
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
         results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
   /**
@@ -54,12 +54,12 @@ $(function () {
     if (params !== null && params !== '') {
       url += '?doku=' + encodeURIComponent(params);
     }
-    window.history.replaceState({}, "", url);
+    window.history.replaceState({}, '', url);
   }
 
   // Get the page url
   var pageUrl = window.location.href;
-  var pageUrlLoc = pageUrl.indexOf("?");
+  var pageUrlLoc = pageUrl.indexOf('?');
   if (pageUrlLoc > 0) {
     pageUrl = pageUrl.substr(0, pageUrlLoc);
   }
@@ -84,12 +84,12 @@ $(function () {
         var params = getUrlParams(message);
         updateDokuwikiFrame(params);
       } else {
-        document.getElementById("iframe_left").src = message.data;
+        document.getElementById('iframe_left').src = message.data;
       }
     }
 
     // Forward to other frames
-    document.getElementById("iframe_left").contentWindow.postMessage(message, '*');
-    document.getElementById("iframe_right").contentWindow.postMessage(message, '*');
+    document.getElementById('iframe_left').contentWindow.postMessage(message, '*');
+    document.getElementById('iframe_right').contentWindow.postMessage(message, '*');
   });
 });

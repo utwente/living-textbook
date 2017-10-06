@@ -7,10 +7,10 @@
    * Data source
    *****************************************************************************************************/
 
-  // cb.data_source = "data/GIS_RS.json";
-  // cb.data_source = "data/GIS_RS_REDUCED.json";
-  // cb.data_source = "data/GIS_RS_link_count.json";
-  cb.data_source = "data/GIS_RS_link_and_individuals.json";
+  // cb.data_source = 'data/GIS_RS.json';
+  // cb.data_source = 'data/GIS_RS_REDUCED.json';
+  // cb.data_source = 'data/GIS_RS_link_count.json';
+  cb.data_source = 'data/GIS_RS_link_and_individuals.json';
 
   /******************************************************************************************************
    * Configuration variables
@@ -76,7 +76,7 @@
 
   // Node label styles
   cb.defaultNodeLabelColor = '#000';
-  cb.activeNodeLabelStrokeStyle = "#fff";
+  cb.activeNodeLabelStrokeStyle = '#fff';
 
   cb.applyStyle = function (style) {
     switch (style) {
@@ -163,19 +163,19 @@
    * @type {{nodes: [*], links: [*]}}
    */
   Types.DataType = {
-    "nodes": [
+    nodes: [
       {
-        "nodeName": "string",
-        "label": "string",
-        "link": "string",
-        "numberOfLinks": 1
+        nodeName: '',
+        label: '',
+        link: '',
+        numberOfLinks: 0
       }
     ],
-    "links": [
+    links: [
       {
-        "source": 1,
-        "target": 1,
-        "relationName": "string"
+        source: 0,
+        target: 0,
+        relationName: ''
       }
     ]
   };
@@ -185,25 +185,25 @@
    * @type {{index: number, x: number, y: number, vx: number, vy: number, fx: number, fy: number, radius: number, nodeName: string, label: string, expandedLabel: Array, expandedLabelStart: number, link: string, numberOfLinks: number, dragged: boolean, highlighted: boolean, linkNode: boolean}}
    */
   Types.NodeType = {
-    "index": 0,
-    "x": 0,
-    "y": 0,
-    "vx": 0,
-    "vy": 0,
-    "fx": 0,
-    "fy": 0,
-    "color": 0,
-    "radius": 0,
-    "nodeName": "",
-    "label": "",
-    "expandedLabel": [],
-    "expandedLabelStart": 0,
-    "link": "",
-    "numberOfLinks": 0,
-    "individuals": "",
-    "dragged": false,
-    "highlighted": false,
-    "linkNode": false
+    index: 0,
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    fx: 0,
+    fy: 0,
+    color: 0,
+    radius: 0,
+    nodeName: '',
+    label: '',
+    expandedLabel: [],
+    expandedLabelStart: 0,
+    link: '',
+    numberOfLinks: 0,
+    individuals: '',
+    dragged: false,
+    highlighted: false,
+    linkNode: false
   };
 
   /**
@@ -211,9 +211,9 @@
    * @type {{source: number, target: number, relationName: string}}
    */
   Types.LinkType = {
-    "source": 0,
-    "target": 0,
-    "relationName": ""
+    source: 0,
+    target: 0,
+    relationName: ''
   };
 
   /******************************************************************************************************
@@ -526,10 +526,10 @@
     mouseMoveDisabled = !mouseMoveDisabled;
 
     if (!clickSend && node !== undefined) {
-      if (typeof node.link !== 'undefined' && node.link !== "") {
+      if (typeof node.link !== 'undefined' && node.link !== '') {
         clickSend = true;
         //noinspection JSCheckFunctionSignatures
-        parent.postMessage({'type': 'wiki_update', 'data': node.link}, "*");
+        parent.postMessage({'type': 'wiki_update', 'data': node.link}, '*');
         setTimeout(function () {
           clickSend = false;
         }, 250);
@@ -659,7 +659,7 @@
    */
   function moveToPosition(minX, maxX, minY, maxY, duration) {
     // Check duration
-    duration = typeof duration !== "undefined" ? duration : 3000;
+    duration = typeof duration !== 'undefined' ? duration : 3000;
 
     // Calculate scale
     var scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
@@ -720,7 +720,7 @@
         context.moveTo(0, j);
         context.lineTo(cb.mapWidth, j);
       }
-      context.strokeStyle = "black";
+      context.strokeStyle = 'black';
       context.stroke();
 
       // Draw canvas size rectangle
@@ -730,7 +730,7 @@
       context.lineTo(canvasWidth, canvasHeight);
       context.lineTo(0, canvasHeight);
       context.lineTo(0, 0);
-      context.strokeStyle = "blue";
+      context.strokeStyle = 'blue';
       context.stroke();
     }
 
@@ -1062,8 +1062,8 @@
   function colorNode(node, color) {
     node.color = color;
 
-    if (typeof(Storage) !== "undefined") {
-      localStorage.setItem("nodeColor." + node.label, color);
+    if (typeof(Storage) !== 'undefined') {
+      localStorage.setItem('nodeColor.' + node.label, color);
     }
   }
 
@@ -1076,7 +1076,7 @@
     });
 
     // Clear local storage
-    if (typeof(Storage) !== "undefined") {
+    if (typeof(Storage) !== 'undefined') {
       localStorage.clear();
     }
   }
@@ -1086,8 +1086,8 @@
    */
   function loadNodeColor(node) {
     node.color = 0;
-    if (typeof(Storage) !== "undefined") {
-      var color = localStorage.getItem("nodeColor." + node.label);
+    if (typeof(Storage) !== 'undefined') {
+      var color = localStorage.getItem('nodeColor.' + node.label);
       if (color !== null) {
         node.color = parseInt(color);
       }
@@ -1133,19 +1133,19 @@
      *****************************************************************************************************/
 
     cbSimulation = d3.forceSimulation()
-        .force("sidedetection", keepInBoxForce)     // To keep nodes in the map view
-        .force("charge", d3.forceManyBody()         // To keep nodes grouped
+        .force('sidedetection', keepInBoxForce)     // To keep nodes in the map view
+        .force('charge', d3.forceManyBody()         // To keep nodes grouped
             .distanceMin(cb.manyBodyDistanceMin)
             .distanceMax(cb.manyBodyDistanceMax)
             .strength(cb.manyBodyStrength))
-        .force("collide", d3.forceCollide()         // To prevent nodes from overlapping
+        .force('collide', d3.forceCollide()         // To prevent nodes from overlapping
             .radius(getNodeRadius)
             .strength(cb.collideStrength)
             .iterations(cb.collideIterations))
-        .force("link", d3.forceLink()               // To force a certain link distance
+        .force('link', d3.forceLink()               // To force a certain link distance
             .distance(getLinkDistance)
             .strength(cb.linkStrength))
-        .force("center",                            // To force the node to move around the map center
+        .force('center',                            // To force the node to move around the map center
             d3.forceCenter(cb.mapWidth / 2, cb.mapHeight / 2));
 
     // Retrieve the node data
@@ -1163,10 +1163,10 @@
         // Set default label values
         node.expandedLabelStart = 0;
         node.expandedLabel = [];
-        if (node.label === "") return;
+        if (node.label === '') return;
 
         // Calculate node text lines
-        var lines = node.label.split(" ");
+        var lines = node.label.split(' ');
         if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)) {
           node.expandedLabel = lines;
         } else {
@@ -1174,7 +1174,7 @@
           node.expandedLabel.push(lines[0]);
           for (var i = 1; i < lines.length; i++) {
             if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= cb.minCharCount) {
-              node.expandedLabel[node.expandedLabel.length - 1] += " " + lines[i];
+              node.expandedLabel[node.expandedLabel.length - 1] += ' ' + lines[i];
             } else {
               node.expandedLabel.push(lines[i]);
             }
@@ -1197,10 +1197,10 @@
 
       // Load data (nodes and links)
       cbSimulation.nodes(cbGraph.nodes.concat(cbGraph.linkNodes));
-      cbSimulation.force("link").links(cbGraph.links);
+      cbSimulation.force('link').links(cbGraph.links);
 
       // Load handlers for the tick event
-      cbSimulation.on("tick", function () {
+      cbSimulation.on('tick', function () {
 
         // Update link node positions
         cbGraph.linkNodes.map(function (linkNode) {
@@ -1215,15 +1215,15 @@
       // Create zoom handler
       cbZoom = d3.zoom()
           .scaleExtent(cb.zoomExtent)
-          .on("zoom", zoomGraph);
+          .on('zoom', zoomGraph);
 
       // Create drag handlers
       cbDrag = d3.drag()
           .container(canvas)
           .subject(findNode)
-          .on("start", onDragStarted)
-          .on("drag", onDragged)
-          .on("end", onDragEnded);
+          .on('start', onDragStarted)
+          .on('drag', onDragged)
+          .on('end', onDragEnded);
 
       // Add handlers to canvas
       cbCanvas = d3.select(canvas);
@@ -1232,13 +1232,13 @@
           .call(cbZoom)
           .on('mousemove', onMouseMove)
           .on('click', onClick)
-          .on("dblclick.zoom", onDoubleClick)
+          .on('dblclick.zoom', onDoubleClick)
           .on('contextmenu', onRightClick);
 
       // Add window handlers
       d3.select(window)
-          .on("resize", resizeCanvas)
-          .on("keydown", onKeyDown);
+          .on('resize', resizeCanvas)
+          .on('keydown', onKeyDown);
     });
 
     // Add message handler
@@ -1286,11 +1286,11 @@
     if (contextMenuNode === null) {
       // Global
       return {
-        "reset": {name: "Reset node colors", icon: 'fa-undo'},
-        "sep1": "---------",
-        "center": {name: "Back to center", icon: 'fa-sign-in'},
-        "sep2": "---------",
-        "quit": {name: "Close", icon: 'fa-times'}
+        'reset': {name: 'Reset node colors', icon: 'fa-undo'},
+        'sep1': '---------',
+        'center': {name: 'Back to center', icon: 'fa-sign-in'},
+        'sep2': '---------',
+        'quit': {name: 'Close', icon: 'fa-times'}
       };
     } else {
       // Node
@@ -1312,25 +1312,25 @@
             name: 'Examples',
             items: individualsItems
           },
-          sep1: "---------"
+          sep1: '---------'
         };
       }
 
       // Merge with default data
       var defaultData = {
-        "styles": {
-          name: "Change color",
+        'styles': {
+          name: 'Change color',
           items: {
-            "style-1": {name: "Red", icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
-            "style-2": {name: "Green", icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
-            "style-3": {name: "Blue", icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
-            "style-4": {name: "Orange", icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
-            "sep1": "---------",
-            "style-0": {name: "Default", icon: contextMenuNode.color === 0 ? 'fa-check' : 'fa-undo'}
+            'style-1': {name: 'Red', icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
+            'style-2': {name: 'Green', icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
+            'style-3': {name: 'Blue', icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
+            'style-4': {name: 'Orange', icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
+            'sep1': '---------',
+            'style-0': {name: 'Default', icon: contextMenuNode.color === 0 ? 'fa-check' : 'fa-undo'}
           }
         },
-        "sep2": "---------",
-        "quit": {name: "Close", icon: 'quit'}
+        'sep2': '---------',
+        'quit': {name: 'Close', icon: 'quit'}
       };
 
       return $.extend(individuals, defaultData);

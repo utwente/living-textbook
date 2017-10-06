@@ -5,19 +5,19 @@
  */
 $(function () {
   // Watermark the search field
-  var watermark = "Search";
-  var $search = $("#search");
+  var watermark = 'Search';
+  var $search = $('#search');
 
-  // Add "Search" watermark to the search box
-  $search.val(watermark).addClass("watermark")
+  // Add 'Search' watermark to the search box
+  $search.val(watermark).addClass('watermark')
       .blur(function () {
         if ($(this).val().length === 0) {
-          $(this).val(watermark).addClass("watermark");
+          $(this).val(watermark).addClass('watermark');
         }
       })
       .focus(function () {
         if ($(this).val() === watermark) {
-          $(this).val("").removeClass("watermark");
+          $(this).val('').removeClass('watermark');
         }
       });
 
@@ -28,7 +28,7 @@ $(function () {
       'async': false,
       'global': false,
       'url': cb.data_source,
-      'dataType': "json",
+      'dataType': 'json',
       'success': function (data) {
         json = data;
       }
@@ -54,7 +54,7 @@ $(function () {
 
   // Bind search result changed handler
   $search.change(function () {
-    var current = $search.typeahead("getActive");
+    var current = $search.typeahead('getActive');
     if (current === $search.val()) {
       cb.searchNode(current);
     }

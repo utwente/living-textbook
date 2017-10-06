@@ -39,7 +39,7 @@
     opened = true;
     readyHandler = typeof readyHandler === 'function' ? readyHandler : function () {
       if (!firstOpen) return;
-      document.getElementById("iframe_right").contentWindow.postMessage({
+      document.getElementById('iframe_right').contentWindow.postMessage({
         'type': 'cb_opened'
       }, '*');
     };
@@ -84,14 +84,14 @@
     if (fullScreen) {
       // Close full screen
       dragButton.doResize(fullScreenX, 0, undefined, true, function () {
-        $('#full_screen_button').find('span').html("Open full screen");
+        $('#full_screen_button').find('span').html('Open full screen');
       });
       moveContainersInner.fadeIn();
     } else {
       // Open full screen
       fullScreenX = lastX;
       dragButton.doResize(-moveContainersInner.innerWidth(), -moveContainersInner.innerWidth(), undefined, true, function () {
-        $('#full_screen_button').find('span').html("Close full screen");
+        $('#full_screen_button').find('span').html('Close full screen');
       });
       moveContainersInner.fadeOut();
     }
@@ -231,7 +231,7 @@
     var message = event.data;
     if (message.type === 'cb_update') {
       openButton.openWindow(function () {
-        document.getElementById("iframe_right").contentWindow.postMessage({
+        document.getElementById('iframe_right').contentWindow.postMessage({
           'type': 'cb_update_opened',
           'data': message.data
         }, '*');
