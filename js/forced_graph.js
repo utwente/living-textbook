@@ -1320,6 +1320,7 @@
       var defaultData = {
         'styles': {
           name: 'Change color',
+          icon: 'fa-paint-brush',
           items: {
             'style-1': {name: 'Red', icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
             'style-2': {name: 'Green', icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
@@ -1330,7 +1331,7 @@
           }
         },
         'sep2': '---------',
-        'quit': {name: 'Close', icon: 'quit'}
+        'quit': {name: 'Close', icon: 'fa-times'}
       };
 
       return $.extend(individuals, defaultData);
