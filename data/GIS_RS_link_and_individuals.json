@@ -4,7 +4,8 @@
       "nodeName": "http://vgibox.eu/Absolute_atmopsheric_correction",
       "label": "Absolute atmopsheric correction",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_atmospheric_disturbance",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Radiative transfer models"
     },
     {
       "nodeName": "http://vgibox.eu/Atmopsheric_correction",
@@ -22,13 +23,15 @@
       "nodeName": "http://vgibox.eu/Satellite-based_positioning",
       "label": "Satellite-based positioning",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=positioning_technology",
-      "numberOfLinks": "5"
+      "numberOfLinks": "5",
+      "individuals": "Galileo; GPS; GLONASS"
     },
     {
       "nodeName": "http://vgibox.eu/Absolute_ratio",
       "label": "Absolute ratio",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Nr. of inhabitants"
     },
     {
       "nodeName": "http://vgibox.eu/Ratio_data",
@@ -214,19 +217,22 @@
       "nodeName": "http://vgibox.eu/Sources_of_errors",
       "label": "Sources of errors",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=error_types",
-      "numberOfLinks": "4"
+      "numberOfLinks": "4",
+      "individuals": "Unknowns; Random; Instrumental; Human"
     },
     {
       "nodeName": "http://vgibox.eu/Automatic",
       "label": "Automatic",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=automatic_classification",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Equal interval; Equal frequency"
     },
     {
       "nodeName": "http://vgibox.eu/Raster_Reclassification",
       "label": "Raster Reclassification",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=automatic_classification",
-      "numberOfLinks": "4"
+      "numberOfLinks": "4",
+      "individuals": "user controlled; automatic"
     },
     {
       "nodeName": "http://vgibox.eu/Band_selection",
@@ -238,7 +244,8 @@
       "nodeName": "http://vgibox.eu/Image_requirement",
       "label": "Image requirement",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensors",
-      "numberOfLinks": "5"
+      "numberOfLinks": "5",
+      "individuals": "Temporal resolution; Spectral resolution; Spectral coverage; Spatial resolution; Spatial coverage; Radiometric resolution; Dynamic range"
     },
     {
       "nodeName": "http://vgibox.eu/Base_station",
@@ -280,7 +287,8 @@
       "nodeName": "http://vgibox.eu/Boundaries",
       "label": "Boundaries",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=boundaries",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Fuzzy; Crips"
     },
     {
       "nodeName": "http://vgibox.eu/Discrete_Field",
@@ -334,7 +342,8 @@
       "nodeName": "http://vgibox.eu/Digital_camera",
       "label": "Digital camera",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "6"
+      "numberOfLinks": "6",
+      "individuals": "Line/Pushbroom; Frame"
     },
     {
       "nodeName": "http://vgibox.eu/CMY",
@@ -364,7 +373,8 @@
       "nodeName": "http://vgibox.eu/Sensor",
       "label": "Sensor",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "OSA; MSS, ETM; HRG; DMC"
     },
     {
       "nodeName": "http://vgibox.eu/Carrier_phase_measurement",
@@ -379,16 +389,18 @@
       "numberOfLinks": "2"
     },
     {
-      "nodeName": "http://vgibox.eu/Raster_Proximity",
-      "label": "Raster Proximity",
-      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=diffuse_calculations",
-      "numberOfLinks": "3"
-    },
-    {
       "nodeName": "http://vgibox.eu/Surface_Analysis",
       "label": "Surface Analysis",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=raster_based_surface_analysis",
-      "numberOfLinks": "6"
+      "numberOfLinks": "6",
+      "individuals": "Slope convexity/concavity; Slope angle; Slope Aspect; Hillshade"
+    },
+    {
+      "nodeName": "http://vgibox.eu/Raster_Proximity",
+      "label": "Raster Proximity",
+      "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=diffuse_calculations",
+      "numberOfLinks": "3",
+      "individuals": "Spread; Diffusion"
     },
     {
       "nodeName": "http://vgibox.eu/Cellular_Automata",
@@ -400,7 +412,8 @@
       "nodeName": "http://vgibox.eu/Characteristic_of_time",
       "label": "Characteristic of time",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_temporal_dimension",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Valid; Transaction; Relative; Linear; Granularity; Discrete; Cyclic; Continuous; Branching; Absolute"
     },
     {
       "nodeName": "http://vgibox.eu/Time",
@@ -412,13 +425,15 @@
       "nodeName": "http://vgibox.eu/Class_Definition",
       "label": "Class Definition",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis#image_classification_process",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Objective of classification; Classification Schemes?; Aggregation level (output)"
     },
     {
       "nodeName": "http://vgibox.eu/Digital_Image_Classification",
       "label": "Digital Image Classification",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "7"
+      "numberOfLinks": "7",
+      "individuals": "User of classification output; Type of sensor; Techinical requirements/knowledge; Objective of image classfication; Designing classes and mapping approach"
     },
     {
       "nodeName": "http://vgibox.eu/Class_separability",
@@ -430,13 +445,15 @@
       "nodeName": "http://vgibox.eu/Training",
       "label": "Training",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Signatures; Sampling strategy; Sample size"
     },
     {
       "nodeName": "http://vgibox.eu/Classification_Algorithm",
       "label": "Classification Algorithm",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis#classification_algorithms",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Purpose of classification; Charactistics of training data; Charactistics of image data"
     },
     {
       "nodeName": "http://vgibox.eu/Clock_reading",
@@ -478,7 +495,8 @@
       "nodeName": "http://vgibox.eu/True_colour",
       "label": "True colour",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_visualization",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Natural colour; False colour"
     },
     {
       "nodeName": "http://vgibox.eu/Completeness",
@@ -490,13 +508,15 @@
       "nodeName": "http://vgibox.eu/Component",
       "label": "Component",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=model_components",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Variable; Parameter; Initial condition; Forcing function; Control function; Boundary condition; Boundaries; Agent"
     },
     {
       "nodeName": "http://vgibox.eu/Systems_model",
       "label": "Systems model",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis",
-      "numberOfLinks": "6"
+      "numberOfLinks": "6",
+      "individuals": "Transparency; Scale; Complexity"
     },
     {
       "nodeName": "http://vgibox.eu/Cone",
@@ -568,13 +588,15 @@
       "nodeName": "http://vgibox.eu/Coordinate_transformation",
       "label": "Coordinate transformation",
       "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20transformations/coordtrans.html",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Projection change; Geographic to geocentric conversion; Geocentric to geographic conversion; 3D geographic transformations; 3D geocentric transformations; 2D Cartesian transformations"
     },
     {
       "nodeName": "http://vgibox.eu/Correction_of_imperfections_of_a_sensor",
       "label": "Correction of imperfections of a sensor",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_atmospheric_disturbance",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Random noise; Periodic line dropouts; Line striping"
     },
     {
       "nodeName": "http://vgibox.eu/Correlation",
@@ -700,7 +722,8 @@
       "nodeName": "http://vgibox.eu/Decrease_local_contrast",
       "label": "Decrease local contrast",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_visualization",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Smoothing"
     },
     {
       "nodeName": "http://vgibox.eu/Filtering",
@@ -724,7 +747,8 @@
       "nodeName": "http://vgibox.eu/Optical_scanner",
       "label": "Optical scanner",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "8"
+      "numberOfLinks": "8",
+      "individuals": "whiskbroom"
     },
     {
       "nodeName": "http://vgibox.eu/Differential_positioning",
@@ -808,7 +832,8 @@
       "nodeName": "http://vgibox.eu/Ellipsoid",
       "label": "Ellipsoid",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_ellipsoid_spheroid&s%5B%5D=ellipsoid",
-      "numberOfLinks": "4"
+      "numberOfLinks": "4",
+      "individuals": "WGS84; GRS80; Clarke1880; Bessel"
     },
     {
       "nodeName": "http://vgibox.eu/Reference_surface",
@@ -820,7 +845,8 @@
       "nodeName": "http://vgibox.eu/Global_horizontal_datum",
       "label": "Global horizontal datum",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=global_horizontal_datum",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "WGS84; ITRF2008; ITRF2000; ETRS89"
     },
     {
       "nodeName": "http://vgibox.eu/Emissivity",
@@ -862,13 +888,15 @@
       "nodeName": "http://vgibox.eu/Orbit_characteristic",
       "label": "Orbit characteristic",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Repeat cycle; Period; Inclination angle; Altitude"
     },
     {
       "nodeName": "http://vgibox.eu/Feature_Space",
       "label": "Feature Space",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Feautre space plots; Distance in feature space"
     },
     {
       "nodeName": "http://vgibox.eu/Image",
@@ -880,13 +908,15 @@
       "nodeName": "http://vgibox.eu/Supervised_Image_Classfication_Algorithm",
       "label": "Supervised Image Classfication Algorithm",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "5"
+      "numberOfLinks": "5",
+      "individuals": "Minimum dstance to mean classifier; Maximum Likelihood classifier; Box classfier"
     },
     {
       "nodeName": "http://vgibox.eu/Field_survey",
       "label": "Field survey",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=field_survey",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Total Station; Optical; GPS"
     },
     {
       "nodeName": "http://vgibox.eu/Terrestrial_surveys",
@@ -970,7 +1000,8 @@
       "nodeName": "http://vgibox.eu/Geoid",
       "label": "Geoid",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=the_geoid",
-      "numberOfLinks": "4"
+      "numberOfLinks": "4",
+      "individuals": "EGM96; EGM2008"
     },
     {
       "nodeName": "http://vgibox.eu/Global_vertical_datum",
@@ -1000,7 +1031,8 @@
       "nodeName": "http://vgibox.eu/Histogram_operation",
       "label": "Histogram operation",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_visualization",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Piece wise linear; Linear; Histogram equalisation; Gamma"
     },
     {
       "nodeName": "http://vgibox.eu/Horizontal_datum",
@@ -1090,19 +1122,22 @@
       "nodeName": "http://vgibox.eu/Raster",
       "label": "Raster",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=raster",
-      "numberOfLinks": "6"
+      "numberOfLinks": "6",
+      "individuals": "Thematic raster map; Satellite image raster"
     },
     {
       "nodeName": "http://vgibox.eu/Image_Space",
       "label": "Image Space",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Spatial resolution; Radiometric resolution; Number of bands"
     },
     {
       "nodeName": "http://vgibox.eu/Image_characteristic",
       "label": "Image characteristic",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensors",
-      "numberOfLinks": "6"
+      "numberOfLinks": "6",
+      "individuals": "Temporal resolution; Spectral resolution; Spectral coverage; Spatial resolution; Spatial coverage; Radiometric resolution; Dynamic range"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_problem",
@@ -1114,7 +1149,8 @@
       "nodeName": "http://vgibox.eu/Sensor_characteristic",
       "label": "Sensor characteristic",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Spectral sensitivity; Spectral bands; Quantisation/ A/D conversion; Dynamic range"
     },
     {
       "nodeName": "http://vgibox.eu/Radiometric_operations",
@@ -1126,7 +1162,8 @@
       "nodeName": "http://vgibox.eu/Increase_local_contrast",
       "label": "Increase local contrast",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_visualization",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Edge enhancement"
     },
     {
       "nodeName": "http://vgibox.eu/Spatial_Autocorrelation",
@@ -1138,7 +1175,8 @@
       "nodeName": "http://vgibox.eu/Interval_data",
       "label": "Interval data",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=interval",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Temperature"
     },
     {
       "nodeName": "http://vgibox.eu/Quantitative_data",
@@ -1162,7 +1200,8 @@
       "nodeName": "http://vgibox.eu/Irregular_Tessellation",
       "label": "Irregular Tessellation",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=irregular_tessellation",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "QuadTree"
     },
     {
       "nodeName": "http://vgibox.eu/Tessellation",
@@ -1174,7 +1213,8 @@
       "nodeName": "http://vgibox.eu/Join",
       "label": "Join",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=join",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "right join; left join; full outer join; equi join"
     },
     {
       "nodeName": "http://vgibox.eu/Relation",
@@ -1222,7 +1262,8 @@
       "nodeName": "http://vgibox.eu/Local_horizontal_datum",
       "label": "Local horizontal datum",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=local_horizontal_datum&s%5B%5D=local&s%5B%5D=horizontal",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Potsdam (German); Leigon (Ghana); Amersfoort (Dutch)"
     },
     {
       "nodeName": "http://vgibox.eu/Local_vertical_datum",
@@ -1294,43 +1335,50 @@
       "nodeName": "http://vgibox.eu/Map_item",
       "label": "Map item",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=visualization_map_cosmetics",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Title; Scale bar; North arrow; Map projection; Map margin; Map image; Legend; Bibliographic information"
     },
     {
       "nodeName": "http://vgibox.eu/Map_projection",
       "label": "Map projection",
       "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
-      "numberOfLinks": "5"
+      "numberOfLinks": "5",
+      "individuals": "Stereographic; Mercator; Albers equal-area conic"
     },
     {
       "nodeName": "http://vgibox.eu/Distortion_property",
       "label": "Distortion property",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_projections&s%5B%5D=distortion",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Other; Equivalent; Equidistant; Conformal"
     },
     {
       "nodeName": "http://vgibox.eu/Projection_class",
       "label": "Projection class",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_projections&s%5B%5D=projection&s%5B%5D=class#map_projections",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Other; Cylindrical; Conical; Azimuthal"
     },
     {
       "nodeName": "http://vgibox.eu/Map_symbol",
       "label": "Map symbol",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=bertins_variables",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Text; Point symbol; Line symbol; Area symbol"
     },
     {
       "nodeName": "http://vgibox.eu/Map_type",
       "label": "Map type",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_type",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Proportional point symbol map; Piechart map; Isoline map; Flowline map; Dot map; Choropleth map; Chorochromatic map; Cartogram"
     },
     {
       "nodeName": "http://vgibox.eu/Mean_sea_level",
       "label": "Mean sea level",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=mean_seal_level&s%5B%5D=mean&s%5B%5D=sea",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Oostende (Belgium); NAP (Dutch); Lagos1955"
     },
     {
       "nodeName": "http://vgibox.eu/Measurement",
@@ -1342,7 +1390,8 @@
       "nodeName": "http://vgibox.eu/Mechanical_component",
       "label": "Mechanical component",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Rotating mirror"
     },
     {
       "nodeName": "http://vgibox.eu/Mobile_GIS",
@@ -1384,7 +1433,8 @@
       "nodeName": "http://vgibox.eu/Network_Characteristics",
       "label": "Network Characteristics",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis&s%5B%5D=network&s%5B%5D=characteristics",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "undirected; single-modal; planar; non-planar; multi-modal; directed"
     },
     {
       "nodeName": "http://vgibox.eu/Network_Allocation",
@@ -1402,13 +1452,15 @@
       "nodeName": "http://vgibox.eu/Network_Particioning",
       "label": "Network Particioning",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=network_analysis#network_partitioning",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Tracing; Network allocation"
     },
     {
       "nodeName": "http://vgibox.eu/Nominal_data",
       "label": "Nominal data",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=nominal",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Landuse"
     },
     {
       "nodeName": "http://vgibox.eu/Qualitative_data",
@@ -1438,7 +1490,8 @@
       "nodeName": "http://vgibox.eu/Object_based_classifcation",
       "label": "Object based classifcation",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Very high resolution imagery; Use of imge feature beyong spectral domain; Image segementation; Extracting of real-world meaningful objects; Dealing with cons of pixel based approaches"
     },
     {
       "nodeName": "http://vgibox.eu/Observation",
@@ -1462,13 +1515,15 @@
       "nodeName": "http://vgibox.eu/Optimal_Path_Finding",
       "label": "Optimal Path Finding",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=optimal_path_finding&s%5B%5D=optimal&s%5B%5D=path",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Unordered; Ordered"
     },
     {
       "nodeName": "http://vgibox.eu/Orbit",
       "label": "Orbit",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_sensor_optical",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Sun-synchronous; Polar/near-polar; Geostationary"
     },
     {
       "nodeName": "http://vgibox.eu/Satellite",
@@ -1486,7 +1541,8 @@
       "nodeName": "http://vgibox.eu/Ordinal_data",
       "label": "Ordinal data",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Road classes"
     },
     {
       "nodeName": "http://vgibox.eu/Overlay_Analysis",
@@ -1504,19 +1560,22 @@
       "nodeName": "http://vgibox.eu/Perception_property",
       "label": "Perception property",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=bertins_variables&s%5B%5D=perception",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Selective; Quantitative; Ordered; Associative"
     },
     {
       "nodeName": "http://vgibox.eu/Visual_variable",
       "label": "Visual variable",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=bertins_variables",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Value; Texture; Size; Orientation; Form; Color"
     },
     {
       "nodeName": "http://vgibox.eu/Pixel_based_classifcation",
       "label": "Pixel based classifcation",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Spectral classes; Moderate and low resolution imagery; Mixed pixel problems; Extraction of thematic classes related to"
     },
     {
       "nodeName": "http://vgibox.eu/Polygon",
@@ -1588,13 +1647,15 @@
       "nodeName": "http://vgibox.eu/Raster_Measurements",
       "label": "Raster Measurements",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=measurement_functions#standard_distance_function",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "anchor point"
     },
     {
       "nodeName": "http://vgibox.eu/Raster_Overlay",
       "label": "Raster Overlay",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=map_algebra",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Decision table; Conditional expression; Comparison and logical operators; Arithmetic operators"
     },
     {
       "nodeName": "http://vgibox.eu/Reclassification",
@@ -1636,7 +1697,8 @@
       "nodeName": "http://vgibox.eu/Validation_of_results",
       "label": "Validation of results",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Samping design; Overall accuracy; Kappa; Ground reference points; Confusion matrix"
     },
     {
       "nodeName": "http://vgibox.eu/Reflectance",
@@ -1678,19 +1740,22 @@
       "nodeName": "http://vgibox.eu/Relative_atmospheric_correction",
       "label": "Relative atmospheric correction",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_atmospheric_disturbance",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Two reflectance; Two reference surfaces"
     },
     {
       "nodeName": "http://vgibox.eu/Relative_ratio",
       "label": "Relative ratio",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_types_and_values&s%5B%5D=ratio",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Population density"
     },
     {
       "nodeName": "http://vgibox.eu/Remote_sensing",
       "label": "Remote sensing",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=data_entry_rs",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "satellite; aerial"
     },
     {
       "nodeName": "http://vgibox.eu/Resolution",
@@ -1714,7 +1779,8 @@
       "nodeName": "http://vgibox.eu/Satellite-based_augmentation_system",
       "label": "Satellite-based augmentation system",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=positioning_technology",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "WAAS; MSAS; EGNOS"
     },
     {
       "nodeName": "http://vgibox.eu/Scanning",
@@ -1840,7 +1906,8 @@
       "nodeName": "http://vgibox.eu/Spectral_reflectance",
       "label": "Spectral reflectance",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=emradiation",
-      "numberOfLinks": "5"
+      "numberOfLinks": "5",
+      "individuals": "Water; Vegetation; Soil"
     },
     {
       "nodeName": "http://vgibox.eu/Land_cover",
@@ -1864,7 +1931,8 @@
       "nodeName": "http://vgibox.eu/Statistical_parameter",
       "label": "Statistical parameter",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=rs_visualization",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "SD; Min/Max; Frequency; Cummulative %"
     },
     {
       "nodeName": "http://vgibox.eu/Stefan_boltzman's_law",
@@ -1900,19 +1968,22 @@
       "nodeName": "http://vgibox.eu/System",
       "label": "System",
       "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Interactions; Emergent properties; Elements"
     },
     {
       "nodeName": "http://vgibox.eu/Dimensions",
       "label": "Dimensions",
       "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Time; Structure; Space"
     },
     {
       "nodeName": "http://vgibox.eu/System_Modelling",
       "label": "System Modelling",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=models_gis",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "Problem Analysis; Model Implementation; Model Formulation; Conceptual Modelling; Application"
     },
     {
       "nodeName": "http://vgibox.eu/Systems_Dynamics",
@@ -1930,7 +2001,8 @@
       "nodeName": "http://vgibox.eu/Triangulated_Irregular_Networks",
       "label": "Triangulated Irregular Networks",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=tin",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Delaunay"
     },
     {
       "nodeName": "http://vgibox.eu/Table",
@@ -1978,7 +2050,8 @@
       "nodeName": "http://vgibox.eu/Topology",
       "label": "Topology",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=topology",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "3-dimensional; 2-dimensional"
     },
     {
       "nodeName": "http://vgibox.eu/Training_set",
@@ -2026,19 +2099,22 @@
       "nodeName": "http://vgibox.eu/Membership_functions",
       "label": "Membership functions",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=uncertainty_naturaldata",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Fuzzy; Boolean"
     },
     {
       "nodeName": "http://vgibox.eu/Uncertainty_analysis",
       "label": "Uncertainty analysis",
       "link": "http://kartoweb.itc.nl/geometrics/Coordinate%20systems/coordsys.html",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Sensitivity"
     },
     {
       "nodeName": "http://vgibox.eu/Unsupervised_Image_Classification_Algorithm",
       "label": "Unsupervised Image Classification Algorithm",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=digital_image_analysis",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "K-mean; Isodata"
     },
     {
       "nodeName": "http://vgibox.eu/User_Controlled",
@@ -2050,7 +2126,8 @@
       "nodeName": "http://vgibox.eu/Vector_Reclassification",
       "label": "Vector Reclassification",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=classification_functions",
-      "numberOfLinks": "3"
+      "numberOfLinks": "3",
+      "individuals": "post processing"
     },
     {
       "nodeName": "http://vgibox.eu/Validation",
@@ -2062,13 +2139,15 @@
       "nodeName": "http://vgibox.eu/Vector_Measurements",
       "label": "Vector Measurements",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=measurement_functions",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Centroid; Bounding box"
     },
     {
       "nodeName": "http://vgibox.eu/Vector_Overlay",
       "label": "Vector Overlay",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=overlay_functions",
-      "numberOfLinks": "2"
+      "numberOfLinks": "2",
+      "individuals": "Overwrite; Intersect; Clip"
     },
     {
       "nodeName": "http://vgibox.eu/Verification",
@@ -2098,7 +2177,8 @@
       "nodeName": "http://vgibox.eu/Visibility_analysis",
       "label": "Visibility analysis",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=gis_analysis_processes&s%5B%5D=viewshed",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Viewshed; Line of sight"
     },
     {
       "nodeName": "http://vgibox.eu/Visible_light",
@@ -2110,7 +2190,8 @@
       "nodeName": "http://vgibox.eu/Volumetric_analysis",
       "label": "Volumetric analysis",
       "link": "https://itc-giscience.utwente.nl/doku/doku.php?id=raster_based_surface_analysis",
-      "numberOfLinks": "1"
+      "numberOfLinks": "1",
+      "individuals": "Cut/fill"
     },
     {
       "nodeName": "http://vgibox.eu/Wavelength_and_frequency",
@@ -3617,12 +3698,12 @@
       "relationName": "is used by"
     },
     {
-      "source": 63,
+      "source": 64,
       "target": 227,
       "relationName": "is a kind of"
     },
     {
-      "source": 63,
+      "source": 64,
       "target": 194,
       "relationName": "is used by"
     },
@@ -4132,12 +4213,12 @@
       "relationName": "is a kind of"
     },
     {
-      "source": 64,
+      "source": 63,
       "target": 20,
       "relationName": "is a kind of"
     },
     {
-      "source": 64,
+      "source": 63,
       "target": 194,
       "relationName": "is used by"
     },
@@ -4188,7 +4269,7 @@
     },
     {
       "source": 320,
-      "target": 64,
+      "target": 63,
       "relationName": "is used by"
     },
     {
@@ -4423,12 +4504,12 @@
     },
     {
       "source": 340,
-      "target": 37,
+      "target": 341,
       "relationName": "is a kind of"
     },
     {
       "source": 340,
-      "target": 341,
+      "target": 37,
       "relationName": "is a kind of"
     },
     {
@@ -4513,7 +4594,7 @@
     },
     {
       "source": 349,
-      "target": 64,
+      "target": 63,
       "relationName": "is a kind of"
     },
     {
@@ -4548,7 +4629,7 @@
     },
     {
       "source": 351,
-      "target": 64,
+      "target": 63,
       "relationName": "is a kind of"
     },
     {

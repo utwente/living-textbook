@@ -1,0 +1,10 @@
+span.concept-browser-link {
+  cursor: pointer;
+  color: #e68c1f;
+  text-decoration: none;
+}
+
+span.concept-browser-link:hover {
+  color: #7c4b19;
+  text-decoration: underline;
+}

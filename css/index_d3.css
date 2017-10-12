@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: #edeff1;
+}
+
+#graph_container_div {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.button-container {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  z-index: 100;
+}
+
+#search-div, #readme-button-div {
+  height: 30px;
+  width: 40%;
+  max-width: 300px;
+}
+
+#search, #readme-button {
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  margin: 1px;
+}
+
+#search-div {
+  left: 0;
+}
+
+#readme-button-div {
+  left: unset;
+  right: 0;
+}
+
+text {
+  font-family: sans-serif;
+  pointer-events: none;
+}
+
+.nodeLabel {
+  text-shadow: 0 0 0.2em #ffffff;
+}
+
+.linklabel {
+  font-size: 0.8em;
+  -webkit-text-stroke: 2px white;
+}
+
+ul.ui-autocomplete.ui-menu {
+  background-color: white;
+  font-size: 11px;
+  width: auto;
+  list-style-type: none;
+  padding: 0 4px;
+}
+
+li.ui-menu-item > div {
+  padding: 2px;
+  margin: 3px 5px;
+}
+
+div.ui-helper-hidden-accessible {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.vertical_text {
+  transform: rotate(90deg);
+}
+
+input.watermark {
+  color: #999;
+}
+
+input {
+  padding: 2px;
+}

@@ -1,0 +1,40 @@
+stages:
+  - docker
+  - prepare
+  - static
+
+build-docker:
+  stage: docker
+  image: docker
+  before_script:
+    - docker pull docker
+    - docker pull node:latest
+    - docker pull hyzual/jshint
+  script:
+    - docker build -t drenso/013_nodejs:latest tests/docker/nodejs
+
+install-dependencies:
+  stage: prepare
+  image: drenso/013_nodejs
+  dependencies:
+    - build-docker
+  script:
+    - bower install --allow-root
+
+js-analysis:
+  stage: static
+  image: docker
+  before_script:
+    - cp tests/jshint/.jshintignore .
+  script:
+    - docker run --rm -v $(pwd):/lint hyzual/jshint js dokuwiki --verbose --config tests/jshint/config
+
+css-analysis:
+  stage: static
+  image: drenso/013_nodejs
+  dependencies:
+    - build-docker
+  before_script:
+    - cp tests/csslint/.csslintrc .
+  script:
+    - csslint css dokuwiki
