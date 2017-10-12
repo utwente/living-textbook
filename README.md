@@ -11,6 +11,25 @@
 * Run `bower install` (if you do not know bower, check it's [documentation](https://bower.io/)).
 * Open `index.html` to see the page and the concept map.
 
+### Updating the live server
+
+* SSH to the server: `linux243.utsp.utwente.nl`, use your UT-account as credentials
+* Move to `itc-giscience.utwente.nl/webroot`
+* `git pull` to update the concept browser
+* If necessary, update the bower components (see below).
+
+**Data structure:**
+* `data`: Contains the dokuwiki files and data
+* `webroot`: Contains the GIT-clone of the Living Textbook concept browser 
+> *Note*: In `webroot` two files (symlinks) are added, `doku` -> `../data/doku` & `doku.php` -> `dokuwiki/doku.php`.
+
+**Dependencies:**
+
+For the external dependencies `bower` is used, which unfortunately is not available on the UT-server. In order to install or update the components, copy the `bower_components` folder from your local machine into the `webroot` directory.
+
+### Dokuwiki plugin
+In the `dokuwiki` folder there is a plugin named `conceptbrowserlinker`, which is installed in dokuwiki. You can install this by zipping the folder and add it using the dokuwiki interface.
+
 ### Triplestore
 The repository contains `Sparql_to_JSON.html`. If you run it you will have a simple interface/form to create and execute SPARQL queries. The response will be transformed into a proper JSON to build a concept map.    
 Before you start playing with the code install some software: 
