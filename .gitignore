@@ -1,2 +1,10 @@
 .idea
 bower_components
+composer.phar
+
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
