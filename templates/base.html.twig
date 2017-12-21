@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Living Textbook by ITC, University of Twente{% endblock %}</title>
+
+  {% block default_javascripts %}
+    <!-- Default JS -->
+    <script src="{{ asset('build/manifest.js') }}"></script>
+    <script src="{{ asset('build/vendor.js') }}"></script>
+    <script src="{{ asset('build/js/app.js') }}"></script>
+  {% endblock %}
+
+  <!-- Included JS -->
+  {% block javascripts %}{% endblock %}
+
+  <!-- Default CSS -->
+  {% block default_stylesheets%}
+    <link rel="stylesheet" href="{{ asset('build/vendor.css') }}" />
+    <link rel="stylesheet" href="{{ asset('build/css/app.css') }}" />
+  {% endblock %}
+
+  <!-- Included CSS -->
+  {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% block content %}{% endblock %}
+
+{% block javascripts_bottom %}{% endblock %}
+</body>
+</html>
