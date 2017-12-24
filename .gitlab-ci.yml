@@ -1,40 +1,90 @@
 stages:
   - docker
-#  - prepare
-#  - static
+  - prepare
+  - static
+  - tests
 
 build-docker:
   stage: docker
   image: docker
   before_script:
-    - docker pull docker
+    - docker pull cloudflare/phan:latest
+    - docker pull docker:latest
+    - docker pull hyzual/jshint:latest
     - docker pull node:latest
-    - docker pull hyzual/jshint
+    - docker pull php:7.1-cli
+    - docker pull python:latest
   script:
-    - docker build -t drenso/013_nodejs:latest tests/docker/nodejs
+    - docker build -t drenso/013_sasslint:latest tests/docker/sasslint
+    - docker build -t drenso/013_php:latest tests/docker/php
+    - docker build -t drenso/013_yamllint:latest tests/docker/yamllint
+  tags:
+    - docker
 
-#install-dependencies:
-#  stage: prepare
-#  image: drenso/013_nodejs
-#  dependencies:
-#    - build-docker
-#  script:
-#    - bower install --allow-root
-#
-#js-analysis:
-#  stage: static
-#  image: docker
-#  before_script:
-#    - cp tests/jshint/.jshintignore .
-#  script:
-#    - docker run --rm -v $(pwd):/lint hyzual/jshint js dokuwiki --verbose --config tests/jshint/config
-#
-#css-analysis:
-#  stage: static
-#  image: drenso/013_nodejs
-#  dependencies:
-#    - build-docker
-#  before_script:
-#    - cp tests/csslint/.csslintrc .
-#  script:
-#    - csslint css dokuwiki
+install-dependencies:
+  stage: prepare
+  image: drenso/013_php
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
+    expire_in: 1 hour
+    paths:
+      - app/bootstrap.php.cache
+      - var/cache/
+      - vendor/
+  before_script:
+    - ./install-composer.sh
+  script:
+    - php composer.phar install --no-interaction --no-progress --no-suggest
+  after_script:
+    - find vendor/ -name .git -type d -exec rm -rf {} \+
+  tags:
+    - docker
+
+php-analysis:
+  stage: static
+  image:
+    name: cloudflare/phan:latest
+    entrypoint: [ "" ]
+  dependencies:
+    - install-dependencies
+  script:
+    - php7 /opt/phan/phan -k tests/phan/config.php
+  tags:
+    - docker
+
+js-analysis:
+  stage: static
+  image:
+    name: hyzual/jshint
+    entrypoint: [ "" ]
+  dependencies: []
+  before_script:
+    - cp tests/jshint/.jshintignore .
+  script:
+    - /usr/bin/jshint src --verbose --config tests/jshint/config
+  tags:
+    - docker
+
+yaml-analysis:
+  stage: static
+  image: drenso/013_yamllint
+  dependencies: []
+  # This needs to be removed once https://github.com/adrienverge/yamllint/issues/30 is fixed
+  before_script:
+    - "find src -type f -name *.yml -exec sed -ri 's/(_controller: )([a-zA-Z]+:[a-zA-Z\\/]+:[a-zA-Z]+)/\\1\\\"\\2\\\"/g' {} \\;"
+    - "find config -type f -name *.yml -exec sed -ri 's/(_controller: )([a-zA-Z]+:[a-zA-Z\\/]+:[a-zA-Z]+)/\\1\\\"\\2\\\"/g' {} \\;"
+  script:
+    - yamllint -c tests/yamllint/config config src
+  tags:
+    - docker
+
+sass-analysis:
+  stage: static
+  image: drenso/013_sasslint
+  dependencies: []
+  before_script:
+    - cp tests/sass-lint/.sass-lint.yml .
+  script:
+    - sass-lint assets/css
+  tags:
+    - docker
