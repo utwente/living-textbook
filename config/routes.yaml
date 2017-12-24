@@ -1,3 +1,8 @@
-#index:
-#    path: /
-#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+logout:
+  path: /logout
+  schemes:  [ https ]
+
+_home:
+  path: /
+  defaults: { _controller: 'App\Controller\DefaultController::forwardHome' }
+  schemes:  [ https ]

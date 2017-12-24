@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
   <title>{% block title %}Living Textbook by ITC, University of Twente{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {% block default_javascripts %}
     <!-- Default JS -->
@@ -24,7 +25,7 @@
   {% block stylesheets %}{% endblock %}
 </head>
 <body>
-{% block content %}{% endblock %}
+{% block base_content %}{% endblock %}
 
 {% block javascripts_bottom %}{% endblock %}
 </body>

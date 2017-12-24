@@ -1,3 +1,5 @@
 controllers:
-  resource: ../../src/Controller/
   type: annotation
+  resource: ../../src/Controller/
+  prefix: /{_locale}
+  schemes: [ https ]

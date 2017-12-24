@@ -1,0 +1,50 @@
+{% macro flashbag_alert(type, message, icon, close) %}
+  <div class="alert alert-{{ type }}{% if close %} alert-dismissible{% endif %} fade in" role="alert">
+    {% if icon is not null %}
+      <span class="fa fa-fw {{ icon }}" aria-hidden="true"></span>
+    {% endif %}
+    {% if close %}
+      <button type="button" class="close" data-dismiss="alert" aria-label="{{ "general.close"|trans }}">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    {% endif %}
+    {{ message }}
+  </div>
+{% endmacro %}
+
+{% spaceless %}
+  <div id="flashbag-container">
+    {% block flashbags %}
+      {% from _self import flashbag_alert as flashbag_alert %}
+
+      {# Authentication error messages #}
+      {% for flashMessage in app.session.flashbag.get('authError') %}
+        {{ flashbag_alert('danger', flashMessage, 'fa-exclamation-triangle', false) }}
+      {% endfor %}
+
+      {# General error messages #}
+      {% for flashMessage in app.session.flashbag.get('error') %}
+        {{ flashbag_alert('danger', flashMessage, 'fa-exclamation-triangle', true) }}
+      {% endfor %}
+
+      {# General notice message #}
+      {% for flashMessage in app.session.flashbag.get('warning') %}
+        {{ flashbag_alert('warning', flashMessage, 'fa-exclamation', true) }}
+      {% endfor %}
+
+      {# General success messages #}
+      {% for flashMessage in app.session.flashbag.get('success') %}
+        {{ flashbag_alert('success', flashMessage, 'fa-check', true) }}
+      {% endfor %}
+
+      {# General info messages #}
+      {% for flashMessage in app.session.flashbag.get('info') %}
+        {{ flashbag_alert('info', flashMessage, 'fa-info', true) }}
+      {% endfor %}
+      {% for flashMessage in app.session.flashbag.get('notice') %}
+        {{ flashbag_alert('info', flashMessage, 'fa-info', true) }}
+      {% endfor %}
+
+    {% endblock %}
+  </div>
+{% endspaceless %}

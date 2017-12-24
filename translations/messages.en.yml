@@ -1,0 +1,5 @@
+login:
+  login: "Login"
+  login-text: "Before you can continue, you will need to login."
+  password: "Password"
+  username: "Username"

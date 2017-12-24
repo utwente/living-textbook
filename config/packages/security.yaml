@@ -1,0 +1,16 @@
+security:
+  # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+  providers:
+    in_memory: { memory: ~ }
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      pattern: ^/
+      anonymous: true
+
+  access_control:
+    - { path: ^/_wdt/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/_profiler/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY  }
+    - { path: ^/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }

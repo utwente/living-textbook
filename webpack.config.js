@@ -16,7 +16,8 @@ Encore
 
     .createSharedEntry('vendor', [
       'jquery',
-      'bootstrap-sass',
+      'popper.js',
+      'bootstrap',
 
       // you can also extract CSS - this will create a 'vendor.css' file
       // this CSS will *not* be included in page1.css or page2.css anymore
@@ -28,6 +29,11 @@ Encore
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     .autoProvidejQuery()
+
+    // Provide popper global var for bootstrap
+    .autoProvideVariables({
+      Popper: ['popper.js', 'default']
+    })
 ;
 
 module.exports = Encore.getWebpackConfig();
