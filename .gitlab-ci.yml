@@ -74,7 +74,7 @@ yaml-analysis:
     - "find src -type f -name *.yml -exec sed -ri 's/(_controller: )([a-zA-Z]+:[a-zA-Z\\/]+:[a-zA-Z]+)/\\1\\\"\\2\\\"/g' {} \\;"
     - "find config -type f -name *.yml -exec sed -ri 's/(_controller: )([a-zA-Z]+:[a-zA-Z\\/]+:[a-zA-Z]+)/\\1\\\"\\2\\\"/g' {} \\;"
   script:
-    - yamllint -c tests/yamllint/config config src
+    - yamllint -c tests/yamllint/config config
   tags:
     - docker
 

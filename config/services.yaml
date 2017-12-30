@@ -2,6 +2,10 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
   locale: 'en'
+  kickin.exceptionhandler.configuration.class: App\ExceptionHandler\ExceptionHandlerConfiguration
+  app_version: "%env(APP_VERSION)%"
+  production_server: "%env(PRODUCTION_SERVER)%"
+  exception_receiver: "%env(EXCEPTION_RECEIVER)%"
 
 services:
   # default configuration for services in *this* file
