@@ -1,4 +1,63 @@
 {% extends '_layout/base.html.twig' %}
 
+{% block javascripts %}
+  <script src="{{ asset('build/double-column.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('build/double-column.css') }}"/>
+{% endblock %}
+
 {% block base_content %}
+  <div id="double-column-container">
+    <div id="invisible-frame"></div>
+    <div id="left-container">
+      <div class="animation-opacity-container">
+        <div id="open-button">
+          <i class="fa fa-angle-left"></i>
+          <span>{{ 'browser.open'|trans }}</span>
+        </div>
+        <div id="left-container-content">
+          {% block content_left %}{% endblock %}
+        </div>
+      </div>
+    </div>
+    <div id="draggable-bar">
+      <div id="draggable-bar-inner">
+        <div id="button-container">
+          <button id="drag-button" class="drag-window">
+            <span>Drag button</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="right-container">
+      <div class="animation-opacity-container">
+        <div id="concept-browser-controls" class="container-fluid">
+          <div class="row justify-content-between">
+            <div class="search-container">
+              <input id="search" title="Search" class="form-control form-control-sm" autocomplete="off">
+            </div>
+            <div class="action-container">
+              <button id="close-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.close'|trans }}">
+                <i class="fa fa-fw fa-times"></i>
+              </button>
+              <button id="fullscreen-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.fullscreen-toggle'|trans }}">
+                <i class="fa fa-fw fa-arrows-alt"></i>
+              </button>
+              <button class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.readme'|trans }}">
+                <i class="fa fa-fw fa-file-text"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="right-container-content">
+          {% block content_right %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

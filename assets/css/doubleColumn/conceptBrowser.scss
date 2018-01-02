@@ -1,0 +1,20 @@
+#concept-browser-controls {
+  z-index: 85;
+  position: absolute;
+
+  .search-container, .action-container {
+    width: 40%;
+    max-width: 300px;
+    padding: 2px;
+  }
+
+  .search-container {
+    .typeahead.dropdown-menu {
+      width: auto !important;
+    }
+  }
+
+  .action-container {
+    text-align: right;
+  }
+}

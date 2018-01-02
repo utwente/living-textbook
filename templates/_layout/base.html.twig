@@ -7,26 +7,25 @@
 
   {% block default_javascripts %}
     <!-- Default JS -->
-    <script src="{{ asset('build/manifest.js') }}"></script>
-    <script src="{{ asset('build/vendor.js') }}"></script>
-    <script src="{{ asset('build/js/app.js') }}"></script>
+    <script src="{{ asset('build/manifest.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('build/vendor.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('build/app.js') }}" type="text/javascript"></script>
   {% endblock %}
 
   <!-- Included JS -->
   {% block javascripts %}{% endblock %}
 
   <!-- Default CSS -->
-  {% block default_stylesheets%}
-    <link rel="stylesheet" href="{{ asset('build/vendor.css') }}" />
-    <link rel="stylesheet" href="{{ asset('build/css/app.css') }}" />
+  {% block default_stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/vendor.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}"/>
   {% endblock %}
 
   <!-- Included CSS -->
   {% block stylesheets %}{% endblock %}
 </head>
 <body>
-{% block base_content %}{% endblock %}
-
-{% block javascripts_bottom %}{% endblock %}
+  {% block base_content %}{% endblock %}
+  {% block javascripts_bottom %}{% endblock %}
 </body>
 </html>

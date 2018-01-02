@@ -1,0 +1,128 @@
+@import '../vars/vars';
+
+body, .double-column-container {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#invisible-frame {
+  background-color: unset;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+#left-container, #right-container, #draggable-bar {
+  background-color: $background-color;
+  height: 100%;
+  box-sizing: border-box;
+  float: left;
+}
+
+#left-container {
+  width: 100%;
+  z-index: 10;
+}
+
+#right-container {
+  width: 0;
+  z-index: 50;
+  position: absolute;
+  right: 0;
+
+  .animation-opacity-container {
+    opacity: 0;
+  }
+}
+
+#draggable-bar {
+  z-index: 80;
+
+  > #draggable-bar-inner {
+    background-color: $drag-background-color;
+    display: table;
+    position: absolute;
+    width: 18px;
+    height: 100%;
+    z-index: 80;
+
+    .drag-window {
+      z-index: 80;
+      background-color: $drag-background-color;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      width: 18px;
+      height: 25%;
+      font-size: 0;
+      text-indent: -9999px;
+      box-shadow: none;
+      border-radius: 0;
+      border: none;
+      transition: background 0.3s;
+      cursor: ew-resize;
+
+      &:focus {
+        outline: none;
+      }
+
+      span {
+        display: block;
+        width: 2px;
+        height: 100%;
+        margin: 0 auto;
+        background: $drag-stripes-color;
+
+        &:before {
+          left: 3px;
+        }
+        &:after {
+          right: 3px;
+        }
+        &:before, &:after {
+          position: absolute;
+          display: block;
+          top: 0;
+          width: 2px;
+          height: 100%;
+          background-color: $drag-stripes-color;
+          content: "";
+        }
+      }
+    }
+  }
+}
+
+#button-container {
+  display: table-cell;
+  vertical-align: middle;
+  z-index: 80;
+}
+
+#open-button {
+  position: absolute;
+  right: 0;
+  height: $open-button-size;
+  z-index: 30;
+
+  > i.fa, > span {
+    height: 100%;
+    float: left;
+  }
+  > i.fa {
+    line-height: $open-button-size - (0.05 * $open-icon-size);
+    font-size: $open-icon-size - (0.25 * $open-icon-size);
+    color: $drag-stripes-color;
+  }
+  > span {
+    writing-mode: tb-rl;
+    text-align: center;
+  }
+}
+
+@import 'conceptBrowser.scss';

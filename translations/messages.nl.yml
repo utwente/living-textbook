@@ -1,3 +1,10 @@
+browser:
+  actions: "Acties"
+  close: "Sluit de concept browser"
+  fullscreen-toggle: "Toggle fullscreen"
+  open: "Open browser"
+  readme: "Open readme"
+
 login:
   login: "Login"
   login-text: "Voordat je verder kan, moet je inloggen."

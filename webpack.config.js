@@ -11,13 +11,15 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // uncomment to define the assets of the project
-    .addEntry('js/app', './assets/js/app.js')
-    .addStyleEntry('css/app', './assets/css/app.scss')
+    .addEntry('app', './assets/js/app.js')
+    .addEntry('double-column', './assets/js/doubleColumn.js')
 
     .createSharedEntry('vendor', [
       'jquery',
       'popper.js',
       'bootstrap',
+      'bootstrap-3-typeahead',
+      'font-awesome/css/font-awesome.css',
 
       // you can also extract CSS - this will create a 'vendor.css' file
       // this CSS will *not* be included in page1.css or page2.css anymore
