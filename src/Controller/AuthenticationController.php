@@ -3,18 +3,38 @@
 namespace App\Controller;
 
 use App\Form\Authentication\LoginType;
+use App\Security\Core\Authentication\Provider\OIDCProvider;
+use App\Security\OIDCClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Security;
 
 class AuthenticationController extends Controller
 {
+
+  /**
+   * This route handles every login request
+   * Only this route is listened to by the security services, so another route is not possible
+   *
+   * This route is defined in the routes.yml in order to remove the _locale requirement
+   *
+   * @return Response
+   */
+  public function checkLogin()
+  {
+    if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+      return $this->redirect($this->generateUrl('app_default_index'));
+    } else {
+      return $this->redirect($this->generateUrl('app_authentication_login'));
+    }
+  }
 
   /**
    * This controller render the default login page, which shows the option to login with SURFconext
@@ -24,6 +44,7 @@ class AuthenticationController extends Controller
    * @Template
    *
    * @param Request $request
+   *
    * @return array|RedirectResponse
    */
   public function login(Request $request)
@@ -33,7 +54,7 @@ class AuthenticationController extends Controller
     }
 
     $session = $request->getSession();
-    $form = $this->createForm(LoginType::class, array(
+    $form    = $this->createForm(LoginType::class, array(
         '_username' => $session->get(Security::LAST_USERNAME, ''),
     ), array(
         'action' => $this->generateUrl('login_check'),
@@ -59,24 +80,22 @@ class AuthenticationController extends Controller
     }
 
     return [
-        'form' => $form->createView()
+        'form' => $form->createView(),
     ];
   }
 
   /**
-   * This route handles every login request
-   * Only this route is listened to by the security services, so another route is not possible
+   * This controller forward the user to the SURFconext login
    *
-   * @Route("/login_check", name="login_check", schemes={"https"})
+   * @Route("/login_surf")
    *
-   * @return Response
+   * @param OIDCClient $oidc
+   *
+   * @return RedirectResponse
    */
-  public function checkLogin()
+  public function surfconext(OIDCClient $oidc)
   {
-    if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-      return $this->redirect($this->generateUrl('app_default_index'));
-    } else {
-      return $this->redirect($this->generateUrl('app_authentication_login'));
-    }
+    // Redirect to authorization @ surfconext
+    return $oidc->generateAuthorizationRedirect();
   }
 }

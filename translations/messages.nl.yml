@@ -7,7 +7,11 @@ browser:
   search: "Zoeken"
 
 login:
+  custom-account: "Persoonlijk account"
   login: "Login"
-  login-text: "Voordat je verder kan, moet je inloggen."
+  login-text: "Voordat je verder kan, moet je inloggen. Dat kan met je universiteitsaccount (door middel van SURFconext) of met een account dat specifiek voor je aangemaakt is."
   password: "Wachtwoord"
+  surfconext: "SURFconext"
+  surfconext-login-text: "Klik op het logo om in te loggen met SURFconext"
+  surfconext-login: "SURFconext login"
   username: "Gebruikersnaam"

@@ -13,6 +13,10 @@ parameters:
   router.request_context.host: "%env(HTTP_HOST)%"
   router.request_context.scheme: "%env(HTTP_SCHEMA)%"
 
+  oidc.well_known_url: "%env(OIDC_WELL_KNOWN)%"
+  oidc.client_id: "%env(OIDC_CLIENT_ID)%"
+  oidc.client_secret: "%env(OIDC_CLIENT_SECRET)%"
+
 services:
   # default configuration for services in *this* file
   _defaults:
@@ -44,3 +48,11 @@ services:
   App\Database\SoftDeletableSubscriber:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
+
+  App\Security\OIDCClient:
+    arguments:
+      $userinfoEndpoint: "%oidc.userinfo-endpoint%"
+      $authorizationEndpoint: "%oidc.authorization-endpoint%"
+      $tokenEndpoint: "%oidc.token-endpoint%"
+      $clientId: "%oidc.client_id%"
+      $clientSecret: "%oidc.client_secret%"
