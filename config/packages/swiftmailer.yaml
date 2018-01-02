@@ -7,4 +7,3 @@ swiftmailer:
     exception_mailer:
       url: '%env(EXCEPTION_MAILER_URL)%'
       spool: { type: memory }
-
