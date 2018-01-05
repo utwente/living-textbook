@@ -27,14 +27,15 @@ class DataController extends Controller
 {
 
   /**
-   * @Route("/export")
+   * @Route("/export", options={"expose"=true})
    *
    * @param EntityManagerInterface $em
    * @param SerializerInterface    $serializer
    *
    * @return JsonResponse
    */
-  public function export(EntityManagerInterface $em, SerializerInterface $serializer){
+  public function export(EntityManagerInterface $em, SerializerInterface $serializer)
+  {
     // Retrieve the nodes
     $nodes = $em->getRepository('App:Node')->findAll();
 

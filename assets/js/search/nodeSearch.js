@@ -28,8 +28,8 @@
 
     // Create search source
     var optArray = [];
-    for (var i = 0; i < data.nodes.length; i++) {
-      optArray.push(data.nodes[i].label);
+    for (var i = 0; i < data.length; i++) {
+      optArray.push(data[i].name);
     }
     optArray = optArray.sort();
 
@@ -65,7 +65,6 @@
       source: optArray,
       minLength: 0,
       items: 10,
-      fitToElement: true,
       showHintOnFocus: true
     });
   };
