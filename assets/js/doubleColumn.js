@@ -5,5 +5,5 @@ $(function () {
   require('./doubleColumn/draggebleWindow');
   require('./search/nodeSearch');
 
-  nodeSearch.createSearch($('#search'), Routing.generate('app_data_export'), true);
+  nodeSearch.createSearch($('#search'), Routing.generate('app_data_search'), true);
 });

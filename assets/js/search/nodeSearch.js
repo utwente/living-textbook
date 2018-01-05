@@ -1,7 +1,4 @@
 (function (nodeSearch, $) {
-  // Watermark the search field
-  var watermark = 'Search';
-
   // Create function to create and/or update the searcher
   nodeSearch.createSearch = function ($search, data, isUrl) {
     if (typeof data === 'undefined') {
@@ -26,30 +23,10 @@
       })();
     }
 
-    // Create search source
-    var optArray = [];
-    for (var i = 0; i < data.length; i++) {
-      optArray.push(data[i].name);
-    }
-    optArray = optArray.sort();
-
     // Destroy previous typeahead, if any
     if (typeof $search.data('typeahead') === 'object') {
       $search.typeahead('destroy');
     }
-
-    // Add 'Search' watermark to the search box
-    $search.val(watermark).addClass('watermark')
-        .blur(function () {
-          if ($(this).val().length === 0) {
-            $(this).val(watermark).addClass('watermark');
-          }
-        })
-        .focus(function () {
-          if ($(this).val() === watermark) {
-            $(this).val('').removeClass('watermark');
-          }
-        });
 
     // Bind search result changed handler
     $search.change(function () {
@@ -62,10 +39,10 @@
 
     // Create the actual search functionality, which is a bootstrap typeahead
     $search.typeahead({
-      source: optArray,
+      source: data,
       minLength: 0,
       items: 10,
-      showHintOnFocus: true
+      showHintOnFocus: "all"
     });
   };
 }(window.nodeSearch = window.nodeSearch || {}, $));

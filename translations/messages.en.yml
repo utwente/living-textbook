@@ -4,6 +4,7 @@ browser:
   fullscreen-toggle: "Toggle fullscreen"
   open: "Open browser"
   readme: "Open readme"
+  search: "Search"
 
 data:
   json-file: "JSON data file"

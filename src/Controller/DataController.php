@@ -6,13 +6,16 @@ use App\Entity\Node;
 use App\Entity\NodeRelation;
 use App\Entity\RelationType;
 use App\Form\Data\JsonUploadType;
+use App\Repository\NodeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -27,20 +30,28 @@ class DataController extends Controller
 {
 
   /**
-   * @Route("/export", options={"expose"=true})
+   * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
+   * @Route("/search", name="app_data_search", options={"expose"=true})
    *
+   * @param bool                   $export
    * @param EntityManagerInterface $em
    * @param SerializerInterface    $serializer
    *
    * @return JsonResponse
    */
-  public function export(EntityManagerInterface $em, SerializerInterface $serializer)
+  public function export(bool $export = false, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Retrieve the nodes
-    $nodes = $em->getRepository('App:Node')->findAll();
+    $nodeRepo = $em->getRepository('App:Node');
+    assert($nodeRepo instanceof NodeRepository);
+    $nodes = $nodeRepo->findAllOrderedByName();
 
     // Return as JSON
-    return new JsonResponse($serializer->serialize($nodes, 'json'), 200, [], true);
+    $groups = ["Default"];
+    if ($export) $groups[] = "relations";
+    $json = $serializer->serialize($nodes, 'json', SerializationContext::create()->setGroups($groups));
+
+    return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
   /**

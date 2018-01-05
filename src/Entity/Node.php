@@ -56,6 +56,7 @@ class Node
    * @Assert\NotNull()
    *
    * @JMS\Expose()
+   * @JMS\Groups({"relations"})
    */
   private $relations;
 
@@ -81,6 +82,7 @@ class Node
    * @return int
    *
    * @JMS\VirtualProperty("numberOfLinks")
+   * @JMS\Groups({"relations"})
    */
   public function getNumberOfLinks(): int
   {
