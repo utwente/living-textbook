@@ -1,2 +1,7 @@
 // Import bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.card.container-card {
+  margin-top: ($grid-gutter-width / 2);
+  margin-bottom: ($grid-gutter-width / 2);
+}

@@ -2,6 +2,10 @@
 
 {% block base_content %}
   <div class="container-fluid">
-    {% block content %}{% endblock %}
+    <div class="card container-card">
+      <div class="card-body">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
   </div>
 {% endblock %}

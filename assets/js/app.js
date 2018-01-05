@@ -7,5 +7,5 @@ global.$ = global.jQuery = $;
 // Initialize page
 $(function () {
   // Load tooltips
-  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
 });

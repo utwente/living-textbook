@@ -109,6 +109,7 @@ body, .double-column-container {
   right: 0;
   height: $open-button-size;
   z-index: 30;
+  padding-left: 10px;
 
   > i.fa, > span {
     height: 100%;
