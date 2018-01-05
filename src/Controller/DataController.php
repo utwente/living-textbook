@@ -6,13 +6,12 @@ use App\Entity\Node;
 use App\Entity\NodeRelation;
 use App\Entity\RelationType;
 use App\Form\Data\JsonUploadType;
-use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,6 +25,22 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DataController extends Controller
 {
+
+  /**
+   * @Route("/export")
+   *
+   * @param EntityManagerInterface $em
+   * @param SerializerInterface    $serializer
+   *
+   * @return JsonResponse
+   */
+  public function export(EntityManagerInterface $em, SerializerInterface $serializer){
+    // Retrieve the nodes
+    $nodes = $em->getRepository('App:Node')->findAll();
+
+    // Return as JSON
+    return new JsonResponse($serializer->serialize($nodes, 'json'), 200, [], true);
+  }
 
   /**
    * @Route("/upload")
@@ -94,7 +109,7 @@ class DataController extends Controller
           // Create the links
           foreach ($jsonData['links'] as $jsonLink) {
             $relation = new NodeRelation();
-            $relation->setRightNode($nodes[$jsonLink['target']]);
+            $relation->setTarget($nodes[$jsonLink['target']]);
             $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
             $nodes[$jsonLink['source']]->addRelation($relation);
           }

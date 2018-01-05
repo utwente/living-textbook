@@ -51,16 +51,18 @@ class Node
   /**
    * @var ArrayCollection|NodeRelation[]
    *
-   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="leftNode", cascade={"persist","remove"})
+   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="source", cascade={"persist","remove"})
    *
    * @Assert\NotNull()
+   *
+   * @JMS\Expose()
    */
   private $relations;
 
   /**
    * @var ArrayCollection|NodeRelation[]
    *
-   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="rightNode", cascade={"persist","remove"})
+   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="target", cascade={"persist","remove"})
    *
    * @Assert\NotNull()
    */
@@ -128,9 +130,9 @@ class Node
    */
   public function addRelation(NodeRelation $nodeRelation): Node
   {
-    // Check whether the left node is set
-    if (!$nodeRelation->getLeftNode()) {
-      $nodeRelation->setLeftNode($this);
+    // Check whether the source is set, otherwise set it as this
+    if (!$nodeRelation->getSource()) {
+      $nodeRelation->setSource($this);
     }
 
     $this->relations->add($nodeRelation);

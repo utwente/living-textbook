@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\NodeRelationRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @JMS\ExclusionPolicy("all")
  */
 class NodeRelation
 {
@@ -37,21 +39,21 @@ class NodeRelation
    * @var Node
    *
    * @ORM\ManyToOne(targetEntity="Node", inversedBy="relations")
-   * @ORM\JoinColumn(name="left_node_id", referencedColumnName="id", nullable=false)
+   * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $leftNode;
+  private $source;
 
   /**
    * @var Node
    *
    * @ORM\ManyToOne(targetEntity="Node", inversedBy="indirectRelations")
-   * @ORM\JoinColumn(name="right_node_id", referencedColumnName="id", nullable=false)
+   * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $rightNode;
+  private $target;
 
   /**
    * @var RelationType
@@ -72,6 +74,28 @@ class NodeRelation
 
   /**
    * @return int
+   *
+   * @JMS\VirtualProperty("target")
+   * @JMS\Expose()
+   */
+  public function getTargetId(): int
+  {
+    return $this->getTarget() ? $this->getTarget()->getId() : NULL;
+  }
+
+  /**
+   * @return string
+   *
+   * @JMS\VirtualProperty("relationName")
+   * @JMS\Expose()
+   */
+  public function getRelationName(): string
+  {
+    return $this->relationType ? $this->relationType->getName() : '';
+  }
+
+  /**
+   * @return int
    */
   public function getId(): int
   {
@@ -81,19 +105,19 @@ class NodeRelation
   /**
    * @return Node|null
    */
-  public function getLeftNode(): ?Node
+  public function getSource(): ?Node
   {
-    return $this->leftNode;
+    return $this->source;
   }
 
   /**
-   * @param Node $leftNode
+   * @param Node $source
    *
    * @return NodeRelation
    */
-  public function setLeftNode(Node $leftNode): NodeRelation
+  public function setSource(Node $source): NodeRelation
   {
-    $this->leftNode = $leftNode;
+    $this->source = $source;
 
     return $this;
   }
@@ -101,19 +125,19 @@ class NodeRelation
   /**
    * @return Node|null
    */
-  public function getRightNode(): ?Node
+  public function getTarget(): ?Node
   {
-    return $this->rightNode;
+    return $this->target;
   }
 
   /**
-   * @param Node $rightNode
+   * @param Node $target
    *
    * @return NodeRelation
    */
-  public function setRightNode(Node $rightNode): NodeRelation
+  public function setTarget(Node $target): NodeRelation
   {
-    $this->rightNode = $rightNode;
+    $this->target = $target;
 
     return $this;
   }
