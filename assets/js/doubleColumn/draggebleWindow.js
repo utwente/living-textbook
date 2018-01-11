@@ -1,3 +1,10 @@
+require('../../css/conceptBrowser/conceptBrowser.scss');
+
+/**
+ * Register dw namespace in the browser, for usage of the draggable window object
+ *
+ * $ has been defined globally in the app.js
+ */
 (function (dw, $, undefined) {
 
   var openWidth = 760;
@@ -35,7 +42,9 @@
     opened = true;
     readyHandler = typeof readyHandler === 'function' ? readyHandler : function () {
       if (!firstOpen) return;
-      // @todo place open message
+
+      // When the map is opened, make sure to center the view
+      cb.centerView(500);
     };
 
     // Check for full screen, and adjust resize accordingly
@@ -144,6 +153,7 @@
         animationCount--;
         if (animationCount === 0) {
           callback();
+          cb.resizeCanvas();
         }
       };
       leftFrame.animate({
@@ -155,7 +165,7 @@
 
       rightFrame.animate({
         width: rightWidth
-      }, {duration: animationDuration, complete: completeFunction});
+      }, {duration: animationDuration, complete: completeFunction, progress: cb.resizeCanvas});
       rightFrame.find('.animation-opacity-container').animate({
         opacity: rightWidth <= 0 ? 0 : 1
       }, {duration: animationDuration, complete: completeFunction});
@@ -166,6 +176,7 @@
       rightFrame.find('.animation-opacity-container').css('opacity', rightWidth <= 0 ? 0 : 1);
       callback();
     }
+    cb.resizeCanvas();
   };
 
   /**

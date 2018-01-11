@@ -1,26 +1,11 @@
-(function (nodeSearch, $) {
+(function (nodeSearch) {
   // Create function to create and/or update the searcher
-  nodeSearch.createSearch = function ($search, data, isUrl) {
+  nodeSearch.createSearch = function ($search, data) {
+    if (typeof $search === 'undefined') {
+      throw 'Search field not given!';
+    }
     if (typeof data === 'undefined') {
       throw 'No data given!';
-    }
-    isUrl = typeof isUrl !== 'undefined' ? isUrl : false;
-
-    if (isUrl) {
-      // Get graph data for search
-      data = (function () {
-        var json = null;
-        $.ajax({
-          'async': false,
-          'global': false,
-          'url': data,
-          'dataType': 'json',
-          'success': function (data) {
-            json = data;
-          }
-        });
-        return json;
-      })();
     }
 
     // Destroy previous typeahead, if any
@@ -31,9 +16,8 @@
     // Bind search result changed handler
     $search.change(function () {
       var current = $search.typeahead('getActive');
-      if (current === $search.val()) {
-        // @todo Reimplement this module
-        cb.searchNode(current);
+      if (current.name === $search.val()) {
+        cb.searchNodeById(current.id);
       }
     });
 
@@ -45,4 +29,4 @@
       showHintOnFocus: "all"
     });
   };
-}(window.nodeSearch = window.nodeSearch || {}, $));
+}(window.nodeSearch = window.nodeSearch || {}));

@@ -54,9 +54,13 @@
             </div>
           </div>
         </div>
-        <div id="right-container-content">
-          {% block content_right %}{% endblock %}
-        </div>
+      </div>
+      <div id="right-container-content">
+        {% block content_right %}
+          <div id="graph_container_div">
+            <canvas id="graph_container_canvas"></canvas>
+          </div>
+        {% endblock %}
       </div>
     </div>
   </div>

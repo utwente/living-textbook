@@ -1,9 +1,22 @@
 require('../css/doubleColumn/doubleColumn.scss');
-const $ = require('jquery');
 
+/**
+ * Load the modules required for the double column page in order to function properly
+ *
+ * $ has been defined globally in the app.js
+ */
 $(function () {
   require('./doubleColumn/draggebleWindow');
   require('./search/nodeSearch');
+  require('./conceptBrowser/conceptBrowser');
 
-  nodeSearch.createSearch($('#search'), Routing.generate('app_data_search'), true);
+  $.get({
+    url: Routing.generate('app_data_export'),
+    dataType: 'json'
+  }).done(function (data) {
+    nodeSearch.createSearch($('#search'), data);
+    cb.init(data);
+  }).fail(function (error) {
+    throw error;
+  })
 });

@@ -20,10 +20,12 @@ Encore
 
     .createSharedEntry('vendor', [
       'jquery',
+      'jquery-contextmenu',
       'popper.js',
       'bootstrap',
       'bootstrap-3-typeahead',
       'font-awesome/css/font-awesome.css',
+      'd3',
 
       // you can also extract CSS - this will create a 'vendor.css' file
       // this CSS will *not* be included in page1.css or page2.css anymore
