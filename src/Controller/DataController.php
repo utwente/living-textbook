@@ -7,6 +7,7 @@ use App\Entity\NodeRelation;
 use App\Entity\RelationType;
 use App\Form\Data\JsonUploadType;
 use App\Repository\NodeRepository;
+use App\Repository\RelationTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -41,6 +42,11 @@ class DataController extends Controller
    */
   public function export(bool $export = false, EntityManagerInterface $em, SerializerInterface $serializer)
   {
+    // Retrieve the relations type as cache
+    $relationTypeRepo = $em->getRepository('App:RelationType');
+    assert($relationTypeRepo instanceof RelationTypeRepository);
+    $relationTypes = $relationTypeRepo->findAll();
+
     // Retrieve the nodes
     $nodeRepo = $em->getRepository('App:Node');
     assert($nodeRepo instanceof NodeRepository);

@@ -51,7 +51,7 @@ class Node
   /**
    * @var ArrayCollection|NodeRelation[]
    *
-   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="source", cascade={"persist","remove"})
+   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
    *
    * @Assert\NotNull()
    *
@@ -63,7 +63,7 @@ class Node
   /**
    * @var ArrayCollection|NodeRelation[]
    *
-   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="target", cascade={"persist","remove"})
+   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="target", cascade={"persist","remove"}, fetch="EAGER")
    *
    * @Assert\NotNull()
    */
