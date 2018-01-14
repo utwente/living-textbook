@@ -10,17 +10,17 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Node
+ * Class ConceptRelation
  *
  * @author BobV
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Repository\NodeRelationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ConceptRelationRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMS\ExclusionPolicy("all")
  */
-class NodeRelation
+class ConceptRelation
 {
 
   use Blameable;
@@ -36,9 +36,9 @@ class NodeRelation
   private $id;
 
   /**
-   * @var Node
+   * @var Concept
    *
-   * @ORM\ManyToOne(targetEntity="Node", inversedBy="relations")
+   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="relations")
    * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -46,9 +46,9 @@ class NodeRelation
   private $source;
 
   /**
-   * @var Node
+   * @var Concept
    *
-   * @ORM\ManyToOne(targetEntity="Node", inversedBy="indirectRelations")
+   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="indirectRelations")
    * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -66,7 +66,7 @@ class NodeRelation
   private $relationType;
 
   /**
-   * NodeRelation constructor.
+   * ConceptRelation constructor.
    */
   public function __construct()
   {
@@ -103,19 +103,19 @@ class NodeRelation
   }
 
   /**
-   * @return Node|null
+   * @return Concept|null
    */
-  public function getSource(): ?Node
+  public function getSource(): ?Concept
   {
     return $this->source;
   }
 
   /**
-   * @param Node $source
+   * @param Concept $source
    *
-   * @return NodeRelation
+   * @return ConceptRelation
    */
-  public function setSource(Node $source): NodeRelation
+  public function setSource(Concept $source): ConceptRelation
   {
     $this->source = $source;
 
@@ -123,19 +123,19 @@ class NodeRelation
   }
 
   /**
-   * @return Node|null
+   * @return Concept|null
    */
-  public function getTarget(): ?Node
+  public function getTarget(): ?Concept
   {
     return $this->target;
   }
 
   /**
-   * @param Node $target
+   * @param Concept $target
    *
-   * @return NodeRelation
+   * @return ConceptRelation
    */
-  public function setTarget(Node $target): NodeRelation
+  public function setTarget(Concept $target): ConceptRelation
   {
     $this->target = $target;
 
@@ -153,9 +153,9 @@ class NodeRelation
   /**
    * @param RelationType $relationType
    *
-   * @return NodeRelation
+   * @return ConceptRelation
    */
-  public function setRelationType(RelationType $relationType): NodeRelation
+  public function setRelationType(RelationType $relationType): ConceptRelation
   {
     $this->relationType = $relationType;
 

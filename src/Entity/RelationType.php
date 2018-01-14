@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Node
+ * Class RelationType
  *
  * @author BobV
  *
