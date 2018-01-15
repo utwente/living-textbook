@@ -1,5 +1,5 @@
 {% macro flashbag_alert(type, message, icon, close) %}
-  <div class="alert alert-{{ type }}{% if close %} alert-dismissible{% endif %} fade in" role="alert">
+  <div class="alert alert-{{ type }}{% if close %} alert-dismissible{% endif %} fade-in" role="alert">
     {% if icon is not null %}
       <span class="fa fa-fw {{ icon }}" aria-hidden="true"></span>
     {% endif %}
