@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\ClassConstraints\ConceptClass;
 
 /**
  * Class Concept
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMS\ExclusionPolicy("all")
+ *
+ * @ConceptClass()
  */
 class Concept
 {
@@ -70,12 +73,22 @@ class Concept
   private $indirectRelations;
 
   /**
+   * @var ArrayCollection|ConceptStudyArea[]
+   *
+   * @ORM\OneToMany(targetEntity="ConceptStudyArea", mappedBy="concept", cascade={"persist","remove"})
+   *
+   * @Assert\NotNull()
+   */
+  private $studyAreas;
+
+  /**
    * Concept constructor.
    */
   public function __construct()
   {
     $this->relations         = new ArrayCollection();
     $this->indirectRelations = new ArrayCollection();
+    $this->studyAreas        = new ArrayCollection();
   }
 
   /**
@@ -160,6 +173,43 @@ class Concept
   public function getIndirectRelations()
   {
     return $this->indirectRelations;
+  }
+
+  /**
+   * @return ConceptStudyArea[]|ArrayCollection
+   */
+  public function getStudyAreas()
+  {
+    return $this->studyAreas;
+  }
+
+  /**
+   * @param ConceptStudyArea $studyArea
+   *
+   * @return $this
+   */
+  public function addStudyArea(ConceptStudyArea $studyArea): Concept
+  {
+    // Check whether the concept is set, otherwise set it as this
+    if (!$studyArea->getConcept()) {
+      $studyArea->setConcept($this);
+    }
+
+    $this->studyAreas->add($studyArea);
+
+    return $this;
+  }
+
+  /**
+   * @param ConceptStudyArea $studyArea
+   *
+   * @return $this
+   */
+  public function removeStudyArea(ConceptStudyArea $studyArea): Concept
+  {
+    $this->studyAreas->removeElement($studyArea);
+
+    return $this;
   }
 
 }

@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\ConceptStudyArea;
 use App\Entity\RelationType;
+use App\Entity\StudyArea;
 use App\Form\Data\JsonUploadType;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
@@ -31,16 +33,17 @@ class DataController extends Controller
 {
 
   /**
-   * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
-   * @Route("/search", name="app_data_search", options={"expose"=true})
+   * @Route("/export/{studyArea}", name="app_data_export", options={"expose"=true}, defaults={"export"=true, "studyArea"=null}, requirements={"studyArea": "\d+"})
+   * @Route("/search/{studyArea}", name="app_data_search", options={"expose"=true}, defaults={"studyArea"=null}, requirements={"studyArea": "\d+"})
    *
    * @param bool                   $export
    * @param EntityManagerInterface $em
    * @param SerializerInterface    $serializer
+   * @param StudyArea|null         $studyArea
    *
    * @return JsonResponse
    */
-  public function export(bool $export = false, EntityManagerInterface $em, SerializerInterface $serializer)
+  public function export(bool $export = false, EntityManagerInterface $em, SerializerInterface $serializer, ?StudyArea $studyArea)
   {
     // Retrieve the relations type as cache
     $relationTypeRepo = $em->getRepository('App:RelationType');
@@ -50,7 +53,11 @@ class DataController extends Controller
     // Retrieve the concepts
     $conceptRepo = $em->getRepository('App:Concept');
     assert($conceptRepo instanceof ConceptRepository);
-    $concepts = $conceptRepo->findAllOrderedByName();
+    if($studyArea !== null) {
+      $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea);
+    } else {
+      $concepts = $conceptRepo->findAllOrderedByName();
+    }
 
     // Return as JSON
     $groups = ["Default"];
@@ -121,6 +128,12 @@ class DataController extends Controller
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
+            foreach($data['studyArea'] as $studyArea)
+            {
+              $conceptStudyArea = new ConceptStudyArea();
+              $conceptStudyArea->setStudyArea($studyArea);
+              $concepts[$key]->addStudyArea($conceptStudyArea);
+            }
             $em->persist($concepts[$key]);
           }
 
