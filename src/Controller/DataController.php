@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Node;
-use App\Entity\NodeRelation;
+use App\Entity\Concept;
+use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use App\Form\Data\JsonUploadType;
-use App\Repository\NodeRepository;
+use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
@@ -47,15 +47,15 @@ class DataController extends Controller
     assert($relationTypeRepo instanceof RelationTypeRepository);
     $relationTypes = $relationTypeRepo->findAll();
 
-    // Retrieve the nodes
-    $nodeRepo = $em->getRepository('App:Node');
-    assert($nodeRepo instanceof NodeRepository);
-    $nodes = $nodeRepo->findAllOrderedByName();
+    // Retrieve the concepts
+    $conceptRepo = $em->getRepository('App:Concept');
+    assert($conceptRepo instanceof ConceptRepository);
+    $concepts = $conceptRepo->findAllOrderedByName();
 
     // Return as JSON
     $groups = ["Default"];
     if ($export) $groups[] = "relations";
-    $json = $serializer->serialize($nodes, 'json', SerializationContext::create()->setGroups($groups));
+    $json = $serializer->serialize($concepts, 'json', SerializationContext::create()->setGroups($groups));
 
     return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
@@ -116,20 +116,20 @@ class DataController extends Controller
           }
           $em->flush();
 
-          // Create a new node for every entry
-          /** @var Node[] $nodes */
-          $nodes = array();
+          // Create a new concept for every entry
+          /** @var Concept[] $concepts */
+          $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
-            $nodes[$key] = (new Node())->setName($jsonNode['label']);
-            $em->persist($nodes[$key]);
+            $concepts[$key] = (new Concept())->setName($jsonNode['label']);
+            $em->persist($concepts[$key]);
           }
 
           // Create the links
           foreach ($jsonData['links'] as $jsonLink) {
-            $relation = new NodeRelation();
-            $relation->setTarget($nodes[$jsonLink['target']]);
+            $relation = new ConceptRelation();
+            $relation->setTarget($concepts[$jsonLink['target']]);
             $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
-            $nodes[$jsonLink['source']]->addRelation($relation);
+            $concepts[$jsonLink['source']]->addRelation($relation);
           }
 
           // Save the data

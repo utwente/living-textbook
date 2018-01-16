@@ -11,17 +11,17 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Node
+ * Class Concept
  *
  * @author BobV
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Repository\NodeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ConceptRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMS\ExclusionPolicy("all")
  */
-class Node
+class Concept
 {
 
   use Blameable;
@@ -49,9 +49,9 @@ class Node
   private $name;
 
   /**
-   * @var ArrayCollection|NodeRelation[]
+   * @var ArrayCollection|ConceptRelation[]
    *
-   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
+   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
    *
    * @Assert\NotNull()
    *
@@ -61,16 +61,16 @@ class Node
   private $relations;
 
   /**
-   * @var ArrayCollection|NodeRelation[]
+   * @var ArrayCollection|ConceptRelation[]
    *
-   * @ORM\OneToMany(targetEntity="NodeRelation", mappedBy="target", cascade={"persist","remove"}, fetch="EAGER")
+   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"}, fetch="EAGER")
    *
    * @Assert\NotNull()
    */
   private $indirectRelations;
 
   /**
-   * Node constructor.
+   * Concept constructor.
    */
   public function __construct()
   {
@@ -108,9 +108,9 @@ class Node
   /**
    * @param string $name
    *
-   * @return Node
+   * @return Concept
    */
-  public function setName(string $name): Node
+  public function setName(string $name): Concept
   {
     $this->name = $name;
 
@@ -118,7 +118,7 @@ class Node
   }
 
   /**
-   * @return ArrayCollection|Node[]
+   * @return ArrayCollection|Concept[]
    */
   public function getRelations()
   {
@@ -126,36 +126,36 @@ class Node
   }
 
   /**
-   * @param NodeRelation $nodeRelation
+   * @param ConceptRelation $conceptRelation
    *
    * @return $this
    */
-  public function addRelation(NodeRelation $nodeRelation): Node
+  public function addRelation(ConceptRelation $conceptRelation): Concept
   {
     // Check whether the source is set, otherwise set it as this
-    if (!$nodeRelation->getSource()) {
-      $nodeRelation->setSource($this);
+    if (!$conceptRelation->getSource()) {
+      $conceptRelation->setSource($this);
     }
 
-    $this->relations->add($nodeRelation);
+    $this->relations->add($conceptRelation);
 
     return $this;
   }
 
   /**
-   * @param NodeRelation $nodeRelation
+   * @param ConceptRelation $conceptRelation
    *
    * @return $this
    */
-  public function removeRelation(NodeRelation $nodeRelation): Node
+  public function removeRelation(ConceptRelation $conceptRelation): Concept
   {
-    $this->relations->removeElement($nodeRelation);
+    $this->relations->removeElement($conceptRelation);
 
     return $this;
   }
 
   /**
-   * @return ArrayCollection|NodeRelation[]
+   * @return ArrayCollection|ConceptRelation[]
    */
   public function getIndirectRelations()
   {

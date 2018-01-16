@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class NodeRepository extends EntityRepository
+class ConceptRepository extends EntityRepository
 {
 
   /**
