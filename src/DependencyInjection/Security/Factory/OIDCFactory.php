@@ -48,7 +48,7 @@ class OIDCFactory extends AbstractFactory
    */
   protected function getListenerId()
   {
-    return 'oicd.authentication.listener';
+    return 'security.authentication.listener.oidc';
   }
 
   /**
@@ -56,7 +56,7 @@ class OIDCFactory extends AbstractFactory
    */
   protected function getProviderKey()
   {
-    return 'oicd.authentication.provider';
+    return 'security.authentication.provider.oidc';
   }
 
   /**

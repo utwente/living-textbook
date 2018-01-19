@@ -3,15 +3,13 @@
 namespace App\Controller;
 
 use App\Form\Authentication\LoginType;
-use App\Security\Core\Authentication\Provider\OIDCProvider;
-use App\Security\OIDCClient;
+use App\OIDC\OIDCClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Security;
@@ -92,6 +90,9 @@ class AuthenticationController extends Controller
    * @param OIDCClient $oidc
    *
    * @return RedirectResponse
+   *
+   * @throws \App\Exception\OIDCConfigurationException
+   * @throws \App\Exception\OIDCConfigurationResolveException
    */
   public function surfconext(OIDCClient $oidc)
   {

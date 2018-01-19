@@ -5,17 +5,17 @@ parameters:
 
   kickin.exceptionhandler.configuration.class: App\ExceptionHandler\ExceptionHandlerConfiguration
 
-  app_version: "%env(APP_VERSION)%"
-  production_server: "%env(PRODUCTION_SERVER)%"
-  exception_receiver: "%env(EXCEPTION_RECEIVER)%"
+  app_version: '%env(APP_VERSION)%'
+  production_server: '%env(PRODUCTION_SERVER)%'
+  exception_receiver: '%env(EXCEPTION_RECEIVER)%'
 
-  env(HTTP_SCHEMA): "https"
-  router.request_context.host: "%env(HTTP_HOST)%"
-  router.request_context.scheme: "%env(HTTP_SCHEMA)%"
+  env(HTTP_SCHEMA): 'https'
+  router.request_context.host: '%env(HTTP_HOST)%'
+  router.request_context.scheme: '%env(HTTP_SCHEMA)%'
 
-  oidc.well_known_url: "%env(OIDC_WELL_KNOWN)%"
-  oidc.client_id: "%env(OIDC_CLIENT_ID)%"
-  oidc.client_secret: "%env(OIDC_CLIENT_SECRET)%"
+  oidc.well_known_url: '%env(OIDC_WELL_KNOWN)%'
+  oidc.client_id: '%env(OIDC_CLIENT_ID)%'
+  oidc.client_secret: '%env(OIDC_CLIENT_SECRET)%'
 
 services:
   # default configuration for services in *this* file
@@ -49,10 +49,31 @@ services:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
 
-  App\Security\OIDCClient:
+  App\OIDC\OIDCClient:
     arguments:
-      $userinfoEndpoint: "%oidc.userinfo-endpoint%"
-      $authorizationEndpoint: "%oidc.authorization-endpoint%"
-      $tokenEndpoint: "%oidc.token-endpoint%"
-      $clientId: "%oidc.client_id%"
-      $clientSecret: "%oidc.client_secret%"
+      $wellKnownUrl: '%oidc.well_known_url%'
+      $clientId: '%oidc.client_id%'
+      $clientSecret: '%oidc.client_secret%'
+
+  security.authentication.provider.oidc:
+    class: App\Security\Core\Authentication\Provider\OIDCProvider
+    arguments:
+      - ''
+      - '@security.user_checker'
+      - '@security.token_storage'
+      - '@logger'
+      - '@App\OIDC\OIDCClient'
+      - '@request_stack'
+
+  security.authentication.listener.oidc:
+    class: App\Security\Http\Firewall\OIDCListener
+    arguments:
+      - '@security.token_storage'
+      - '@security.authentication.manager'
+      - '@security.authentication.session_strategy'
+      - '@security.http_utils'
+      - ''
+      - ''
+      - ''
+      - { }
+      - '@logger'

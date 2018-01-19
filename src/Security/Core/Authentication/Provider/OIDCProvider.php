@@ -2,26 +2,27 @@
 
 namespace App\Security\Core\Authentication\Provider;
 
+use App\Exception\OIDCException;
+use App\OIDC\OIDCClient;
 use App\Security\Core\Authentication\Token\OIDCToken;
 use App\Security\Core\Exception\OIDCAuthenticationException;
 use App\Security\Core\Exception\OIDCUsernameNotFoundException;
-use App\Security\Core\User\OIDCUserProvider;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OIDCProvider implements AuthenticationProviderInterface
 {
 
-  const OIDC_SESSION_NONCE = 'oidc.session.nonce';
-  const OIDC_SESSION_STATE = 'oidc.session.state';
-
   /**
-   * @var OIDCUserProvider
+   * @var UserProviderInterface
    */
   private $userProvider;
 
@@ -40,12 +41,24 @@ class OIDCProvider implements AuthenticationProviderInterface
    */
   private $logger;
 
-  public function __construct(OIDCUserProvider $userProvider, UserCheckerInterface $userChecker, TokenStorageInterface $tokenStorage, LoggerInterface $logger)
+  /**
+   * @var OIDCClient
+   */
+  private $OIDCClient;
+
+  /**
+   * @var Request
+   */
+  private $request;
+
+  public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, TokenStorageInterface $tokenStorage, LoggerInterface $logger, OIDCClient $OIDCClient, RequestStack $request)
   {
     $this->userProvider = $userProvider;
     $this->userChecker  = $userChecker;
     $this->tokenStorage = $tokenStorage;
     $this->logger       = $logger;
+    $this->OIDCClient   = $OIDCClient;
+    $this->request      = $request->getMasterRequest();
   }
 
   /**
@@ -71,6 +84,18 @@ class OIDCProvider implements AuthenticationProviderInterface
 
       return $token;
     }
+
+    // Try to validate the request
+    try {
+      if (($authData = $this->OIDCClient->authenticate($this->request)) === false) {
+        return NULL;
+      }
+
+      $userData = $this->OIDCClient->retrieveUserInfo($authData);
+    } catch (OIDCException $e) {
+      throw new OIDCAuthenticationException("Request validation failed", null, $e);
+    }
+
 
     // Retrieve the user
     try {

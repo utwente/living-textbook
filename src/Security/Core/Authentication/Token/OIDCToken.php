@@ -6,7 +6,6 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
 class OIDCToken extends AbstractToken
 {
-
   /**
    * Returns the user credentials.
    *
