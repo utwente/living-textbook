@@ -1,7 +1,4 @@
 controllers:
   type: annotation
   resource: ../../src/Controller/
-  prefix: /{_locale}
   schemes: [ https ]
-  requirements:
-    _locale: "en|nl"

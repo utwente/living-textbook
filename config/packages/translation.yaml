@@ -3,5 +3,3 @@ framework:
   translator:
     paths:
       - '%kernel.project_dir%/translations'
-    fallbacks:
-      - '%locale%'
