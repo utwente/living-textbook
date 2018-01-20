@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Oidc\Security\Authentication\Token\OidcToken;
 use App\Oidc\Security\UserProvider\OidcUserProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -30,13 +29,14 @@ class UserProvider implements OidcUserProviderInterface
    *
    * @param OidcToken $token
    *
-   * @return UserInterface
+   * @return User
    */
   public function loadUserByToken(OidcToken $token)
   {
     // Determine whether this user already exists
     try {
       $user = $this->loadUserByUsername($token->getUsername());
+      $user->update($token);
     } catch (UsernameNotFoundException $e){
       // Create a new user
       $user = User::createFromToken($token);
@@ -60,7 +60,7 @@ class UserProvider implements OidcUserProviderInterface
    *
    * @param string $username The username
    *
-   * @return UserInterface
+   * @return User
    *
    * @throws UsernameNotFoundException if the user is not found
    */
@@ -84,9 +84,9 @@ class UserProvider implements OidcUserProviderInterface
    * object can just be merged into some internal array of users / identity
    * map.
    *
-   * @return UserInterface
+   * @param UserInterface $user
    *
-   * @throws UnsupportedUserException if the user is not supported
+   * @return UserInterface
    */
   public function refreshUser(UserInterface $user)
   {

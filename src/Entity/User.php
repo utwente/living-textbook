@@ -171,11 +171,25 @@ class User implements AdvancedUserInterface, \Serializable
   public static function createFromToken(OidcToken $token): User
   {
     return (new User())
+        ->setUsername($token->getUsername())
+        ->update($token);
+  }
+
+  /**
+   * Update the user with the latest information from the token
+   * Do not update the username, this should be the same anyways
+   *
+   * @param OidcToken $token
+   *
+   * @return User
+   */
+  public function update(OidcToken $token): User
+  {
+    return $this
         ->setDisplayName($token->getDisplayName())
         ->setFullName($token->getFullName())
         ->setGivenName($token->getGivenName())
-        ->setFamilyName($token->getFamilyName())
-        ->setUsername($token->getUsername());
+        ->setFamilyName($token->getFamilyName());
   }
 
   /**
