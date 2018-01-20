@@ -177,14 +177,24 @@ class OidcClient
    * @param OidcTokens $tokens
    *
    * @return mixed
+   * @throws OidcException
    * @throws OidcConfigurationException
    * @throws OidcConfigurationResolveException
    */
   public function retrieveUserInfo(OidcTokens $tokens)
   {
+    // Set the authorization header
     $headers = ["Authorization: Bearer {$tokens->getAccessToken()}"];
 
-    return json_decode($this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers), true);
+    // Retrieve the user information
+    $data = json_decode($this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers), true);
+
+    // Check data due
+    if ($data === NULL){
+      throw new OidcException("Error retrieving the user info from the endpoint.");
+    }
+
+    return $data;
   }
 
   /**

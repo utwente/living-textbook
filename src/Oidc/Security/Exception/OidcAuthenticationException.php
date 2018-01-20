@@ -12,6 +12,9 @@ class OidcAuthenticationException extends AuthenticationException
   public function __construct(string $message = "", TokenInterface $token = NULL, \Throwable $previous = NULL)
   {
     parent::__construct($message, 0, $previous);
-    $this->setToken($token);
+
+    if ($token instanceof TokenInterface) {
+      $this->setToken($token);
+    }
   }
 }
