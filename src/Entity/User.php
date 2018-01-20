@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
+use App\Database\Traits\Blameable;
+use App\Database\Traits\SoftDeletable;
+use App\Oidc\Security\Authentication\Token\OidcToken;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Database\Traits\Blameable;
-use App\Database\Traits\SoftDeletable;
 
 /**
  * Class User
@@ -22,7 +23,6 @@ use App\Database\Traits\SoftDeletable;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
  * @UniqueEntity("username", message="user.email-used", errorPath="username")
- *
  *
  * Authentication error order:
  * PreAuth:
@@ -46,18 +46,18 @@ class User implements AdvancedUserInterface, \Serializable
   private $id;
 
   /**
-   * Full name
+   * Given name
    *
    * @var string
    *
-   * @ORM\Column(name="first_name", type="string", length=100)
+   * @ORM\Column(name="given_name", type="string", length=100)
    *
    * @Assert\Length(min=2,max=100)
    */
-  protected $firstName;
+  protected $givenName;
 
   /**
-   * Full name
+   * Family name
    *
    * @var string
    *
@@ -65,7 +65,29 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @Assert\Length(min=5,max=100)
    */
-  protected $lastName;
+  protected $familyName;
+
+  /**
+   * Full name
+   *
+   * @var string
+   *
+   * @ORM\Column(name="full_name", type="string", length=200)
+   *
+   * @Assert\Length(min=5, max=200)
+   */
+  protected $fullName;
+
+  /**
+   * Display name
+   *
+   * @var string
+   *
+   * @ORM\Column(name="display_name", type="string", length=200)
+   *
+   * @Assert\Length(min=5, max=200)
+   */
+  protected $displayName;
 
   /**
    * Authentication name (username), equal to email address
@@ -81,7 +103,8 @@ class User implements AdvancedUserInterface, \Serializable
   protected $username;
 
   /**
-   * Password, stored encrypted
+   * Password, stored encrypted, if any.
+   * No password is stored for OIDC authentication
    *
    * @var string
    *
@@ -103,6 +126,15 @@ class User implements AdvancedUserInterface, \Serializable
   protected $registeredOn;
 
   /**
+   * DateTime on which the user has lastly logged on
+   *
+   * @var \DateTime|null
+   *
+   * @ORM\Column(name="last_used", type="datetime")
+   */
+  protected $lastUsed;
+
+  /**
    * Whether the account is active or not
    *
    * @var bool
@@ -113,7 +145,7 @@ class User implements AdvancedUserInterface, \Serializable
   /**
    * @var array[string]
    *
-   * @ORM\Column(name="roles", type="array", nullable=false, options={"default" = "a:0:{}"})
+   * @ORM\Column(name="roles", type="array", nullable=false)
    *
    * @Assert\NotNull()
    */
@@ -124,19 +156,26 @@ class User implements AdvancedUserInterface, \Serializable
    */
   public function __construct()
   {
-    $this->registeredOn     = new \DateTime();
-    $this->isActive         = true;
-    $this->securityRoles    = array();
+    $this->registeredOn  = new \DateTime();
+    $this->isActive      = true;
+    $this->securityRoles = array();
   }
 
   /**
-   * Get the full name (firstname lastname)
+   * Create a user from a token object
    *
-   * @return string
+   * @param OidcToken $token
+   *
+   * @return User
    */
-  public function getFullName()
+  public static function createFromToken(OidcToken $token): User
   {
-    return sprintf('%s %s', $this->firstName, $this->lastName);
+    return (new User())
+        ->setDisplayName($token->getDisplayName())
+        ->setFullName($token->getFullName())
+        ->setGivenName($token->getGivenName())
+        ->setFamilyName($token->getFamilyName())
+        ->setUsername($token->getUsername());
   }
 
   /**
@@ -171,9 +210,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @link  http://php.net/manual/en/serializable.unserialize.php
    *
-   * @param string $serialized <p>
-   *                           The string representation of the object.
-   *                           </p>
+   * @param string $serialized The string representation of the object.
    *
    * @return void
    * @since 5.1.0
@@ -200,8 +237,7 @@ class User implements AdvancedUserInterface, \Serializable
    */
   public function isAccountNonLocked()
   {
-    // Account is locked when there is no password
-    return $this->password !== NULL;
+    return true;
   }
 
   /**
@@ -291,7 +327,7 @@ class User implements AdvancedUserInterface, \Serializable
    */
   public function eraseCredentials()
   {
-    // TODO: Implement eraseCredentials() method.
+    $this->password = NULL;
   }
 
   /**
@@ -300,46 +336,6 @@ class User implements AdvancedUserInterface, \Serializable
   public function getId()
   {
     return $this->id;
-  }
-
-  /**
-   * @return string
-   */
-  public function getFirstName()
-  {
-    return $this->firstName;
-  }
-
-  /**
-   * @param string $firstName
-   *
-   * @return $this
-   */
-  public function setFirstName($firstName)
-  {
-    $this->firstName = $firstName;
-
-    return $this;
-  }
-
-  /**
-   * @return string
-   */
-  public function getLastName()
-  {
-    return $this->lastName;
-  }
-
-  /**
-   * @param string $lastName
-   *
-   * @return User
-   */
-  public function setLastName($lastName)
-  {
-    $this->lastName = $lastName;
-
-    return $this;
   }
 
   /**
@@ -383,9 +379,11 @@ class User implements AdvancedUserInterface, \Serializable
   }
 
   /**
-   * @return bool
+   * Get isActive
+   *
+   * @return boolean
    */
-  public function isIsActive()
+  public function getIsActive()
   {
     return $this->isActive;
   }
@@ -403,20 +401,6 @@ class User implements AdvancedUserInterface, \Serializable
   }
 
   /**
-   * Set registeredOn
-   *
-   * @param \DateTime $registeredOn
-   *
-   * @return User
-   */
-  public function setRegisteredOn($registeredOn)
-  {
-    $this->registeredOn = $registeredOn;
-
-    return $this;
-  }
-
-  /**
    * Get registeredOn
    *
    * @return \DateTime
@@ -427,24 +411,23 @@ class User implements AdvancedUserInterface, \Serializable
   }
 
   /**
-   * Get isActive
-   *
-   * @return boolean
+   * @return \DateTime|null
    */
-  public function getIsActive()
+  public function getLastUsed(): ?\DateTime
   {
-    return $this->isActive;
+    return $this->lastUsed;
   }
 
   /**
-   * Generate a random secure token
+   * @param \DateTime $lastUsed
    *
-   * @return string
-   * @throws \Exception
+   * @return User
    */
-  public function generateToken()
+  public function setLastUsed(\DateTime $lastUsed): User
   {
-    return bin2hex(random_bytes(40));
+    $this->lastUsed = $lastUsed;
+
+    return $this;
   }
 
   /**
@@ -470,6 +453,86 @@ class User implements AdvancedUserInterface, \Serializable
   public function getSecurityRoles()
   {
     return $this->securityRoles;
+  }
+
+  /**
+   * @return string
+   */
+  public function getGivenName(): string
+  {
+    return $this->givenName;
+  }
+
+  /**
+   * @param string $givenName
+   *
+   * @return User
+   */
+  public function setGivenName(string $givenName): User
+  {
+    $this->givenName = $givenName;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getFamilyName(): string
+  {
+    return $this->familyName;
+  }
+
+  /**
+   * @param string $familyName
+   *
+   * @return User
+   */
+  public function setFamilyName(string $familyName): User
+  {
+    $this->familyName = $familyName;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getFullName(): string
+  {
+    return $this->fullName;
+  }
+
+  /**
+   * @param string $fullName
+   *
+   * @return User
+   */
+  public function setFullName(string $fullName): User
+  {
+    $this->fullName = $fullName;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getDisplayName(): string
+  {
+    return $this->displayName;
+  }
+
+  /**
+   * @param string $displayName
+   *
+   * @return User
+   */
+  public function setDisplayName(string $displayName): User
+  {
+    $this->displayName = $displayName;
+
+    return $this;
   }
 
 }

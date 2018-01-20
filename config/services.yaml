@@ -62,8 +62,6 @@ services:
       - '@security.user_checker'
       - '@security.token_storage'
       - '@logger'
-      - '@App\Oidc\OidcClient'
-      - '@request_stack'
 
   security.authentication.listener.oidc:
     class: App\Oidc\Security\Firewall\OidcListener
@@ -77,3 +75,4 @@ services:
       - ''
       - { }
       - '@logger'
+      - '@App\Oidc\OidcClient'

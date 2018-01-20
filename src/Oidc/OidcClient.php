@@ -184,7 +184,7 @@ class OidcClient
   {
     $headers = ["Authorization: Bearer {$tokens->getAccessToken()}"];
 
-    return json_decode($this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers));
+    return json_decode($this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers), true);
   }
 
   /**

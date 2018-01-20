@@ -1,7 +1,9 @@
 security:
   # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
   providers:
-    in_memory: { memory: ~ }
+    default_provider:
+      id: App\Security\UserProvider
+
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -10,6 +12,9 @@ security:
       pattern: ^/
       oidc: ~
       anonymous: true
+      logout:
+        path:   logout
+        target: _home
 
   access_control:
     - { path: ^/_wdt/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
