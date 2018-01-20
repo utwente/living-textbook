@@ -45,29 +45,29 @@ class OidcJwtHelper
   }
 
   /**
-   * @param OidcTokens $tokens  string encoded JWT
-   * @param int        $section the section we would like to decode
+   * @param string $jwt     string encoded JWT
+   * @param int    $section the section we would like to decode
    *
    * @return object
    */
-  public function decodeJwt(OidcTokens $tokens, $section = 0)
+  public function decodeJwt(string $jwt, $section = 0)
   {
-    $parts = explode(".", $tokens->getIdToken());
+    $parts = explode(".", $jwt);
 
     return json_decode(self::base64url_decode($parts[$section]));
   }
 
   /**
-   * @param            $issuer
-   * @param            $claims
-   * @param OidcTokens $tokens
+   * @param                 $issuer
+   * @param                 $claims
+   * @param OidcTokens|null $tokens
    *
    * @return bool
    */
   public function verifyJwtClaims($issuer, $claims, OidcTokens $tokens = NULL)
   {
     if (isset($claims->at_hash) && $tokens->getAccessToken() !== NULL) {
-      $accessTokenHeader = $this->getAccessTokenHeader($tokens->getAccessToken());
+      $accessTokenHeader = $this->getAccessTokenHeader($tokens);
       if (isset($accessTokenHeader->alg) && $accessTokenHeader->alg != 'none') {
         $bit = substr($accessTokenHeader->alg, 2, 3);
       } else {
@@ -157,13 +157,13 @@ class OidcJwtHelper
   }
 
   /**
-   * @param $accessToken
+   * @param OidcTokens $tokens
    *
    * @return object
    */
-  private function getAccessTokenHeader($accessToken)
+  private function getAccessTokenHeader(OidcTokens $tokens)
   {
-    return $this->decodeJwt($accessToken, 0);
+    return $this->decodeJwt($tokens->getAccessToken(), 0);
   }
 
   /**

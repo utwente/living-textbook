@@ -133,7 +133,7 @@ class OidcClient
     $tokens = $this->requestTokens($code);
 
     // Retrieve the claims
-    $claims = $this->jwtHelper->decodeJwt($tokens, 1);
+    $claims = $this->jwtHelper->decodeJwt($tokens->getIdToken(), 1);
 
     // Verify the token
     if (!$this->jwtHelper->verifyJwtSignature($this->getJwktUri(), $tokens)) {
