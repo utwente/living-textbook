@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Security\Core\Exception;
+namespace App\Oidc\Security\Exception;
 
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class OIDCUsernameNotFoundException extends UsernameNotFoundException
+class OidcUsernameNotFoundException extends UsernameNotFoundException
 {
   public function __construct(UsernameNotFoundException $previous = NULL)
   {

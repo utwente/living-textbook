@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exception;
+namespace App\Oidc\Exception;
 
-class OIDCConfigurationException extends OIDCException
+class OidcConfigurationException extends OidcException
 {
   public function __construct(string $key)
   {

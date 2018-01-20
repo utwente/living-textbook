@@ -1,15 +1,16 @@
 <?php
 
-namespace App\OIDC;
-use App\Exception\OIDCException;
+namespace App\Oidc;
+
+use App\Oidc\Exception\OidcException;
 
 /**
- * Class OIDCTokens
+ * Class OidcTokens
  * Contains the access and id tokens retrieved from OpenID authentication
  *
  * @author BobV
  */
-class OIDCTokens
+class OidcTokens
 {
 
   /**
@@ -23,16 +24,16 @@ class OIDCTokens
   private $idToken;
 
   /**
-   * OIDCTokens constructor.
+   * OidcTokens constructor.
    *
    * @param \stdClass $tokens
    *
-   * @throws OIDCException
+   * @throws OidcException
    */
   public function __construct(\stdClass $tokens)
   {
     if (!isset($tokens->id_token) || !isset($tokens->access_token)) {
-      throw new OIDCException("Invalid token object.");
+      throw new OidcException("Invalid token object.");
     }
     $this->accessToken = $tokens->access_token;
     $this->idToken     = $tokens->id_token;

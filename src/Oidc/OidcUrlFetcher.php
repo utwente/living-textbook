@@ -1,10 +1,16 @@
 <?php
 
-namespace App\OIDC;
+namespace App\Oidc;
 
-use App\Security\Core\Exception\OIDCAuthenticationException;
+use App\Oidc\Security\Exception\OidcAuthenticationException;
 
-class OIDCUrlFetcher
+/**
+ * Class OidcUrlFetcher
+ * Helper for resource loading
+ *
+ * @author BobV
+ */
+class OidcUrlFetcher
 {
   /**
    * Retrieve the content from the specified url
@@ -15,7 +21,7 @@ class OIDCUrlFetcher
    *
    * @return mixed
    */
-  public function fetchURL(string $url, $params = NULL, $headers = [])
+  public function fetchUrl(string $url, $params = NULL, $headers = [])
   {
     // Create a new cURL resource handle
     $ch = curl_init();
@@ -25,7 +31,7 @@ class OIDCUrlFetcher
 
       // Check params
       if (!is_array($params)) {
-        throw new OIDCAuthenticationException("The parameters should be specified as array!");
+        throw new OidcAuthenticationException("The parameters should be specified as array!");
       }
 
       $params = http_build_query($params);
@@ -67,7 +73,7 @@ class OIDCUrlFetcher
     $output = curl_exec($ch);
 
     if ($output === false) {
-      throw new OIDCAuthenticationException('Curl error: ' . curl_error($ch));
+      throw new OidcAuthenticationException('Curl error: ' . curl_error($ch));
     }
 
     // Close the cURL resource, and free system resources

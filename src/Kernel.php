@@ -2,12 +2,10 @@
 
 namespace App;
 
-use App\DependencyInjection\Compiler\OIDCCompilePass;
-use App\DependencyInjection\Security\Factory\OIDCFactory;
+use App\Oidc\Security\Factory\OidcFactory;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
@@ -89,9 +87,9 @@ class Kernel extends BaseKernel
    */
   protected function build(ContainerBuilder $container)
   {
-    // Register the OIDC factory
+    // Register the Oidc factory
     $extension = $container->getExtension('security');
     assert($extension instanceof SecurityExtension);
-    $extension->addSecurityListenerFactory(new OIDCFactory());
+    $extension->addSecurityListenerFactory(new OidcFactory());
   }
 }

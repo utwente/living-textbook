@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Security\Core\User;
+namespace App\Oidc\Security\UserProvider;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OIDCUserProvider implements UserProviderInterface
+class OidcUserProvider implements UserProviderInterface
 {
 
   /**

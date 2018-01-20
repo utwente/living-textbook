@@ -1,13 +1,13 @@
 <?php
 
-namespace App\DependencyInjection\Security\Factory;
+namespace App\Oidc\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class OIDCFactory extends AbstractFactory
+class OidcFactory extends AbstractFactory
 {
   /**
    * Subclasses must return the id of a service which implements the

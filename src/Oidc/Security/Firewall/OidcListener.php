@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Security\Http\Firewall;
+namespace App\Oidc\Security\Firewall;
 
-use App\Security\Core\Authentication\Token\OIDCToken;
+use App\Oidc\Security\Authentication\Token\OidcToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 
-class OIDCListener extends AbstractAuthenticationListener
+class OidcListener extends AbstractAuthenticationListener
 {
 
   /**
@@ -22,7 +22,7 @@ class OIDCListener extends AbstractAuthenticationListener
    */
   protected function attemptAuthentication(Request $request)
   {
-    $token = new OIDCToken();
+    $token = new OidcToken();
 
     return $this->authenticationManager->authenticate($token);
   }

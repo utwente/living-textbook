@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Security\Core\Exception;
+namespace App\Oidc\Security\Exception;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class OIDCAuthenticationException extends AuthenticationException
+class OidcAuthenticationException extends AuthenticationException
 {
   const TOKEN_UNSUPPORTED = 'Token unsupported';
 

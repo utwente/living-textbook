@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\Authentication\LoginType;
-use App\OIDC\OIDCClient;
+use App\Oidc\OidcClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -87,14 +87,14 @@ class AuthenticationController extends Controller
    *
    * @Route("/login_surf")
    *
-   * @param OIDCClient $oidc
+   * @param OidcClient $oidc
    *
    * @return RedirectResponse
    *
-   * @throws \App\Exception\OIDCConfigurationException
-   * @throws \App\Exception\OIDCConfigurationResolveException
+   * @throws \App\Oidc\Exception\OidcConfigurationException
+   * @throws \App\Oidc\Exception\OidcConfigurationResolveException
    */
-  public function surfconext(OIDCClient $oidc)
+  public function surfconext(OidcClient $oidc)
   {
     // Redirect to authorization @ surfconext
     return $oidc->generateAuthorizationRedirect();

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Security\Core\Authentication\Token;
+namespace App\Oidc\Security\Authentication\Token;
 
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 
-class OIDCToken extends AbstractToken
+class OidcToken extends AbstractToken
 {
   /**
    * Returns the user credentials.

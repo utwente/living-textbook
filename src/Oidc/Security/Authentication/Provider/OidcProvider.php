@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Security\Core\Authentication\Provider;
+namespace App\Oidc\Security\Authentication\Provider;
 
-use App\Exception\OIDCException;
-use App\OIDC\OIDCClient;
-use App\Security\Core\Authentication\Token\OIDCToken;
-use App\Security\Core\Exception\OIDCAuthenticationException;
-use App\Security\Core\Exception\OIDCUsernameNotFoundException;
+use App\Oidc\Exception\OidcException;
+use App\Oidc\OidcClient;
+use App\Oidc\Security\Authentication\Token\OidcToken;
+use App\Oidc\Security\Exception\OidcAuthenticationException;
+use App\Oidc\Security\Exception\OidcUsernameNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OIDCProvider implements AuthenticationProviderInterface
+class OidcProvider implements AuthenticationProviderInterface
 {
 
   /**
@@ -42,22 +42,22 @@ class OIDCProvider implements AuthenticationProviderInterface
   private $logger;
 
   /**
-   * @var OIDCClient
+   * @var OidcClient
    */
-  private $OIDCClient;
+  private $OidcClient;
 
   /**
    * @var Request
    */
   private $request;
 
-  public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, TokenStorageInterface $tokenStorage, LoggerInterface $logger, OIDCClient $OIDCClient, RequestStack $request)
+  public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, TokenStorageInterface $tokenStorage, LoggerInterface $logger, OidcClient $OidcClient, RequestStack $request)
   {
     $this->userProvider = $userProvider;
     $this->userChecker  = $userChecker;
     $this->tokenStorage = $tokenStorage;
     $this->logger       = $logger;
-    $this->OIDCClient   = $OIDCClient;
+    $this->OidcClient   = $OidcClient;
     $this->request      = $request->getMasterRequest();
   }
 
@@ -75,7 +75,7 @@ class OIDCProvider implements AuthenticationProviderInterface
     // Check whether the token is supported
     if (!$this->supports($token)) {
       $this->logger->debug("OIDC Provider: Unsupported token supplied", array('token' => get_class($token)));
-      throw new OIDCAuthenticationException(OIDCAuthenticationException::TOKEN_UNSUPPORTED, $token);
+      throw new OidcAuthenticationException(OidcAuthenticationException::TOKEN_UNSUPPORTED, $token);
     }
 
     // Check if the token is already authenticated
@@ -87,13 +87,13 @@ class OIDCProvider implements AuthenticationProviderInterface
 
     // Try to validate the request
     try {
-      if (($authData = $this->OIDCClient->authenticate($this->request)) === false) {
+      if (($authData = $this->OidcClient->authenticate($this->request)) === NULL) {
         return NULL;
       }
 
-      $userData = $this->OIDCClient->retrieveUserInfo($authData);
-    } catch (OIDCException $e) {
-      throw new OIDCAuthenticationException("Request validation failed", null, $e);
+      $userData = $this->OidcClient->retrieveUserInfo($authData);
+    } catch (OidcException $e) {
+      throw new OidcAuthenticationException("Request validation failed", null, $e);
     }
 
 
@@ -102,14 +102,14 @@ class OIDCProvider implements AuthenticationProviderInterface
       $user = $this->userProvider->loadUserByUsername($token);
     } catch (UsernameNotFoundException $e) {
       $this->logger->debug("OIDC Provider: User not found", array('username' => $token->getUsername()));
-      throw new OIDCUsernameNotFoundException($e);
+      throw new OidcUsernameNotFoundException($e);
     }
 
     // Check user
     $this->userChecker->checkPreAuth($user);
     $this->userChecker->checkPostAuth($user);
 
-    $token = new OIDCToken();
+    $token = new OidcToken();
     $token->setAuthenticated(true);
 
     return $token;
@@ -124,6 +124,6 @@ class OIDCProvider implements AuthenticationProviderInterface
    */
   public function supports(TokenInterface $token)
   {
-    return $token instanceof OIDCToken;
+    return $token instanceof OidcToken;
   }
 }

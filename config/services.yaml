@@ -49,24 +49,24 @@ services:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
 
-  App\OIDC\OIDCClient:
+  App\Oidc\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'
       $clientId: '%oidc.client_id%'
       $clientSecret: '%oidc.client_secret%'
 
   security.authentication.provider.oidc:
-    class: App\Security\Core\Authentication\Provider\OIDCProvider
+    class: App\Oidc\Security\Authentication\Provider\OidcProvider
     arguments:
       - ''
       - '@security.user_checker'
       - '@security.token_storage'
       - '@logger'
-      - '@App\OIDC\OIDCClient'
+      - '@App\Oidc\OidcClient'
       - '@request_stack'
 
   security.authentication.listener.oidc:
-    class: App\Security\Http\Firewall\OIDCListener
+    class: App\Oidc\Security\Firewall\OidcListener
     arguments:
       - '@security.token_storage'
       - '@security.authentication.manager'
