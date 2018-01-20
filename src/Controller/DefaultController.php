@@ -29,7 +29,7 @@ class DefaultController extends Controller
   {
     // Check whether login is required
     if (!$this->isGranted('ROLE_USER')) {
-      return $this->redirectToRoute('app_authentication_login');
+      return $this->redirectToRoute('login');
     }
 
     return [];

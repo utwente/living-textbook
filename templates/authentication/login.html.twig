@@ -1,5 +1,9 @@
 {% extends 'single_column.html.twig' %}
 
+{% block _flashbags %}
+  {# Clear block here to place message more close to the form #}
+{% endblock %}
+
 {% block base_content %}
 <div class="container-fluid">
   <div class="row justify-content-center mt-3">
@@ -7,10 +11,11 @@
       <div class="card">
         <h1 class="card-header">{{ 'login.login'|trans|capitalize }}</h1>
         <div class="card-body">
+          {% include '_layout/flashbags.html.twig' %}
           <p class="card-text">{{ 'login.login-text'|trans }}</p>
           <h5>{{ 'login.surfconext'|trans }}</h5>
           <p class="card-text">{{ 'login.surfconext-login-text'|trans }}</p>
-          <a href="{{ path('app_authentication_surfconext') }}" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
+          <a href="{{ path('login_surf') }}" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
             <div class="login-surfconext"></div>
           </a>
           <h5>{{ 'login.custom-account'|trans }}</h5>

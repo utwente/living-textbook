@@ -4,6 +4,13 @@ security:
     default_provider:
       id: App\Security\UserProvider
 
+  access_decision_manager:
+    strategy: unanimous
+
+  encoders:
+    App\Entity\User:
+      algorithm: bcrypt
+
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -12,6 +19,11 @@ security:
       pattern: ^/
       oidc: ~
       anonymous: true
+      form_login:
+        check_path: login_check
+        login_path: login
+        username_parameter: "login[_username]"
+        password_parameter: "login[_password]"
       logout:
         path:   logout
         target: _home

@@ -2,11 +2,6 @@ logout:
   path: /logout
   schemes:  [ https ]
 
-login_check:
-  path: /login_check
-  defaults: { _controller: 'App\Controller\AuthenticationController::checkLogin' }
-  schemes:  [ https ]
-
 _home:
   path: /
   defaults: { _controller: 'App\Controller\DefaultController::forwardHome' }

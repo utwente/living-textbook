@@ -23,6 +23,8 @@ class AuthenticationController extends Controller
    *
    * This route is defined in the routes.yml in order to remove the _locale requirement
    *
+   * @Route("/login_check", name="login_check")
+   *
    * @return Response
    */
   public function checkLogin()
@@ -30,7 +32,7 @@ class AuthenticationController extends Controller
     if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
       return $this->redirect($this->generateUrl('app_default_index'));
     } else {
-      return $this->redirect($this->generateUrl('app_authentication_login'));
+      return $this->redirect($this->generateUrl('login'));
     }
   }
 
@@ -38,7 +40,7 @@ class AuthenticationController extends Controller
    * This controller render the default login page, which shows the option to login with SURFconext
    * or with an local account.
    *
-   * @Route("/login")
+   * @Route("/login", name="login")
    * @Template
    *
    * @param Request $request
@@ -85,7 +87,7 @@ class AuthenticationController extends Controller
   /**
    * This controller forward the user to the SURFconext login
    *
-   * @Route("/login_surf")
+   * @Route("/login_surf", name="login_surf")
    *
    * @param OidcClient $oidc
    *

@@ -20,6 +20,9 @@ class LoginType extends AbstractType
         ))
         ->add('_password', PasswordType::class, array(
             'label' => 'login.password',
+            'attr' => [
+                'autocomplete' => false,
+            ]
         ))
         ->add('submit', SubmitType::class, array(
             'label' => 'login.login',
