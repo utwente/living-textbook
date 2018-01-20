@@ -13,12 +13,3 @@ $(function () {
   // Load tooltips
   $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
 });
-
-// Export loadLocale function
-global.loadRoutingLocale = function(locale) {
-  var routes = Routing.getRoutes();
-  for (var i = 0; i < routes.b.length; i++) {
-    routes.c[routes.b[i]].defaults._locale = locale;
-  }
-  Routing.setRoutes(routes);
-};
