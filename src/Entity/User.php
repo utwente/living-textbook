@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
- * @UniqueEntity("username", message="user.email-used", errorPath="username")
+ * @UniqueEntity({"username", "isOidc"}, message="user.email-used", errorPath="username")
  *
  * Authentication error order:
  * PreAuth:
@@ -94,13 +94,24 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @var string
    *
-   * @ORM\Column(name="username", type="string", length=255, unique=true)
+   * @ORM\Column(name="username", type="string", length=255)
    *
    * @Assert\NotBlank()
    * @Assert\Email()
    * @Assert\Length(min="5", max="255")
    */
   protected $username;
+
+  /**
+   * If set, the account was created using OIDC
+   *
+   * @var boolean
+   *
+   * @ORM\Column(name="is_oidc", type="boolean", nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  protected $isOidc = false;
 
   /**
    * Password, stored encrypted, if any.
@@ -172,6 +183,7 @@ class User implements AdvancedUserInterface, \Serializable
   {
     return (new User())
         ->setUsername($token->getUsername())
+        ->setIsOidc(true)
         ->update($token);
   }
 
@@ -216,6 +228,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->username,
         $this->password,
         $this->isActive,
+        $this->isOidc,
     ));
   }
 
@@ -236,6 +249,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->username,
         $this->password,
         $this->isActive,
+        $this->isOidc,
         ) = unserialize($serialized);
   }
 
@@ -368,6 +382,26 @@ class User implements AdvancedUserInterface, \Serializable
   public function setUsername($username)
   {
     $this->username = $username;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isOidc(): bool
+  {
+    return $this->isOidc;
+  }
+
+  /**
+   * @param bool $isOidc
+   *
+   * @return User
+   */
+  public function setIsOidc(bool $isOidc): User
+  {
+    $this->isOidc = $isOidc;
 
     return $this;
   }

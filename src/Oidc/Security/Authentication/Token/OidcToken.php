@@ -90,6 +90,6 @@ class OidcToken extends AbstractToken
       return $this->userData[$key];
     }
 
-    return NULL;
+    return '';
   }
 }

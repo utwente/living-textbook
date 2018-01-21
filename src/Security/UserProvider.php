@@ -35,9 +35,9 @@ class UserProvider implements OidcUserProviderInterface
   {
     // Determine whether this user already exists
     try {
-      $user = $this->loadUserByUsername($token->getUsername());
+      $user = $this->loadUserByUsername($token->getUsername(), true);
       $user->update($token);
-    } catch (UsernameNotFoundException $e){
+    } catch (UsernameNotFoundException $e) {
       // Create a new user
       $user = User::createFromToken($token);
 
@@ -59,15 +59,15 @@ class UserProvider implements OidcUserProviderInterface
    * found.
    *
    * @param string $username The username
+   * @param bool   $isOidc   If set, find Oidc users
    *
    * @return User
    *
-   * @throws UsernameNotFoundException if the user is not found
    */
-  public function loadUserByUsername($username)
+  public function loadUserByUsername($username, $isOidc = false)
   {
     $user = $this->em->getRepository('App:User')
-        ->findOneBy(['username' => $username]);
+        ->findOneBy(['username' => $username, 'isOidc' => $isOidc]);
 
     if (!$user) {
       throw new UsernameNotFoundException();
@@ -90,7 +90,11 @@ class UserProvider implements OidcUserProviderInterface
    */
   public function refreshUser(UserInterface $user)
   {
-    return $this->loadUserByUsername($user->getUsername());
+    if ($user instanceof User) {
+      return $this->loadUserByUsername($user->getUsername(), $user->isOidc());
+    } else {
+      return $this->loadUserByUsername($user->getUsername());
+    }
   }
 
   /**
