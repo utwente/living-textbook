@@ -186,7 +186,7 @@ class OidcJwtHelper
       }
     }
     if (isset($header->kid)) {
-      throw new OidcAuthenticationException('Unable to find a key for (algorithm, kid):' . $header->alg . ', ' . $header->kid . ')');
+      throw new OidcAuthenticationException(sprintf('Unable to find a key for (algorithm, kid): %s, %s', $header->alg, $header->kid));
     } else {
       throw new OidcAuthenticationException('Unable to find a key for RSA');
     }

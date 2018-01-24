@@ -47,21 +47,33 @@ class OidcToken extends AbstractToken
     return $this;
   }
 
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->getUserData('preferred_username');
   }
 
+  /**
+   * @return string
+   */
   public function getFullName()
   {
     return $this->getUserData('name');
   }
 
+  /**
+   * @return string
+   */
   public function getGivenName()
   {
     return $this->getUserData('given_name');
   }
 
+  /**
+   * @return string
+   */
   public function getFamilyName()
   {
     return $this->getUserData('family_name');

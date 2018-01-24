@@ -168,7 +168,7 @@ class OidcClient
         'nonce'         => $this->generateNonce(),
     ];
 
-    return new RedirectResponse($this->getAuthorizationEndpoint() . '?' . http_build_query($data));
+    return new RedirectResponse(sprintf('%s?%s', $this->getAuthorizationEndpoint(), http_build_query($data)));
   }
 
   /**
@@ -190,7 +190,7 @@ class OidcClient
     $data = json_decode($this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers), true);
 
     // Check data due
-    if ($data === NULL){
+    if ($data === NULL) {
       throw new OidcException("Error retrieving the user info from the endpoint.");
     }
 
