@@ -3,6 +3,7 @@ browser:
   close: 'Close concept browser'
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open browser'
+  toggle: 'Toggle browser'
   readme: 'Open readme'
   search: 'Search'
 

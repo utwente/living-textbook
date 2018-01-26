@@ -1,5 +1,3 @@
-require('../../css/conceptBrowser/conceptBrowser.scss');
-
 /**
  * Register dw namespace in the browser, for usage of the draggable window object
  *
@@ -12,7 +10,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   var openedX = 0;
   var fullScreen = false;
   var fullScreenX = 0;
-  var openButton = $('#open-button');
   var closeButton = $('#close-button');
   var fullScreenButton = $('#fullscreen-button');
   var dragButton = $('#drag-button');
@@ -34,7 +31,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   dw.openWindow = function (readyHandler) {
     // Check if already opened
     if (opened) {
-      readyHandler();
+      if (typeof readyHandler === 'function') readyHandler();
+
       return;
     }
 
@@ -60,9 +58,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         firstOpen = false;
       });
     }
-
-    // Fade out the open button
-    openButton.fadeOut();
   };
 
   /**
@@ -74,10 +69,15 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     openedX = lastX;
 
     // Resize the window in order to close it
-    dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), true, function () {
-      openButton.fadeIn();
-    });
+    dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), true);
     moveContainersInner.fadeIn();
+  };
+
+  /**
+   * Handler for toggle window action
+   */
+  dw.toggleWindow = function() {
+    opened ? dw.closeWindow() : dw.openWindow();
   };
 
   /**
@@ -104,7 +104,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   };
 
   // Bind the click handler to the button
-  openButton.click(dw.openWindow);
   closeButton.click(dw.closeWindow);
   fullScreenButton.click(dw.fullScreenWindow);
 
@@ -147,7 +146,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Move the window (with or without animation)
     if (animate) {
-      animationCount = 4;
+      animationCount = 3;
       var animationDuration = 1000;
       var completeFunction = function () {
         animationCount--;
@@ -159,24 +158,25 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       leftFrame.animate({
         width: leftWidth
       }, {duration: animationDuration, complete: completeFunction});
-      leftFrame.find('.animation-opacity-container').animate({
-        opacity: leftWidth <= 0 ? 0 : 1
-      }, {duration: animationDuration, complete: completeFunction});
 
       rightFrame.animate({
         width: rightWidth
-      }, {duration: animationDuration, complete: completeFunction, progress: cb.resizeCanvas});
+      }, {duration: animationDuration, complete: completeFunction});
       rightFrame.find('.animation-opacity-container').animate({
         opacity: rightWidth <= 0 ? 0 : 1
       }, {duration: animationDuration, complete: completeFunction});
+
+      // Prerender the canvas
+      if (rightWidth > 0) {
+        cb.resizeCanvasWithSizes(rightWidth)
+      }
     } else {
       leftFrame.width(leftWidth);
       rightFrame.width(rightWidth);
-      leftFrame.find('.animation-opacity-container').css('opacity', leftWidth <= 0 ? 0 : 1);
       rightFrame.find('.animation-opacity-container').css('opacity', rightWidth <= 0 ? 0 : 1);
       callback();
+      cb.resizeCanvas();
     }
-    cb.resizeCanvas();
   };
 
   /**

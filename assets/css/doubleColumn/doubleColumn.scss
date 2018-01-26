@@ -1,10 +1,18 @@
 @import '../vars/vars';
 
-body, .double-column-container {
+body, #double-column-container {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+#double-column-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 #invisible-frame {
@@ -15,16 +23,27 @@ body, .double-column-container {
   z-index: -1;
 }
 
-#left-container, #right-container, #draggable-bar {
+#left-container, #left-container-content, #right-container, #draggable-bar {
   background-color: $background-color;
   height: 100%;
   box-sizing: border-box;
   float: left;
 }
 
-#left-container {
+#left-container, #left-container-content {
   width: 100%;
   z-index: 10;
+}
+
+#data-iframe {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 0;
+}
+
+#concept-data-content {
+  padding: 10px;
 }
 
 #right-container {
@@ -102,26 +121,4 @@ body, .double-column-container {
   display: table-cell;
   vertical-align: middle;
   z-index: 80;
-}
-
-#open-button {
-  position: absolute;
-  right: 0;
-  height: $open-button-size;
-  z-index: 30;
-  padding-left: 10px;
-
-  > i.fa, > span {
-    height: 100%;
-    float: left;
-  }
-  > i.fa {
-    line-height: $open-button-size - (0.05 * $open-icon-size);
-    font-size: $open-icon-size - (0.25 * $open-icon-size);
-    color: $drag-stripes-color;
-  }
-  > span {
-    writing-mode: tb-rl;
-    text-align: center;
-  }
 }

@@ -1,3 +1,5 @@
+require('../../css/conceptBrowser/conceptBrowser.scss');
+
 /**
  * Register cb (concept browser) namespace for usage
  */
@@ -229,6 +231,7 @@
   var highlightedNode = null, mouseMoveDisabled = false;
   var clickSend = false;
   var contextMenuNode = null, lastTransformed;
+  var isLoaded = false;
 
   // Initialize the graph object
   cbGraph = {nodes: [], links: [], linkNodes: []};
@@ -312,6 +315,10 @@
     d3.select(window).dispatch('custom_resize');
   };
 
+  cb.resizeCanvasWithSizes = function(width, height){
+    d3.select(window).dispatch('custom_resize', {detail: {width: width, height: height}});
+  };
+
   /**
    * Resize the canvas (draw area)
    * This should be done on draggable window size changes, or browser window changes
@@ -319,8 +326,8 @@
   function resizeCanvas() {
     // Get container size, and set sizes and zoom extent
     var $container = $('#graph_container_div');
-    canvas.width = canvasWidth = $container.innerWidth();
-    canvas.height = canvasHeight = $container.innerHeight();
+    canvas.width = canvasWidth = ((d3.event && d3.event.detail && d3.event.detail.width) ? d3.event.detail.width : $container.innerWidth());
+    canvas.height = canvasHeight = ((d3.event && d3.event.detail && d3.event.detail.height) ? d3.event.detail.height : $container.innerHeight());
     halfCanvasWidth = canvasWidth / 2;
     halfCanvasHeight = canvasHeight / 2;
     cb.zoomExtent[0] = Math.max(canvasWidth / cb.mapWidth, canvasHeight / cb.mapHeight, 0.1);
@@ -681,6 +688,8 @@
    * @param duration
    */
   function moveToPosition(minX, maxX, minY, maxY, duration) {
+    if (!isLoaded) return;
+
     // Check duration
     duration = typeof duration !== 'undefined' ? duration : 3000;
 
@@ -1139,17 +1148,18 @@
   }
 
   /******************************************************************************************************
+   * Initialize canvas
+   *****************************************************************************************************/
+
+  canvas = document.getElementById('graph_container_canvas');
+  cbCanvas = d3.select(canvas);
+  resizeCanvas();
+
+  /******************************************************************************************************
    * Register init function
    *****************************************************************************************************/
 
   cb.init = function (data) {
-
-    /******************************************************************************************************
-     * Initialize canvas
-     *****************************************************************************************************/
-
-    canvas = document.getElementById('graph_container_canvas');
-    resizeCanvas();
 
     /******************************************************************************************************
      * Convert the data to be suitable for the concept browser
@@ -1273,7 +1283,6 @@
         .on('end', onDragEnded);
 
     // Add handlers to canvas
-    cbCanvas = d3.select(canvas);
     cbCanvas
         .call(cbDrag)
         .call(cbZoom)
@@ -1319,6 +1328,11 @@
         };
       }
     });
+
+    // Center view and center image
+    isLoaded = true;
+    resizeCanvas();
+    setTimeout(function(){cb.centerView(500);}, 500);
   };
 
   /**

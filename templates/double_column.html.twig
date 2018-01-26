@@ -12,14 +12,8 @@
   <div id="double-column-container">
     <div id="invisible-frame"></div>
     <div id="left-container">
-      <div class="animation-opacity-container">
-        <div id="open-button">
-          <i class="fa fa-angle-left"></i>
-          <span>{{ 'browser.open'|trans }}</span>
-        </div>
-        <div id="left-container-content">
-          {% block content_left %}{% endblock %}
-        </div>
+      <div id="left-container-content">
+        <iframe id="data-iframe" src="{{ pageUrl }}"></iframe>
       </div>
     </div>
     <div id="draggable-bar">

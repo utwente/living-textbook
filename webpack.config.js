@@ -17,6 +17,7 @@ Encore
       './assets/js/_fos_js_routes.js'
     ])
     .addEntry('double-column', './assets/js/doubleColumn.js')
+    .addEntry('wiki', './assets/js/wiki.js')
 
     .createSharedEntry('vendor', [
       'jquery',

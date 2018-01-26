@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
 class DefaultController extends Controller
 {
@@ -22,16 +23,25 @@ class DefaultController extends Controller
   }
 
   /**
-   * @Route("/")
+   * @Route("/", defaults={"pageUrl"=""})
+   * @Route("/page/{pageUrl}", defaults={"pageUrl"=""}, requirements={"pageUrl"=".+"})
    * @Template
+   *
+   * @param string          $pageUrl
+   *
+   * @param RouterInterface $router
+   *
+   * @return array|RedirectResponse
    */
-  public function index()
+  public function index(string $pageUrl, RouterInterface $router)
   {
     // Check whether login is required
     if (!$this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('login');
     }
 
-    return [];
+    return [
+        'pageUrl' => $pageUrl != '' ? '/' . $pageUrl : $router->generate('app_wiki_show'),
+    ];
   }
 }

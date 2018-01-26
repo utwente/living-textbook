@@ -1,9 +1,22 @@
 {% extends '_layout/base.html.twig' %}
 
+{% block javascripts %}
+  <script type="text/javascript">
+    var currentPath = "{{ app.request.pathinfo|escape('js') }}";
+  </script>
+  <script src="{{ asset('build/wiki.js') }}" type="text/javascript"></script>
+{% endblock %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('build/wiki.css') }}"/>
+{% endblock %}
+
 {% block base_content %}
+  {% block _menu %}{% include '_layout/menu.html.twig' %}{% endblock %}
   <div class="container-fluid">
     <div class="card container-card">
       <div class="card-body">
+        {% block _flashbags %}{% include '_layout/flashbags.html.twig' %}{% endblock %}
         {% block content %}{% endblock %}
       </div>
     </div>
