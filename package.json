@@ -1,7 +1,7 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.17.0",
-        "bootstrap": "4.0.0-beta.2",
+        "bootstrap": "^4.0.0",
         "bootstrap-3-typeahead": "^4.0.2",
         "d3": "^4.12.2",
         "font-awesome": "^4.7.0",
