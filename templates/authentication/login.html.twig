@@ -13,13 +13,32 @@
         <div class="card-body">
           {% include '_layout/flashbags.html.twig' %}
           <p class="card-text">{{ 'login.login-text'|trans }}</p>
-          <h5>{{ 'login.surfconext'|trans }}</h5>
-          <p class="card-text">{{ 'login.surfconext-login-text'|trans }}</p>
-          <a href="{{ path('login_surf') }}" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
-            <div class="login-surfconext"></div>
-          </a>
-          <h5>{{ 'login.custom-account'|trans }}</h5>
-          {{ form(form) }}
+
+          <ul class="nav nav-tabs nav-fill">
+            <li class="nav-item">
+              <a class="nav-link active" id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab" >
+                {{ 'login.surfconext'|trans }}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab" >
+                {{ 'login.custom-account'|trans }}
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content" id="login-option">
+
+            <div class="tab-pane active" id="tab-surfconext" role="tabpanel" aria-labelledby="tab-surfconext-button">
+              <a href="{{ path('login_surf') }}" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
+                <div class="login-surfconext"></div>
+              </a>
+              <p class="card-text text-center">{{ 'login.surfconext-login-text'|trans }}</p>
+            </div>
+
+            <div class="tab-pane" id="tab-custom-account" role="tabpanel" aria-labelledby="tab-custom-account-button">
+              {{ form(form) }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
