@@ -1,7 +1,0 @@
-base   conceptbrowserlinker
-author B. van de Vijver
-email  bob@drenso.nl
-date   2017-09-01
-name   conceptbrowserlinker plugin
-desc   Couples the Living Textbook Concept Browser with DokuWiki by extending the dokuwiki syntax
-url    https://www.drenso.nl
