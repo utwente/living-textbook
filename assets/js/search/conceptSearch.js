@@ -1,6 +1,6 @@
-(function (nodeSearch) {
+(function (conceptSearch) {
   // Create function to create and/or update the searcher
-  nodeSearch.createSearch = function ($search, data) {
+  conceptSearch.createSearch = function ($search, data) {
     if (typeof $search === 'undefined') {
       throw 'Search field not given!';
     }
@@ -17,7 +17,7 @@
     $search.change(function () {
       var current = $search.typeahead('getActive');
       if (current.name === $search.val()) {
-        cb.searchNodeById(current.id);
+        cb.searchConceptById(current.id);
       }
     });
 
@@ -29,4 +29,4 @@
       showHintOnFocus: "all"
     });
   };
-}(window.nodeSearch = window.nodeSearch || {}));
+}(window.conceptSearch = window.conceptSearch || {}));

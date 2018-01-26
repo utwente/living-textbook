@@ -7,14 +7,14 @@ require('../css/doubleColumn/doubleColumn.scss');
  */
 $(function () {
   require('./doubleColumn/draggebleWindow');
-  require('./search/nodeSearch');
+  require('./search/conceptSearch');
   require('./conceptBrowser/conceptBrowser');
 
   $.get({
     url: Routing.generate('app_data_export'),
     dataType: 'json'
   }).done(function (data) {
-    nodeSearch.createSearch($('#search'), data);
+    conceptSearch.createSearch($('#search'), data);
     cb.init(data);
   }).fail(function (error) {
     throw error;

@@ -4,15 +4,6 @@
 (function (cb, $, d3, undefined) {
 
   /******************************************************************************************************
-   * Data source
-   *****************************************************************************************************/
-
-  // cb.data_source = 'data/GIS_RS.json';
-  // cb.data_source = 'data/GIS_RS_REDUCED.json';
-  // cb.data_source = 'data/GIS_RS_link_count.json';
-  cb.data_source = '/GIS_RS_link_and_individuals.json';
-
-  /******************************************************************************************************
    * Configuration variables
    *****************************************************************************************************/
 
@@ -263,10 +254,10 @@
    *****************************************************************************************************/
 
   /**
-   * Search and focus on a node based on its name
+   * Search and focus on a node based on its concept name
    * @param name
    */
-  cb.searchNode = function (name) {
+  cb.searchConcept = function (name) {
     // Find the node by label
     var nodes = cbGraph.nodes.filter(function (node) {
       return node.label === name;
@@ -280,10 +271,10 @@
   };
 
   /**
-   * Search and focus on a node based on its id
+   * Search and focus on a node based on a concept id
    * @param id
    */
-  cb.searchNodeById = function (id) {
+  cb.searchConceptById = function (id) {
     // Find the node by id
     var nodes = cbGraph.nodes.filter(function (node) {
       return node.id === id;
@@ -1170,21 +1161,21 @@
     };
 
     // First, map the nodes
-    data.map(function (node) {
-      idIndexMap[node.id] = cbGraph.nodes.length;
+    data.map(function (concept) {
+      idIndexMap[concept.id] = cbGraph.nodes.length;
       cbGraph.nodes.push({
-        id: node.id,
-        label: node.name,
+        id: concept.id,
+        label: concept.name,
         link: '',
-        numberOfLinks: node.relations.length
+        numberOfLinks: concept.relations.length
       });
     });
 
     // Secondly, map the links from every node
-    data.map(function (node) {
-      node.relations.map(function (relation) {
+    data.map(function (concept) {
+      concept.relations.map(function (relation) {
         cbGraph.links.push({
-          source: idIndexMap[node.id],
+          source: idIndexMap[concept.id],
           target: idIndexMap[relation.targetId],
           relationName: relation.relationName
         })
@@ -1305,7 +1296,7 @@
     //
     //   // Search a node due to wiki interaction
     //   if (message.type === 'cb_update_opened') {
-    //     cb.searchNode(message.data);
+    //     cb.searchConcept(message.data);
     //   }
     // });
 
