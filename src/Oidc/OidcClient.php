@@ -186,8 +186,12 @@ class OidcClient
     // Set the authorization header
     $headers = ["Authorization: Bearer {$tokens->getAccessToken()}"];
 
-    // Retrieve the user information
-    $data = json_decode($this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers), true);
+    // Retrieve the user information and convert the encoding to UTF-8 to harden for surfconext UTF-8 bug
+    $jsonData = $this->urlFetcher->fetchUrl($this->getUserinfoEndpoint(), NULL, $headers);
+    $jsonData = mb_convert_encoding($jsonData, 'UTF-8');
+
+    // Read the data
+    $data     = json_decode($jsonData, true);
 
     // Check data due
     if ($data === NULL) {
