@@ -27,9 +27,16 @@ $(function () {
     throw error;
   });
 
-  // Initialize page
-  $(function () {
-    // Load tooltips
-    $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
+  // Load tooltips
+  $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
+
+  // Load pop state handler
+  window.addEventListener('popstate', function (event) {
+    // Check for state object
+    if (!event.state) return;
+
+    // Restore document title and page
+    eHandler.onPageLoad({url: event.state.currentUrl});
+    document.title = event.state.currentTitle;
   });
 });

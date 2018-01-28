@@ -493,8 +493,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @returns {undefined}
    */
   function findNode() {
+    if (!isLoaded) return;
+
     var transformed;
     if (typeof d3.event.clientX === 'undefined' || typeof d3.event.clientY === 'undefined') {
+      if (!lastTransformed) return;
       transformed = lastTransformed;
     } else {
       transformed = lastTransformed = transformLocation(d3.event);

@@ -18,23 +18,33 @@ require('../event/eventTypes');
   }
 
   /**
+   * Page needs to load event
+   */
+  eDispatch.pageLoad = function (url) {
+    dispatchParent(types.PAGE_LOAD, {
+      url: url
+    })
+  };
+
+  /**
    * Page loaded event
    */
-  eDispatch.pageLoaded = function(){
+  eDispatch.pageLoaded = function () {
     // Check current path
-    if (typeof currentUrl === 'undefined'){
+    if (typeof currentUrl === 'undefined') {
       currentPath = window.location.pathname;
     }
 
-    dispatchParent(types.PAGE_LOAD, {
-      url: currentPath
+    dispatchParent(types.PAGE_LOADED, {
+      url: currentPath,
+      title: document.title
     });
   };
 
   /**
    * Open concept browser event
    */
-  eDispatch.toggleConceptBrowser = function() {
+  eDispatch.toggleConceptBrowser = function () {
     dispatchParent(types.TOGGLE_CONCEPT_BROWSER);
   };
 
