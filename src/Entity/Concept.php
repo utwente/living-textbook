@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\ClassConstraints\ConceptClass;
 
 /**
  * Class Concept
@@ -21,8 +20,6 @@ use App\Validator\ClassConstraints\ConceptClass;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMS\ExclusionPolicy("all")
- *
- * @ConceptClass()
  */
 class Concept
 {
@@ -78,6 +75,7 @@ class Concept
    * @ORM\OneToMany(targetEntity="ConceptStudyArea", mappedBy="concept", cascade={"persist","remove"})
    *
    * @Assert\NotNull()
+   * @Assert\Count(min=1, minMessage="concept.no-study-area-given")
    */
   private $studyAreas;
 
