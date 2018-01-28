@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Security;
@@ -80,7 +81,8 @@ class AuthenticationController extends Controller
     }
 
     return [
-        'form' => $form->createView(),
+        'form'       => $form->createView(),
+        'formActive' => $session->get(Security::LAST_USERNAME, '') !== '',
     ];
   }
 
@@ -89,15 +91,20 @@ class AuthenticationController extends Controller
    *
    * @Route("/login_surf", name="login_surf")
    *
-   * @param OidcClient $oidc
+   * @param SessionInterface $session
+   * @param OidcClient       $oidc
    *
    * @return RedirectResponse
    *
    * @throws \App\Oidc\Exception\OidcConfigurationException
    * @throws \App\Oidc\Exception\OidcConfigurationResolveException
    */
-  public function surfconext(OidcClient $oidc)
+  public function surfconext(SessionInterface $session, OidcClient $oidc)
   {
+    // Remove errors from state
+    $session->remove(Security::AUTHENTICATION_ERROR);
+    $session->remove(Security::LAST_USERNAME);
+
     // Redirect to authorization @ surfconext
     return $oidc->generateAuthorizationRedirect();
   }

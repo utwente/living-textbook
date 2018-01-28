@@ -30,6 +30,13 @@ require('../event/eventTypes');
    * @param data
    */
   function onPageLoad(data) {
+    // Check options
+    data.options = data.options || {};
+    if (data.options.topLevel){
+      window.location.href = data.url;
+      return;
+    }
+
     // By removing the iframe before changing it's url, we do not influence the browser history stack
     var $iframe = $('#data-iframe');
     var $container = $iframe.parent();

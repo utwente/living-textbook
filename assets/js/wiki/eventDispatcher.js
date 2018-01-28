@@ -20,9 +20,12 @@ require('../event/eventTypes');
   /**
    * Page needs to load event
    */
-  eDispatch.pageLoad = function (url) {
+  eDispatch.pageLoad = function (url, options) {
+    options = options || {};
+
     dispatchParent(types.PAGE_LOAD, {
-      url: url
+      url: url,
+      options: options
     })
   };
 

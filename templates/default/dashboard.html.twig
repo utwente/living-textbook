@@ -1,11 +1,9 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'data.upload-json'|trans }}
+  {{ 'app.dashboard'|trans }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'data.upload-json-text'|trans }}</p>
-
-  {{ form(form) }}
+  <a href="{{ path('app_concept_list') }}">Concept list</a>
 {% endblock %}

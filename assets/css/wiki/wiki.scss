@@ -1,0 +1,7 @@
+@import '../vars/vars';
+
+.container-fluid {
+  &.with-menu {
+    margin-top: $body-with-menu-margin;
+  }
+}

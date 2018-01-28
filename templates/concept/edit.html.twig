@@ -1,11 +1,9 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'data.upload-json'|trans }}
+  {{ 'concept.edit-title'|trans({'%item%': concept.name}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'data.upload-json-text'|trans }}</p>
-
   {{ form(form) }}
 {% endblock %}

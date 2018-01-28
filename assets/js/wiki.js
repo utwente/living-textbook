@@ -26,11 +26,20 @@ $(function () {
       var $from = $(from);
 
       // Exclude 'no-link' class from handler
-      if ($from.hasClass('no-link')) return;
+      if ($from.hasClass('no-block')) return;
+
+      // Exclude hash urls
+      var url = $from.attr('href');
+      if (url === '#') return;
+
+      // Build options
+      var options = {
+        topLevel: $from.hasClass('top-level')
+      };
 
       // Load the new page
       e.preventDefault();
-      eDispatch.pageLoad($from.attr('href'));
+      eDispatch.pageLoad(url, options);
     }
   });
 
