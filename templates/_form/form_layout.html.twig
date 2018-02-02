@@ -1,10 +1,15 @@
 {% extends 'bootstrap_4_horizontal_layout.html.twig' %}
 
+{% block form_start -%}
+  {%- set attr = attr|merge({onsubmit: '$(this).find(\'button, submit\').attr(\'disabled\', \'disabled\');'}) -%}
+  {{- parent() -}}
+{%- endblock %}
+
 {% block form_label_class -%}
   {%- if hide_label is not defined or hide_label|default(false) == false -%}
     col-sm-4 col-md-3 col-lg-2
-  {% endif %}
-{% endblock %}
+  {%- endif -%}
+{%- endblock %}
 
 {% block form_group_class -%}
   {%- if hide_label is defined and hide_label == true -%}
@@ -14,10 +19,10 @@
   {%- endif -%}
 {%- endblock form_group_class %}
 
-{% block submit_widget %}
+{% block submit_widget -%}
   {%- set attr = attr|merge({class: (attr.class|default('btn-success'))|trim}) -%}
   {{- parent() -}}
-{% endblock %}
+{%- endblock %}
 
 {% block form_row -%}
   {{- block("form_header") -}}
