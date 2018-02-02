@@ -1,12 +1,20 @@
-{% macro data_introduction(introduction) %}
-  {% if introduction.hasData %}
-    <p>{{ introduction.introduction }}</p>
+{% block data_display_block %}
+  {% if data.hasData %}
+    {% if title is defined %}<h3>{{ title }}</h3>{% endif %}
+    <p>{{ data.text }}</p>
   {% endif %}
+{% endblock %}
+
+{% macro data_introduction(data) %}
+  {{ block('data_display_block') }}
 {% endmacro %}
 
-{% macro data_learning_outcomes(learningOutcome) %}
-  {% if learningOutcome.hasData %}
-    <h3>{{ 'concept.learning-outcomes'|trans }}</h3>
-    <p>{{ learningOutcome.learningOutcomes }}</p>
-  {% endif %}
+{% macro data_learning_outcomes(data) %}
+  {% set title = 'concept.learning-outcomes'|trans %}
+  {{ block('data_display_block') }}
+{% endmacro %}
+
+{% macro data_theory_explanation(data) %}
+  {% set title = 'concept.theory-explanation'|trans %}
+  {{ block('data_display_block') }}
 {% endmacro %}

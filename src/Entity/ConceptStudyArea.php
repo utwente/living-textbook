@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,23 +19,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ConceptStudyAreaRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @JMS\ExclusionPolicy("all")
+ * @JMSA\ExclusionPolicy("all")
  */
 class ConceptStudyArea
 {
+  use IdTrait;
   use Blameable;
   use SoftDeletable;
-
-  /**
-   * @var int
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   *
-   * @JMS\Expose()
-   */
-  private $id;
 
   /**
    * @var Concept
@@ -55,14 +46,6 @@ class ConceptStudyArea
    * @Assert\NotNull()
    */
   private $studyArea;
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
-  }
 
   /**
    * @return Concept|null

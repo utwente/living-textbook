@@ -3,8 +3,10 @@
 namespace App\Form\Concept;
 
 use App\Entity\Concept;
-use App\Form\Data\DataIntroductionType;
-use App\Form\Data\DataLearningOutcomesType;
+use App\Entity\Data\DataIntroduction;
+use App\Entity\Data\DataLearningOutcomes;
+use App\Entity\Data\DataTheoryExplanation;
+use App\Form\Data\BaseDataTextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,11 +21,20 @@ class EditConceptType extends AbstractType
         ->add('name', TextType::class, [
             'label' => 'concept.name',
         ])
-        ->add('introduction', DataIntroductionType::class, [
-            'hide_label' => true,
+        ->add('introduction', BaseDataTextType::class, [
+            'label'      => 'concept.introduction',
+            'required'   => true,
+            'data_class' => DataIntroduction::class,
         ])
-        ->add('learningOutcomes', DataLearningOutcomesType::class, [
-            'hide_label' => true,
+        ->add('learningOutcomes', BaseDataTextType::class, [
+            'label'      => 'concept.learning-outcomes',
+            'required'   => false,
+            'data_class' => DataLearningOutcomes::class,
+        ])
+        ->add('theoryExplanation', BaseDataTextType::class, [
+            'label'      => 'concept.theory-explanation',
+            'required'   => false,
+            'data_class' => DataTheoryExplanation::class,
         ])
         ->add('submit', SubmitType::class, [
             'label' => 'form.save',

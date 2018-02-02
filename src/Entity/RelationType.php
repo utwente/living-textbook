@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,17 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RelationType
 {
 
+  use IdTrait;
   use Blameable;
   use SoftDeletable;
-
-  /**
-   * @var int
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
 
   /**
    * @var string
@@ -47,14 +40,6 @@ class RelationType
    */
   public function __construct()
   {
-  }
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
   }
 
   /**

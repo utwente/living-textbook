@@ -3,13 +3,15 @@
 namespace App\Entity;
 
 use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataLearningOutcomes;
+use App\Entity\Data\DataTheoryExplanation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,24 +23,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ConceptRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @JMS\ExclusionPolicy("all")
+ * @JMSA\ExclusionPolicy("all")
  */
 class Concept
 {
 
+  use IdTrait;
   use Blameable;
   use SoftDeletable;
-
-  /**
-   * @var int
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   *
-   * @JMS\Expose()
-   */
-  private $id;
 
   /**
    * @var string
@@ -46,7 +38,7 @@ class Concept
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    * @Assert\Length(min=3, max=255)
    *
-   * @JMS\Expose()
+   * @JMSA\Expose()
    */
   private $name;
 
@@ -72,14 +64,24 @@ class Concept
   private $learningOutcomes;
 
   /**
+   * @var DataTheoryExplanation
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataTheoryExplanation", cascade={"persist","remove"})
+   * @ORM\JoinColumn(name="theory_explanation_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   */
+  private $theoryExplanation;
+
+  /**
    * @var ArrayCollection|ConceptRelation[]
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
    *
    * @Assert\NotNull()
    *
-   * @JMS\Expose()
-   * @JMS\Groups({"relations"})
+   * @JMSA\Expose()
+   * @JMSA\Groups({"relations"})
    */
   private $relations;
 
@@ -112,27 +114,20 @@ class Concept
     $this->studyAreas        = new ArrayCollection();
 
     // Initialize data
-    $this->introduction     = new DataIntroduction();
-    $this->learningOutcomes = new DataLearningOutcomes();
+    $this->introduction      = new DataIntroduction();
+    $this->learningOutcomes  = new DataLearningOutcomes();
+    $this->theoryExplanation = new DataTheoryExplanation();
   }
 
   /**
    * @return int
    *
-   * @JMS\VirtualProperty("numberOfLinks")
-   * @JMS\Groups({"relations"})
+   * @JMSA\VirtualProperty("numberOfLinks")
+   * @JMSA\Groups({"relations"})
    */
   public function getNumberOfLinks(): int
   {
     return count($this->relations) + count($this->indirectRelations);
-  }
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
   }
 
   /**
@@ -273,6 +268,26 @@ class Concept
   public function setLearningOutcomes(DataLearningOutcomes $learningOutcomes): Concept
   {
     $this->learningOutcomes = $learningOutcomes;
+
+    return $this;
+  }
+
+  /**
+   * @return DataTheoryExplanation
+   */
+  public function getTheoryExplanation(): DataTheoryExplanation
+  {
+    return $this->theoryExplanation;
+  }
+
+  /**
+   * @param DataTheoryExplanation $theoryExplanation
+   *
+   * @return Concept
+   */
+  public function setTheoryExplanation(DataTheoryExplanation $theoryExplanation): Concept
+  {
+    $this->theoryExplanation = $theoryExplanation;
 
     return $this;
   }

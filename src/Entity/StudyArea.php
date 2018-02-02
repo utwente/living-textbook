@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,24 +20,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @JMS\ExclusionPolicy("all")
+ * @JMSA\ExclusionPolicy("all")
  */
 class StudyArea
 {
 
+  use IdTrait;
   use Blameable;
   use SoftDeletable;
-
-  /**
-   * @var int
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   *
-   * @JMS\Expose()
-   */
-  private $id;
 
   /**
    * @var string
@@ -44,7 +35,7 @@ class StudyArea
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    * @Assert\Length(min=3, max=255)
    *
-   * @JMS\Expose()
+   * @JMSA\Expose()
    */
   private $name;
 
@@ -53,7 +44,7 @@ class StudyArea
    *
    * @ORM\OneToMany(targetEntity="ConceptStudyArea", mappedBy="studyArea", cascade={"persist","remove"})
    *
-   * @JMS\Expose()
+   * @JMSA\Expose()
    */
   private $concepts;
 
@@ -63,14 +54,6 @@ class StudyArea
   public function __construct()
   {
     $this->concepts = new ArrayCollection();
-  }
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
   }
 
   /**

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Oidc\Security\Authentication\Token\OidcToken;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,15 +36,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements AdvancedUserInterface, \Serializable
 {
 
+  use IdTrait;
   use Blameable;
   use SoftDeletable;
-
-  /**
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
 
   /**
    * Given name
@@ -356,14 +351,6 @@ class User implements AdvancedUserInterface, \Serializable
   public function eraseCredentials()
   {
     $this->password = NULL;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getId()
-  {
-    return $this->id;
   }
 
   /**

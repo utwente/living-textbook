@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as JMS;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,22 +19,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ConceptRelationRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- * @JMS\ExclusionPolicy("all")
+ * @JMSA\ExclusionPolicy("all")
  */
 class ConceptRelation
 {
 
+  use IdTrait;
   use Blameable;
   use SoftDeletable;
-
-  /**
-   * @var int
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
 
   /**
    * @var Concept
@@ -75,8 +68,8 @@ class ConceptRelation
   /**
    * @return int
    *
-   * @JMS\VirtualProperty("target")
-   * @JMS\Expose()
+   * @JMSA\VirtualProperty("target")
+   * @JMSA\Expose()
    */
   public function getTargetId(): int
   {
@@ -86,20 +79,12 @@ class ConceptRelation
   /**
    * @return string
    *
-   * @JMS\VirtualProperty("relationName")
-   * @JMS\Expose()
+   * @JMSA\VirtualProperty("relationName")
+   * @JMSA\Expose()
    */
   public function getRelationName(): string
   {
     return $this->relationType ? $this->relationType->getName() : '';
-  }
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
   }
 
   /**

@@ -8,6 +8,7 @@ use App\Validator\Constraint\Data\WordCount;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * Class DataIntroduction
@@ -16,77 +17,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\Data\DataIntroductionRepository")
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class DataIntroduction implements DataInterface
 {
 
-  use Blameable;
-  use SoftDeletable;
+  use BaseDataTextObject;
 
   /**
-   * @var int
+   * Add constraints to field from the base trait
    *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
+   * @param ClassMetadata $metadata
    */
-  private $id;
-
-  /**
-   * Introduction and definition
-   *
-   * @var string
-   *
-   * @ORM\Column(name="introduction", type="text", nullable=false)
-   * @Assert\NotBlank()
-   * @WordCount()
-   */
-  private $introduction;
-
-  /**
-   * DataIntroduction constructor.
-   */
-  public function __construct()
+  public static function loadValidatorMetadata(ClassMetadata $metadata)
   {
-    $this->introduction = '';
+    $metadata->addPropertyConstraints('text', [
+        new Assert\NotBlank(),
+        new WordCount(),
+    ]);
   }
-
-  /**
-   * @return bool
-   */
-  public function hasData(): bool
-  {
-    return $this->introduction != '';
-  }
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
-  }
-
-  /**
-   * @return string
-   */
-  public function getIntroduction(): string
-  {
-    return $this->introduction;
-  }
-
-  /**
-   * @param string $introduction
-   *
-   * @return DataIntroduction
-   */
-  public function setIntroduction(string $introduction): DataIntroduction
-  {
-    $this->introduction = $introduction;
-
-    return $this;
-  }
-
 }
