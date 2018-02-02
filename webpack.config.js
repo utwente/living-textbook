@@ -22,6 +22,7 @@ Encore
     .createSharedEntry('vendor', [
       'jquery',
       'jquery-contextmenu',
+      'jquery-contextmenu/dist/jquery.contextMenu.css',
       'popper.js',
       'bootstrap',
       'bootstrap-3-typeahead',
