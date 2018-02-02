@@ -1,7 +1,10 @@
-{% macro action_bar(edit_url, list_url) %}
+{% macro action_bar(edit_url, show_url, list_url) %}
   <div class="float-right" role="group" aria-label="{{ 'form.action-bar'|trans }}">
     {% if edit_url|default(false) != false %}
       <a href="{{ edit_url }}" class="btn btn-secondary"><i class="fa fa-pencil"></i> {{ 'form.edit'|trans }}</a>
+    {% endif %}
+    {% if show_url|default(false) != false %}
+      <a href="{{ show_url }}" class="btn btn-secondary"><i class="fa fa-eye"></i> {{ 'form.show'|trans }}</a>
     {% endif %}
     {% if list_url|default(false) != false %}
       <a href="{{ list_url }}" class="btn btn-secondary"><i class="fa fa-list"></i> {{ 'form.list'|trans }}</a>

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Data\DataIntroduction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -49,6 +50,17 @@ class Concept
   private $name;
 
   /**
+   * @var DataIntroduction
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataIntroduction",cascade={"persist","remove"})
+   * @ORM\JoinColumn(name="introduction_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\Valid()
+   */
+  private $introduction;
+
+  /**
    * @var ArrayCollection|ConceptRelation[]
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
@@ -87,6 +99,9 @@ class Concept
     $this->relations         = new ArrayCollection();
     $this->indirectRelations = new ArrayCollection();
     $this->studyAreas        = new ArrayCollection();
+
+    // Initialize data
+    $this->introduction = new DataIntroduction();
   }
 
   /**
@@ -206,6 +221,26 @@ class Concept
   public function removeStudyArea(ConceptStudyArea $studyArea): Concept
   {
     $this->studyAreas->removeElement($studyArea);
+
+    return $this;
+  }
+
+  /**
+   * @return DataIntroduction
+   */
+  public function getIntroduction(): DataIntroduction
+  {
+    return $this->introduction;
+  }
+
+  /**
+   * @param DataIntroduction $introduction
+   *
+   * @return Concept
+   */
+  public function setIntroduction(DataIntroduction $introduction): Concept
+  {
+    $this->introduction = $introduction;
 
     return $this;
   }

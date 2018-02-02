@@ -12,6 +12,7 @@ browser:
 
 concept:
   edit-title: 'Edit concept "%item%"'
+  introduction: 'Introduction and definition'
   list-title: 'Concept list'
   name: 'Name'
 

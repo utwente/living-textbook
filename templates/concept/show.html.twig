@@ -1,13 +1,18 @@
 {% extends 'single_column.html.twig' %}
 {% import '_macro/_action_bar.html.twig' as macros %}
 
+{% block before_title %}
+  {{ macros.action_bar(
+    path('app_concept_edit', {'concept': concept.id}),
+    false,
+    path('app_concept_list')
+  ) }}
+{% endblock %}
+
 {% block title %}
   {{ concept.name  }}
 {% endblock %}
 
-{% block before_title %}
-  {{ macros.action_bar(
-    path('app_concept_edit', {'concept': concept.id}),
-    path('app_concept_list')
-  ) }}
+{% block content %}
+  {{ concept.introduction }}
 {% endblock %}

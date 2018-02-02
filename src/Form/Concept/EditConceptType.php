@@ -3,6 +3,7 @@
 namespace App\Form\Concept;
 
 use App\Entity\Concept;
+use App\Form\Data\DataIntroductionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,6 +16,9 @@ class EditConceptType extends AbstractType
   {
     $builder
         ->add('name', TextType::class)
+        ->add('introduction', DataIntroductionType::class, [
+            'hide_label' => true,
+        ])
         ->add('submit', SubmitType::class, [
             'label' => 'form.save',
         ]);
