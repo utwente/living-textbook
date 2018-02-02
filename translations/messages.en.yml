@@ -13,6 +13,7 @@ browser:
 concept:
   edit-title: 'Edit concept "%item%"'
   introduction: 'Introduction and definition'
+  learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
   name: 'Name'
 

@@ -1,0 +1,12 @@
+{% macro data_introduction(introduction) %}
+  {% if introduction.hasData %}
+    <p>{{ introduction.introduction }}</p>
+  {% endif %}
+{% endmacro %}
+
+{% macro data_learning_outcomes(learningOutcome) %}
+  {% if learningOutcome.hasData %}
+    <h3>{{ 'concept.learning-outcomes'|trans }}</h3>
+    <p>{{ learningOutcome.learningOutcomes }}</p>
+  {% endif %}
+{% endmacro %}

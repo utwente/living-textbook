@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Data\DataIntroduction;
+use App\Entity\Data\DataLearningOutcomes;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -52,13 +53,23 @@ class Concept
   /**
    * @var DataIntroduction
    *
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataIntroduction",cascade={"persist","remove"})
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataIntroduction", cascade={"persist","remove"})
    * @ORM\JoinColumn(name="introduction_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\Valid()
    */
   private $introduction;
+
+  /**
+   * @var DataLearningOutcomes
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataLearningOutcomes", cascade={"persist","remove"})
+   * @ORM\JoinColumn(name="learning_outcomes_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   */
+  private $learningOutcomes;
 
   /**
    * @var ArrayCollection|ConceptRelation[]
@@ -101,7 +112,8 @@ class Concept
     $this->studyAreas        = new ArrayCollection();
 
     // Initialize data
-    $this->introduction = new DataIntroduction();
+    $this->introduction     = new DataIntroduction();
+    $this->learningOutcomes = new DataLearningOutcomes();
   }
 
   /**
@@ -241,6 +253,26 @@ class Concept
   public function setIntroduction(DataIntroduction $introduction): Concept
   {
     $this->introduction = $introduction;
+
+    return $this;
+  }
+
+  /**
+   * @return DataLearningOutcomes
+   */
+  public function getLearningOutcomes(): DataLearningOutcomes
+  {
+    return $this->learningOutcomes;
+  }
+
+  /**
+   * @param DataLearningOutcomes $learningOutcomes
+   *
+   * @return Concept
+   */
+  public function setLearningOutcomes(DataLearningOutcomes $learningOutcomes): Concept
+  {
+    $this->learningOutcomes = $learningOutcomes;
 
     return $this;
   }

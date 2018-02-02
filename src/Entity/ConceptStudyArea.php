@@ -85,7 +85,7 @@ class ConceptStudyArea
   }
 
   /**
-   * @return StudyArea
+   * @return StudyArea|null
    */
   public function getStudyArea(): ?StudyArea
   {

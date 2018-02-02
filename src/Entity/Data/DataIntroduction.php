@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class DataIntroduction
+class DataIntroduction implements DataInterface
 {
 
   use Blameable;
@@ -54,11 +54,11 @@ class DataIntroduction
   }
 
   /**
-   * @return string
+   * @return bool
    */
-  public function __toString()
+  public function hasData(): bool
   {
-    return $this->introduction;
+    return $this->introduction != '';
   }
 
   /**

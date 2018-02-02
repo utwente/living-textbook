@@ -5,3 +5,9 @@
     margin-top: $body-with-menu-margin;
   }
 }
+
+.card-body {
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+}

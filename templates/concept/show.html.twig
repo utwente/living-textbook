@@ -1,5 +1,6 @@
 {% extends 'single_column.html.twig' %}
 {% import '_macro/_action_bar.html.twig' as macros %}
+{% import '_data/_data_templates.html.twig' as data %}
 
 {% block before_title %}
   {{ macros.action_bar(
@@ -14,5 +15,6 @@
 {% endblock %}
 
 {% block content %}
-  {{ concept.introduction }}
+  {{ data.data_introduction(concept.introduction) }}
+  {{ data.data_learning_outcomes(concept.learningOutcomes) }}
 {% endblock %}
