@@ -8,4 +8,5 @@
 
   // Concept browser actions/states
   eType.TOGGLE_CONCEPT_BROWSER = 'open_concept_browser';
+  eType.CONCEPT_SELECTED = 'concept_selected';
 }(window.eType = window.eType || {}));

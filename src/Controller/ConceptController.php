@@ -69,7 +69,7 @@ class ConceptController extends Controller
   }
 
   /**
-   * @Route("/{concept}", requirements={"concept"="\d+"})
+   * @Route("/{concept}", requirements={"concept"="\d+"}, options={"expose"=true})
    * @Template()
    *
    * @param Concept $concept

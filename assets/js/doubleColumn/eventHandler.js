@@ -25,8 +25,20 @@ require('../event/eventTypes');
       case types.TOGGLE_CONCEPT_BROWSER:
         onToggleConceptBrowser();
         break;
+      case types.CONCEPT_SELECTED:
+        onConceptSelected(data);
+        break;
     }
   });
+
+  /**
+   * Load the concept page
+   * @param data
+   */
+  function onConceptSelected(data) {
+    // Forward to page load
+    onPageLoad({url: Routing.generate('app_concept_show', {concept: data.id})})
+  }
 
   /**
    * Update the iframe src url

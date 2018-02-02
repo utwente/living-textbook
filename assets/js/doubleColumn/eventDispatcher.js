@@ -17,4 +17,14 @@ require('../event/eventTypes');
     }, '*');
   }
 
+  /**
+   * Concept selected event
+   * @param id
+   */
+  eDispatch.conceptSelected = function(id){
+    dispatchParent(types.CONCEPT_SELECTED, {
+      id: id
+    });
+  };
+
 }(window.eDispatch = window.eDispatch || {}, window.eType));

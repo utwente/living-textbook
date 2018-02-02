@@ -10,12 +10,12 @@ global.d3 = d3;
  * $ has been defined globally in the app.js
  */
 $(function () {
+  require('./doubleColumn/eventHandler');
+  require('./doubleColumn/eventDispatcher');
   require('./doubleColumn/draggebleWindow');
   require('./search/conceptSearch');
   require('./conceptBrowser/conceptBrowser');
   require('./doubleColumn/draggebleWindow');
-  require('./doubleColumn/eventHandler');
-  require('./doubleColumn/eventDispatcher');
 
   $.get({
     url: Routing.generate('app_data_export'),

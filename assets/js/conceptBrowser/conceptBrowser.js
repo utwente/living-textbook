@@ -3,7 +3,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 /**
  * Register cb (concept browser) namespace for usage
  */
-(function (cb, $, d3, undefined) {
+(function (cb, $, d3, dispatcher, undefined) {
 
   /******************************************************************************************************
    * Configuration variables
@@ -559,10 +559,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     mouseMoveDisabled = !mouseMoveDisabled;
 
     if (!clickSend && node !== undefined) {
-      if (typeof node.link !== 'undefined' && node.link !== '') {
+      if (typeof node.id !== 'undefined' && node.id !== '') {
         clickSend = true;
         //noinspection JSCheckFunctionSignatures
-        parent.postMessage({'type': 'wiki_update', 'data': node.link}, '*');
+        dispatcher.conceptSelected(node.id);
         setTimeout(function () {
           clickSend = false;
         }, 250);
@@ -1398,4 +1398,4 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     }
   }
 
-}(window.cb = window.cb || {}, jQuery, d3));
+}(window.cb = window.cb || {}, jQuery, d3, eDispatch));
