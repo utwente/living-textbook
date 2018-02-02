@@ -49,6 +49,10 @@ services:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
 
+  App\Form\Extension\FormExtension:
+    tags:
+      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
   App\Oidc\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'

@@ -1,13 +1,54 @@
 {% extends 'bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block form_label_class -%}
-col-sm-4 col-md-3 col-lg-2
+  {%- if hide_label is not defined or hide_label|default(false) == false -%}
+    col-sm-4 col-md-3 col-lg-2
+  {% endif %}
 {% endblock %}
+
 {% block form_group_class -%}
-col-sm-8 col-md-9 col-lg-10
+  {%- if hide_label is defined and hide_label == true -%}
+    col-sm-12
+  {%- else -%}
+    col-sm-8 col-md-9 col-lg-10
+  {%- endif -%}
 {%- endblock form_group_class %}
 
 {% block submit_widget %}
   {%- set attr = attr|merge({class: (attr.class|default('btn-success'))|trim}) -%}
   {{- parent() -}}
 {% endblock %}
+
+{% block form_row -%}
+  {{- block("form_header") -}}
+  {{- parent() -}}
+{% endblock %}
+
+{% block checkbox_row -%}
+  {{- block("form_header") -}}
+  {{- parent() -}}
+{% endblock %}
+
+{% block submit_row -%}
+  {{- block("form_header") -}}
+  {{- parent() -}}
+{%- endblock submit_row %}
+
+{% block reset_row -%}
+  {{- block("form_header") -}}
+  {{- parent() -}}
+{%- endblock reset_row %}
+
+{% block form_label -%}
+  {%- if hide_label is defined and hide_label == true -%}
+  {%- else -%}
+    {{ parent() }}
+  {%- endif -%}
+{% endblock %}
+
+{# Define block which enables form_header option #}
+{% block form_header -%}
+  {%- if form_header is defined and form_header != false -%}
+    <h2>{{ form_header|trans }}</h2>
+  {%- endif -%}
+{%- endblock %}
