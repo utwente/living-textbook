@@ -9,6 +9,9 @@ require('../event/eventTypes');
    * Register message handler for communication
    */
   window.addEventListener('message', function (event) {
+    // @todo remove
+    console.info('Event received', event.data);
+
     var type = event.data.type;
     var data = event.data.payload;
 
@@ -32,17 +35,13 @@ require('../event/eventTypes');
   function onPageLoad(data) {
     // Check options
     data.options = data.options || {};
-    if (data.options.topLevel){
+    if (data.options.topLevel) {
       window.location.href = data.url;
       return;
     }
 
     // By removing the iframe before changing it's url, we do not influence the browser history stack
-    var $iframe = $('#data-iframe');
-    var $container = $iframe.parent();
-    $iframe.remove();
-    $iframe.attr('src', data.url);
-    $container.append($iframe);
+    dw.iframeLoad(data.url);
   }
 
   eHandler.onPageLoad = function (data) {

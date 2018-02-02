@@ -1,4 +1,5 @@
 @import '../vars/vars';
+@import '../mixins/mixins';
 
 body, #double-column-container {
   margin: 0;
@@ -33,6 +34,21 @@ body, #double-column-container {
 #left-container, #left-container-content {
   width: 100%;
   z-index: 10;
+}
+
+#left-container-loader {
+  position: absolute;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background-color: $background-color;
+
+  &>div {
+    @include div-center();
+    text-align: center;
+    font-size: $loader-size;
+    color: $loader-color;
+  }
 }
 
 #data-iframe {

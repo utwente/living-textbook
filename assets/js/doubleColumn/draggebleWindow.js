@@ -76,7 +76,7 @@
   /**
    * Handler for toggle window action
    */
-  dw.toggleWindow = function() {
+  dw.toggleWindow = function () {
     opened ? dw.closeWindow() : dw.openWindow();
   };
 
@@ -153,6 +153,7 @@
         if (animationCount === 0) {
           callback();
           cb.resizeCanvas();
+          iframeLoaderUpdate();
         }
       };
       leftFrame.animate({
@@ -177,6 +178,8 @@
       callback();
       cb.resizeCanvas();
     }
+
+    iframeLoaderUpdate();
   };
 
   /**
@@ -233,4 +236,40 @@
       dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), undefined, undefined, true);
     }
   };
+
+  ////////////////////////////////
+  // iFrame handlers
+  ////////////////////////////////
+
+  /**
+   * Load a new source in the iframe
+   * @param url
+   */
+  dw.iframeLoad = function (url) {
+    dw.iframeLoader(true);
+    var $iframe = $('#data-iframe');
+    var $container = $iframe.parent();
+    $iframe.remove();
+    $iframe.attr('src', url);
+    $container.append($iframe);
+  };
+
+  dw.iframeLoader = function(loading) {
+    iframeLoaderUpdate();
+    var $loader = $('#left-container-loader');
+    if (loading){
+      $loader.fadeIn();
+    } else {
+      $loader.fadeOut();
+    }
+  };
+
+  function iframeLoaderUpdate(){
+    var $loader = $('#left-container-loader');
+    var $iframe = $('#data-iframe');
+
+    $loader.height($iframe.height());
+    $loader.width($iframe.width());
+  }
+
 }(window.dw = window.dw || {}, $));

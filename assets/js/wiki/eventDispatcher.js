@@ -11,6 +11,9 @@ require('../event/eventTypes');
    * @param data
    */
   function dispatchParent(type, data) {
+    // @todo remove
+    console.info('Event dispatched', type, data);
+
     parent.postMessage({
       type: type,
       payload: data
