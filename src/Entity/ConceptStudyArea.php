@@ -65,9 +65,9 @@ class ConceptStudyArea
   }
 
   /**
-   * @return Concept
+   * @return Concept|null
    */
-  public function getConcept(): Concept
+  public function getConcept(): ?Concept
   {
     return $this->concept;
   }
@@ -87,7 +87,7 @@ class ConceptStudyArea
   /**
    * @return StudyArea
    */
-  public function getStudyArea(): StudyArea
+  public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
@@ -95,7 +95,7 @@ class ConceptStudyArea
   /**
    * @param StudyArea $studyArea
    *
-   * @return ConceptStudyArea
+   * @return ConceptStudyArea|null
    */
   public function setStudyArea(StudyArea $studyArea): ConceptStudyArea
   {
@@ -103,6 +103,5 @@ class ConceptStudyArea
 
     return $this;
   }
-
 
 }
