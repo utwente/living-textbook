@@ -24,8 +24,10 @@ data:
   upload-json-text: 'This upload form can be used to upload an JSON file in old style'
 
 form:
+  action-bar: 'Action bar'
   cancel: 'Cancel'
   edit: 'Edit'
+  list: 'List'
   save: 'Save'
   show: 'Show'
 
@@ -42,3 +44,8 @@ login:
   surfconext-login-text: 'Click on the image to login with your university credentials.'
   surfconext-login: 'SURFconext login'
   username: 'Username'
+
+menu:
+  edit: 'Edit'
+  concept: 'Concepts'
+  case-study: 'Case studies'

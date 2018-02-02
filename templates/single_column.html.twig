@@ -18,6 +18,7 @@
     <div class="card container-card">
       <div class="card-body">
         {% block _flashbags %}{% include '_layout/flashbags.html.twig' %}{% endblock %}
+        {% block before_title %}{% endblock %}
         {% block content_title %}<h1>{{ block('title') }}</h1>{% endblock %}
         {% block content %}{% endblock %}
       </div>
