@@ -14,10 +14,12 @@ concept:
   edit-title: 'Edit concept "%item%"'
   examples: 'Examples'
   how-to: 'How to'
+  indirect-relations: 'Indirect relations'
   introduction: 'Introduction and definition'
   learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
   name: 'Name'
+  relations: 'Relations'
   self-assessment: 'Self assessment'
   theory-explanation: 'Theory explanation'
 

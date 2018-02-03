@@ -33,3 +33,26 @@
   {% set title = 'concept.self-assessment'|trans %}
   {{ block('data_display_block') }}
 {% endmacro %}
+
+{% block data_display_relations %}
+  <h3>{{ title }}</h3>
+  <ul>
+    {% for relation in relations %}
+      <li>{{ relation.source.name }} {{ relation.relationType.name }} {{ relation.target.name }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% macro data_relations(relations) %}
+  {% if relations|length > 0 %}
+    {% set title = 'concept.relations'|trans %}
+    {{ block('data_display_relations') }}
+  {% endif %}
+{% endmacro %}
+
+{% macro data_indirect_relations(relations) %}
+  {% if relations|length > 0 %}
+    {% set title = 'concept.indirect-relations'|trans %}
+    {{ block('data_display_relations') }}
+  {% endif %}
+{% endmacro %}
