@@ -5,8 +5,11 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Data\DataExamples;
+use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataLearningOutcomes;
+use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -74,6 +77,36 @@ class Concept
   private $theoryExplanation;
 
   /**
+   * @var DataHowTo
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataHowTo", cascade={"persist", "remove"})
+   * @ORM\JoinColumn(name="how_to_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   */
+  private $howTo;
+
+  /**
+   * @var DataExamples
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataExamples", cascade={"persist", "remove"})
+   * @ORM\JoinColumn(name="examples_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   */
+  private $examples;
+
+  /**
+   * @var DataSelfAssessment
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataSelfAssessment", cascade={"persist", "remove"})
+   * @ORM\JoinColumn(name="self_assessment_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   */
+  private $selfAssessment;
+
+  /**
    * @var ArrayCollection|ConceptRelation[]
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
@@ -117,6 +150,9 @@ class Concept
     $this->introduction      = new DataIntroduction();
     $this->learningOutcomes  = new DataLearningOutcomes();
     $this->theoryExplanation = new DataTheoryExplanation();
+    $this->howTo             = new DataHowTo();
+    $this->examples          = new DataExamples();
+    $this->selfAssessment    = new DataSelfAssessment();
   }
 
   /**
@@ -288,6 +324,66 @@ class Concept
   public function setTheoryExplanation(DataTheoryExplanation $theoryExplanation): Concept
   {
     $this->theoryExplanation = $theoryExplanation;
+
+    return $this;
+  }
+
+  /**
+   * @return DataHowTo
+   */
+  public function getHowTo(): DataHowTo
+  {
+    return $this->howTo;
+  }
+
+  /**
+   * @param DataHowTo $howTo
+   *
+   * @return Concept
+   */
+  public function setHowTo(DataHowTo $howTo): Concept
+  {
+    $this->howTo = $howTo;
+
+    return $this;
+  }
+
+  /**
+   * @return DataExamples
+   */
+  public function getExamples(): DataExamples
+  {
+    return $this->examples;
+  }
+
+  /**
+   * @param DataExamples $examples
+   *
+   * @return Concept
+   */
+  public function setExamples(DataExamples $examples): Concept
+  {
+    $this->examples = $examples;
+
+    return $this;
+  }
+
+  /**
+   * @return DataSelfAssessment
+   */
+  public function getSelfAssessment(): DataSelfAssessment
+  {
+    return $this->selfAssessment;
+  }
+
+  /**
+   * @param DataSelfAssessment $selfAssessment
+   *
+   * @return Concept
+   */
+  public function setSelfAssessment(DataSelfAssessment $selfAssessment): Concept
+  {
+    $this->selfAssessment = $selfAssessment;
 
     return $this;
   }

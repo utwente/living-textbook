@@ -3,8 +3,11 @@
 namespace App\Form\Concept;
 
 use App\Entity\Concept;
+use App\Entity\Data\DataExamples;
+use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataLearningOutcomes;
+use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Form\Data\BaseDataTextType;
 use Symfony\Component\Form\AbstractType;
@@ -35,6 +38,21 @@ class EditConceptType extends AbstractType
             'label'      => 'concept.theory-explanation',
             'required'   => false,
             'data_class' => DataTheoryExplanation::class,
+        ])
+        ->add('howTo', BaseDataTextType::class, [
+            'label'      => 'concept.how-to',
+            'required'   => false,
+            'data_class' => DataHowTo::class,
+        ])
+        ->add('examples', BaseDataTextType::class, [
+            'label'      => 'concept.examples',
+            'required'   => false,
+            'data_class' => DataExamples::class,
+        ])
+        ->add('selfAssessment', BaseDataTextType::class, [
+            'label'      => 'concept.self-assessment',
+            'required'   => false,
+            'data_class' => DataSelfAssessment::class,
         ])
         ->add('submit', SubmitType::class, [
             'label' => 'form.save',

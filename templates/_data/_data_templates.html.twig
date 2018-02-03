@@ -18,3 +18,18 @@
   {% set title = 'concept.theory-explanation'|trans %}
   {{ block('data_display_block') }}
 {% endmacro %}
+
+{% macro data_how_to(data) %}
+  {% set title = 'concept.how-to'|trans %}
+  {{ block('data_display_block') }}
+{% endmacro %}
+
+{% macro data_examples(data) %}
+  {% set title = 'concept.examples'|trans %}
+  {{ block('data_display_block') }}
+{% endmacro %}
+
+{% macro data_self_assessment(data) %}
+  {% set title = 'concept.self-assessment'|trans %}
+  {{ block('data_display_block') }}
+{% endmacro %}

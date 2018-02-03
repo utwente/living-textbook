@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class DataLearningOutcomes
+ * Class DataExamples
  *
  * @author BobV
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Repository\Data\DataLearningOutcomesRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Data\DataExamplesRepository")
  */
-class DataLearningOutcomes implements DataInterface
+class DataExamples implements DataInterface
 {
   use BaseDataTextObject;
 }

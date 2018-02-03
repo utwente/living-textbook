@@ -5,7 +5,7 @@ namespace App\Entity\Data;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class DataLearningOutcomesRepository
+ * Class DataTheoryExplanation
  *
  * @author BobV
  *
