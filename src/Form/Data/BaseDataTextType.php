@@ -3,10 +3,13 @@
 namespace App\Form\Data;
 
 use App\Entity\Data\BaseDataTextObject;
+use App\Form\Type\CkEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BaseDataTextType extends AbstractType
@@ -14,7 +17,7 @@ class BaseDataTextType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('text', TextareaType::class, [
+        ->add('text', $options['ckeditor'] ? CkEditorType::class : TextareaType::class, [
             'label'    => $options['label'],
             'required' => $options['required'],
         ]);
@@ -26,9 +29,11 @@ class BaseDataTextType extends AbstractType
         'label'      => false,
         'required'   => true,
         'hide_label' => true,
+        'ckeditor'   => true,
     ]);
     $resolver->setAllowedTypes('label', ['string', 'bool']);
     $resolver->setAllowedTypes('required', ['bool']);
+    $resolver->setAllowedTypes('ckeditor', ['bool']);
 
     $resolver->setRequired('data_class');
     $resolver->setAllowedTypes('data_class', ['string', 'null']);

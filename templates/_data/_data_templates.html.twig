@@ -1,7 +1,7 @@
 {% block data_display_block %}
   {% if data.hasData %}
     {% if title is defined %}<h3>{{ title }}</h3>{% endif %}
-    <p>{{ data.text }}</p>
+    {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
   {% endif %}
 {% endblock %}
 

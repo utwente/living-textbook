@@ -4,3 +4,5 @@ twig:
   strict_variables: '%kernel.debug%'
   form_themes:
     - "_form/form_layout.html.twig"
+  globals:
+    allowed_ckeditor_tags: '<p><br>'

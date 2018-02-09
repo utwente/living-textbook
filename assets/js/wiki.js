@@ -30,7 +30,10 @@ $(function () {
 
       // Exclude hash urls
       var url = $from.attr('href');
-      if (url === '#') return;
+      if (url.startsWith('#')) return;
+
+      // Exclude javascript urls
+      if (url.startsWith('javascript')) return;
 
       // Build options
       var options = {

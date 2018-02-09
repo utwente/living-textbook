@@ -74,6 +74,12 @@
             "ref": "370bcf99b04c0dfd0b545745aad622d757af5e1b"
         }
     },
+    "fsi/ckeditor-bundle": {
+        "version": "7.0.0"
+    },
+    "fsi/json-builder": {
+        "version": "3.1.0"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.32"
     },

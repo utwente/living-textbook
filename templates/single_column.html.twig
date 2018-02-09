@@ -6,6 +6,10 @@
     var currentPath = "{{ app.request.pathinfo|escape('js') }}";
   </script>
   <script src="{{ asset('build/wiki.js') }}" type="text/javascript"></script>
+
+  {% if form is defined %}
+    <script src="{{ asset('ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+  {% endif %}
 {% endblock %}
 
 {% block stylesheets %}
