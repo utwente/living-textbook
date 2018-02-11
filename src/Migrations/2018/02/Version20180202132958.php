@@ -39,12 +39,16 @@ class Version20180202132958 extends AbstractMigration implements ContainerAwareI
     if (!$studyArea) {
       $studyArea = new StudyArea();
       $studyArea->setName('Default');
+      $em->persist($studyArea);
     } else {
       $studyArea = $studyArea[0];
     }
 
     // Generate default study-area-concept relations
-    $concepts = $em->getRepository('App:Concept')->findAll();
+    $concepts = $em->getRepository('App:Concept')->createQueryBuilder('c')
+        ->select('c.id')
+        ->join('c.studyAreas', 'sa')
+        ->getQuery()->getResult();
     foreach ($concepts as $concept) {
       /** @var Concept $concept */
       if (count($concept->getStudyAreas()) == 0) {

@@ -47,7 +47,10 @@ class Version20180209110008 extends AbstractMigration implements ContainerAwareI
   {
     // Generate introduction objects for the existing concepts
     $em       = $this->container->get('doctrine.orm.entity_manager');
-    $concepts = $em->getRepository('App:Concept')->findAll();
+    $concepts = $em->getRepository('App:Concept')->createQueryBuilder('c')
+        ->select('c.id')
+        ->join('c.externalResources', 'er')
+        ->getQuery()->getResult();
 
     // Setup reflection property
     $reflClass = new \ReflectionClass(Concept::class);
