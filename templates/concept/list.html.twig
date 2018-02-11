@@ -1,5 +1,10 @@
 {% extends 'single_column.html.twig' %}
 
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import new_bar %}
+  {{ new_bar(path('app_concept_add')) }}
+{% endblock %}
+
 {% block title %}
   {{ 'concept.list-title'|trans }}
 {% endblock %}

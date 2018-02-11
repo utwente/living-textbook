@@ -11,9 +11,23 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ConceptRelationType extends AbstractType
 {
+  /** @var TranslatorInterface */
+  private $translator;
+
+  /**
+   * ConceptRelationType constructor.
+   *
+   * @param TranslatorInterface $translator
+   */
+  public function __construct(TranslatorInterface $translator)
+  {
+    $this->translator = $translator;
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     if ($options['incoming']) {
@@ -35,7 +49,7 @@ class ConceptRelationType extends AbstractType
     }
   }
 
-  private function addEntityType(FormBuilderInterface $builder, string $field, int $id)
+  private function addEntityType(FormBuilderInterface $builder, string $field, ?int $id)
   {
     $builder
         ->add($field, EntityType::class, [
@@ -46,7 +60,7 @@ class ConceptRelationType extends AbstractType
               return $repo->createQueryBuilder('c')
                   ->where('c.id != :id')
                   ->orderBy('c.name', 'ASC')
-                  ->setParameter('id', $id);
+                  ->setParameter('id', $id ?? 0);
             },
         ]);
   }
@@ -58,7 +72,7 @@ class ConceptRelationType extends AbstractType
         'disabled' => true,
         'mapped'   => false,
         'required' => false,
-        'data'     => $name,
+        'data'     => empty($name) ? $this->translator->trans('concept.new') : $name,
     ]);
   }
 
@@ -71,7 +85,7 @@ class ConceptRelationType extends AbstractType
         'data_class' => ConceptRelation::class,
     ]);
 
-    $resolver->setAllowedTypes('concept_id', ['int']);
+    $resolver->setAllowedTypes('concept_id', ['null', 'int']);
     $resolver->setAllowedTypes('concept_name', ['string']);
     $resolver->setAllowedTypes('incoming', ['bool']);
 

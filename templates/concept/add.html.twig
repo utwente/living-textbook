@@ -2,15 +2,11 @@
 
 {% block before_title %}
   {% from '_macro/_action_bar.html.twig' import action_bar %}
-  {{ action_bar(
-    false,
-    path('app_concept_show', {'concept': concept.id}),
-    path('app_concept_list')
-  ) }}
+  {{ action_bar(false, false, path('app_concept_list')) }}
 {% endblock %}
 
 {% block title %}
-  {{ 'concept.edit-title'|trans({'%item%': concept.name}) }}
+  {{ 'concept.add-title'|trans }}
 {% endblock %}
 
 {% block content %}

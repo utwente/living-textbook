@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\ConceptStudyArea;
 use App\Entity\ExternalResource;
 use App\Form\Concept\EditConceptType;
 use App\Repository\ConceptRepository;
@@ -53,30 +54,15 @@ class ConceptController extends Controller
       $originalIndirectRelations->add($indirectRelation);
     }
 
+    // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
         'concept' => $concept,
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Check resources
-      foreach ($concept->getExternalResources()->getResources() as $resource) {
-        if ($resource->getResourceCollection() === NULL) {
-          $resource->setResourceCollection($concept->getExternalResources());
-        }
-      };
-
-      // Check relations
-      foreach ($concept->getRelations() as $relation) {
-        if ($relation->getSource() === NULL) {
-          $relation->setSource($concept);
-        }
-      }
-      foreach ($concept->getIndirectRelations() as $indirectRelation) {
-        if ($indirectRelation->getTarget() === NULL) {
-          $indirectRelation->setTarget($concept);
-        }
-      }
+      // Check concept relations
+      $concept->checkRelations();
 
       // Remove outdated resources
       foreach ($originalResources as $originalResource) {
@@ -125,6 +111,48 @@ class ConceptController extends Controller
 
     return [
         'concepts' => $concepts,
+    ];
+  }
+
+  /**
+   * @Route("/add")
+   * @Template()
+   *
+   * @param Request                $request
+   * @param EntityManagerInterface $em
+   *
+   * @return array|Response
+   */
+  public function add(Request $request, EntityManagerInterface $em)
+  {
+    // Create new concept
+    $concept = new Concept();
+
+    // @todo remove
+    // Add default study area
+    $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($em->getRepository('App:StudyArea')->find(1)));
+
+    // Create form and handle request
+    $form = $this->createForm(EditConceptType::class, $concept, [
+        'concept' => $concept,
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Check concept relations
+      $concept->checkRelations();
+
+      // Save the data
+      $em->persist($concept);
+      $em->flush();
+
+      // Forward to show page
+      return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
+    }
+
+    return [
+        'concept' => $concept,
+        'form'    => $form->createView(),
     ];
   }
 

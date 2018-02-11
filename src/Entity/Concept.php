@@ -153,6 +153,7 @@ class Concept
    */
   public function __construct()
   {
+    $this->name              = '';
     $this->relations         = new ArrayCollection();
     $this->indirectRelations = new ArrayCollection();
     $this->studyAreas        = new ArrayCollection();
@@ -164,6 +165,32 @@ class Concept
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
     $this->selfAssessment    = new DataSelfAssessment();
+    $this->externalResources = new DataExternalResources();
+  }
+
+  /**
+   * Check whether the relations have the correct owning data
+   */
+  public function checkRelations()
+  {
+    // Check resources
+    foreach ($this->getExternalResources()->getResources() as $resource) {
+      if ($resource->getResourceCollection() === NULL) {
+        $resource->setResourceCollection($this->getExternalResources());
+      }
+    };
+
+    // Check relations
+    foreach ($this->getRelations() as $relation) {
+      if ($relation->getSource() === NULL) {
+        $relation->setSource($this);
+      }
+    }
+    foreach ($this->getIndirectRelations() as $indirectRelation) {
+      if ($indirectRelation->getTarget() === NULL) {
+        $indirectRelation->setTarget($this);
+      }
+    }
   }
 
   /**

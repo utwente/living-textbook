@@ -1,13 +1,33 @@
 {% macro action_bar(edit_url, show_url, list_url) %}
-  <div class="float-right" role="group" aria-label="{{ 'form.action-bar'|trans }}">
-    {% if edit_url|default(false) != false %}
-      <a href="{{ edit_url }}" class="btn btn-secondary"><i class="fa fa-pencil"></i> {{ 'form.edit'|trans }}</a>
-    {% endif %}
-    {% if show_url|default(false) != false %}
-      <a href="{{ show_url }}" class="btn btn-secondary"><i class="fa fa-eye"></i> {{ 'form.show'|trans }}</a>
-    {% endif %}
-    {% if list_url|default(false) != false %}
-      <a href="{{ list_url }}" class="btn btn-secondary"><i class="fa fa-list"></i> {{ 'form.list'|trans }}</a>
-    {% endif %}
-  </div>
+  {% from _self import _action_button %}
+  {{ block('_bar_header') }}
+  {% if edit_url|default(false) != false %}
+    {{ _action_button(edit_url, 'fa-pencil', 'form.edit') }}
+  {% endif %}
+  {% if show_url|default(false) != false %}
+    {{ _action_button(show_url, 'fa-eye', 'form.show') }}
+  {% endif %}
+  {% if list_url|default(false) != false %}
+    {{ _action_button(list_url, 'fa-list', 'form.list') }}
+  {% endif %}
+  {{ block('_bar_footer') }}
 {% endmacro %}
+
+{% macro new_bar(new_url) %}
+  {% from _self import _action_button %}
+  {{ block('_bar_header') }}
+  {{ _action_button(new_url, 'fa-plus', 'form.add') }}
+  {{ block('_bar_footer') }}
+{% endmacro %}
+
+{% macro _action_button(url, icon, label) %}
+  <a href="{{ url }}" class="btn btn-secondary"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>
+{% endmacro %}
+
+{% block _bar_header %}
+<div class="float-right" role="group" aria-label="{{ 'form.action-bar'|trans }}">
+  {% endblock %}
+
+  {% block _bar_footer %}
+</div>
+{% endblock %}

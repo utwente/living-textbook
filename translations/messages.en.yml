@@ -11,6 +11,7 @@ browser:
   search: 'Search'
 
 concept:
+  add-title: 'Add new concept'
   edit-title: 'Edit concept "%item%"'
   examples: 'Examples'
   external-resources: 'External resources'
@@ -21,6 +22,7 @@ concept:
   learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
   name: 'Name'
+  new: 'New concept'
   outgoing-relations: 'Outgoing relations'
   relations: 'Relations'
   self-assessment: 'Self assessment'
@@ -36,6 +38,7 @@ data:
 
 form:
   action-bar: 'Action bar'
+  add: 'Add'
   cancel: 'Cancel'
   edit: 'Edit'
   list: 'List'

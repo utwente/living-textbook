@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait IdTrait
 {
   /**
-   * @var int
+   * @var int|null
    *
    * @ORM\Column(name="id", type="integer")
    * @ORM\Id
@@ -18,9 +18,9 @@ trait IdTrait
   private $id;
 
   /**
-   * @return int
+   * @return int|null
    */
-  public function getId(): int
+  public function getId(): ?int
   {
     return $this->id;
   }
