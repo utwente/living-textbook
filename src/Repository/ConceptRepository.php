@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\StudyArea;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class ConceptRepository extends EntityRepository
 {
@@ -13,7 +14,12 @@ class ConceptRepository extends EntityRepository
    */
   public function findAllOrderedByName()
   {
-    return $this->findBy([], ['name' => 'ASC']);
+    $qb = $this->createQueryBuilder('c')
+        ->orderBy('c.name', 'ASC');
+
+    $this->loadRelations($qb, 'c');
+
+    return $qb->getQuery()->getResult();
   }
 
   /**
@@ -29,6 +35,24 @@ class ConceptRepository extends EntityRepository
         ->where('sa = :studyArea')
         ->setParameter(':studyArea', $studyArea)
         ->orderBy('c.name', 'asc');
+
+    $this->loadRelations($qb, 'c');
+
     return $qb->getQuery()->getResult();
+  }
+
+  /**
+   * Eagerly load the concept relations, while applying the soft deletable filter
+   *
+   * @param QueryBuilder $qb
+   * @param string       $alias
+   */
+  private function loadRelations(QueryBuilder &$qb, string $alias)
+  {
+    $qb
+        ->leftJoin($alias . '.relations', 'r')
+        ->leftJoin($alias . '.indirectRelations', 'ir')
+        ->addSelect('r')
+        ->addSelect('ir');
   }
 }
