@@ -85,9 +85,12 @@
   {{- block('form_widget') -}}
 
   {# Enable plugin for form #}
+  {% set allow_move_calc = allow_move is not defined or (allow_move is defined and allow_move) %}
   <script type="text/javascript">
     $('#{{ id }}').collection({
-      add: '<a href="#" class="collection-rescue-add btn btn-secondary"><i class="fa fa-plus fa-fw"></i></a>'
+      add: '<a href="#" class="collection-rescue-add btn btn-secondary"><i class="fa fa-plus fa-fw"></i></a>',
+      allow_down: {{ allow_move_calc ? 'true' : 'false' }},
+      allow_up: {{ allow_move_calc ? 'true' : 'false' }}
     });
   </script>
 {%- endblock %}

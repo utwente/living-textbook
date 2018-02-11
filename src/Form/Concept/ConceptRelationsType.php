@@ -5,6 +5,8 @@ namespace App\Form\Concept;
 use App\Entity\Concept;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConceptRelationsType extends AbstractType
@@ -38,6 +40,11 @@ class ConceptRelationsType extends AbstractType
 
       return $value;
     });
+  }
+
+  public function buildView(FormView $view, FormInterface $form, array $options)
+  {
+    $view->vars['allow_move'] = false;
   }
 
   public function getParent()
