@@ -198,7 +198,7 @@ class Concept
   }
 
   /**
-   * @return ArrayCollection|Concept[]
+   * @return ArrayCollection|ConceptRelation[]
    */
   public function getRelations()
   {

@@ -60,12 +60,14 @@ class EditConceptType extends AbstractType
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
         ])
-        ->add('relations', CollectionType::class, [
-            'label'         => 'concept.relations',
-            'entry_type'    => ConceptRelationType::class,
-            'entry_options' => [
-                'hide_label' => true,
-            ],
+        ->add('relations', ConceptRelationsType::class, [
+            'label'   => 'concept.outgoing-relations',
+            'concept' => $options['concept'],
+        ])
+        ->add('indirectRelations', ConceptRelationsType::class, [
+            'label'    => 'concept.incoming-relations',
+            'concept'  => $options['concept'],
+            'incoming' => true,
         ])
         ->add('submit', SubmitType::class, [
             'label' => 'form.save',
@@ -74,8 +76,11 @@ class EditConceptType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver)
   {
+    $resolver->setRequired('concept');
     $resolver->setDefaults([
         'data_class' => Concept::class,
     ]);
+
+    $resolver->setAllowedTypes('concept', [Concept::class]);
   }
 }

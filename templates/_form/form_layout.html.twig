@@ -7,7 +7,7 @@
 
 {% block form_label_class -%}
   {%- if hide_label is not defined or hide_label|default(false) == false -%}
-    col-sm-4 col-md-3 col-lg-2
+    col-md-3 col-lg-2
   {%- endif -%}
 {%- endblock %}
 
@@ -15,7 +15,7 @@
   {%- if hide_label is defined and hide_label == true -%}
     col-sm-12
   {%- else -%}
-    col-sm-8 col-md-9 col-lg-10
+    col-md-9 col-lg-10
   {%- endif -%}
 {%- endblock form_group_class %}
 
@@ -108,10 +108,18 @@
   </div>
 {%- endblock %}
 
-{% block external_resource_row %}
-  {{ block('collection_widget_data_row') }}
-{% endblock %}
+{% block external_resource_row -%}
+  {{- block('collection_widget_data_row') -}}
+{%- endblock %}
 
 {% block external_resource_widget -%}
-  {{ block('collection_widget_data_widget') }}
+  {{- block('collection_widget_data_widget') -}}
+{%- endblock %}
+
+{% block concept_relation_row -%}
+  {{- block('collection_widget_data_row') -}}
+{%- endblock %}
+
+{% block concept_relation_widget -%}
+  {{- block('collection_widget_data_widget') -}}
 {%- endblock %}

@@ -13,12 +13,12 @@ class DataExternalResourcesType extends AbstractBaseDataType
   {
     $builder
         ->add('resources', CollectionType::class, [
-            'label'         => $options['label'],
-            'required'      => $options['required'],
-            'allow_add'     => true,
-            'allow_delete'  => true,
-            'prototype'     => true,
-            'entry_type'    => ExternalResourceType::class,
+            'label'        => $options['label'],
+            'required'     => $options['required'],
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'prototype'    => true,
+            'entry_type'   => ExternalResourceType::class,
         ]);
   }
 
@@ -32,6 +32,5 @@ class DataExternalResourcesType extends AbstractBaseDataType
       return $value;
     });
   }
-
 
 }

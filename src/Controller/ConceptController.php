@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
+use App\Entity\ConceptRelation;
 use App\Entity\ExternalResource;
 use App\Form\Concept\EditConceptType;
 use App\Repository\ConceptRepository;
@@ -42,23 +43,57 @@ class ConceptController extends Controller
       $originalResources->add($resource);
     }
 
-    $form = $this->createForm(EditConceptType::class, $concept);
+    // Map original relations
+    $originalRelations = new ArrayCollection();
+    foreach ($concept->getRelations() as $relation) {
+      $originalRelations->add($relation);
+    }
+    $originalIndirectRelations = new ArrayCollection();
+    foreach ($concept->getIndirectRelations() as $indirectRelation) {
+      $originalIndirectRelations->add($indirectRelation);
+    }
+
+    $form = $this->createForm(EditConceptType::class, $concept, [
+        'concept' => $concept,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Check resources
-      $concept->getExternalResources()->getResources()->forAll(function ($key, $resource) use ($concept) {
-        /** @var ExternalResource $resource */
+      foreach ($concept->getExternalResources()->getResources() as $resource) {
         if ($resource->getResourceCollection() === NULL) {
           $resource->setResourceCollection($concept->getExternalResources());
         }
-        return true;
-      });
+      };
+
+      // Check relations
+      foreach ($concept->getRelations() as $relation) {
+        if ($relation->getSource() === NULL) {
+          $relation->setSource($concept);
+        }
+      }
+      foreach ($concept->getIndirectRelations() as $indirectRelation) {
+        if ($indirectRelation->getTarget() === NULL) {
+          $indirectRelation->setTarget($concept);
+        }
+      }
 
       // Remove outdated resources
       foreach ($originalResources as $originalResource) {
-        if (false === $concept->getExternalResources()->getResources()->contains($originalResource)){
+        if (false === $concept->getExternalResources()->getResources()->contains($originalResource)) {
           $em->remove($originalResource);
+        }
+      }
+
+      // Remove outdated relations
+      foreach ($originalRelations as $originalRelation) {
+        if (false === $concept->getRelations()->contains($originalRelation)) {
+          $em->remove($originalRelation);
+        }
+      }
+      foreach ($originalIndirectRelations as $originalIndirectRelation) {
+        if (false === $concept->getIndirectRelations()->contains($originalIndirectRelation)) {
+          $em->remove($originalIndirectRelation);
         }
       }
 
