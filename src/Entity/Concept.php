@@ -109,7 +109,7 @@ class Concept
   /**
    * @var ArrayCollection|ConceptRelation[]
    *
-   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"}, fetch="EAGER")
+   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
    *
    * @Assert\NotNull()
    *
@@ -121,7 +121,7 @@ class Concept
   /**
    * @var ArrayCollection|ConceptRelation[]
    *
-   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"}, fetch="EAGER")
+   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"})
    *
    * @Assert\NotNull()
    */
