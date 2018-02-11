@@ -10,7 +10,9 @@ use App\Entity\Data\DataLearningOutcomes;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Form\Data\BaseDataTextType;
+use App\Form\Data\DataExternalResourcesType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,10 +51,21 @@ class EditConceptType extends AbstractType
             'required'   => false,
             'data_class' => DataExamples::class,
         ])
+        ->add('externalResources', DataExternalResourcesType::class, [
+            'label'    => 'concept.external-resources',
+            'required' => true,
+        ])
         ->add('selfAssessment', BaseDataTextType::class, [
             'label'      => 'concept.self-assessment',
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
+        ])
+        ->add('relations', CollectionType::class, [
+            'label'         => 'concept.relations',
+            'entry_type'    => ConceptRelationType::class,
+            'entry_options' => [
+                'hide_label' => true,
+            ],
         ])
         ->add('submit', SubmitType::class, [
             'label' => 'form.save',

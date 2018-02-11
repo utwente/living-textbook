@@ -29,6 +29,17 @@
   {{ block('data_display_block') }}
 {% endmacro %}
 
+{% macro data_external_resources(data) %}
+  {% if data|length > 0 %}
+    <h3>{{ 'concept.external-resources'|trans }}</h3>
+    <ul>
+      {% for example in data %}
+        <li><a href="{{ example.url }}" class="no-block" target="_blank">{{ example.description }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
 {% macro data_self_assessment(data) %}
   {% set title = 'concept.self-assessment'|trans %}
   {{ block('data_display_block') }}

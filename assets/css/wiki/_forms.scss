@@ -6,3 +6,17 @@ label {
     }
   }
 }
+
+.card {
+  &.card-collection {
+    margin-bottom: 10px;
+
+    & > .card-body {
+      padding: 0.75rem;
+
+      & > .form-group {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

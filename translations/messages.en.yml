@@ -13,6 +13,7 @@ browser:
 concept:
   edit-title: 'Edit concept "%item%"'
   examples: 'Examples'
+  external-resources: 'External resources'
   how-to: 'How to'
   indirect-relations: 'Indirect relations'
   introduction: 'Introduction and definition'
@@ -57,3 +58,12 @@ menu:
   edit: 'Edit'
   concept: 'Concepts'
   case-study: 'Case studies'
+
+relation:
+  source: 'Source'
+  target: 'Target'
+  type: 'Relation type'
+
+resource:
+  description: 'Description'
+  url: 'Url'

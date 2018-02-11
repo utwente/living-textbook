@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
+use App\Entity\ExternalResource;
 use App\Form\Concept\EditConceptType;
 use App\Repository\ConceptRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,10 +36,33 @@ class ConceptController extends Controller
    */
   public function edit(Request $request, Concept $concept, EntityManagerInterface $em)
   {
+    // Map original resources
+    $originalResources = new ArrayCollection();
+    foreach ($concept->getExternalResources()->getResources() as $resource) {
+      $originalResources->add($resource);
+    }
+
     $form = $this->createForm(EditConceptType::class, $concept);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      // Check resources
+      $concept->getExternalResources()->getResources()->forAll(function ($key, $resource) use ($concept) {
+        /** @var ExternalResource $resource */
+        if ($resource->getResourceCollection() === NULL) {
+          $resource->setResourceCollection($concept->getExternalResources());
+        }
+        return true;
+      });
+
+      // Remove outdated resources
+      foreach ($originalResources as $originalResource) {
+        if (false === $concept->getExternalResources()->getResources()->contains($originalResource)){
+          $em->remove($originalResource);
+        }
+      }
+
+      // Save the data
       $em->flush();
 
       return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);

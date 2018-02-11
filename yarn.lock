@@ -3144,7 +3144,11 @@ jquery-contextmenu@^2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/jquery-contextmenu/-/jquery-contextmenu-2.6.3.tgz#02a937ad2a2bbf5e311f1db7c1eb3047dc183481"
 
-jquery@^3.2.1:
+jquery-ui@>=1.0:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
+
+jquery@>=1.7, jquery@^3.2.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
@@ -5335,6 +5339,13 @@ svgo@^0.7.0:
     mkdirp "~0.5.1"
     sax "~1.2.1"
     whet.extend "~0.9.9"
+
+symfony-collection@ninsuo/symfony-collection:
+  version "2.1.25"
+  resolved "https://codeload.github.com/ninsuo/symfony-collection/tar.gz/077c253bed5a5bd145382591f517da7550266861"
+  dependencies:
+    jquery ">=1.7"
+    jquery-ui ">=1.0"
 
 tapable@^0.2.7:
   version "0.2.8"

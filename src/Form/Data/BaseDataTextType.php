@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BaseDataTextType extends AbstractType
+class BaseDataTextType extends AbstractBaseDataType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
@@ -25,30 +25,12 @@ class BaseDataTextType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver)
   {
+    parent::configureOptions($resolver);
+
     $resolver->setDefaults([
-        'label'      => false,
-        'required'   => true,
-        'hide_label' => true,
-        'ckeditor'   => true,
+        'ckeditor' => true,
     ]);
-    $resolver->setAllowedTypes('label', ['string', 'bool']);
-    $resolver->setAllowedTypes('required', ['bool']);
     $resolver->setAllowedTypes('ckeditor', ['bool']);
-
-    $resolver->setRequired('data_class');
-    $resolver->setAllowedTypes('data_class', ['string', 'null']);
-    $resolver->setNormalizer('data_class', function (OptionsResolver $options, $value) {
-      if (!class_exists($value)) {
-        throw new InvalidConfigurationException(sprintf('The "data_class" option must contain a valid class name ("%s" given).', $value ? $value : 'NULL'));
-      }
-
-      $traits = class_uses($value);
-      if (!in_array(BaseDataTextObject::class, $traits)) {
-        throw new InvalidConfigurationException(sprintf('The "data_class" option must contain a class which uses the "%s" trait (class "%s" does not)', BaseDataTextObject::class, $value));
-      }
-
-      return $value;
-    });
   }
 
 }

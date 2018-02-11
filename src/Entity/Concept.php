@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Data\DataExamples;
+use App\Entity\Data\DataExternalResources;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataLearningOutcomes;
@@ -95,6 +96,16 @@ class Concept
    * @Assert\Valid()
    */
   private $examples;
+
+  /**
+   * @var DataExternalResources
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataExternalResources", cascade={"persist", "remove"})
+   * @ORM\JoinColumn(name="external_resources_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   */
+  private $externalResources;
 
   /**
    * @var DataSelfAssessment
@@ -384,6 +395,26 @@ class Concept
   public function setSelfAssessment(DataSelfAssessment $selfAssessment): Concept
   {
     $this->selfAssessment = $selfAssessment;
+
+    return $this;
+  }
+
+  /**
+   * @return DataExternalResources
+   */
+  public function getExternalResources(): DataExternalResources
+  {
+    return $this->externalResources;
+  }
+
+  /**
+   * @param DataExternalResources $externalResources
+   *
+   * @return Concept
+   */
+  public function setExternalResources(DataExternalResources $externalResources): Concept
+  {
+    $this->externalResources = $externalResources;
 
     return $this;
   }
