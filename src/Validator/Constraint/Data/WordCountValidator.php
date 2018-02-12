@@ -28,7 +28,7 @@ class WordCountValidator extends ConstraintValidator
     }
 
     // Count words
-    $count = str_word_count($value);
+    $count = str_word_count(strip_tags($value));
 
     // Check count
     $message = false;
@@ -42,7 +42,7 @@ class WordCountValidator extends ConstraintValidator
     if (!$message) return;
 
     // Build violation
-    $this->context->buildViolation($constraint->minMessage, [
+    $this->context->buildViolation($message, [
         '%min%'   => $constraint->min,
         '%max%'   => $constraint->max,
         '%count%' => $count,
