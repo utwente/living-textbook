@@ -31,7 +31,7 @@ class ConceptRelationType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     if ($options['incoming']) {
-      self::addEntityType($builder, 'source', $options['concept_id']);
+      $this->addEntityType($builder, 'source', $options['concept_id']);
     } else {
       $this->addTextType($builder, 'source', $options['concept_name']);
     }

@@ -243,6 +243,7 @@
 
   /**
    * Load a new source in the iframe
+   * By removing the iframe before changing it's url, we do not influence the browser history stack
    * @param url
    */
   dw.iframeLoad = function (url) {

@@ -52,7 +52,6 @@ require('../event/eventTypes');
       return;
     }
 
-    // By removing the iframe before changing it's url, we do not influence the browser history stack
     dw.iframeLoad(data.url);
   }
 
