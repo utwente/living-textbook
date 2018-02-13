@@ -54,16 +54,16 @@
   </ul>
 {% endblock %}
 
-{% macro data_relations(relations) %}
+{% macro data_incoming_relations(relations) %}
   {% if relations|length > 0 %}
-    {% set title = 'concept.relations'|trans %}
+    {% set title = 'concept.incoming-relations'|trans %}
     {{ block('data_display_relations') }}
   {% endif %}
 {% endmacro %}
 
-{% macro data_indirect_relations(relations) %}
+{% macro data_outgoing_relations(relations) %}
   {% if relations|length > 0 %}
-    {% set title = 'concept.indirect-relations'|trans %}
+    {% set title = 'concept.outgoing-relations'|trans %}
     {{ block('data_display_relations') }}
   {% endif %}
 {% endmacro %}

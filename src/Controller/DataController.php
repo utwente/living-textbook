@@ -142,7 +142,7 @@ class DataController extends Controller
             $relation = new ConceptRelation();
             $relation->setTarget($concepts[$jsonLink['target']]);
             $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
-            $concepts[$jsonLink['source']]->addRelation($relation);
+            $concepts[$jsonLink['source']]->addOutgoingRelation($relation);
           }
 
           // Save the data

@@ -60,11 +60,11 @@ class EditConceptType extends AbstractType
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
         ])
-        ->add('relations', ConceptRelationsType::class, [
+        ->add('outgoingRelations', ConceptRelationsType::class, [
             'label'   => 'concept.outgoing-relations',
             'concept' => $options['concept'],
         ])
-        ->add('indirectRelations', ConceptRelationsType::class, [
+        ->add('incomingRelations', ConceptRelationsType::class, [
             'label'    => 'concept.incoming-relations',
             'concept'  => $options['concept'],
             'incoming' => true,

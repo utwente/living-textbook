@@ -126,8 +126,9 @@ class Concept
    *
    * @JMSA\Expose()
    * @JMSA\Groups({"relations"})
+   * @JMSA\SerializedName("relations")
    */
-  private $relations;
+  private $outgoingRelations;
 
   /**
    * @var ArrayCollection|ConceptRelation[]
@@ -136,7 +137,7 @@ class Concept
    *
    * @Assert\NotNull()
    */
-  private $indirectRelations;
+  private $incomingRelations;
 
   /**
    * @var ArrayCollection|ConceptStudyArea[]
@@ -154,8 +155,8 @@ class Concept
   public function __construct()
   {
     $this->name              = '';
-    $this->relations         = new ArrayCollection();
-    $this->indirectRelations = new ArrayCollection();
+    $this->outgoingRelations = new ArrayCollection();
+    $this->incomingRelations = new ArrayCollection();
     $this->studyAreas        = new ArrayCollection();
 
     // Initialize data
@@ -171,7 +172,7 @@ class Concept
   /**
    * Check whether the relations have the correct owning data
    */
-  public function checkRelations()
+  public function checkEntityRelations()
   {
     // Check resources
     foreach ($this->getExternalResources()->getResources() as $resource) {
@@ -181,12 +182,12 @@ class Concept
     };
 
     // Check relations
-    foreach ($this->getRelations() as $relation) {
+    foreach ($this->getOutgoingRelations() as $relation) {
       if ($relation->getSource() === NULL) {
         $relation->setSource($this);
       }
     }
-    foreach ($this->getIndirectRelations() as $indirectRelation) {
+    foreach ($this->getIncomingRelations() as $indirectRelation) {
       if ($indirectRelation->getTarget() === NULL) {
         $indirectRelation->setTarget($this);
       }
@@ -201,7 +202,7 @@ class Concept
    */
   public function getNumberOfLinks(): int
   {
-    return count($this->relations) + count($this->indirectRelations);
+    return count($this->outgoingRelations) + count($this->incomingRelations);
   }
 
   /**
@@ -227,9 +228,9 @@ class Concept
   /**
    * @return ArrayCollection|ConceptRelation[]
    */
-  public function getRelations()
+  public function getOutgoingRelations()
   {
-    return $this->relations;
+    return $this->outgoingRelations;
   }
 
   /**
@@ -237,14 +238,14 @@ class Concept
    *
    * @return $this
    */
-  public function addRelation(ConceptRelation $conceptRelation): Concept
+  public function addOutgoingRelation(ConceptRelation $conceptRelation): Concept
   {
     // Check whether the source is set, otherwise set it as this
     if (!$conceptRelation->getSource()) {
       $conceptRelation->setSource($this);
     }
 
-    $this->relations->add($conceptRelation);
+    $this->outgoingRelations->add($conceptRelation);
 
     return $this;
   }
@@ -254,9 +255,9 @@ class Concept
    *
    * @return $this
    */
-  public function removeRelation(ConceptRelation $conceptRelation): Concept
+  public function removeOutgoingRelation(ConceptRelation $conceptRelation): Concept
   {
-    $this->relations->removeElement($conceptRelation);
+    $this->outgoingRelations->removeElement($conceptRelation);
 
     return $this;
   }
@@ -264,9 +265,9 @@ class Concept
   /**
    * @return ArrayCollection|ConceptRelation[]
    */
-  public function getIndirectRelations()
+  public function getIncomingRelations()
   {
-    return $this->indirectRelations;
+    return $this->incomingRelations;
   }
 
   /**

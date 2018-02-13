@@ -14,7 +14,8 @@
     <thead>
     <tr>
       <th scope="col">{{ 'concept.name'|trans }}</th>
-      <th scope="col">{{ 'concept.relations'|trans }}</th>
+      <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
+      <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
       <th scope="col">{{ 'form.edit'|trans }}</th>
       <th scope="col">{{ 'form.show'|trans }}</th>
     </tr>
@@ -23,7 +24,8 @@
     {% for concept in concepts %}
       <tr>
         <td>{{ concept.name }}</td>
-        <td>{{ concept.relations|length + concept.indirectRelations|length }}</td>
+        <td>{{ concept.outgoingRelations|length }}</td>
+        <td>{{ concept.incomingRelations|length }}</td>
         <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
         <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
       </tr>

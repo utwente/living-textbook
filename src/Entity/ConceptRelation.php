@@ -31,7 +31,7 @@ class ConceptRelation
   /**
    * @var Concept
    *
-   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="relations")
+   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="outgoingRelations")
    * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -41,7 +41,7 @@ class ConceptRelation
   /**
    * @var Concept
    *
-   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="indirectRelations")
+   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="incomingRelations")
    * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()

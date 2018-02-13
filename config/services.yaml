@@ -43,7 +43,7 @@ services:
 
   # Overwrite for JMS serializer to always use the identical names
   jms_serializer.naming_strategy:
-    alias: jms_serializer.identical_property_naming_strategy
+    alias: App\Serializer\Metadata\PropertyMetadata\SerializedNameWithIdenticalPropertyNamingStrategy
 
   App\Database\SoftDeletableSubscriber:
     tags:

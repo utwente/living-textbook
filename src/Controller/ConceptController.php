@@ -45,13 +45,13 @@ class ConceptController extends Controller
     }
 
     // Map original relations
-    $originalRelations = new ArrayCollection();
-    foreach ($concept->getRelations() as $relation) {
-      $originalRelations->add($relation);
+    $originalOutgoingRelations = new ArrayCollection();
+    foreach ($concept->getOutgoingRelations() as $outgoingRelation) {
+      $originalOutgoingRelations->add($outgoingRelation);
     }
-    $originalIndirectRelations = new ArrayCollection();
-    foreach ($concept->getIndirectRelations() as $indirectRelation) {
-      $originalIndirectRelations->add($indirectRelation);
+    $originalIncomingRelations = new ArrayCollection();
+    foreach ($concept->getIncomingRelations() as $incomingRelation) {
+      $originalIncomingRelations->add($incomingRelation);
     }
 
     // Create form and handle request
@@ -62,7 +62,7 @@ class ConceptController extends Controller
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Check concept relations
-      $concept->checkRelations();
+      $concept->checkEntityRelations();
 
       // Remove outdated resources
       foreach ($originalResources as $originalResource) {
@@ -72,14 +72,14 @@ class ConceptController extends Controller
       }
 
       // Remove outdated relations
-      foreach ($originalRelations as $originalRelation) {
-        if (false === $concept->getRelations()->contains($originalRelation)) {
-          $em->remove($originalRelation);
+      foreach ($originalOutgoingRelations as $originalOutgoingRelation) {
+        if (false === $concept->getOutgoingRelations()->contains($originalOutgoingRelation)) {
+          $em->remove($originalOutgoingRelation);
         }
       }
-      foreach ($originalIndirectRelations as $originalIndirectRelation) {
-        if (false === $concept->getIndirectRelations()->contains($originalIndirectRelation)) {
-          $em->remove($originalIndirectRelation);
+      foreach ($originalIncomingRelations as $originalIncomingRelation) {
+        if (false === $concept->getIncomingRelations()->contains($originalIncomingRelation)) {
+          $em->remove($originalIncomingRelation);
         }
       }
 
@@ -140,7 +140,7 @@ class ConceptController extends Controller
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Check concept relations
-      $concept->checkRelations();
+      $concept->checkEntityRelations();
 
       // Save the data
       $em->persist($concept);

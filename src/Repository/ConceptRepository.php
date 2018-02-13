@@ -50,8 +50,8 @@ class ConceptRepository extends EntityRepository
   private function loadRelations(QueryBuilder &$qb, string $alias)
   {
     $qb
-        ->leftJoin($alias . '.relations', 'r')
-        ->leftJoin($alias . '.indirectRelations', 'ir')
+        ->leftJoin($alias . '.outgoingRelations', 'r')
+        ->leftJoin($alias . '.incomingRelations', 'ir')
         ->addSelect('r')
         ->addSelect('ir');
   }
