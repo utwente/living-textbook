@@ -1,7 +1,7 @@
 require('../event/eventTypes');
 
 /**
- * This module generates events from the wiki side of the application
+ * This module generates events from the content side of the application
  */
 (function (eDispatch, types) {
 

@@ -549,7 +549,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
   /**
    * Left mouse button click, in order to fix node highlight
-   * Communicates with the wiki in order to open the correct page
+   * Communicates with the content in order to open the correct page
    */
   function onClick() {
     var node = findNode();
@@ -1306,7 +1306,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     //   var message = event.data;
     //   console.log(message);
     //
-    //   // Search a node due to wiki interaction
+    //   // Search a node due to content interaction
     //   if (message.type === 'cb_update_opened') {
     //     cb.searchConcept(message.data);
     //   }

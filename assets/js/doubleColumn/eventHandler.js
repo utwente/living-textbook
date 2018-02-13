@@ -1,7 +1,7 @@
 require('../event/eventTypes');
 
 /**
- * This module handles events from the wiki of the application
+ * This module handles events from the content of the application
  */
 (function (eHandler, types) {
 

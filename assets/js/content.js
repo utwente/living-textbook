@@ -1,4 +1,4 @@
-require('../css/wiki/wiki.scss');
+require('../css/content/content.scss');
 
 function findParent(tag, el) {
   while (el) {
@@ -11,8 +11,8 @@ function findParent(tag, el) {
 }
 
 $(function () {
-  require('./wiki/eventHandler');
-  require('./wiki/eventDispatcher');
+  require('./content/eventHandler');
+  require('./content/eventDispatcher');
 
   // Load tooltips
   $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
