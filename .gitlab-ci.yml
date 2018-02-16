@@ -20,6 +20,8 @@ build-docker:
     - docker build -t drenso/013_yamllint:latest tests/docker/yamllint
   tags:
     - docker
+  except:
+    - drenso-updates-v2
 
 install-dependencies:
   stage: prepare
@@ -39,6 +41,8 @@ install-dependencies:
     - find vendor/ -name .git -type d -exec rm -rf {} \+
   tags:
     - docker
+  except:
+    - drenso-updates-v2
 
 php-analysis:
   stage: static
@@ -51,6 +55,8 @@ php-analysis:
     - php7 /opt/phan/phan -k tests/phan/config.php
   tags:
     - docker
+  except:
+    - drenso-updates-v2
 
 js-analysis:
   stage: static
@@ -64,6 +70,8 @@ js-analysis:
     - /usr/bin/jshint src --verbose --config tests/jshint/config
   tags:
     - docker
+  except:
+    - drenso-updates-v2
 
 yaml-analysis:
   stage: static
@@ -77,6 +85,8 @@ yaml-analysis:
     - yamllint -c tests/yamllint/config config
   tags:
     - docker
+  except:
+    - drenso-updates-v2
 
 sass-analysis:
   stage: static
@@ -88,3 +98,5 @@ sass-analysis:
     - sass-lint assets/css
   tags:
     - docker
+  except:
+    - drenso-updates-v2
