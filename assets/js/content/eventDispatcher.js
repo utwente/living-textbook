@@ -48,6 +48,13 @@ require('../event/eventTypes');
   };
 
   /**
+   * Page submit event
+   */
+  eDispatch.pageSubmit = function () {
+    dispatchParent(types.PAGE_SUBMIT);
+  };
+
+  /**
    * Open concept browser event
    */
   eDispatch.toggleConceptBrowser = function () {

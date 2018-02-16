@@ -1,7 +1,7 @@
 {% extends 'bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block form_start -%}
-  {#{%- set attr = attr|merge({onsubmit: '$(this).find(\'button, submit\').attr(\'disabled\', \'disabled\');'}) -%}#}
+  {%- set attr = attr|merge({onsubmit: 'eDispatch.pageSubmit();'}) -%}
   {{- parent() -}}
 {%- endblock %}
 

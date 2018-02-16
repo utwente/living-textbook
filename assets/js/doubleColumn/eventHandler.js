@@ -5,6 +5,9 @@ require('../event/eventTypes');
  */
 (function (eHandler, types) {
 
+  // Initialize current url
+  eHandler.currentUrl = $('#data-iframe').attr('src');
+
   /**
    * Register message handler for communication
    */
@@ -21,6 +24,9 @@ require('../event/eventTypes');
         break;
       case types.PAGE_LOADED:
         onPageLoaded(data);
+        break;
+      case types.PAGE_SUBMIT:
+        onPageSubmit();
         break;
       case types.TOGGLE_CONCEPT_BROWSER:
         onToggleConceptBrowser();
@@ -66,8 +72,9 @@ require('../event/eventTypes');
   function onPageLoaded(data) {
     // Calculate new url
     var newUrl = '/page' + data.url;
+    this.currentUrl = data.url;
     var state = {
-      currentUrl: $('#data-iframe').attr('src'),
+      currentUrl: this.currentUrl,
       currentTitle: document.title
     };
 
@@ -80,6 +87,13 @@ require('../event/eventTypes');
 
     // Set the title
     document.title = data.title;
+  }
+
+  /**
+   * Show the loaded screen
+   */
+  function onPageSubmit() {
+    dw.iframeLoader(true);
   }
 
   /**
