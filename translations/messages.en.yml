@@ -40,9 +40,12 @@ form:
   action-bar: 'Action bar'
   add: 'Add'
   cancel: 'Cancel'
+  confirm-remove: 'Yes, I want to delete this'
   edit: 'Edit'
   list: 'List'
+  remove: 'Remove'
   save: 'Save'
+  save-and-list: 'Save and open list'
   show: 'Show'
 
 login:

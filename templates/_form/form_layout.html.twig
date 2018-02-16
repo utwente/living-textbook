@@ -1,7 +1,7 @@
 {% extends 'bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block form_start -%}
-  {%- set attr = attr|merge({onsubmit: '$(this).find(\'button, submit\').attr(\'disabled\', \'disabled\');'}) -%}
+  {#{%- set attr = attr|merge({onsubmit: '$(this).find(\'button, submit\').attr(\'disabled\', \'disabled\');'}) -%}#}
   {{- parent() -}}
 {%- endblock %}
 
@@ -20,7 +20,7 @@
 {%- endblock form_group_class %}
 
 {% block submit_widget -%}
-  {%- set attr = attr|merge({class: (attr.class|default('btn-success'))|trim}) -%}
+  {%- set attr = attr|merge({class: (attr.class|default('btn-outline-success'))|trim}) -%}
   {{- parent() -}}
 {%- endblock %}
 
@@ -68,61 +68,4 @@
   {%- if form_header is defined and form_header != false -%}
     <h2>{{ form_header|trans }}</h2>
   {%- endif -%}
-{%- endblock %}
-
-{# Collection widget to add collection edit support #}
-{% block collection_widget -%}
-  {# Copied from plugin https://github.com/ninsuo/symfony-collection/blob/master/jquery.collection.html.twig #}
-  {%- if prototype is defined -%}
-    {%- set attr = attr|merge({'data-prototype': form_row(prototype)}) -%}
-    {%- set attr = attr|merge({'data-prototype-name': prototype.vars.name}) -%}
-  {%- endif -%}
-  {%- set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) -%}
-  {%- set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) -%}
-  {%- set attr = attr|merge({'data-name-prefix': full_name}) -%}
-
-  {# Render normal widget #}
-  {{- block('form_widget') -}}
-
-  {# Enable plugin for form #}
-  {% set allow_move_calc = allow_move is not defined or (allow_move is defined and allow_move) %}
-  <script type="text/javascript">
-    $('#{{ id }}').collection({
-      add: '<a href="#" class="collection-rescue-add btn btn-secondary"><i class="fa fa-plus fa-fw"></i></a>',
-      allow_down: {{ allow_move_calc ? 'true' : 'false' }},
-      allow_up: {{ allow_move_calc ? 'true' : 'false' }}
-    });
-  </script>
-{%- endblock %}
-
-{% block collection_widget_data_row -%}
-  <div class="card card-collection">
-    <div class="card-body">{{ form_row(form) }}</div>
-  </div>
-{%- endblock %}
-
-{% block collection_widget_data_widget -%}
-  {{ form_widget(form) }}
-  <div class="text-right">
-    <a href="#" class="collection-up btn btn-secondary"><i class="fa fa-step-backward fa-fw"></i></a>
-    <a href="#" class="collection-remove btn btn-secondary"><i class="fa fa-minus fa-fw"></i></a>
-    <a href="#" class="collection-add btn btn-secondary"><i class="fa fa-plus fa-fw"></i></a>
-    <a href="#" class="collection-down btn btn-secondary"><i class="fa fa-step-forward fa-fw"></i></a>
-  </div>
-{%- endblock %}
-
-{% block external_resource_row -%}
-  {{- block('collection_widget_data_row') -}}
-{%- endblock %}
-
-{% block external_resource_widget -%}
-  {{- block('collection_widget_data_widget') -}}
-{%- endblock %}
-
-{% block concept_relation_row -%}
-  {{- block('collection_widget_data_row') -}}
-{%- endblock %}
-
-{% block concept_relation_widget -%}
-  {{- block('collection_widget_data_widget') -}}
 {%- endblock %}

@@ -1,0 +1,26 @@
+{# General button extension, to print icons in the buttons, but also support "<a href" buttons #}
+{%- block button_widget -%}
+  {% set attr = attr|merge({class: (attr.class|default('btn-outline-secondary') ~ ' btn')|trim}) %}
+  {%- if label is empty -%}
+    {%- if label_format is not empty -%}
+      {% set label = label_format|replace({
+        '%name%': name,
+        '%id%': id,
+      }) %}
+    {%- else -%}
+      {% set label = name|humanize %}
+    {%- endif -%}
+  {%- endif -%}
+  {% if route is defined %}
+    <a href="{{ path(route, route_params) }}" {{ block('button_attributes') }}>
+  {% else %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+  {% endif %}
+  {% if icon is defined %}<i class="{{ icon }}"></i>{% endif %}
+  {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
+  {% if route is defined %}
+    </a>
+  {% else %}
+    </button>
+  {% endif %}
+{%- endblock button_widget -%}

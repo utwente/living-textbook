@@ -1,0 +1,14 @@
+{# General save_row block #}
+{% block save_row %}
+  <div class="form-group">
+    {% for item in form %}
+      {{ form_widget(item) }}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{# RemoveType in order to render the buttons correctly #}
+{% block remove_widget %}
+  <div class="clearfix spacer"></div>
+  {{ block('save_row') }}
+{% endblock %}

@@ -27,7 +27,7 @@ class LoginType extends AbstractType
         ->add('submit', SubmitType::class, array(
             'label' => 'login.login',
             'attr' => [
-                'class' => 'btn-primary',
+                'class' => 'btn-outline-primary',
             ],
         ));
   }
