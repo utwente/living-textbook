@@ -5,7 +5,8 @@
   {{ action_bar(
     path('app_concept_edit', {'concept': concept.id}),
     false,
-    path('app_concept_list')
+    path('app_concept_list'),
+    path('app_concept_remove', {'concept': concept.id})
   ) }}
 {% endblock %}
 

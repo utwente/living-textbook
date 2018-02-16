@@ -25,6 +25,9 @@ concept:
   new: 'New concept'
   outgoing-relations: 'Outgoing relations'
   relations: 'Relations'
+  remove: 'Remove concept "%item%"'
+  remove-text: 'Are you sure you want to remove the concept "%item%" and all of its relations?'
+  removed: 'Concept "%item%" has been removed successfully'
   self-assessment: 'Self assessment'
   theory-explanation: 'Theory explanation'
 

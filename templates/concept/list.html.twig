@@ -18,6 +18,7 @@
       <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
       <th scope="col">{{ 'form.edit'|trans }}</th>
       <th scope="col">{{ 'form.show'|trans }}</th>
+      <th scope="col">{{ 'form.remove'|trans }}</th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
         <td>{{ concept.incomingRelations|length }}</td>
         <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
         <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
+        <td><a href="{{ path('app_concept_remove', {'concept': concept.id}) }}">{{ 'form.remove'|trans }}</a></td>
       </tr>
     {% endfor %}
     </tbody>

@@ -1,4 +1,4 @@
-{% macro action_bar(edit_url, show_url, list_url) %}
+{% macro action_bar(edit_url, show_url, list_url, remove_url) %}
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
   {% if edit_url|default(false) != false %}
@@ -9,6 +9,9 @@
   {% endif %}
   {% if list_url|default(false) != false %}
     {{ _action_button(list_url, 'fa-list', 'form.list') }}
+  {% endif %}
+  {% if remove_url|default(false) != false %}
+    {{  _action_button(remove_url, 'fa-times', 'form.remove') }}
   {% endif %}
   {{ block('_bar_footer') }}
 {% endmacro %}

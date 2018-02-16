@@ -7,6 +7,9 @@ use App\Entity\ConceptRelation;
 use App\Entity\ConceptStudyArea;
 use App\Entity\ExternalResource;
 use App\Form\Concept\EditConceptType;
+use App\Form\Concept\RemoveConceptType;
+use App\Form\Type\RemoveType;
+use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class ConceptController
@@ -25,6 +29,52 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ConceptController extends Controller
 {
+  /**
+   * @Route("/add")
+   * @Template()
+   *
+   * @param Request                $request
+   * @param EntityManagerInterface $em
+   *
+   * @return array|Response
+   */
+  public function add(Request $request, EntityManagerInterface $em)
+  {
+    // Create new concept
+    $concept = new Concept();
+
+    // @todo remove
+    // Add default study area
+    $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($em->getRepository('App:StudyArea')->find(1)));
+
+    // Create form and handle request
+    $form = $this->createForm(EditConceptType::class, $concept, [
+        'concept' => $concept,
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Check concept relations
+      $concept->checkEntityRelations();
+
+      // Save the data
+      $em->persist($concept);
+      $em->flush();
+
+      // Check for forward to list
+      if (SaveType::isListClicked($form)) {
+        return $this->redirectToRoute('app_concept_list');
+      }
+
+      // Forward to show page
+      return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
+    }
+
+    return [
+        'concept' => $concept,
+        'form'    => $form->createView(),
+    ];
+  }
 
   /**
    * @Route("/edit/{concept}", requirements={"concept"="\d+"})
@@ -86,6 +136,12 @@ class ConceptController extends Controller
       // Save the data
       $em->flush();
 
+      // Check for forward to list
+      if (SaveType::isListClicked($form)) {
+        return $this->redirectToRoute('app_concept_list');
+      }
+
+      // Forward to show
       return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
     }
 
@@ -115,39 +171,30 @@ class ConceptController extends Controller
   }
 
   /**
-   * @Route("/add")
+   * @Route("/remove/{concept}", requirements={"concept"="\d+"})
    * @Template()
    *
    * @param Request                $request
+   * @param Concept                $concept
    * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
    *
-   * @return array|Response
+   * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
    */
-  public function add(Request $request, EntityManagerInterface $em)
+  public function remove(Request $request, Concept $concept, EntityManagerInterface $em, TranslatorInterface $trans)
   {
-    // Create new concept
-    $concept = new Concept();
-
-    // @todo remove
-    // Add default study area
-    $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($em->getRepository('App:StudyArea')->find(1)));
-
-    // Create form and handle request
-    $form = $this->createForm(EditConceptType::class, $concept, [
-        'concept' => $concept,
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route'        => 'app_concept_show',
+        'cancel_route_params' => ['concept' => $concept->getId()],
     ]);
     $form->handleRequest($request);
-
     if ($form->isSubmitted() && $form->isValid()) {
-      // Check concept relations
-      $concept->checkEntityRelations();
-
-      // Save the data
-      $em->persist($concept);
+      $em->remove($concept);
       $em->flush();
 
-      // Forward to show page
-      return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
+      $this->addFlash('success', $trans->trans('concept.removed', ['%item%' => $concept->getName()]));
+
+      return $this->redirectToRoute('app_concept_list');
     }
 
     return [

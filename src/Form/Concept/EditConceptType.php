@@ -11,6 +11,7 @@ use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Data\DataExternalResourcesType;
+use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -69,8 +70,8 @@ class EditConceptType extends AbstractType
             'concept'  => $options['concept'],
             'incoming' => true,
         ])
-        ->add('submit', SubmitType::class, [
-            'label' => 'form.save',
+        ->add('submit', SaveType::class, [
+            'list_route' => 'app_concept_list',
         ]);
   }
 

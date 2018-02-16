@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'concept.remove'|trans({"%item%": concept.name}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'concept.remove-text'|trans({"%item%": concept.name}) }}</p>
+
+  {{ form(form) }}
+{% endblock %}
