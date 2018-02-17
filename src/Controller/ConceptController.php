@@ -11,6 +11,7 @@ use App\Form\Concept\RemoveConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
+use App\Repository\StudyAreaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -45,7 +46,9 @@ class ConceptController extends Controller
 
     // @todo remove
     // Add default study area
-    $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($em->getRepository('App:StudyArea')->find(1)));
+    $studyAreaRepo = $em->getRepository('App:StudyArea');
+    assert($studyAreaRepo instanceof StudyAreaRepository);
+    $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($studyAreaRepo->findDefault()));
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [

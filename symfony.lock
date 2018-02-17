@@ -2,6 +2,15 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
+    "components/elfinder": {
+        "version": "2.2"
+    },
+    "components/jquery": {
+        "version": "3.2.1"
+    },
+    "components/jqueryui": {
+        "version": "1.12.1"
+    },
     "composer/ca-bundle": {
         "version": "1.1.0"
     },
@@ -83,6 +92,24 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.32"
     },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
+    },
+    "helios-ag/fm-elfinder-bundle": {
+        "version": "7.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "7.0",
+            "ref": "fb9152ee3538f968d9e0f2c763ecbe4ab63eff26"
+        }
+    },
+    "helios-ag/fm-elfinder-php-connector": {
+        "version": "2.5.7"
+    },
+    "intervention/image": {
+        "version": "2.4.1"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -106,6 +133,9 @@
     },
     "kick-in/exception-handler-bundle": {
         "version": "1.1.0"
+    },
+    "kriswallsmith/assetic": {
+        "version": "v1.4.0"
     },
     "monolog/monolog": {
         "version": "1.23.0"
@@ -131,11 +161,17 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.0.2"
     },
     "psr/simple-cache": {
         "version": "1.0.0"
+    },
+    "robloach/component-installer": {
+        "version": "0.2.3"
     },
     "sensio/framework-extra-bundle": {
         "version": "4.0",
@@ -268,6 +304,9 @@
     },
     "symfony/polyfill-php72": {
         "version": "v1.6.0"
+    },
+    "symfony/process": {
+        "version": "v3.4.4"
     },
     "symfony/profiler-pack": {
         "version": "v1.0.3"

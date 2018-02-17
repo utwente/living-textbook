@@ -1,0 +1,3 @@
+# Disabled in order to manage rights effectively
+#fm_elfinder:
+#    resource: "@FMElfinderBundle/Resources/config/routing.yml"

@@ -1,0 +1,15 @@
+fm_elfinder:
+  assets_path: "/elfinder-assets"
+  instances:
+    default:
+      editor: ckeditor
+      include_assets: true
+      relative_path: true
+      connector:
+        roots:
+          uploads:
+            driver: LocalFileSystem
+            path: uploads
+            alias: root
+            upload_allow: [ 'all' ]
+            upload_max_size: 10M

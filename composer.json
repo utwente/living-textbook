@@ -6,6 +6,7 @@
         "ext-iconv": "*",
         "friendsofsymfony/jsrouting-bundle": "^2.1",
         "fsi/ckeditor-bundle": "^7.0",
+        "helios-ag/fm-elfinder-bundle": "^7.0",
         "jms/serializer-bundle": "^2.3",
         "kick-in/exception-handler-bundle": "^1.1",
         "phpseclib/phpseclib": "^2.0",
@@ -36,6 +37,7 @@
         "preferred-install": {
             "*": "dist"
         },
+        "component-dir": "public/elfinder-assets",
         "sort-packages": true
     },
     "autoload": {

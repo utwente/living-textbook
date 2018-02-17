@@ -1,2 +1,6 @@
 ivory_ck_editor:
   autoload: false
+  default_config: default
+  configs:
+    default:
+      filebrowserBrowseRoute: "elfinder"
