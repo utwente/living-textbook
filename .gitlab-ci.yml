@@ -15,9 +15,9 @@ build-docker:
     - docker pull php:7.1-cli
     - docker pull python:latest
   script:
-    - docker build -t drenso/013_sasslint:latest tests/docker/sasslint
-    - docker build -t drenso/013_php:latest tests/docker/php
-    - docker build -t drenso/013_yamllint:latest tests/docker/yamllint
+    - docker build -t drenso/013_sasslint:1.0 tests/docker/sasslint
+    - docker build -t drenso/013_php:1.1 tests/docker/php
+    - docker build -t drenso/013_yamllint:1.0 tests/docker/yamllint
   tags:
     - docker
   except:
@@ -25,7 +25,7 @@ build-docker:
 
 install-dependencies:
   stage: prepare
-  image: drenso/013_php
+  image: drenso/013_php:1.1
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}"
     expire_in: 1 hour
@@ -61,7 +61,7 @@ php-analysis:
 js-analysis:
   stage: static
   image:
-    name: hyzual/jshint
+    name: hyzual/jshint:latest
     entrypoint: [ "" ]
   dependencies: []
   before_script:
@@ -75,7 +75,7 @@ js-analysis:
 
 yaml-analysis:
   stage: static
-  image: drenso/013_yamllint
+  image: drenso/013_yamllint:1.0
   dependencies: []
   # This needs to be removed once https://github.com/adrienverge/yamllint/issues/30 is fixed
   before_script:
@@ -90,7 +90,7 @@ yaml-analysis:
 
 sass-analysis:
   stage: static
-  image: drenso/013_sasslint
+  image: drenso/013_sasslint:1.0
   dependencies: []
   before_script:
     - cp tests/sass-lint/.sass-lint.yml .

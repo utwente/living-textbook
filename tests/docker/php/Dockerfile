@@ -31,3 +31,9 @@ RUN apt-get install -y libldap2-dev && \
 
 # MySQL extension
 RUN docker-php-ext-install pdo pdo_mysql
+
+# Imagick extension
+RUN export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS" && \
+    apt-get install -y --no-install-recommends libmagickwand-dev && \
+    pecl install imagick-3.4.3 && \
+    docker-php-ext-enable imagick
