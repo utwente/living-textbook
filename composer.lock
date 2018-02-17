@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a73ba486443be0831233b094c8a1884f",
+    "content-hash": "af07745f27f52fdfabfc8a26e92aaff8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -49,6 +49,64 @@
                 "transliterator"
             ],
             "time": "2017-04-04T11:38:05+00:00"
+        },
+        {
+            "name": "bobv/latex-bundle",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobvandevijver/latex-bundle.git",
+                "reference": "eec1a3ff11c544589515564a7f448be58ec8b5f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/eec1a3ff11c544589515564a7f448be58ec8b5f9",
+                "reference": "eec1a3ff11c544589515564a7f448be58ec8b5f9",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/config": ">= 2.3.0",
+                "symfony/console": ">= 2.3.0",
+                "symfony/dependency-injection": ">= 2.3.0",
+                "symfony/filesystem": ">= 2.3.0",
+                "symfony/finder": ">= 2.3.0",
+                "symfony/form": ">= 2.3.0",
+                "symfony/framework-bundle": ">= 2.3.0",
+                "symfony/http-foundation": ">= 2.3.0",
+                "symfony/http-kernel": ">= 2.3.0",
+                "symfony/options-resolver": ">= 2.3.0",
+                "symfony/process": ">= 2.3.0",
+                "twig/twig": ">= 1.9.0"
+            },
+            "suggest": {
+                "egeloen/ckeditor-bundle": "Allows the usage of the bobv_latex form type, and easily integrates ckeditor into your Symfony application",
+                "spatie/pdf-to-image": "Allows you to convert PDF output into a image."
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "BobV\\LatexBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob van de Vijver",
+                    "email": "bobvandevijver@hotmail.com"
+                }
+            ],
+            "description": "Latex and pdf generator for Symfony 2",
+            "homepage": "http://github.com/bobvandevijver/latex-bundle",
+            "keywords": [
+                "generator",
+                "latex",
+                "pdf",
+                "symfony"
+            ],
+            "time": "2018-02-17T16:07:26+00:00"
         },
         {
             "name": "components/elfinder",
@@ -2997,6 +3055,56 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2018-01-11T05:54:03+00:00"
+        },
+        {
+            "name": "spatie/pdf-to-image",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/pdf-to-image.git",
+                "reference": "e3b841f2810155cf16ef4eee927873d97250e712"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/e3b841f2810155cf16ef4eee927873d97250e712",
+                "reference": "e3b841f2810155cf16ef4eee927873d97250e712",
+                "shasum": ""
+            },
+            "require": {
+                "ext-imagick": "*",
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\PdfToImage\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Convert a pdf to an image",
+            "homepage": "https://github.com/spatie/pdf-to-image",
+            "keywords": [
+                "convert",
+                "image",
+                "pdf",
+                "pdf-to-image",
+                "spatie"
+            ],
+            "time": "2017-12-20T19:32:03+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",

@@ -4,3 +4,8 @@ ivory_ck_editor:
   configs:
     default:
       filebrowserBrowseRoute: "elfinder"
+      extraPlugins: "latexeditor"
+  plugins:
+    latexeditor:
+      path:     "/ckeditor-plugins/latexeditor/"
+      filename: "plugin.js"
