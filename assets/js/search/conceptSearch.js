@@ -17,7 +17,7 @@
     $search.change(function () {
       var current = $search.typeahead('getActive');
       if (current.name === $search.val()) {
-        cb.searchConceptById(current.id);
+        cb.moveToConceptById(current.id);
       }
     });
 

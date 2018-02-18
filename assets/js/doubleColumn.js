@@ -15,7 +15,6 @@ $(function () {
   require('./doubleColumn/draggebleWindow');
   require('./search/conceptSearch');
   require('./conceptBrowser/conceptBrowser');
-  require('./doubleColumn/draggebleWindow');
 
   $.get({
     url: Routing.generate('app_data_export'),
@@ -38,5 +37,27 @@ $(function () {
     // Restore document title and page
     eHandler.onPageLoad({url: event.state.currentUrl});
     document.title = event.state.currentTitle;
+  });
+
+  // Load refresh behavior
+  $('#refresh-button').on('click', function () {
+    var $button = $(this);
+    var $icon = $button.find('i');
+    $icon.addClass('fa-spin').addClass('fa-spinner').removeClass('fa-refresh');
+    $button.attr('disabled', 'disabled');
+    $button.tooltip('hide');
+
+    $.get({
+      url: Routing.generate('app_data_export'),
+      dataType: 'json'
+    }).done(function (data) {
+      // conceptSearch.updateData($('#search'), data);
+      cb.update(data);
+    }).fail(function (error) {
+      throw error;
+    }).always(function () {
+      $icon.removeClass('fa-spin').removeClass('fa-spinner').addClass('fa-refresh');
+      $button.removeAttr('disabled');
+    });
   });
 });

@@ -8,6 +8,7 @@ browser:
   open: 'Open browser'
   toggle: 'Toggle browser'
   readme: 'Open readme'
+  refresh: 'Refresh data'
   search: 'Search'
 
 concept:

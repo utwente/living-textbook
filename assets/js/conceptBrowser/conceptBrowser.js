@@ -14,6 +14,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   cb.mapWidthDragMargin = cb.mapWidth / 30;
   cb.mapHeight = 2000;
   cb.mapHeightDragMargin = cb.mapHeight / 20;
+  cb.zoomMargin = 25;
 
   // Force settings
   cb.collideStrength = 0.6;
@@ -157,30 +158,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     name: '',
     relations: [
       {
+        id: 0,
         targetId: 0,
         relationName: 0
-      }
-    ]
-  };
-
-  /**
-   * Data type description
-   * @type {{nodes: [*], links: [*]}}
-   */
-  Types.DataType = {
-    nodes: [
-      {
-        id: 0,
-        label: '',
-        link: '',
-        numberOfLinks: 0
-      }
-    ],
-    links: [
-      {
-        source: 0,
-        target: 0,
-        relationName: ''
       }
     ]
   };
@@ -215,6 +195,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @type {{source: number, target: number, relationName: string}}
    */
   Types.LinkType = {
+    id: 0,
     source: 0,
     target: 0,
     relationName: ''
@@ -257,36 +238,17 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    *****************************************************************************************************/
 
   /**
-   * Search and focus on a node based on its concept name
-   * @param name
-   */
-  cb.searchConcept = function (name) {
-    // Find the node by label
-    var nodes = cbGraph.nodes.filter(function (node) {
-      return node.label === name;
-    });
-
-    // If found, move to it
-    if (nodes.length > 0) {
-      moveToNode(nodes[0]);
-      setNodeAsHighlight(nodes[0]);
-    }
-  };
-
-  /**
    * Search and focus on a node based on a concept id
    * @param id
    */
-  cb.searchConceptById = function (id) {
+  cb.moveToConceptById = function (id) {
     // Find the node by id
-    var nodes = cbGraph.nodes.filter(function (node) {
-      return node.id === id;
-    });
+    var node = getNodeById(id);
 
     // If found, move to it
-    if (nodes.length > 0) {
-      moveToNode(nodes[0]);
-      setNodeAsHighlight(nodes[0]);
+    if (node) {
+      moveToNode(node);
+      setNodeAsHighlight(node);
     }
   };
 
@@ -307,17 +269,55 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     moveToPosition(minX, maxX, minY, maxY, duration);
   };
 
-  /******************************************************************************************************
-   * Utility functions
-   *****************************************************************************************************/
-
+  /**
+   * Create an event to resize the canvas
+   */
   cb.resizeCanvas = function () {
     d3.select(window).dispatch('custom_resize');
   };
 
-  cb.resizeCanvasWithSizes = function(width, height){
+  /**
+   * Create an event to resize the canvas to a specific size
+   * @param width
+   * @param height
+   */
+  cb.resizeCanvasWithSizes = function (width, height) {
     d3.select(window).dispatch('custom_resize', {detail: {width: width, height: height}});
   };
+
+  /******************************************************************************************************
+   * Utility functions
+   *****************************************************************************************************/
+
+  /**
+   * Get a node by id
+   * @param id
+   * @returns NodeType|null
+   */
+  function getNodeById(id) {
+    // Find the node by id
+    var result = cbGraph.nodes.filter(function (node) {
+      return node.id === id;
+    });
+
+    // Return result
+    return result ? result[0] : null;
+  }
+
+  /**
+   * Get a link by id
+   * @param id
+   * @returns LinkType|null
+   */
+  function getLinkById(id) {
+    // Find the link by id
+    var result = cbGraph.links.filter(function (link) {
+      return link.id === id;
+    });
+
+    // Return result
+    return result ? result[0] : null;
+  }
 
   /**
    * Resize the canvas (draw area)
@@ -354,6 +354,82 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     node.radius = cb.baseNodeRadius + cb.extendNodeRatio * (node.numberOfLinks ? node.numberOfLinks : 1);
     return node.radius + cb.nodeRadiusMargin;
+  }
+
+  /**
+   * Load the node label
+   *
+   * @param node
+   */
+  function updateNodeLabel(node) {
+    // Set default label values
+    node.expandedLabelStart = 0;
+    node.expandedLabel = [];
+    if (node.label === '') return;
+
+    // Calculate node text lines
+    var lines = node.label.split(' ');
+    if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)) {
+      node.expandedLabel = lines;
+    } else {
+      // Check if next line can be combined with the last line
+      node.expandedLabel.push(lines[0]);
+      for (var i = 1; i < lines.length; i++) {
+        if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= cb.minCharCount) {
+          node.expandedLabel[node.expandedLabel.length - 1] += ' ' + lines[i];
+        } else {
+          node.expandedLabel.push(lines[i]);
+        }
+      }
+    }
+
+    // Calculate offset for the amount of lines
+    node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * cb.defaultNodeLabelFontSize);
+  }
+
+  /**
+   * Generate the link nodes to avoid overlap (http://bl.ocks.org/couchand/7190660)
+   */
+  function generateLinkNodes() {
+    cbGraph.linkNodes = [];
+    cbGraph.links.map(function (link) {
+      cbGraph.linkNodes.push({
+        // We need to have the object, so select it if available
+        source: link.source.hasOwnProperty('id')
+            ? link.source
+            : cbGraph.nodes.filter(function (node) {
+              return node.id === link.source;
+            })[0],
+        target: link.target.hasOwnProperty('id')
+            ? link.target
+            : cbGraph.nodes.filter(function (node) {
+              return node.id === link.target;
+            })[0],
+        x: 0,
+        y: 0,
+        vx: 0,
+        vy: 0,
+        linkNode: true
+      });
+    });
+  }
+
+  /**
+   * Calculate the link node locations
+   */
+  function updateLinkNodeLocations() {
+    cbGraph.linkNodes.map(function (linkNode) {
+      linkNode.x = (linkNode.source.x + linkNode.target.x) * 0.5;
+      linkNode.y = (linkNode.source.y + linkNode.target.y) * 0.5;
+    });
+  }
+
+  /**
+   * Reload the simulation nodes/links
+   */
+  function reloadSimulation() {
+    cbSimulation.nodes(cbGraph.nodes.concat(cbGraph.linkNodes));
+    cbSimulation.force('link').links(cbGraph.links);
   }
 
   /**
@@ -672,10 +748,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
     cbGraph.nodes.map(function (node) {
       if (!node.highlighted) return;
-      minX = Math.min(minX, node.x - node.radius);
-      maxX = Math.max(maxX, node.x + node.radius);
-      minY = Math.min(minY, node.y - node.radius);
-      maxY = Math.max(maxY, node.y + node.radius);
+      minX = Math.min(minX, node.x - node.radius - cb.zoomMargin);
+      maxX = Math.max(maxX, node.x + node.radius + cb.zoomMargin);
+      minY = Math.min(minY, node.y - node.radius - cb.zoomMargin);
+      maxY = Math.max(maxY, node.y + node.radius + cb.zoomMargin);
     });
 
     // Do the actual move
@@ -1159,6 +1235,93 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   resizeCanvas();
 
   /******************************************************************************************************
+   * Register update functions
+   *****************************************************************************************************/
+
+  cb.updateNodeName = function (id, name) {
+    var node = getNodeById(id);
+
+    if (node) {
+      node.label = name;
+      updateNodeLabel(node);
+      cbSimulation.restart();
+    }
+  };
+
+  cb.update = function (data) {
+    // First, stop de simulation
+    cbSimulation.stop();
+
+    // Reset the link nodes
+    cbGraph.linkNodes = [];
+
+    // Map the new data
+    var availConcepts = [];
+    var availLinks = [];
+    data.map(function (concept) {
+      availConcepts.push(concept.id);
+      var node = getNodeById(concept.id);
+      if (!node) {
+        // Create
+        node = {
+          id: concept.id,
+          link: '',
+          x: halfMapWidth,
+          y: halfMapHeight,
+          vx: 0,
+          vy: 0
+        };
+        cbGraph.nodes.push(node)
+      }
+
+      // Update properties
+      node.label = concept.name;
+      node.numberOfLinks = concept.relations.length;
+      getNodeRadius(node);
+      loadNodeColor(node);
+      updateNodeLabel(node);
+
+      // Update relations
+      concept.relations.map(function (relation) {
+        availLinks.push(relation.id);
+        var link = getLinkById(relation.id);
+        if (!link) {
+          // Create
+          link = {
+            id: relation.id,
+            source: node,
+            target: getNodeById(relation.targetId)
+          };
+          cbGraph.links.push(link);
+        }
+
+        // Update properties
+        link.relationName = relation.relationName;
+      });
+    });
+
+    // Remove missing nodes
+    cbGraph.nodes = cbGraph.nodes.filter(function (node) {
+      return availConcepts.indexOf(node.id) !== -1;
+    });
+    // Remove missing links
+    cbGraph.links = cbGraph.links.filter(function (link) {
+      return availLinks.indexOf(link.id) !== -1;
+    });
+
+    // Recreate the link nodes
+    generateLinkNodes();
+    updateLinkNodeLocations();
+
+    // Reload the nodes and links
+    reloadSimulation();
+
+    // Restart simulation
+    cbSimulation.alpha(0.5);
+    cbSimulation.restart();
+  };
+
+  /******************************************************************************************************
    * Register init function
    *****************************************************************************************************/
 
@@ -1167,29 +1330,28 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     /******************************************************************************************************
      * Convert the data to be suitable for the concept browser
      *****************************************************************************************************/
-    var idIndexMap = {};
     cbGraph = {
       nodes: [],
-      links: []
+      links: [],
+      linkNodes: []
     };
 
-    // First, map the nodes
+    // Map the nodes and relations to their js equivalent
     data.map(function (concept) {
-      idIndexMap[concept.id] = cbGraph.nodes.length;
+      // Node mapping
       cbGraph.nodes.push({
         id: concept.id,
         label: concept.name,
         link: '',
         numberOfLinks: concept.relations.length
       });
-    });
 
-    // Secondly, map the links from every node
-    data.map(function (concept) {
+      // Relation mapping
       concept.relations.map(function (relation) {
         cbGraph.links.push({
-          source: idIndexMap[concept.id],
-          target: idIndexMap[relation.targetId],
+          id: relation.id,
+          source: concept.id,
+          target: relation.targetId,
           relationName: relation.relationName
         })
       });
@@ -1211,7 +1373,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
             .iterations(cb.collideIterations))
         .force('link', d3.forceLink()               // To force a certain link distance
             .distance(getLinkDistance)
-            .strength(cb.linkStrength))
+            .strength(cb.linkStrength)
+            .id(function (d) {
+              return d.id;
+            }))
         .force('center',                            // To force the node to move around the map center
             d3.forceCenter(cb.mapWidth / 2, cb.mapHeight / 2));
 
@@ -1219,54 +1384,19 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbGraph.nodes.map(function (node) {
       getNodeRadius(node);
       loadNodeColor(node);
-
-      // Set default label values
-      node.expandedLabelStart = 0;
-      node.expandedLabel = [];
-      if (node.label === '') return;
-
-      // Calculate node text lines
-      var lines = node.label.split(' ');
-      if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)) {
-        node.expandedLabel = lines;
-      } else {
-        // Check if next line can be combined with the last line
-        node.expandedLabel.push(lines[0]);
-        for (var i = 1; i < lines.length; i++) {
-          if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= cb.minCharCount) {
-            node.expandedLabel[node.expandedLabel.length - 1] += ' ' + lines[i];
-          } else {
-            node.expandedLabel.push(lines[i]);
-          }
-        }
-      }
-
-      // Calculate offset for the amount of lines
-      node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * cb.defaultNodeLabelFontSize);
+      updateNodeLabel(node);
     });
 
-    // Create linkNodes to avoid overlap (http://bl.ocks.org/couchand/7190660)
-    cbGraph.linkNodes = [];
-    cbGraph.links.map(function (link) {
-      cbGraph.linkNodes.push({
-        source: cbGraph.nodes[link.source],
-        target: cbGraph.nodes[link.target],
-        linkNode: true
-      });
-    });
+    generateLinkNodes();
 
     // Load data (nodes and links)
-    cbSimulation.nodes(cbGraph.nodes.concat(cbGraph.linkNodes));
-    cbSimulation.force('link').links(cbGraph.links);
+    reloadSimulation();
 
     // Load handlers for the tick event
     cbSimulation.on('tick', function () {
 
       // Update link node positions
-      cbGraph.linkNodes.map(function (linkNode) {
-        linkNode.x = (linkNode.source.x + linkNode.target.x) * 0.5;
-        linkNode.y = (linkNode.source.y + linkNode.target.y) * 0.5;
-      });
+      updateLinkNodeLocations();
 
       // Draw the actual graph
       drawGraph();
@@ -1308,7 +1438,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     //
     //   // Search a node due to content interaction
     //   if (message.type === 'cb_update_opened') {
-    //     cb.searchConcept(message.data);
+    //     cb.moveToConceptById(message.data);
     //   }
     // });
 
@@ -1335,7 +1465,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Center view and center image
     isLoaded = true;
     resizeCanvas();
-    setTimeout(function(){cb.centerView(500);}, 500);
+    setTimeout(function () {
+      cb.centerView(500);
+    }, 500);
   };
 
   /**
