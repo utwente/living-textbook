@@ -1098,7 +1098,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     node.color = color;
 
     if (typeof(Storage) !== 'undefined') {
-      localStorage.setItem('nodeColor.' + node.label, color);
+      localStorage.setItem('nodeColor.' + node.id, color);
     }
   }
 
@@ -1122,7 +1122,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function loadNodeColor(node) {
     node.color = 0;
     if (typeof(Storage) !== 'undefined') {
-      var color = localStorage.getItem('nodeColor.' + node.label);
+      var color = localStorage.getItem('nodeColor.' + node.id);
       if (color !== null) {
         node.color = parseInt(color);
       }
