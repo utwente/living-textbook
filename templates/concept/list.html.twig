@@ -24,7 +24,9 @@
     <tbody>
     {% for concept in concepts %}
       <tr>
-        <td>{{ concept.name }}</td>
+        <td>
+          <a href="#" onclick="eDispatch.showConcept({{- concept.id -}});" data-toggle="tooltip" title="{{ 'browser.open'|trans }}">{{ concept.name }}</a>
+        </td>
         <td>{{ concept.outgoingRelations|length }}</td>
         <td>{{ concept.incomingRelations|length }}</td>
         <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
