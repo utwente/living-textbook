@@ -61,4 +61,14 @@ require('../event/eventTypes');
     dispatchParent(types.TOGGLE_CONCEPT_BROWSER);
   };
 
+  /**
+   * Show the given concept
+   * @param id
+   */
+  eDispatch.showConcept = function (id) {
+    dispatchParent(types.SHOW_CONCEPT, {
+      id: id
+    });
+  };
+
 }(window.eDispatch = window.eDispatch || {}, window.eType));

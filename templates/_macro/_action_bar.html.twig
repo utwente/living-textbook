@@ -1,6 +1,9 @@
-{% macro action_bar(edit_url, show_url, list_url, remove_url) %}
+{% macro action_bar(edit_url, show_url, list_url, remove_url, browser_id) %}
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
+  {% if browser_id|default(false) != false %}
+    <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-secondary"><i class="fa fa-fw fa-search"></i> {{ 'browser.open'|trans }}</a>
+  {% endif %}
   {% if edit_url|default(false) != false %}
     {{ _action_button(edit_url, 'fa-pencil', 'form.edit') }}
   {% endif %}

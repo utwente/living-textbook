@@ -34,6 +34,9 @@ require('../event/eventTypes');
       case types.CONCEPT_SELECTED:
         onConceptSelected(data);
         break;
+      case types.SHOW_CONCEPT:
+        onShowConcept(data);
+        break;
     }
   });
 
@@ -101,6 +104,16 @@ require('../event/eventTypes');
    */
   function onToggleConceptBrowser() {
     dw.toggleWindow();
+  }
+
+  /**
+   * A concept must be shown
+   * @param data
+   */
+  function onShowConcept(data) {
+    dw.openWindow(function () {
+      cb.moveToConceptById(data.id);
+    });
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType));
