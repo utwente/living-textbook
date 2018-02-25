@@ -49,7 +49,7 @@
   <h3>{{ title }}</h3>
   <ul>
     {% for relation in relations %}
-      <li>{{ relation.source.name }} {{ relation.relationType.name }} {{ relation.target.name }}</li>
+      <li>{{ relation.source.name }} <i>{{ relation.relationType.name|lower }}</i> {{ relation.target.name }}</li>
     {% endfor %}
   </ul>
 {% endblock %}
