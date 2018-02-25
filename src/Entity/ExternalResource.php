@@ -50,6 +50,7 @@ class ExternalResource
    *
    * @Assert\NotBlank()
    * @Assert\Url()
+   * @Assert\Length(max=1000)
    */
   private $url;
 
