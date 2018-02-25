@@ -1,6 +1,6 @@
 {% block data_display_block %}
   {% if data.hasData %}
-    {% if title is defined %}<h3>{{ title }}</h3>{% endif %}
+    {% if title is defined %}<h2>{{ title }}</h2>{% endif %}
     {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
   {% endif %}
 {% endblock %}
@@ -31,7 +31,7 @@
 
 {% macro data_external_resources(data) %}
   {% if data|length > 0 %}
-    <h3>{{ 'concept.external-resources'|trans }}</h3>
+    <h2>{{ 'concept.external-resources'|trans }}</h2>
     <ul>
       {% for example in data %}
         <li><a href="{{ example.url }}" class="no-block" target="_blank">{{ example.description }}</a></li>
@@ -46,7 +46,7 @@
 {% endmacro %}
 
 {% block data_display_relations %}
-  <h3>{{ title }}</h3>
+  <h2>{{ title }}</h2>
   <ul>
     {% for relation in relations %}
       <li>{{ relation.source.name }} <i>{{ relation.relationType.name|lower }}</i> {{ relation.target.name }}</li>
