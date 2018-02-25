@@ -35,11 +35,20 @@ class ExternalResource
 
   /**
    * @var string
-   *
-   * @ORM\Column(name="description", type="text", length=255, nullable=false)
+   * @ORM\Column(name="title", type="text", length=255, nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(min=10, max=255)
+   * @Assert\Length(min=1, max=255)
+   */
+  private $title;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="description", type="text", length=1000, nullable=false)
+   *
+   * @Assert\NotBlank()
+   * @Assert\Length(min=10, max=1000)
    */
   private $description;
 
@@ -68,6 +77,7 @@ class ExternalResource
    */
   public function __construct()
   {
+    $this->title       = '';
     $this->description = '';
     $this->url         = '';
     $this->broken      = false;
@@ -89,6 +99,26 @@ class ExternalResource
   public function setResourceCollection(DataExternalResources $resourceCollection): ExternalResource
   {
     $this->resourceCollection = $resourceCollection;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getTitle(): string
+  {
+    return $this->title;
+  }
+
+  /**
+   * @param string $title
+   *
+   * @return ExternalResource
+   */
+  public function setTitle(string $title): ExternalResource
+  {
+    $this->title = $title;
 
     return $this;
   }

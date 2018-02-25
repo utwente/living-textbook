@@ -78,5 +78,6 @@ relation:
   type: 'Relation type'
 
 resource:
+  title: 'Title'
   description: 'Description'
   url: 'Url'

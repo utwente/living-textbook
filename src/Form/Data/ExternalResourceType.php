@@ -18,6 +18,9 @@ class ExternalResourceType extends AbstractType
         ->add('id', HiddenType::class, [
             'disabled' => true,
         ])
+        ->add('title', TextType::class, [
+            'label' => 'resource.title',
+        ])
         ->add('description', TextType::class, [
             'label' => 'resource.description',
         ])
