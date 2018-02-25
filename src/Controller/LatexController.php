@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Generator\LatexGeneratorInterface;
 use BobV\LatexBundle\Latex\Base\Standalone;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
@@ -43,33 +44,51 @@ class LatexController extends Controller
     if (!$content) {
       throw $this->createNotFoundException();
     }
+    $cacheKey = urlencode($content);
 
     // Check cache (and whether cached file exists)
     $imageLocation = NULL;
     $cache         = new FilesystemCache('latex.equations', 86400);
-    if (NULL === ($imageLocation = $cache->get($content)) ||
+    $cached        = true;
+    if (NULL === ($imageLocation = $cache->get($cacheKey)) ||
         !(new Filesystem())->exists($imageLocation)) {
 
-      // Create latex object
-      $document = (new Standalone(md5($content)))
-          ->addElement(new CustomCommand($content));
+      try {
+        // Create latex object
+        $document = (new Standalone(md5($content)))
+            ->addPackages(['mathtools', 'amssymb', 'esint'])
+            ->addElement(new CustomCommand('\\begin{displaymath}'))
+            ->addElement(new CustomCommand($content))
+            ->addElement(new CustomCommand('\\end{displaymath}'));
 
-      // Generate pdf output
-      $pdfLocation = $generator->generate($document);
+        // Generate pdf output
+        $pdfLocation = $generator->generate($document);
 
-      // Determine output location
-      $imageLocation = str_replace('.pdf', '.jpg', $pdfLocation);
+        // Determine output location
+        $imageLocation = str_replace('.pdf', '.jpg', $pdfLocation);
 
-      // Convert to image
-      $pdf = new Pdf($pdfLocation);
-      $pdf->setOutputFormat('jpg');
-      $pdf->saveImage($imageLocation);
+        // Convert to image
+        $pdf = new Pdf($pdfLocation);
+        $pdf->setOutputFormat('jpg');
+        $pdf->saveImage($imageLocation);
 
-      // Save location in the cache
-      $cache->set($content, $imageLocation);
+        // Save location in the cache
+        $cache->set($cacheKey, $imageLocation);
+      } catch (LatexException $e) {
+        $imageLocation = sprintf('%s/%s',
+            $this->getParameter('kernel.project_dir'),
+            'public/img/latex/error.jpg');
+        $cached        = false;
+      }
     }
 
     // Return image
-    return new BinaryFileResponse($imageLocation);
+    $response = new BinaryFileResponse($imageLocation);
+    if ($cached) {
+      $response->setMaxAge(86400);
+      $response->headers->addCacheControlDirective('max-age', 86400);
+    }
+
+    return $response;
   }
 }

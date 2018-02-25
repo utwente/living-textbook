@@ -45,7 +45,7 @@ class DataController extends Controller
    */
   public function export(bool $export = false, EntityManagerInterface $em, SerializerInterface $serializer, ?StudyArea $studyArea)
   {
-    // Retrieve the relations type as cache
+    // Retrieve the relation types as cache
     $relationTypeRepo = $em->getRepository('App:RelationType');
     assert($relationTypeRepo instanceof RelationTypeRepository);
     $relationTypes = $relationTypeRepo->findAll();

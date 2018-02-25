@@ -17,7 +17,7 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
     // Load preview
     var img = editor.document.createElement('img');
     img.setAttribute('class', 'latex-image');
-    img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: '$' + content + '$'}));
+    img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: content}));
     img.setAttribute('alt', content);
 
     // Update the preview
@@ -89,7 +89,7 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
       // Create image
       var img = editor.document.createElement('img');
       img.setAttribute('class', 'latex-image');
-      img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: '$' + content + '$'}));
+      img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: content}));
       img.setAttribute('alt', content);
       editor.insertElement(img);
 
