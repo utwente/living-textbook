@@ -50,7 +50,7 @@ form:
   remove: 'Remove'
   save: 'Save'
   save-and-list: 'Save and open list'
-  show: 'Show'
+  show: 'View'
 
 login:
   account-disabled: 'Your account has been disabled.'
