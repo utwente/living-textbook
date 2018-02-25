@@ -71,7 +71,11 @@ class EditConceptType extends AbstractType
             'incoming' => true,
         ])
         ->add('submit', SaveType::class, [
-            'list_route' => 'app_concept_list',
+            'list_route'          => 'app_concept_list',
+            'enable_cancel'       => true,
+            'cancel_label'        => 'form.discard',
+            'cancel_route'        => 'app_concept_show',
+            'cancel_route_params' => ['concept' => $options['concept']->getId()],
         ]);
   }
 

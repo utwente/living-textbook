@@ -45,6 +45,7 @@ form:
   add: 'Add'
   cancel: 'Cancel'
   confirm-remove: 'Yes, I want to delete this'
+  discard: 'Discard'
   edit: 'Edit'
   list: 'List'
   remove: 'Remove'
