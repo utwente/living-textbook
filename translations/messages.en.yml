@@ -71,6 +71,7 @@ menu:
   edit: 'Edit'
   concept: 'Concepts'
   case-study: 'Case studies'
+  study-area: 'Study areas'
 
 relation:
   source: 'Source'
@@ -81,3 +82,15 @@ resource:
   title: 'Title'
   description: 'Description'
   url: 'Url'
+
+study-area:
+  add-title: 'Add new study area'
+  edit-title: 'Edit study area "%item%"'
+  list-title: 'Study area list'
+  name: 'Name'
+  new: 'New study area'
+  owner: 'Owner'
+  remove: 'Remove study area "%item%"'
+  remove-text: 'Are you sure you want to remove the study area "%item%"?'
+  removed: 'Study area "%item%" has been removed successfully'
+  show: 'This study area is owned by %owner%. It contains the following concepts:'

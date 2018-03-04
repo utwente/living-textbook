@@ -9,7 +9,7 @@
   {{ 'concept.list-title'|trans }}
 {% endblock %}
 
-{% block content %}
+{% macro list(concepts) %}
   <table class="table">
     <thead>
     <tr>
@@ -36,4 +36,9 @@
     {% endfor %}
     </tbody>
   </table>
+{% endmacro %}
+
+{% block content %}
+  {% from _self import list %}
+  {{ list(concepts) }}
 {% endblock %}

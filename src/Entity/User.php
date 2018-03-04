@@ -167,6 +167,11 @@ class User implements AdvancedUserInterface, \Serializable
     $this->securityRoles = array();
   }
 
+  public function __toString(): string
+  {
+    return $this->getDisplayName() . ' (' . $this->getUsername() . ')';
+  }
+
   /**
    * Create a user from a token object
    *

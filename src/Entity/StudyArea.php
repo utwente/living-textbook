@@ -43,16 +43,28 @@ class StudyArea
    * @var ArrayCollection|ConceptStudyArea[]
    *
    * @ORM\OneToMany(targetEntity="ConceptStudyArea", mappedBy="studyArea", cascade={"persist","remove"})
+   * @ORM\OrderBy({"concept" = "ASC"})
    *
    * @JMSA\Expose()
    */
   private $concepts;
 
   /**
+   * @var User
+   *
+   * @ORM\ManyToOne(targetEntity="User")
+   * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=true)
+   *
+   * @Assert\NotNull()
+   */
+  private $owner;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
   {
+    $this->name     = '';
     $this->concepts = new ArrayCollection();
   }
 
@@ -118,6 +130,26 @@ class StudyArea
   public function __toString(): string
   {
     return $this->getName();
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getOwner(): ?User
+  {
+    return $this->owner;
+  }
+
+  /**
+   * @param User $owner
+   *
+   * @return StudyArea
+   */
+  public function setOwner(User $owner): StudyArea
+  {
+    $this->owner = $owner;
+
+    return $this;
   }
 
 }

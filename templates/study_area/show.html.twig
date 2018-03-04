@@ -1,0 +1,23 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import action_bar %}
+  {{ action_bar(
+    path('app_studyarea_edit', {'studyArea': studyArea.id}),
+    false,
+    path('app_studyarea_list'),
+    path('app_studyarea_remove', {'studyArea': studyArea.id}),
+    studyArea.id
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ studyArea.name }}
+{% endblock %}
+
+{% block content %}
+  {{ 'study-area.show'|trans({'%owner%': studyArea.owner|default('nobody')}) }}
+  {% from 'concept/list.html.twig' import list %}
+  {{ list(concepts) }}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import new_bar %}
+  {{ new_bar(path('app_studyarea_add')) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'study-area.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'study-area.name'|trans }}</th>
+      <th scope="col">{{ 'study-area.owner'|trans }}</th>
+      <th scope="col">{{ 'form.edit'|trans }}</th>
+      <th scope="col">{{ 'form.show'|trans }}</th>
+      <th scope="col">{{ 'form.remove'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for studyArea in studyAreas %}
+      <tr>
+        <td>{{ studyArea.name }}</td>
+        <td>{{ studyArea.owner }}</td>
+        <td><a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id}) }}">{{ 'form.edit'|trans }}</a></td>
+        <td><a href="{{ path('app_studyarea_show', {'studyArea': studyArea.id}) }}">{{ 'form.show'|trans }}</a></td>
+        <td><a href="{{ path('app_studyarea_remove', {'studyArea': studyArea.id}) }}">{{ 'form.remove'|trans }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
