@@ -23,6 +23,9 @@ class EditConceptType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    /** @var Concept $concept */
+    $concept = $options['concept'];
+    $editing = $concept->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
             'label' => 'concept.name',
@@ -63,19 +66,19 @@ class EditConceptType extends AbstractType
         ])
         ->add('outgoingRelations', ConceptRelationsType::class, [
             'label'   => 'concept.outgoing-relations',
-            'concept' => $options['concept'],
+            'concept' => $concept,
         ])
         ->add('incomingRelations', ConceptRelationsType::class, [
             'label'    => 'concept.incoming-relations',
-            'concept'  => $options['concept'],
+            'concept'  => $concept,
             'incoming' => true,
         ])
         ->add('submit', SaveType::class, [
             'list_route'          => 'app_concept_list',
             'enable_cancel'       => true,
             'cancel_label'        => 'form.discard',
-            'cancel_route'        => 'app_concept_show',
-            'cancel_route_params' => ['concept' => $options['concept']->getId()],
+            'cancel_route'        => $editing ? 'app_concept_show' : 'app_concept_list',
+            'cancel_route_params' => $editing ? ['concept' => $concept->getId()] : [],
         ]);
   }
 
