@@ -91,6 +91,7 @@ study-area:
   new: 'New study area'
   owner: 'Owner'
   remove: 'Remove study area "%item%"'
+  remove-impossible: 'It is impossible to remove this study area, because there are concepts which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
   show: 'This study area is owned by %owner%. It contains the following concepts:'

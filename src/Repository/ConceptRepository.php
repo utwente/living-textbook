@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\StudyArea;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
 class ConceptRepository extends EntityRepository
@@ -38,6 +39,31 @@ class ConceptRepository extends EntityRepository
 
     $this->loadRelations($qb, 'c');
 
+    return $qb->getQuery()->getResult();
+  }
+
+  public function findUniqueByStudyAreaOrderedByName(StudyArea $studyArea)
+  {
+    $subqb = $this->createQueryBuilder('c2')
+        ->select('c2.id')
+        ->join('c2.studyAreas', 'csa2')
+        ->groupBy('c2.id')
+        ->having('COUNT(c2) < 2');
+    $qb = $this->createQueryBuilder('c');
+
+    $qb
+        ->join('c.studyAreas', 'csa')
+        ->join('csa.studyArea', 'sa')
+        ->where('sa = :studyArea')
+        ->andWhere(
+            $qb->expr()->in(
+                'c.id',
+                $subqb->getDQL()
+            ))
+        ->setParameter(':studyArea', $studyArea)
+        ->orderBy('c.name', 'asc');
+
+    $this->loadRelations($qb, 'c');
     return $qb->getQuery()->getResult();
   }
 

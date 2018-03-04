@@ -5,7 +5,14 @@
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'study-area.remove-text'|trans({"%item%": studyArea.name}) }}</p>
 
-  {{ form(form) }}
+  {% if uniqueConcepts|length < 1 %}
+    <p>{{ 'study-area.remove-text'|trans({"%item%": studyArea.name}) }}</p>
+
+    {{ form(form) }}
+  {% else %}
+    <p>{{ 'study-area.remove-impossible'|trans }}</p>
+    {% from 'concept/list.html.twig' import list %}
+    {{ list(uniqueConcepts) }}
+  {% endif %}
 {% endblock %}
