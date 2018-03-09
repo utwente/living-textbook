@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\ConceptRepository")
+ * @ORM\HasLifecycleCallbacks()
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
@@ -124,6 +125,7 @@ class Concept
    * @var ArrayCollection|ConceptRelation[]
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
+   * @ORM\OrderBy({"outgoingPosition" = "ASC"})
    *
    * @Assert\NotNull()
    *
@@ -137,6 +139,7 @@ class Concept
    * @var ArrayCollection|ConceptRelation[]
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"})
+   * @ORM\OrderBy({"incomingPosition" = "ASC"})
    *
    * @Assert\NotNull()
    */
@@ -174,6 +177,8 @@ class Concept
 
   /**
    * Check whether the relations have the correct owning data
+   *
+   * @ORM\PreFlush()
    */
   public function checkEntityRelations()
   {
@@ -194,6 +199,43 @@ class Concept
       if ($indirectRelation->getTarget() === NULL) {
         $indirectRelation->setTarget($this);
       }
+    }
+  }
+
+  /**
+   * This method wil order the concept relations on flush
+   *
+   * @ORM\PreFlush()
+   */
+  public function fixConceptRelationOrder()
+  {
+    $this->doFixConceptRelationOrder($this->getOutgoingRelations(), 'getTarget', 'setOutgoingPosition');
+    $this->doFixConceptRelationOrder($this->getIncomingRelations(), 'getSource', 'setIncomingPosition');
+  }
+
+  /**
+   * @param ArrayCollection $values
+   * @param string          $conceptRetriever
+   * @param string          $positionSetter
+   */
+  private function doFixConceptRelationOrder(ArrayCollection $values, string $conceptRetriever, string $positionSetter)
+  {
+    $iterator = $values->getIterator();
+    assert($iterator instanceof \ArrayIterator);
+    $iterator->uasort(function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever) {
+      $val = strcasecmp($a->getRelationName(), $b->getRelationName());
+
+      return $val === 0
+          ? strcasecmp($a->$conceptRetriever()->getName(), $b->$conceptRetriever()->getName())
+          : $val;
+    });
+
+    // Set sort order
+    $key = 0;
+    foreach (iterator_to_array($iterator) as &$value) {
+      assert($value instanceof ConceptRelation);
+      $value->$positionSetter($key);
+      $key++;
     }
   }
 

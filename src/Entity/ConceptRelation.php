@@ -59,10 +59,38 @@ class ConceptRelation
   private $relationType;
 
   /**
+   * The position field will be filled automatically by a callback in the concept,
+   * in order to force the desired positioning
+   *
+   * @var int
+   *
+   * @ORM\Column(name="outgoing_position", type="integer", nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\GreaterThanOrEqual(value="0")
+   */
+  private $outgoingPosition;
+
+  /**
+   * The position field will be filled automatically by a callback in the concept,
+   * in order to force the desired positioning
+   *
+   * @var int
+   *
+   * @ORM\Column(name="incoming_position", type="integer", nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\GreaterThanOrEqual(value="0")
+   */
+  private $incomingPosition;
+
+  /**
    * ConceptRelation constructor.
    */
   public function __construct()
   {
+    $this->incomingPosition = 0;
+    $this->outgoingPosition = 0;
   }
 
   /**
@@ -154,4 +182,45 @@ class ConceptRelation
 
     return $this;
   }
+
+  /**
+   * @return int
+   */
+  public function getOutgoingPosition(): int
+  {
+    return $this->outgoingPosition;
+  }
+
+  /**
+   * @param int $outgoingPosition
+   *
+   * @return ConceptRelation
+   */
+  public function setOutgoingPosition(int $outgoingPosition): ConceptRelation
+  {
+    $this->outgoingPosition = $outgoingPosition;
+
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getIncomingPosition(): int
+  {
+    return $this->incomingPosition;
+  }
+
+  /**
+   * @param int $incomingPosition
+   *
+   * @return ConceptRelation
+   */
+  public function setIncomingPosition(int $incomingPosition): ConceptRelation
+  {
+    $this->incomingPosition = $incomingPosition;
+
+    return $this;
+  }
+
 }

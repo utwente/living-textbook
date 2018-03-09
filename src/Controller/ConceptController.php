@@ -57,9 +57,6 @@ class ConceptController extends Controller
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Check concept relations
-      $concept->checkEntityRelations();
-
       // Save the data
       $em->persist($concept);
       $em->flush();
@@ -114,9 +111,6 @@ class ConceptController extends Controller
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Check concept relations
-      $concept->checkEntityRelations();
-
       // Remove outdated resources
       foreach ($originalResources as $originalResource) {
         if (false === $concept->getExternalResources()->getResources()->contains($originalResource)) {
