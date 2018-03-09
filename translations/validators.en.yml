@@ -1,4 +1,6 @@
 concept:
+  duplicated-relation: 'A duplicate relation exist between "%c1%" and "%c2%".'
+  inversed-relation: 'The relation between "%c1%" and "%c2%" in also available as inversed relation.'
   no-study-area-given: 'Please select at least one study area.'
 
 data:

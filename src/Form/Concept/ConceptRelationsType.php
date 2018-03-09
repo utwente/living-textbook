@@ -15,12 +15,13 @@ class ConceptRelationsType extends AbstractType
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
-        'incoming'      => false,
-        'allow_add'     => true,
-        'allow_delete'  => true,
-        'prototype'     => true,
-        'entry_type'    => ConceptRelationType::class,
-        'entry_options' => [
+        'incoming'       => false,
+        'allow_add'      => true,
+        'allow_delete'   => true,
+        'prototype'      => true,
+        'error_bubbling' => false,
+        'entry_type'     => ConceptRelationType::class,
+        'entry_options'  => [
             'hide_label'   => true,
             'concept_id'   => 0,
             'concept_name' => '',

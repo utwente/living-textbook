@@ -9,6 +9,16 @@
   {%- set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) -%}
   {%- set attr = attr|merge({'data-name-prefix': full_name}) -%}
 
+  {%- if errors|length > 0 -%}
+    <div class="alert alert-danger">
+      <ul class="list-unstyled mb-0">
+        {%- for error in errors -%}
+          <li><i class="fa fa-exclamation-circle"></i> {{ error.message }}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif %}
+
   {# Render normal widget #}
   {{- block('form_widget') -}}
 

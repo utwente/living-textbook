@@ -12,6 +12,7 @@ use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataLearningOutcomes;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
+use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -28,6 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
+ *
+ * @ConceptRelationValidator()
  */
 class Concept
 {
@@ -446,5 +449,4 @@ class Concept
 
     return $this;
   }
-
 }

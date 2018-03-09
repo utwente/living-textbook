@@ -23,8 +23,8 @@ class WordCountValidator extends ConstraintValidator
   public function validate($value, Constraint $constraint)
   {
     // Check constraint
-    if (!$constraint instanceof WordCount) {
-      throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\NotBlank');
+    if (!($constraint instanceof WordCount)) {
+      throw new UnexpectedTypeException($constraint, WordCount::class);
     }
 
     // Count words

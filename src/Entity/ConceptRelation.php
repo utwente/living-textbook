@@ -66,14 +66,22 @@ class ConceptRelation
   }
 
   /**
-   * @return int
+   * @return int|null
    *
    * @JMSA\VirtualProperty("target")
    * @JMSA\Expose()
    */
-  public function getTargetId(): int
+  public function getTargetId(): ?int
   {
     return $this->getTarget() ? $this->getTarget()->getId() : NULL;
+  }
+
+  /**
+   * @return int|null
+   */
+  public function getSourceId(): ?int
+  {
+    return $this->getSource() ? $this->getSource()->getId() : NULL;
   }
 
   /**
@@ -146,5 +154,4 @@ class ConceptRelation
 
     return $this;
   }
-
 }
