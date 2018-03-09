@@ -30,7 +30,7 @@ class UploadsController extends Controller
   {
     // Create path from request
     $fs            = new Filesystem();
-    $requestedFile = realpath(sprintf('%s/public/uploads/%s', $this->getParameter("kernel.project_dir"), $path));
+    $requestedFile = sprintf('%s/public/uploads/%s', $this->getParameter("kernel.project_dir"), $path);
 
     // Check if path exists
     if (!$fs->exists($requestedFile)) {
