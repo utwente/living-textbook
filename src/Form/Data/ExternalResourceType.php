@@ -3,6 +3,7 @@
 namespace App\Form\Data;
 
 use App\Entity\ExternalResource;
+use App\Form\Type\OrderedCollectionElementType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,7 +27,8 @@ class ExternalResourceType extends AbstractType
         ])
         ->add('url', UrlType::class, [
             'label' => 'resource.url',
-        ]);
+        ])
+        ->add('position', OrderedCollectionElementType::class);
   }
 
   public function configureOptions(OptionsResolver $resolver)

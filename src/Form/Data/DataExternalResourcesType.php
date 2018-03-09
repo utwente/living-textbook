@@ -3,6 +3,7 @@
 namespace App\Form\Data;
 
 use App\Entity\Data\DataExternalResources;
+use App\Form\Type\OrderedCollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,7 +13,7 @@ class DataExternalResourcesType extends AbstractBaseDataType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('resources', CollectionType::class, [
+        ->add('resources', OrderedCollectionType::class, [
             'label'        => $options['label'],
             'required'     => $options['required'],
             'allow_add'    => true,

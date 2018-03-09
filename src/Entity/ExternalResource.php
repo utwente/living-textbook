@@ -64,6 +64,16 @@ class ExternalResource
   private $url;
 
   /**
+   * @var int
+   *
+   * @ORM\Column(name="position", type="integer", nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\GreaterThanOrEqual(value="0")
+   */
+  private $position;
+
+  /**
    * @var bool
    *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
@@ -80,6 +90,7 @@ class ExternalResource
     $this->title       = '';
     $this->description = '';
     $this->url         = '';
+    $this->position    = 0;
     $this->broken      = false;
   }
 
@@ -159,6 +170,26 @@ class ExternalResource
   public function setUrl(string $url): ExternalResource
   {
     $this->url = $url;
+
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPosition(): int
+  {
+    return $this->position;
+  }
+
+  /**
+   * @param int $position
+   *
+   * @return ExternalResource
+   */
+  public function setPosition(int $position): ExternalResource
+  {
+    $this->position = $position;
 
     return $this;
   }

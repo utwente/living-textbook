@@ -29,6 +29,7 @@
       add: '<a href="#" class="collection-rescue-add btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i></a>',
       allow_down: {{ allow_move_calc ? 'true' : 'false' }},
       allow_up: {{ allow_move_calc ? 'true' : 'false' }}
+      {% if position_selector is defined %}, position_field_selector: '.{{ position_selector }}'{% endif %}
     });
   </script>
 {%- endblock %}

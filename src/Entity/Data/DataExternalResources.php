@@ -30,6 +30,7 @@ class DataExternalResources implements DataInterface
    * @var ExternalResource[]|ArrayCollection
    *
    * @ORM\OneToMany(targetEntity="App\Entity\ExternalResource", mappedBy="resourceCollection", cascade={"persist","remove"})
+   * @ORM\OrderBy({"position" = "ASC"})
    *
    * @Assert\NotNull()
    * @Assert\Valid()
