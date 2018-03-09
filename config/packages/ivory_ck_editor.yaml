@@ -4,8 +4,11 @@ ivory_ck_editor:
   configs:
     default:
       filebrowserBrowseRoute: "elfinder"
-      extraPlugins: "latexeditor"
+      extraPlugins: "latexeditor,image2"
   plugins:
     latexeditor:
       path:     "/ckeditor-plugins/latexeditor/"
+      filename: "plugin.js"
+    image2:
+      path:     "/ckeditor-plugins/image2/"
       filename: "plugin.js"
