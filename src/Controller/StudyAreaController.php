@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\StudyArea;
-use App\Form\Concept\RemoveConceptType;
 use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
@@ -133,7 +132,9 @@ class StudyAreaController extends Controller
    */
   public function remove(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
-    $uniqueConcepts = $em->getRepository('App:Concept')->findUniqueByStudyAreaOrderedByName($studyArea);
+    $conceptRepository = $em->getRepository('App:Concept');
+    assert($conceptRepository instanceof ConceptRepository);
+    $uniqueConcepts = $conceptRepository->findUniqueByStudyAreaOrderedByName($studyArea);
 
     if (count($uniqueConcepts) > 0) {
       return [
