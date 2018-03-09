@@ -1,0 +1,31 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '~bootstrap/scss/mixins/_border-radius.scss';
+
+figure {
+  &.image {
+    text-align: center;
+    border: solid 1px #ccc;
+    @include border-radius($card-border-radius);
+    background-color: darken($card-bg, 5%);
+    padding: 10px;
+    margin: 5px 0;
+    display: inline-block;
+
+    img {
+      vertical-align: top;
+    }
+
+    figcaption {
+      margin-top: 10px;
+      text-align: center;
+      display: block;
+      font-style: italic;
+
+      width: calc(100% + 20px);
+      margin-left: -10px;
+      margin-bottom: -10px;
+      background-color: darken($card-bg, 15%);
+    }
+  }
+}
