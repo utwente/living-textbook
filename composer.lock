@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "81b9fc1114c6a5442d01a269dd0defbe",
+    "content-hash": "b7aba57c087cb5ff3f5a08a74a4105d5",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5884,6 +5884,58 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "drenso/phan-extensions",
+            "version": "v2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Drenso/PhanExtensions.git",
+                "reference": "1b0e8c32624d7fc5b4b19035071232c660ecfd7f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/1b0e8c32624d7fc5b4b19035071232c660ecfd7f",
+                "reference": "1b0e8c32624d7fc5b4b19035071232c660ecfd7f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "phan/phan": "0.12.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Drenso\\PhanExtensions\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob van de Vijver",
+                    "email": "bob@drenso.nl"
+                },
+                {
+                    "name": "Tobias Feijten",
+                    "email": "tobias@drenso.nl"
+                }
+            ],
+            "description": "This project contains several extensions (stubs/plugins) to be used with Phan for static PHP analysis",
+            "homepage": "https://github.com/Drenso/PhanExtensions",
+            "keywords": [
+                "phan",
+                "plugin",
+                "plugins",
+                "stub",
+                "stubs",
+                "symfony"
+            ],
+            "time": "2018-03-11T12:36:58+00:00"
+        },
         {
             "name": "symfony/dotenv",
             "version": "v4.0.3",

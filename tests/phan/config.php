@@ -43,7 +43,6 @@ function rglob($pattern, $flags = 0) {
 $disabled_analysis = array_merge(
   [
     'var/cache',
-    'tests/phan/stubs',
     'vendor',
   ],
   rglob('src/*Trait*')
@@ -70,6 +69,11 @@ return [
   // a call to parent::__construct() is required
     'parent_constructor_required'     => [],
 
+  // A list of plugin files to execute
+    'plugins'                         => [
+        'vendor/drenso/phan-extensions/Plugin/Annotation/SymfonyAnnotationPlugin.php'
+    ],
+
   // A list of directories that should be parsed for class and
   // method information. After excluding the directories
   // defined in exclude_analysis_directory_list, the remaining
@@ -81,7 +85,6 @@ return [
         'var',
         'src',
         'vendor',
-        'tests/phan/stubs',
     ],
 
   // A list of directories holding code that we want to parse, but not analyze

@@ -74,6 +74,9 @@
     "doctrine/orm": {
         "version": "v2.5.13"
     },
+    "drenso/phan-extensions": {
+        "version": "v1.0.0"
+    },
     "egulias/email-validator": {
         "version": "2.1.3"
     },
