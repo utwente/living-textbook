@@ -50,7 +50,7 @@ class Version20180202132958 extends AbstractMigration implements ContainerAwareI
         ->join('c.studyAreas', 'sa')
         ->getQuery()->getResult();
     foreach ($concepts as $concept) {
-      /** @var Concept $concept */
+      assert($concept instanceof Concept);
       if (count($concept->getStudyAreas()) == 0) {
         $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($studyArea));
       }

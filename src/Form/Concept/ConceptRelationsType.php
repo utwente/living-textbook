@@ -43,6 +43,13 @@ class ConceptRelationsType extends AbstractType
     });
   }
 
+  /**
+   * @param FormView      $view
+   * @param FormInterface $form
+   * @param array         $options
+   *
+   * @suppress PhanTypeMismatchProperty
+   */
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['allow_move'] = false;

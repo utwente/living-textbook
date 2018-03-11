@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
-use App\Entity\ConceptRelation;
 use App\Entity\ConceptStudyArea;
-use App\Entity\ExternalResource;
 use App\Form\Concept\EditConceptType;
-use App\Form\Concept\RemoveConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;

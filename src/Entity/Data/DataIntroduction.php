@@ -2,11 +2,8 @@
 
 namespace App\Entity\Data;
 
-use App\Database\Traits\Blameable;
-use App\Database\Traits\SoftDeletable;
 use App\Validator\Constraint\Data\WordCount;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 

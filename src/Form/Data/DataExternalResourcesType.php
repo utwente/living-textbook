@@ -4,7 +4,6 @@ namespace App\Form\Data;
 
 use App\Entity\Data\DataExternalResources;
 use App\Form\Type\OrderedCollectionType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
