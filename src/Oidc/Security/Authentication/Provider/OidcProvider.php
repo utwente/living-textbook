@@ -10,6 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 
@@ -51,7 +52,7 @@ class OidcProvider implements AuthenticationProviderInterface
    *
    * @return TokenInterface An authenticated TokenInterface instance, never null
    *
-   * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException if the authentication fails
+   * @throws AuthenticationException if the authentication fails
    */
   public function authenticate(TokenInterface $token)
   {

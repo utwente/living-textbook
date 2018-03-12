@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7aba57c087cb5ff3f5a08a74a4105d5",
+    "content-hash": "8e9c4336c5b004a46fb0c806f5049fe4",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5886,16 +5886,16 @@
     "packages-dev": [
         {
             "name": "drenso/phan-extensions",
-            "version": "v2.0",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/PhanExtensions.git",
-                "reference": "1b0e8c32624d7fc5b4b19035071232c660ecfd7f"
+                "reference": "1b0523752a467257cea66c326c5211a73d84053b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/1b0e8c32624d7fc5b4b19035071232c660ecfd7f",
-                "reference": "1b0e8c32624d7fc5b4b19035071232c660ecfd7f",
+                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/1b0523752a467257cea66c326c5211a73d84053b",
+                "reference": "1b0523752a467257cea66c326c5211a73d84053b",
                 "shasum": ""
             },
             "require": {
@@ -5934,7 +5934,7 @@
                 "stubs",
                 "symfony"
             ],
-            "time": "2018-03-11T12:36:58+00:00"
+            "time": "2018-03-12T19:14:51+00:00"
         },
         {
             "name": "symfony/dotenv",

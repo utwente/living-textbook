@@ -32,7 +32,7 @@
         "symfony/yaml": "^4.0"
     },
     "require-dev": {
-        "drenso/phan-extensions": "^2.0",
+        "drenso/phan-extensions": "^2.1",
         "symfony/dotenv": "^4.0",
         "symfony/profiler-pack": "^1.0"
     },

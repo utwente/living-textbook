@@ -71,7 +71,8 @@ return [
 
   // A list of plugin files to execute
     'plugins'                         => [
-        'vendor/drenso/phan-extensions/Plugin/Annotation/SymfonyAnnotationPlugin.php'
+        'vendor/drenso/phan-extensions/Plugin/Annotation/SymfonyAnnotationPlugin.php',
+        'vendor/drenso/phan-extensions/Plugin/DocComment/ThrowsPlugin.php',
     ],
 
   // A list of directories that should be parsed for class and
