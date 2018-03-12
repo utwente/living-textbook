@@ -2,12 +2,18 @@
 
 namespace App\Repository;
 
+use App\Entity\Concept;
 use App\Entity\StudyArea;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ConceptRepository extends EntityRepository
+class ConceptRepository extends ServiceEntityRepository
 {
+  public function __construct(RegistryInterface $registry)
+  {
+    parent::__construct($registry, Concept::class);
+  }
 
   /**
    * @return array

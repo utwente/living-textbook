@@ -37,23 +37,21 @@ class DataController extends Controller
    * @Route("/search/{studyArea}", name="app_data_search", options={"expose"=true}, defaults={"studyArea"=null}, requirements={"studyArea": "\d+"})
    *
    * @param bool                   $export
-   * @param EntityManagerInterface $em
+   * @param RelationTypeRepository $relationTypeRepo
+   * @param ConceptRepository      $conceptRepo
    * @param SerializerInterface    $serializer
    * @param StudyArea|null         $studyArea
    *
    * @return JsonResponse
    */
-  public function export(bool $export = false, EntityManagerInterface $em, SerializerInterface $serializer, ?StudyArea $studyArea)
+  public function export(bool $export = false, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
+                         SerializerInterface $serializer, ?StudyArea $studyArea)
   {
     // Retrieve the relation types as cache
-    $relationTypeRepo = $em->getRepository('App:RelationType');
-    assert($relationTypeRepo instanceof RelationTypeRepository);
     $relationTypes = $relationTypeRepo->findAll();
 
     // Retrieve the concepts
-    $conceptRepo = $em->getRepository('App:Concept');
-    assert($conceptRepo instanceof ConceptRepository);
-    if($studyArea !== null) {
+    if ($studyArea !== NULL) {
       $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea);
     } else {
       $concepts = $conceptRepo->findAllOrderedByName();
@@ -73,14 +71,14 @@ class DataController extends Controller
    *
    * @param Request                $request
    * @param SerializerInterface    $serializer
-   *
    * @param TranslatorInterface    $translator
-   *
    * @param EntityManagerInterface $em
+   * @param RelationTypeRepository $relationTypeRepo
    *
    * @return array
    */
-  public function upload(Request $request, SerializerInterface $serializer, TranslatorInterface $translator, EntityManagerInterface $em)
+  public function upload(Request $request, SerializerInterface $serializer, TranslatorInterface $translator,
+                         EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo)
   {
     $form = $this->createForm(JsonUploadType::class);
     $form->handleRequest($request);
@@ -111,7 +109,7 @@ class DataController extends Controller
             if (!array_key_exists($linkName, $linkTypes)) {
 
               // Retrieve from database
-              $linkType = $em->getRepository('App:RelationType')->findOneBy(['name' => $linkName]);
+              $linkType = $relationTypeRepo->findOneBy(['name' => $linkName]);
               if ($linkType) {
                 $linkTypes[$linkName] = $linkType;
               } else {
@@ -128,8 +126,7 @@ class DataController extends Controller
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
-            foreach($data['studyArea'] as $studyArea)
-            {
+            foreach ($data['studyArea'] as $studyArea) {
               $conceptStudyArea = new ConceptStudyArea();
               $conceptStudyArea->setStudyArea($studyArea);
               $concepts[$key]->addStudyArea($conceptStudyArea);

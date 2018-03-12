@@ -2,8 +2,14 @@
 
 namespace App\Repository\Data;
 
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Data\DataTheoryExplanation;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class DataTheoryExplanationRepository extends EntityRepository
+class DataTheoryExplanationRepository extends ServiceEntityRepository
 {
+  public function __construct(RegistryInterface $registry)
+  {
+    parent::__construct($registry, DataTheoryExplanation::class);
+  }
 }

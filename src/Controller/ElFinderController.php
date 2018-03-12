@@ -4,13 +4,11 @@ namespace App\Controller;
 
 use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 /**
  * Class ElFinderController
@@ -25,19 +23,17 @@ class ElFinderController extends Controller
   /**
    * @Route("/load/{instance}/{studyArea}", defaults={"instance"="default","studyArea"="null"}, name="ef_connect")
    *
-   * @param Request                $request
-   * @param string                 $instance
-   * @param StudyArea|null         $studyArea
-   * @param EntityManagerInterface $em
+   * @param Request             $request
+   * @param string              $instance
+   * @param StudyArea|null      $studyArea
+   * @param StudyAreaRepository $studyAreaRepo
    *
    * @return Response
    */
-  public function load(Request $request, string $instance, ?StudyArea $studyArea, EntityManagerInterface $em)
+  public function load(Request $request, string $instance, ?StudyArea $studyArea, StudyAreaRepository $studyAreaRepo)
   {
     // Check study area
     if ($studyArea == NULL) {
-      $studyAreaRepo = $em->getRepository('App:StudyArea');
-      assert($studyAreaRepo instanceof StudyAreaRepository);
       $studyArea = $studyAreaRepo->findDefault();
     }
 
@@ -49,18 +45,16 @@ class ElFinderController extends Controller
   /**
    * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default","studyArea"="null"}, name="elfinder")
    *
-   * @param Request                $request
-   * @param string                 $instance
-   * @param StudyArea|null         $studyArea
-   * @param EntityManagerInterface $em
+   * @param Request             $request
+   * @param string              $instance
+   * @param StudyArea|null      $studyArea
+   * @param StudyAreaRepository $studyAreaRepo
    *
    * @return Response
    */
-  public function show(Request $request, string $instance, ?StudyArea $studyArea, EntityManagerInterface $em)
+  public function show(Request $request, string $instance, ?StudyArea $studyArea, StudyAreaRepository $studyAreaRepo)
   {
     if ($studyArea == NULL) {
-      $studyAreaRepo = $em->getRepository('App:StudyArea');
-      assert($studyAreaRepo instanceof StudyAreaRepository);
       $studyArea = $studyAreaRepo->findDefault();
     }
 

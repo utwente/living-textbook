@@ -33,18 +33,17 @@ class ConceptController extends Controller
    *
    * @param Request                $request
    * @param EntityManagerInterface $em
+   * @param StudyAreaRepository    $studyAreaRepo
    *
    * @return array|Response
    */
-  public function add(Request $request, EntityManagerInterface $em)
+  public function add(Request $request, EntityManagerInterface $em, StudyAreaRepository $studyAreaRepo)
   {
     // Create new concept
     $concept = new Concept();
 
     // @todo remove
     // Add default study area
-    $studyAreaRepo = $em->getRepository('App:StudyArea');
-    assert($studyAreaRepo instanceof StudyAreaRepository);
     $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($studyAreaRepo->findDefault()));
 
     // Create form and handle request
@@ -149,14 +148,12 @@ class ConceptController extends Controller
    * @Route("/list")
    * @Template()
    *
-   * @param EntityManagerInterface $em
+   * @param ConceptRepository $repo
    *
    * @return array
    */
-  public function list(EntityManagerInterface $em)
+  public function list(ConceptRepository $repo)
   {
-    $repo = $em->getRepository('App:Concept');
-    assert($repo instanceof ConceptRepository);
     $concepts = $repo->findAllOrderedByName();
 
     return [

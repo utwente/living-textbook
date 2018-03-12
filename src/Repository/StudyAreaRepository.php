@@ -3,11 +3,17 @@
 namespace App\Repository;
 
 use App\Entity\StudyArea;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class StudyAreaRepository extends EntityRepository
+class StudyAreaRepository extends ServiceEntityRepository
 {
   const DEFAULT = 1;
+
+  public function __construct(RegistryInterface $registry)
+  {
+    parent::__construct($registry, StudyArea::class);
+  }
 
   /**
    * @return StudyArea|object
