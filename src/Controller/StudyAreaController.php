@@ -132,16 +132,6 @@ class StudyAreaController extends Controller
    */
   public function remove(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
-    $conceptRepository = $em->getRepository('App:Concept');
-    assert($conceptRepository instanceof ConceptRepository);
-    $uniqueConcepts = $conceptRepository->findUniqueByStudyAreaOrderedByName($studyArea);
-
-    if (count($uniqueConcepts) > 0) {
-      return [
-          'uniqueConcepts' => $uniqueConcepts,
-          'studyArea'      => $studyArea,
-      ];
-    }
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route'        => 'app_studyarea_show',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
@@ -157,7 +147,6 @@ class StudyAreaController extends Controller
     }
 
     return [
-        'uniqueConcepts' => $uniqueConcepts,
         'studyArea'      => $studyArea,
         'form'           => $form->createView(),
     ];

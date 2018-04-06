@@ -25,7 +25,6 @@ class JsonUploadType extends AbstractType
             'constraints' => [
                 new NotNull(),
             ],
-            'multiple'    => true,
         ])
         ->add('submit', SubmitType::class);
   }

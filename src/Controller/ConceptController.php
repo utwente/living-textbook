@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
-use App\Entity\ConceptStudyArea;
 use App\Form\Concept\EditConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
@@ -44,7 +43,7 @@ class ConceptController extends Controller
 
     // @todo remove
     // Add default study area
-    $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($studyAreaRepo->findDefault()));
+    $concept->setStudyArea($studyAreaRepo->findDefault());
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [

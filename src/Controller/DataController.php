@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
-use App\Entity\ConceptStudyArea;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Form\Data\JsonUploadType;
@@ -126,11 +125,7 @@ class DataController extends Controller
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
-            foreach ($data['studyArea'] as $studyArea) {
-              $conceptStudyArea = new ConceptStudyArea();
-              $conceptStudyArea->setStudyArea($studyArea);
-              $concepts[$key]->addStudyArea($conceptStudyArea);
-            }
+            $concepts[$key]->setStudyArea($data['studyArea']);
             $em->persist($concepts[$key]);
           }
 

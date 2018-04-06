@@ -3,9 +3,6 @@
 namespace DoctrineMigrations;
 
 use App\Database\Migration\ContainerAwareMigration;
-use App\Entity\Concept;
-use App\Entity\ConceptStudyArea;
-use App\Entity\StudyArea;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -18,51 +15,34 @@ class Version20180202132958 extends AbstractMigration implements ContainerAwareI
 
   use ContainerAwareMigration;
 
+  /**
+   * @param Schema $schema
+   *
+   * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
+   */
   public function up(Schema $schema)
   {
     // this up() migration is auto-generated, please modify it to your needs
+    $this->abortIf(true, "This migration can not be completed, as the correct version is not installed. " .
+        "Please revert to 75ff0f0, and rerun the migrations up until that point, and then resume the upgrade.");
   }
 
 
   /**
    * @param Schema $schema
    *
-   * @throws \Doctrine\ORM\ORMException
-   * @throws \Doctrine\ORM\OptimisticLockException
+   * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
    */
   public function postUp(Schema $schema)
   {
-    $em = $this->container->get('doctrine.orm.entity_manager');
+    $this->abortIf(true, "This migration can not be completed, as the correct version is not installed. " .
+        "Please revert to 75ff0f0, and rerun the migrations up until that point, and then resume the upgrade.");
 
-    // Generate a study area, if not yet available
-    $studyArea = $em->getRepository('App:StudyArea')->findBy([], NULL, 1);
-    if (!$studyArea) {
-      $studyArea = new StudyArea();
-      $studyArea->setName('Default');
-      $em->persist($studyArea);
-    } else {
-      $studyArea = $studyArea[0];
-    }
-
-    // Generate default study-area-concept relations
-    $concepts = $em->getRepository('App:Concept')->createQueryBuilder('c')
-        ->select('c.id')
-        ->join('c.studyAreas', 'sa')
-        ->getQuery()->getResult();
-    foreach ($concepts as $concept) {
-      assert($concept instanceof Concept);
-      if (count($concept->getStudyAreas()) == 0) {
-        $concept->addStudyArea((new ConceptStudyArea())->setStudyArea($studyArea));
-      }
-    }
-
-    // Save data
-    $em->flush();
+    // Implementation removed due to code change
   }
 
   public function down(Schema $schema)
   {
     // this down() migration is auto-generated, please modify it to your needs
-
   }
 }
