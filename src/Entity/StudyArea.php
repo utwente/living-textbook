@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -40,10 +41,9 @@ class StudyArea
   private $name;
 
   /**
-   * @var ArrayCollection|ConceptStudyArea[]
+   * @var Collection|Concept[]
    *
-   * @ORM\OneToMany(targetEntity="ConceptStudyArea", mappedBy="studyArea", cascade={"persist","remove"})
-   * @ORM\OrderBy({"concept" = "ASC"})
+   * @ORM\OneToMany(targetEntity="Concept", mappedBy="studyArea", cascade={"persist","remove"})
    *
    * @JMSA\Expose()
    */
@@ -89,7 +89,7 @@ class StudyArea
   }
 
   /**
-   * @return ConceptStudyArea[]|ArrayCollection
+   * @return Concept[]|Collection
    */
   public function getConcepts()
   {
@@ -97,11 +97,11 @@ class StudyArea
   }
 
   /**
-   * @param ConceptStudyArea $concept
+   * @param Concept $concept
    *
    * @return StudyArea
    */
-  public function addConcept(ConceptStudyArea $concept): StudyArea
+  public function addConcept(Concept $concept): StudyArea
   {
     // Check whether the studyarea is set, otherwise set it as this
     if (!$concept->getStudyArea()) {
@@ -113,11 +113,11 @@ class StudyArea
   }
 
   /**
-   * @param ConceptStudyArea $concept
+   * @param Concept $concept
    *
    * @return StudyArea
    */
-  public function removeConcept(ConceptStudyArea $concept): StudyArea
+  public function removeConcept(Concept $concept): StudyArea
   {
     $this->concepts->removeElement($concept);
 

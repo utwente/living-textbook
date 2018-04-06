@@ -146,14 +146,14 @@ class Concept
   private $incomingRelations;
 
   /**
-   * @var ArrayCollection|ConceptStudyArea[]
+   * @var StudyArea
    *
-   * @ORM\OneToMany(targetEntity="ConceptStudyArea", mappedBy="concept", cascade={"persist","remove"})
+   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="concepts")
+   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
-   * @Assert\Count(min=1, minMessage="concept.no-study-area-given")
    */
-  private $studyAreas;
+  private $studyArea;
 
   /**
    * Concept constructor.
@@ -163,7 +163,6 @@ class Concept
     $this->name              = '';
     $this->outgoingRelations = new ArrayCollection();
     $this->incomingRelations = new ArrayCollection();
-    $this->studyAreas        = new ArrayCollection();
 
     // Initialize data
     $this->introduction      = new DataIntroduction();
@@ -316,38 +315,21 @@ class Concept
   }
 
   /**
-   * @return ConceptStudyArea[]|ArrayCollection
+   * @return StudyArea|null
    */
-  public function getStudyAreas()
+  public function getStudyArea(): ?StudyArea
   {
-    return $this->studyAreas;
+    return $this->studyArea;
   }
 
   /**
-   * @param ConceptStudyArea $studyArea
+   * @param StudyArea $studyArea
    *
-   * @return $this
+   * @return Concept
    */
-  public function addStudyArea(ConceptStudyArea $studyArea): Concept
+  public function setStudyArea(StudyArea $studyArea): Concept
   {
-    // Check whether the concept is set, otherwise set it as this
-    if (!$studyArea->getConcept()) {
-      $studyArea->setConcept($this);
-    }
-
-    $this->studyAreas->add($studyArea);
-
-    return $this;
-  }
-
-  /**
-   * @param ConceptStudyArea $studyArea
-   *
-   * @return $this
-   */
-  public function removeStudyArea(ConceptStudyArea $studyArea): Concept
-  {
-    $this->studyAreas->removeElement($studyArea);
+    $this->studyArea = $studyArea;
 
     return $this;
   }
