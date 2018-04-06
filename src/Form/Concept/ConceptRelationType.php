@@ -6,10 +6,13 @@ use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use App\Repository\ConceptRepository;
+use App\Repository\RelationTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -36,17 +39,45 @@ class ConceptRelationType extends AbstractType
       $this->addTextType($builder, 'source', $options['concept_name']);
     }
 
-    $builder->add('relationType', EntityType::class, [
-        'label'        => 'relation.type',
-        'class'        => RelationType::class,
-        'choice_label' => 'name',
-    ]);
-
     if (!$options['incoming']) {
       $this->addEntityType($builder, 'target', $options['concept_id']);
     } else {
       $this->addTextType($builder, 'target', $options['concept_name']);
     }
+
+    $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+      /** @var ConceptRelation|null $relation */
+      $relation       = $event->getData();
+      $relationTypeId = $relation === NULL ? NULL : $relation->getRelationType()->getId();
+      $form           = $event->getForm();
+
+      $form->add('relationType', EntityType::class, [
+          'label'         => 'relation.type',
+          'class'         => RelationType::class,
+          'choice_label'  => 'name',
+          'choice_attr'   => function ($val, $key, $index) {
+            /** @var RelationType $val */
+            return $val->getDeletedAt() === NULL ? [] : ['disabled' => 'disabled'];
+          },
+          'query_builder' => function (RelationTypeRepository $repo) use ($relationTypeId) {
+            $qb = $repo->createQueryBuilder('rt');
+
+            // Update result based on current data
+            if ($relationTypeId === NULL) {
+              $qb->where('rt.deletedAt IS NULL');
+            } else {
+              $qb->where($qb->expr()->orX(
+                  $qb->expr()->isNull('rt.deletedAt'),
+                  $qb->expr()->eq('rt.id', ':id')
+              ));
+              $qb->setParameter('id', $relationTypeId);
+            }
+
+            return $qb;
+          },
+      ]);
+
+    });
   }
 
   private function addEntityType(FormBuilderInterface $builder, string $field, ?int $id)

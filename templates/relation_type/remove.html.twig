@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'relation-type.remove'|trans({"%item%": relationType.name}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'relation-type.remove-text'|trans({"%item%": relationType.name}) }}</p>
+
+  {{ form(form) }}
+{% endblock %}

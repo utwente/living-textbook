@@ -71,6 +71,7 @@ menu:
   edit: 'Edit'
   concept: 'Concepts'
   case-study: 'Case studies'
+  relation-type: 'Relation types'
   study-area: 'Study areas'
 
 relation:
@@ -95,3 +96,12 @@ study-area:
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
   show: 'This study area is owned by %owner%. It contains the following concepts:'
+
+relation-type:
+  add-title: 'Add new relation type'
+  edit-title: 'Edit relation type "%item%"'
+  list-title: 'Relation type list'
+  name: 'Name'
+  remove: 'Remove relation type "%item%"'
+  remove-text: 'Are you sure you want to remove the relation type "%item%"? Note that existing usages of the type will not be removed automatically!'
+  removed: 'Relation type "%item%" has been removed successfully'

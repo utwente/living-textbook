@@ -14,6 +14,7 @@ use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -217,7 +218,7 @@ class Concept
    * @param string          $conceptRetriever
    * @param string          $positionSetter
    */
-  private function doFixConceptRelationOrder(ArrayCollection $values, string $conceptRetriever, string $positionSetter)
+  private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter)
   {
     $iterator = $values->getIterator();
     assert($iterator instanceof \ArrayIterator);

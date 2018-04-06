@@ -40,14 +40,18 @@
   </div>
 {%- endblock %}
 
-{% block collection_widget_data_widget -%}
-  {{ form_widget(form) }}
+{% block collection_buttons %}
   <div class="text-right">
     <a href="#" class="collection-up btn btn-outline-secondary"><i class="fa fa-step-backward fa-fw"></i></a>
     <a href="#" class="collection-remove btn btn-outline-secondary"><i class="fa fa-minus fa-fw"></i></a>
     <a href="#" class="collection-add btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i></a>
     <a href="#" class="collection-down btn btn-outline-secondary"><i class="fa fa-step-forward fa-fw"></i></a>
   </div>
+{% endblock %}
+
+{% block collection_widget_data_widget -%}
+  {{ form_widget(form) }}
+  {{ block('collection_buttons') }}
 {%- endblock %}
 
 {% block external_resource_row -%}
@@ -63,5 +67,8 @@
 {%- endblock %}
 
 {% block concept_relation_widget -%}
-  {{- block('collection_widget_data_widget') -}}
+  {{ form_row(form.source) }}
+  {{ form_row(form.relationType) }}
+  {{ form_row(form.target) }}
+  {{ block('collection_buttons') }}
 {%- endblock %}

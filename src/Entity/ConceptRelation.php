@@ -172,12 +172,15 @@ class ConceptRelation
   }
 
   /**
-   * @param RelationType $relationType
+   * @param RelationType|null $relationType
    *
    * @return ConceptRelation
    */
-  public function setRelationType(RelationType $relationType): ConceptRelation
+  public function setRelationType(?RelationType $relationType): ConceptRelation
   {
+    // Return on null, as the type might be deleted
+    if ($relationType === NULL) return $this;
+
     $this->relationType = $relationType;
 
     return $this;

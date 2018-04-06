@@ -1,0 +1,31 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import new_bar %}
+  {{ new_bar(path('app_relationtype_add')) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'relation-type.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'relation-type.name'|trans }}</th>
+      <th scope="col">{{ 'form.edit'|trans }}</th>
+      <th scope="col">{{ 'form.remove'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for relationType in relationTypes %}
+      <tr>
+        <td>{{ relationType.name }}</td>
+        <td><a href="{{ path('app_relationtype_edit', {'relationType': relationType.id}) }}">{{ 'form.edit'|trans }}</a></td>
+        <td><a href="{{ path('app_relationtype_remove', {'relationType': relationType.id}) }}">{{ 'form.remove'|trans }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

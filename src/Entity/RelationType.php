@@ -6,7 +6,6 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\RelationTypeRepository")
  *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * We do not enable the soft-deletable extension here, as soft-deleted relation should still work after they have been
+ * removed. The should however no longer be displayed in the list/edit possibilities.
+ * //Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class RelationType
 {
@@ -40,6 +41,7 @@ class RelationType
    */
   public function __construct()
   {
+    $this->name = '';
   }
 
   /**
