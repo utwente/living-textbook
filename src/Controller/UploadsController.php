@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author BobV
  *
- * @Route("/uploads")
+ * @Route("/{_studyArea}/uploads", requirements={"_studyArea"="\d+"})
  */
 class UploadsController extends Controller
 {

@@ -5,10 +5,10 @@ namespace App\Controller;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
-use App\Entity\StudyArea;
 use App\Form\Data\JsonUploadType;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -32,29 +32,25 @@ class DataController extends Controller
 {
 
   /**
-   * @Route("/export/{studyArea}", name="app_data_export", options={"expose"=true}, defaults={"export"=true, "studyArea"=null}, requirements={"studyArea": "\d+"})
-   * @Route("/search/{studyArea}", name="app_data_search", options={"expose"=true}, defaults={"studyArea"=null}, requirements={"studyArea": "\d+"})
+   * @Route("/export/{_studyArea}", name="app_data_export", options={"expose"=true}, defaults={"export"=true, "_studyArea"=null}, requirements={"_studyArea": "\d+"})
+   * @Route("/search/{_studyArea}", name="app_data_search", options={"expose"=true}, defaults={"_studyArea"=null}, requirements={"_studyArea": "\d+"})
    *
    * @param bool                   $export
    * @param RelationTypeRepository $relationTypeRepo
    * @param ConceptRepository      $conceptRepo
    * @param SerializerInterface    $serializer
-   * @param StudyArea|null         $studyArea
+   * @param RequestStudyArea       $studyArea
    *
    * @return JsonResponse
    */
   public function export(bool $export = false, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
-                         SerializerInterface $serializer, ?StudyArea $studyArea)
+                         SerializerInterface $serializer, RequestStudyArea $studyArea)
   {
     // Retrieve the relation types as cache
     $relationTypes = $relationTypeRepo->findAll();
 
     // Retrieve the concepts
-    if ($studyArea !== NULL) {
-      $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea);
-    } else {
-      $concepts = $conceptRepo->findAllOrderedByName();
-    }
+    $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea->getStudyArea());
 
     // Return as JSON
     $groups = ["Default"];

@@ -22,7 +22,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author TobiasF
  *
- * @Route("/studyarea")
+ * @Route("/{_studyArea}/studyarea", requirements={"_studyArea"="\d+"})
  */
 class StudyAreaController extends Controller
 {

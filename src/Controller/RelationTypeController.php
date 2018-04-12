@@ -19,7 +19,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Class RelationTypeController
  *
- * @Route("/relationtype")
+ * @Route("/{_studyArea}/relationtype", requirements={"_studyArea"="\d+"})
  */
 class RelationTypeController extends Controller
 {

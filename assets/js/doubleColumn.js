@@ -17,7 +17,7 @@ $(function () {
   require('./conceptBrowser/conceptBrowser');
 
   $.get({
-    url: Routing.generate('app_data_export'),
+    url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
     dataType: 'json'
   }).done(function (data) {
     conceptSearch.createSearch($('#search'), data);
@@ -48,7 +48,7 @@ $(function () {
     $button.tooltip('hide');
 
     $.get({
-      url: Routing.generate('app_data_export'),
+      url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
       dataType: 'json'
     }).done(function (data) {
       // conceptSearch.updateData($('#search'), data);

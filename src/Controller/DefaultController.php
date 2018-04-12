@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\StudyAreaRepository;
+use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,27 +25,36 @@ class DefaultController extends Controller
   }
 
   /**
-   * @Route("/", defaults={"pageUrl"=""})
-   * @Route("/page/{pageUrl}", defaults={"pageUrl"=""}, requirements={"pageUrl"=".+"})
+   * @Route("/", defaults={"_studyArea"=null, "pageUrl"=""})
+   * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"_studyArea"="\d+", "pageUrl"=".+"})
+   * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"})
    * @Template("double_column.html.twig")
    *
-   * @param string          $pageUrl
-   * @param RouterInterface $router
+   * @param RequestStudyArea    $requestStudyArea
+   * @param string              $pageUrl
+   * @param RouterInterface     $router
+   * @param StudyAreaRepository $studyAreaRepository
    *
    * @return array|RedirectResponse
    */
-  public function index(string $pageUrl, RouterInterface $router)
+  public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router, StudyAreaRepository $studyAreaRepository)
   {
     // Disable profiler on the home page
     if ($this->get('profiler')) $this->get('profiler')->disable();
 
+    // Retrieve actual study area from wrapper
+    $studyArea = $requestStudyArea->getStudyArea();
+
     return [
-        'pageUrl' => $pageUrl != '' ? '/' . $pageUrl : $router->generate('app_default_dashboard'),
+        'studyArea' => $studyArea,
+        'pageUrl'   => $pageUrl != ''
+            ? '/' . $studyArea->getId() . '/' . $pageUrl
+            : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),
     ];
   }
 
   /**
-   * @Route("/dashboard")
+   * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
    * @Template
    *
    * @return array

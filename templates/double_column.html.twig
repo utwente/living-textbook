@@ -1,6 +1,10 @@
 {% extends '_layout/base.html.twig' %}
 
 {% block javascripts %}
+  <!--suppress JSUnusedLocalSymbols -->
+  <script type="text/javascript">
+    var _studyArea = {{ studyArea.id }};
+  </script>
   <script src="{{ asset('build/double-column.js') }}" type="text/javascript"></script>
 {% endblock %}
 

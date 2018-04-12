@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author BobV
  *
- * @Route("/latex")
+ * @Route("/{_studyArea}/latex", requirements={"_studyArea"="\d+"})
  */
 class LatexController extends Controller
 {

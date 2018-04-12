@@ -8,6 +8,7 @@ use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
+use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,7 +23,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author BobV
  *
- * @Route("/concept")
+ * @Route("/{_studyArea}/concept", requirements={"_studyArea"="\d+"})
  */
 class ConceptController extends Controller
 {
@@ -31,19 +32,19 @@ class ConceptController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $studyArea
    * @param EntityManagerInterface $em
    * @param StudyAreaRepository    $studyAreaRepo
    *
    * @return array|Response
    */
-  public function add(Request $request, EntityManagerInterface $em, StudyAreaRepository $studyAreaRepo)
+  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, StudyAreaRepository $studyAreaRepo)
   {
     // Create new concept
     $concept = new Concept();
 
-    // @todo remove
-    // Add default study area
-    $concept->setStudyArea($studyAreaRepo->findDefault());
+    // Add current study area
+    $concept->setStudyArea($studyArea->getStudyArea());
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
@@ -76,13 +77,19 @@ class ConceptController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
    * @param Concept                $concept
    * @param EntityManagerInterface $em
    *
    * @return Response|array
    */
-  public function edit(Request $request, Concept $concept, EntityManagerInterface $em)
+  public function edit(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, EntityManagerInterface $em)
   {
+    // Check study area
+    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
     // Map original resources
     $originalResources = new ArrayCollection();
     foreach ($concept->getExternalResources()->getResources() as $resource) {
@@ -148,12 +155,13 @@ class ConceptController extends Controller
    * @Template()
    *
    * @param ConceptRepository $repo
+   * @param RequestStudyArea  $studyArea
    *
    * @return array
    */
-  public function list(ConceptRepository $repo)
+  public function list(ConceptRepository $repo, RequestStudyArea $studyArea)
   {
-    $concepts = $repo->findAllOrderedByName();
+    $concepts = $repo->findByStudyAreaOrderedByName($studyArea->getStudyArea());
 
     return [
         'concepts' => $concepts,
@@ -165,14 +173,20 @@ class ConceptController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
    * @param Concept                $concept
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
    */
-  public function remove(Request $request, Concept $concept, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, EntityManagerInterface $em, TranslatorInterface $trans)
   {
+    // Check study area
+    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route'        => 'app_concept_show',
         'cancel_route_params' => ['concept' => $concept->getId()],
@@ -197,12 +211,18 @@ class ConceptController extends Controller
    * @Route("/{concept}", requirements={"concept"="\d+"}, options={"expose"=true})
    * @Template()
    *
-   * @param Concept $concept
+   * @param Concept          $concept
+   * @param RequestStudyArea $requestStudyArea
    *
    * @return array
    */
-  public function show(Concept $concept)
+  public function show(Concept $concept, RequestStudyArea $requestStudyArea)
   {
+    // Check study area
+    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
     return [
         'concept' => $concept,
     ];
