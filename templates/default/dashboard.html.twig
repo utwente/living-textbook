@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block content %}
-  <a href="{{ path('app_concept_list') }}">Concept list</a>
+  {{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}
 {% endblock %}

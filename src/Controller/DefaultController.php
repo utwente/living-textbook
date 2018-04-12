@@ -7,7 +7,6 @@ use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -15,18 +14,8 @@ class DefaultController extends Controller
 {
 
   /**
-   * @param Request $request
-   *
-   * @return RedirectResponse
-   */
-  public function forwardHome(Request $request)
-  {
-    return $this->redirect($this->generateUrl('app_default_index', array('_locale' => $request->getLocale())));
-  }
-
-  /**
    * @Route("/", defaults={"_studyArea"=null, "pageUrl"=""})
-   * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"_studyArea"="\d+", "pageUrl"=".+"})
+   * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home")
    * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"})
    * @Template("double_column.html.twig")
    *
@@ -57,10 +46,14 @@ class DefaultController extends Controller
    * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
    * @Template
    *
+   * @param RequestStudyArea $requestStudyArea
+   *
    * @return array
    */
-  public function dashboard()
+  public function dashboard(RequestStudyArea $requestStudyArea)
   {
-    return [];
+    return [
+        'studyArea' => $requestStudyArea->getStudyArea()
+    ];
   }
 }

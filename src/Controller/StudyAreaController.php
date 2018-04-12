@@ -8,6 +8,7 @@ use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
+use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -104,18 +105,18 @@ class StudyAreaController extends Controller
    * @Route("/list")
    * @Template()
    *
-   * @param EntityManagerInterface $em
+   * @param StudyAreaRepository $studyAreaRepository
+   * @param RequestStudyArea    $requestStudyArea
    *
    * @return array
    */
-  public function list(EntityManagerInterface $em)
+  public function list(StudyAreaRepository $studyAreaRepository, RequestStudyArea $requestStudyArea)
   {
-    $repo = $em->getRepository('App:StudyArea');
-    assert($repo instanceof StudyAreaRepository);
-    $studyAreas = $repo->findAll();
+    $studyAreas = $studyAreaRepository->findAll();
 
     return [
-        'studyAreas' => $studyAreas,
+        'currentStudyArea' => $requestStudyArea->getStudyArea(),
+        'studyAreas'       => $studyAreas,
     ];
   }
 
@@ -147,8 +148,7 @@ class StudyAreaController extends Controller
     }
 
     return [
-        'studyArea'      => $studyArea,
-        'form'           => $form->createView(),
+        'form' => $form->createView(),
     ];
   }
 
@@ -156,15 +156,14 @@ class StudyAreaController extends Controller
    * @Route("/{studyArea}", requirements={"studyArea"="\d+"}, options={"expose"=true})
    * @Template()
    *
-   * @param StudyArea $studyArea
+   * @param StudyArea         $studyArea
+   * @param ConceptRepository $conceptRepository
    *
    * @return array
    */
-  public function show(StudyArea $studyArea, EntityManagerInterface $em)
+  public function show(StudyArea $studyArea, ConceptRepository $conceptRepository)
   {
-    $conceptRepo = $em->getRepository('App:Concept');
-    assert($conceptRepo instanceof ConceptRepository);
-    $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea);
+    $concepts = $conceptRepository->findByStudyAreaOrderedByName($studyArea);
 
     return [
         'studyArea' => $studyArea,

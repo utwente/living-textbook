@@ -31,7 +31,7 @@ class AuthenticationController extends Controller
   public function checkLogin()
   {
     if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-      return $this->redirect($this->generateUrl('app_default_index'));
+      return $this->redirect($this->generateUrl('_home'));
     } else {
       return $this->redirect($this->generateUrl('login'));
     }
@@ -51,7 +51,7 @@ class AuthenticationController extends Controller
   public function login(Request $request)
   {
     if ($this->isGranted('ROLE_USER')) {
-      return $this->redirectToRoute('app_default_index');
+      return $this->redirectToRoute('_home');
     }
 
     $session = $request->getSession();

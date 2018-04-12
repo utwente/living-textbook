@@ -15,6 +15,7 @@
     <tr>
       <th scope="col">{{ 'study-area.name'|trans }}</th>
       <th scope="col">{{ 'study-area.owner'|trans }}</th>
+      <th scope="col">{{ 'study-area.switch-to'|trans }}</th>
       <th scope="col">{{ 'form.edit'|trans }}</th>
       <th scope="col">{{ 'form.show'|trans }}</th>
       <th scope="col">{{ 'form.remove'|trans }}</th>
@@ -25,6 +26,13 @@
       <tr>
         <td>{{ studyArea.name }}</td>
         <td>{{ studyArea.owner }}</td>
+        <td>
+          {% if studyArea.id == currentStudyArea.id %}
+            {{ 'study-area.current'|trans }}
+          {% else %}
+            <a class="top-level" href="{{ path('_home', {'_studyArea': studyArea.id}) }}">{{ 'study-area.switch-to'|trans }}</a>
+          {% endif %}
+        </td>
         <td><a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id}) }}">{{ 'form.edit'|trans }}</a></td>
         <td><a href="{{ path('app_studyarea_show', {'studyArea': studyArea.id}) }}">{{ 'form.show'|trans }}</a></td>
         <td><a href="{{ path('app_studyarea_remove', {'studyArea': studyArea.id}) }}">{{ 'form.remove'|trans }}</a></td>
