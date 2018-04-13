@@ -5,5 +5,9 @@
 {% endblock %}
 
 {% block content %}
-  {{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}
+  <p>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</p>
+
+  {% if form is not null %}
+    {{ form(form) }}
+  {% endif %}
 {% endblock %}

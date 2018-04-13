@@ -43,6 +43,7 @@ data:
 
 dashboard:
   study-area-text: 'You are currently browsing the study area "%studyArea%".'
+  study-area-switch: 'Switch to another study area'
 
 form:
   action-bar: 'Action bar'
