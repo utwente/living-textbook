@@ -67,3 +67,14 @@
     {{ block('data_display_relations') }}
   {% endif %}
 {% endmacro %}
+
+{% macro data_prior_knowledge(data) %}
+  {% if data|length > 0 %}
+    <h2>{{ 'concept.prior-knowledge'|trans }}</h2>
+    <ul>
+    {% for priorKnowledge in data %}
+      <li><a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

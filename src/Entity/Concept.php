@@ -63,6 +63,28 @@ class Concept
   private $introduction;
 
   /**
+   * @var Concept[]|Collection
+   *
+   * @ORM\ManyToMany(targetEntity="App\Entity\Concept", inversedBy="priorKnowledgeOf")
+   * @ORM\JoinTable(name="concepts_prior_knowledge",
+   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="prior_knowledge_id", referencedColumnName="id")}
+   *      )
+   * @ORM\OrderBy({"name" = "ASC"})
+   *
+   * @Assert\NotNull()
+   * @Assert\Valid()
+   */
+  private $priorKnowledge;
+
+  /**
+   * @var Concept[]|Collection
+   *
+   * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="priorKnowledge")
+   */
+  private $priorKnowledgeOf;
+
+  /**
    * @var DataLearningOutcomes
    *
    * @ORM\OneToOne(targetEntity="App\Entity\Data\DataLearningOutcomes", cascade={"persist","remove"})
@@ -165,6 +187,10 @@ class Concept
     $this->outgoingRelations = new ArrayCollection();
     $this->incomingRelations = new ArrayCollection();
 
+    // Prior knowledge
+    $this->priorKnowledge   = new ArrayCollection();
+    $this->priorKnowledgeOf = new ArrayCollection();
+
     // Initialize data
     $this->introduction      = new DataIntroduction();
     $this->learningOutcomes  = new DataLearningOutcomes();
@@ -214,9 +240,9 @@ class Concept
   }
 
   /**
-   * @param ArrayCollection $values
-   * @param string          $conceptRetriever
-   * @param string          $positionSetter
+   * @param Collection $values
+   * @param string     $conceptRetriever
+   * @param string     $positionSetter
    */
   private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter)
   {
@@ -473,5 +499,45 @@ class Concept
     $this->externalResources = $externalResources;
 
     return $this;
+  }
+
+  /**
+   * @return Concept[]|Collection
+   */
+  public function getPriorKnowledge()
+  {
+    return $this->priorKnowledge;
+  }
+
+  /**
+   * @param Concept $concept
+   *
+   * @return Concept
+   */
+  public function addPriorKnowledge(Concept $concept): Concept
+  {
+    $this->priorKnowledge->add($concept);
+
+    return $this;
+  }
+
+  /**
+   * @param Concept $concept
+   *
+   * @return Concept
+   */
+  public function removePriorKnowledge(Concept $concept): Concept
+  {
+    $this->priorKnowledge->removeElement($concept);
+
+    return $this;
+  }
+
+  /**
+   * @return Concept[]|Collection
+   */
+  public function getPriorKnowledgeOf()
+  {
+    return $this->priorKnowledgeOf;
   }
 }
