@@ -12,6 +12,8 @@ use App\Entity\Data\DataTheoryExplanation;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Data\DataExternalResourcesType;
 use App\Form\Type\SaveType;
+use App\Repository\ConceptRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,6 +34,22 @@ class EditConceptType extends AbstractType
             'label'      => 'concept.introduction',
             'required'   => true,
             'data_class' => DataIntroduction::class,
+        ])
+        ->add('priorKnowledge', EntityType::class, [
+            'label'         => 'concept.prior-knowledge',
+            'class'         => Concept::class,
+            'choice_label'  => 'name',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (ConceptRepository $conceptRepository) use ($concept) {
+              return $conceptRepository->createQueryBuilder('c')
+                  ->where('c != :self')
+                  ->andWhere('c.studyArea = :studyArea')
+                  ->setParameter('self', $concept)
+                  ->setParameter('studyArea', $concept->getStudyArea())
+                  ->orderBy('c.name');
+            },
+            'select2'       => true,
         ])
         ->add('learningOutcomes', BaseDataTextType::class, [
             'label'      => 'concept.learning-outcomes',

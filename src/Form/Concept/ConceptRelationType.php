@@ -54,6 +54,7 @@ class ConceptRelationType extends AbstractType
       $form->add('relationType', EntityType::class, [
           'label'         => 'relation.type',
           'class'         => RelationType::class,
+          'select2'       => true,
           'choice_label'  => 'name',
           'choice_attr'   => function ($val, $key, $index) {
             /** @var RelationType $val */
@@ -87,6 +88,7 @@ class ConceptRelationType extends AbstractType
             'label'         => 'relation.' . $field,
             'class'         => Concept::class,
             'choice_label'  => 'name',
+            'select2'       => true,
             'query_builder' => function (ConceptRepository $repo) use ($id) {
               return $repo->createQueryBuilder('c')
                   ->where('c.id != :id')
