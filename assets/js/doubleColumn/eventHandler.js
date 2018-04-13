@@ -46,7 +46,7 @@ require('../event/eventTypes');
    */
   function onConceptSelected(data) {
     // Forward to page load
-    onPageLoad({url: Routing.generate('app_concept_show', {concept: data.id})})
+    onPageLoad({url: Routing.generate('app_concept_show', {_studyArea: _studyArea, concept: data.id})})
   }
 
   /**
