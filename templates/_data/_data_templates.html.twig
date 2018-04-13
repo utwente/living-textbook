@@ -1,7 +1,9 @@
 {% block data_display_block %}
   {% if data.hasData %}
     {% if title is defined %}<h2>{{ title }}</h2>{% endif %}
-    {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
+    <div class="ltb-text-container">
+      {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
+    </div>
   {% endif %}
 {% endblock %}
 
@@ -101,7 +103,9 @@
       {% for learningOutcome in data %}
         <li>
           <b>{{ learningOutcome.shortName }}</b>
-          <br/>{{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+          <div class="ltb-text-container">
+            {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+          </div>
         </li>
       {% endfor %}
     </ul>

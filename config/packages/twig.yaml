@@ -8,4 +8,4 @@ twig:
     - "_form/_collection_layout.html.twig"
     - "_form/_custom_types_layout.html.twig"
   globals:
-    allowed_ckeditor_tags: '<p><br><figure><figcaption><img>'
+    allowed_ckeditor_tags: '%ckeditor_tags%'

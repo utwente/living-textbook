@@ -1,9 +1,18 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
 @import '../vars/vars';
 
 .container-fluid {
   &.with-menu {
     margin-top: $body-with-menu-margin;
   }
+}
+
+.ltb-text-container {
+  h1, .h1 { font-size: $h3-font-size; }
+  h2, .h2 { font-size: $h4-font-size; }
+  h3, .h3 { font-size: $h5-font-size; }
+  h4, .h4 { font-size: $h6-font-size; }
 }
 
 @import '_forms';

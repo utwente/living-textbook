@@ -1,10 +1,27 @@
+parameters:
+  ckeditor_tags: "<p><br><span><h1><h2><h3><h4>
+  <img><figure><figcaption>
+  <ul><ol><li>
+  <strong><b><em><u><s><sup><sub><pre>
+  <table><tbody><thead><tr><td><th>"
+
 fos_ck_editor:
   autoload: false
-  default_config: default
+  default_config: ltb_config
   configs:
-    default:
+    ltb_config:
+      toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
       extraPlugins: "latexeditor,image2"
+      format_tags: "p;h1;h2;h3;h4;pre"
+  toolbars:
+    configs:
+      ltb_toolbar: [ "@text_tools", "@ltb_tools", "@edit_tools", "/", "@font_tools" ]
+    items:
+      edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
+      text_tools: [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
+      ltb_tools: [ "Image", "LatexEditor" ]
+      font_tools: [ "Format", "FontSize", "TextColor" ]
   plugins:
     latexeditor:
       path:     "/ckeditor-plugins/latexeditor/"
