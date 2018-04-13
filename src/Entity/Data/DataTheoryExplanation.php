@@ -3,6 +3,7 @@
 namespace App\Entity\Data;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class DataTheoryExplanation
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\Data\DataTheoryExplanationRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class DataTheoryExplanation implements DataInterface
 {

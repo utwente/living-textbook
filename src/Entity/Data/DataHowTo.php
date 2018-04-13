@@ -3,6 +3,7 @@
 namespace App\Entity\Data;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class DataHowTo
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\Data\DataHowToRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class DataHowTo implements DataInterface
 {

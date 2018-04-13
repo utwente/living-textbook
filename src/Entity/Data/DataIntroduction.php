@@ -6,6 +6,7 @@ use App\Validator\Constraint\Data\WordCount;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class DataIntroduction
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\Data\DataIntroductionRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class DataIntroduction implements DataInterface
 {
