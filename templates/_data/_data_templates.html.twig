@@ -46,17 +46,31 @@
 {% endmacro %}
 
 {% block data_display_relations %}
+  {% import _self as macros %}
   <h2>{{ title }}</h2>
   <ul>
     {% for relation in relations %}
-      <li>{{ relation.source.name }} <i>{{ relation.relationType.name|lower }}</i> {{ relation.target.name }}</li>
+      <li>
+        {{ macros.link_to_relation(relation.source, incoming) }}
+        <i>{{ relation.relationType.name|lower }}</i>
+        {{ macros.link_to_relation(relation.target, not incoming) }}
+      </li>
     {% endfor %}
   </ul>
 {% endblock %}
 
+{% macro link_to_relation(concept, createLink) %}
+  {% if createLink %}
+    <a href="{{ path('app_concept_show', {concept: concept.id}) }}">{{ concept.name }}</a>
+  {% else %}
+    {{ concept.name }}
+  {% endif %}
+{% endmacro %}
+
 {% macro data_incoming_relations(relations) %}
   {% if relations|length > 0 %}
     {% set title = 'concept.incoming-relations'|trans %}
+    {% set incoming = true %}
     {{ block('data_display_relations') }}
   {% endif %}
 {% endmacro %}
@@ -64,6 +78,7 @@
 {% macro data_outgoing_relations(relations) %}
   {% if relations|length > 0 %}
     {% set title = 'concept.outgoing-relations'|trans %}
+    {% set incoming = false %}
     {{ block('data_display_relations') }}
   {% endif %}
 {% endmacro %}
