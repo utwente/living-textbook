@@ -1,5 +1,11 @@
+// Darker the background of hovers
+$dropdown-link-hover-bg: #d2d2d2;
+
 // Import bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Import Select2 Bootstrap theme
+@import '~select2-bootstrap-theme/src/select2-bootstrap';
 
 .card.container-card {
   margin-top: ($grid-gutter-width / 2);

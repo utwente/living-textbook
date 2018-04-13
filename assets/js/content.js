@@ -46,6 +46,11 @@ $(function () {
     }
   });
 
+  // Load select2
+  $('select.select2').select2({
+    theme: "bootstrap"
+  });
+
   // Page loaded event
   eDispatch.pageLoaded();
 });

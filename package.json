@@ -10,6 +10,8 @@
         "node-sass": "^4.7.2",
         "popper.js": "^1.12.9",
         "sass-loader": "^6.0.6",
+        "select2": "4.0.5",
+        "select2-bootstrap-theme": "https://github.com/angel-vladov/select2-bootstrap-theme.git#master",
         "symfony-collection": "ninsuo/symfony-collection"
     },
     "license": "UNLICENSED",

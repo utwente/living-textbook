@@ -57,6 +57,10 @@ services:
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
+  App\Form\Extension\Select2Extension:
+    tags:
+      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
+
   App\Oidc\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'
