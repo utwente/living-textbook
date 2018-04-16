@@ -69,3 +69,16 @@
     <h2>{{ form_header|trans }}</h2>
   {%- endif -%}
 {%- endblock %}
+
+{%- block choice_widget_collapsed -%}
+  {{- parent() -}}
+  {%- spaceless -%}
+    {% if select2 %}
+      <script type="text/javascript">
+        $('#{{ id }}').select2({
+          theme: "bootstrap"
+        });
+      </script>
+    {% endif %}
+  {%- endspaceless -%}
+{%- endblock -%}
