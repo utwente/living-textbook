@@ -42,12 +42,18 @@ class EditConceptType extends AbstractType
             'required'      => false,
             'multiple'      => true,
             'query_builder' => function (ConceptRepository $conceptRepository) use ($concept) {
-              return $conceptRepository->createQueryBuilder('c')
-                  ->where('c != :self')
-                  ->andWhere('c.studyArea = :studyArea')
-                  ->setParameter('self', $concept)
+              $qb = $conceptRepository->createQueryBuilder('c');
+
+              if ($concept->getId()) {
+                $qb->where('c != :self')
+                    ->setParameter('self', $concept);
+              }
+
+              $qb->andWhere('c.studyArea = :studyArea')
                   ->setParameter('studyArea', $concept->getStudyArea())
                   ->orderBy('c.name');
+
+              return $qb;
             },
             'select2'       => true,
         ])
