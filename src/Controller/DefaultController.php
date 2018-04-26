@@ -32,7 +32,7 @@ class DefaultController extends Controller
   public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router, StudyAreaRepository $studyAreaRepository)
   {
     // Disable profiler on the home page
-    if ($this->get('profiler')) $this->get('profiler')->disable();
+    if ($this->has('profiler')) $this->get('profiler')->disable();
 
     // Retrieve actual study area from wrapper
     $studyArea = $requestStudyArea->getStudyArea();
