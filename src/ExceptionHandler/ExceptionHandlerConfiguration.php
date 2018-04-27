@@ -49,7 +49,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    */
   public function getSender()
   {
-    return array('helpdesk@snt.utwente.nl' => 'SNT WESP');
+    return array($this->container->getParameter('exception_sender') => 'Living Textbook');
   }
 
   /**

@@ -2139,16 +2139,16 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "5d40adc20015fd8d35fcdf7e14b8d413ed40f8bb"
+                "reference": "b172b57968c24dc6db8e44689348fd396d2519e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/5d40adc20015fd8d35fcdf7e14b8d413ed40f8bb",
-                "reference": "5d40adc20015fd8d35fcdf7e14b8d413ed40f8bb",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/b172b57968c24dc6db8e44689348fd396d2519e8",
+                "reference": "b172b57968c24dc6db8e44689348fd396d2519e8",
                 "shasum": ""
             },
             "require": {
@@ -2189,7 +2189,7 @@
                 "exception handler",
                 "symfony"
             ],
-            "time": "2017-12-27T10:40:07+00:00"
+            "time": "2018-04-27T09:33:34+00:00"
         },
         {
             "name": "kriswallsmith/assetic",

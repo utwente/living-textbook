@@ -8,6 +8,7 @@ parameters:
   app_version: '%env(APP_VERSION)%'
   production_server: '%env(PRODUCTION_SERVER)%'
   exception_receiver: '%env(EXCEPTION_RECEIVER)%'
+  exception_sender: '%env(EXCEPTION_SENDER)%'
 
   env(HTTP_SCHEMA): 'https'
   router.request_context.host: '%env(HTTP_HOST)%'
