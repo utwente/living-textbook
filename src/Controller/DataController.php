@@ -86,18 +86,21 @@ class DataController extends Controller
       if ($data['json'] instanceof UploadedFile) {
         $jsonData = $serializer->deserialize(file_get_contents($data['json']->getPathname()), 'array', 'json');
 
-        // Check fields
-        if (array_key_exists('nodes', $jsonData) &&
-            array_key_exists('label', $jsonData['nodes']) &&
-            array_key_exists('links', $jsonData) &&
-            array_key_exists('source', $jsonData['links']) &&
-            array_key_exists('target', $jsonData['links']) &&
-            array_key_exists('relationName', $jsonData['links'])
-        ) {
+        try {
+          // Check fields
+          if (!array_key_exists('nodes', $jsonData) ||
+              !array_key_exists('links', $jsonData)
+          ) {
+            throw new \InvalidArgumentException();
+          }
 
           // Resolve the link types
           $linkTypes = array();
           foreach ($jsonData['links'] as $jsonLink) {
+
+            if (!array_key_exists('relationName', $jsonLink)) {
+              throw new \InvalidArgumentException();
+            }
 
             // Check whether already cached
             $linkName = $jsonLink['relationName'];
@@ -120,6 +123,10 @@ class DataController extends Controller
           /** @var Concept[] $concepts */
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
+            if (!array_key_exists('label', $jsonNode)) {
+              throw new \InvalidArgumentException();
+            }
+
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
             $concepts[$key]->setStudyArea($data['studyArea']);
             $em->persist($concepts[$key]);
@@ -127,6 +134,12 @@ class DataController extends Controller
 
           // Create the links
           foreach ($jsonData['links'] as $jsonLink) {
+            if (!array_key_exists('target', $jsonLink) ||
+                !array_key_exists('relationName', $jsonLink) ||
+                !array_key_exists('source', $jsonLink)) {
+              throw new \InvalidArgumentException();
+            }
+
             $relation = new ConceptRelation();
             $relation->setTarget($concepts[$jsonLink['target']]);
             $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
@@ -137,7 +150,8 @@ class DataController extends Controller
           $em->flush();
           $this->addFlash('success', $translator->trans('data.json-uploaded'));
           $this->redirectToRoute('app_data_upload');
-        } else {
+
+        } catch (\InvalidArgumentException $e) {
           $this->addFlash('error', $translator->trans('data.json-incorrect'));
         }
       }

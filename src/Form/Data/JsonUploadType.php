@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class JsonUploadType extends AbstractType
@@ -16,7 +17,12 @@ class JsonUploadType extends AbstractType
   {
     $builder
         ->add('json', FileType::class, [
-            'label' => 'data.json-file',
+            'label'       => 'data.json-file',
+            'constraints' => [
+                new NotNull(),
+                new File([
+                    'mimeTypes' => ['application/json', 'text/plain'],
+                ])],
         ])
         ->add('studyArea', EntityType::class, [
             'class'       => StudyArea::class,
