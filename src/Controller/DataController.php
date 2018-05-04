@@ -26,14 +26,14 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author BobV
  *
- * @Route("/data")
+ * @Route("/{_studyArea}/data", requirements={"_studyArea"="\d+"})
  */
 class DataController extends Controller
 {
 
   /**
-   * @Route("/export/{_studyArea}", name="app_data_export", options={"expose"=true}, defaults={"export"=true, "_studyArea"=null}, requirements={"_studyArea": "\d+"})
-   * @Route("/search/{_studyArea}", name="app_data_search", options={"expose"=true}, defaults={"_studyArea"=null}, requirements={"_studyArea": "\d+"})
+   * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
+   * @Route("/search", name="app_data_search", options={"expose"=true}, defaults={"export"=false})
    *
    * @param bool                   $export
    * @param RelationTypeRepository $relationTypeRepo
@@ -43,7 +43,7 @@ class DataController extends Controller
    *
    * @return JsonResponse
    */
-  public function export(bool $export = false, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
+  public function export(bool $export, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
                          SerializerInterface $serializer, RequestStudyArea $studyArea)
   {
     // Retrieve the relation types as cache
@@ -65,6 +65,7 @@ class DataController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
    * @param SerializerInterface    $serializer
    * @param TranslatorInterface    $translator
    * @param EntityManagerInterface $em
@@ -72,10 +73,10 @@ class DataController extends Controller
    *
    * @return array
    */
-  public function upload(Request $request, SerializerInterface $serializer, TranslatorInterface $translator,
+  public function upload(Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
                          EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo)
   {
-    $form = $this->createForm(JsonUploadType::class);
+    $form = $this->createForm(JsonUploadType::class, ['studyArea' => $requestStudyArea->getStudyArea()]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
