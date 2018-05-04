@@ -1,3 +1,5 @@
+submit: Submit
+
 app:
   dashboard: 'Dashboard'
 
@@ -76,6 +78,7 @@ menu:
   edit: 'Edit'
   concept: 'Concepts'
   case-study: 'Case studies'
+  import-data: 'Import'
   relation-type: 'Relation types'
   study-area: 'Study areas'
 
