@@ -26,8 +26,31 @@
 
 {% block form_row -%}
   {{- block("form_header") -}}
-  {{- parent() -}}
+
+  {%- if expanded is defined and expanded -%}
+    {{ block('fieldset_form_row') }}
+  {%- else -%}
+    <div class="form-group row{% if (not compound or force_error|default(false)) and not valid %} is-invalid{% endif %}">
+      {{- form_label(form) -}}
+      <div class="{{ block('form_group_class') }}">
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+      </div>
+    </div>
+  {%- endif -%}
 {% endblock %}
+
+{% block fieldset_form_row -%}
+  <fieldset class="form-group">
+    <div class="row{% if (not compound or force_error|default(false)) and not valid %} is-invalid{% endif %}">
+      {{- form_label(form) -}}
+      <div class="{{ block('form_group_class') }}">
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+      </div>
+    </div>
+  </fieldset>
+{%- endblock fieldset_form_row %}
 
 {% block checkbox_row -%}
   {{- block("form_header") -}}
@@ -49,6 +72,9 @@
   {%- else -%}
     {{ parent() }}
   {%- endif -%}
+{% endblock %}
+
+{% block form_label_errors %}
 {% endblock %}
 
 {% block form_errors -%}
