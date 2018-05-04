@@ -46,6 +46,11 @@ $(function () {
     }
   });
 
+  // Disable submit buttons on submit
+  $('form').submit(function(){
+    $(this).find(':input[type=submit]').prop('disabled', true);
+  });
+
   // Page loaded event
   eDispatch.pageLoaded();
 });
