@@ -84,9 +84,13 @@ class DataController extends Controller
 
       // Check file format, then load json data
       if ($data['json'] instanceof UploadedFile) {
-        $jsonData = $serializer->deserialize(file_get_contents($data['json']->getPathname()), 'array', 'json');
-
         try {
+          try {
+            $jsonData = $serializer->deserialize(file_get_contents($data['json']->getPathname()), 'array', 'json');
+          } catch (\Exception $e){
+            throw new \InvalidArgumentException("", 0, $e);
+          }
+
           // Check fields
           if (!array_key_exists('nodes', $jsonData) ||
               !array_key_exists('links', $jsonData)
