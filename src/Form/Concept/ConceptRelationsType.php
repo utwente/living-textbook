@@ -22,10 +22,8 @@ class ConceptRelationsType extends AbstractType
         'error_bubbling' => false,
         'entry_type'     => ConceptRelationType::class,
         'entry_options'  => [
-            'hide_label'   => true,
-            'concept_id'   => 0,
-            'concept_name' => '',
-            'incoming'     => false,
+            'hide_label' => true,
+            'incoming'   => false,
         ],
     ]);
 
@@ -33,11 +31,8 @@ class ConceptRelationsType extends AbstractType
     $resolver->setAllowedTypes('incoming', ['bool']);
 
     $resolver->setNormalizer('entry_options', function (OptionsResolver $options, $value) {
-      /** @var Concept $concept */
-      $concept               = $options->offsetGet('concept');
-      $value['concept_id']   = $concept->getId();
-      $value['concept_name'] = $concept->getName();
-      $value['incoming']     = $options->offsetGet('incoming');
+      $value['concept']  = $options->offsetGet('concept');
+      $value['incoming'] = $options->offsetGet('incoming');
 
       return $value;
     });

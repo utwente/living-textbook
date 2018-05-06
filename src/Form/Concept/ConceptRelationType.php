@@ -33,16 +33,19 @@ class ConceptRelationType extends AbstractType
 
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    /** @var Concept $concept */
+    $concept = $options['concept'];
+
     if ($options['incoming']) {
-      $this->addEntityType($builder, 'source', $options['concept_id']);
+      $this->addConceptType($builder, 'source', $concept);
     } else {
-      $this->addTextType($builder, 'source', $options['concept_name']);
+      $this->addTextType($builder, 'source', $concept->getName());
     }
 
     if (!$options['incoming']) {
-      $this->addEntityType($builder, 'target', $options['concept_id']);
+      $this->addConceptType($builder, 'target', $concept);
     } else {
-      $this->addTextType($builder, 'target', $options['concept_name']);
+      $this->addTextType($builder, 'target', $concept->getName());
     }
 
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -81,7 +84,7 @@ class ConceptRelationType extends AbstractType
     });
   }
 
-  private function addEntityType(FormBuilderInterface $builder, string $field, ?int $id)
+  private function addConceptType(FormBuilderInterface $builder, string $field, Concept $concept)
   {
     $builder
         ->add($field, EntityType::class, [
@@ -89,11 +92,13 @@ class ConceptRelationType extends AbstractType
             'class'         => Concept::class,
             'choice_label'  => 'name',
             'select2'       => true,
-            'query_builder' => function (ConceptRepository $repo) use ($id) {
+            'query_builder' => function (ConceptRepository $repo) use ($concept) {
               return $repo->createQueryBuilder('c')
                   ->where('c.id != :id')
+                  ->andWhere('c.studyArea = :studyArea')
                   ->orderBy('c.name', 'ASC')
-                  ->setParameter('id', $id ?? 0);
+                  ->setParameter('id', $concept->getId() ?? 0)
+                  ->setParameter('studyArea', $concept->getStudyArea());
             },
         ]);
   }
@@ -111,15 +116,13 @@ class ConceptRelationType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setRequired('concept_name');
-    $resolver->setRequired('concept_id');
+    $resolver->setRequired('concept');
     $resolver->setDefaults([
         'incoming'   => false,
         'data_class' => ConceptRelation::class,
     ]);
 
-    $resolver->setAllowedTypes('concept_id', ['null', 'int']);
-    $resolver->setAllowedTypes('concept_name', ['string']);
+    $resolver->setAllowedTypes('concept', [Concept::class]);
     $resolver->setAllowedTypes('incoming', ['bool']);
 
   }
