@@ -1317,7 +1317,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     reloadSimulation();
 
     // Restart simulation
-    cbSimulation.alpha(0.5);
+    cbSimulation.alpha(0.01);
     cbSimulation.restart();
   };
 
