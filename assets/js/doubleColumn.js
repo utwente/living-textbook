@@ -4,6 +4,9 @@ require('../css/doubleColumn/doubleColumn.scss');
 const d3 = require('d3');
 global.d3 = d3;
 
+// Import routing
+import Routing from 'fos-routing';
+
 /**
  * Load the modules required for the double column page in order to function properly
  *

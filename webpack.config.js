@@ -13,7 +13,6 @@ Encore
     // uncomment to define the assets of the project
     .addEntry('app', [
       './assets/js/app.js',
-      './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js',
       './assets/js/_fos_js_routes.js'
     ])
     .addEntry('double-column', './assets/js/doubleColumn.js')

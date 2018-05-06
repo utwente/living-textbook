@@ -1,5 +1,8 @@
 require('../event/eventTypes');
 
+// Import routing
+import Routing from 'fos-routing';
+
 /**
  * This module handles events from the content of the application
  */
@@ -75,9 +78,9 @@ require('../event/eventTypes');
   function onPageLoaded(data) {
     // Calculate new url
     var newUrl = '/page' + data.url;
-    this.currentUrl = data.url;
+    eHandler.currentUrl = data.url;
     var state = {
-      currentUrl: this.currentUrl,
+      currentUrl: eHandler.currentUrl,
       currentTitle: document.title
     };
 
