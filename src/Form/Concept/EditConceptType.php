@@ -32,7 +32,6 @@ class EditConceptType extends AbstractType
         ])
         ->add('introduction', BaseDataTextType::class, [
             'label'      => 'concept.introduction',
-            'required'   => true,
             'data_class' => DataIntroduction::class,
         ])
         ->add('priorKnowledge', EntityType::class, [
