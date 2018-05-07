@@ -647,7 +647,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     if (node && !mouseMoveDisabled) {
       setNodeAsHighlight(node);
     }
-    mouseMoveDisabled = !mouseMoveDisabled;
+    mouseMoveDisabled = !!node;
 
     if (!clickSend && node !== undefined) {
       if (typeof node.id !== 'undefined' && node.id !== '') {
