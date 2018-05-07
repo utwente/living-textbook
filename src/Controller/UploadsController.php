@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,29 +15,33 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author BobV
  *
- * @Route("/{_studyArea}/uploads", requirements={"_studyArea"="\d+"})
+ * @Route("/uploads")
  */
 class UploadsController extends Controller
 {
   /**
-   * @Route("/{path}", requirements={"path"=".+"})
-   * @param Request $request
-   * @param         $path
+   * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"})
+   * @param Request          $request
+   * @param RequestStudyArea $studyArea
+   * @param string           $path
    *
    * @return Response
    */
-  public function load(Request $request, string $path)
+  public function load(Request $request, RequestStudyArea $studyArea, string $path)
   {
     // Create path from request
     $fs            = new Filesystem();
-    $requestedFile = sprintf('%s/public/uploads/%s', $this->getParameter("kernel.project_dir"), $path);
+    $requestedFile = sprintf('%s/public/uploads/studyarea/%s/%s',
+        $this->getParameter("kernel.project_dir"),
+        $studyArea->getStudyArea()->getId(),
+        $path);
 
     // Check if path exists
     if (!$fs->exists($requestedFile)) {
       throw $this->createNotFoundException();
     }
 
-    // @todo Implement right for image loading
+    // @todo Implement rights for image loading
     return $this->file($requestedFile, NULL, $request->query->has('download')
         ? ResponseHeaderBag::DISPOSITION_ATTACHMENT
         : ResponseHeaderBag::DISPOSITION_INLINE);
