@@ -123,6 +123,9 @@ deploy-prod:
     - ssh -i /prod_id -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/finish_update"'
     - ssh -i /prod_id -tt x1002348@linux367.utsp.utwente.nl 'rm -rf build'
     - rm /prod_id
+  environment:
+    name: Production
+    url: https://ltb.itc.utwente.nl
   tags:
     - docker
   only:
