@@ -110,7 +110,7 @@ build-assets:
 
 deploy-prod:
   stage: deploy
-  image: kickin/ssh:1.0.0
+  image: kickin/ssh:1.1.0
   dependencies:
     - build-assets
   before_script:
