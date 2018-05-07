@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -73,6 +74,11 @@ class RelationTypeController extends Controller
    */
   public function edit(Request $request, RelationType $relationType, EntityManagerInterface $em)
   {
+    // Check if not removed
+    if ($relationType->getDeletedAt() !== NULL){
+      throw $this->createNotFoundException();
+    }
+
     // Create form and handle request
     $form = $this->createForm(EditRelationTypeType::class, $relationType);
     $form->handleRequest($request);
@@ -127,12 +133,23 @@ class RelationTypeController extends Controller
    */
   public function remove(Request $request, RelationType $relationType, EntityManagerInterface $em, TranslatorInterface $trans)
   {
+    // Check if not already deleted
+    if ($relationType->getDeletedAt() !== null){
+      $this->addFlash('warning', $trans->trans('relation-type.removed-already', ['%item%' => $relationType->getName()]));
+
+      return $this->redirectToRoute('app_relationtype_list');
+    }
+
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route' => 'app_relationtype_list',
     ]);
     $form->handleRequest($request);
+
     if ($form->isSubmitted() && $form->isValid()) {
-      $em->remove($relationType);
+
+      // Remove the relation type by setting the deletedAt/By manually
+      $relationType->setDeletedAt(new \DateTime());
+      $relationType->setDeletedBy($this->getUser() instanceof UserInterface ? $this->getUser()->getName() : 'anon.');
       $em->flush();
 
       $this->addFlash('success', $trans->trans('relation-type.removed', ['%item%' => $relationType->getName()]));
