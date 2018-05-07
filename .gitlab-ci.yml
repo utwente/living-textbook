@@ -117,11 +117,7 @@ deploy-prod:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$SSH_PROD_PRIVATE_KEY")
   script:
-    - scp -r public/build x1002348@linux367.utsp.utwente.nl:~/build
-    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/start_update"'
-    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --scp "build" "/opt/application/013-living-textbook/public"'
-    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/finish_update"'
-    - ssh -tt x1002348@linux367.utsp.utwente.nl 'rm -rf build'
+    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && LC_TOKEN=$PRIVATE_ACCESS_TOKEN LC_BRANCH=$CI_COMMIT_REF_NAME ./update/deploy"'
   environment:
     name: Production
     url: https://ltb.itc.utwente.nl

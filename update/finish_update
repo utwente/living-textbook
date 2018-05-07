@@ -1,4 +1,0 @@
-#! /bin/bash -e
-
-# Restore frontend controller
-cp update/controllers/index.php public/index.php

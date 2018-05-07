@@ -1,0 +1,29 @@
+#! /bin/bash -e
+
+# Put the website on updating
+cp update/controllers/update.php public/index.php
+
+# Pull the new data
+ssh-agent bash -c 'ssh-add /home/x1002348/.ssh/gitlab-deploy; git pull'
+
+# Retrieve the asset-build
+curl -sS --header "PRIVATE-TOKEN: ${LC_TOKEN}" "https://gitlab.drenso.nl/api/v4/projects/extern%2F013-living-textbook/jobs/artifacts/${LC_BRANCH}/download?job=build-assets" > build.zip
+
+# Unzip and replace
+rm -rf public/build/*
+unzip -q build.zip
+
+# Install/update composer for usage
+./install-composer.sh
+
+# Install vendors
+COMPOSER_CACHE_DIR=/tmp/composer; php composer.phar install -o --apcu-autoloader --no-dev
+
+# Clear cache
+sudo -u www-data php bin/console cache:clear
+
+# Execute migrations
+sudo -u www-data php bin/console doctrine:migrations:migrate -n
+
+# Restore frontend controller
+cp update/controllers/index.php public/index.php
