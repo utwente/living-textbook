@@ -8,7 +8,7 @@ parameters:
   database_password: '%env(file:DATABASE_SECRET_FILE)%'
 
   app_version: '%env(APP_VERSION)%'
-  production_server: '%env(PRODUCTION_SERVER)%'
+  production_server: '%env(bool:PRODUCTION_SERVER)%'
   exception_receiver: '%env(EXCEPTION_RECEIVER)%'
   exception_sender: '%env(EXCEPTION_SENDER)%'
 
