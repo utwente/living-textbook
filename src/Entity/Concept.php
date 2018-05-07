@@ -277,6 +277,15 @@ class Concept
   }
 
   /**
+   * @return bool
+   *
+   * @JMSA\VirtualProperty("isEmpty")
+   */
+  public function isEmpty(){
+    return !$this->getIntroduction()->hasData();
+  }
+
+  /**
    * @return string
    */
   public function getName(): string

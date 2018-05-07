@@ -74,6 +74,19 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
   cb.applyStyle = function (style) {
     switch (style) {
+      case -1: { // Grey 'empty' state
+        // Node styles
+        cb.defaultNodeFillStyle = '#6b6b6b';
+        cb.defaultNodeStrokeStyle = '#d5d5d5';
+        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
+        cb.draggedNodeStrokeStyle = '#2359ff';
+        cb.fadedNodeFillStyle = '#a2a2a2';
+        cb.fadedNodeStrokeStyle = '#d5d5d5';
+        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
+        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
+
+        break;
+      }
       case 1: {
         // Node styles
         cb.defaultNodeFillStyle = '#de5356';
@@ -156,6 +169,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     numberOfLinks: 0,
     id: 0,
     name: '',
+    isEmpty: false,
     relations: [
       {
         id: 0,
@@ -187,7 +201,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     individuals: '',
     dragged: false,
     highlighted: false,
-    linkNode: false
+    linkNode: false,
+    empty: false
   };
 
   /**
@@ -856,6 +871,16 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbGraph.links.map(drawNormalLink);
     context.stroke();
 
+    // Draw empty nodes
+    cb.applyStyle(-1);
+    context.beginPath();
+    context.lineWidth = cb.nodeLineWidth;
+    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
+    context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
+    cbGraph.nodes.map(drawEmptyNode);
+    context.fill();
+    context.stroke();
+
     // Draw normal nodes
     for (var nn = 0; nn <= 4; nn++) {
       cb.applyStyle(nn);
@@ -1105,11 +1130,19 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   }
 
   /**
+   * Draw a node when in empty state
+   * @param node
+   */
+  function drawEmptyNode(node){
+    if (node.empty) drawNode(node);
+  }
+
+  /**
    * Draw a node when in normal state
    * @param node
    */
   function drawNormalNode(node) {
-    if (node.highlighted || node.dragged) return;
+    if (node.highlighted || node.dragged || node.empty) return;
     drawNode(node);
   }
 
@@ -1118,7 +1151,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawDraggedNode(node) {
-    if (node.dragged) drawNode(node);
+    if (node.dragged && !node.empty) drawNode(node);
   }
 
   /**
@@ -1126,7 +1159,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawHighlightedNode(node) {
-    if (node.highlighted) drawNode(node);
+    if (node.highlighted && !node.empty) drawNode(node);
   }
 
   /**
@@ -1277,6 +1310,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       // Update properties
       node.label = concept.name;
       node.numberOfLinks = concept.relations.length;
+      node.empty = concept.isEmpty;
       getNodeRadius(node);
       loadNodeColor(node);
       updateNodeLabel(node);
@@ -1342,6 +1376,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       cbGraph.nodes.push({
         id: concept.id,
         label: concept.name,
+        empty: concept.isEmpty,
         link: '',
         numberOfLinks: concept.relations.length
       });
@@ -1430,18 +1465,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         .on('custom_resize', resizeCanvas)
         .on('keydown', onKeyDown);
 
-    // @todo switch to new API
-    // Add message handler
-    // window.addEventListener('message', function (event) {
-    //   var message = event.data;
-    //   console.log(message);
-    //
-    //   // Search a node due to content interaction
-    //   if (message.type === 'cb_update_opened') {
-    //     cb.moveToConceptById(message.data);
-    //   }
-    // });
-
     // Define context menu
     //noinspection JSUnusedGlobalSymbols
     $.contextMenu({
@@ -1486,7 +1509,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       };
     } else {
       // Node
-      var individuals = {};
+      var nodeItems = {};
 
       // Generate individuals, if any
       if (contextMenuNode.individuals !== undefined) {
@@ -1499,7 +1522,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
           };
         });
 
-        individuals = {
+        nodeItems = {
           individuals: {
             name: 'Examples',
             items: individualsItems
@@ -1508,25 +1531,33 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         };
       }
 
+      // Color data
+      if (!contextMenuNode.empty) {
+        var colorData = {
+          'styles': {
+            name: 'Change color',
+            icon: 'fa-paint-brush',
+            items: {
+              'style-1': {name: 'Red', icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
+              'style-2': {name: 'Green', icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
+              'style-3': {name: 'Blue', icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
+              'style-4': {name: 'Orange', icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
+              'sep1': '---------',
+              'style-0': {name: 'Default', icon: contextMenuNode.color === 0 ? 'fa-check' : 'fa-undo'}
+            }
+          },
+          'sep2': '---------',
+        };
+
+        nodeItems = $.extend(nodeItems, colorData);
+      }
+
       // Merge with default data
       var defaultData = {
-        'styles': {
-          name: 'Change color',
-          icon: 'fa-paint-brush',
-          items: {
-            'style-1': {name: 'Red', icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
-            'style-2': {name: 'Green', icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
-            'style-3': {name: 'Blue', icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
-            'style-4': {name: 'Orange', icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
-            'sep1': '---------',
-            'style-0': {name: 'Default', icon: contextMenuNode.color === 0 ? 'fa-check' : 'fa-undo'}
-          }
-        },
-        'sep2': '---------',
         'quit': {name: 'Close', icon: 'fa-times'}
       };
 
-      return $.extend(individuals, defaultData);
+      return $.extend(nodeItems, defaultData);
     }
   }
 
