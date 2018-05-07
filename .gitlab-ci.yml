@@ -112,17 +112,16 @@ deploy-prod:
   dependencies:
     - build-assets
   before_script:
-    - mkdir ~/.ssh/
+    - mkdir -p ~/.ssh
     - echo "linux367.utsp.utwente.nl $SSH_PROD_HOST_KEY" > ~/.ssh/known_hosts
-    - echo "$SSH_PROD_PRIVATE_KEY" > /prod_id
-    - chmod 600 /prod_id
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PROD_PRIVATE_KEY")
   script:
-    - scp -i /prod_id -r public/build x1002348@linux367.utsp.utwente.nl:~/build
-    - ssh -i /prod_id -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/start_update"'
-    - ssh -i /prod_id -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --scp "build" "/opt/application/013-living-textbook/public"'
-    - ssh -i /prod_id -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/finish_update"'
-    - ssh -i /prod_id -tt x1002348@linux367.utsp.utwente.nl 'rm -rf build'
-    - rm /prod_id
+    - scp -r public/build x1002348@linux367.utsp.utwente.nl:~/build
+    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/start_update"'
+    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --scp "build" "/opt/application/013-living-textbook/public"'
+    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && ./update/finish_update"'
+    - ssh -tt x1002348@linux367.utsp.utwente.nl 'rm -rf build'
   environment:
     name: Production
     url: https://ltb.itc.utwente.nl
