@@ -119,7 +119,7 @@ deploy-prod:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$SSH_PROD_PRIVATE_KEY")
   script:
-    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && LC_TOKEN=$PRIVATE_ACCESS_TOKEN LC_BRANCH=$CI_COMMIT_REF_NAME ./update/deploy"'
+    - ssh -tt x1002348@linux367.utsp.utwente.nl './013-living-textbook --no-forward "cd /opt/application/013-living-textbook && LC_TOKEN=$PRIVATE_ACCESS_TOKEN LC_PIPELINE_ID=$CI_PIPELINE_ID ./update/deploy"'
   environment:
     name: Production
     url: https://ltb.itc.utwente.nl

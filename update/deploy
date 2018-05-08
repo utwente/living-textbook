@@ -6,12 +6,18 @@ cp update/controllers/update.php public/index.php
 # Pull the new data
 ssh-agent bash -c 'ssh-add /home/x1002348/.ssh/gitlab-deploy; git pull'
 
-# Retrieve the asset-build
-curl -sS --header "PRIVATE-TOKEN: ${LC_TOKEN}" "https://gitlab.drenso.nl/api/v4/projects/extern%2F013-living-textbook/jobs/artifacts/${LC_BRANCH}/download?job=build-assets" > build.zip
+# Retrieve the asset-build artifact
+JOB_ID=`curl -sS --header "PRIVATE-TOKEN: ${LC_TOKEN}" "https://gitlab.drenso.nl/api/v4/projects/extern%2F013-living-textbook/pipelines/${LC_PIPELINE_ID}/jobs" | jq '.[] | select(.name == "build-assets" and .status == "success" and .artifacts_file != null) | .id'`
+if [ -z "$JOB_ID" ]; then
+  echo "Required asset artifact not found in pipeline #${LC_PIPELINE_ID}"
+fi
+echo "Downloading artifact for job #${JOB_ID}..."
+curl -sS --header "PRIVATE-TOKEN: ${LC_TOKEN}" "https://gitlab.drenso.nl/api/v4/projects/extern%2F013-living-textbook/jobs/${JOB_ID}/artifacts" > build.zip
 
 # Unzip and replace
 rm -rf public/build/*
 unzip -q build.zip
+rm build.zip
 
 # Install/update composer for usage
 ./install-composer.sh
