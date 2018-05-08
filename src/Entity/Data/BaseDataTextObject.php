@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class DataLearningOutcomes
+ * Class BaseDataTextObject
  *
  * @author BobV
  *

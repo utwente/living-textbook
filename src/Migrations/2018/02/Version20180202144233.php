@@ -3,8 +3,6 @@
 namespace DoctrineMigrations;
 
 use App\Database\Migration\ContainerAwareMigration;
-use App\Entity\Concept;
-use App\Entity\Data\DataLearningOutcomes;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -42,34 +40,7 @@ class Version20180202144233 extends AbstractMigration implements ContainerAwareI
    */
   public function postUp(Schema $schema)
   {
-    // Generate introduction objects for the existing concepts
-    $em       = $this->container->get('doctrine.orm.entity_manager');
-    $concepts = $em->getRepository('App:Concept')->createQueryBuilder('c')
-        ->select('c.id')
-        ->join('c.learningOutcomes', 'lo')
-        ->getQuery()->getResult();
-
-    // Setup reflection property
-    $reflClass = new \ReflectionClass(Concept::class);
-    $reflProp  = $reflClass->getProperty('learningOutcomes');
-    $reflProp->setAccessible(true);
-
-    // Loop concepts
-    foreach ($concepts as $concept) {
-      /** @var Concept $concept */
-
-      if ($reflProp->getValue($concept) === NULL) {
-        $concept->setLearningOutcomes(new DataLearningOutcomes());
-      }
-    }
-
-    // Save data
-    $em->flush();
-
-    // Update database
-    $this->connection->executeQuery('set foreign_key_checks = off');
-    $this->connection->executeQuery('ALTER TABLE concept CHANGE learning_outcomes_id learning_outcomes_id INT NOT NULL');
-    $this->connection->executeQuery('set foreign_key_checks = on');
+    // This migration is removed due to the removal of DataLearningOutcome
   }
 
   /**

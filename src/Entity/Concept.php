@@ -9,7 +9,6 @@ use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataExternalResources;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
-use App\Entity\Data\DataLearningOutcomes;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
@@ -85,12 +84,16 @@ class Concept
   private $priorKnowledgeOf;
 
   /**
-   * @var DataLearningOutcomes
+   * @var LearningOutcome[]|Collection
    *
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataLearningOutcomes", cascade={"persist","remove"})
-   * @ORM\JoinColumn(name="learning_outcomes_id", referencedColumnName="id", nullable=false)
+   * @ORM\ManyToMany(targetEntity="App\Entity\LearningOutcome", inversedBy="concepts")
+   * @ORM\JoinTable(name="concepts_learning_outcomes",
+   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="learning_outcome_id", referencedColumnName="id")}
+   *      )
+   * @ORM\OrderBy({"number" = "ASC"})
    *
-   * @Assert\Valid()
+   * @Assert\NotNull()
    */
   private $learningOutcomes;
 
@@ -191,9 +194,11 @@ class Concept
     $this->priorKnowledge   = new ArrayCollection();
     $this->priorKnowledgeOf = new ArrayCollection();
 
+    // Learning outcome
+    $this->learningOutcomes = new ArrayCollection();
+
     // Initialize data
     $this->introduction      = new DataIntroduction();
-    $this->learningOutcomes  = new DataLearningOutcomes();
     $this->theoryExplanation = new DataTheoryExplanation();
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
@@ -281,7 +286,8 @@ class Concept
    *
    * @JMSA\VirtualProperty("isEmpty")
    */
-  public function isEmpty(){
+  public function isEmpty()
+  {
     return !$this->getIntroduction()->hasData();
   }
 
@@ -386,26 +392,6 @@ class Concept
   public function setIntroduction(DataIntroduction $introduction): Concept
   {
     $this->introduction = $introduction;
-
-    return $this;
-  }
-
-  /**
-   * @return DataLearningOutcomes
-   */
-  public function getLearningOutcomes(): DataLearningOutcomes
-  {
-    return $this->learningOutcomes;
-  }
-
-  /**
-   * @param DataLearningOutcomes $learningOutcomes
-   *
-   * @return Concept
-   */
-  public function setLearningOutcomes(DataLearningOutcomes $learningOutcomes): Concept
-  {
-    $this->learningOutcomes = $learningOutcomes;
 
     return $this;
   }
@@ -548,5 +534,37 @@ class Concept
   public function getPriorKnowledgeOf()
   {
     return $this->priorKnowledgeOf;
+  }
+
+  /**
+   * @return LearningOutcome[]|Collection
+   */
+  public function getLearningOutcomes()
+  {
+    return $this->learningOutcomes;
+  }
+
+  /**
+   * @param LearningOutcome $learningOutcome
+   *
+   * @return Concept
+   */
+  public function addLearningOurcome(LearningOutcome $learningOutcome): Concept
+  {
+    $this->learningOutcomes->add($learningOutcome);
+
+    return $this;
+  }
+
+  /**
+   * @param LearningOutcome $learningOutcome
+   *
+   * @return Concept
+   */
+  public function removeLearningOutcome(LearningOutcome $learningOutcome): Concept
+  {
+    $this->learningOutcomes->removeElement($learningOutcome);
+
+    return $this;
   }
 }
