@@ -6,13 +6,14 @@ use App\Entity\Concept;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
-use App\Entity\Data\DataLearningOutcomes;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
+use App\Entity\LearningOutcome;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Data\DataExternalResourcesType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
+use App\Repository\LearningOutcomeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -56,10 +57,19 @@ class EditConceptType extends AbstractType
             },
             'select2'       => true,
         ])
-        ->add('learningOutcomes', BaseDataTextType::class, [
-            'label'      => 'concept.learning-outcomes',
-            'required'   => false,
-            'data_class' => DataLearningOutcomes::class,
+        ->add('learningOutcomes', EntityType::class, [
+            'label'         => 'concept.learning-outcomes',
+            'class'         => LearningOutcome::class,
+            'choice_label'  => 'shortName',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($concept) {
+              return $learningOutcomeRepository->createQueryBuilder('lo')
+                  ->where('lo.studyArea = :studyArea')
+                  ->setParameter('studyArea', $concept->getStudyArea())
+                  ->orderBy('lo.number');
+            },
+            'select2'       => true,
         ])
         ->add('theoryExplanation', BaseDataTextType::class, [
             'label'      => 'concept.theory-explanation',

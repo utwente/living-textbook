@@ -9,11 +9,6 @@
   {{ block('data_display_block') }}
 {% endmacro %}
 
-{% macro data_learning_outcomes(data) %}
-  {% set title = 'concept.learning-outcomes'|trans %}
-  {{ block('data_display_block') }}
-{% endmacro %}
-
 {% macro data_theory_explanation(data) %}
   {% set title = 'concept.theory-explanation'|trans %}
   {{ block('data_display_block') }}
@@ -34,7 +29,10 @@
     <h2>{{ 'concept.external-resources'|trans }}</h2>
     <ul>
       {% for example in data %}
-        <li><a href="{{ example.url }}" class="no-block" target="_blank">{{ example.title }}</a><br>{{ example.description }}</li>
+        <li>
+          <a href="{{ example.url }}" class="no-block" target="_blank">{{ example.title }}</a>\
+          <br/>{{ example.description }}
+        </li>
       {% endfor %}
     </ul>
   {% endif %}
@@ -87,9 +85,25 @@
   {% if data|length > 0 %}
     <h2>{{ 'concept.prior-knowledge'|trans }}</h2>
     <ul>
-    {% for priorKnowledge in data %}
-      <li><a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a></li>
-    {% endfor %}
+      {% for priorKnowledge in data %}
+        <li>
+          <a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro data_learning_outcomes(data) %}
+  {% if data|length > 0 %}
+    <h2>{{ 'concept.learning-outcomes'|trans }}</h2>
+    <ul>
+      {% for learningOutcome in data %}
+        <li>
+          <b>{{ learningOutcome.shortName }}</b>
+          <br/>{{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+        </li>
+      {% endfor %}
     </ul>
   {% endif %}
 {% endmacro %}
