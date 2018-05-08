@@ -1,0 +1,18 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import action_bar %}
+  {{ action_bar(
+    false,
+    false,
+    path('app_learningoutcome_add')
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'learning-outcome.edit-title'|trans({'%item%': learningOutcome.name}) }}
+{% endblock %}
+
+{% block content %}
+  {{ form(form) }}
+{% endblock %}

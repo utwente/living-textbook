@@ -1,0 +1,20 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'learning-outcome.remove'|trans({"%item%": learningOutcome.name}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'learning-outcome.remove-text'|trans({"%item%": learningOutcome.name}) }}</p>
+
+  {% if learningOutcome.concepts|length > 0 %}
+    <p>{{ 'learning-outcome.remove-concepts'|trans }}</p>
+    <ul>
+      {% for concept in learningOutcome.concepts %}
+        <li>{{ concept.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {{ form(form) }}
+{% endblock %}

@@ -60,6 +60,20 @@ form:
   save-and-list: 'Save and open list'
   show: 'View'
 
+learning-outcome:
+  add-title: 'Add new learning outcome'
+  edit-title: 'Edit learning outcome "%item%"'
+  list-title: 'Learning outcome list'
+  name: 'Name'
+  number: 'Number'
+  saved: 'Learning outcome "%item%" has been saved successfully.'
+  remove: 'Remove learning outcome "%item%"'
+  remove-concepts: 'Note that the learning outcome will also be removed from the following concepts:'
+  remove-text: 'Are you sure you want to remove the learning outcome "%item%"?'
+  removed: 'Learning outcome "%item%" has been removed successfully.'
+  text: 'Content'
+  updated: 'Learning outcome "%item%" has been successfully updated.'
+
 login:
   account-disabled: 'Your account has been disabled.'
   bad-credentials: 'Your credentials are invalid.'
@@ -79,6 +93,7 @@ menu:
   concept: 'Concepts'
   case-study: 'Case studies'
   import-data: 'Import'
+  learning-outcomes: 'Learning outcomes'
   relation-type: 'Relation types'
   study-area: 'Study areas'
 

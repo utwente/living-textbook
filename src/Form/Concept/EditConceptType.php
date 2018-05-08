@@ -64,10 +64,7 @@ class EditConceptType extends AbstractType
             'required'      => false,
             'multiple'      => true,
             'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($concept) {
-              return $learningOutcomeRepository->createQueryBuilder('lo')
-                  ->where('lo.studyArea = :studyArea')
-                  ->setParameter('studyArea', $concept->getStudyArea())
-                  ->orderBy('lo.number');
+              return $learningOutcomeRepository->findForStudyAreaQb($concept->getStudyArea());
             },
             'select2'       => true,
         ])

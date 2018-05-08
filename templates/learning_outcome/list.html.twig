@@ -1,0 +1,33 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import new_bar %}
+  {{ new_bar(path('app_learningoutcome_add')) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'learning-outcome.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'learning-outcome.number'|trans }}</th>
+      <th scope="col">{{ 'learning-outcome.name'|trans }}</th>
+      <th scope="col">{{ 'form.edit'|trans }}</th>
+      <th scope="col">{{ 'form.remove'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for learningOutcome in learningOutcomes %}
+      <tr>
+        <td>{{ learningOutcome.number }}</td>
+        <td>{{ learningOutcome.name }}</td>
+        <td><a href="{{ path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.edit'|trans }}</a></td>
+        <td><a href="{{ path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.remove'|trans }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
