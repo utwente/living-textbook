@@ -129,5 +129,6 @@ relation-type:
   name: 'Name'
   remove: 'Remove relation type "%item%"'
   remove-text: 'Are you sure you want to remove the relation type "%item%"? Note that existing usages of the type will not be removed automatically!'
+  remove-relations: 'Note that the following relations still use this relation type:'
   removed: 'Relation type "%item%" has been removed successfully'
   removed-already: 'The relation type "%item%" was already removed'

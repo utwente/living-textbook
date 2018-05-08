@@ -28,6 +28,16 @@ class RelationType
   use SoftDeletable;
 
   /**
+   * @var StudyArea|null
+   *
+   * @ORM\ManyToOne(targetEntity="StudyArea")
+   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  private $studyArea;
+
+  /**
    * @var string
    *
    * @ORM\Column(name="name", type="string", length=100, nullable=false)
@@ -64,4 +74,23 @@ class RelationType
     return $this;
   }
 
+  /**
+   * @return StudyArea|null
+   */
+  public function getStudyArea(): ?StudyArea
+  {
+    return $this->studyArea;
+  }
+
+  /**
+   * @param StudyArea|null $studyArea
+   *
+   * @return RelationType
+   */
+  public function setStudyArea(?StudyArea $studyArea): RelationType
+  {
+    $this->studyArea = $studyArea;
+
+    return $this;
+  }
 }

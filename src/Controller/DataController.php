@@ -47,7 +47,7 @@ class DataController extends Controller
                          SerializerInterface $serializer, RequestStudyArea $studyArea)
   {
     // Retrieve the relation types as cache
-    $relationTypes = $relationTypeRepo->findAll();
+    $relationTypes = $relationTypeRepo->findBy(['studyArea' => $studyArea->getStudyArea()]);
 
     // Retrieve the concepts
     $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea->getStudyArea());
@@ -112,12 +112,12 @@ class DataController extends Controller
             if (!array_key_exists($linkName, $linkTypes)) {
 
               // Retrieve from database
-              $linkType = $relationTypeRepo->findOneBy(['name' => $linkName]);
+              $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $data['studyArea']]);
               if ($linkType) {
                 $linkTypes[$linkName] = $linkType;
               } else {
                 // Create new link type
-                $linkTypes[$linkName] = (new RelationType())->setName($linkName);
+                $linkTypes[$linkName] = (new RelationType())->setStudyArea($data['studyArea'])->setName($linkName);
                 $em->persist($linkTypes[$linkName]);
               }
             }

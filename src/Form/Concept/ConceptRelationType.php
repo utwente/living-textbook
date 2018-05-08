@@ -48,7 +48,7 @@ class ConceptRelationType extends AbstractType
       $this->addTextType($builder, 'target', $concept->getName());
     }
 
-    $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+    $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($concept) {
       /** @var ConceptRelation|null $relation */
       $relation       = $event->getData();
       $relationTypeId = $relation === NULL ? NULL : $relation->getRelationType()->getId();
@@ -63,7 +63,7 @@ class ConceptRelationType extends AbstractType
             /** @var RelationType $val */
             return $val->getDeletedAt() === NULL ? [] : ['disabled' => 'disabled'];
           },
-          'query_builder' => function (RelationTypeRepository $repo) use ($relationTypeId) {
+          'query_builder' => function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
             $qb = $repo->createQueryBuilder('rt');
 
             // Update result based on current data
@@ -76,6 +76,9 @@ class ConceptRelationType extends AbstractType
               ));
               $qb->setParameter('id', $relationTypeId);
             }
+
+            $qb->andWhere('rt.studyArea = :studyArea')
+                ->setParameter('studyArea', $concept->getStudyArea());
 
             return $qb;
           },

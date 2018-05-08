@@ -41,10 +41,7 @@ class ConceptController extends Controller
   public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, StudyAreaRepository $studyAreaRepo)
   {
     // Create new concept
-    $concept = new Concept();
-
-    // Add current study area
-    $concept->setStudyArea($studyArea->getStudyArea());
+    $concept = (new Concept())->setStudyArea($studyArea->getStudyArea());
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [

@@ -6,7 +6,9 @@ use App\Entity\RelationType;
 use App\Form\RelationType\EditRelationTypeType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
+use App\Repository\ConceptRelationRepository;
 use App\Repository\RelationTypeRepository;
+use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -29,17 +31,17 @@ class RelationTypeController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $studyArea
    * @param EntityManagerInterface $em
    *
    * @return array|Response
    */
-  public function add(Request $request, EntityManagerInterface $em)
+  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em)
   {
     // Create new
-    $relationType = new RelationType();
+    $relationType = (new RelationType())->setStudyArea($studyArea->getStudyArea());
 
     $form = $this->createForm(EditRelationTypeType::class, $relationType);
-
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -67,15 +69,21 @@ class RelationTypeController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $studyArea
    * @param RelationType           $relationType
    * @param EntityManagerInterface $em
    *
    * @return Response|array
    */
-  public function edit(Request $request, RelationType $relationType, EntityManagerInterface $em)
+  public function edit(Request $request, RequestStudyArea $studyArea, RelationType $relationType, EntityManagerInterface $em)
   {
+    // Check if correct study area
+    if ($relationType->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
     // Check if not removed
-    if ($relationType->getDeletedAt() !== NULL){
+    if ($relationType->getDeletedAt() !== NULL) {
       throw $this->createNotFoundException();
     }
 
@@ -107,16 +115,15 @@ class RelationTypeController extends Controller
    * @Route("/list")
    * @Template()
    *
+   * @param RequestStudyArea       $studyArea
    * @param RelationTypeRepository $repo
    *
    * @return array
    */
-  public function list(RelationTypeRepository $repo)
+  public function list(RequestStudyArea $studyArea, RelationTypeRepository $repo)
   {
-    $relationTypes = $repo->findBy(['deletedAt' => NULL]);
-
     return [
-        'relationTypes' => $relationTypes,
+        'relationTypes' => $repo->findForStudyArea($studyArea->getStudyArea()),
     ];
   }
 
@@ -124,17 +131,25 @@ class RelationTypeController extends Controller
    * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
    *
-   * @param Request                $request
-   * @param RelationType           $relationType
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request                   $request
+   * @param RequestStudyArea          $studyArea
+   * @param RelationType              $relationType
+   * @param ConceptRelationRepository $conceptRelationRepository
+   * @param EntityManagerInterface    $em
+   * @param TranslatorInterface       $trans
    *
    * @return array|RedirectResponse
    */
-  public function remove(Request $request, RelationType $relationType, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(Request $request, RequestStudyArea $studyArea, RelationType $relationType,
+                         ConceptRelationRepository $conceptRelationRepository, EntityManagerInterface $em, TranslatorInterface $trans)
   {
+    // Check if correct study area
+    if ($relationType->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
     // Check if not already deleted
-    if ($relationType->getDeletedAt() !== null){
+    if ($relationType->getDeletedAt() !== NULL) {
       $this->addFlash('warning', $trans->trans('relation-type.removed-already', ['%item%' => $relationType->getName()]));
 
       return $this->redirectToRoute('app_relationtype_list');
@@ -158,8 +173,9 @@ class RelationTypeController extends Controller
     }
 
     return [
-        'relationType' => $relationType,
-        'form'         => $form->createView(),
+        'relationType'     => $relationType,
+        'conceptRelations' => $conceptRelationRepository->getByRelationType($relationType),
+        'form'             => $form->createView(),
     ];
   }
 }

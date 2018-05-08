@@ -5,7 +5,22 @@
 {% endblock %}
 
 {% block content %}
+  {% import '_data/_data_templates.html.twig' as macros %}
+
   <p>{{ 'relation-type.remove-text'|trans({"%item%": relationType.name}) }}</p>
+
+  {% if conceptRelations|length > 0 %}
+    <p>{{ 'relation-type.remove-relations'|trans }}</p>
+    <ul>
+      {% for relation in conceptRelations %}
+        <li>
+          {{ macros.link_to_relation(relation.source, false) }}
+          <i>{{ relation.relationType.name|lower }}</i>
+          {{ macros.link_to_relation(relation.target, false) }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 
   {{ form(form) }}
 {% endblock %}
