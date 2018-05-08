@@ -65,14 +65,20 @@ class LearningOutcomeController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $studyArea
    * @param LearningOutcome        $learningOutcome
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function edit(Request $request, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(Request $request, RequestStudyArea $studyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
   {
+    // Check if correct study area
+    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()){
+      throw $this->createNotFoundException();
+    }
+
     // Create form and handle request
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome);
     $form->handleRequest($request);
@@ -114,14 +120,20 @@ class LearningOutcomeController extends Controller
    * @Template()
    *
    * @param Request                $request
+   * @param RequestStudyArea       $studyArea
    * @param LearningOutcome        $learningOutcome
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function remove(Request $request, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(Request $request, RequestStudyArea $studyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
   {
+    // Check if correct study area
+    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()){
+      throw $this->createNotFoundException();
+    }
+
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route' => 'app_learningoutcome_list',
     ]);
