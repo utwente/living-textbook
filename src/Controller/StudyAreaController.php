@@ -33,10 +33,11 @@ class StudyAreaController extends Controller
    *
    * @param Request                $request
    * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, EntityManagerInterface $em)
+  public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new StudyArea
     $studyArea = new StudyArea();
@@ -50,6 +51,8 @@ class StudyAreaController extends Controller
       // Save the data
       $em->persist($studyArea);
       $em->flush();
+
+      $this->addFlash('success', $trans->trans('study-area.saved', ['%item%' => $studyArea->getName()]));
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {
@@ -72,10 +75,11 @@ class StudyAreaController extends Controller
    * @param Request                $request
    * @param StudyArea              $studyArea
    * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em)
+  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create form and handle request
     $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea]);
@@ -85,6 +89,8 @@ class StudyAreaController extends Controller
 
       // Save the data
       $em->flush();
+
+      $this->addFlash('success', $trans->trans('study-area.updated', ['%item%' => $studyArea->getName()]));
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {

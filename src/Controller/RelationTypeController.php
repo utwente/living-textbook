@@ -33,10 +33,11 @@ class RelationTypeController extends Controller
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
    * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em)
+  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new
     $relationType = (new RelationType())->setStudyArea($studyArea->getStudyArea());
@@ -49,6 +50,8 @@ class RelationTypeController extends Controller
       // Save the data
       $em->persist($relationType);
       $em->flush();
+
+      $this->addFlash('success', $trans->trans('relation-type.saved', ['%item%' => $relationType->getName()]));
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {
@@ -72,10 +75,11 @@ class RelationTypeController extends Controller
    * @param RequestStudyArea       $studyArea
    * @param RelationType           $relationType
    * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, RequestStudyArea $studyArea, RelationType $relationType, EntityManagerInterface $em)
+  public function edit(Request $request, RequestStudyArea $studyArea, RelationType $relationType, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
     if ($relationType->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
@@ -95,6 +99,8 @@ class RelationTypeController extends Controller
 
       // Save the data
       $em->flush();
+
+      $this->addFlash('success', $trans->trans('relation-type.updated', ['%item%' => $relationType->getName()]));
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {

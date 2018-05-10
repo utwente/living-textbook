@@ -7,7 +7,6 @@ use App\Form\Concept\EditConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
-use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,11 +33,11 @@ class ConceptController extends Controller
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
    * @param EntityManagerInterface $em
-   * @param StudyAreaRepository    $studyAreaRepo
+   * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, StudyAreaRepository $studyAreaRepo)
+  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new concept
     $concept = (new Concept())->setStudyArea($studyArea->getStudyArea());
@@ -53,6 +52,8 @@ class ConceptController extends Controller
       // Save the data
       $em->persist($concept);
       $em->flush();
+
+      $this->addFlash('success', $trans->trans('concept.saved', ['%item%' => $concept->getName()]));
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {
@@ -77,10 +78,11 @@ class ConceptController extends Controller
    * @param RequestStudyArea       $requestStudyArea
    * @param Concept                $concept
    * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, EntityManagerInterface $em)
+  public function edit(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -131,6 +133,8 @@ class ConceptController extends Controller
 
       // Save the data
       $em->flush();
+
+      $this->addFlash('success', $trans->trans('concept.updated', ['%item%' => $concept->getName()]));
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {

@@ -32,8 +32,10 @@ concept:
   remove: 'Remove concept "%item%"'
   remove-text: 'Are you sure you want to remove the concept "%item%" and all of its relations?'
   removed: 'Concept "%item%" has been removed successfully'
+  saved: 'Concept "%item%" has been saved successfully.'
   self-assessment: 'Self assessment'
   theory-explanation: 'Theory explanation'
+  updated: 'Concept "%item%" has been successfully updated.'
 
 data:
   json-file: 'JSON data file'
@@ -119,8 +121,10 @@ study-area:
   remove-impossible: 'It is impossible to remove this study area, because there are concepts which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
+  saved: 'Study area "%item%" has been saved successfully.'
   show: 'This study area is owned by %owner%. It contains the following concepts:'
   switch-to: 'Switch'
+  updated: 'Study area "%item%" has been successfully updated.'
 
 relation-type:
   add-title: 'Add new relation type'
@@ -132,3 +136,5 @@ relation-type:
   remove-relations: 'Note that the following relations still use this relation type:'
   removed: 'Relation type "%item%" has been removed successfully'
   removed-already: 'The relation type "%item%" was already removed'
+  saved: 'Relation type "%item%" has been saved successfully.'
+  updated: 'Relation type "%item%" has been successfully updated.'
