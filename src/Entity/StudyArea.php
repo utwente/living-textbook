@@ -53,7 +53,7 @@ class StudyArea
    * @var User
    *
    * @ORM\ManyToOne(targetEntity="User")
-   * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=true)
+   * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */

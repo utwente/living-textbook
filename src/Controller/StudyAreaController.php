@@ -10,6 +10,7 @@ use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -71,6 +72,7 @@ class StudyAreaController extends Controller
   /**
    * @Route("/edit/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
+   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    *
    * @param Request                $request
    * @param StudyArea              $studyArea
@@ -129,6 +131,7 @@ class StudyAreaController extends Controller
   /**
    * @Route("/remove/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
+   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    *
    * @param Request                $request
    * @param StudyArea              $studyArea
