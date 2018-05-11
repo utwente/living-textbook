@@ -92,7 +92,8 @@ login:
   custom-account: 'Fallback account'
   general-error: 'Login failed due to an unknown error.'
   login: 'Login'
-  login-text: 'Before you can continue, you will need to login. You can either log in using your university credentials (SURFconext) or a account specifically created for you.'
+  login-text: 'Before you can continue and work with the living textbook, you will need to login.
+    You can either log in using your university credentials (SURFconext) or a account specifically created for you.'
   logout: 'Logout'
   password: 'Password'
   surfconext: 'University login'

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\Authentication\LoginType;
 use App\Oidc\OidcClient;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,6 +26,7 @@ class AuthenticationController extends Controller
    * This route is defined in the routes.yml in order to remove the _locale requirement
    *
    * @Route("/login_check", name="login_check")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @return Response
    */
@@ -43,6 +45,7 @@ class AuthenticationController extends Controller
    *
    * @Route("/login", name="login")
    * @Template
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param Request $request
    *
@@ -90,6 +93,7 @@ class AuthenticationController extends Controller
    * This controller forward the user to the SURFconext login
    *
    * @Route("/login_surf", name="login_surf")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param SessionInterface $session
    * @param OidcClient       $oidc

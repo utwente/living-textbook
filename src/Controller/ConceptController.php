@@ -10,6 +10,7 @@ use App\Repository\ConceptRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class ConceptController extends Controller
   /**
    * @Route("/add")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
@@ -73,6 +75,7 @@ class ConceptController extends Controller
   /**
    * @Route("/edit/{concept}", requirements={"concept"="\d+"})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -154,6 +157,7 @@ class ConceptController extends Controller
   /**
    * @Route("/list")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param ConceptRepository $repo
    * @param RequestStudyArea  $studyArea
@@ -172,6 +176,7 @@ class ConceptController extends Controller
   /**
    * @Route("/remove/{concept}", requirements={"concept"="\d+"})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -211,6 +216,7 @@ class ConceptController extends Controller
   /**
    * @Route("/{concept}", requirements={"concept"="\d+"}, options={"expose"=true})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Concept          $concept
    * @param RequestStudyArea $requestStudyArea

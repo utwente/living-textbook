@@ -31,6 +31,7 @@ class StudyAreaController extends Controller
   /**
    * @Route("/add")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param EntityManagerInterface $em
@@ -112,6 +113,7 @@ class StudyAreaController extends Controller
   /**
    * @Route("/list")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param StudyAreaRepository $studyAreaRepository
    * @param RequestStudyArea    $requestStudyArea
@@ -164,6 +166,7 @@ class StudyAreaController extends Controller
   /**
    * @Route("/{studyArea}", requirements={"studyArea"="\d+"}, options={"expose"=true})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param StudyArea         $studyArea
    * @param ConceptRepository $conceptRepository

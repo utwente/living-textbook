@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,15 +22,15 @@ class DefaultController extends Controller
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home", options={"expose"=true})
    * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"})
    * @Template("double_column.html.twig")
+   * @IsGranted("ROLE_USER")
    *
    * @param RequestStudyArea    $requestStudyArea
    * @param string              $pageUrl
    * @param RouterInterface     $router
-   * @param StudyAreaRepository $studyAreaRepository
    *
    * @return array|RedirectResponse
    */
-  public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router, StudyAreaRepository $studyAreaRepository)
+  public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router)
   {
     // Disable profiler on the home page
     if ($this->has('profiler')) $this->get('profiler')->disable();
@@ -48,6 +49,7 @@ class DefaultController extends Controller
   /**
    * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
    * @Template
+   * @IsGranted("ROLE_USER")
    *
    * @param RequestStudyArea $requestStudyArea
    *

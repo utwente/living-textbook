@@ -10,6 +10,7 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,6 +30,7 @@ class RelationTypeController extends Controller
   /**
    * @Route("/add")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
@@ -70,6 +72,7 @@ class RelationTypeController extends Controller
   /**
    * @Route("/edit/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
@@ -120,6 +123,7 @@ class RelationTypeController extends Controller
   /**
    * @Route("/list")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param RequestStudyArea       $studyArea
    * @param RelationTypeRepository $repo
@@ -136,6 +140,7 @@ class RelationTypeController extends Controller
   /**
    * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                   $request
    * @param RequestStudyArea          $studyArea

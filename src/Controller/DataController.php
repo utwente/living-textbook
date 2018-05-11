@@ -12,6 +12,7 @@ use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -34,6 +35,7 @@ class DataController extends Controller
   /**
    * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
    * @Route("/search", name="app_data_search", options={"expose"=true}, defaults={"export"=false})
+   * @IsGranted("ROLE_USER")
    *
    * @param bool                   $export
    * @param RelationTypeRepository $relationTypeRepo
@@ -63,6 +65,7 @@ class DataController extends Controller
   /**
    * @Route("/upload")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

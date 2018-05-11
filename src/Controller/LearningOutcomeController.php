@@ -8,6 +8,7 @@ use App\Form\Type\RemoveType;
 use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,7 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/add")
    * @Template
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
@@ -63,6 +65,7 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/edit/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
@@ -75,7 +78,7 @@ class LearningOutcomeController extends Controller
   public function edit(Request $request, RequestStudyArea $studyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()){
+    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -102,6 +105,7 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/list")
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param RequestStudyArea          $studyArea
    * @param LearningOutcomeRepository $repo
@@ -118,6 +122,7 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/remove/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param RequestStudyArea       $studyArea
@@ -130,7 +135,7 @@ class LearningOutcomeController extends Controller
   public function remove(Request $request, RequestStudyArea $studyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()){
+    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -157,6 +162,7 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/show/{learningOutcome}", requirements={"learningOurcome"="\d+"})
    * @Template()
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param RequestStudyArea $requestStudyArea
    * @param LearningOutcome  $learningOutcome

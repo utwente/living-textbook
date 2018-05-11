@@ -89,6 +89,21 @@ sass-analysis:
     - drenso-updates-v2
     - production
 
+action-security-check:
+  stage: tests
+  image: drenso/php:7.1-d1
+  dependencies:
+    - install-dependencies
+  before_script:
+    - cp .env.dist .env
+  script:
+    - php bin/console ltb:check:action-security
+  tags:
+    - docker
+  except:
+    - drenso-updates-v2
+    - production
+
 build-assets:
   stage: build
   image: node:9.11

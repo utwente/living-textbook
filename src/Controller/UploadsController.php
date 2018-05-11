@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Request\Wrapper\RequestStudyArea;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,8 @@ class UploadsController extends Controller
 {
   /**
    * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"})
+   * @IsGranted("ROLE_USER")
+   *
    * @param Request          $request
    * @param RequestStudyArea $studyArea
    * @param string           $path

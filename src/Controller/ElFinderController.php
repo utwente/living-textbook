@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,7 @@ class ElFinderController extends Controller
 
   /**
    * @Route("/load/{instance}/{studyArea}", defaults={"instance"="default","studyArea"="null"}, name="ef_connect")
+   * @IsGranted("ROLE_USER")
    *
    * @param Request             $request
    * @param string              $instance
@@ -44,6 +46,7 @@ class ElFinderController extends Controller
 
   /**
    * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default","studyArea"="null"}, name="elfinder")
+   * @IsGranted("ROLE_USER")
    *
    * @param Request             $request
    * @param string              $instance

@@ -6,6 +6,7 @@ use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Generator\LatexGeneratorInterface;
 use BobV\LatexBundle\Latex\Base\Standalone;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Spatie\PdfToImage\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Cache\Simple\FilesystemCache;
@@ -27,6 +28,7 @@ class LatexController extends Controller
 
   /**
    * @Route("/render", methods={"GET"}, options={"expose"=true})
+   * @IsGranted("ROLE_USER")
    *
    * @param Request                 $request
    * @param LatexGeneratorInterface $generator
@@ -36,6 +38,7 @@ class LatexController extends Controller
    * @throws \BobV\LatexBundle\Exception\LatexException
    * @throws \Spatie\PdfToImage\Exceptions\InvalidFormat
    * @throws \Spatie\PdfToImage\Exceptions\PdfDoesNotExist
+   * @throws \Psr\SimpleCache\InvalidArgumentException
    */
   public function renderLatex(Request $request, LatexGeneratorInterface $generator)
   {
