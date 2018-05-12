@@ -30,21 +30,28 @@ class StudyAreaController extends Controller
 {
   /**
    * @Route("/add")
+   * @Route("/add/first", defaults={"first" = true}, name="app_studyarea_add_first")
    * @Template()
    * @IsGranted("ROLE_USER")
    *
    * @param Request                $request
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
+   * @param bool                   $first
    *
    * @return array|Response
    */
-  public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans, $first = false)
   {
     // Create new StudyArea
     $studyArea = (new StudyArea())->setOwner($this->getUser());
+    if ($first) $studyArea->setAccessType(StudyArea::ACCESS_INDIVIDUAL);
 
-    $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea, 'select_owner' => false]);
+    $form = $this->createForm(EditStudyAreaType::class, $studyArea, [
+        'studyArea'    => $studyArea,
+        'select_owner' => false,
+        'save_only'    => $first,
+    ]);
 
     $form->handleRequest($request);
 
@@ -56,6 +63,11 @@ class StudyAreaController extends Controller
 
       $this->addFlash('success', $trans->trans('study-area.saved', ['%item%' => $studyArea->getName()]));
 
+      // Check for forward to home
+      if ($first) {
+        return $this->redirectToRoute('_home', ['_studyArea' => $studyArea->getId()]);
+      }
+
       // Check for forward to list
       if (SaveType::isListClicked($form)) {
         return $this->redirectToRoute('app_studyarea_list');
@@ -65,9 +77,16 @@ class StudyAreaController extends Controller
       return $this->redirectToRoute('app_studyarea_show', ['studyArea' => $studyArea->getId()]);
     }
 
-    return [
+    $params = [
         'form' => $form->createView(),
     ];
+
+    // Check for first
+    if ($first) {
+      return $this->render('study_area/add_first.html.twig', $params);
+    }
+
+    return $params;
   }
 
   /**

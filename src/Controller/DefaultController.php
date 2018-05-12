@@ -35,6 +35,12 @@ class DefaultController extends Controller
     // Disable profiler on the home page
     if ($this->has('profiler')) $this->get('profiler')->disable();
 
+    // Check for empty study area
+    if (!$requestStudyArea->hasValue()){
+      // This means that there is no study area found for the user
+      return $this->redirectToRoute('app_studyarea_add_first', ['_studyArea' => 0]);
+    }
+
     // Retrieve actual study area from wrapper
     $studyArea = $requestStudyArea->getStudyArea();
 

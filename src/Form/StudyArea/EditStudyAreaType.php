@@ -23,7 +23,8 @@ class EditStudyAreaType extends AbstractType
     $editing   = $studyArea->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
-            'label' => 'study-area.name',
+            'label'      => 'study-area.name',
+            'empty_data' => '',
         ]);
 
     // User option
@@ -49,11 +50,13 @@ class EditStudyAreaType extends AbstractType
             'select2'      => true,
         ])
         ->add('submit', SaveType::class, [
-            'list_route'          => 'app_studyarea_list',
-            'enable_cancel'       => true,
-            'cancel_label'        => 'form.discard',
-            'cancel_route'        => $editing ? 'app_studyarea_show' : 'app_studyarea_list',
-            'cancel_route_params' => $editing ? ['studyArea' => $studyArea->getId()] : [],
+            'enable_save_and_list' => !$options['save_only'],
+            'enable_list'          => !$options['save_only'],
+            'list_route'           => 'app_studyarea_list',
+            'enable_cancel'        => !$options['save_only'],
+            'cancel_label'         => 'form.discard',
+            'cancel_route'         => $editing ? 'app_studyarea_show' : 'app_studyarea_list',
+            'cancel_route_params'  => $editing ? ['studyArea' => $studyArea->getId()] : [],
         ]);
   }
 
@@ -61,6 +64,8 @@ class EditStudyAreaType extends AbstractType
   {
     $resolver
         ->setDefault('data_class', StudyArea::class)
+        ->setDefault('save_only', false)
+        ->setAllowedTypes('save_only', 'bool')
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('select_owner')
