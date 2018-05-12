@@ -1,24 +1,28 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% from '_macro/_action_bar.html.twig' import new_bar %}
-  {{ new_bar(path('app_concept_add')) }}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+    {% from '_macro/_action_bar.html.twig' import new_bar %}
+    {{ new_bar(path('app_concept_add')) }}
+  {% endif %}
 {% endblock %}
 
 {% block title %}
   {{ 'concept.list-title'|trans }}
 {% endblock %}
 
-{% macro list(concepts) %}
+{% macro list(concepts, studyArea) %}
   <table class="table">
     <thead>
     <tr>
       <th scope="col">{{ 'concept.name'|trans }}</th>
       <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
       <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
-      <th scope="col">{{ 'form.edit'|trans }}</th>
       <th scope="col">{{ 'form.show'|trans }}</th>
-      <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+        <th scope="col">{{ 'form.edit'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -29,9 +33,11 @@
         </td>
         <td>{{ concept.outgoingRelations|length }}</td>
         <td>{{ concept.incomingRelations|length }}</td>
-        <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
         <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
-        <td><a href="{{ path('app_concept_remove', {'concept': concept.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+          <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
+          <td><a href="{{ path('app_concept_remove', {'concept': concept.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>
@@ -40,5 +46,5 @@
 
 {% block content %}
   {% from _self import list %}
-  {{ list(concepts) }}
+  {{ list(concepts, studyArea) }}
 {% endblock %}

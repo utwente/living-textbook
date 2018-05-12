@@ -108,6 +108,7 @@ menu:
   import-data: 'Import'
   learning-outcomes: 'Learning outcomes'
   relation-type: 'Relation types'
+  show: 'Show'
   study-area: 'Study areas'
 
 relation:
@@ -121,6 +122,7 @@ resource:
   url: 'Url'
 
 study-area:
+  access-type: 'Access type'
   add-title: 'Add new study area'
   current: 'Current'
   edit-title: 'Edit study area "%item%"'

@@ -5,9 +5,11 @@ namespace App\Form\StudyArea;
 
 use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Form\Type\PrintedTextType;
 use App\Form\Type\SaveType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,15 +19,34 @@ class EditStudyAreaType extends AbstractType
 
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    $studyArea  = $options['studyArea'];
-    $editing = $studyArea->getId() !== NULL;
+    $studyArea = $options['studyArea'];
+    $editing   = $studyArea->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
             'label' => 'study-area.name',
-        ])
-        ->add('owner', EntityType::class, [
-            'label' => 'study-area.owner',
-            'class' => User::class,
+        ]);
+
+    // User option
+    if ($options['select_owner']) {
+      $builder->add('owner', EntityType::class, [
+          'label'   => 'study-area.owner',
+          'class'   => User::class,
+          'select2' => true,
+      ]);
+    } else {
+      $builder->add('owner', PrintedTextType::class, [
+          'label' => 'study-area.owner',
+      ]);
+    }
+
+    $builder
+        ->add('accessType', ChoiceType::class, [
+            'label'        => 'study-area.access-type',
+            'choices'      => StudyArea::getAccessTypes(),
+            'choice_label' => function ($value, $key, $index) {
+              return ucfirst($value);
+            },
+            'select2'      => true,
         ])
         ->add('submit', SaveType::class, [
             'list_route'          => 'app_studyarea_list',
@@ -38,9 +59,12 @@ class EditStudyAreaType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setRequired('studyArea');
-    $resolver->setAllowedTypes('studyArea', StudyArea::class);
-    parent::configureOptions($resolver);
+    $resolver
+        ->setDefault('data_class', StudyArea::class)
+        ->setRequired('studyArea')
+        ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setRequired('select_owner')
+        ->setAllowedTypes('select_owner', 'bool');
   }
 
 }

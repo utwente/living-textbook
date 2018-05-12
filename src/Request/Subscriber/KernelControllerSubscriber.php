@@ -3,6 +3,7 @@
 namespace App\Request\Subscriber;
 
 use App\Entity\StudyArea;
+use App\Entity\User;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class KernelControllerSubscriber
@@ -20,14 +22,17 @@ use Symfony\Component\Routing\RouterInterface;
 class KernelControllerSubscriber implements EventSubscriberInterface
 {
 
-  /** @var string Study area session key */
-  const SESSION_STUDY_AREA = '_studyArea';
+  /** @var string Study area session/request key */
+  public const STUDY_AREA_KEY = '_studyArea';
 
   /** @var RouterInterface */
   private $router;
 
   /** @var StudyAreaRepository */
   private $studyAreaRepository;
+
+  /** @var TokenStorageInterface */
+  private $tokenStorage;
 
   /** @var StudyArea|null */
   private $studyArea;
@@ -38,13 +43,15 @@ class KernelControllerSubscriber implements EventSubscriberInterface
   /**
    * KernelControllerSubscriber constructor.
    *
-   * @param RouterInterface     $router
-   * @param StudyAreaRepository $studyAreaRepository
+   * @param RouterInterface       $router
+   * @param StudyAreaRepository   $studyAreaRepository
+   * @param TokenStorageInterface $tokenStorage
    */
-  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository)
+  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage)
   {
     $this->router              = $router;
     $this->studyAreaRepository = $studyAreaRepository;
+    $this->tokenStorage        = $tokenStorage;
     $this->studyArea           = NULL;
     $this->studyAreaId         = NULL;
   }
@@ -78,25 +85,42 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     $session = $request->getSession();
 
     // Retrieve study area id from route
-    $studyAreaId = $request->attributes->get(self::SESSION_STUDY_AREA, NULL);
+    $studyAreaId = $request->attributes->get(self::STUDY_AREA_KEY, NULL);
 
     // Check the study area
     if (!$studyAreaId) {
+
+      // Set to -1 to force empty study area
+      $studyAreaId = -1;
+
       // Try to retrieve it from the session
-      if ($session->has(self::SESSION_STUDY_AREA)) {
-        $studyAreaId = $session->get(self::SESSION_STUDY_AREA);
-      } else {
-        // @todo determine default in case of null
-        $studyAreaId = 1;
+      if ($session->has(self::STUDY_AREA_KEY)) {
+        $studyAreaId = $session->get(self::STUDY_AREA_KEY);
+      }
+
+      // Invalid or no result from session
+      if ($studyAreaId == -1) {
+        // Try to find a visible study area
+        $token = $this->tokenStorage->getToken();
+        if ($token !== NULL && ($user = $token->getUser()) instanceof User) {
+          if (NULL !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
+            assert($studyArea instanceof StudyArea);
+            $studyAreaId     = $studyArea->getId();
+            $this->studyArea = $studyArea;
+          }
+        }
       }
     }
 
     // Save in memory for usage and in session as backup
-    $this->studyAreaId = $studyAreaId;
-    $session->set(self::SESSION_STUDY_AREA, $studyAreaId);
+    if ($this->studyAreaId !== $studyAreaId) {
+      $this->studyArea   = NULL;
+      $this->studyAreaId = $studyAreaId;
+      $session->set(self::STUDY_AREA_KEY, $studyAreaId);
+    }
 
     // Inject this into the router context
-    $this->router->getContext()->setParameter(self::SESSION_STUDY_AREA, $studyAreaId);
+    $this->router->getContext()->setParameter(self::STUDY_AREA_KEY, $studyAreaId);
   }
 
   public function injectStudyArea(FilterControllerArgumentsEvent $event)
@@ -104,9 +128,9 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     if ($this->studyAreaId === NULL) {
       // Check for session value
       $session = $event->getRequest()->getSession();
-      if (!$session->has(self::SESSION_STUDY_AREA)) return;
+      if (!$session->has(self::STUDY_AREA_KEY)) return;
 
-      $this->studyAreaId = $session->get(self::SESSION_STUDY_AREA);
+      $this->studyAreaId = $session->get(self::STUDY_AREA_KEY);
     }
 
     $controller = $event->getController();
@@ -127,11 +151,12 @@ class KernelControllerSubscriber implements EventSubscriberInterface
         if ($argument !== NULL && $argument->hasValue()) continue;
 
         // Cache study area during request
-        if ($this->studyArea == NULL) {
+        if ($this->studyArea == NULL && $this->studyAreaId !== -1) {
           $this->studyArea = $this->studyAreaRepository->find($this->studyAreaId);
         }
 
-        // Save value
+        // Save value in wrapper (as otherwise the Doctrine mapper would kick in)
+        // The value might be null
         $arguments[$key] = new RequestStudyArea($this->studyArea);
       }
 

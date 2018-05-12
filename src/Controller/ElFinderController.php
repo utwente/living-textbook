@@ -39,7 +39,7 @@ class ElFinderController extends Controller
       $studyArea = $studyAreaRepo->findDefault();
     }
 
-    $this->checkPermissions($studyArea);
+    $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
 
     return $this->forwardToElFinder('load', $instance, $studyArea, $request->query->all());
   }
@@ -61,20 +61,10 @@ class ElFinderController extends Controller
       $studyArea = $studyAreaRepo->findDefault();
     }
 
-    $this->checkPermissions($studyArea);
+    // Check for edit permissions
+    $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
 
     return $this->forwardToElFinder('show', $instance, $studyArea, $request->query->all());
-  }
-
-  /**
-   * Check the permissions for the requested study area
-   *
-   * @param StudyArea $studyArea
-   */
-  private function checkPermissions(StudyArea $studyArea)
-  {
-    // @todo check permissions for the study area
-    // throw new NotFoundException();
   }
 
   /**

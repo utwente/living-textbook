@@ -25,7 +25,7 @@
     {% for studyArea in studyAreas %}
       <tr>
         <td>{{ studyArea.name }}</td>
-        <td>{{ studyArea.owner }}</td>
+        <td>{{ studyArea.owner.displayName }}</td>
         <td>
           {% if studyArea.id == currentStudyArea.id %}
             {{ 'study-area.current'|trans }}

@@ -4,6 +4,7 @@ namespace App\Security\Voters;
 
 use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -11,7 +12,23 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class StudyAreaVoter extends Voter
 {
 
+  // Role constants
   const OWNER = 'STUDYAREA_OWNER';
+  const SHOW = 'STUDYAREA_SHOW';
+  const EDIT = 'STUDYAREA_EDIT';
+
+  /** @var StudyAreaRepository */
+  private $studyAreaRepository;
+
+  /**
+   * StudyAreaVoter constructor.
+   *
+   * @param StudyAreaRepository $studyAreaRepository
+   */
+  public function __construct(StudyAreaRepository $studyAreaRepository)
+  {
+    $this->studyAreaRepository = $studyAreaRepository;
+  }
 
   /**
    * Determines if the attribute and subject are supported by this voter.
@@ -27,7 +44,7 @@ class StudyAreaVoter extends Voter
       return false;
     }
 
-    if (!$subject instanceof StudyArea && !$subject instanceof RequestStudyArea) {
+    if ($subject !== NULL && !$subject instanceof StudyArea && !$subject instanceof RequestStudyArea) {
       return false;
     }
 
@@ -55,14 +72,27 @@ class StudyAreaVoter extends Voter
 
     // Convert study area if required
     if ($subject instanceof RequestStudyArea) {
+      // Check for value, otherwise deny access
+      if (!$subject->hasValue()) return false;
+
       $subject = $subject->getStudyArea();
     }
 
+    /** @var StudyArea $subject */
     assert($subject instanceof StudyArea);
+
+    // Always return false for null values
+    if ($subject === NULL) {
+      return false;
+    }
 
     switch ($attribute) {
       case self::OWNER:
-        return $this->isOwner($user, $subject);
+        return $subject->isOwner($user);
+      case self::SHOW:
+        return $subject->isVisible($user);
+      case self::EDIT:
+        return $subject->isEditable($user);
     }
 
     throw new \LogicException('This code should not be reached!');
@@ -75,19 +105,8 @@ class StudyAreaVoter extends Voter
   {
     return [
         self::OWNER,
+        self::SHOW,
+        self::EDIT,
     ];
-  }
-
-  /**
-   * Check whether the given user is the owner
-   *
-   * @param User      $user
-   * @param StudyArea $studyArea
-   *
-   * @return bool
-   */
-  private function isOwner(User $user, StudyArea $studyArea)
-  {
-    return $user->getId() === $studyArea->getOwner()->getId();
   }
 }

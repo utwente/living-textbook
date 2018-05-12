@@ -42,9 +42,9 @@ class StudyAreaController extends Controller
   public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new StudyArea
-    $studyArea = new StudyArea();
+    $studyArea = (new StudyArea())->setOwner($this->getUser());
 
-    $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea]);
+    $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea, 'select_owner' => false]);
 
     $form->handleRequest($request);
 
@@ -84,8 +84,11 @@ class StudyAreaController extends Controller
    */
   public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
+
+    $this->isGranted("STUDYAREA_OWNER");
+
     // Create form and handle request
-    $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea]);
+    $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea, 'select_owner' => false]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -122,7 +125,7 @@ class StudyAreaController extends Controller
    */
   public function list(StudyAreaRepository $studyAreaRepository, RequestStudyArea $requestStudyArea)
   {
-    $studyAreas = $studyAreaRepository->findAll();
+    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
 
     return [
         'currentStudyArea' => $requestStudyArea->getStudyArea(),
@@ -166,7 +169,7 @@ class StudyAreaController extends Controller
   /**
    * @Route("/{studyArea}", requirements={"studyArea"="\d+"}, options={"expose"=true})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="studyArea")
    *
    * @param StudyArea         $studyArea
    * @param ConceptRepository $conceptRepository

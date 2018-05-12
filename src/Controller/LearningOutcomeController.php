@@ -29,19 +29,19 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/add")
    * @Template
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new object
-    $learningOutcome = (new LearningOutcome())->setStudyArea($studyArea->getStudyArea());
+    $learningOutcome = (new LearningOutcome())->setStudyArea($requestStudyArea->getStudyArea());
 
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome);
     $form->handleRequest($request);
@@ -65,20 +65,20 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/edit/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param LearningOutcome        $learningOutcome
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function edit(Request $request, RequestStudyArea $studyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
+    if ($learningOutcome->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -105,37 +105,38 @@ class LearningOutcomeController extends Controller
   /**
    * @Route("/list")
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea          $studyArea
+   * @param RequestStudyArea          $requestStudyArea
    * @param LearningOutcomeRepository $repo
    *
    * @return array
    */
-  public function list(RequestStudyArea $studyArea, LearningOutcomeRepository $repo)
+  public function list(RequestStudyArea $requestStudyArea, LearningOutcomeRepository $repo)
   {
     return [
-        'learningOutcomes' => $repo->findForStudyArea($studyArea->getStudyArea()),
+        'studyArea'        => $requestStudyArea->getStudyArea(),
+        'learningOutcomes' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param LearningOutcome        $learningOutcome
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function remove(Request $request, RequestStudyArea $studyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
+    if ($learningOutcome->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 

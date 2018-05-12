@@ -1,8 +1,10 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% from '_macro/_action_bar.html.twig' import new_bar %}
-  {{ new_bar(path('app_learningoutcome_add')) }}
+  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+    {% from '_macro/_action_bar.html.twig' import new_bar %}
+    {{ new_bar(path('app_learningoutcome_add')) }}
+  {% endif %}
 {% endblock %}
 
 {% block title %}
@@ -16,8 +18,10 @@
       <th scope="col">{{ 'learning-outcome.number'|trans }}</th>
       <th scope="col">{{ 'learning-outcome.name'|trans }}</th>
       <th scope="col">{{ 'form.show'|trans }}</th>
-      <th scope="col">{{ 'form.edit'|trans }}</th>
-      <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+        <th scope="col">{{ 'form.edit'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -26,8 +30,10 @@
         <td>{{ learningOutcome.number }}</td>
         <td>{{ learningOutcome.name }}</td>
         <td><a href="{{ path('app_learningoutcome_show', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.show'|trans }}</a></td>
-        <td><a href="{{ path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.edit'|trans }}</a></td>
-        <td><a href="{{ path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+          <td><a href="{{ path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.edit'|trans }}</a></td>
+          <td><a href="{{ path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>

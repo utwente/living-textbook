@@ -35,24 +35,24 @@ class DataController extends Controller
   /**
    * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
    * @Route("/search", name="app_data_search", options={"expose"=true}, defaults={"export"=false})
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param bool                   $export
    * @param RelationTypeRepository $relationTypeRepo
    * @param ConceptRepository      $conceptRepo
    * @param SerializerInterface    $serializer
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    *
    * @return JsonResponse
    */
   public function export(bool $export, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
-                         SerializerInterface $serializer, RequestStudyArea $studyArea)
+                         SerializerInterface $serializer, RequestStudyArea $requestStudyArea)
   {
     // Retrieve the relation types as cache
-    $relationTypes = $relationTypeRepo->findBy(['studyArea' => $studyArea->getStudyArea()]);
+    $relationTypes = $relationTypeRepo->findBy(['studyArea' => $requestStudyArea->getStudyArea()]);
 
     // Retrieve the concepts
-    $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea->getStudyArea());
+    $concepts = $conceptRepo->findByStudyAreaOrderedByName($requestStudyArea->getStudyArea());
 
     // Return as JSON
     $groups = ["Default"];
@@ -65,7 +65,7 @@ class DataController extends Controller
   /**
    * @Route("/upload")
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

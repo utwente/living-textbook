@@ -26,6 +26,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class StudyArea
 {
 
+  // Access types, used to determine if a user can access the study area
+  const ACCESS_PUBLIC = 'public';
+  const ACCESS_INDIVIDUAL = 'individual';
+  const ACCESS_GROUP = 'group';
+
   use IdTrait;
   use Blameable;
   use SoftDeletable;
@@ -60,12 +65,71 @@ class StudyArea
   private $owner;
 
   /**
+   * @var string
+   *
+   * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
+   *
+   * @Assert\Choice(callback="getAccessTypes")
+   */
+  private $accessType;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
   {
-    $this->name     = '';
-    $this->concepts = new ArrayCollection();
+    $this->name       = '';
+    $this->concepts   = new ArrayCollection();
+    $this->accessType = self::ACCESS_PUBLIC;
+  }
+
+  /**
+   * Possible access types
+   *
+   * @return array
+   */
+  public static function getAccessTypes()
+  {
+    return [self::ACCESS_PUBLIC, self::ACCESS_INDIVIDUAL, self::ACCESS_GROUP];
+  }
+
+  /**
+   * Check whether the given user is the StudyArea owner
+   *
+   * @param User $user
+   *
+   * @return bool
+   */
+  public function isOwner(User $user)
+  {
+    return $user->getId() === $this->owner->getId();
+  }
+
+  /**
+   * Check whether the StudyArea is visible for the user
+   *
+   * @param User $user
+   *
+   * @return bool
+   */
+  public function isVisible(User $user)
+  {
+    switch ($this->accessType) {
+      case StudyArea::ACCESS_PUBLIC:
+        return true;
+      case StudyArea::ACCESS_INDIVIDUAL:
+        return $this->isOwner($user);
+      case StudyArea::ACCESS_GROUP:
+        // @todo check if user in group
+        return $this->isOwner($user);
+    }
+
+    return false;
+  }
+
+  public function isEditable(User $user){
+    // @todo implement group response
+    return $this->isOwner($user);
   }
 
   /**
@@ -148,6 +212,26 @@ class StudyArea
   public function setOwner(User $owner): StudyArea
   {
     $this->owner = $owner;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getAccessType(): string
+  {
+    return $this->accessType;
+  }
+
+  /**
+   * @param string $accessType
+   *
+   * @return StudyArea
+   */
+  public function setAccessType(string $accessType): StudyArea
+  {
+    $this->accessType = $accessType;
 
     return $this;
   }

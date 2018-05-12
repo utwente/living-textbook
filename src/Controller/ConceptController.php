@@ -30,19 +30,19 @@ class ConceptController extends Controller
   /**
    * @Route("/add")
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new concept
-    $concept = (new Concept())->setStudyArea($studyArea->getStudyArea());
+    $concept = (new Concept())->setStudyArea($requestStudyArea->getStudyArea());
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
@@ -75,7 +75,7 @@ class ConceptController extends Controller
   /**
    * @Route("/edit/{concept}", requirements={"concept"="\d+"})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -157,26 +157,27 @@ class ConceptController extends Controller
   /**
    * @Route("/list")
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param ConceptRepository $repo
-   * @param RequestStudyArea  $studyArea
+   * @param RequestStudyArea  $requestStudyArea
    *
    * @return array
    */
-  public function list(ConceptRepository $repo, RequestStudyArea $studyArea)
+  public function list(ConceptRepository $repo, RequestStudyArea $requestStudyArea)
   {
-    $concepts = $repo->findByStudyAreaOrderedByName($studyArea->getStudyArea());
+    $concepts = $repo->findByStudyAreaOrderedByName($requestStudyArea->getStudyArea());
 
     return [
-        'concepts' => $concepts,
+        'studyArea' => $requestStudyArea->getStudyArea(),
+        'concepts'  => $concepts,
     ];
   }
 
   /**
    * @Route("/remove/{concept}", requirements={"concept"="\d+"})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -216,7 +217,7 @@ class ConceptController extends Controller
   /**
    * @Route("/{concept}", requirements={"concept"="\d+"}, options={"expose"=true})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param Concept          $concept
    * @param RequestStudyArea $requestStudyArea

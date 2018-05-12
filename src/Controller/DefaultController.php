@@ -24,9 +24,9 @@ class DefaultController extends Controller
    * @Template("double_column.html.twig")
    * @IsGranted("ROLE_USER")
    *
-   * @param RequestStudyArea    $requestStudyArea
-   * @param string              $pageUrl
-   * @param RouterInterface     $router
+   * @param RequestStudyArea $requestStudyArea
+   * @param string           $pageUrl
+   * @param RouterInterface  $router
    *
    * @return array|RedirectResponse
    */
@@ -49,25 +49,30 @@ class DefaultController extends Controller
   /**
    * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
    * @Template
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
+   * @param RequestStudyArea    $requestStudyArea
+   * @param StudyAreaRepository $studyAreaRepository
    *
    * @return array
+   *
+   * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function dashboard(RequestStudyArea $requestStudyArea)
+  public function dashboard(RequestStudyArea $requestStudyArea, StudyAreaRepository $studyAreaRepository)
   {
-    // @todo Check for amount of available study areas
-    if (true) {
+    $user = $this->getUser();
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    if ($studyAreaRepository->getVisibleCount($user) > 1) {
       $form = $this->createFormBuilder()
           ->add('studyArea', EntityType::class, [
               'label'         => 'dashboard.study-area-switch',
               'class'         => StudyArea::class,
               'select2'       => true,
-              'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($requestStudyArea) {
-                return $studyAreaRepository->createQueryBuilder('sa')
-                    ->where('sa != :current')
-                    ->setParameter('current', $requestStudyArea->getStudyArea())
+              'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
+                return $studyAreaRepository->getVisibleQueryBuilder($user)
+                    ->andWhere('sa != :current')
+                    ->setParameter('current', $studyArea)
                     ->orderBy('sa.name');
               },
           ])
@@ -84,7 +89,7 @@ class DefaultController extends Controller
 
     return [
         'form'      => isset($form) ? $form->createView() : NULL,
-        'studyArea' => $requestStudyArea->getStudyArea(),
+        'studyArea' => $studyArea,
     ];
   }
 }

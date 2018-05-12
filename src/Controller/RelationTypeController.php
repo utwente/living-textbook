@@ -30,19 +30,19 @@ class RelationTypeController extends Controller
   /**
    * @Route("/add")
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create new
-    $relationType = (new RelationType())->setStudyArea($studyArea->getStudyArea());
+    $relationType = (new RelationType())->setStudyArea($requestStudyArea->getStudyArea());
 
     $form = $this->createForm(EditRelationTypeType::class, $relationType);
     $form->handleRequest($request);
@@ -72,20 +72,20 @@ class RelationTypeController extends Controller
   /**
    * @Route("/edit/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param RelationType           $relationType
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, RequestStudyArea $studyArea, RelationType $relationType, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($relationType->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
+    if ($relationType->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -123,27 +123,28 @@ class RelationTypeController extends Controller
   /**
    * @Route("/list")
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea       $studyArea
+   * @param RequestStudyArea       $requestStudyArea
    * @param RelationTypeRepository $repo
    *
    * @return array
    */
-  public function list(RequestStudyArea $studyArea, RelationTypeRepository $repo)
+  public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $repo)
   {
     return [
-        'relationTypes' => $repo->findForStudyArea($studyArea->getStudyArea()),
+        'studyArea'     => $requestStudyArea->getStudyArea(),
+        'relationTypes' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                   $request
-   * @param RequestStudyArea          $studyArea
+   * @param RequestStudyArea          $requestStudyArea
    * @param RelationType              $relationType
    * @param ConceptRelationRepository $conceptRelationRepository
    * @param EntityManagerInterface    $em
@@ -151,11 +152,11 @@ class RelationTypeController extends Controller
    *
    * @return array|RedirectResponse
    */
-  public function remove(Request $request, RequestStudyArea $studyArea, RelationType $relationType,
+  public function remove(Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType,
                          ConceptRelationRepository $conceptRelationRepository, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($relationType->getStudyArea()->getId() != $studyArea->getStudyArea()->getId()) {
+    if ($relationType->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 

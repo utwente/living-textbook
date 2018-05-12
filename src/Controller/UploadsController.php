@@ -22,7 +22,7 @@ class UploadsController extends Controller
 {
   /**
    * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"})
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param Request          $request
    * @param RequestStudyArea $studyArea
@@ -44,7 +44,6 @@ class UploadsController extends Controller
       throw $this->createNotFoundException();
     }
 
-    // @todo Implement rights for image loading
     return $this->file($requestedFile, NULL, $request->query->has('download')
         ? ResponseHeaderBag::DISPOSITION_ATTACHMENT
         : ResponseHeaderBag::DISPOSITION_INLINE);

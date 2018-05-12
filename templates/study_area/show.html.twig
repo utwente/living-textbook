@@ -19,6 +19,6 @@
   <p>{{ 'study-area.show'|trans({'%owner%': studyArea.owner|default('nobody')}) }}</p>
 
   {% from 'concept/list.html.twig' import list %}
-  {{ list(concepts) }}
+  {{ list(concepts, studyArea) }}
 
 {% endblock %}

@@ -1,8 +1,10 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% from '_macro/_action_bar.html.twig' import new_bar %}
-  {{ new_bar(path('app_relationtype_add')) }}
+  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+    {% from '_macro/_action_bar.html.twig' import new_bar %}
+    {{ new_bar(path('app_relationtype_add')) }}
+  {% endif %}
 {% endblock %}
 
 {% block title %}
@@ -14,16 +16,20 @@
     <thead>
     <tr>
       <th scope="col">{{ 'relation-type.name'|trans }}</th>
-      <th scope="col">{{ 'form.edit'|trans }}</th>
-      <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+        <th scope="col">{{ 'form.edit'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% endif %}
     </tr>
     </thead>
     <tbody>
     {% for relationType in relationTypes %}
       <tr>
         <td>{{ relationType.name }}</td>
-        <td><a href="{{ path('app_relationtype_edit', {'relationType': relationType.id}) }}">{{ 'form.edit'|trans }}</a></td>
-        <td><a href="{{ path('app_relationtype_remove', {'relationType': relationType.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+          <td><a href="{{ path('app_relationtype_edit', {'relationType': relationType.id}) }}">{{ 'form.edit'|trans }}</a></td>
+          <td><a href="{{ path('app_relationtype_remove', {'relationType': relationType.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>
