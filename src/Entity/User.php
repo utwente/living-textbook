@@ -47,6 +47,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @ORM\Column(name="given_name", type="string", length=100)
    *
+   * @Assert\NotBlank()
    * @Assert\Length(min=2,max=100)
    */
   protected $givenName;
@@ -58,6 +59,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @ORM\Column(name="last_name", type="string", length=100)
    *
+   * @Assert\NotBlank()
    * @Assert\Length(min=5,max=100)
    */
   protected $familyName;
@@ -69,6 +71,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @ORM\Column(name="full_name", type="string", length=200)
    *
+   * @Assert\NotBlank()
    * @Assert\Length(min=5, max=200)
    */
   protected $fullName;
@@ -80,6 +83,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @ORM\Column(name="display_name", type="string", length=200)
    *
+   * @Assert\NotBlank()
    * @Assert\Length(min=5, max=200)
    */
   protected $displayName;
@@ -93,7 +97,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @Assert\NotBlank()
    * @Assert\Email()
-   * @Assert\Length(min="5", max="255")
+   * @Assert\Length(min=5, max=255)
    */
   protected $username;
 
@@ -116,6 +120,7 @@ class User implements AdvancedUserInterface, \Serializable
    *
    * @ORM\Column(name="password", type="string", length=255, nullable=true)
    *
+   * @Assert\NotBlank()
    * @Assert\Length(min=10, max=2048)
    */
   protected $password;

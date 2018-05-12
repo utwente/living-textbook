@@ -39,6 +39,7 @@ class StudyArea
    * @var string
    *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
+   * @Assert\NotBlank()
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
