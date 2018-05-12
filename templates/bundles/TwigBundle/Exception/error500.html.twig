@@ -1,0 +1,5 @@
+{% extends '@Twig/Exception/error.html.twig' %}
+
+{% block exception_text %}
+  {{ 'exception.error-text-500'|trans({'%code%': status_code, '%text%': status_text}) }}
+{% endblock %}

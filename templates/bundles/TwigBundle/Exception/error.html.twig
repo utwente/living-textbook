@@ -1,0 +1,13 @@
+{% extends 'simple_card.html.twig' %}
+{% block _menu %}{% endblock %}
+
+{% block title %}
+  {{ 'exception.error-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <h4>{{ 'exception.error-code'|trans({'%code%': status_code}) }}</h4>
+  {% block exception_text %}
+    {{ 'exception.error-text'|trans({'%code%': status_code, '%text%': status_text}) }}
+  {% endblock %}
+{% endblock %}

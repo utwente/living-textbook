@@ -1,43 +1,35 @@
-{% extends 'single_column.html.twig' %}
+{% extends 'simple_card.html.twig' %}
 
-{% block base_content %}
-<div class="container-fluid">
-  <div class="row justify-content-center mt-3">
-    <div class="col-12 col-sm-10 col-md-8 col-xl-6">
-      <div class="card">
-        <h1 class="card-header">{{ 'login.login'|trans|capitalize }}</h1>
-        <div class="card-body">
-          {% include '_layout/flashbags.html.twig' %}
-          <p class="card-text">{{ 'login.login-text'|trans }}</p>
+{% block title %}
+  {{ 'login.login'|trans|capitalize }}
+{% endblock %}
 
-          <ul class="nav nav-tabs nav-fill">
-            <li class="nav-item">
-              <a class="nav-link{% if not formActive %} active{% endif %}" id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab" >
-                {{ 'login.surfconext'|trans }}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link{% if formActive %} active{% endif %}" id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab" >
-                {{ 'login.custom-account'|trans }}
-              </a>
-            </li>
-          </ul>
-          <div class="tab-content" id="login-option">
+{% block content %}
+  <p class="card-text">{{ 'login.login-text'|trans }}</p>
 
-            <div class="tab-pane{% if not formActive %} active{% endif %}" id="tab-surfconext" role="tabpanel" aria-labelledby="tab-surfconext-button">
-              <a href="{{ path('login_surf') }}" class="no-block" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
-                <div class="login-surfconext"></div>
-              </a>
-              <p class="card-text text-center">{{ 'login.surfconext-login-text'|trans }}</p>
-            </div>
+  <ul class="nav nav-tabs nav-fill">
+    <li class="nav-item">
+      <a class="nav-link{% if not formActive %} active{% endif %}" id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab" >
+        {{ 'login.surfconext'|trans }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if formActive %} active{% endif %}" id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab" >
+        {{ 'login.custom-account'|trans }}
+      </a>
+    </li>
+  </ul>
+  <div class="tab-content" id="login-option">
 
-            <div class="tab-pane {% if formActive %} active{% endif %}" id="tab-custom-account" role="tabpanel" aria-labelledby="tab-custom-account-button">
-              {{ form(form) }}
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="tab-pane{% if not formActive %} active{% endif %}" id="tab-surfconext" role="tabpanel" aria-labelledby="tab-surfconext-button">
+      <a href="{{ path('login_surf') }}" class="no-block" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
+        <div class="login-surfconext"></div>
+      </a>
+      <p class="card-text text-center">{{ 'login.surfconext-login-text'|trans }}</p>
+    </div>
+
+    <div class="tab-pane {% if formActive %} active{% endif %}" id="tab-custom-account" role="tabpanel" aria-labelledby="tab-custom-account-button">
+      {{ form(form) }}
     </div>
   </div>
-</div>
 {% endblock %}

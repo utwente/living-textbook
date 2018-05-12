@@ -1,0 +1,9 @@
+{% extends '@Twig/Exception/error.html.twig' %}
+
+{% block title %}
+  {{ 'exception.not-found-title'|trans }}
+{% endblock %}
+
+{% block exception_text %}
+  {{ 'exception.error-text-404'|trans({'%code%': status_code, '%text%': status_text}) }}
+{% endblock %}
