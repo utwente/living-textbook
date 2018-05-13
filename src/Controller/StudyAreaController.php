@@ -160,13 +160,22 @@ class StudyAreaController extends Controller
    *
    * @param Request                $request
    * @param StudyArea              $studyArea
+   * @param StudyAreaRepository    $studyAreaRepository
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|RedirectResponse
+   * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function remove(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(Request $request, StudyArea $studyArea, StudyAreaRepository $studyAreaRepository,
+                         EntityManagerInterface $em, TranslatorInterface $trans)
   {
+    // Check if this is the only study area
+    if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
+      $this->addFlash('warning', $trans->trans('study-area.owner-last-remove'));
+      return $this->redirectToRoute('app_studyarea_list');
+    }
+
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route'        => 'app_studyarea_show',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
@@ -226,7 +235,7 @@ class StudyAreaController extends Controller
   {
     // Check if this is the only study area
     if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
-      $this->addFlash('warning', $trans->trans('study-area.owner-last'));
+      $this->addFlash('warning', $trans->trans('study-area.owner-last-transfer'));
       return $this->redirectToRoute('app_studyarea_list');
     }
 
