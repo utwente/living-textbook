@@ -25,7 +25,15 @@
     {% for studyArea in studyAreas %}
       <tr>
         <td>{{ studyArea.name }}</td>
-        <td>{{ studyArea.owner.displayName }}</td>
+        <td>
+          {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+            <a href="{{ path('app_studyarea_transferowner', {'studyArea': studyArea.id}) }}"
+              data-toggle="tooltip" title="{{ 'study-area.transfer-ownership'|trans }}">
+              {{ studyArea.owner.displayName }}</a>
+          {% else %}
+          {{ studyArea.owner.displayName }}
+          {% endif %}
+        </td>
         <td>
           {% if studyArea.id == currentStudyArea.id %}
             {{ 'study-area.current'|trans }}

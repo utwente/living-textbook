@@ -130,6 +130,9 @@ study-area:
   name: 'Name'
   new: 'New study area'
   owner: 'Owner'
+  owner-last: 'You cannot transfer the ownership of your only study area.'
+  owner-transferred: 'The ownership for study area "%item%" has been transferred to "%owner%".'
+  permissions-updated: 'The permissions for the study area "%item%" have been updated.'
   remove: 'Remove study area "%item%"'
   remove-impossible: 'It is impossible to remove this study area, because there are concepts which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
@@ -138,6 +141,7 @@ study-area:
   saved: 'Study area "%item%" has been saved successfully.'
   show: 'This study area is owned by %owner%. It contains the following concepts:'
   switch-to: 'Switch'
+  transfer-ownership: 'Transfer ownership'
   updated: 'Study area "%item%" has been successfully updated.'
 
 relation-type:

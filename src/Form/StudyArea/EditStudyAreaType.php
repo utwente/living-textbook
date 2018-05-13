@@ -4,10 +4,7 @@ namespace App\Form\StudyArea;
 
 
 use App\Entity\StudyArea;
-use App\Entity\User;
-use App\Form\Type\PrintedTextType;
 use App\Form\Type\SaveType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,22 +22,7 @@ class EditStudyAreaType extends AbstractType
         ->add('name', TextType::class, [
             'label'      => 'study-area.name',
             'empty_data' => '',
-        ]);
-
-    // User option
-    if ($options['select_owner']) {
-      $builder->add('owner', EntityType::class, [
-          'label'   => 'study-area.owner',
-          'class'   => User::class,
-          'select2' => true,
-      ]);
-    } else {
-      $builder->add('owner', PrintedTextType::class, [
-          'label' => 'study-area.owner',
-      ]);
-    }
-
-    $builder
+        ])
         ->add('accessType', ChoiceType::class, [
             'label'        => 'study-area.access-type',
             'choices'      => StudyArea::getAccessTypes(),

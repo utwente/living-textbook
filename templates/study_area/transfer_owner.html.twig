@@ -1,0 +1,9 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'study-area.transfer-ownership'|trans({'%item%': studyArea.name}) }}
+{% endblock %}
+
+{% block content %}
+  {{ form(form) }}
+{% endblock %}

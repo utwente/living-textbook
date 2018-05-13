@@ -27,6 +27,20 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
+   * @param User $owner
+   *
+   * @return mixed
+   * @throws NonUniqueResultException
+   */
+  public function getOwnerAmount(User $owner){
+    return $this->createQueryBuilder('sa')
+        ->where('sa.owner = :owner')
+        ->setParameter('owner', $owner)
+        ->select('COUNT(sa.id)')
+        ->getQuery()->getSingleScalarResult();
+  }
+
+  /**
    * Retrieve the visible study area's
    *
    * @param User $user

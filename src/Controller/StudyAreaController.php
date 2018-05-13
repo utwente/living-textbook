@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\StudyArea;
 use App\Form\StudyArea\EditStudyAreaType;
+use App\Form\StudyArea\TransferOwnerType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
@@ -202,6 +203,52 @@ class StudyAreaController extends Controller
     return [
         'studyArea' => $studyArea,
         'concepts'  => $concepts,
+    ];
+  }
+
+  /**
+   * @Route("/transfer/{studyArea}", requirements={"studyArea"="\d+"})
+   * @Template()
+   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
+   *
+   * @param Request                $request
+   * @param StudyArea              $studyArea
+   * @param StudyAreaRepository    $studyAreaRepository
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
+   *
+   * @return array|Response
+   *
+   * @throws \Doctrine\ORM\NonUniqueResultException
+   */
+  public function transferOwner(Request $request, StudyArea $studyArea, StudyAreaRepository $studyAreaRepository,
+                                EntityManagerInterface $em, TranslatorInterface $trans)
+  {
+    // Check if this is the only study area
+    if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
+      $this->addFlash('warning', $trans->trans('study-area.owner-last'));
+      return $this->redirectToRoute('app_studyarea_list');
+    }
+
+    $form = $this->createForm(TransferOwnerType::class, $studyArea, [
+        'current_owner' => $studyArea->getOwner(),
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $em->flush();
+
+      $this->addFlash('success', $trans->trans('study-area.owner-transferred', [
+          '%item%'  => $studyArea->getName(),
+          '%owner%' => $studyArea->getOwner()->getFullName(),
+      ]));
+
+      return $this->redirectToRoute('app_studyarea_list');
+    }
+
+    return [
+        'studyArea' => $studyArea,
+        'form'      => $form->createView(),
     ];
   }
 
