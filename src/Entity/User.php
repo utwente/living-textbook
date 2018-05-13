@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Oidc\Exception\OidcException;
 use App\Oidc\Security\Authentication\Token\OidcToken;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -183,11 +184,19 @@ class User implements AdvancedUserInterface, \Serializable
    * @param OidcToken $token
    *
    * @return User
+   * @throws OidcException
    */
   public static function createFromToken(OidcToken $token): User
   {
+    $username = $token->getUsername();
+
+    // Username must not be empty!
+    if (empty($username)){
+      throw new OidcException('Retrieved username from OIDC is empty!');
+    }
+
     return (new User())
-        ->setUsername($token->getUsername())
+        ->setUsername($username)
         ->setIsOidc(true)
         ->update($token);
   }
