@@ -11,19 +11,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class StudyAreaRepository extends ServiceEntityRepository
 {
-  const DEFAULT = 1;
-
   public function __construct(RegistryInterface $registry)
   {
     parent::__construct($registry, StudyArea::class);
-  }
-
-  /**
-   * @return StudyArea|object
-   */
-  public function findDefault()
-  {
-    return $this->find(self::DEFAULT);
   }
 
   /**
@@ -32,7 +22,8 @@ class StudyAreaRepository extends ServiceEntityRepository
    * @return mixed
    * @throws NonUniqueResultException
    */
-  public function getOwnerAmount(User $owner){
+  public function getOwnerAmount(User $owner)
+  {
     return $this->createQueryBuilder('sa')
         ->where('sa.owner = :owner')
         ->setParameter('owner', $owner)
@@ -59,12 +50,13 @@ class StudyAreaRepository extends ServiceEntityRepository
    *
    * @return mixed|null
    */
-  public function getFirstVisible(User $user){
+  public function getFirstVisible(User $user)
+  {
     try {
       return $this->getVisibleQueryBuilder($user)->setMaxResults(1)->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException $e) {
       // Impossible due to max results
-      return null;
+      return NULL;
     }
   }
 
