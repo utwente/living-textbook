@@ -3,6 +3,7 @@
 namespace App\Form\LearningOutcome;
 
 use App\Entity\LearningOutcome;
+use App\Entity\StudyArea;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
@@ -27,7 +28,8 @@ class EditLearningOutcomeType extends AbstractType
             'label' => 'learning-outcome.name',
         ])
         ->add('text', CkEditorType::class, [
-            'label' => 'learning-outcome.text',
+            'label'     => 'learning-outcome.text',
+            'studyArea' => $options['studyArea'],
         ])
         ->add('submit', SaveType::class, [
             'list_route'           => 'app_learningoutcome_list',
@@ -43,6 +45,9 @@ class EditLearningOutcomeType extends AbstractType
    */
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setDefault('data_class', LearningOutcome::class);
+    $resolver
+        ->setRequired('studyArea')
+        ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setDefault('data_class', LearningOutcome::class);
   }
 }

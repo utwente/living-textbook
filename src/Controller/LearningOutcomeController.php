@@ -43,7 +43,7 @@ class LearningOutcomeController extends Controller
     // Create new object
     $learningOutcome = (new LearningOutcome())->setStudyArea($requestStudyArea->getStudyArea());
 
-    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome);
+    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, ['studyArea' => $requestStudyArea->getStudyArea()]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -83,7 +83,7 @@ class LearningOutcomeController extends Controller
     }
 
     // Create form and handle request
-    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome);
+    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, ['studyArea' => $requestStudyArea->getStudyArea()]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {

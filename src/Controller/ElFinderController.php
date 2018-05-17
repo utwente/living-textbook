@@ -22,22 +22,30 @@ class ElFinderController extends Controller
 {
 
   /**
-   * @Route("/load/{instance}/{studyArea}", defaults={"instance"="default","studyArea"="null"}, name="ef_connect")
+   * @Route("/load/{instance}", defaults={"instance"="default"}, name="ef_connect")
    * @IsGranted("ROLE_USER")
    *
    * @param Request             $request
    * @param string              $instance
-   * @param StudyArea|null      $studyArea
-   * @param StudyAreaRepository $studyAreaRepo
+   * @param StudyAreaRepository $studyAreaRepository
    *
    * @return Response
    */
-  public function load(Request $request, string $instance, ?StudyArea $studyArea, StudyAreaRepository $studyAreaRepo)
+  public function load(Request $request, string $instance, StudyAreaRepository $studyAreaRepository)
   {
-    // Check study area
-    if ($studyArea == NULL) {
-      $studyArea = $studyAreaRepo->findDefault();
+    // Parse study area from the home folder
+    if (NULL === ($homeFolderString = $request->query->get('homeFolder', NULL))) {
+      // Home folder query parameter not found
+      throw $this->createNotFoundException();
     }
+
+    // Match for study area id
+    preg_match("/^studyarea\/(\d+)/", $homeFolderString, $result);
+    $studyAreaId = intval($result[1]);
+    if (!($studyArea = $studyAreaRepository->find($studyAreaId))) {
+      throw $this->createNotFoundException();
+    }
+    assert($studyArea instanceof StudyArea);
 
     $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
 
@@ -45,22 +53,17 @@ class ElFinderController extends Controller
   }
 
   /**
-   * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default","studyArea"="null"}, name="elfinder")
+   * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default"}, name="elfinder")
    * @IsGranted("ROLE_USER")
    *
-   * @param Request             $request
-   * @param string              $instance
-   * @param StudyArea|null      $studyArea
-   * @param StudyAreaRepository $studyAreaRepo
+   * @param Request        $request
+   * @param string         $instance
+   * @param StudyArea|null $studyArea
    *
    * @return Response
    */
-  public function show(Request $request, string $instance, ?StudyArea $studyArea, StudyAreaRepository $studyAreaRepo)
+  public function show(Request $request, string $instance, StudyArea $studyArea)
   {
-    if ($studyArea == NULL) {
-      $studyArea = $studyAreaRepo->findDefault();
-    }
-
     // Check for edit permissions
     $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
 
@@ -80,10 +83,10 @@ class ElFinderController extends Controller
   protected function forwardToElFinder(string $action, string $instance, StudyArea $studyArea, array $query)
   {
     // Check whether the folder for the study area exists
-    $folder = sprintf('studyarea/%d', $studyArea->getId());
+    $folder     = sprintf('studyarea/%d', $studyArea->getId());
     $folderPath = sprintf('%s/public/uploads/%s', $this->getParameter("kernel.project_dir"), $folder);
     $filesystem = new Filesystem();
-    if (!$filesystem->exists($folderPath)){
+    if (!$filesystem->exists($folderPath)) {
       $filesystem->mkdir($folderPath);
     }
 

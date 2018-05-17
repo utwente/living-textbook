@@ -25,18 +25,18 @@ class UploadsController extends Controller
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param Request          $request
-   * @param RequestStudyArea $studyArea
+   * @param RequestStudyArea $requestStudyArea
    * @param string           $path
    *
    * @return Response
    */
-  public function load(Request $request, RequestStudyArea $studyArea, string $path)
+  public function load(Request $request, RequestStudyArea $requestStudyArea, string $path)
   {
     // Create path from request
     $fs            = new Filesystem();
     $requestedFile = sprintf('%s/public/uploads/studyarea/%s/%s',
         $this->getParameter("kernel.project_dir"),
-        $studyArea->getStudyArea()->getId(),
+        $requestStudyArea->getStudyArea()->getId(),
         $path);
 
     // Check if path exists

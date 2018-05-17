@@ -25,8 +25,9 @@ class EditConceptType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var Concept $concept */
-    $concept = $options['concept'];
-    $editing = $concept->getId() !== NULL;
+    $concept   = $options['concept'];
+    $studyArea = $concept->getStudyArea();
+    $editing   = $concept->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
             'label' => 'concept.name',
@@ -34,6 +35,7 @@ class EditConceptType extends AbstractType
         ->add('introduction', BaseDataTextType::class, [
             'label'      => 'concept.introduction',
             'data_class' => DataIntroduction::class,
+            'studyArea'  => $studyArea,
         ])
         ->add('priorKnowledge', EntityType::class, [
             'label'         => 'concept.prior-knowledge',
@@ -72,16 +74,19 @@ class EditConceptType extends AbstractType
             'label'      => 'concept.theory-explanation',
             'required'   => false,
             'data_class' => DataTheoryExplanation::class,
+            'studyArea'  => $studyArea,
         ])
         ->add('howTo', BaseDataTextType::class, [
             'label'      => 'concept.how-to',
             'required'   => false,
             'data_class' => DataHowTo::class,
+            'studyArea'  => $studyArea,
         ])
         ->add('examples', BaseDataTextType::class, [
             'label'      => 'concept.examples',
             'required'   => false,
             'data_class' => DataExamples::class,
+            'studyArea'  => $studyArea,
         ])
         ->add('externalResources', DataExternalResourcesType::class, [
             'label'    => 'concept.external-resources',
@@ -91,6 +96,7 @@ class EditConceptType extends AbstractType
             'label'      => 'concept.self-assessment',
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
+            'studyArea'  => $studyArea,
         ])
         ->add('outgoingRelations', ConceptRelationsType::class, [
             'label'   => 'concept.outgoing-relations',
