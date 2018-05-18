@@ -8,12 +8,19 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class StudyAreaRepository extends ServiceEntityRepository
 {
-  public function __construct(RegistryInterface $registry)
+
+  /** @var AuthorizationCheckerInterface */
+  private $auth;
+
+  public function __construct(RegistryInterface $registry, AuthorizationCheckerInterface $authorizationChecker)
   {
     parent::__construct($registry, StudyArea::class);
+
+    $this->auth = $authorizationChecker;
   }
 
   /**
@@ -82,7 +89,13 @@ class StudyAreaRepository extends ServiceEntityRepository
    */
   public function getVisibleQueryBuilder(User $user)
   {
-    $qb = $this->createQueryBuilder('sa');
+    $qb = $this->createQueryBuilder('sa')
+        ->orderBy('sa.name', 'ASC');
+
+    // Return everything for super admins
+    if ($this->auth->isGranted('ROLE_SUPER_ADMIN')){
+      return $qb;
+    }
 
     return $qb
         ->distinct()

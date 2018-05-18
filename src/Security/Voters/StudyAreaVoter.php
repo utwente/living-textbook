@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class StudyAreaVoter extends Voter
@@ -17,6 +18,9 @@ class StudyAreaVoter extends Voter
   const SHOW = 'STUDYAREA_SHOW';
   const EDIT = 'STUDYAREA_EDIT';
 
+  /** @var AccessDecisionManagerInterface */
+  private $decisionManager;
+
   /** @var StudyAreaRepository */
   private $studyAreaRepository;
 
@@ -25,8 +29,9 @@ class StudyAreaVoter extends Voter
    *
    * @param StudyAreaRepository $studyAreaRepository
    */
-  public function __construct(StudyAreaRepository $studyAreaRepository)
+  public function __construct(AccessDecisionManagerInterface $decisionManager, StudyAreaRepository $studyAreaRepository)
   {
+    $this->decisionManager = $decisionManager;
     $this->studyAreaRepository = $studyAreaRepository;
   }
 
@@ -68,6 +73,10 @@ class StudyAreaVoter extends Voter
     if (!$user instanceof User) {
       // Require authenticated user
       return false;
+    }
+
+    if ($this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])){
+      return true;
     }
 
     // Convert study area if required
