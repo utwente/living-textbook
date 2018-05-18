@@ -14,16 +14,19 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Class KernelControllerSubscriber
+ * Class RequestStudyAreaSubscriber
  * Subscriber for KernelEvents related to controllers
  *
  * @author BobV
  */
-class KernelControllerSubscriber implements EventSubscriberInterface
+class RequestStudyAreaSubscriber implements EventSubscriberInterface
 {
 
   /** @var string Study area session/request key */
   public const STUDY_AREA_KEY = '_studyArea';
+
+  /** @var string Study area twig key */
+  public const TWIG_STUDY_AREA_KEY = '_twigStudyArea';
 
   /** @var RouterInterface */
   private $router;
@@ -34,6 +37,9 @@ class KernelControllerSubscriber implements EventSubscriberInterface
   /** @var TokenStorageInterface */
   private $tokenStorage;
 
+  /** @var \Twig_Environment */
+  private $twig;
+
   /** @var StudyArea|null */
   private $studyArea;
 
@@ -41,17 +47,19 @@ class KernelControllerSubscriber implements EventSubscriberInterface
   private $studyAreaId;
 
   /**
-   * KernelControllerSubscriber constructor.
+   * RequestStudyAreaSubscriber constructor.
    *
    * @param RouterInterface       $router
    * @param StudyAreaRepository   $studyAreaRepository
    * @param TokenStorageInterface $tokenStorage
+   * @param \Twig_Environment     $twig
    */
-  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage)
+  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage, \Twig_Environment $twig)
   {
     $this->router              = $router;
     $this->studyAreaRepository = $studyAreaRepository;
     $this->tokenStorage        = $tokenStorage;
+    $this->twig                = $twig;
     $this->studyArea           = NULL;
     $this->studyAreaId         = NULL;
   }
@@ -68,9 +76,11 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             array('determineStudyArea', 0),
         ],
         KernelEvents::CONTROLLER_ARGUMENTS => [
-            array('injectStudyArea', 0),
+            array('injectStudyAreaInControllerArguments', 0),
         ],
-
+        KernelEvents::VIEW                 => [
+            array('injectStudyAreaInView', 0),
+        ],
     );
   }
 
@@ -123,7 +133,12 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     $this->router->getContext()->setParameter(self::STUDY_AREA_KEY, $studyAreaId);
   }
 
-  public function injectStudyArea(FilterControllerArgumentsEvent $event)
+  /**
+   * Inject the StudyArea in the controller arguments when required
+   *
+   * @param FilterControllerArgumentsEvent $event
+   */
+  public function injectStudyAreaInControllerArguments(FilterControllerArgumentsEvent $event)
   {
     if ($this->studyAreaId === NULL) {
       // Check for session value
@@ -165,5 +180,13 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     } catch (\ReflectionException $e) {
       // Do nothing
     }
+  }
+
+  /**
+   * Inject the StudyArea in the twig variables for the view
+   */
+  public function injectStudyAreaInView()
+  {
+    $this->twig->addGlobal(self::TWIG_STUDY_AREA_KEY, $this->studyArea);
   }
 }

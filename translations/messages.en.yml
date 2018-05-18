@@ -102,6 +102,7 @@ login:
   username: 'Username'
 
 menu:
+  config: 'Configuration'
   edit: 'Edit'
   concept: 'Concepts'
   case-study: 'Case studies'

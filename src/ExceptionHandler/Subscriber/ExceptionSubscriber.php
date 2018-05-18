@@ -2,7 +2,7 @@
 
 namespace App\ExceptionHandler\Subscriber;
 
-use App\Request\Subscriber\KernelControllerSubscriber;
+use App\Request\Subscriber\RequestStudyAreaSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -25,7 +25,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
     if ($exception instanceof AccessDeniedHttpException) {
       // Clear cached study area on 403
-      $event->getRequest()->getSession()->remove(KernelControllerSubscriber::STUDY_AREA_KEY);
+      $event->getRequest()->getSession()->remove(RequestStudyAreaSubscriber::STUDY_AREA_KEY);
     }
   }
 }

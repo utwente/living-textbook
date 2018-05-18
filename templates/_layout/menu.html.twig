@@ -15,13 +15,23 @@
           {{ 'menu.show'|trans }}
         </a>
         <div class="dropdown-menu" aria-labelledby="edit-dropdown">
+          <a class="dropdown-item" href="{{ path('app_studyarea_list') }}">{{ 'menu.study-area'|trans }}</a>
           <a class="dropdown-item" href="{{ path('app_concept_list') }}">{{ 'menu.concept'|trans }}</a>
           <a class="dropdown-item" href="{{ path('app_learningoutcome_list') }}">{{ 'menu.learning-outcomes'|trans }}</a>
-          <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
-          <a class="dropdown-item" href="{{ path('app_studyarea_list') }}">{{ 'menu.study-area'|trans }}</a>
-          <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
         </div>
       </li>
+
+      {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="edit-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ 'menu.config'|trans }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="edit-dropdown">
+            <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
+            <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
+          </div>
+        </li>
+      {% endif %}
     </ul>
 
     <a class="btn btn-outline-primary ml-lg-2" href="#" onclick="eDispatch.toggleConceptBrowser(); $(this).blur();">{{ 'browser.toggle'|trans }}</a>
