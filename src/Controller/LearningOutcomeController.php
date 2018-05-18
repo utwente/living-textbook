@@ -154,4 +154,25 @@ class LearningOutcomeController extends Controller
     ];
   }
 
+  /**
+   * @Route("/show/{learningOutcome}", requirements={"learningOurcome"="\d+"})
+   * @Template()
+   *
+   * @param RequestStudyArea $requestStudyArea
+   * @param LearningOutcome  $learningOutcome
+   *
+   * @return array
+   */
+  public function show(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome)
+  {
+    // Check if correct study area
+    if ($learningOutcome->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    return [
+        'learningOutcome' => $learningOutcome,
+    ];
+  }
+
 }

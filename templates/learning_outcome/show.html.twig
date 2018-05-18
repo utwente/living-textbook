@@ -1,0 +1,22 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import action_bar %}
+  {{ action_bar(
+    path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}),
+    false,
+    path('app_learningoutcome_list'),
+    path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}),
+    false
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ learningOutcome.shortName }}
+{% endblock %}
+
+{% block content %}
+  <div class="ltb-text-container">
+    {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+  </div>
+{% endblock %}

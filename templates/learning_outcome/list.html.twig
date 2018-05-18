@@ -15,6 +15,7 @@
     <tr>
       <th scope="col">{{ 'learning-outcome.number'|trans }}</th>
       <th scope="col">{{ 'learning-outcome.name'|trans }}</th>
+      <th scope="col">{{ 'form.show'|trans }}</th>
       <th scope="col">{{ 'form.edit'|trans }}</th>
       <th scope="col">{{ 'form.remove'|trans }}</th>
     </tr>
@@ -24,6 +25,7 @@
       <tr>
         <td>{{ learningOutcome.number }}</td>
         <td>{{ learningOutcome.name }}</td>
+        <td><a href="{{ path('app_learningoutcome_show', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.show'|trans }}</a></td>
         <td><a href="{{ path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.edit'|trans }}</a></td>
         <td><a href="{{ path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.remove'|trans }}</a></td>
       </tr>
