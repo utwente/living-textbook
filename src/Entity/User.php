@@ -7,6 +7,8 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Oidc\Exception\OidcException;
 use App\Oidc\Security\Authentication\Token\OidcToken;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -164,6 +166,13 @@ class User implements AdvancedUserInterface, \Serializable
   private $securityRoles;
 
   /**
+   * @var UserGroup[]|Collection
+   *
+   * @ORM\ManyToMany(targetEntity="App\Entity\UserGroup", mappedBy="users")
+   */
+  private $userGroups;
+
+  /**
    * User constructor.
    */
   public function __construct()
@@ -171,6 +180,7 @@ class User implements AdvancedUserInterface, \Serializable
     $this->registeredOn  = new \DateTime();
     $this->isActive      = true;
     $this->securityRoles = array();
+    $this->userGroups    = new ArrayCollection();
   }
 
   public function __toString(): string
@@ -191,7 +201,7 @@ class User implements AdvancedUserInterface, \Serializable
     $username = $token->getUsername();
 
     // Username must not be empty!
-    if (empty($username)){
+    if (empty($username)) {
       throw new OidcException('Retrieved username from OIDC is empty!');
     }
 
@@ -587,6 +597,13 @@ class User implements AdvancedUserInterface, \Serializable
     $this->displayName = $displayName;
 
     return $this;
+  }
+
+  /**
+   * @return UserGroup[]|Collection
+   */
+  public function getUserGroups(){
+    return $this->userGroups;
   }
 
 }

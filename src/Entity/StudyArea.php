@@ -56,6 +56,15 @@ class StudyArea
   private $concepts;
 
   /**
+   * @var Collection|UserGroup[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\UserGroup", mappedBy="studyArea", cascade={"persist","remove"})
+   *
+   * @JMSA\Expose()
+   */
+  private $userGroups;
+
+  /**
    * @var User
    *
    * @ORM\ManyToOne(targetEntity="User")
@@ -81,6 +90,7 @@ class StudyArea
   {
     $this->name       = '';
     $this->concepts   = new ArrayCollection();
+    $this->userGroups = new ArrayCollection();
     $this->accessType = self::ACCESS_PUBLIC;
   }
 
@@ -92,6 +102,25 @@ class StudyArea
   public static function getAccessTypes()
   {
     return [self::ACCESS_PUBLIC, self::ACCESS_INDIVIDUAL, self::ACCESS_GROUP];
+  }
+
+  /**
+   * Check whether the user is in a certain or one of the groups
+   *
+   * @param User        $user
+   * @param string|NULL $groupType
+   *
+   * @return bool
+   */
+  public function isUserInGroup(User $user, string $groupType = null){
+
+    foreach($this->userGroups as $userGroup){
+      if ($groupType === null || $userGroup->getGroupType() === $groupType){
+        return $userGroup->getUsers()->contains($user);
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -121,16 +150,15 @@ class StudyArea
       case StudyArea::ACCESS_INDIVIDUAL:
         return $this->isOwner($user);
       case StudyArea::ACCESS_GROUP:
-        // @todo check if user in group
-        return $this->isOwner($user);
+        return $this->isOwner($user) || $this->isUserInGroup($user);
     }
 
     return false;
   }
 
-  public function isEditable(User $user){
-    // @todo implement group response
-    return $this->isOwner($user);
+  public function isEditable(User $user)
+  {
+    return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_EDITOR);
   }
 
   /**
@@ -185,6 +213,42 @@ class StudyArea
   public function removeConcept(Concept $concept): StudyArea
   {
     $this->concepts->removeElement($concept);
+
+    return $this;
+  }
+
+  /**
+   * @return UserGroup[]|Collection
+   */
+  public function getUserGroups()
+  {
+    return $this->userGroups;
+  }
+
+  /**
+   * @param UserGroup $userGroup
+   *
+   * @return StudyArea
+   */
+  public function addUserGroup(UserGroup $userGroup): StudyArea
+  {
+    // Check whether the StudyArea is set, otherwise set it as this
+    if (!$userGroup->getStudyArea()) {
+      $userGroup->setStudyArea($this);
+    }
+    $this->userGroups->add($userGroup);
+
+    return $this;
+  }
+
+  /**
+   * @param UserGroup $userGroup
+   *
+   * @return StudyArea
+   */
+  public function removeUserGroup(UserGroup $userGroup): StudyArea
+  {
+    $this->userGroups->removeElement($userGroup);
 
     return $this;
   }

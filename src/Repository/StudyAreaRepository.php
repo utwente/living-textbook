@@ -84,11 +84,14 @@ class StudyAreaRepository extends ServiceEntityRepository
   {
     $qb = $this->createQueryBuilder('sa');
 
-    // @todo check for group rights
     return $qb
+        ->distinct()
+        ->leftJoin('sa.userGroups', 'ug')
+        ->leftJoin('ug.users', 'u')
         ->where($qb->expr()->orX(
             $qb->expr()->eq('sa.owner', ':user'),
-            $qb->expr()->eq('sa.accessType', ':public')
+            $qb->expr()->eq('sa.accessType', ':public'),
+            $qb->expr()->eq('u', ':user')
         ))
         ->setParameter('user', $user)
         ->setParameter('public', StudyArea::ACCESS_PUBLIC);
