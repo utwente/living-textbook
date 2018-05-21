@@ -102,6 +102,7 @@ login:
   username: 'Username'
 
 menu:
+  admin: 'Administrators'
   config: 'Configuration'
   edit: 'Edit'
   concept: 'Concepts'
@@ -111,6 +112,17 @@ menu:
   relation-type: 'Relation types'
   show: 'Show'
   study-area: 'Study areas'
+
+permissions:
+  admin: 'Administrator'
+  add-admin-title: 'Add new adminstrator'
+  admin-added: '%user% has been promoted to administrator'
+  admin-list-title: 'Administrators'
+  admin-removed: '%user% is no longer an administrator'
+  cannot-edit-self: 'It is not possible to edit yourself'
+  no-admin: '%user% is no admin user'
+  remove-admin: 'Remove %user% as administrator'
+  remove-admin-text: 'Are you sure you want to remove %user% as administrator?'
 
 relation:
   source: 'Source'
@@ -158,3 +170,7 @@ relation-type:
   removed-already: 'The relation type "%item%" was already removed'
   saved: 'Relation type "%item%" has been saved successfully.'
   updated: 'Relation type "%item%" has been successfully updated.'
+
+user:
+  display-name: 'Name'
+  emailaddress: 'E-mail address'

@@ -165,6 +165,16 @@ class User implements AdvancedUserInterface, \Serializable
   private $securityRoles;
 
   /**
+   * @var boolean
+   *
+   * @ORM\Column(name="is_admin", type="boolean", nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\Type("bool")
+   */
+  private $isAdmin;
+
+  /**
    * @var UserGroup[]|Collection
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\UserGroup", mappedBy="users")
@@ -178,6 +188,7 @@ class User implements AdvancedUserInterface, \Serializable
   {
     $this->registeredOn  = new \DateTime();
     $this->isActive      = true;
+    $this->isAdmin       = false;
     $this->securityRoles = array();
     $this->userGroups    = new ArrayCollection();
   }
@@ -354,7 +365,13 @@ class User implements AdvancedUserInterface, \Serializable
    */
   public function getRoles()
   {
-    return array_merge(array('ROLE_USER'), $this->securityRoles);
+    $roles = ['ROLE_USER'];
+
+    if ($this->isAdmin) {
+      $roles[] = 'ROLE_SUPER_ADMIN';
+    }
+
+    return array_merge($roles, $this->securityRoles);
   }
 
   /**
@@ -599,9 +616,30 @@ class User implements AdvancedUserInterface, \Serializable
   }
 
   /**
+   * @return bool
+   */
+  public function isAdmin(): bool
+  {
+    return $this->isAdmin;
+  }
+
+  /**
+   * @param bool $isAdmin
+   *
+   * @return User
+   */
+  public function setIsAdmin(bool $isAdmin): User
+  {
+    $this->isAdmin = $isAdmin;
+
+    return $this;
+  }
+
+  /**
    * @return UserGroup[]|Collection
    */
-  public function getUserGroups(){
+  public function getUserGroups()
+  {
     return $this->userGroups;
   }
 

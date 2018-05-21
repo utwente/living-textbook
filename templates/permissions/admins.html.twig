@@ -1,0 +1,35 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import new_bar %}
+  {{ new_bar(path('app_permissions_addadmin')) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'permissions.admin-list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'user.display-name'|trans }}</th>
+      <th scope="col">{{ 'user.display-name'|trans }}</th>
+      <th scope="col">{{ 'form.remove'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for admin in admins %}
+      <tr>
+        <td>{{ admin.displayName }}</td>
+        <td>{{ admin.username }}</td>
+        <td>
+          {% if app.user.id != admin.id %}
+            <a href="{{ path('app_permissions_removeadmin', {'user': admin.id}) }}">{{ 'form.remove'|trans }}</a>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

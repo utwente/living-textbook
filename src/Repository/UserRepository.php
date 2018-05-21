@@ -12,4 +12,12 @@ class UserRepository extends ServiceEntityRepository
   {
     parent::__construct($registry, User::class);
   }
+
+  public function getSuperAdmins()
+  {
+    return $this->createQueryBuilder('u')
+        ->where('u.isAdmin = :admin')
+        ->setParameter('admin', true)
+        ->getQuery()->getResult();
+  }
 }
