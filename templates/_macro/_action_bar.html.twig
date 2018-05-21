@@ -2,19 +2,19 @@
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
   {% if browser_id|default(false) != false %}
-    <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-secondary"><i class="fa fa-fw fa-search"></i> {{ 'browser.open'|trans }}</a>
+    <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-primary"><i class="fa fa-fw fa-search"></i> {{ 'browser.open'|trans }}</a>
   {% endif %}
   {% if edit_url|default(false) != false %}
     {{ _action_button(edit_url, 'fa-pencil', 'form.edit') }}
   {% endif %}
   {% if show_url|default(false) != false %}
-    {{ _action_button(show_url, 'fa-eye', 'form.show') }}
+    {{ _action_button(show_url, 'fa-eye', 'form.show', 'primary') }}
   {% endif %}
   {% if list_url|default(false) != false %}
     {{ _action_button(list_url, 'fa-list', 'form.list') }}
   {% endif %}
   {% if remove_url|default(false) != false %}
-    {{  _action_button(remove_url, 'fa-times', 'form.remove') }}
+    {{  _action_button(remove_url, 'fa-times', 'form.remove', 'danger') }}
   {% endif %}
   {{ block('_bar_footer') }}
 {% endmacro %}
@@ -22,12 +22,12 @@
 {% macro new_bar(new_url) %}
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
-  {{ _action_button(new_url, 'fa-plus', 'form.add') }}
+  {{ _action_button(new_url, 'fa-plus', 'form.add', 'success') }}
   {{ block('_bar_footer') }}
 {% endmacro %}
 
-{% macro _action_button(url, icon, label) %}
-  <a href="{{ url }}" class="btn btn-outline-secondary"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>
+{% macro _action_button(url, icon, label, color) %}
+  <a href="{{ url }}" class="btn btn-outline-{{ color|default('secondary') }}"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>
 {% endmacro %}
 
 {% block _bar_header %}
