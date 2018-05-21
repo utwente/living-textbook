@@ -4,14 +4,15 @@
   {{ 'permissions.study-area-title'|trans }}
 {% endblock %}
 
-{% macro print_users(users) %}
+{% macro print_users(users, type) %}
+
   {% if users|length > 0 %}
     <table class="table">
       <thead>
       <tr>
         <th scope="col">{{ 'user.display-name'|trans }}</th>
         <th scope="col">{{ 'user.display-name'|trans }}</th>
-        <th scope="col">{{ 'form.remove'|trans }}</th>
+        <th scope="col">{{ 'form.revoke'|trans }}</th>
       </tr>
       </thead>
       <tbody>
@@ -20,12 +21,24 @@
           <td>{{ user.displayName }}</td>
           <td>{{ user.username }}</td>
           <td>
+            <a href="{{ path('app_permissions_removepermission', {'user': user.id, 'groupType': type}) }}">{{ 'form.revoke'|trans }}</a>
           </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
   {% endif %}
+  <div role="group" aria-label="{{ 'form.action-bar'|trans }}">
+    <a href="{{ path('app_permissions_addpermissions', {'groupType': type}) }}" class="btn btn-outline-success">
+      <i class="fa fa-fw fa-plus"></i> {{ 'form.add'|trans }}
+    </a>
+    {% if users|length > 0 %}
+      <a href="{{ path('app_permissions_removeallpermissions', {'groupType': type}) }}" class="btn btn-outline-danger">
+        <i class="fa fa-fw fa-times"></i> {{ 'form.revoke-all'|trans }}
+      </a>
+    {% endif %}
+  </div>
+  <div class="mt-4"></div>
 {% endmacro %}
 
 {% block content %}
@@ -41,14 +54,14 @@
 
     {% set viewers = studyArea.getViewers() %}
     <h4>{{ 'permissions.viewer-count'|transchoice(viewers|length) }}</h4>
-    {{ print_users(viewers) }}
+    {{ print_users(viewers, constant('App\\Entity\\UserGroup::GROUP_VIEWER')) }}
 
     {% set editors = studyArea.getEditors() %}
     <h4>{{ 'permissions.editor-count'|transchoice(editors|length) }}</h4>
-    {{ print_users(editors) }}
+    {{ print_users(editors, constant('App\\Entity\\UserGroup::GROUP_EDITOR')) }}
 
     {% set reviewers = studyArea.getReviewers() %}
     <h4>{{ 'permissions.reviewer-count'|transchoice(reviewers|length) }}</h4>
-    {{ print_users(reviewers) }}
+    {{ print_users(reviewers, constant('App\\Entity\\UserGroup::GROUP_REVIEWER')) }}
   {% endif %}
 {% endblock %}

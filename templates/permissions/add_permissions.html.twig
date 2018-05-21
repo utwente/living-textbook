@@ -1,0 +1,14 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import action_bar %}
+  {{ action_bar(false, false, path('app_permissions_admins')) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'permissions.add-permissions'|trans({'%type%': type}) }}
+{% endblock %}
+
+{% block content %}
+  {{ form(form) }}
+{% endblock %}
