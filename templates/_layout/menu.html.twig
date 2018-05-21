@@ -29,6 +29,9 @@
           <div class="dropdown-menu" aria-labelledby="edit-dropdown">
             <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
             <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
+            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+              <a class="dropdown-item" href="{{ path('app_permissions_studyarea') }}">{{ 'menu.permissions'|trans }}</a>
+            {% endif %}
             {% if is_granted("ROLE_SUPER_ADMIN") %}
               <a class="dropdown-item" href="{{ path('app_permissions_admins') }}">{{ 'menu.admin'|trans }}</a>
             {% endif %}

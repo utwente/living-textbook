@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\Permission\AddAdminType;
 use App\Form\Type\RemoveType;
 use App\Repository\UserRepository;
+use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -122,6 +123,22 @@ class PermissionsController extends Controller
     return [
         'admin' => $user,
         'form'  => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/studyarea")
+   * @Template
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea $requestStudyArea
+   *
+   * @return array
+   */
+  public function studyArea(RequestStudyArea $requestStudyArea)
+  {
+    return [
+        'studyArea' => $requestStudyArea->getStudyArea(),
     ];
   }
 

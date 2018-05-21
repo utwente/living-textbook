@@ -1,0 +1,54 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'permissions.study-area-title'|trans }}
+{% endblock %}
+
+{% macro print_users(users) %}
+  {% if users|length > 0 %}
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">{{ 'user.display-name'|trans }}</th>
+        <th scope="col">{{ 'user.display-name'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.displayName }}</td>
+          <td>{{ user.username }}</td>
+          <td>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+  {% if studyArea.accessType != 'group' %}
+    {{ 'permissions.study-area-not-group'|trans({'%item%': studyArea.name}) }}
+    <a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id, 'permissions': true}) }}">
+      {{ 'permissions.change-now'|trans }}.
+    </a>
+  {% else %}
+
+    <p>{{ 'permissions.info-text'|trans }}</p>
+    {% from _self import print_users %}
+
+    {% set viewers = studyArea.getViewers() %}
+    <h4>{{ 'permissions.viewer-count'|transchoice(viewers|length) }}</h4>
+    {{ print_users(viewers) }}
+
+    {% set editors = studyArea.getEditors() %}
+    <h4>{{ 'permissions.editor-count'|transchoice(editors|length) }}</h4>
+    {{ print_users(editors) }}
+
+    {% set reviewers = studyArea.getReviewers() %}
+    <h4>{{ 'permissions.reviewer-count'|transchoice(reviewers|length) }}</h4>
+    {{ print_users(reviewers) }}
+  {% endif %}
+{% endblock %}

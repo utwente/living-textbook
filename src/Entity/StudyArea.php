@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -112,15 +113,78 @@ class StudyArea
    *
    * @return bool
    */
-  public function isUserInGroup(User $user, string $groupType = null){
-
-    foreach($this->userGroups as $userGroup){
-      if ($groupType === null || $userGroup->getGroupType() === $groupType){
-        return $userGroup->getUsers()->contains($user);
-      }
+  public function isUserInGroup(User $user, string $groupType = NULL)
+  {
+    foreach ($this->getUserGroups($groupType) as $userGroup) {
+      return $userGroup->getUsers()->contains($user);
     }
 
     return false;
+  }
+
+  /**
+   * @param string|NULL $groupType
+   *
+   * @return UserGroup[]|Collection
+   */
+  public function getUserGroups(string $groupType = NULL)
+  {
+    return $groupType === NULL ? $this->userGroups : $this->userGroups->matching(
+        Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
+  }
+
+  /**
+   * Get the editors
+   *
+   * @return User[]|Collection
+   */
+  public function getEditors()
+  {
+    $editorGroup = $this->getUserGroups(UserGroup::GROUP_EDITOR);
+    if ($editorGroup->isEmpty()){
+      // Early return to prevent warning with array_merge
+      return [];
+    }
+
+    return array_merge(...$editorGroup->map(function (UserGroup $userGroup) {
+      return $userGroup->getUsers()->toArray();
+    })->toArray());
+  }
+
+  /**
+   * Get the editors
+   *
+   * @return User[]|Collection
+   */
+  public function getReviewers()
+  {
+    $reviewGroup = $this->getUserGroups(UserGroup::GROUP_REVIEWER);
+    if ($reviewGroup->isEmpty()){
+      // Early return to prevent warning with array_merge
+      return [];
+    }
+
+    return array_merge(...$reviewGroup->map(function (UserGroup $userGroup) {
+      return $userGroup->getUsers()->toArray();
+    })->toArray());
+  }
+
+  /**
+   * Get the viewers
+   *
+   * @return User[]|Collection
+   */
+  public function getViewers()
+  {
+    $viewerGroup = $this->getUserGroups(UserGroup::GROUP_VIEWER);
+    if ($viewerGroup->isEmpty()){
+      // Early return to prevent warning with array_merge
+      return [];
+    }
+
+    return array_merge(...$viewerGroup->map(function (UserGroup $userGroup) {
+      return $userGroup->getUsers()->toArray();
+    })->toArray());
   }
 
   /**
@@ -196,7 +260,7 @@ class StudyArea
    */
   public function addConcept(Concept $concept): StudyArea
   {
-    // Check whether the studyarea is set, otherwise set it as this
+    // Check whether the study area is set, otherwise set it as this
     if (!$concept->getStudyArea()) {
       $concept->setStudyArea($this);
     }
@@ -215,14 +279,6 @@ class StudyArea
     $this->concepts->removeElement($concept);
 
     return $this;
-  }
-
-  /**
-   * @return UserGroup[]|Collection
-   */
-  public function getUserGroups()
-  {
-    return $this->userGroups;
   }
 
   /**

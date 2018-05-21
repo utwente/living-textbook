@@ -105,10 +105,17 @@ class StudyAreaController extends Controller
   public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
 
-    $this->isGranted("STUDYAREA_OWNER");
+    // Check whether permissions flag is set
+    $permissions = $request->query->get('permissions', false);
 
     // Create form and handle request
-    $form = $this->createForm(EditStudyAreaType::class, $studyArea, ['studyArea' => $studyArea, 'select_owner' => false]);
+    $form = $this->createForm(EditStudyAreaType::class, $studyArea, [
+        'studyArea'         => $studyArea,
+        'select_owner'      => false,
+        'save_and_list'     => !$permissions,
+        'cancel_route_edit' => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
+        'list_route'        => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +131,7 @@ class StudyAreaController extends Controller
       }
 
       // Forward to show
-      return $this->redirectToRoute('app_studyarea_show', ['studyArea' => $studyArea->getId()]);
+      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_studyarea_show', ['studyArea' => $studyArea->getId()]);
     }
 
     return [
@@ -173,6 +180,7 @@ class StudyAreaController extends Controller
     // Check if this is the only study area
     if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
       $this->addFlash('warning', $trans->trans('study-area.owner-last-remove'));
+
       return $this->redirectToRoute('app_studyarea_list');
     }
 
@@ -236,6 +244,7 @@ class StudyAreaController extends Controller
     // Check if this is the only study area
     if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
       $this->addFlash('warning', $trans->trans('study-area.owner-last-transfer'));
+
       return $this->redirectToRoute('app_studyarea_list');
     }
 
