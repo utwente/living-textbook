@@ -47,8 +47,13 @@ $(function () {
   });
 
   // Disable submit buttons on submit
-  $('form').submit(function(){
-    $(this).find(':input[type=submit]').prop('disabled', true);
+  $('form').submit(function () {
+    $(this).find(':input[type=submit]')
+        .addClass('disabled')
+        .on('click', function (e) {
+          e.preventDefault();
+          return false;
+        });
   });
 
   // Page loaded event
