@@ -111,7 +111,7 @@ class PermissionsController extends Controller
     $form->handleRequest($request);
 
     // Handle form
-    if ($form->isSubmitted() && RemoveType::isRemoveClicked($form)) {
+    if (RemoveType::isRemoveClicked($form)) {
       $user->setIsAdmin(false);
       $em->flush();
 

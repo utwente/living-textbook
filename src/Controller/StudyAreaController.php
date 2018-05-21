@@ -189,7 +189,8 @@ class StudyAreaController extends Controller
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
     ]);
     $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
+
+    if (RemoveType::isRemoveClicked($form)) {
       $em->remove($studyArea);
       $em->flush();
 

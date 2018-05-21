@@ -199,7 +199,7 @@ class ConceptController extends Controller
         'cancel_route_params' => ['concept' => $concept->getId()],
     ]);
     $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
+    if (RemoveType::isRemoveClicked($form)) {
       $em->remove($concept);
       $em->flush();
 

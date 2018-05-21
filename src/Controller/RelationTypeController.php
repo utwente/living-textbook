@@ -172,7 +172,7 @@ class RelationTypeController extends Controller
     ]);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
+    if (RemoveType::isRemoveClicked($form)) {
 
       // Remove the relation type by setting the deletedAt/By manually
       $relationType->setDeletedAt(new \DateTime());
