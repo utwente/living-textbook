@@ -64,14 +64,14 @@ services:
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
 
-  App\Oidc\OidcClient:
+  Drenso\OidcBundle\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'
       $clientId: '%oidc.client_id%'
       $clientSecret: '%oidc.client_secret%'
 
   security.authentication.provider.oidc:
-    class: App\Oidc\Security\Authentication\Provider\OidcProvider
+    class: Drenso\OidcBundle\Security\Authentication\Provider\OidcProvider
     arguments:
       - ''
       - '@security.user_checker'
@@ -79,7 +79,7 @@ services:
       - '@logger'
 
   security.authentication.listener.oidc:
-    class: App\Oidc\Security\Firewall\OidcListener
+    class: Drenso\OidcBundle\Security\Firewall\OidcListener
     arguments:
       - '@security.token_storage'
       - '@security.authentication.manager'
@@ -90,4 +90,4 @@ services:
       - ''
       - { }
       - '@logger'
-      - '@App\Oidc\OidcClient'
+      - '@Drenso\OidcBundle\OidcClient'

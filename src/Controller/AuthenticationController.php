@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Form\Authentication\LoginType;
-use App\Oidc\OidcClient;
+use Drenso\OidcBundle\OidcClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -100,8 +100,8 @@ class AuthenticationController extends Controller
    *
    * @return RedirectResponse
    *
-   * @throws \App\Oidc\Exception\OidcConfigurationException
-   * @throws \App\Oidc\Exception\OidcConfigurationResolveException
+   * @throws \Drenso\OidcBundle\Exception\OidcConfigurationException
+   * @throws \Drenso\OidcBundle\OidcConfigurationResolveException
    */
   public function surfconext(SessionInterface $session, OidcClient $oidc)
   {

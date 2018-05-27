@@ -3,9 +3,9 @@
 namespace App\Security;
 
 use App\Entity\User;
-use App\Oidc\Security\Authentication\Token\OidcToken;
-use App\Oidc\Security\UserProvider\OidcUserProviderInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
+use Drenso\OidcBundle\Security\UserProvider\OidcUserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 

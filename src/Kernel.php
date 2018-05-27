@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Oidc\Security\Factory\OidcFactory;
+use Drenso\OidcBundle\Security\Factory\OidcFactory;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -87,6 +87,7 @@ class Kernel extends BaseKernel
    */
   protected function build(ContainerBuilder $container)
   {
+
     // Register the Oidc factory
     $extension = $container->getExtension('security');
     assert($extension instanceof SecurityExtension);
