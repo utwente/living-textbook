@@ -367,7 +367,7 @@ class User implements AdvancedUserInterface, \Serializable
   {
     $roles = ['ROLE_USER'];
 
-    if ($this->isAdmin) {
+    if ($this->isAdmin()) {
       $roles[] = 'ROLE_SUPER_ADMIN';
     }
 

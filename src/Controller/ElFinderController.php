@@ -56,9 +56,9 @@ class ElFinderController extends Controller
    * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default"}, name="elfinder")
    * @IsGranted("ROLE_USER")
    *
-   * @param Request        $request
-   * @param string         $instance
-   * @param StudyArea|null $studyArea
+   * @param Request   $request
+   * @param string    $instance
+   * @param StudyArea $studyArea
    *
    * @return Response
    */

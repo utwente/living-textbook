@@ -48,7 +48,7 @@ class EditStudyAreaType extends AbstractType
         ->setDefaults([
             'data_class'        => StudyArea::class,
             'save_only'         => false,
-            'save_and_list' => true,
+            'save_and_list'     => true,
             'list_route'        => 'app_studyarea_list',
             'cancel_route'      => 'app_studyarea_list',
             'cancel_route_edit' => 'app_studyarea_show',

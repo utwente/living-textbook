@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Form\Permission\AddAdminType;
-use App\Form\Permission\AddPermissinsType;
+use App\Form\Permission\AddPermissionsType;
 use App\Form\Type\RemoveType;
 use App\Repository\UserGroupRepository;
 use App\Repository\UserRepository;
@@ -180,7 +180,7 @@ class PermissionsController extends Controller
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    $form = $this->createForm(AddPermissinsType::class, NULL, [
+    $form = $this->createForm(AddPermissionsType::class, NULL, [
         'user_group' => $userGroup,
     ]);
     $form->handleRequest($request);
@@ -208,7 +208,7 @@ class PermissionsController extends Controller
   }
 
   /**
-   * @Route("/studyarea/remove/all/{groupType}",requirements={"groupType"="viewer|editor|reviewer"})
+   * @Route("/studyarea/revoke/all/{groupType}",requirements={"groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
@@ -255,7 +255,7 @@ class PermissionsController extends Controller
   }
 
   /**
-   * @Route("/studyarea/remove/{user}/{groupType}",requirements={"user"="\d+", "groupType"="viewer|editor|reviewer"})
+   * @Route("/studyarea/revoke/{user}/{groupType}",requirements={"user"="\d+", "groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *

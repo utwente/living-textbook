@@ -4,7 +4,6 @@ namespace App\Security\Voters;
 
 use App\Entity\StudyArea;
 use App\Entity\User;
-use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -21,18 +20,14 @@ class StudyAreaVoter extends Voter
   /** @var AccessDecisionManagerInterface */
   private $decisionManager;
 
-  /** @var StudyAreaRepository */
-  private $studyAreaRepository;
-
   /**
    * StudyAreaVoter constructor.
    *
-   * @param StudyAreaRepository $studyAreaRepository
+   * @param AccessDecisionManagerInterface $decisionManager
    */
-  public function __construct(AccessDecisionManagerInterface $decisionManager, StudyAreaRepository $studyAreaRepository)
+  public function __construct(AccessDecisionManagerInterface $decisionManager)
   {
     $this->decisionManager = $decisionManager;
-    $this->studyAreaRepository = $studyAreaRepository;
   }
 
   /**
