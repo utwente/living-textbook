@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @author BobV
  *
- * @Route("/{_studyArea}/latex", requirements={"_studyArea"="\d+"})
+ * @Route("/latex")
  */
 class LatexController extends Controller
 {
@@ -35,7 +35,6 @@ class LatexController extends Controller
    *
    * @return Response
    *
-   * @throws \BobV\LatexBundle\Exception\LatexException
    * @throws \Spatie\PdfToImage\Exceptions\InvalidFormat
    * @throws \Spatie\PdfToImage\Exceptions\PdfDoesNotExist
    * @throws \Psr\SimpleCache\InvalidArgumentException
@@ -77,7 +76,7 @@ class LatexController extends Controller
 
         // Save location in the cache
         $cache->set($cacheKey, $imageLocation);
-      } catch (LatexException $e) {
+      } /** @noinspection PhpRedundantCatchClauseInspection */ catch (LatexException $e) {
         $imageLocation = sprintf('%s/%s',
             $this->getParameter('kernel.project_dir'),
             'public/img/latex/error.jpg');
