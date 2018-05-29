@@ -875,6 +875,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       context.lineTo(0, 0);
       context.strokeStyle = 'blue';
       context.stroke();
+
+      context.beginPath();
+      context.fillStyle = '#ff0000';
+      context.arc(halfCanvasWidth, halfCanvasHeight, 10, 0, 2 * Math.PI);
+      context.fill();
     }
 
     //////////////////////
