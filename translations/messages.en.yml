@@ -12,6 +12,8 @@ browser:
   readme: 'Open readme'
   refresh: 'Refresh data'
   search: 'Search'
+  zoom-in: 'Zoom in'
+  zoom-out: 'Zoom out'
 
 concept:
   add-title: 'Add new concept'

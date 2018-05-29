@@ -31,6 +31,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   cb.drawGrid = false;
   cb.drawLinkNodes = false;
   cb.zoomExtent = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
+  cb.zoomButtonFactor = 1.5;
 
   /******************************************************************************************************
    * Style configuration variables
@@ -813,6 +814,22 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     drawGraph();
   }
 
+  /**
+   * Zoom to the new scale, which is limited
+   * @param newScale New scale
+   */
+  function zoomFromButton(newScale){
+    var transform = d3.zoomIdentity
+        .translate(halfCanvasWidth, halfCanvasHeight)
+        .scale(Math.max(cb.zoomExtent[0], Math.min(cb.zoomExtent[1], newScale)))
+        .translate(
+            (cbTransform.x - halfCanvasWidth) / cbTransform.k,
+            (cbTransform.y - halfCanvasHeight) / cbTransform.k
+        );
+    cbCanvas
+        .call(cbZoom.transform, transform);
+  }
+
   /******************************************************************************************************
    * Canvas draw methods
    *****************************************************************************************************/
@@ -1441,6 +1458,14 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbZoom = d3.zoom()
         .scaleExtent(cb.zoomExtent)
         .on('zoom', zoomGraph);
+
+    // Create zoom handlers for buttons
+    $('#zoom-in-button').on('click', function () {
+      zoomFromButton(cbTransform.k * cb.zoomButtonFactor);
+    });
+    $('#zoom-out-button').on('click', function(){
+      zoomFromButton(cbTransform.k / cb.zoomButtonFactor);
+    });
 
     // Create drag handlers
     cbDrag = d3.drag()

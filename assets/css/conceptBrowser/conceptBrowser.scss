@@ -1,4 +1,4 @@
-#concept-browser-controls {
+#concept-browser-controls, #concept-browser-controls-bottom {
   z-index: 85;
   position: absolute;
 
@@ -11,6 +11,11 @@
   .action-container {
     text-align: right;
   }
+}
+
+#concept-browser-controls-bottom {
+  right: 0;
+  bottom: 0;
 }
 
 #right-container-content, #graph_container_div {

@@ -67,6 +67,22 @@
           </div>
         {% endblock %}
       </div>
+      <div class="animation-opacity-container">
+        <div id="concept-browser-controls-bottom" class="container-fluid">
+          <div class="row justify-content-end">
+            <div class="action-container">
+              <button id="zoom-in-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.zoom-in'|trans }}">
+                <i class="fa fa-fw fa-search-plus"></i>
+              </button>
+              <button id="zoom-out-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.zoom-out'|trans }}">
+                <i class="fa fa-fw fa-search-minus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}
