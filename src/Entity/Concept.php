@@ -273,8 +273,9 @@ class Concept
   /**
    * @return int
    *
-   * @JMSA\VirtualProperty("numberOfLinks")
-   * @JMSA\Groups({"relations"})
+   * @JMSA\Expose()
+   * @JMSA\VirtualProperty()
+   * @JMSA\Groups({"relations","download_json"})
    */
   public function getNumberOfLinks(): int
   {
@@ -284,11 +285,23 @@ class Concept
   /**
    * @return bool
    *
-   * @JMSA\VirtualProperty("isEmpty")
+   * @JMSA\VirtualProperty()
    */
   public function isEmpty()
   {
     return !$this->getIntroduction()->hasData();
+  }
+
+  /**
+   * @return string
+   *
+   * @JMSA\Expose()
+   * @JMSA\VirtualProperty()
+   * @JMSA\Groups({"download_json"})
+   */
+  public function getLabel()
+  {
+    return $this->getName();
   }
 
   /**

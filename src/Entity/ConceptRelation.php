@@ -96,7 +96,8 @@ class ConceptRelation
   /**
    * @return int|null
    *
-   * @JMSA\VirtualProperty("target")
+   * @JMSA\VirtualProperty()
+   * @JMSA\SerializedName("target")
    * @JMSA\Expose()
    */
   public function getTargetId(): ?int
@@ -115,7 +116,7 @@ class ConceptRelation
   /**
    * @return string
    *
-   * @JMSA\VirtualProperty("relationName")
+   * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
   public function getRelationName(): string

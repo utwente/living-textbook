@@ -174,7 +174,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     relations: [
       {
         id: 0,
-        targetId: 0,
+        target: 0,
         relationName: 0
       }
     ]
@@ -1346,7 +1346,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
           link = {
             id: relation.id,
             source: node,
-            target: getNodeById(relation.targetId)
+            target: getNodeById(relation.target)
           };
           cbGraph.links.push(link);
         }
@@ -1408,7 +1408,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         cbGraph.links.push({
           id: relation.id,
           source: concept.id,
-          target: relation.targetId,
+          target: relation.target,
           relationName: relation.relationName
         })
       });
