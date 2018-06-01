@@ -67,6 +67,11 @@
   {{- parent() -}}
 {%- endblock reset_row %}
 
+{% block file_row %}
+  {{- block("form_header") -}}
+  {{ block("form_row") }}
+{% endblock %}
+
 {% block form_label -%}
   {%- if hide_label is defined and hide_label == true -%}
   {%- else -%}

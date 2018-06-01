@@ -11,3 +11,44 @@ $dropdown-link-hover-bg: #d2d2d2;
   margin-top: ($grid-gutter-width / 2);
   margin-bottom: ($grid-gutter-width / 2);
 }
+
+// Reset custom form-file bootstrap style
+.col-form-label.custom-file-label {
+  @extend .col-form-label;
+  position: initial;
+  top: initial;
+  right: initial;
+  left: initial;
+  z-index: initial;
+  color: inherit;
+  background-color: inherit;
+  border: inherit;
+  border-radius: inherit;
+  height: inherit;
+  padding-right: ($grid-gutter-width / 2);
+  padding-left: ($grid-gutter-width / 2);
+}
+
+.required.custom-file-label::after {
+  position: initial;
+  top: initial;
+  right: initial;
+  bottom: initial;
+  z-index: initial;
+  display: initial;
+  height: initial;
+  padding: initial;
+  line-height: initial;
+  background-color: initial;
+  border-left: initial;
+  border-radius: initial;
+}
+
+.custom-file-input {
+  margin-top: 5px;
+  position: inherit;
+  z-index: inherit;
+  width: inherit;
+  height: inherit;
+  opacity: inherit;
+}
