@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
+use App\Form\Data\DownloadType;
 use App\Form\Data\JsonUploadType;
+use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -91,7 +93,7 @@ class DataController extends Controller
         try {
           try {
             $jsonData = $serializer->deserialize(file_get_contents($data['json']->getPathname()), 'array', 'json');
-          } catch (\Exception $e){
+          } catch (\Exception $e) {
             throw new \InvalidArgumentException("", 0, $e);
           }
 
@@ -167,6 +169,71 @@ class DataController extends Controller
 
     return [
         'form' => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/download")
+   * @Template()
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param Request                   $request
+   * @param RequestStudyArea          $requestStudyArea
+   * @param SerializerInterface       $serializer
+   * @param EntityManagerInterface    $em
+   * @param ConceptRepository         $conceptRepo
+   * @param ConceptRelationRepository $conceptRelationRepo
+   * @param RelationTypeRepository    $relationTypeRepo
+   *
+   * @return array|Response
+   */
+  public function download(Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, EntityManagerInterface $em,
+                           ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo)
+  {
+    // Use a form due to the fact that in the future, there will probably be a type selection here (json/owl)
+    $form = $this->createForm(DownloadType::class);
+    $form->handleRequest($request);
+
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Retrieve the relation types as cache
+      $relationTypes = $relationTypeRepo->findBy(['studyArea' => $studyArea]);
+
+      // Retrieve the concepts
+      $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea);
+      $links    = $conceptRelationRepo->findByConcepts($concepts);
+
+      // Detach the data from the ORM
+      $idMap = [];
+      foreach ($concepts as $key => $concept) {
+        assert($concept instanceof Concept);
+        $idMap[$concept->getId()] = $key;
+      }
+      $mappedLinks = [];
+      foreach ($links as &$link) {
+        assert($link instanceof ConceptRelation);
+        $mappedLinks[] = [
+            'target'       => $idMap[$link->getTargetId()],
+            'source'       => $idMap[$link->getSourceId()],
+            'relationName' => $link->getRelationName(),
+        ];
+      }
+
+      // Create JSON data
+      {
+        // Return as JSON
+        $json = $serializer->serialize([
+            'nodes' => $concepts,
+            'links' => $mappedLinks,
+        ], 'json', SerializationContext::create()->setGroups(['download_json']));
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+      }
+    }
+
+    return [
+        'studyArea' => $studyArea,
+        'form'      => $form->createView(),
     ];
   }
 

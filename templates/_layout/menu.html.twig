@@ -21,14 +21,25 @@
         </div>
       </li>
 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="data-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ 'menu.data'|trans }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="data-dropdown">
+          <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
+          {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+            <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
+          {% endif %}
+        </div>
+      </li>
+
       {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="edit-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="config-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ 'menu.config'|trans }}
           </a>
-          <div class="dropdown-menu" aria-labelledby="edit-dropdown">
+          <div class="dropdown-menu" aria-labelledby="config-dropdown">
             <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
-            <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
             {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_permissions_studyarea') }}">{{ 'menu.permissions'|trans }}</a>
             {% endif %}

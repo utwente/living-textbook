@@ -29,4 +29,21 @@ class ConceptRelationRepository extends ServiceEntityRepository
         ->setParameter('relationType', $relationType)
         ->getQuery()->getResult();
   }
+
+  /**
+   * Retrieve all links related to the given concepts
+   *
+   * @param array $concepts
+   *
+   * @return mixed
+   */
+  public function findByConcepts(array $concepts)
+  {
+    return $this->createQueryBuilder('l')
+        ->distinct()
+        ->where('l.source IN (:concepts)')
+        ->orWhere('l.target IN (:concepts)')
+        ->setParameter('concepts', $concepts)
+        ->getQuery()->getResult();
+  }
 }

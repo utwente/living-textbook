@@ -182,6 +182,14 @@ class Concept
   private $studyArea;
 
   /**
+   * @var string|null
+   *
+   * @JMSA\Expose
+   * @JMSA\Groups({"download_json"})
+   */
+  private $link;
+
+  /**
    * Concept constructor.
    */
   public function __construct()
@@ -579,5 +587,26 @@ class Concept
     $this->learningOutcomes->removeElement($learningOutcome);
 
     return $this;
+  }
+
+  /**
+   * @param string $link
+   *
+   * @return Concept
+   */
+  public function setLink(string $link): Concept
+  {
+    $this->link = $link;
+
+    return $this;
+  }
+
+  /**
+   * @return null|string
+   * @internal Used for serialization only
+   */
+  public function getLink(): ?string
+  {
+    return $this->link;
   }
 }

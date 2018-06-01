@@ -12,3 +12,10 @@
   <div class="clearfix spacer"></div>
   {{ block('save_row') }}
 {% endblock %}
+
+{# Single button type, to remove empty label space #}
+{% block single_button_row %}
+  <div class="form-group">
+    {{ form_widget(form) }}
+  </div>
+{% endblock %}

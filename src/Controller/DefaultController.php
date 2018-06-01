@@ -20,7 +20,7 @@ class DefaultController extends Controller
   /**
    * @Route("/", defaults={"_studyArea"=null, "pageUrl"=""})
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home", options={"expose"=true})
-   * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"})
+   * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"}, name="_home_simple")
    * @Template("double_column.html.twig")
    * @IsGranted("ROLE_USER")
    *

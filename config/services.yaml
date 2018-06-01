@@ -64,6 +64,10 @@ services:
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
 
+  App\Serializer\Handler\ConceptHandler:
+    tags:
+      - { name: jms_serializer.event_subscriber }
+
   Drenso\OidcBundle\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'
