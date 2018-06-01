@@ -48,6 +48,8 @@ $(function () {
 
   // Disable submit buttons on submit
   $('form').submit(function () {
+    if ($(this).attr('target') === '_blank') return;
+
     $(this).find(':input[type=submit]')
         .addClass('disabled')
         .on('click', function (e) {

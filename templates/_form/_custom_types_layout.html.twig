@@ -13,9 +13,10 @@
   {{ block('save_row') }}
 {% endblock %}
 
-{# Single button type, to remove empty label space #}
-{% block single_button_row %}
+{# Single submit type, to remove empty label space #}
+{% block single_submit_row %}
+  {%- set type = 'submit' -%}
   <div class="form-group">
-    {{ form_widget(form) }}
+    {{ block('button_widget') }}
   </div>
 {% endblock %}

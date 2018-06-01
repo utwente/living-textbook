@@ -50,7 +50,9 @@ require('../event/eventTypes');
   /**
    * Page submit event
    */
-  eDispatch.pageSubmit = function () {
+  eDispatch.pageSubmit = function (form) {
+    if (form.attr('target') === '_blank') return;
+
     dispatchParent(types.PAGE_SUBMIT);
   };
 

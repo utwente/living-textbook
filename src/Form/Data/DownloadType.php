@@ -2,9 +2,10 @@
 
 namespace App\Form\Data;
 
-use App\Form\Type\SingleButtonType;
+use App\Form\Type\SingleSubmitType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DownloadType extends AbstractType
 {
@@ -12,7 +13,7 @@ class DownloadType extends AbstractType
   {
     $builder
         // In the future, there will probably be a type selection here (json/owl)
-        ->add('submit', SingleButtonType::class, [
+        ->add('submit', SingleSubmitType::class, [
             'label' => 'data.download',
             'icon'  => 'fa-download',
             'attr'  => array(
@@ -20,4 +21,15 @@ class DownloadType extends AbstractType
             ),
         ]);
   }
+
+  public function configureOptions(OptionsResolver $resolver)
+  {
+    $resolver->setDefaults([
+        'attr' => [
+            'target' => '_blank',
+        ],
+    ]);
+  }
+
+
 }

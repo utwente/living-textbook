@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -195,7 +196,7 @@ class DataController extends Controller
     $form->handleRequest($request);
 
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($form->isSubmitted() && $form->isValid()) {
+    if ($form->isSubmitted()) {
       // Retrieve the relation types as cache
       $relationTypes = $relationTypeRepo->findBy(['studyArea' => $studyArea]);
 
@@ -227,7 +228,12 @@ class DataController extends Controller
             'links' => $mappedLinks,
         ], 'json', SerializationContext::create()->setGroups(['download_json']));
 
-        return new JsonResponse($json, Response::HTTP_OK, [], true);
+        $response = new JsonResponse($json, Response::HTTP_OK, [], true);
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            sprintf('%s_export.json', mb_strtolower(preg_replace('/[^\p{L}\p{N}]/u', '_', $studyArea->getName())))
+        ));
+        return $response;
       }
     }
 
