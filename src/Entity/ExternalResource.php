@@ -53,11 +53,10 @@ class ExternalResource
   private $description;
 
   /**
-   * @var string
+   * @var string|null
    *
-   * @ORM\Column(name="url", type="text", length=1000, nullable=false)
+   * @ORM\Column(name="url", type="text", length=1000, nullable=true)
    *
-   * @Assert\NotBlank()
    * @Assert\Url()
    * @Assert\Length(max=1000)
    */
@@ -155,19 +154,19 @@ class ExternalResource
   }
 
   /**
-   * @return string
+   * @return string|null
    */
-  public function getUrl(): string
+  public function getUrl(): ?string
   {
     return $this->url;
   }
 
   /**
-   * @param string $url
+   * @param string|null $url
    *
    * @return ExternalResource
    */
-  public function setUrl(string $url): ExternalResource
+  public function setUrl(?string $url): ExternalResource
   {
     $this->url = $url;
 

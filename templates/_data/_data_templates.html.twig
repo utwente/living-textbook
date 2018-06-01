@@ -30,10 +30,14 @@
   {% if data|length > 0 %}
     <h2>{{ 'concept.external-resources'|trans }}</h2>
     <ul>
-      {% for example in data %}
+      {% for resource in data %}
         <li>
-          <a href="{{ example.url }}" class="no-block" target="_blank">{{ example.title }}</a>
-          <br/>{{ example.description }}
+          {% if resource.url is not empty %}
+            <a href="{{ resource.url }}" class="no-block" target="_blank">{{ resource.title }}</a>
+          {% else %}
+            {{ resource.title }}
+          {% endif %}
+          <br/>{{ resource.description }}
         </li>
       {% endfor %}
     </ul>

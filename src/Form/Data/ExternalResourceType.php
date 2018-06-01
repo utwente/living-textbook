@@ -26,7 +26,8 @@ class ExternalResourceType extends AbstractType
             'label' => 'resource.description',
         ])
         ->add('url', UrlType::class, [
-            'label' => 'resource.url',
+            'label'    => 'resource.url',
+            'required' => false,
         ])
         ->add('position', OrderedCollectionElementType::class);
   }
