@@ -13,7 +13,7 @@ use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Role\Role;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,16 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
  * @UniqueEntity({"username", "isOidc"}, message="user.email-used", errorPath="username")
- *
- * Authentication error order:
- * PreAuth:
- * - LockedException (isAccountNonLocked)          -> (inactive)
- * - DisabledException (isEnabled)                 -> active flag false
- * - AccountExpiredException (isAccountNonExpired) -> (inactive)
- * PostAuth
- * - CredentialsExpiredException (isCredentialsNonExpired) -> (inactive)
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements UserInterface, \Serializable
 {
 
   use IdTrait;
@@ -148,14 +140,6 @@ class User implements AdvancedUserInterface, \Serializable
   protected $lastUsed;
 
   /**
-   * Whether the account is active or not
-   *
-   * @var bool
-   * @ORM\Column(name="is_active", type="boolean")
-   */
-  private $isActive;
-
-  /**
    * @var array[string]
    *
    * @ORM\Column(name="roles", type="array", nullable=false)
@@ -187,7 +171,6 @@ class User implements AdvancedUserInterface, \Serializable
   public function __construct()
   {
     $this->registeredOn  = new \DateTime();
-    $this->isActive      = true;
     $this->isAdmin       = false;
     $this->securityRoles = array();
     $this->userGroups    = new ArrayCollection();
@@ -261,7 +244,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->id,
         $this->username,
         $this->password,
-        $this->isActive,
+        true, // BC-compatibility with serialized sessions
         $this->isOidc,
     ));
   }
@@ -282,69 +265,9 @@ class User implements AdvancedUserInterface, \Serializable
         $this->id,
         $this->username,
         $this->password,
-        $this->isActive,
+        , //  BC-compatibility with serialized sessions
         $this->isOidc,
         ) = unserialize($serialized);
-  }
-
-  /**
-   * Checks whether the user is locked.
-   *
-   * Internally, if this method returns false, the authentication system
-   * will throw a LockedException and prevent login.
-   *
-   * @return bool true if the user is not locked, false otherwise
-   *
-   * @see LockedException
-   */
-  public function isAccountNonLocked()
-  {
-    return true;
-  }
-
-  /**
-   * Checks whether the user is enabled.
-   *
-   * Internally, if this method returns false, the authentication system
-   * will throw a DisabledException and prevent login.
-   *
-   * @return bool true if the user is enabled, false otherwise
-   *
-   * @see DisabledException
-   */
-  public function isEnabled()
-  {
-    return $this->isActive;
-  }
-
-  /**
-   * Checks whether the user's account has expired.
-   *
-   * Internally, if this method returns false, the authentication system
-   * will throw an AccountExpiredException and prevent login.
-   *
-   * @return bool true if the user's account is non expired, false otherwise
-   *
-   * @see AccountExpiredException
-   */
-  public function isAccountNonExpired()
-  {
-    return true;
-  }
-
-  /**
-   * Checks whether the user's credentials (password) has expired.
-   *
-   * Internally, if this method returns false, the authentication system
-   * will throw a CredentialsExpiredException and prevent login.
-   *
-   * @return bool true if the user's credentials are non expired, false otherwise
-   *
-   * @see CredentialsExpiredException
-   */
-  public function isCredentialsNonExpired()
-  {
-    return true;
   }
 
   /**
@@ -454,28 +377,6 @@ class User implements AdvancedUserInterface, \Serializable
   public function setPassword($password)
   {
     $this->password = $password;
-
-    return $this;
-  }
-
-  /**
-   * Get isActive
-   *
-   * @return boolean
-   */
-  public function getIsActive()
-  {
-    return $this->isActive;
-  }
-
-  /**
-   * @param bool $isActive
-   *
-   * @return User
-   */
-  public function setIsActive($isActive)
-  {
-    $this->isActive = $isActive;
 
     return $this;
   }

@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Security;
 
 class AuthenticationController extends Controller
@@ -74,9 +73,6 @@ class AuthenticationController extends Controller
       if ($authError instanceof BadCredentialsException) {
         // Bad credentials given
         $this->addFlash('authError', $trans->trans('login.bad-credentials'));
-      } else if ($authError instanceof DisabledException) {
-        // Account is disabled
-        $this->addFlash('authError', $trans->trans('login.account-disabled'));
       } else {
         // General error occurred
         $this->addFlash('authError', $trans->trans('login.general-error'));
@@ -101,7 +97,7 @@ class AuthenticationController extends Controller
    * @return RedirectResponse
    *
    * @throws \Drenso\OidcBundle\Exception\OidcConfigurationException
-   * @throws \Drenso\OidcBundle\OidcConfigurationResolveException
+   * @throws \Drenso\OidcBundle\Exception\OidcConfigurationResolveException
    */
   public function surfconext(SessionInterface $session, OidcClient $oidc)
   {

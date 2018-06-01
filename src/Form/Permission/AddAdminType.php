@@ -19,7 +19,6 @@ class AddAdminType extends AbstractType
             'query_builder' => function (UserRepository $ur) {
               return $ur->createQueryBuilder('u')
                   ->where('u.isAdmin = false')
-                  ->andWhere('u.isActive = true')
                   ->orderBy('u.displayName', 'ASC');
             },
             'select2'       => true,
