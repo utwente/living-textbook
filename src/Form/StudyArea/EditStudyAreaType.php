@@ -30,16 +30,19 @@ class EditStudyAreaType extends AbstractType
               return ucfirst($value);
             },
             'select2'      => true,
-        ])
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => !$options['save_only'] && $options['save_and_list'],
-            'enable_list'          => !$options['save_only'],
-            'list_route'           => $options['list_route'],
-            'enable_cancel'        => !$options['save_only'],
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => $editing ? $options['cancel_route_edit'] : $options['cancel_route'],
-            'cancel_route_params'  => $editing ? ['studyArea' => $studyArea->getId()] : [],
         ]);
+    if (!$options['hide_submit']) {
+      $builder
+          ->add('submit', SaveType::class, [
+              'enable_save_and_list' => !$options['save_only'] && $options['save_and_list'],
+              'enable_list'          => !$options['save_only'],
+              'list_route'           => $options['list_route'],
+              'enable_cancel'        => !$options['save_only'],
+              'cancel_label'         => 'form.discard',
+              'cancel_route'         => $editing ? $options['cancel_route_edit'] : $options['cancel_route'],
+              'cancel_route_params'  => $editing ? ['studyArea' => $studyArea->getId()] : [],
+          ]);
+    }
   }
 
   public function configureOptions(OptionsResolver $resolver)
@@ -52,6 +55,7 @@ class EditStudyAreaType extends AbstractType
             'list_route'        => 'app_studyarea_list',
             'cancel_route'      => 'app_studyarea_list',
             'cancel_route_edit' => 'app_studyarea_show',
+            'hide_submit'       => false,
         ])
         ->setAllowedTypes('save_only', 'bool')
         ->setAllowedTypes('save_and_list', 'bool')
@@ -61,7 +65,8 @@ class EditStudyAreaType extends AbstractType
         ->setAllowedTypes('cancel_route', 'string')
         ->setAllowedTypes('cancel_route_edit', 'string')
         ->setRequired('select_owner')
-        ->setAllowedTypes('select_owner', 'bool');
+        ->setAllowedTypes('select_owner', 'bool')
+        ->setAllowedTypes('hide_submit', 'bool');
   }
 
 }

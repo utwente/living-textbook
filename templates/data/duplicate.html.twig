@@ -1,0 +1,21 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'data.duplicate'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'data.duplicate-text'|trans({'%item%': studyArea.name}) }}</p>
+
+  {{ form(form) }}
+
+  <script type="text/javascript">
+    $('#duplicate_select_all').on('change', function(){
+      if ($(this).is(':checked')){
+        $('#duplicate_concepts').attr('disabled', 'disabled');
+      } else {
+        $('#duplicate_concepts').removeAttr('disabled');
+      }
+    });
+  </script>
+{% endblock %}

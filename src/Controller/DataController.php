@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
+use App\Entity\StudyArea;
 use App\Form\Data\DownloadType;
+use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
@@ -233,6 +235,7 @@ class DataController extends Controller
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             sprintf('%s_export.json', mb_strtolower(preg_replace('/[^\p{L}\p{N}]/u', '_', $studyArea->getName())))
         ));
+
         return $response;
       }
     }
@@ -240,6 +243,47 @@ class DataController extends Controller
     return [
         'studyArea' => $studyArea,
         'form'      => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/duplicate")
+   * @Template()
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param TranslatorInterface $trans
+   *
+   * @return array|Response
+   */
+  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans)
+  {
+    // Create form to select the concepts for this study area
+    $studyArea = (new StudyArea())->setOwner($this->getUser())->setAccessType(StudyArea::ACCESS_INDIVIDUAL);
+    $form      = $this->createForm(DuplicateType::class, [
+        'studyArea' => $studyArea,
+    ], [
+        'current_study_area' => $requestStudyArea->getStudyArea(),
+        'new_study_area'     => $studyArea,
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+
+      $data      = $form->getData();
+      $selectAll = $data['select_all'];
+      $concepts  = $data['concepts'];
+
+      // Create the new study area
+      $this->addFlash('success', $trans->trans('data.concepts-duplicated'));
+
+      return $this->redirectToRoute('app_default_dashboard');
+    }
+
+    return [
+        'form'      => $form->createView(),
+        'studyArea' => $requestStudyArea->getStudyArea(),
     ];
   }
 

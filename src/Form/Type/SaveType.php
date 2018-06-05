@@ -29,7 +29,7 @@ class SaveType extends AbstractType
     if ($options['enable_save']) {
       $builder->add('_save', SubmitType::class, array(
           'label' => $options['save_label'],
-          'icon'  => 'fa-check',
+          'icon'  => $options['save_icon'],
           'attr'  => array(
               'class' => 'btn btn-outline-success',
           ),
@@ -40,7 +40,7 @@ class SaveType extends AbstractType
     if ($options['enable_save_and_list']) {
       $builder->add('_save_and_list', SubmitType::class, array(
           'label' => $options['save_and_list_label'],
-          'icon'  => 'fa-check',
+          'icon'  => $options['save_and_list_icon'],
           'attr'  => array(
               'class' => 'btn btn-outline-info',
           ),
@@ -52,8 +52,8 @@ class SaveType extends AbstractType
           'label'        => $options['cancel_label'],
           'route'        => $options['cancel_route'],
           'route_params' => $options['cancel_route_params'],
-          'icon'         => 'fa-times',
-          'attr'  => array(
+          'icon'         => $options['cancel_icon'],
+          'attr'         => array(
               'class' => 'btn btn-outline-danger',
           ),
       ));
@@ -65,7 +65,7 @@ class SaveType extends AbstractType
           'label'        => $options['list_label'],
           'route'        => $options['list_route'],
           'route_params' => $options['list_route_params'],
-          'icon'         => 'fa-list',
+          'icon'         => $options['list_icon'],
       ));
     }
   }
@@ -99,9 +99,13 @@ class SaveType extends AbstractType
     $resolver->setDefaults(array(
         'mapped'               => false,
         'save_label'           => 'form.save',
+        'save_icon'            => 'fa-check',
         'save_and_list_label'  => 'form.save-and-list',
+        'save_and_list_icon'   => 'fa-check',
         'list_label'           => 'form.list',
+        'list_icon'            => 'fa-list',
         'cancel_label'         => 'form.cancel',
+        'cancel_icon'          => 'fa-times',
         'enable_save'          => true,
         'enable_save_and_list' => true,
         'enable_list'          => true,

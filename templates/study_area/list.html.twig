@@ -1,8 +1,8 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% from '_macro/_action_bar.html.twig' import new_bar %}
-  {{ new_bar(path('app_studyarea_add')) }}
+  {% from '_macro/_action_bar.html.twig' import new_and_duplicate_bar %}
+  {{ new_and_duplicate_bar(path('app_studyarea_add'), path('app_data_duplicate')) }}
 {% endblock %}
 
 {% block title %}
