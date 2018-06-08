@@ -1,10 +1,19 @@
 {# General save_row block #}
 {% block save_row %}
-  <div class="form-group">
-    {% for item in form %}
-      {{ form_widget(item) }}
-    {% endfor %}
+  {% if locate_static|default(false) %}
+    <div class="locate-static-placeholder"></div>
+    <div class="locate-static-container">
+  {% endif %}
+  <div class="form-group form-group-save-button">
+    <div class="form-group-inner">
+      {% for item in form %}
+        {{ form_widget(item) }}
+      {% endfor %}
+    </div>
   </div>
+  {% if locate_static|default(false) %}
+    </div>
+  {% endif %}
 {% endblock %}
 
 {# RemoveType in order to render the buttons correctly #}

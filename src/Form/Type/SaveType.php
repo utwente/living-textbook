@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,6 +72,18 @@ class SaveType extends AbstractType
   }
 
   /**
+   * Build view
+   *
+   * @param FormView      $view
+   * @param FormInterface $form
+   * @param array         $options
+   */
+  public function buildView(FormView $view, FormInterface $form, array $options)
+  {
+    $view->vars['locate_static'] = $options['locate_static'];
+  }
+
+  /**
    * Check whether the "save and list" button is clicked
    *
    * @param FormInterface $form
@@ -114,6 +127,7 @@ class SaveType extends AbstractType
         'list_route_params'    => array(),
         'cancel_route'         => NULL,
         'cancel_route_params'  => array(),
+        'locate_static'        => false,
     ));
 
     $resolver->setAllowedTypes('save_label', 'string');
@@ -127,6 +141,7 @@ class SaveType extends AbstractType
     $resolver->setAllowedTypes('list_route_params', 'array');
     $resolver->setAllowedTypes('cancel_route', array('null', 'string'));
     $resolver->setAllowedTypes('cancel_route_params', 'array');
+    $resolver->setAllowedTypes('locate_static', 'bool');
 
     $resolver->setNormalizer('list_route', function (Options $options, $value) {
       if ($options['enable_list'] === true && $value === NULL) {

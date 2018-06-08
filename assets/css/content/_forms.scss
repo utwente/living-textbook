@@ -12,8 +12,29 @@ form {
     }
   }
 
+  .form-group-save-button {
+    text-align: right;
+    margin-bottom: 0;
+  }
+
   .invalid-feedback {
     display: block;
+  }
+
+  .locate-static-placeholder {
+    height: 1rem;
+  }
+
+  .locate-static-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    padding: 2px;
+
+    .form-group-inner {
+      width: 100%;
+      background-color: white;
+    }
   }
 }
 

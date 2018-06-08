@@ -109,6 +109,7 @@ class EditConceptType extends AbstractType
             'incoming' => true,
         ])
         ->add('submit', SaveType::class, [
+            'locate_static'       => true,
             'list_route'          => 'app_concept_list',
             'enable_cancel'       => true,
             'cancel_label'        => 'form.discard',
