@@ -114,9 +114,15 @@ import Routing from 'fos-routing';
    * @param data
    */
   function onShowConcept(data) {
-    dw.openWindow(function () {
-      cb.moveToConceptById(data.id);
-    });
+    if (data.id === -1){
+      dw.openWindow(function() {
+        cb.centerView();
+      });
+    } else {
+      dw.openWindow(function () {
+        cb.moveToConceptById(data.id);
+      });
+    }
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType));

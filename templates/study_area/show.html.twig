@@ -3,11 +3,12 @@
 {% block before_title %}
   {% from '_macro/_action_bar.html.twig' import action_bar %}
   {{ action_bar(
-    path('app_studyarea_edit', {'studyArea': studyArea.id}),
+    is_granted('STUDYAREA_OWNER', studyArea) ? path('app_studyarea_edit', {'studyArea': studyArea.id}) : false,
     false,
     path('app_studyarea_list'),
-    path('app_studyarea_remove', {'studyArea': studyArea.id}),
-    studyArea.id
+    false,
+    is_granted('STUDYAREA_OWNER', studyArea) ? path('app_studyarea_remove', {'studyArea': studyArea.id}) : false,
+    -1
   ) }}
 {% endblock %}
 

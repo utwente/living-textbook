@@ -3,10 +3,11 @@
 {% block before_title %}
   {% from '_macro/_action_bar.html.twig' import action_bar %}
   {{ action_bar(
-    path('app_concept_edit', {'concept': concept.id}),
+    is_granted('STUDYAREA_EDIT', _twigStudyArea) ? path('app_concept_edit', {'concept': concept.id}) : false,
     false,
     path('app_concept_list'),
-    path('app_concept_remove', {'concept': concept.id}),
+    is_granted('STUDYAREA_EDIT', _twigStudyArea) ? path('app_concept_add') : false,
+    is_granted('STUDYAREA_EDIT', _twigStudyArea) ? path('app_concept_remove', {'concept': concept.id}) : false,
     concept.id
   ) }}
 {% endblock %}
