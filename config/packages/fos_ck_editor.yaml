@@ -13,7 +13,7 @@ fos_ck_editor:
       toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
       extraPlugins: "latexeditor,image2"
-      format_tags: "p;h1;h2;h3;h4;pre"
+      format_tags: "h3;h4;p"
   toolbars:
     configs:
       ltb_toolbar: [ "@text_tools", "@ltb_tools", "@edit_tools", "/", "@font_tools" ]
@@ -21,7 +21,7 @@ fos_ck_editor:
       edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
       text_tools: [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
       ltb_tools: [ "Image", "LatexEditor" ]
-      font_tools: [ "Format", "FontSize", "TextColor" ]
+      font_tools: [ "Format", "TextColor" ]
   plugins:
     latexeditor:
       path:     "/ckeditor-plugins/latexeditor/"
