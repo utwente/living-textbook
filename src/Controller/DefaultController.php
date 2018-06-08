@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\StudyArea;
+use App\Repository\ConceptRepository;
+use App\Repository\LearningOutcomeRepository;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -36,7 +38,7 @@ class DefaultController extends Controller
     if ($this->has('profiler')) $this->get('profiler')->disable();
 
     // Check for empty study area
-    if (!$requestStudyArea->hasValue()){
+    if (!$requestStudyArea->hasValue()) {
       // This means that there is no study area found for the user
       return $this->redirectToRoute('app_studyarea_add_first', ['_studyArea' => 0]);
     }
@@ -57,22 +59,26 @@ class DefaultController extends Controller
    * @Template
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea    $requestStudyArea
-   * @param StudyAreaRepository $studyAreaRepository
+   * @param RequestStudyArea          $requestStudyArea
+   * @param StudyAreaRepository       $studyAreaRepository
+   * @param ConceptRepository         $conceptRepo
+   * @param LearningOutcomeRepository $learningOutcomeRepo
    *
    * @return array
    *
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function dashboard(RequestStudyArea $requestStudyArea, StudyAreaRepository $studyAreaRepository)
+  public function dashboard(RequestStudyArea $requestStudyArea, StudyAreaRepository $studyAreaRepository,
+                            ConceptRepository $conceptRepo, LearningOutcomeRepository $learningOutcomeRepo)
   {
-    $user = $this->getUser();
+    $user      = $this->getUser();
     $studyArea = $requestStudyArea->getStudyArea();
 
     if ($studyAreaRepository->getVisibleCount($user) > 1) {
       $form = $this->createFormBuilder()
           ->add('studyArea', EntityType::class, [
-              'label'         => 'dashboard.study-area-switch',
+              'placeholder'   => 'dashboard.select-study-area',
+              'hide_label'    => true,
               'class'         => StudyArea::class,
               'select2'       => true,
               'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
@@ -83,19 +89,21 @@ class DefaultController extends Controller
               },
           ])
           ->add('submit', SubmitType::class, [
-              'label' => 'study-area.switch-to',
-              'icon'  => 'fa-chevron-right',
-              'attr'  => array(
+              'disabled' => true,
+              'label'    => 'study-area.switch-to',
+              'icon'     => 'fa-chevron-right',
+              'attr'     => array(
                   'class'   => 'btn btn-outline-success',
-                  'onclick' => 'eDispatch.pageLoad(Routing.generate(\'_home\', {\'_studyArea\': $(\'#form_studyArea\').val()}), {topLevel: true}); return false;',
               ),
           ])
           ->getForm();
     }
 
     return [
-        'form'      => isset($form) ? $form->createView() : NULL,
-        'studyArea' => $studyArea,
+        'form'                 => isset($form) ? $form->createView() : NULL,
+        'studyArea'            => $studyArea,
+        'conceptCount'         => $conceptRepo->getCountForStudyArea($studyArea),
+        'learningOutcomeCount' => $learningOutcomeRepo->getCountForStudyArea($studyArea),
     ];
   }
 }

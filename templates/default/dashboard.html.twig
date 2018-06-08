@@ -1,13 +1,47 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'app.dashboard'|trans }}
+  {{ studyArea.name }} - {{ 'app.dashboard'|trans }}
 {% endblock %}
 
 {% block content %}
   <p>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</p>
+  <ul>
+    <li>
+      {% if conceptCount > 0 %}<a href="{{ path('app_concept_list') }}">{% endif %}
+        {{ 'dashboard.concept-count'|transchoice(conceptCount) }}
+        {% if conceptCount > 0 %}</a>{% endif %}
+    </li>
+    <li>
+      {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
+        {{ 'dashboard.learning-outcome-count'|transchoice(learningOutcomeCount) }}
+        {% if learningOutcomeCount > 0 %}</a>{% endif %}
+    </li>
+  </ul>
 
+  <h4>{{ 'dashboard.study-area-switch'|trans }}</h4>
   {% if form is not null %}
-    {{ form(form) }}
+    {{ form_start(form) }}
+    <div class="row">
+      <div class="col-sm-12 col-md-5 col-lg-3 mt-1">
+        {{ form_widget(form.studyArea) }}
+      </div>
+      <div class="col mt-1">
+        {{ form_widget(form.submit) }}
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      $('#form_studyArea').on('change', function () {
+        $('#form_submit').removeAttr('disabled');
+      });
+
+      $('#form_submit').on('click', function () {
+        eDispatch.pageLoad(Routing.generate('_home', {'_studyArea': $('#form_studyArea').val()}), {topLevel: true});
+        return false;
+      });
+    </script>
+
+    {{ form_end(form) }}
   {% endif %}
 {% endblock %}

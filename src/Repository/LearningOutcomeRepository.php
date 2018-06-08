@@ -6,6 +6,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 class LearningOutcomeRepository extends ServiceEntityRepository
 {
@@ -53,5 +54,20 @@ class LearningOutcomeRepository extends ServiceEntityRepository
         ->where('c IN (:concepts)')
         ->setParameter('concepts', $concepts)
         ->getQuery()->getResult();
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   * @throws NonUniqueResultException
+   */
+  public function getCountForStudyArea(StudyArea $studyArea)
+  {
+    return $this->createQueryBuilder('lo')
+        ->select('COUNT(lo.id)')
+        ->where('lo.studyArea = :studyArea')
+        ->setParameter('studyArea', $studyArea)
+        ->getQuery()->getSingleScalarResult();
   }
 }
