@@ -35,7 +35,7 @@ trait BaseDataTextObject
    *
    * @return bool
    */
-  function hasData(): bool
+  public function hasData(): bool
   {
     return $this->text !== NULL && $this->text != '';
   }

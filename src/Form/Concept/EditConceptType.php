@@ -36,6 +36,7 @@ class EditConceptType extends AbstractType
             'label'      => 'concept.introduction',
             'data_class' => DataIntroduction::class,
             'studyArea'  => $studyArea,
+            'required'   => false,
         ])
         ->add('priorKnowledge', EntityType::class, [
             'label'         => 'concept.prior-knowledge',

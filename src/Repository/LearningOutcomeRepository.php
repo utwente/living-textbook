@@ -37,4 +37,21 @@ class LearningOutcomeRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea)
         ->orderBy('lo.number', 'ASC');
   }
+
+  /**
+   * Find learning outcomes for a set of concepts
+   *
+   * @param array $concepts
+   *
+   * @return LearningOutcome[]
+   */
+  public function findForConcepts(array $concepts)
+  {
+    return $this->createQueryBuilder('lo')
+        ->distinct()
+        ->leftJoin('lo.concepts', 'c')
+        ->where('c IN (:concepts)')
+        ->setParameter('concepts', $concepts)
+        ->getQuery()->getResult();
+  }
 }

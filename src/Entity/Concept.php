@@ -570,7 +570,7 @@ class Concept
    *
    * @return Concept
    */
-  public function addLearningOurcome(LearningOutcome $learningOutcome): Concept
+  public function addLearningOutcome(LearningOutcome $learningOutcome): Concept
   {
     $this->learningOutcomes->add($learningOutcome);
 

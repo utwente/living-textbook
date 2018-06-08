@@ -35,7 +35,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
    *
    * @param array $concepts
    *
-   * @return mixed
+   * @return ConceptRelation[]|Collection
    */
   public function findByConcepts(array $concepts)
   {
