@@ -47,9 +47,9 @@ $(function () {
   });
 
   // Disable submit buttons on submit
-  $('form').submit(function () {
+  let $form = $('form');
+  $form.submit(function () {
     if ($(this).attr('target') === '_blank') return;
-
     $(this).find(':input[type=submit]')
         .addClass('disabled')
         .on('click', function (e) {
@@ -57,6 +57,9 @@ $(function () {
           return false;
         });
   });
+
+  // Autofocus first form field
+  $form.find('input').first().focus();
 
   // Page loaded event
   eDispatch.pageLoaded();
