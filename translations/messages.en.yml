@@ -105,9 +105,11 @@ login:
   general-error: 'Login failed due to an unknown error.'
   login: 'Login'
   login-text: 'Before you can continue and work with the living textbook, you will need to login.
-    You can either log in using your university credentials (SURFconext) or a account specifically created for you.'
+    You can either log in using your university credentials (SURFconext) or an account specifically created for you.'
   logout: 'Logout'
   password: 'Password'
+  privacy-policy: 'Privacy policy'
+  privacy-policy-text: 'By logging in, you accept our '
   surfconext: 'University login'
   surfconext-login-text: 'Click on the image to login with your university credentials.'
   surfconext-login: 'SURFconext login'
