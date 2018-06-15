@@ -74,9 +74,16 @@ $(function () {
         });
   });
 
-  // Autofocus first form field
+  // Auto focus first form field
   $form.find('input').first().focus();
 
   // Page loaded event
   eDispatch.pageLoaded();
+
+  // Check in double column has been detected (after timeout)
+  setTimeout(() => {
+    if (!inDoubleColumn) {
+      $('#no-browser-warning').slideDown();
+    }
+  }, 5000)
 });
