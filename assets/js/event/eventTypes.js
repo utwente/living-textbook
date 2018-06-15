@@ -2,6 +2,10 @@
  * This module defines several event constants
  */
 (function (eType) {
+  // Double column state
+  eType.CHECK_DOUBLE_COLUMN = 'check_double_column';
+  eType.CHECK_DOUBLE_COLUMN_RETURN = 'check_double_column_return';
+
   // Page actions/states
   eType.PAGE_LOAD = 'page_load';
   eType.PAGE_LOADED = 'page_loaded';

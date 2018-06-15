@@ -11,14 +11,22 @@ require('../event/eventTypes');
    * @param data
    */
   function dispatchParent(type, data) {
-    // @todo remove
-    console.info('Event dispatched', type, data);
+    console.info('Event dispatched from content', type, data);
 
     parent.postMessage({
       type: type,
       payload: data
     }, '*');
   }
+
+  /**
+   * Send a message to determine if it is executed in a double column environment
+   */
+  eDispatch.checkForDoubleColumn = function(checksum) {
+    dispatchParent(types.CHECK_DOUBLE_COLUMN, {
+      checksum: checksum,
+    });
+  };
 
   /**
    * Page needs to load event

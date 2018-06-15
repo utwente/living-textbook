@@ -1,5 +1,16 @@
 require('../css/content/content.scss');
 
+let inDoubleColumn = false;
+const inDoubleColumnChecksum = Math.random().toString(36);
+
+export function setDoubleColumnDetected(checksum) {
+  if (checksum === inDoubleColumnChecksum) {
+    console.info("DoubleColumn context detected!");
+    $('#no-browser-warning').slideUp();
+    inDoubleColumn = true;
+  }
+}
+
 function findParent(tag, el) {
   while (el) {
     if ((el.nodeName || el.tagName).toLowerCase() === tag.toLowerCase()) {
@@ -14,11 +25,16 @@ $(function () {
   require('./content/eventHandler');
   require('./content/eventDispatcher');
 
+  eDispatch.checkForDoubleColumn(inDoubleColumnChecksum);
+
   // Load tooltips
   $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
 
   // Bind to all links
   $(document.body).on('click', function (e) {
+    // Disable this behavior if the browser has not been found
+    if (!inDoubleColumn) return;
+
     e = e || event;
 
     var from = findParent('a', e.target || e.srcElement);

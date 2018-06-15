@@ -15,13 +15,15 @@ import Routing from 'fos-routing';
    * Register message handler for communication
    */
   window.addEventListener('message', function (event) {
-    // @todo remove
-    console.info('Event received', event.data);
+    console.info('Event received in double column', event.data);
 
-    var type = event.data.type;
-    var data = event.data.payload;
+    let type = event.data.type;
+    let data = event.data.payload;
 
     switch (type) {
+      case types.CHECK_DOUBLE_COLUMN:
+        onCheckDoubleColumn(data);
+        break;
       case types.PAGE_LOAD:
         onPageLoad(data);
         break;
@@ -42,6 +44,14 @@ import Routing from 'fos-routing';
         break;
     }
   });
+
+  /**
+   * Return the checksum to indicate it's here
+   * @param data
+   */
+  function onCheckDoubleColumn(data) {
+    eDispatch.returnDoubleColumnChecksum(data.checksum);
+  }
 
   /**
    * Load the concept page

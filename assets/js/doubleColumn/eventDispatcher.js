@@ -11,6 +11,8 @@ require('../event/eventTypes');
    * @param data
    */
   function dispatchParent(type, data) {
+    console.info('Event dispatched from double column to parent', type, data);
+
     parent.postMessage({
       type: type,
       payload: data
@@ -18,10 +20,34 @@ require('../event/eventTypes');
   }
 
   /**
+   * Dispatches the given message to the iframe
+   * @param type
+   * @param data
+   */
+  function dispatchIframe(type, data) {
+    console.info('Event dispatched from double column to iframe', type, data);
+
+    document.getElementById("data-iframe").contentWindow.postMessage({
+      type: type,
+      payload: data
+    }, '*');
+  }
+
+  /**
+   * Send the checksum back to the content
+   * @param checksum
+   */
+  eDispatch.returnDoubleColumnChecksum = function (checksum) {
+    dispatchIframe(types.CHECK_DOUBLE_COLUMN_RETURN, {
+      checksum: checksum
+    });
+  };
+
+  /**
    * Concept selected event
    * @param id
    */
-  eDispatch.conceptSelected = function(id){
+  eDispatch.conceptSelected = function (id) {
     dispatchParent(types.CONCEPT_SELECTED, {
       id: id
     });
