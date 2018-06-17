@@ -24,6 +24,7 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
       return;
     }
 
+
     // Check if it is really an update
     if (previousVal === content || content === image.getAttribute('alt')) return;
     previousVal = content;
@@ -84,6 +85,16 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
     onShow: function () {
       var selection = editor.getSelection();
       var image = selection.getStartElement().getAscendant('img', true);
+
+      // Check for CKE span image wrapper
+      if (!image) {
+        var span = selection.getStartElement().getAscendant('span', true);
+        if (span) {
+          if (span.$.classList.contains('cke_widget_image')) {
+            image = span.getChild(0);
+          }
+        }
+      }
 
       if (!image) {
         image = editor.document.createElement('img');

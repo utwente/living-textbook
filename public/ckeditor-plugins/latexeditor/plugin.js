@@ -39,22 +39,31 @@ CKEDITOR.plugins.add('latexeditor', {
       // if the selected item is image of class 'latex-image',
       // we should be interested in it
       editor.contextMenu.addListener(function (element) {
-        var res = {};
-        if (element.getAscendant('img', true)) {
-          if (element.getAttribute('class') === 'latex-image') {
-            res['latexEditor'] = CKEDITOR.TRISTATE_OFF;
-            return res;
+
+        // Check for cke span image wrapper
+        if (element.getAscendant('span', true)){
+          if (element.$.classList.contains('cke_widget_image')){
+            element = element.getChild(0);
+          }
+        }
+
+        element = element.getAscendant('img', true);
+        if (element) {
+          if (element.$.classList.contains('latex-image')) {
+            editor.contextMenu.removeAll();
+            return {
+              latexEditor: CKEDITOR.TRISTATE_OFF
+            };
           }
         }
       });
-
     }
 
     // Register on double click event to open the editor
     editor.on('doubleclick', function (evt) {
       var element = evt.data.element;
       if (element && element.is('img')) {
-        if (element.getAttribute('class') === 'latex-image') {
+        if (element.$.classList.contains('latex-image')) {
           evt.data.dialog = pluginCmd;
         }
       }
