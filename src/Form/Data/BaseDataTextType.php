@@ -20,6 +20,7 @@ class BaseDataTextType extends AbstractBaseDataType
     ];
     if ($options['ckeditor']) {
       $formOptions['studyArea'] = $options['studyArea'];
+      $formOptions['config_name'] = 'ltb_concept_config';
     }
 
     $builder

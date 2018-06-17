@@ -52,3 +52,23 @@ $dropdown-link-hover-bg: #d2d2d2;
   height: inherit;
   opacity: inherit;
 }
+
+// Fix select 2 in ckeditor
+.cke_dialog {
+  .select2 {
+    .select2-container {
+
+    }
+    .select2-selection {
+      position: relative;
+
+      > span {
+        font: inherit
+      }
+    }
+  }
+}
+
+.select2-container.select2-container--bootstrap.select2-container--open {
+  z-index: 10011; // Higher than 10010 in ckeditor
+}

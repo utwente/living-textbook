@@ -1,5 +1,5 @@
 parameters:
-  ckeditor_tags: "<p><br><span><h1><h2><h3><h4>
+  ckeditor_tags: "<p><br><span><h1><h2><h3><h4><a>
   <img><figure><figcaption>
   <ul><ol><li>
   <strong><b><em><u><s><sup><sub><pre>
@@ -9,18 +9,22 @@ fos_ck_editor:
   autoload: false
   default_config: ltb_config
   configs:
-    ltb_config:
+    ltb_config: &ckeditor_default
       toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
-      extraPlugins: "latexeditor,image2"
       format_tags: "h3;h4;p"
+      extraPlugins: "latexeditor,image2"
+      extraAllowedContent: "img(latex-image);a[data-concept-id](concept-link)"
+    ltb_concept_config:
+      <<: *ckeditor_default
+      extraPlugins: "latexeditor,image2,conceptselector"
   toolbars:
     configs:
-      ltb_toolbar: [ "@text_tools", "@ltb_tools", "@edit_tools", "/", "@font_tools" ]
+      ltb_toolbar: [ "@text_tools", "@ltb_tools", "/", "@font_tools", "@edit_tools" ]
     items:
       edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
       text_tools: [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
-      ltb_tools: [ "Image", "LatexEditor" ]
+      ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector" ]
       font_tools: [ "Format", "TextColor" ]
   plugins:
     latexeditor:
@@ -28,4 +32,7 @@ fos_ck_editor:
       filename: "plugin.js"
     image2:
       path:     "/ckeditor-plugins/image2/"
+      filename: "plugin.js"
+    conceptselector:
+      path:     "/ckeditor-plugins/conceptselector/"
       filename: "plugin.js"

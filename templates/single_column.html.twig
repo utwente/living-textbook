@@ -4,6 +4,7 @@
   <!--suppress JSUnusedLocalSymbols -->
   <script type="text/javascript">
     var currentPath = "{{ app.request.pathinfo|escape('js') }}";
+    var currentStudyArea = {{ _twigStudyArea|default({id: 0}).id }};
   </script>
   <script src="{{ asset('build/content.js') }}" type="text/javascript"></script>
 
