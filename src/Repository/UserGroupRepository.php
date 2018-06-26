@@ -42,4 +42,39 @@ class UserGroupRepository extends ServiceEntityRepository
       return NULL;
     }
   }
+
+  /**
+   * Remove obsolete user groups based on the new study area access type
+   * Note that flush is required after this function call!
+   *
+   * @param StudyArea $studyArea
+   */
+  public function removeObsoleteGroups(StudyArea $studyArea)
+  {
+    $qb = $this->createQueryBuilder('ug')
+        ->where('ug.studyArea = :studyArea')
+        ->setParameter('studyArea', $studyArea);
+
+    switch ($studyArea->getAccessType()) {
+      case StudyArea::ACCESS_INDIVIDUAL:
+        // Remove all groups
+        break;
+      case StudyArea::ACCESS_GROUP:
+        // Nothing to do
+        return;
+      case StudyArea::ACCESS_PUBLIC:
+        // Remove viewer group
+        $qb->andWhere('ug.groupType = :groupType')
+            ->setParameter('groupType', UserGroup::GROUP_VIEWER);
+        break;
+    }
+
+    // Execute the query
+    $groups = $qb->getQuery()->getResult();
+
+    // Remove with entity manager to trigger soft delete
+    array_walk($groups, function ($group) {
+      $this->getEntityManager()->remove($group);
+    });
+  }
 }

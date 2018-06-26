@@ -9,6 +9,7 @@ use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
+use App\Repository\UserGroupRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -98,11 +99,12 @@ class StudyAreaController extends Controller
    * @param Request                $request
    * @param StudyArea              $studyArea
    * @param EntityManagerInterface $em
+   * @param UserGroupRepository    $userGroupRepo
    * @param TranslatorInterface    $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em, UserGroupRepository $userGroupRepo, TranslatorInterface $trans)
   {
 
     // Check whether permissions flag is set
@@ -119,6 +121,9 @@ class StudyAreaController extends Controller
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+
+      // Check if permissions must be reset
+      $userGroupRepo->removeObsoleteGroups($studyArea);
 
       // Save the data
       $em->flush();

@@ -25,6 +25,7 @@ class EditStudyAreaType extends AbstractType
         ])
         ->add('accessType', ChoiceType::class, [
             'label'        => 'study-area.access-type',
+            'help'         => 'study-area.access-type-change-note',
             'choices'      => StudyArea::getAccessTypes(),
             'choice_label' => function ($value, $key, $index) {
               return ucfirst($value);

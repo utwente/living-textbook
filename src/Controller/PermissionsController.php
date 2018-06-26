@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Form\Permission\AddAdminType;
@@ -165,10 +166,18 @@ class PermissionsController extends Controller
   public function addPermissions(Request $request, RequestStudyArea $requestStudyArea, string $groupType,
                                  EntityManagerInterface $em, UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans)
   {
-    $userGroup = $userGroupRepository->getForType($requestStudyArea->getStudyArea(), $groupType);
+    // Check for un-allowed combinations
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($studyArea->getAccessType() == StudyArea::ACCESS_PUBLIC && $groupType == UserGroup::GROUP_VIEWER){
+      $this->addFlash('notice', $trans->trans('permissions.not-allowed-public-viewer', ['%type%' => $groupType]));
+
+      return $this->redirectToRoute('app_permissions_studyarea');
+    }
+
+    $userGroup = $userGroupRepository->getForType($studyArea, $groupType);
     if (!$userGroup) {
       // Create a new group if not found
-      $userGroup = (new UserGroup())->setStudyArea($requestStudyArea->getStudyArea())->setGroupType($groupType);
+      $userGroup = (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
     }
 
     // Check whether there are actually users available
@@ -201,7 +210,7 @@ class PermissionsController extends Controller
     }
 
     return [
-        'studyArea' => $requestStudyArea->getStudyArea(),
+        'studyArea' => $studyArea,
         'type'      => $groupType,
         'form'      => $form->createView(),
     ];

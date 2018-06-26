@@ -151,7 +151,8 @@ permissions:
   info-text: 'Here you can grant and remove permissions on a per user basis.'
   no-admin: '%user% is no admin user'
   no-users-available: 'There are no users that can be granted the "%type%" permission'
-  permissions-added: 'The "%type" permissions have been added'
+  not-allowed-public-viewer: 'It is not possible to add viewer permissions to public study areas!'
+  permissions-added: 'The "%type%" permissions have been added'
   remove-admin: 'Remove %user% as administrator'
   remove-admin-text: 'Are you sure you want to remove %user% as administrator?'
   remove-all-not-necessary: 'The "%type%" permissions cannot be revoked, as they are not found'
@@ -162,7 +163,7 @@ permissions:
   remove-permission-text: 'Are you sure you want to revoke the "%type%" permission from the user %user% in the study area "%item%"?'
   removed-single-permission: 'Revoked "%type%" permission from %user%'
   reviewer-count: '{0} No reviewers|{1} One reviewer|]1,Inf[ %count% reviewers'
-  study-area-not-group: 'The current study area (%item%) does not have group permissions, which is required for advanced permission settings.'
+  study-area-not-group-or-public: 'The current study area (%item%) does not have group or public permissions, which is required for advanced permission settings.'
   study-area-title: 'Study area permissions'
   viewer-count: '{0} No viewers|{1} One viewer|]1,Inf[ %count% viewers'
   user: 'User'
@@ -179,6 +180,7 @@ resource:
 
 study-area:
   access-type: 'Access type'
+  access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!'
   add-title: 'Add new study area'
   current: 'Current'
   edit-title: 'Edit study area "%item%"'

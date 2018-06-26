@@ -42,8 +42,8 @@
 {% endmacro %}
 
 {% block content %}
-  {% if studyArea.accessType != 'group' %}
-    {{ 'permissions.study-area-not-group'|trans({'%item%': studyArea.name}) }}
+  {% if studyArea.accessType != 'group' and studyArea.accessType != 'public' %}
+    {{ 'permissions.study-area-not-group-or-public'|trans({'%item%': studyArea.name}) }}
     <a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id, 'permissions': true}) }}">
       {{ 'permissions.change-now'|trans }}.
     </a>
@@ -52,9 +52,11 @@
     <p>{{ 'permissions.info-text'|trans }}</p>
     {% from _self import print_users %}
 
-    {% set viewers = studyArea.getViewers() %}
-    <h4>{{ 'permissions.viewer-count'|transchoice(viewers|length) }}</h4>
-    {{ print_users(viewers, constant('App\\Entity\\UserGroup::GROUP_VIEWER')) }}
+    {% if studyArea.accessType != 'public' %}
+      {% set viewers = studyArea.getViewers() %}
+      <h4>{{ 'permissions.viewer-count'|transchoice(viewers|length) }}</h4>
+      {{ print_users(viewers, constant('App\\Entity\\UserGroup::GROUP_VIEWER')) }}
+    {% endif %}
 
     {% set editors = studyArea.getEditors() %}
     <h4>{{ 'permissions.editor-count'|transchoice(editors|length) }}</h4>
