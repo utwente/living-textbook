@@ -893,18 +893,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbGraph.links.map(drawNormalLink);
     context.stroke();
 
-    // Draw empty nodes
-    cb.applyStyle(-1);
-    context.beginPath();
-    context.lineWidth = cb.nodeLineWidth;
-    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
-    context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
-    cbGraph.nodes.map(drawEmptyNode);
-    context.fill();
-    context.stroke();
-
     // Draw normal nodes
-    for (var nn = 0; nn <= 4; nn++) {
+    for (var nn = -1; nn <= 4; nn++) {
       cb.applyStyle(nn);
       context.beginPath();
       context.lineWidth = cb.nodeLineWidth;
@@ -945,7 +935,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw dragged nodes
     if (isDragging) {
-      for (var dn = 0; dn <= 4; dn++) {
+      for (var dn = -1; dn <= 4; dn++) {
         cb.applyStyle(dn);
         context.beginPath();
         context.lineWidth = cb.nodeLineWidth;
@@ -977,7 +967,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     }
 
     // Draw highlighted nodes
-    for (var hn = 0; hn <= 4; hn++) {
+    for (var hn = -1; hn <= 4; hn++) {
       cb.applyStyle(hn);
       context.beginPath();
       context.lineWidth = cb.nodeLineWidth;
@@ -1152,19 +1142,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   }
 
   /**
-   * Draw a node when in empty state
-   * @param node
-   */
-  function drawEmptyNode(node){
-    if (node.empty) drawNode(node);
-  }
-
-  /**
    * Draw a node when in normal state
    * @param node
    */
   function drawNormalNode(node) {
-    if (node.highlighted || node.dragged || node.empty) return;
+    if (node.highlighted || node.dragged) return;
     drawNode(node);
   }
 
@@ -1173,7 +1155,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawDraggedNode(node) {
-    if (node.dragged && !node.empty) drawNode(node);
+    if (node.dragged) drawNode(node);
   }
 
   /**
@@ -1181,7 +1163,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawHighlightedNode(node) {
-    if (node.highlighted && !node.empty) drawNode(node);
+    if (node.highlighted) drawNode(node);
   }
 
   /**
@@ -1216,7 +1198,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function filterNodeOnColor(color) {
     return function (node) {
-      return node.color === color;
+      if (color === -1){
+        return node.empty;
+      }
+      return !node.empty && node.color === color;
     };
   }
 
