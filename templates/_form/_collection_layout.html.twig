@@ -1,4 +1,19 @@
 {# Collection widget to add collection edit support #}
+{% block collection_row -%}
+  {{- block("form_header") -}}
+
+  {%- if expanded is defined and expanded -%}
+    {{ block('fieldset_form_row') }}
+  {%- else -%}
+    <div class="form-group row">
+      {{- form_label(form) -}}
+      <div class="{{ block('form_group_class') }}">
+        {{- form_widget(form) -}}
+      </div>
+    </div>
+  {%- endif -%}
+{% endblock %}
+
 {% block collection_widget -%}
   {# Copied from plugin https://github.com/ninsuo/symfony-collection/blob/master/jquery.collection.html.twig #}
   {%- if prototype is defined -%}
