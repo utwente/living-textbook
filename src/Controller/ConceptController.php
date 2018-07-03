@@ -124,19 +124,16 @@ class ConceptController extends Controller
 
       // Remove outdated relations
       foreach ($originalOutgoingRelations as $originalOutgoingRelation) {
-        if (false === $concept->getOutgoingRelations()->contains($originalOutgoingRelation)) {
-          $em->remove($originalOutgoingRelation);
-        }
+        // Remove all original relations, because we just make new ones
+        $em->remove($originalOutgoingRelation);
       }
       foreach ($originalIncomingRelations as $originalIncomingRelation) {
-        if (false === $concept->getIncomingRelations()->contains($originalIncomingRelation)) {
-          $em->remove($originalIncomingRelation);
-        }
+        // Remove all original relations, because we just make new ones
+        $em->remove($originalIncomingRelation);
       }
 
       // Save the data
       $em->flush();
-
       $this->addFlash('success', $trans->trans('concept.updated', ['%item%' => $concept->getName()]));
 
       // Check for forward to list

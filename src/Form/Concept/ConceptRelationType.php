@@ -9,6 +9,7 @@ use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -34,15 +35,16 @@ class ConceptRelationType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var Concept $concept */
-    $concept = $options['concept'];
+    $concept  = $options['concept'];
+    $incoming = $options['incoming'];
 
-    if ($options['incoming']) {
+    if ($incoming) {
       $this->addConceptType($builder, 'source', $concept);
     } else {
       $this->addTextType($builder, 'source', $concept->getName());
     }
 
-    if (!$options['incoming']) {
+    if (!$incoming) {
       $this->addConceptType($builder, 'target', $concept);
     } else {
       $this->addTextType($builder, 'target', $concept->getName());
@@ -85,6 +87,40 @@ class ConceptRelationType extends AbstractType
       ]);
 
     });
+
+    // Add a transformer to create new relations on every edit
+    $builder->addModelTransformer(new CallbackTransformer(function (?ConceptRelation $conceptRelation) {
+      if ($conceptRelation) {
+        return [
+            'source'       => $conceptRelation->getSource(),
+            'target'       => $conceptRelation->getTarget(),
+            'relationType' => $conceptRelation->getRelationType(),
+        ];
+      }
+
+      return [
+          'source'       => NULL,
+          'target'       => NULL,
+          'relationType' => NULL,
+      ];
+    }, function ($data) use ($concept, $incoming) {
+
+      $conceptRelation = (new ConceptRelation())
+          ->setRelationType($data['relationType']);
+
+      // Create correct data
+      if ($incoming) {
+        $conceptRelation
+            ->setSource($data['source'])
+            ->setTarget($concept);
+      } else {
+        $conceptRelation
+            ->setSource($concept)
+            ->setTarget($data['target']);
+      }
+
+      return $conceptRelation;
+    }));
   }
 
   private function addConceptType(FormBuilderInterface $builder, string $field, Concept $concept)
@@ -121,8 +157,7 @@ class ConceptRelationType extends AbstractType
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
-        'incoming'   => false,
-        'data_class' => ConceptRelation::class,
+        'incoming' => false,
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);
