@@ -77,12 +77,12 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     switch (style) {
       case -1: { // Grey 'empty' state
         // Node styles
-        cb.defaultNodeFillStyle = '#6b6b6b';
+        cb.defaultNodeFillStyle = '#8e8e8e';
         cb.defaultNodeStrokeStyle = '#d5d5d5';
         cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#2359ff';
-        cb.fadedNodeFillStyle = '#a2a2a2';
-        cb.fadedNodeStrokeStyle = '#d5d5d5';
+        cb.draggedNodeStrokeStyle = '#737373';
+        cb.fadedNodeFillStyle = '#bdbdbd';
+        cb.fadedNodeStrokeStyle = '#e1e1e1';
         cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
         cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
 
