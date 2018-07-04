@@ -28,6 +28,8 @@ concept:
   list-title: 'Concept list'
   name: 'Name'
   new: 'New concept'
+  no-relations-possible-concept: "There are no other concepts available."
+  no-relations-possible-linktype: "There are no link types defined."
   outgoing-relations: 'Outgoing relations'
   prior-knowledge: 'Prior knowledge'
   relations: 'Relations'

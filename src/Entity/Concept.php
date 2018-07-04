@@ -153,6 +153,7 @@ class Concept
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
    * @ORM\OrderBy({"outgoingPosition" = "ASC"})
    *
+   * @Assert\Valid()
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
@@ -167,6 +168,7 @@ class Concept
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"})
    * @ORM\OrderBy({"incomingPosition" = "ASC"})
    *
+   * @Assert\Valid()
    * @Assert\NotNull()
    */
   private $incomingRelations;

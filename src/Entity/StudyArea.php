@@ -85,6 +85,13 @@ class StudyArea
   private $accessType;
 
   /**
+   * @var Collection|RelationType[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\RelationType", mappedBy="studyArea")
+   */
+  private $relationTypes;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -355,6 +362,14 @@ class StudyArea
     $this->accessType = $accessType;
 
     return $this;
+  }
+
+  /**
+   * @return RelationType[]|Collection
+   */
+  public function getRelationTypes()
+  {
+    return $this->relationTypes;
   }
 
 }

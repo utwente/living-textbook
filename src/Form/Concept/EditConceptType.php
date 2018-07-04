@@ -19,9 +19,24 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class EditConceptType extends AbstractType
 {
+
+  /** @var TranslatorInterface */
+  private $translator;
+
+  /**
+   * EditConceptType constructor.
+   *
+   * @param TranslatorInterface $translator
+   */
+  public function __construct(TranslatorInterface $translator)
+  {
+    $this->translator = $translator;
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var Concept $concept */
@@ -98,16 +113,32 @@ class EditConceptType extends AbstractType
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
             'studyArea'  => $studyArea,
-        ])
-        ->add('outgoingRelations', ConceptRelationsType::class, [
-            'label'   => 'concept.outgoing-relations',
-            'concept' => $concept,
-        ])
-        ->add('incomingRelations', ConceptRelationsType::class, [
-            'label'    => 'concept.incoming-relations',
-            'concept'  => $concept,
-            'incoming' => true,
-        ])
+        ]);
+
+    $otherConceptsAvailable = ($editing && $studyArea->getConcepts()->count() > 1) || (!$editing && !$studyArea->getConcepts()->isEmpty());
+    $linkTypesAvailable     = !$studyArea->getRelationTypes()->isEmpty();
+    if ($otherConceptsAvailable && $linkTypesAvailable) {
+      $builder
+          ->add('outgoingRelations', ConceptRelationsType::class, [
+              'label'   => 'concept.outgoing-relations',
+              'concept' => $concept,
+          ])
+          ->add('incomingRelations', ConceptRelationsType::class, [
+              'label'    => 'concept.incoming-relations',
+              'concept'  => $concept,
+              'incoming' => true,
+          ]);
+    } else {
+      $builder->add('relations', TextType::class, [
+          'label'    => 'concept.relations',
+          'disabled' => true,
+          'mapped'   => false,
+          'required' => false,
+          'data'     => $this->translator->trans('concept.no-relations-possible-' . ($otherConceptsAvailable ? "linktype" : "concept")),
+      ]);
+    }
+
+    $builder
         ->add('submit', SaveType::class, [
             'locate_static'       => true,
             'list_route'          => 'app_concept_list',
