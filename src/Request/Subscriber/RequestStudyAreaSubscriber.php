@@ -9,6 +9,7 @@ use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -97,6 +98,11 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     // Retrieve study area id from route
     $studyAreaId = $request->attributes->get(self::STUDY_AREA_KEY, NULL);
 
+    // Check whether it actually exists, throw not found otherwise
+    if ($studyAreaId && !$this->studyAreaRepository->find($studyAreaId)){
+      throw new NotFoundHttpException("Study area not found");
+    }
+
     // Check the study area
     if (!$studyAreaId) {
 
@@ -106,6 +112,12 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
       // Try to retrieve it from the session
       if ($session->has(self::STUDY_AREA_KEY)) {
         $studyAreaId = $session->get(self::STUDY_AREA_KEY);
+
+        // Check whether it actually still exists, remove from session otherwise
+        if (!$this->studyAreaRepository->find($studyAreaId)){
+          $session->remove(self::STUDY_AREA_KEY);
+          $studyAreaId = -1;
+        }
       }
 
       // Invalid or no result from session

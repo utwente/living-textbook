@@ -3,6 +3,7 @@
 namespace App\Request\Wrapper;
 
 use App\Entity\StudyArea;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class RequestStudyArea
@@ -33,7 +34,7 @@ class RequestStudyArea
   public function getStudyArea(): StudyArea
   {
     if ($this->studyArea === NULL) {
-      throw new \InvalidArgumentException("Study area is not correctly set!");
+      throw new NotFoundHttpException("Study area is not correctly set!");
     }
 
     return $this->studyArea;
