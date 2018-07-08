@@ -15,6 +15,7 @@
     <tr>
       <th scope="col">{{ 'study-area.name'|trans }}</th>
       <th scope="col">{{ 'study-area.owner'|trans }}</th>
+      <th scope="col">{{ 'study-area.access-type'|trans }}</th>
       <th scope="col">{{ 'study-area.switch-to'|trans }}</th>
       <th scope="col">{{ 'form.show'|trans }}</th>
       <th scope="col">{{ 'form.edit'|trans }}</th>
@@ -34,6 +35,7 @@
           {{ studyArea.owner.displayName }}
           {% endif %}
         </td>
+        <td>{{ studyArea.accessType|capitalize }}</td>
         <td>
           {% if studyArea.id == currentStudyArea.id %}
             {{ 'study-area.current'|trans }}
