@@ -47,7 +47,7 @@ class StudyAreaController extends Controller
   {
     // Create new StudyArea
     $studyArea = (new StudyArea())->setOwner($this->getUser());
-    if ($first) $studyArea->setAccessType(StudyArea::ACCESS_INDIVIDUAL);
+    if ($first) $studyArea->setAccessType(StudyArea::ACCESS_PRIVATE);
 
     $form = $this->createForm(EditStudyAreaType::class, $studyArea, [
         'studyArea'    => $studyArea,

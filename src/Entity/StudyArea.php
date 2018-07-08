@@ -29,7 +29,7 @@ class StudyArea
 
   // Access types, used to determine if a user can access the study area
   const ACCESS_PUBLIC = 'public';
-  const ACCESS_INDIVIDUAL = 'individual';
+  const ACCESS_PRIVATE = 'private';
   const ACCESS_GROUP = 'group';
 
   use IdTrait;
@@ -109,7 +109,7 @@ class StudyArea
    */
   public static function getAccessTypes()
   {
-    return [self::ACCESS_PUBLIC, self::ACCESS_INDIVIDUAL, self::ACCESS_GROUP];
+    return [self::ACCESS_PUBLIC, self::ACCESS_PRIVATE, self::ACCESS_GROUP];
   }
 
   /**
@@ -218,7 +218,7 @@ class StudyArea
     switch ($this->accessType) {
       case StudyArea::ACCESS_PUBLIC:
         return true;
-      case StudyArea::ACCESS_INDIVIDUAL:
+      case StudyArea::ACCESS_PRIVATE:
         return $this->isOwner($user);
       case StudyArea::ACCESS_GROUP:
         return $this->isOwner($user) || $this->isUserInGroup($user);

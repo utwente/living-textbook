@@ -56,7 +56,7 @@ class UserGroupRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea);
 
     switch ($studyArea->getAccessType()) {
-      case StudyArea::ACCESS_INDIVIDUAL:
+      case StudyArea::ACCESS_PRIVATE:
         // Remove all groups
         break;
       case StudyArea::ACCESS_GROUP:

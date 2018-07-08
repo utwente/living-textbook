@@ -267,7 +267,7 @@ class DataController extends Controller
                             EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create form to select the concepts for this study area
-    $newStudyArea = (new StudyArea())->setOwner($this->getUser())->setAccessType(StudyArea::ACCESS_INDIVIDUAL);
+    $newStudyArea = (new StudyArea())->setOwner($this->getUser())->setAccessType(StudyArea::ACCESS_PRIVATE);
     $form         = $this->createForm(DuplicateType::class, [
         'studyArea' => $newStudyArea,
     ], [
