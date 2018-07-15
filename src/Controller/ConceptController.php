@@ -92,12 +92,6 @@ class ConceptController extends Controller
       throw $this->createNotFoundException();
     }
 
-    // Map original resources
-    $originalResources = new ArrayCollection();
-    foreach ($concept->getExternalResources()->getResources() as $resource) {
-      $originalResources->add($resource);
-    }
-
     // Map original relations
     $originalOutgoingRelations = new ArrayCollection();
     foreach ($concept->getOutgoingRelations() as $outgoingRelation) {
@@ -115,13 +109,6 @@ class ConceptController extends Controller
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Remove outdated resources
-      foreach ($originalResources as $originalResource) {
-        if (false === $concept->getExternalResources()->getResources()->contains($originalResource)) {
-          $em->remove($originalResource);
-        }
-      }
-
       // Remove outdated relations
       foreach ($originalOutgoingRelations as $originalOutgoingRelation) {
         // Remove all original relations, because we just make new ones

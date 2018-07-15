@@ -8,11 +8,12 @@ use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
+use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Form\Data\BaseDataTextType;
-use App\Form\Data\DataExternalResourcesType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
+use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -104,9 +105,19 @@ class EditConceptType extends AbstractType
             'data_class' => DataExamples::class,
             'studyArea'  => $studyArea,
         ])
-        ->add('externalResources', DataExternalResourcesType::class, [
-            'label'    => 'concept.external-resources',
-            'required' => true,
+        ->add('externalResources', EntityType::class, [
+            'label'         => 'concept.external-resources',
+            'class'         => ExternalResource::class,
+            'choice_label'  => 'title',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($concept) {
+              return $externalResourceRepository->createQueryBuilder('er')
+                  ->where('er.studyArea = :studyArea')
+                  ->setParameter('studyArea', $concept->getStudyArea())
+                  ->orderBy('er.title', 'ASC');
+            },
+            'select2'       => true,
         ])
         ->add('selfAssessment', BaseDataTextType::class, [
             'label'      => 'concept.self-assessment',
