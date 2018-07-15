@@ -17,6 +17,11 @@
         {{ 'dashboard.learning-outcome-count'|transchoice(learningOutcomeCount) }}
         {% if learningOutcomeCount > 0 %}</a>{% endif %}
     </li>
+    <li>
+      {% if externalResourceCount > 0 %}<a href="{{ path('app_externalresource_list') }}">{% endif %}
+        {{ 'dashboard.external-resource-count'|transchoice(externalResourceCount) }}
+      {% if externalResourceCount > 0 %}</a>{% endif %}
+    </li>
   </ul>
 
   <h4>{{ 'dashboard.study-area-switch'|trans }}</h4>

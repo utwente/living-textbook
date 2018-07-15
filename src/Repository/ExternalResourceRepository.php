@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\ExternalResource;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ExternalResourceRepository extends ServiceEntityRepository
@@ -36,5 +37,20 @@ class ExternalResourceRepository extends ServiceEntityRepository
         ->where('er.studyArea = :studyArea')
         ->setParameter('studyArea', $studyArea)
         ->orderBy('er.title', 'ASC');
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   * @throws NonUniqueResultException
+   */
+  public function getCountForStudyArea(StudyArea $studyArea)
+  {
+    return $this->createQueryBuilder('lo')
+        ->select('COUNT(lo.id)')
+        ->where('lo.studyArea = :studyArea')
+        ->setParameter('studyArea', $studyArea)
+        ->getQuery()->getSingleScalarResult();
   }
 }

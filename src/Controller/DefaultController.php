@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\StudyArea;
 use App\Repository\ConceptRepository;
+use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -59,17 +60,19 @@ class DefaultController extends Controller
    * @Template
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea          $requestStudyArea
-   * @param StudyAreaRepository       $studyAreaRepository
-   * @param ConceptRepository         $conceptRepo
-   * @param LearningOutcomeRepository $learningOutcomeRepo
+   * @param RequestStudyArea           $requestStudyArea
+   * @param StudyAreaRepository        $studyAreaRepository
+   * @param ConceptRepository          $conceptRepo
+   * @param LearningOutcomeRepository  $learningOutcomeRepo
+   * @param ExternalResourceRepository $externalResourceRepo
    *
    * @return array
    *
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
   public function dashboard(RequestStudyArea $requestStudyArea, StudyAreaRepository $studyAreaRepository,
-                            ConceptRepository $conceptRepo, LearningOutcomeRepository $learningOutcomeRepo)
+                            ConceptRepository $conceptRepo, LearningOutcomeRepository $learningOutcomeRepo,
+                            ExternalResourceRepository $externalResourceRepo)
   {
     $user      = $this->getUser();
     $studyArea = $requestStudyArea->getStudyArea();
@@ -93,17 +96,18 @@ class DefaultController extends Controller
               'label'    => 'study-area.switch-to',
               'icon'     => 'fa-chevron-right',
               'attr'     => array(
-                  'class'   => 'btn btn-outline-success',
+                  'class' => 'btn btn-outline-success',
               ),
           ])
           ->getForm();
     }
 
     return [
-        'form'                 => isset($form) ? $form->createView() : NULL,
-        'studyArea'            => $studyArea,
-        'conceptCount'         => $conceptRepo->getCountForStudyArea($studyArea),
-        'learningOutcomeCount' => $learningOutcomeRepo->getCountForStudyArea($studyArea),
+        'form'                  => isset($form) ? $form->createView() : NULL,
+        'studyArea'             => $studyArea,
+        'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea),
+        'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
+        'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
     ];
   }
 }

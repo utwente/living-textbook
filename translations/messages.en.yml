@@ -59,6 +59,7 @@ data:
 
 dashboard:
   concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
+  external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
   learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
   select-study-area: 'Select one...'
   study-area-text: 'You are currently browsing the study area "%studyArea%". It currently contains:'
