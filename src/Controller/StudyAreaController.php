@@ -16,7 +16,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -190,10 +189,10 @@ class StudyAreaController extends Controller
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
-   * @return array|RedirectResponse
+   * @return array|Response
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function remove(Request $request, StudyArea $studyArea, StudyAreaRepository $studyAreaRepository,
+  public function remove(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea, StudyAreaRepository $studyAreaRepository,
                          EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if this is the only study area
@@ -215,11 +214,18 @@ class StudyAreaController extends Controller
 
       $this->addFlash('success', $trans->trans('study-area.removed', ['%item%' => $studyArea->getName()]));
 
+      if ($requestStudyArea->getStudyArea()->getId() == $studyArea->getId()) {
+        return $this->render('reloading_fullscreen.html.twig', [
+            'reloadUrl' => $this->generateUrl('app_default_index'),
+        ]);
+      }
+
       return $this->redirectToRoute('app_studyarea_list');
     }
 
     return [
-        'form' => $form->createView(),
+        'form'      => $form->createView(),
+        'studyArea' => $studyArea,
     ];
   }
 
