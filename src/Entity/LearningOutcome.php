@@ -164,7 +164,6 @@ class LearningOutcome
     return $this->concepts;
   }
 
-
   /**
    * @return StudyArea|null
    */

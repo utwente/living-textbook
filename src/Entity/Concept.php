@@ -6,7 +6,6 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Data\DataExamples;
-use App\Entity\Data\DataExternalResources;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
@@ -128,12 +127,16 @@ class Concept
   private $examples;
 
   /**
-   * @var DataExternalResources
+   * @var ExternalResource[]|Collection
    *
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataExternalResources", cascade={"persist", "remove"})
-   * @ORM\JoinColumn(name="external_resources_id", referencedColumnName="id", nullable=false)
+   * @ORM\ManyToMany(targetEntity="App\Entity\ExternalResource", inversedBy="concepts")
+   * @ORM\JoinTable(name="concepts_external_resources",
+   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="external_resource_id", referencedColumnName="id")}
+   *      )
+   * @ORM\OrderBy({"title" = "ASC"})
    *
-   * @Assert\Valid()
+   * @Assert\NotNull()
    */
   private $externalResources;
 
@@ -207,13 +210,15 @@ class Concept
     // Learning outcome
     $this->learningOutcomes = new ArrayCollection();
 
+    // External resources
+    $this->externalResources = new ArrayCollection();
+
     // Initialize data
     $this->introduction      = new DataIntroduction();
     $this->theoryExplanation = new DataTheoryExplanation();
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
     $this->selfAssessment    = new DataSelfAssessment();
-    $this->externalResources = new DataExternalResources();
   }
 
   /**
@@ -223,13 +228,6 @@ class Concept
    */
   public function checkEntityRelations()
   {
-    // Check resources
-    foreach ($this->getExternalResources()->getResources() as $resource) {
-      if ($resource->getResourceCollection() === NULL) {
-        $resource->setResourceCollection($this->getExternalResources());
-      }
-    };
-
     // Check relations
     foreach ($this->getOutgoingRelations() as $relation) {
       if ($relation->getSource() === NULL) {
@@ -500,21 +498,34 @@ class Concept
   }
 
   /**
-   * @return DataExternalResources
+   * @return ExternalResource[]|Collection
    */
-  public function getExternalResources(): DataExternalResources
+  public function getExternalResources()
   {
     return $this->externalResources;
   }
 
+
   /**
-   * @param DataExternalResources $externalResources
+   * @param ExternalResource $externalResource
    *
    * @return Concept
    */
-  public function setExternalResources(DataExternalResources $externalResources): Concept
+  public function addExternalResource(ExternalResource $externalResource): Concept
   {
-    $this->externalResources = $externalResources;
+    $this->externalResources->add($externalResource);
+
+    return $this;
+  }
+
+  /**
+   * @param ExternalResource $externalResource
+   *
+   * @return Concept
+   */
+  public function removeExternalResource(ExternalResource $externalResource): Concept
+  {
+    $this->externalResources->removeElement($externalResource);
 
     return $this;
   }

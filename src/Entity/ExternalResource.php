@@ -5,7 +5,8 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
-use App\Entity\Data\DataExternalResources;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,12 +27,21 @@ class ExternalResource
   use SoftDeletable;
 
   /**
-   * @var DataExternalResources|null
+   * @var Concept[]|Collection
    *
-   * @ORM\ManyToOne(targetEntity="App\Entity\Data\DataExternalResources", inversedBy="resources")
-   * @ORM\JoinColumn(name="collection_id", referencedColumnName="id", nullable=false)
+   * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="externalResources")
    */
-  private $resourceCollection;
+  private $concepts;
+
+  /**
+   * @var StudyArea|null
+   *
+   * @ORM\ManyToOne(targetEntity="StudyArea")
+   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  private $studyArea;
 
   /**
    * @var string
@@ -63,16 +73,6 @@ class ExternalResource
   private $url;
 
   /**
-   * @var int
-   *
-   * @ORM\Column(name="position", type="integer", nullable=false)
-   *
-   * @Assert\NotNull()
-   * @Assert\GreaterThanOrEqual(value="0")
-   */
-  private $position;
-
-  /**
    * @var bool
    *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
@@ -89,28 +89,17 @@ class ExternalResource
     $this->title       = '';
     $this->description = '';
     $this->url         = '';
-    $this->position    = 0;
     $this->broken      = false;
+
+    $this->concepts = new ArrayCollection();
   }
 
   /**
-   * @return DataExternalResources|null
+   * @return Concept[]|Collection
    */
-  public function getResourceCollection(): ?DataExternalResources
+  public function getConcepts()
   {
-    return $this->resourceCollection;
-  }
-
-  /**
-   * @param DataExternalResources $resourceCollection
-   *
-   * @return ExternalResource
-   */
-  public function setResourceCollection(DataExternalResources $resourceCollection): ExternalResource
-  {
-    $this->resourceCollection = $resourceCollection;
-
-    return $this;
+    return $this->concepts;
   }
 
   /**
@@ -174,26 +163,6 @@ class ExternalResource
   }
 
   /**
-   * @return int
-   */
-  public function getPosition(): int
-  {
-    return $this->position;
-  }
-
-  /**
-   * @param int $position
-   *
-   * @return ExternalResource
-   */
-  public function setPosition(int $position): ExternalResource
-  {
-    $this->position = $position;
-
-    return $this;
-  }
-
-  /**
    * @return bool
    */
   public function isBroken(): bool
@@ -209,6 +178,26 @@ class ExternalResource
   public function setBroken(bool $broken): ExternalResource
   {
     $this->broken = $broken;
+
+    return $this;
+  }
+
+  /**
+   * @return StudyArea|null
+   */
+  public function getStudyArea(): ?StudyArea
+  {
+    return $this->studyArea;
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return ExternalResource
+   */
+  public function setStudyArea(StudyArea $studyArea): ExternalResource
+  {
+    $this->studyArea = $studyArea;
 
     return $this;
   }
