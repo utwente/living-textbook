@@ -18,7 +18,7 @@
   var moveContainersInner = $('#draggable-bar-inner');
   var animationCount = 0;
   var invisibleFrame = $('#invisible-frame');
-  var lastX = document.body.clientWidth / 2;
+  var lastX = -1;
   var firstOpen = true;
 
   ////////////////////////////////
