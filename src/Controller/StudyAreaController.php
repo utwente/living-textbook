@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\StudyArea\TransferOwnerType;
@@ -61,6 +62,17 @@ class StudyAreaController extends Controller
 
       // Save the data
       $em->persist($studyArea);
+      $em->flush();
+
+      // Add default relation types
+      for ($i = 1; $i <= 3; $i++) {
+        $name         = $trans->trans('relation.default-' . $i);
+        $relationType = (new RelationType())
+            ->setStudyArea($studyArea)
+            ->setName($name);
+
+        $em->persist($relationType);
+      }
       $em->flush();
 
       $this->addFlash('success', $trans->trans('study-area.saved', ['%item%' => $studyArea->getName()]));

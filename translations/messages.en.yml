@@ -191,6 +191,9 @@ relation:
   source: 'Source'
   target: 'Target'
   type: 'Relation type'
+  default-1: "is same as"
+  default-2: "is a kind of"
+  default-3: "is part of"
 
 study-area:
   access-type: 'Access type'
