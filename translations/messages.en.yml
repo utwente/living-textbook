@@ -74,6 +74,21 @@ exception:
   not-authorized-title: 'Not authorized'
   not-found-title: 'Page not found'
 
+external-resource:
+  add-title: 'Add new external resource'
+  description: 'Description'
+  edit-title: 'Edit external resource "%item%"'
+  list-title: 'External resources list'
+  no-url: 'No url'
+  saved: 'External resource "%item%" has been saved successfully.'
+  remove: 'Remove external resource "%item%"'
+  remove-concepts: 'Note that the external resource will also be removed from the following concepts:'
+  remove-text: 'Are you sure you want to remove the external resource "%item%"?'
+  removed: 'External resource "%item%" has been removed successfully.'
+  title: 'Title'
+  updated: 'External resource "%item%" has been successfully updated.'
+  url: 'Url'
+
 form:
   action-bar: 'Action bar'
   add: 'Add'
@@ -131,6 +146,7 @@ menu:
   download: 'Download'
   duplicate: 'Duplicate'
   edit: 'Edit'
+  external-resources: "External resources"
   concept: 'Concepts'
   case-study: 'Case studies'
   import-data: 'Import'
@@ -174,11 +190,6 @@ relation:
   source: 'Source'
   target: 'Target'
   type: 'Relation type'
-
-resource:
-  title: 'Title'
-  description: 'Description'
-  url: 'Url'
 
 study-area:
   access-type: 'Access type'

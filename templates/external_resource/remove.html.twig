@@ -1,0 +1,20 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'external-resource.remove'|trans({"%item%": externalResource.title}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'external-resource.remove-text'|trans({"%item%": externalResource.title}) }}</p>
+
+  {% if externalResource.concepts|length > 0 %}
+    <p>{{ 'external-resource.remove-concepts'|trans }}</p>
+    <ul>
+      {% for concept in externalResource.concepts %}
+        <li>{{ concept.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {{ form(form) }}
+{% endblock %}

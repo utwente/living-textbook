@@ -112,10 +112,7 @@ class EditConceptType extends AbstractType
             'required'      => false,
             'multiple'      => true,
             'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($concept) {
-              return $externalResourceRepository->createQueryBuilder('er')
-                  ->where('er.studyArea = :studyArea')
-                  ->setParameter('studyArea', $concept->getStudyArea())
-                  ->orderBy('er.title', 'ASC');
+              return $externalResourceRepository->findForStudyAreaQb($concept->getStudyArea());
             },
             'select2'       => true,
         ])

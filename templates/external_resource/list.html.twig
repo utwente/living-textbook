@@ -1,0 +1,49 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+    {% from '_macro/_action_bar.html.twig' import new_bar %}
+    {{ new_bar(path('app_externalresource_add')) }}
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ 'external-resource.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'external-resource.title'|trans }}</th>
+      <th scope="col">{{ 'external-resource.url'|trans }}</th>
+      {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+        <th scope="col">{{ 'form.edit'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for externalResource in externalResources %}
+      <tr>
+        <td>{{ externalResource.title }}</td>
+        <td>
+          {% if externalResource.url is not empty %}
+            <a href="{{ externalResource.url }}" class="no-block" target="_blank">{{ externalResource.url }}</a>
+          {% else %}
+            {{ 'external-resource.no-url'|trans }}
+          {% endif %}
+        </td>
+        {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+          <td><a
+                href="{{ path('app_externalresource_edit', {'externalResource': externalResource.id}) }}">{{ 'form.edit'|trans }}</a>
+          </td>
+          <td><a
+                href="{{ path('app_externalresource_remove', {'externalResource': externalResource.id}) }}">{{ 'form.remove'|trans }}</a>
+          </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
