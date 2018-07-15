@@ -1,0 +1,19 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'general.reloading'|trans }}
+{% endblock %}
+
+{% block base_content %}
+  <div id="reloader">
+    <div><i class="fa fa-spinner fa-spin"></i></div>
+  </div>
+{% endblock %}
+
+{% block javascripts_bottom %}
+  <script type="text/javascript">
+    $(function () {
+      eDispatch.pageLoad('{{ reloadUrl }}', {topLevel: true});
+    });
+  </script>
+{% endblock %}

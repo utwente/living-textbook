@@ -87,8 +87,10 @@ class StudyAreaController extends Controller
         return $this->redirectToRoute('app_studyarea_list');
       }
 
-      // Forward to show page
-      return $this->redirectToRoute('app_studyarea_show', ['studyArea' => $studyArea->getId()]);
+      // Load reloading page in order to switch to the new study area
+      return $this->render('reloading_fullscreen.html.twig', [
+          'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $studyArea->getId()]),
+      ]);
     }
 
     $params = [

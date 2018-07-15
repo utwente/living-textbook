@@ -1,6 +1,7 @@
 @import '~bootstrap/scss/_functions.scss';
 @import '~bootstrap/scss/_variables.scss';
 @import '../vars/vars';
+@import '../mixins/mixins';
 
 .container-fluid {
   &.with-menu {
@@ -13,6 +14,21 @@
   h2, .h2 { font-size: $h4-font-size; }
   h3, .h3 { font-size: $h5-font-size; }
   h4, .h4 { font-size: $h6-font-size; }
+}
+
+#reloader {
+  position: absolute;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background-color: $background-color;
+
+  &>div {
+    @include div-center();
+    text-align: center;
+    font-size: $loader-size;
+    color: $loader-color;
+  }
 }
 
 @import '_forms';

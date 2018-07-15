@@ -108,6 +108,7 @@ form:
 general:
   close: "Close"
   no-browser-warning: "You've loaded this page without browser support, so browser tools will not work. Open this page <a href=%url%>with browser</a> instead."
+  reloading: "Reloading"
 
 learning-outcome:
   add-title: 'Add new learning outcome'
