@@ -156,6 +156,7 @@ login:
   username: 'Username'
 
 menu:
+  abbreviations: 'Abbreviations'
   admin: 'Administrators'
   config: 'Configuration'
   data: 'Data'
