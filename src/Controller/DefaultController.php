@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\StudyArea;
+use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
@@ -63,16 +64,17 @@ class DefaultController extends Controller
    * @param RequestStudyArea           $requestStudyArea
    * @param StudyAreaRepository        $studyAreaRepository
    * @param ConceptRepository          $conceptRepo
-   * @param LearningOutcomeRepository  $learningOutcomeRepo
+   * @param AbbreviationRepository     $abbreviationRepository
    * @param ExternalResourceRepository $externalResourceRepo
+   * @param LearningOutcomeRepository  $learningOutcomeRepo
    *
    * @return array
    *
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
   public function dashboard(RequestStudyArea $requestStudyArea, StudyAreaRepository $studyAreaRepository,
-                            ConceptRepository $conceptRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                            ExternalResourceRepository $externalResourceRepo)
+                            ConceptRepository $conceptRepo, AbbreviationRepository $abbreviationRepository,
+                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo)
   {
     $user      = $this->getUser();
     $studyArea = $requestStudyArea->getStudyArea();
@@ -106,8 +108,9 @@ class DefaultController extends Controller
         'form'                  => isset($form) ? $form->createView() : NULL,
         'studyArea'             => $studyArea,
         'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea),
-        'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
+        'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
+        'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
     ];
   }
 }
