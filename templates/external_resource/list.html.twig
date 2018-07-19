@@ -1,7 +1,7 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {% from '_macro/_action_bar.html.twig' import new_bar %}
     {{ new_bar(path('app_externalresource_add')) }}
   {% endif %}
@@ -17,7 +17,7 @@
     <tr>
       <th scope="col">{{ 'external-resource.title'|trans }}</th>
       <th scope="col">{{ 'external-resource.url'|trans }}</th>
-      {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
         <th scope="col">{{ 'form.edit'|trans }}</th>
         <th scope="col">{{ 'form.remove'|trans }}</th>
       {% endif %}
@@ -34,7 +34,7 @@
             {{ 'external-resource.no-url'|trans }}
           {% endif %}
         </td>
-        {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <td><a
                 href="{{ path('app_externalresource_edit', {'externalResource': externalResource.id}) }}">{{ 'form.edit'|trans }}</a>
           </td>
