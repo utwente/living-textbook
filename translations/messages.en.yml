@@ -67,13 +67,13 @@ dashboard:
 
 exception:
   error-title: 'Oops, an error occurred!'
-  error-code: 'The server generated a %code% response'
+  error-code: 'The server generated a %code% response.'
   error-text: 'Something went wrong. Please notify us if the problem persists.'
   error-text-403: 'You are not authorized for this page.'
   error-text-404: 'The requested page could not be found.'
   error-text-500: "Something went wrong. We've been notified automatically!"
-  not-authorized-title: 'Not authorized'
-  not-found-title: 'Page not found'
+  error-title-403: 'Not authorized!'
+  error-title-404: 'Page not found!'
 
 external-resource:
   add-title: 'Add new external resource'
