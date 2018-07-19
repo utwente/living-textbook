@@ -29,7 +29,7 @@ class ExternalResourceController extends Controller
   /**
    * @Route("/add")
    * @Template
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -65,7 +65,7 @@ class ExternalResourceController extends Controller
   /**
    * @Route("/edit/{externalResource}", requirements={"externalResource"="\d+"})
    * @Template()
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -123,7 +123,7 @@ class ExternalResourceController extends Controller
   /**
    * @Route("/remove/{externalResource}", requirements={"externalResource"="\d+"})
    * @Template()
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
