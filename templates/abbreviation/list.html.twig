@@ -1,0 +1,43 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+    {% from '_macro/_action_bar.html.twig' import new_bar %}
+    {{ new_bar(path('app_abbreviation_add')) }}
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ 'abbreviation.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'abbreviation.abbreviation'|trans }}</th>
+      <th scope="col">{{ 'abbreviation.meaning'|trans }}</th>
+      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+        <th scope="col">{{ 'form.edit'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for abbreviation in abbreviations %}
+      <tr>
+        <td>{{ abbreviation.abbreviation }}</td>
+        <td>{{ abbreviation.meaning }}</td>
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+          <td><a
+                href="{{ path('app_abbreviation_edit', {'abbreviation': abbreviation.id}) }}">{{ 'form.edit'|trans }}</a>
+          </td>
+          <td><a
+                href="{{ path('app_abbreviation_remove', {'abbreviation': abbreviation.id}) }}">{{ 'form.remove'|trans }}</a>
+          </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

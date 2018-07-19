@@ -1,5 +1,18 @@
 submit: Submit
 
+abbreviation:
+  abbreviation: 'Abbreviation'
+  add-title: 'Add new abbreviation'
+  edit-title: 'Edit abbreviation "%item%"'
+  list-title: 'Abbreviation list'
+  meaning: 'Meaning'
+  no-url: 'No url'
+  saved: 'Abbreviation "%item%" has been saved successfully.'
+  remove: 'Remove abbreviation "%item%"'
+  remove-text: 'Are you sure you want to remove the abbreviation "%item%"?'
+  removed: 'Abbreviation "%item%" has been removed successfully.'
+  updated: 'Abbreviation "%item%" has been successfully updated.'
+
 app:
   dashboard: 'Dashboard'
 

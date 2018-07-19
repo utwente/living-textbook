@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'abbreviation.remove'|trans({"%item%": abbreviation.abbreviation}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'abbreviation.remove-text'|trans({"%item%": abbreviation.abbreviation}) }}</p>
+
+  {{ form(form) }}
+{% endblock %}
