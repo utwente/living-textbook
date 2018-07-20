@@ -15,17 +15,17 @@ fos_ck_editor:
       filebrowserBrowseRoute: "elfinder"
       format_tags: "h3;h4;p"
       extraPlugins: "latexeditor,image2"
-      extraAllowedContent: "img(latex-image);a[data-concept-id](concept-link)"
+      extraAllowedContent: "img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id]"
     ltb_concept_config:
       <<: *ckeditor_default
-      extraPlugins: "latexeditor,image2,conceptselector"
+      extraPlugins: "latexeditor,image2,abbreviationselector,conceptselector"
   toolbars:
     configs:
       ltb_toolbar: [ "@text_tools", "@ltb_tools", "/", "@font_tools", "@edit_tools" ]
     items:
       edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
       text_tools: [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
-      ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector" ]
+      ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector", "AbbreviationSelector" ]
       font_tools: [ "Format", "TextColor" ]
   plugins:
     latexeditor:
@@ -33,6 +33,9 @@ fos_ck_editor:
       filename: "plugin.js"
     image2:
       path:     "/ckeditor-plugins/image2/"
+      filename: "plugin.js"
+    abbreviationselector:
+      path:     "/ckeditor-plugins/abbreviationselector/"
       filename: "plugin.js"
     conceptselector:
       path:     "/ckeditor-plugins/conceptselector/"

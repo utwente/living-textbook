@@ -31,7 +31,7 @@ CKEDITOR.plugins.add('conceptselector', {
         label: editor.lang.conceptselector.edit,
         icon: this.path + 'icons/concept-selector.png',
         command: pluginCmd,
-        group: editor.lang.latexeditor.menu
+        group: editor.lang.conceptselector.menu
       });
 
       // if the selected item is url of class 'concept-link',

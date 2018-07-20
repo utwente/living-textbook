@@ -9,7 +9,7 @@ $(function () {
   if ($abbreviations.length > 0) {
     // Load abbreviation data
     let ids = $abbreviations.map((index, elem) => {
-      return $(elem).data('id');
+      return $(elem).data('abbr-id');
     }).toArray();
 
     $.get(Routing.generate('app_abbreviation_data', {_studyArea: currentStudyArea}), {
@@ -23,7 +23,7 @@ $(function () {
       $abbreviations.each((index, elem) => {
         let $elem = $(elem);
 
-        let id = parseInt($elem.data('id'));
+        let id = parseInt($elem.data('abbr-id'));
         if (-1 !== $.inArray(id, missingIds)){
           $elem.attr('title', 'Meaning unavailable...');
         } else {

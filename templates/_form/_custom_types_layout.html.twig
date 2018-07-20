@@ -29,3 +29,10 @@
     {{ block('button_widget') }}
   </div>
 {% endblock %}
+
+{# Hidden entity widget, for data reuse applications #}
+{% block hidden_entity_row %}
+  <div class="d-none">
+    {{ form_widget(form) }}
+  </div>
+{% endblock %}

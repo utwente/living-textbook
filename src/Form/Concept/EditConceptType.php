@@ -2,6 +2,7 @@
 
 namespace App\Form\Concept;
 
+use App\Entity\Abbreviation;
 use App\Entity\Concept;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
@@ -11,7 +12,9 @@ use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Form\Data\BaseDataTextType;
+use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
+use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
@@ -54,6 +57,7 @@ class EditConceptType extends AbstractType
             'studyArea'  => $studyArea,
             'required'   => false,
         ])
+        // This field is also used by the ckeditor plugin for concept selection
         ->add('priorKnowledge', EntityType::class, [
             'label'         => 'concept.prior-knowledge',
             'class'         => Concept::class,
@@ -154,6 +158,23 @@ class EditConceptType extends AbstractType
             'cancel_label'        => 'form.discard',
             'cancel_route'        => $editing ? 'app_concept_show' : 'app_concept_list',
             'cancel_route_params' => $editing ? ['concept' => $concept->getId()] : [],
+        ]);
+
+    // Fields below are hidden fields, which are used for ckeditor plugins to have the data available on the page
+    // Also used (from above): priorKnowledge
+    $builder
+        ->add('abbreviations', HiddenEntityType::class, [
+            'class'         => Abbreviation::class,
+            'choice_label'  => 'abbreviation',
+            'required'      => false,
+            'multiple'      => true,
+            'mapped'        => false,
+            'query_builder' => function (AbbreviationRepository $abbreviationRepository) use ($concept) {
+              return $abbreviationRepository->createQueryBuilder('a')
+                  ->where('a.studyArea = :studyArea')
+                  ->setParameter('studyArea', $concept->getStudyArea())
+                  ->orderBy('a.abbreviation');
+            },
         ]);
   }
 
