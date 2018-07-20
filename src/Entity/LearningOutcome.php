@@ -54,7 +54,7 @@ class LearningOutcome
    * @ORM\Column(name="number", type="integer", nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Range(min="0", max="1000")
+   * @Assert\Range(max="1000")
    */
   private $number;
 
@@ -66,7 +66,7 @@ class LearningOutcome
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(min="0", max="255")
+   * @Assert\Length(max="255")
    */
   private $name;
 
@@ -78,7 +78,7 @@ class LearningOutcome
    * @ORM\Column(name="text", type="text", nullable=false)
    *
    * @Assert\NotBlank()
-   * @WordCount()
+   * @WordCount(min=1, max=10000)
    */
   private $text;
 

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Validator\Constraint\Data\WordCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -58,7 +59,8 @@ class ExternalResource
    * @ORM\Column(name="description", type="text", length=1000, nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(min=10, max=1000)
+   * @Assert\Length(max=1000)
+   * @WordCount(min=1)
    */
   private $description;
 
