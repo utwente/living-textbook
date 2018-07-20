@@ -8,9 +8,11 @@ use App\Form\Type\RemoveType;
 use App\Repository\AbbreviationRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,6 +62,31 @@ class AbbreviationController extends Controller
     return [
         'form' => $form->createView(),
     ];
+  }
+
+  /**
+   * @Route("/data", options={"expose"="true"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param AbbreviationRepository $abbreviationRepo
+   * @param SerializerInterface    $serializer
+   *
+   * @return JsonResponse
+   */
+  public function data(Request $request, RequestStudyArea $requestStudyArea, AbbreviationRepository $abbreviationRepo, SerializerInterface $serializer)
+  {
+    // Retrieve the abbreviations
+    $ids           = $request->query->get('ids');
+    $ids           = array_filter($ids, function ($id) {
+      return is_numeric($id);
+    });
+    $abbreviations = $abbreviationRepo->findBy(['id' => $ids, 'studyArea' => $requestStudyArea->getStudyArea()]);
+
+    $json = $serializer->serialize($abbreviations, 'json');
+
+    return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
   /**

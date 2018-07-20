@@ -3,7 +3,8 @@ parameters:
   <img><figure><figcaption>
   <ul><ol><li>
   <strong><b><em><u><s><sup><sub><pre>
-  <table><tbody><thead><tr><td><th>"
+  <table><tbody><thead><tr><td><th>
+  <ltb-abbr>"
 
 fos_ck_editor:
   autoload: false

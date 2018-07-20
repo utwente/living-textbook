@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\AbbreviationRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @JMSA\ExclusionPolicy("all")
  */
 class Abbreviation
 {
@@ -39,6 +41,8 @@ class Abbreviation
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=1, max=25)
+   *
+   * @JMSA\Expose()
    */
   private $abbreviation;
 
@@ -48,6 +52,8 @@ class Abbreviation
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=1, max=255)
+   *
+   * @JMSA\Expose()
    */
   private $meaning;
 

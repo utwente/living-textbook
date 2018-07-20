@@ -1,0 +1,8 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+
+ltb-abbr {
+  font-style: italic;
+  text-decoration: none;
+  border-bottom: 1px dotted $body-color;
+}

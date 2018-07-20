@@ -24,6 +24,7 @@ function findParent(tag, el) {
 $(function () {
   require('./content/eventHandler');
   require('./content/eventDispatcher');
+  require('./content/customTags');
 
   eDispatch.checkForDoubleColumn(inDoubleColumnChecksum);
 
