@@ -1,0 +1,16 @@
+@import '../_font';
+@import '../content/_customTags';
+
+body.cke_editable {
+  .cke_image_resizer {
+    // Remove image resizer
+    display: none !important;
+  }
+
+  .cke_image_resizer_wrapper {
+    line-height: unset;
+  }
+}
+
+@import '../content/_styleGuide';
+@include styleGuide;

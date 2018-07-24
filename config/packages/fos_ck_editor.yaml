@@ -3,28 +3,31 @@ parameters:
   <img><figure><figcaption>
   <ul><ol><li>
   <strong><b><em><u><s><sup><sub><pre>
-  <table><tbody><thead><tr><td><th>
-  <ltb-abbr>"
+  <table><tbody><thead><tr><td><th><caption>
+  <ltb-abbr><div>"
 
 fos_ck_editor:
   autoload: false
   default_config: ltb_config
   configs:
     ltb_config: &ckeditor_default
+      language: "en"
       toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
-      format_tags: "h3;h4;p"
+      format_tags: "p;h1;h2;citation;highlight;symbol;reference"
       extraPlugins: "latexeditor,image2"
-      extraAllowedContent: "img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id]"
+      extraAllowedContent: "figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id]"
+      removePlugins: "dialogadvtab"
+      bodyClass: "ltb-text-container"
     ltb_concept_config:
       <<: *ckeditor_default
-      extraPlugins: "latexeditor,image2,abbreviationselector,conceptselector"
+      extraPlugins: "image2,latexeditor,abbreviationselector,conceptselector"
   toolbars:
     configs:
       ltb_toolbar: [ "@text_tools", "@ltb_tools", "/", "@font_tools", "@edit_tools" ]
     items:
       edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
-      text_tools: [ "Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
+      text_tools: [ "Bold", "Italic", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
       ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector", "AbbreviationSelector" ]
       font_tools: [ "Format", "TextColor" ]
   plugins:

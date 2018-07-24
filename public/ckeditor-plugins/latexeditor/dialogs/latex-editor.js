@@ -40,7 +40,7 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
   return {
     title: editor.lang.latexeditor.title,
     minWidth: 550,
-    minHeight: 250,
+    minHeight: 300,
     resizable: CKEDITOR.DIALOG_RESIZE_NONE,
     contents: [
       {
@@ -48,12 +48,29 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
         label: 'LatexEditor',
         elements: [
           {
+            id: 'caption',
+            type: 'text',
+            label: editor.lang.latexeditor.caption,
+            default: '',
+            setup: function (element) {
+              // Retrieve caption value
+              var valueElement = element.findOne('figcaption');
+              if (valueElement) {
+                this.setValue(valueElement.getHtml());
+              }
+            }
+          },
+          {
             id: 'equation',
             type: 'textarea',
             label: editor.lang.latexeditor.equation,
             default: '',
             setup: function (element) {
-              this.setValue(element.getAttribute('alt'));
+              // Retrieve image alt value
+              var valueElement = element.findOne('img');
+              if (valueElement) {
+                this.setValue(decodeURIComponent(valueElement.getAttribute('alt')));
+              }
               previousVal = null;
             },
             onShow: function () {
@@ -84,41 +101,53 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
 
     onShow: function () {
       var selection = editor.getSelection();
-      var image = selection.getStartElement().getAscendant('img', true);
+      var latexImage = selection.getStartElement().getAscendant('figure', true);
 
-      // Check for CKE span image wrapper
-      if (!image) {
-        var span = selection.getStartElement().getAscendant('span', true);
-        if (span) {
-          if (span.$.classList.contains('cke_widget_image')) {
-            image = span.getChild(0);
-          }
-        }
-      }
-
-      if (!image) {
-        image = editor.document.createElement('img');
+      if (!latexImage) {
+        latexImage = editor.document.createElement('figure');
+        latexImage.append(editor.document.createElement('img'));
+        latexImage.append(editor.document.createElement('caption'));
         this.insertMode = true;
       } else {
         this.insertMode = false;
       }
 
-      // set-up the field values based on selected or newly created image
+      // set-up the field values based on selected or newly created latexImage
       if (!this.insertMode) {
-        this.setupContent(image);
+        this.setupContent(latexImage);
       }
     },
 
     onOk: function () {
       // Retrieve value
-      var content = this.getValueOf('latexEditor', 'equation');
+      var equation = this.getValueOf('latexEditor', 'equation');
+      var captionText = this.getValueOf('latexEditor', 'caption');
+
+      // Create container
+      var latexFigure = editor.document.createElement('figure');
+      latexFigure.setAttribute('class', 'latex-figure');
 
       // Create image
       var img = editor.document.createElement('img');
       img.setAttribute('class', 'latex-image');
-      img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: content}));
-      img.setAttribute('alt', content);
-      editor.insertElement(img);
+      img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: equation}));
+      img.setAttribute('alt', encodeURIComponent(equation));
+
+      // Create caption
+      var caption = editor.document.createElement('figcaption');
+      caption.setAttribute('class', 'latex-caption');
+      caption.setHtml(captionText);
+
+      // Add parts to container and put it in the document
+      latexFigure.append(img);
+      latexFigure.append(caption);
+
+      // Find the top level figure and select it
+      var parent = editor.getSelection().getStartElement().getAscendant('figure', true);
+      editor.getSelection().selectElement(parent);
+
+      // Insert the new element by replacing the selection
+      editor.insertElement(latexFigure);
 
       clearInterval(timer);
     },

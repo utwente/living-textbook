@@ -17,8 +17,14 @@ Encore
     ])
     .addEntry('double-column', './assets/js/doubleColumn.js')
     .addEntry('content', [
-        './assets/js/content.js',
-        'symfony-collection/jquery.collection.js'
+      './assets/js/content.js',
+      'symfony-collection/jquery.collection.js'
+    ])
+    .addEntry('ckeditorPatches', [
+      './assets/js/ckeditorPatches.js'
+    ])
+    .addEntry('ckeditorContents', [
+      './assets/css/ckeditor/ckeditor.scss'
     ])
 
     .createSharedEntry('vendor', [

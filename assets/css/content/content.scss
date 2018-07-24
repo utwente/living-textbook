@@ -9,13 +9,6 @@
   }
 }
 
-.ltb-text-container {
-  h1, .h1 { font-size: $h3-font-size; }
-  h2, .h2 { font-size: $h4-font-size; }
-  h3, .h3 { font-size: $h5-font-size; }
-  h4, .h4 { font-size: $h6-font-size; }
-}
-
 #reloader {
   position: absolute;
   z-index: 1000;
@@ -31,6 +24,13 @@
   }
 }
 
+@import 'styleGuide';
 @import '_forms';
-@import '_figures';
-@import '_customTags';
+
+.ltb-text-container {
+  @include styleGuide;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}

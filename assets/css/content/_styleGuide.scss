@@ -1,0 +1,166 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '~bootstrap/scss/mixins/_border-radius.scss';
+@import '~bootstrap/scss/mixins/_hover.scss';
+@import '../vars/vars';
+
+@mixin styleGuide {
+  // Global margin
+  p,
+  ol,
+  ul,
+  div.citation,
+  div.highlight,
+  div.symbol,
+  div.reference {
+    margin-top: 0;
+    margin-bottom: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Normal
+  p,
+  h4, .h4,
+  strong,
+  sup,
+  sub,
+  ol,
+  ul,
+  a,
+  table,
+  caption,
+  div.citation,
+  div.highlight,
+  div.symbol,
+  div.reference {
+    font-size: 1rem;
+    line-height: 1.25rem;
+    font-weight: normal;
+    font-style: normal;
+    text-align: left;
+    color: $body-color;
+  }
+
+  // Headers
+  h3, .h3,
+  h4, .h4 {
+    margin-bottom: 0;
+  }
+
+  // Header 1
+  h3, .h3 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  // Header 2
+  h4, .h4 {
+    font-style: italic;
+  }
+
+  // Citation
+  div.citation {
+    margin-left: 2rem;
+
+    &::before, &::after {
+      content: "\"";
+    }
+  }
+
+  // Highlight
+  div.highlight {
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  // Symbols
+  div.symbol {
+    // No styles
+  }
+
+  // Mathematical symbols
+  sup,
+  sub {
+    font-size: 0.75rem;
+  }
+
+  // Lists
+  ol,
+  ul {
+    padding-left: 2rem;
+  }
+
+  // Links
+  a {
+    text-decoration: underline;
+    color: $link-color;
+
+    @include hover {
+      color: $link-hover-color;
+      text-decoration: $link-hover-decoration;
+    }
+  }
+
+  // References
+  div.reference {
+    padding-left: 1.25rem;
+    text-indent: -1.25rem;
+  }
+
+  // Tables
+  table {
+    min-width: 25%;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+
+    border-collapse: collapse;
+    border: 1px solid $body-color !important;
+
+    th, td {
+      padding: 0.1rem 0.25rem;
+      border: 1px solid $body-color !important;
+    }
+
+    caption {
+      line-height: 0.8rem;
+      margin-top: 0.5rem;
+      padding: 0;
+      caption-side: bottom;
+    }
+  }
+
+  figure {
+    &.image,
+    &.latex-figure {
+      margin: 0 0 1rem;
+      text-align: left;
+      display: inline-block;
+
+      img {
+        border: 1px solid $body-color;
+        vertical-align: top;
+        max-width: 100%;
+        max-height: 80vh;
+        width: auto;
+        height: auto;
+
+        &.latex-image {
+          padding: 0 5px 5px 5px;
+        }
+      }
+
+      figcaption {
+        line-height: 0.8rem;
+        margin-top: 0.5rem;
+        padding: 0;
+        display: block;
+      }
+    }
+  }
+}
