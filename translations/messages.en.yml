@@ -75,9 +75,10 @@ dashboard:
   concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
   external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
   learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
-  select-study-area: 'Select one...'
+  search-concept: 'Search for concept'
+  select-one: 'Select one...'
   study-area-contains: 'This study area has:'
-  study-area-text: 'You are currently browsing the "%studyArea%" study area.'
+  study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
 
 exception:
@@ -217,6 +218,7 @@ study-area:
   access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!'
   add-title: 'Add new study area'
   current: 'Current'
+  description: 'Description'
   edit-title: 'Edit study area "%item%"'
   list-title: 'Study area list'
   name: 'Name'
@@ -232,6 +234,7 @@ study-area:
   removed: 'Study area "%item%" has been removed successfully'
   required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study area's for you."
   saved: 'Study area "%item%" has been saved successfully.'
+  search-concept: 'Search for concepts'
   show: 'This study area is owned by %owner%. It contains the following concepts:'
   switch-to: 'Switch'
   transfer-ownership: 'Transfer ownership'

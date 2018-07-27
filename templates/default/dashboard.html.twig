@@ -1,11 +1,30 @@
 {% extends 'single_column.html.twig' %}
 
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import action_bar %}
+  {{ action_bar(
+    is_granted('STUDYAREA_OWNER', studyArea) ? path('app_studyarea_edit', {'studyArea': studyArea.id}) : false,
+    false,
+    false,
+    false,
+    is_granted('STUDYAREA_OWNER', studyArea) ? path('app_studyarea_remove', {'studyArea': studyArea.id}) : false,
+    -1
+  ) }}
+{% endblock %}
+
+
 {% block title %}
-  {{ 'app.dashboard'|trans }}
+  {{ studyArea.name }}
 {% endblock %}
 
 {% block content %}
   <h2>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</h2>
+
+  {% if studyArea.description is not null %}
+    <div class="ltb-text-container">
+      {{ studyArea.description|striptags(allowed_ckeditor_tags)|raw }}
+    </div>
+  {% endif %}
 
   <p>{{ 'dashboard.study-area-contains'|trans() }}</p>
   <ul>
@@ -22,7 +41,7 @@
     <li>
       {% if externalResourceCount > 0 %}<a href="{{ path('app_externalresource_list') }}">{% endif %}
         {{ 'dashboard.external-resource-count'|transchoice(externalResourceCount) }}
-      {% if externalResourceCount > 0 %}</a>{% endif %}
+        {% if externalResourceCount > 0 %}</a>{% endif %}
     </li>
     <li>
       {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
@@ -31,35 +50,70 @@
     </li>
   </ul>
 
-  <h4>{{ 'dashboard.study-area-switch'|trans }}</h4>
-  {% if form is not null %}
-    {{ form_start(form) }}
+  <h4>{{ 'dashboard.search-concept'|trans }}</h4>
+  {{ form_start(conceptForm) }}
+  <div class="row">
+    <div class="col-sm-12 col-md-5 col-lg-3 mt-1">
+      {{ form_widget(conceptForm.concept) }}
+    </div>
+    <div class="col mt-1">
+      <div class="float-right float-md-left">
+        {{ form_widget(conceptForm.submit) }}
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $('#concept_form_concept').on('change', function () {
+      $('#concept_form_submit').removeAttr('disabled');
+    });
+
+    $('#concept_form_submit').on('click', function () {
+      eDispatch.showConcept(parseInt($('#concept_form_concept').val()));
+      return false;
+    });
+  </script>
+
+  {{ form_end(conceptForm) }}
+
+  <div class="spacer"></div>
+
+  {% if studyAreaForm is not null %}
+    <h4>{{ 'dashboard.study-area-switch'|trans }}</h4>
+    {{ form_start(studyAreaForm) }}
     <div class="row">
       <div class="col-sm-12 col-md-5 col-lg-3 mt-1">
-        {{ form_widget(form.studyArea) }}
+        {{ form_widget(studyAreaForm.studyArea) }}
       </div>
       <div class="col mt-1">
-        {{ form_widget(form.submit) }}
+        <div class="float-right float-md-left">
+          {{ form_widget(studyAreaForm.submit) }}
+        </div>
       </div>
     </div>
 
     <script type="text/javascript">
-      $('#form_studyArea').on('change', function () {
-        $('#form_submit').removeAttr('disabled');
+      $('#studyarea_form_studyArea').on('change', function () {
+        $('#studyarea_form_submit').removeAttr('disabled');
       });
 
-      $('#form_submit').on('click', function () {
-        eDispatch.pageLoad(Routing.generate('_home', {'_studyArea': $('#form_studyArea').val()}), {topLevel: true});
+      $('#studyarea_form_submit').on('click', function () {
+        var url = Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, false);
+        if (inDoubleColumn) {
+          eDispatch.pageLoad(url, {topLevel: true});
+        } else {
+          window.location.href = url;
+        }
         return false;
       });
     </script>
 
-    {{ form_end(form) }}
+    {{ form_end(studyAreaForm) }}
   {% endif %}
 {% endblock %}
 
 {% block second_content %}
-  {% if form is not null %}
+  {% if studyAreaForm is not null %}
     <div class="card container-card">
       <div class="card-body">
         {% from '_macro/_action_bar.html.twig' import new_bar %}
@@ -74,7 +128,6 @@
             <th scope="col">{{ 'study-area.owner'|trans }}</th>
             <th scope="col">{{ 'study-area.access-type'|trans }}</th>
             <th scope="col">{{ 'study-area.switch-to'|trans }}</th>
-            <th scope="col">{{ 'form.show'|trans }}</th>
             <th scope="col">{{ 'form.edit'|trans }}</th>
             <th scope="col">{{ 'form.remove'|trans }}</th>
           </tr>
@@ -97,15 +150,19 @@
                 {% if studyArea.id == currentStudyArea.id %}
                   {{ 'study-area.current'|trans }}
                 {% else %}
-                  <a class="top-level" href="{{ path('_home', {'_studyArea': studyArea.id}) }}">{{ 'study-area.switch-to'|trans }}</a>
+                  <a class="top-level"
+                     href="{{ path('_home', {'_studyArea': studyArea.id}) }}">{{ 'study-area.switch-to'|trans }}</a>
                 {% endif %}
               </td>
-              <td><a href="{{ path('app_studyarea_show', {'studyArea': studyArea.id}) }}">{{ 'form.show'|trans }}</a></td>
               {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-                <td><a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id}) }}">{{ 'form.edit'|trans }}</a></td>
-                <td><a href="{{ path('app_studyarea_remove', {'studyArea': studyArea.id}) }}">{{ 'form.remove'|trans }}</a></td>
+                <td><a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id}) }}">{{ 'form.edit'|trans }}</a>
+                </td>
+                <td><a
+                      href="{{ path('app_studyarea_remove', {'studyArea': studyArea.id}) }}">{{ 'form.remove'|trans }}</a>
+                </td>
               {% else %}
-                <td></td><td></td>
+                <td></td>
+                <td></td>
               {% endif %}
             </tr>
           {% endfor %}

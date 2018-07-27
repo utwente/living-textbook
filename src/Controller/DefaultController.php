@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Concept;
 use App\Entity\StudyArea;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
@@ -14,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -73,19 +75,40 @@ class DefaultController extends Controller
    *
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function dashboard(RequestStudyArea $requestStudyArea, StudyAreaRepository $studyAreaRepository,
+  public function dashboard(RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
                             ConceptRepository $conceptRepo, AbbreviationRepository $abbreviationRepository,
                             ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo)
   {
-    $user      = $this->getUser();
-    $studyArea = $requestStudyArea->getStudyArea();
+    $user       = $this->getUser();
+    $studyArea  = $requestStudyArea->getStudyArea();
     $studyAreas = $studyAreaRepository->getVisible($this->getUser());
+
+    $conceptForm = $formFactory->createNamedBuilder('concept_form')
+        ->add('concept', EntityType::class, [
+            'placeholder'   => 'dashboard.select-one',
+            'hide_label'    => true,
+            'choice_label'  => 'name',
+            'class'         => Concept::class,
+            'select2'       => true,
+            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
+              return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea);
+            },
+        ])
+        ->add('submit', SubmitType::class, [
+            'disabled' => true,
+            'label'    => 'browser.search',
+            'icon'     => 'fa-chevron-right',
+            'attr'     => array(
+                'class' => 'btn btn-outline-success',
+            ),
+        ])
+        ->getForm();
 
     // Only show switch form when there is more than 1 visible study area
     if (count($studyAreas) > 1) {
-      $form = $this->createFormBuilder()
+      $studyAreaForm = $formFactory->createNamedBuilder('studyarea_form')
           ->add('studyArea', EntityType::class, [
-              'placeholder'   => 'dashboard.select-study-area',
+              'placeholder'   => 'dashboard.select-one',
               'hide_label'    => true,
               'class'         => StudyArea::class,
               'select2'       => true,
@@ -108,7 +131,8 @@ class DefaultController extends Controller
     }
 
     return [
-        'form'                  => isset($form) ? $form->createView() : NULL,
+        'conceptForm'           => $conceptForm->createView(),
+        'studyAreaForm'         => isset($studyAreaForm) ? $studyAreaForm->createView() : NULL,
         'studyArea'             => $studyArea,
         'studyAreas'            => $studyAreas,
         'currentStudyArea'      => $requestStudyArea->getStudyArea(),

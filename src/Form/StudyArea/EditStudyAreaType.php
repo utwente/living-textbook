@@ -47,7 +47,7 @@ class EditStudyAreaType extends AbstractType
               'enable_cancel'        => !$options['save_only'],
               'cancel_label'         => 'form.discard',
               'cancel_route'         => $editing ? $options['cancel_route_edit'] : $options['cancel_route'],
-              'cancel_route_params'  => $editing ? ['studyArea' => $studyArea->getId()] : [],
+              'cancel_route_params'  => [],
           ]);
     }
   }
@@ -61,7 +61,7 @@ class EditStudyAreaType extends AbstractType
             'save_and_list'     => true,
             'list_route'        => 'app_studyarea_list',
             'cancel_route'      => 'app_studyarea_list',
-            'cancel_route_edit' => 'app_studyarea_show',
+            'cancel_route_edit' => 'app_default_dashboard',
             'hide_submit'       => false,
         ])
         ->setAllowedTypes('save_only', 'bool')

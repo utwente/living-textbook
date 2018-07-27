@@ -8,7 +8,6 @@ use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\StudyArea\TransferOwnerType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
-use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
 use App\Repository\UserGroupRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -149,7 +148,8 @@ class StudyAreaController extends Controller
       }
 
       // Forward to show
-      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_studyarea_show', ['studyArea' => $studyArea->getId()]);
+      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_default_dashboard',
+          $permissions ? ['studyArea' => $studyArea->getId()] : []);
     }
 
     return [
@@ -164,6 +164,7 @@ class StudyAreaController extends Controller
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    *
    * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
    * @param StudyArea              $studyArea
    * @param StudyAreaRepository    $studyAreaRepository
    * @param EntityManagerInterface $em
@@ -183,7 +184,7 @@ class StudyAreaController extends Controller
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [
-        'cancel_route'        => 'app_studyarea_show',
+        'cancel_route'        => 'app_default_dashboard',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
     ]);
     $form->handleRequest($request);
@@ -206,26 +207,6 @@ class StudyAreaController extends Controller
     return [
         'form'      => $form->createView(),
         'studyArea' => $studyArea,
-    ];
-  }
-
-  /**
-   * @Route("/{studyArea}", requirements={"studyArea"="\d+"}, options={"expose"=true})
-   * @Template()
-   * @IsGranted("STUDYAREA_SHOW", subject="studyArea")
-   *
-   * @param StudyArea         $studyArea
-   * @param ConceptRepository $conceptRepository
-   *
-   * @return array
-   */
-  public function show(StudyArea $studyArea, ConceptRepository $conceptRepository)
-  {
-    $concepts = $conceptRepository->findByStudyAreaOrderedByName($studyArea);
-
-    return [
-        'studyArea' => $studyArea,
-        'concepts'  => $concepts,
     ];
   }
 
