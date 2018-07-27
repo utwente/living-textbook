@@ -5,7 +5,8 @@
 
 .container-fluid {
   &.with-menu {
-    margin-top: $body-with-menu-margin;
+    margin: 0;
+    padding: 0;
   }
 }
 
