@@ -48,6 +48,13 @@ class StudyArea
   private $name;
 
   /**
+   * @var string|null
+   *
+   * @ORM\Column(name="description", type="text", nullable=true)
+   */
+  private $description;
+
+  /**
    * @var Collection|Concept[]
    *
    * @ORM\OneToMany(targetEntity="Concept", mappedBy="studyArea", cascade={"persist","remove"})
@@ -148,7 +155,7 @@ class StudyArea
   public function getEditors()
   {
     $editorGroup = $this->getUserGroups(UserGroup::GROUP_EDITOR);
-    if ($editorGroup->isEmpty()){
+    if ($editorGroup->isEmpty()) {
       // Early return to prevent warning with array_merge
       return [];
     }
@@ -166,7 +173,7 @@ class StudyArea
   public function getReviewers()
   {
     $reviewGroup = $this->getUserGroups(UserGroup::GROUP_REVIEWER);
-    if ($reviewGroup->isEmpty()){
+    if ($reviewGroup->isEmpty()) {
       // Early return to prevent warning with array_merge
       return [];
     }
@@ -184,7 +191,7 @@ class StudyArea
   public function getViewers()
   {
     $viewerGroup = $this->getUserGroups(UserGroup::GROUP_VIEWER);
-    if ($viewerGroup->isEmpty()){
+    if ($viewerGroup->isEmpty()) {
       // Early return to prevent warning with array_merge
       return [];
     }
@@ -248,6 +255,26 @@ class StudyArea
   public function setName(string $name): StudyArea
   {
     $this->name = $name;
+
+    return $this;
+  }
+
+  /**
+   * @return null|string
+   */
+  public function getDescription(): ?string
+  {
+    return $this->description;
+  }
+
+  /**
+   * @param null|string $description
+   *
+   * @return StudyArea
+   */
+  public function setDescription(?string $description): StudyArea
+  {
+    $this->description = $description;
 
     return $this;
   }

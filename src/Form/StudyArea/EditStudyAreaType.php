@@ -4,6 +4,7 @@ namespace App\Form\StudyArea;
 
 
 use App\Entity\StudyArea;
+use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,6 +32,11 @@ class EditStudyAreaType extends AbstractType
               return ucfirst($value);
             },
             'select2'      => true,
+        ])
+        ->add('description', CkEditorType::class, [
+            'label'     => 'study-area.description',
+            'required'  => false,
+            'studyArea' => $studyArea,
         ]);
     if (!$options['hide_submit']) {
       $builder
