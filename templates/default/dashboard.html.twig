@@ -1,11 +1,13 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ studyArea.name }} - {{ 'app.dashboard'|trans }}
+  {{ 'app.dashboard'|trans }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</p>
+  <h2>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</h2>
+
+  <p>{{ 'dashboard.study-area-contains'|trans() }}</p>
   <ul>
     <li>
       {% if conceptCount > 0 %}<a href="{{ path('app_concept_list') }}">{% endif %}
@@ -53,5 +55,63 @@
     </script>
 
     {{ form_end(form) }}
+  {% endif %}
+{% endblock %}
+
+{% block second_content %}
+  {% if form is not null %}
+    <div class="card container-card">
+      <div class="card-body">
+        {% from '_macro/_action_bar.html.twig' import new_bar %}
+        {{ new_bar(path('app_studyarea_add')) }}
+
+        <h1>{{ 'study-area.list-title'|trans }}</h1>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">{{ 'study-area.name'|trans }}</th>
+            <th scope="col">{{ 'study-area.owner'|trans }}</th>
+            <th scope="col">{{ 'study-area.access-type'|trans }}</th>
+            <th scope="col">{{ 'study-area.switch-to'|trans }}</th>
+            <th scope="col">{{ 'form.show'|trans }}</th>
+            <th scope="col">{{ 'form.edit'|trans }}</th>
+            <th scope="col">{{ 'form.remove'|trans }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for studyArea in studyAreas %}
+            <tr>
+              <td>{{ studyArea.name }}</td>
+              <td>
+                {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+                  <a href="{{ path('app_studyarea_transferowner', {'studyArea': studyArea.id}) }}"
+                     data-toggle="tooltip" title="{{ 'study-area.transfer-ownership'|trans }}">
+                    {{ studyArea.owner.displayName }}</a>
+                {% else %}
+                  {{ studyArea.owner.displayName }}
+                {% endif %}
+              </td>
+              <td>{{ studyArea.accessType|capitalize }}</td>
+              <td>
+                {% if studyArea.id == currentStudyArea.id %}
+                  {{ 'study-area.current'|trans }}
+                {% else %}
+                  <a class="top-level" href="{{ path('_home', {'_studyArea': studyArea.id}) }}">{{ 'study-area.switch-to'|trans }}</a>
+                {% endif %}
+              </td>
+              <td><a href="{{ path('app_studyarea_show', {'studyArea': studyArea.id}) }}">{{ 'form.show'|trans }}</a></td>
+              {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+                <td><a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id}) }}">{{ 'form.edit'|trans }}</a></td>
+                <td><a href="{{ path('app_studyarea_remove', {'studyArea': studyArea.id}) }}">{{ 'form.remove'|trans }}</a></td>
+              {% else %}
+                <td></td><td></td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   {% endif %}
 {% endblock %}

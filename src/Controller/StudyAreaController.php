@@ -159,26 +159,6 @@ class StudyAreaController extends Controller
   }
 
   /**
-   * @Route("/list")
-   * @Template()
-   * @IsGranted("ROLE_USER")
-   *
-   * @param StudyAreaRepository $studyAreaRepository
-   * @param RequestStudyArea    $requestStudyArea
-   *
-   * @return array
-   */
-  public function list(StudyAreaRepository $studyAreaRepository, RequestStudyArea $requestStudyArea)
-  {
-    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
-
-    return [
-        'currentStudyArea' => $requestStudyArea->getStudyArea(),
-        'studyAreas'       => $studyAreas,
-    ];
-  }
-
-  /**
    * @Route("/remove/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")

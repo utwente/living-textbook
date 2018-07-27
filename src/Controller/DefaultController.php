@@ -58,6 +58,7 @@ class DefaultController extends Controller
 
   /**
    * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
+   * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"}, name="app_studyarea_list")
    * @Template
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
@@ -78,8 +79,10 @@ class DefaultController extends Controller
   {
     $user      = $this->getUser();
     $studyArea = $requestStudyArea->getStudyArea();
+    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
 
-    if ($studyAreaRepository->getVisibleCount($user) > 1) {
+    // Only show switch form when there is more than 1 visible study area
+    if (count($studyAreas) > 1) {
       $form = $this->createFormBuilder()
           ->add('studyArea', EntityType::class, [
               'placeholder'   => 'dashboard.select-study-area',
@@ -107,6 +110,8 @@ class DefaultController extends Controller
     return [
         'form'                  => isset($form) ? $form->createView() : NULL,
         'studyArea'             => $studyArea,
+        'studyAreas'            => $studyAreas,
+        'currentStudyArea'      => $requestStudyArea->getStudyArea(),
         'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea),
         'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),

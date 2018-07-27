@@ -29,14 +29,6 @@
   {{ block('_bar_footer') }}
 {% endmacro %}
 
-{% macro new_and_duplicate_bar(new_url, duplicate_url) %}
-  {% from _self import _action_button %}
-  {{ block('_bar_header') }}
-  {{ _action_button(new_url, 'fa-plus', 'form.add', 'success') }}
-  {{ _action_button(duplicate_url, 'fa-copy', 'data.duplicate', 'primary') }}
-  {{ block('_bar_footer') }}
-{% endmacro %}
-
 {% macro _action_button(url, icon, label, color) %}
   <a href="{{ url }}" class="btn btn-outline-{{ color|default('secondary') }}"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>
 {% endmacro %}

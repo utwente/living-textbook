@@ -35,3 +35,9 @@
     margin-bottom: 1rem;
   }
 }
+
+table.table {
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

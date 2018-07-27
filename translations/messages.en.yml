@@ -76,8 +76,9 @@ dashboard:
   external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
   learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
   select-study-area: 'Select one...'
-  study-area-text: 'You are currently browsing the study area "%studyArea%". It currently contains:'
-  study-area-switch: 'Switch to another study area'
+  study-area-contains: 'This study area has:'
+  study-area-text: 'You are currently browsing the "%studyArea%" study area.'
+  study-area-switch: 'Search for another study area'
 
 exception:
   error-title: 'Oops, an error occurred!'
