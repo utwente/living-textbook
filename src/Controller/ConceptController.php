@@ -150,7 +150,7 @@ class ConceptController extends Controller
    */
   public function list(ConceptRepository $repo, RequestStudyArea $requestStudyArea)
   {
-    $concepts = $repo->findByStudyAreaOrderedByName($requestStudyArea->getStudyArea());
+    $concepts = $repo->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea());
 
     return [
         'studyArea' => $requestStudyArea->getStudyArea(),

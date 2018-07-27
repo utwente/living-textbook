@@ -59,7 +59,7 @@ class DataController extends Controller
     $relationTypes = $relationTypeRepo->findBy(['studyArea' => $requestStudyArea->getStudyArea()]);
 
     // Retrieve the concepts
-    $concepts = $conceptRepo->findByStudyAreaOrderedByName($requestStudyArea->getStudyArea());
+    $concepts = $conceptRepo->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea());
 
     // Return as JSON
     $groups = ["Default"];
@@ -205,7 +205,7 @@ class DataController extends Controller
       $relationTypes = $relationTypeRepo->findBy(['studyArea' => $studyArea]);
 
       // Retrieve the concepts
-      $concepts = $conceptRepo->findByStudyAreaOrderedByName($studyArea);
+      $concepts = $conceptRepo->findForStudyAreaOrderedByName($studyArea);
       $links    = $conceptRelationRepo->findByConcepts($concepts);
 
       // Detach the data from the ORM

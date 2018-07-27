@@ -32,14 +32,24 @@ class ConceptRepository extends ServiceEntityRepository
   /**
    * @param StudyArea $studyArea
    *
-   * @return array
+   * @return QueryBuilder
    */
-  public function findByStudyAreaOrderedByName(StudyArea $studyArea)
+  public function findForStudyAreaOrderByNameQb(StudyArea $studyArea): QueryBuilder
   {
-    $qb = $this->createQueryBuilder('c')
+    return $this->createQueryBuilder('c')
         ->where('c.studyArea = :studyArea')
         ->setParameter(':studyArea', $studyArea)
         ->orderBy('c.name', 'asc');
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return array
+   */
+  public function findForStudyAreaOrderedByName(StudyArea $studyArea)
+  {
+    $qb = $this->findForStudyAreaOrderByNameQb($studyArea);
 
     $this->loadRelations($qb, 'c');
 
