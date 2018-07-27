@@ -74,6 +74,7 @@ CKEDITOR.plugins.add('latexeditor', {
       if ((element.is('figure') && element.hasClass('latex-figure'))
           || (element.is('img') && element.hasClass('latex-image'))
           || (element.is('caption') && element.hasClass('latex-caption'))) {
+        editor.getSelection().selectElement(element);
         evt.data.dialog = pluginCmd;
       }
     });

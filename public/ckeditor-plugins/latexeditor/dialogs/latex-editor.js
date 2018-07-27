@@ -129,6 +129,7 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
 
       // Create image
       var img = editor.document.createElement('img');
+      img.setAttribute('contenteditable', false);
       img.setAttribute('class', 'latex-image');
       img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: equation}));
       img.setAttribute('alt', encodeURIComponent(equation));
@@ -144,7 +145,9 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
 
       // Find the top level figure and select it
       var parent = editor.getSelection().getStartElement().getAscendant('figure', true);
-      editor.getSelection().selectElement(parent);
+      if (parent) {
+        editor.getSelection().selectElement(parent);
+      }
 
       // Insert the new element by replacing the selection
       editor.insertElement(latexFigure);
