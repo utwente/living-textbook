@@ -1,0 +1,19 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+
+$logo-size: 40px;
+
+.navbar {
+  .navbar-logo-brand {
+    display: flex;
+
+    text-decoration: none;
+
+    .navbar-logo {
+      background: url("../../img/icon/LTB_Logo_V4.svg") no-repeat center center;
+      width: $logo-size;
+      height: $logo-size;
+      margin: 0 ($spacer / 2) 0 (-($spacer / 2));
+    }
+  }
+}
