@@ -33,3 +33,19 @@
     </div>
   </div>
 {% endblock %}
+
+{% block javascripts_bottom %}
+  {{ parent() }}
+  <script type="text/javascript">
+    // Fixate the tab height
+    var maxHeight = 0;
+    $(".tab-content .tab-pane").each(function () {
+      $(this).addClass("active");
+      var height = $(this).height();
+      maxHeight = height > maxHeight ? height : maxHeight;
+      $(this).removeClass("active");
+    });
+    $(".tab-content .tab-pane:first").addClass("active");
+    $(".tab-content").height(maxHeight);
+  </script>
+{% endblock %}

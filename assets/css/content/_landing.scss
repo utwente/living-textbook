@@ -1,0 +1,35 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+
+.license-notice {
+  margin-top: 3 * $spacer;
+
+  > .license-image {
+    height: 2rem;
+    max-width: 25%;
+    background: url("../../img/footer/license.svg") no-repeat bottom left;
+    background-size: contain;
+  }
+}
+
+.landing-page {
+  background: none;
+  &::after {
+    content: "";
+    background: url("../../img/icon/LTB_Logo_V4.svg") no-repeat top right;
+    background-size: contain;
+    background-origin: content-box;
+    opacity: 0.1;
+    top: $spacer;
+    left: $spacer;
+    bottom: $spacer;
+    right: $spacer;
+    position: absolute;
+
+    pointer-events: none;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+  }
+}

@@ -1,11 +1,13 @@
 {% extends 'single_column.html.twig' %}
 
+{% block extra_card_class %}{% endblock %}
+
 {% block base_content %}
   <div class="container-fluid">
     <div class="row justify-content-center mt-3">
       <div class="col-sm-12 col-md-10 col-xl-8">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body {{ block('extra_card_class') -}}">
             <h1>{{ block('title') }}</h1>
             {% include '_layout/flashbags.html.twig' %}
             {% block content %}
@@ -13,8 +15,8 @@
           </div>
         </div>
         <div class="footer">
-          <div class="logo logo-itc"></div>
-          <div class="logo logo-ut"></div>
+          <a href="https://www.itc.nl" target="_blank"><div class="logo logo-itc"></div></a>
+          <a href="https://www.utwente.nl" target="_blank"><div class="logo logo-ut"></div></a>
           <div class="clearfix"></div>
         </div>
       </div>

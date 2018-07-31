@@ -25,17 +25,7 @@
   }
 }
 
-.license-notice {
-  margin-top: 3 * $spacer;
-
-  > .license-image {
-    height: 2rem;
-    max-width: 25%;
-    background: url("../../img/footer/license.svg") no-repeat bottom left;
-    background-size: contain;
-  }
-}
-
+@import '_landing';
 @import '_menu';
 @import 'styleGuide';
 @import '_forms';
