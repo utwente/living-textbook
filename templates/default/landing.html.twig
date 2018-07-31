@@ -1,0 +1,37 @@
+{% extends 'simple_card.html.twig' %}
+
+{% block title %}
+  {{ 'app.welcome'|trans }}
+{% endblock %}
+
+{% block license %}
+  The software and contents of this website are licensed under a
+  <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode" target="_blank">
+    Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
+  </a> license.
+  <br/>
+  The software and content of this website were developed by the
+  <a href="https://www.itc.nl" target="_blank">Faculty ITC</a>
+  from the
+  <a href="https://www.utwente.nl" target="_blank">University of Twente</a>.
+{% endblock %}
+
+{% block content %}
+
+  <p>{{ 'app.welcome-text'|trans }}</p>
+
+  {% block enter %}
+    <p>{{ 'app.user-tracking-notice'|trans }}</p>
+  {% endblock %}
+
+  <div class="spacer"></div>
+  <p>{{ 'app.delete-notice'|trans }}</p>
+
+  <div class="license-notice">
+    <div class="license-image"></div>
+    <p>
+    {{ block('license') }}
+    </p>
+  </div>
+
+{% endblock %}
