@@ -29,7 +29,7 @@
         <td>{{ externalResource.title }}</td>
         <td>
           {% if externalResource.url is not empty %}
-            <a href="{{ externalResource.url }}" class="no-block" target="_blank">{{ externalResource.url }}</a>
+            <a href="{{ externalResource.url }}" target="_blank">{{ externalResource.url }}</a>
           {% else %}
             {{ 'external-resource.no-url'|trans }}
           {% endif %}

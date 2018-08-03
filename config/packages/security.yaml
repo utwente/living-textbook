@@ -17,9 +17,15 @@ security:
       security: false
     main:
       pattern: ^/
-      oidc: ~
       anonymous: true
+      oidc:
+        default_target_path: /
+        always_use_default_target_path: true
+        check_path: login_check
+        login_path: login
       form_login:
+        default_target_path: /
+        always_use_default_target_path: true
         check_path: login_check
         login_path: login
         username_parameter: "login[_username]"

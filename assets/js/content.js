@@ -42,6 +42,9 @@ $(function () {
     if (from) {
       var $from = $(from);
 
+      // Exclude _blank target links
+      if ($from.attr('target') === '_blank') return;
+
       // Exclude 'no-link' class from handler
       if ($from.hasClass('no-block')) return;
 

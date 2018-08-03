@@ -6,6 +6,7 @@ framework:
   session:
     # With this config, PHP's native session handling is used
     handler_id: ~
+    cookie_secure: true
 
   assets:
     json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
