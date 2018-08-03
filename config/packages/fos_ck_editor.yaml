@@ -4,7 +4,7 @@ parameters:
   <ul><ol><li>
   <strong><b><em><u><s><sup><sub><pre>
   <table><tbody><thead><tr><td><th><caption>
-  <ltb-abbr><div>"
+  <ltb-abbr><div><symbol>"
 
 fos_ck_editor:
   autoload: false
@@ -14,20 +14,20 @@ fos_ck_editor:
       language: "en"
       toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
-      format_tags: "p;h1;h2;citation;highlight;symbol;reference"
+      format_tags: "p;h1;h2;citation;reference"
       extraPlugins: "latexeditor,image2"
-      extraAllowedContent: "figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id]"
+      extraAllowedContent: "figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id];symbol"
       removePlugins: "dialogadvtab"
       bodyClass: "ltb-text-container"
     ltb_concept_config:
       <<: *ckeditor_default
-      extraPlugins: "image2,latexeditor,abbreviationselector,conceptselector"
+      extraPlugins: "image2,latexeditor,abbreviationselector,conceptselector,ltbbuttons"
   toolbars:
     configs:
       ltb_toolbar: [ "@text_tools", "@ltb_tools", "/", "@font_tools", "@edit_tools" ]
     items:
       edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
-      text_tools: [ "Bold", "Italic", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
+      text_tools: [ "Highlight", "Symbol", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
       ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector", "AbbreviationSelector" ]
       font_tools: [ "Format", "TextColor" ]
   plugins:
@@ -42,4 +42,7 @@ fos_ck_editor:
       filename: "plugin.js"
     conceptselector:
       path:     "/ckeditor-plugins/conceptselector/"
+      filename: "plugin.js"
+    ltbbuttons:
+      path:     "/ckeditor-plugins/ltbbuttons/"
       filename: "plugin.js"

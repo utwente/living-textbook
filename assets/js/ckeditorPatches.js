@@ -7,8 +7,6 @@ if (window.CKEDITOR) {
   CKEDITOR.config.format_h2 = {element: 'h4'};
 
   // // Add extra styles
-  CKEDITOR.config.format_highlight = {name: "Highlight", element: 'div', attributes: { 'class': 'highlight'}};
-  CKEDITOR.config.format_symbol = {name: "Symbol", element: 'div', attributes: { 'class': 'symbol'}};
   CKEDITOR.config.format_citation = {name: "Citation", element: 'div', attributes: { 'class': 'citation'}};
   CKEDITOR.config.format_reference = {name: "Reference", element: 'div', attributes: { 'class': 'reference'}};
 
