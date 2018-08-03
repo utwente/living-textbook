@@ -21,6 +21,14 @@
   <link rel="stylesheet" href="{{ asset('build/content.css') }}"/>
 {% endblock %}
 
+{% block footer %}
+  <div class="footer">
+    <a href="https://www.itc.nl" target="_blank"><div class="logo logo-itc"></div></a>
+    <a href="https://www.utwente.nl" target="_blank"><div class="logo logo-ut"></div></a>
+    <div class="clearfix"></div>
+  </div>
+{% endblock %}
+
 {% block base_content %}
   {% block _menu %}{% include '_layout/menu.html.twig' %}{% endblock %}
   <div class="container-fluid with-menu">
@@ -42,10 +50,6 @@
       </div>
     </div>
     {% block second_content %}{% endblock %}
-    <div class="footer">
-      <div class="logo logo-itc"></div>
-      <div class="logo logo-ut"></div>
-      <div class="clearfix"></div>
-    </div>
+    {{ block('footer') }}
   </div>
 {% endblock %}
