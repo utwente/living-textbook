@@ -10,3 +10,7 @@ data:
 
 learning-outcome:
   number-already-used: 'This number is already used in this study area.'
+
+user:
+  email-used: 'This e-mail address is already in use!'
+  password-no-match: 'The supplied passwords do not match!'

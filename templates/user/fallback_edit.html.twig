@@ -1,0 +1,18 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% from '_macro/_action_bar.html.twig' import action_bar %}
+  {{ action_bar(
+    false,
+    false,
+    path('app_user_fallbacklist')
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'user.fallback.edit-title'|trans({'%user%': user.displayName}) }}
+{% endblock %}
+
+{% block content %}
+  {{ form(form) }}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'user.fallback.remove'|trans({"%user%": user.displayName}) }}
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{ 'user.fallback.remove-text'|trans({"%user%": user.displayName}) }}
+    {% if studyAreas|length > 0 %}
+      {{ 'user.remove-studyareas'|trans }}
+    {% endif %}
+  </p>
+
+  {% if studyAreas|length > 0 %}
+    <p>{{ 'user.remove-studyareas-list'|trans }}</p>
+    <ul>
+      {% for studyArea in studyAreas %}
+        <li>{{ studyArea.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {{ form(form) }}
+{% endblock %}

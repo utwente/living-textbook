@@ -30,6 +30,7 @@ class UserProvider implements OidcUserProviderInterface
    * @param OidcToken $token
    *
    * @return User
+   * @throws \Drenso\OidcBundle\Exception\OidcException
    */
   public function loadUserByToken(OidcToken $token)
   {
@@ -66,7 +67,7 @@ class UserProvider implements OidcUserProviderInterface
    */
   public function loadUserByUsername($username, $isOidc = false)
   {
-    $user = $this->em->getRepository('App:User')
+    $user = $this->em->getRepository(User::class)
         ->findOneBy(['username' => $username, 'isOidc' => $isOidc]);
 
     if (!$user) {

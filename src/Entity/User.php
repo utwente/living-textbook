@@ -115,7 +115,8 @@ class User implements UserInterface, \Serializable
    *
    * @ORM\Column(name="password", type="string", length=255, nullable=true)
    *
-   * @Assert\Length(min=10, max=2048)
+   * Max length due to BCrypt, @see BCryptPasswordEncoder
+   * @Assert\Length(min=5, max=72)
    */
   protected $password;
 
@@ -135,7 +136,7 @@ class User implements UserInterface, \Serializable
    *
    * @var \DateTime|null
    *
-   * @ORM\Column(name="last_used", type="datetime")
+   * @ORM\Column(name="last_used", type="datetime", nullable=true)
    */
   protected $lastUsed;
 
@@ -170,7 +171,11 @@ class User implements UserInterface, \Serializable
    */
   public function __construct()
   {
+    $this->givenName     = '';
+    $this->familyName    = '';
+    $this->fullName      = '';
     $this->registeredOn  = new \DateTime();
+    $this->isOidc        = false;
     $this->isAdmin       = false;
     $this->securityRoles = array();
     $this->userGroups    = new ArrayCollection();

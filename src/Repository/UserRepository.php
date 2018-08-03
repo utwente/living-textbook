@@ -15,6 +15,16 @@ class UserRepository extends ServiceEntityRepository
   }
 
   /**
+   * Retrieve fallback users
+   *
+   * @return array
+   */
+  public function getFallbackUsers()
+  {
+    return $this->findBy(['isOidc' => false], ['username' => 'ASC']);;
+  }
+
+  /**
    * Retrieve the super admins
    *
    * @return User[]
