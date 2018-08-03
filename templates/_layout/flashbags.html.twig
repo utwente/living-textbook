@@ -15,12 +15,7 @@
 {% spaceless %}
   <div id="flashbag-container">
     {% block flashbags %}
-      {% from _self import flashbag_alert as flashbag_alert %}
-
-      {# Authentication error messages #}
-      {% for flashMessage in app.session.flashbag.get('authError') %}
-        {{ flashbag_alert('danger', flashMessage, 'fa-exclamation-triangle', false) }}
-      {% endfor %}
+      {% from '_layout/flashbags.html.twig' import flashbag_alert %}
 
       {# General error messages #}
       {% for flashMessage in app.session.flashbag.get('error') %}
