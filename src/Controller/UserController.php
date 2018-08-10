@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\Type\RemoveType;
 use App\Form\User\AddFallbackUserType;
+use App\Form\User\ChangePasswordType;
 use App\Form\User\EditFallbackUserType;
 use App\Form\User\UpdatePasswordType;
 use App\Repository\StudyAreaRepository;
@@ -57,6 +58,45 @@ class UserController extends Controller
       $this->addFlash('success', $trans->trans('user.fallback.added', ['%user%' => $user->getDisplayName()]));
 
       return $this->redirectToRoute('app_user_fallbacklist');
+    }
+
+    return [
+        'form' => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/fallback/password/change")
+   * @Template()
+   * @IsGranted("ROLE_USER")
+   *
+   * @param Request                      $request
+   * @param EntityManagerInterface       $em
+   * @param UserPasswordEncoderInterface $encoder
+   * @param TranslatorInterface          $trans
+   *
+   * @return array|Response
+   */
+  public function fallbackChangeOwnPassword(Request $request, EntityManagerInterface $em,
+                                            UserPasswordEncoderInterface $encoder, TranslatorInterface $trans)
+  {
+    $user = $this->getUser();
+
+    // Check whether user is a fallback user
+    if ($user->isOidc()) {
+      throw $this->createNotFoundException();
+    }
+
+    $form = $this->createForm(ChangePasswordType::class);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $user->setPassword($encoder->encodePassword($user, $form->getData()['password']));
+      $em->flush();
+
+      $this->addFlash('success', $trans->trans('user.fallback.password-updated-own'));
+
+      return $this->redirectToRoute('app_default_dashboard');
     }
 
     return [

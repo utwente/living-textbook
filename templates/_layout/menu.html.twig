@@ -46,20 +46,29 @@
         </div>
       </li>
 
-      {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+      {% if not app.user.isOidc or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="config-dropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             {{ 'menu.config'|trans }}
           </a>
           <div class="dropdown-menu" aria-labelledby="config-dropdown">
-            <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
+            {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+              <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
+            {% endif %}
+
             {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_permissions_studyarea') }}">{{ 'menu.permissions'|trans }}</a>
             {% endif %}
+
             {% if is_granted("ROLE_SUPER_ADMIN") %}
               <a class="dropdown-item" href="{{ path('app_permissions_admins') }}">{{ 'menu.admin'|trans }}</a>
               <a class="dropdown-item" href="{{ path('app_user_fallbacklist') }}">{{ 'menu.fallback-users'|trans }}</a>
+            {% endif %}
+
+            {% if not app.user.isOidc %}
+              <a class="dropdown-item"
+                 href="{{ path('app_user_fallbackchangeownpassword') }}">{{ 'menu.change-password'|trans }}</a>
             {% endif %}
           </div>
         </li>

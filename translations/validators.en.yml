@@ -14,3 +14,4 @@ learning-outcome:
 user:
   email-used: 'This e-mail address is already in use!'
   password-no-match: 'The supplied passwords do not match!'
+  wrong-current-password: 'Your current password is not accepted!'

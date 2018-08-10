@@ -218,6 +218,7 @@ login:
 menu:
   abbreviations: 'Abbreviations'
   admin: 'Administrators'
+  change-password: 'Change password'
   config: 'Configuration'
   data: 'Data'
   download: 'Download'
@@ -319,7 +320,10 @@ user:
   fallback:
     added: 'Fallback account for %user% added.'
     add-title: 'Add fallback user'
+    change-password: 'Change password'
+    current-password: 'Current password'
     password-updated: 'Password for %user% updated.'
+    password-updated-own: 'Your password has been updated!'
     remove: 'Remove fallback account'
     remove-text: 'Are you sure you want to remove the user "%user%"?'
     removed: 'The fallback account for %user% has been removed.'
