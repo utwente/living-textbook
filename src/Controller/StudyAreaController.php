@@ -148,8 +148,8 @@ class StudyAreaController extends Controller
       }
 
       // Forward to show
-      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_default_dashboard',
-          $permissions ? ['studyArea' => $studyArea->getId()] : []);
+      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_studyarea_edit',
+          ['studyArea' => $studyArea->getId()]);
     }
 
     return [

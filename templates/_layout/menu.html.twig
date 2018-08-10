@@ -70,10 +70,6 @@
     <a class="btn btn-outline-primary ml-lg-2" href="#"
        onclick="eDispatch.toggleConceptBrowser(); $(this).blur();">{{ 'browser.toggle'|trans }}</a>
 
-    {% if app.user %}
-      <a class="btn btn-outline-dark ml-lg-2 top-level" href="{{ path('logout') }}">{{ 'login.logout'|trans }}</a>
-    {% else %}
-      <a class="btn btn-outline-primary ml-lg-2 top-level" href="{{ path('login') }}">{{ 'login.login'|trans }}</a>
-    {% endif %}
+    <a class="btn btn-outline-dark ml-lg-2 top-level" href="{{ path('logout') }}">{{ 'login.logout'|trans }}</a>
   </div>
 </nav>

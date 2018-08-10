@@ -12,3 +12,18 @@
 {% block content %}
   {{ form(form) }}
 {% endblock %}
+
+{% block javascripts_bottom %}
+  {{ parent() }}
+  <script type="text/javascript">
+    var $firstName = $('#add_fallback_user_givenName');
+    var $familyName = $('#add_fallback_user_familyName');
+    var $fullName = $('#add_fallback_user_fullName');
+
+    $familyName.on('change', function () {
+      if ($fullName.val() === '' && $firstName.val() !== '') {
+        $fullName.val($firstName.val() + ' ' + $familyName.val());
+      }
+    });
+  </script>
+{% endblock %}
