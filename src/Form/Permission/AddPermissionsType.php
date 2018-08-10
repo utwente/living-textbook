@@ -11,6 +11,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddPermissionsType extends AbstractType
 {
@@ -32,8 +35,14 @@ class AddPermissionsType extends AbstractType
             'multiple'      => true,
         ])
         ->add('emails', EmailListType::class, [
-            'required' => false,
-            'label'    => 'permissions.emails',
+            'required'    => false,
+            'label'       => 'permissions.emails',
+            'constraints' => [
+                'constraints' => new All([
+                    new NotBlank(),
+                    new Email(),
+                ]),
+            ],
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
