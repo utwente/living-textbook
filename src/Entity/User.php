@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="user__table", indexes={@ORM\Index(columns={"username"})})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\EntityListeners({"App\Entity\Listener\UserListener"})
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
