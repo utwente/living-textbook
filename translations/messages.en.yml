@@ -333,6 +333,7 @@ user:
     removed: 'The local account for %user% has been removed.'
     reset-password: 'Reset password for %user%'
     reset-password-short: 'Reset password'
+    self-remove: 'You cannot remove your own account'
     updated: 'Local account for %user% updated.'
     user-list: 'Local account list'
   family-name: 'Family name'

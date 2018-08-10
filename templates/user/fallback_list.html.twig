@@ -29,7 +29,11 @@
         <td><a
               href="{{ path('app_user_fallbackresetpassword', {'user': user.id}) }}">{{ 'user.fallback.reset-password-short'|trans }}</a>
         </td>
-        <td><a href="{{ path('app_user_fallbackremove', {'user': user.id}) }}">{{ 'form.remove'|trans }}</a></td>
+        <td>
+          {% if user.id != app.user.id %}
+            <a href="{{ path('app_user_fallbackremove', {'user': user.id}) }}">{{ 'form.remove'|trans }}</a>
+          {% endif %}
+        </td>
       </tr>
     {% endfor %}
     </tbody>

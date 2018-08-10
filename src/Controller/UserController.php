@@ -218,6 +218,13 @@ class UserController extends Controller
       throw $this->createNotFoundException();
     }
 
+    // Check if self
+    if ($user->getId() == $this->getUser()->getId()) {
+      $this->addFlash('notice', $trans->trans('user.fallback.self-remove'));
+
+      return $this->redirectToRoute('app_user_fallbacklist');
+    }
+
     // Get owned study areas
     $studyAreas = $studyAreaRepository->findBy(['owner' => $user], ['name' => 'ASC']);
 
