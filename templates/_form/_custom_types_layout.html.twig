@@ -1,18 +1,57 @@
 {# General save_row block #}
 {% block save_row %}
   {% if locate_static|default(false) %}
-    <div class="locate-static-placeholder"></div>
-    <div class="locate-static-container">
-  {% endif %}
-  <div class="form-group form-group-save-button">
-    <div class="form-group-inner">
-      {% for item in form %}
-        {{ form_widget(item) }}
-      {% endfor %}
+  <div class="locate-static-placeholder"></div>
+  <div class="locate-static-container" id="{{ id }}-static">
+    {% endif %}
+    <div class="form-group form-group-save-button">
+      <div class="form-group-inner">
+        {% for item in form %}
+          {{ form_widget(item) }}
+        {% endfor %}
+      </div>
     </div>
+    {% if locate_static|default(false) %}
   </div>
-  {% if locate_static|default(false) %}
-    </div>
+  <script>
+    {# Fixes the location of the save button with JS, as with the footer a CSS only solution was no longer possible #}
+    var staticLocateUpdater_{{ id }} = function () {
+      var windowHeight = $(window).height();
+      var $staticButtons = $('#{{ id }}-static');
+      var containerBottom = $staticButtons.closest('.card-body').get(0).getBoundingClientRect().bottom;
+
+      var difference = windowHeight - containerBottom;
+      if (difference > 0) {
+        $staticButtons.css('bottom', 'calc(1rem + ' + difference + 'px)');
+      } else {
+        $staticButtons.css('bottom', '1rem');
+      }
+    };
+
+    var staticLocateUpdaterDelay_{{ id }} = (function () {
+      var timer = 0;
+      return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+
+    $(function () {
+      {# Recalculate the position on several events #}
+      staticLocateUpdater_{{ id }}();
+      $(document).on('scroll', staticLocateUpdater_{{ id }});
+      $(document).on('resize', function () {
+        staticLocateUpdaterDelay_{{ id }}(function () {
+          staticLocateUpdater_{{ id }}();
+        }, 500, 'staticResizeTimer_{{ id }}');
+      });
+      if (window.CKEDITOR) {
+        CKEDITOR.on('instanceReady', function () {
+          staticLocateUpdater_{{ id }}()
+        });
+      }
+    });
+  </script>
   {% endif %}
 {% endblock %}
 
