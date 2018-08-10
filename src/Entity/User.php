@@ -88,11 +88,11 @@ class User implements UserInterface, \Serializable
    *
    * @var string
    *
-   * @ORM\Column(name="username", type="string", length=255)
+   * @ORM\Column(name="username", type="string", length=180)
    *
    * @Assert\NotBlank()
    * @Assert\Email()
-   * @Assert\Length(min=5, max=255)
+   * @Assert\Length(min=5, max=180)
    */
   protected $username;
 
@@ -181,9 +181,18 @@ class User implements UserInterface, \Serializable
     $this->userGroups    = new ArrayCollection();
   }
 
-  public function __toString(): string
+  /**
+   * String representation to be used in selection list
+   *
+   * @return string
+   */
+  public function selectionName(): string
   {
-    return $this->getDisplayName() . ' (' . $this->getUsername() . ')';
+    if ($this->isOidc()) {
+      return $this->getDisplayName();
+    }
+
+    return $this->getDisplayName() . ' (Local account)';
   }
 
   /**
@@ -207,6 +216,19 @@ class User implements UserInterface, \Serializable
         ->setUsername($username)
         ->setIsOidc(true)
         ->update($token);
+  }
+
+  /**
+   * Custom sorter, based on display name
+   *
+   * @param User $a
+   * @param User $b
+   *
+   * @return int
+   */
+  public static function sortOnDisplayName(User $a, User $b): int
+  {
+    return strcmp($a->getDisplayName(), $b->getDisplayName());
   }
 
   /**
@@ -340,7 +362,7 @@ class User implements UserInterface, \Serializable
    */
   public function setUsername($username)
   {
-    $this->username = $username;
+    $this->username = mb_strtolower($username);
 
     return $this;
   }

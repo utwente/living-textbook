@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Entity\UserGroup;
+use App\Entity\UserGroupEmail;
 use App\Form\Permission\AddAdminType;
 use App\Form\Permission\AddPermissionsType;
 use App\Form\Type\RemoveType;
@@ -168,7 +169,7 @@ class PermissionsController extends Controller
   {
     // Check for un-allowed combinations
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($studyArea->getAccessType() == StudyArea::ACCESS_PUBLIC && $groupType == UserGroup::GROUP_VIEWER){
+    if ($studyArea->getAccessType() == StudyArea::ACCESS_PUBLIC && $groupType == UserGroup::GROUP_VIEWER) {
       $this->addFlash('notice', $trans->trans('permissions.not-allowed-public-viewer', ['%type%' => $groupType]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
@@ -195,10 +196,29 @@ class PermissionsController extends Controller
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+
       // Persist the selected users
       foreach ($form->getData()['users'] as $user) {
         $userGroup->addUser($user);
       }
+
+      // Parse the email addresses, and convert them to users if applicable
+      $emails     = $form->getData()['emails'];
+      $foundUsers = $userRepository->getUsersForEmails($emails);
+
+      // Add found users to the group, unset their username from the email list
+      foreach ($foundUsers as $foundUser) {
+        if (!$userGroup->getUsers()->contains($foundUser)) {
+          $userGroup->addUser($foundUser);
+        }
+        $emails = array_diff($emails, [$foundUser->getUsername()]);
+      }
+
+      // Add remaining email addresses to the group
+      foreach ($emails as $email) {
+        $userGroup->addEmail($email);
+      }
+
       $em->persist($userGroup);
       $em->flush();
 
@@ -236,7 +256,7 @@ class PermissionsController extends Controller
                                        EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans)
   {
     $userGroup = $userGroupRepository->getForType($requestStudyArea->getStudyArea(), $groupType);
-    if (!$userGroup || $userGroup->getUsers()->isEmpty()) {
+    if (!$userGroup || ($userGroup->getUsers()->isEmpty() && $userGroup->getEmails()->isEmpty())) {
       $this->addFlash('notice', $trans->trans('permissions.remove-all-not-necessary', [
           '%type%' => $groupType,
       ]));
@@ -251,6 +271,10 @@ class PermissionsController extends Controller
 
     if (RemoveType::isRemoveClicked($form)) {
       $userGroup->getUsers()->clear();
+      foreach ($userGroup->getEmails() as $userGroupEmail) {
+        $em->remove($userGroupEmail);
+      }
+      $userGroup->getEmails()->clear();
       $em->flush();
 
       return $this->redirectToRoute('app_permissions_studyarea');
@@ -312,6 +336,66 @@ class PermissionsController extends Controller
     return [
         'studyArea' => $requestStudyArea->getStudyArea(),
         'user'      => $user,
+        'type'      => $groupType,
+        'form'      => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/studyarea/revoke/{email}/{groupType}",requirements={"groupType"="viewer|editor|reviewer"})
+   * @Template
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param string                 $groupType
+   * @param string                 $email
+   * @param EntityManagerInterface $em
+   * @param UserGroupRepository    $userGroupRepository
+   * @param TranslatorInterface    $trans
+   *
+   * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+   *
+   * @throws NonUniqueResultException
+   */
+  public function removeEmailPermission(Request $request, RequestStudyArea $requestStudyArea, string $groupType, string $email,
+                                        EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans)
+  {
+    // Decode email
+    $email = urldecode($email);
+
+    // Retrieve the correct user group
+    $userGroup       = $userGroupRepository->getForType($requestStudyArea->getStudyArea(), $groupType);
+    $userGroupEmails = $userGroup->getEmails()->filter(function (UserGroupEmail $userGroup) use ($email) {
+      return $userGroup->getEmail() == mb_strtolower(trim($email));
+    });
+    if (!$userGroup || count($userGroupEmails) != 1) {
+      $this->addFlash('notice', $trans->trans('permissions.remove-not-necessary', [
+          '%type%' => $groupType, '%user%' => $email,
+      ]));
+
+      return $this->redirectToRoute('app_permissions_studyarea');
+    }
+
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route' => 'app_permissions_studyarea',
+    ]);
+    $form->handleRequest($request);
+
+    if (RemoveType::isRemoveClicked($form)) {
+      $em->remove($userGroupEmails->first());
+      $em->flush();
+
+      $this->addFlash('success', $trans->trans('permissions.removed-single-permission', [
+          '%type%' => $groupType, '%user%' => $email,
+      ]));
+
+      return $this->redirectToRoute('app_permissions_studyarea');
+    }
+
+    return [
+        'studyArea' => $requestStudyArea->getStudyArea(),
+        'email'     => $email,
         'type'      => $groupType,
         'form'      => $form->createView(),
     ];

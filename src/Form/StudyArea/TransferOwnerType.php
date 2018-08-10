@@ -21,6 +21,7 @@ class TransferOwnerType extends AbstractType
         ->add('owner', EntityType::class, [
             'label'         => 'study-area.owner',
             'class'         => User::class,
+            'choice_label'  => 'selectionName',
             'query_builder' => function (UserRepository $userRepository) use ($currentOwner) {
               return $userRepository->createQueryBuilder('u')
                   ->where('u != :current')

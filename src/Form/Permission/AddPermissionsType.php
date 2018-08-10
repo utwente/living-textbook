@@ -4,6 +4,7 @@ namespace App\Form\Permission;
 
 use App\Entity\User;
 use App\Entity\UserGroup;
+use App\Form\Type\EmailListType;
 use App\Form\Type\SaveType;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,13 +21,19 @@ class AddPermissionsType extends AbstractType
 
     $builder
         ->add('users', EntityType::class, [
-            'label'         => 'permissions.user',
+            'required'      => false,
+            'label'         => 'permissions.users',
             'class'         => User::class,
+            'choice_label'  => 'selectionName',
             'query_builder' => function (UserRepository $userRepository) use ($userGroup) {
               return $userRepository->getAvailableUsersForUserGroupQueryBuilder($userGroup);
             },
             'select2'       => true,
             'multiple'      => true,
+        ])
+        ->add('emails', EmailListType::class, [
+            'required' => false,
+            'label'    => 'permissions.emails',
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,

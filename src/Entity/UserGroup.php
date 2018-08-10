@@ -67,12 +67,23 @@ class UserGroup
   private $users;
 
   /**
+   * @var UserGroupEmail[]|Collection
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\UserGroupEmail",
+   *   mappedBy="userGroup", fetch="EAGER", cascade={"persist", "remove"})
+   *
+   * @Assert\NotNull()
+   */
+  private $emails;
+
+  /**
    * UserGroup constructor.
    */
   public function __construct()
   {
     $this->groupType = self::GROUP_VIEWER;
     $this->users     = new ArrayCollection();
+    $this->emails    = new ArrayCollection();
   }
 
   /**
@@ -157,4 +168,30 @@ class UserGroup
     return $this;
   }
 
+  /**
+   * @return Collection|UserGroupEmail[]
+   */
+  public function getEmails()
+  {
+    return $this->emails;
+  }
+
+  /**
+   * @param string $email
+   *
+   * @return UserGroup
+   */
+  public function addEmail(string $email): UserGroup
+  {
+    // Check whether this is not a duplicate
+    foreach ($this->emails as $userGroupEmail) {
+      if ($userGroupEmail->getEmail() == $email) {
+        return $this;
+      }
+    }
+
+    $this->emails->add((new UserGroupEmail)->setEmail($email)->setUserGroup($this));
+
+    return $this;
+  }
 }

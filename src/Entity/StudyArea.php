@@ -171,7 +171,7 @@ class StudyArea
   /**
    * Get the editors
    *
-   * @return User[]|Collection
+   * @return User[]
    */
   public function getEditors()
   {
@@ -181,15 +181,39 @@ class StudyArea
       return [];
     }
 
-    return array_merge(...$editorGroup->map(function (UserGroup $userGroup) {
+    $users = array_merge(...$editorGroup->map(function (UserGroup $userGroup) {
       return $userGroup->getUsers()->toArray();
     })->toArray());
+    usort($users, [User::class, 'sortOnDisplayName']);
+
+    return $users;
+  }
+
+  /**
+   * Get the editors which do not have an account (yet)
+   *
+   * @return UserGroupEmail[]
+   */
+  public function getEmailEditors()
+  {
+    $editorGroup = $this->getUserGroups(UserGroup::GROUP_EDITOR);
+    if ($editorGroup->isEmpty()) {
+      // Early return to prevent warning with array_merge
+      return [];
+    }
+
+    $userGroupEmails = array_merge(...$editorGroup->map(function (UserGroup $userGroup) {
+      return $userGroup->getEmails()->toArray();
+    })->toArray());
+    usort($userGroupEmails, [UserGroupEmail::class, 'sortOnEmail']);
+
+    return $userGroupEmails;
   }
 
   /**
    * Get the editors
    *
-   * @return User[]|Collection
+   * @return User[]
    */
   public function getReviewers()
   {
@@ -199,15 +223,39 @@ class StudyArea
       return [];
     }
 
-    return array_merge(...$reviewGroup->map(function (UserGroup $userGroup) {
+    $users = array_merge(...$reviewGroup->map(function (UserGroup $userGroup) {
       return $userGroup->getUsers()->toArray();
     })->toArray());
+    usort($users, [User::class, 'sortOnDisplayName']);
+
+    return $users;
+  }
+
+  /**
+   * Get the reviewers which do not have an account (yet)
+   *
+   * @return UserGroupEmail[]
+   */
+  public function getEmailReviewers()
+  {
+    $reviewGroup = $this->getUserGroups(UserGroup::GROUP_REVIEWER);
+    if ($reviewGroup->isEmpty()) {
+      // Early return to prevent warning with array_merge
+      return [];
+    }
+
+    $userGroupEmails = array_merge(...$reviewGroup->map(function (UserGroup $userGroup) {
+      return $userGroup->getEmails()->toArray();
+    })->toArray());
+    usort($userGroupEmails, [UserGroupEmail::class, 'sortOnEmail']);
+
+    return $userGroupEmails;
   }
 
   /**
    * Get the viewers
    *
-   * @return User[]|Collection
+   * @return User[]
    */
   public function getViewers()
   {
@@ -217,9 +265,33 @@ class StudyArea
       return [];
     }
 
-    return array_merge(...$viewerGroup->map(function (UserGroup $userGroup) {
+    $users = array_merge(...$viewerGroup->map(function (UserGroup $userGroup) {
       return $userGroup->getUsers()->toArray();
     })->toArray());
+    usort($users, [User::class, 'sortOnDisplayName']);
+
+    return $users;
+  }
+
+  /**
+   * Get the viewers which do not have an account (yet)
+   *
+   * @return UserGroupEmail[]
+   */
+  public function getEmailViewers()
+  {
+    $viewerGroup = $this->getUserGroups(UserGroup::GROUP_VIEWER);
+    if ($viewerGroup->isEmpty()) {
+      // Early return to prevent warning with array_merge
+      return [];
+    }
+
+    $userGroupEmails = array_merge(...$viewerGroup->map(function (UserGroup $userGroup) {
+      return $userGroup->getEmails()->toArray();
+    })->toArray());
+    usort($userGroupEmails, [UserGroupEmail::class, 'sortOnEmail']);
+
+    return $userGroupEmails;
   }
 
   /**

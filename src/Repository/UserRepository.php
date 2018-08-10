@@ -60,4 +60,20 @@ class UserRepository extends ServiceEntityRepository
 
     return $qb;
   }
+
+  /**
+   * Find users for the given email addresses
+   *
+   * @param array $emails Email addresses to search on
+   *
+   * @return User[]
+   */
+  public function getUsersForEmails(array $emails)
+  {
+    $qb = $this->createQueryBuilder('u')
+        ->where('u.username IN (:emails)')
+        ->setParameter('emails', $emails);
+
+    return $qb->getQuery()->getResult();
+  }
 }
