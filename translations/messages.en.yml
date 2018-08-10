@@ -85,6 +85,18 @@ dashboard:
   study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
 
+excel:
+  subject: "Excel export of study area \"%item%\"."
+  description: "Excel status export for the study area \"%item%\"."
+  sheet:
+    general-info:
+      _tab: "General study area info"
+      access-type: "Study area access type"
+      creation-data: "Creation data of study area"
+      last-edit: "Last edit"
+      name: "Study area name"
+      owner: "Study area owner"
+
 exception:
   error-title: 'Oops, an error occurred!'
   error-code: 'The server generated a %code% response.'
@@ -169,6 +181,7 @@ menu:
   download: 'Download'
   duplicate: 'Duplicate'
   edit: 'Edit'
+  excel-status: 'Progress export'
   external-resources: "External resources"
   concept: 'Concepts'
   case-study: 'Case studies'

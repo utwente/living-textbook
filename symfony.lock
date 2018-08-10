@@ -152,6 +152,9 @@
     "kriswallsmith/assetic": {
         "version": "v1.4.0"
     },
+    "markbaker/complex": {
+        "version": "1.4.6"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
@@ -163,6 +166,9 @@
     },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
+    },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.4.0"
     },
     "phpoption/phpoption": {
         "version": "1.5.0"

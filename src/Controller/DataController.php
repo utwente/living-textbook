@@ -7,6 +7,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Excel\StudyAreaStatusBuilder;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
@@ -67,6 +68,23 @@ class DataController extends Controller
     $json = $serializer->serialize($concepts, 'json', SerializationContext::create()->setGroups($groups));
 
     return new JsonResponse($json, Response::HTTP_OK, [], true);
+  }
+
+  /**
+   * @Route("/excel")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param StudyAreaStatusBuilder $builder
+   *
+   * @return Response
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  public function excelStatus(Request $request, RequestStudyArea $requestStudyArea, StudyAreaStatusBuilder $builder)
+  {
+    return $builder->build($request, $requestStudyArea->getStudyArea());
   }
 
   /**
