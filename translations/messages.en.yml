@@ -96,6 +96,15 @@ excel:
       last-edit: "Last edit"
       name: "Study area name"
       owner: "Study area owner"
+    general-relationship-statistics:
+      _tab: "General relation statistics"
+      type: "Relationship \"%type%\""
+      number: "Number of relationships"
+      number-per-type: "Number of relationships per type"
+      types: "Relationship types"
+      types-number: "Number of relationship types"
+      relationships: "Relationships statistics"
+  statistics-item: "Statistics item"
 
 exception:
   error-title: 'Oops, an error occurred!'

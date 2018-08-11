@@ -2,7 +2,12 @@
 
 namespace App\Excel;
 
+use App\Entity\Concept;
+use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Repository\ConceptRelationRepository;
+use App\Repository\ConceptRepository;
+use App\Repository\RelationTypeRepository;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -13,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * Class StudyAreaStatusBuilder
@@ -24,20 +30,42 @@ class StudyAreaStatusBuilder
   /** @var TranslatorInterface */
   private $translator;
 
+  /** @var RelationTypeRepository */
+  private $relationTypeRepo;
+
+  /** @var ConceptRepository */
+  private $conceptRepo;
+
+  /** @var ConceptRelationRepository */
+  private $conceptRelationRepo;
+
   /** @var Spreadsheet */
   private $spreadsheet;
 
   /** @var StudyArea */
   private $studyArea;
 
+  /** @var RelationType[]|Collection */
+  private $relationTypes;
+
+  /** @var Concept[]|Collection */
+  private $concepts;
+
   /**
    * StudyAreaStatusBuilder constructor.
    *
-   * @param TranslatorInterface $translator
+   * @param TranslatorInterface       $translator
+   * @param ConceptRepository         $conceptRepo
+   * @param ConceptRelationRepository $conceptRelationRepo
+   * @param RelationTypeRepository    $relationTypeRepo
    */
-  public function __construct(TranslatorInterface $translator)
+  public function __construct(TranslatorInterface $translator, ConceptRepository $conceptRepo,
+                              ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo)
   {
-    $this->translator = $translator;
+    $this->translator          = $translator;
+    $this->conceptRelationRepo = $conceptRelationRepo;
+    $this->conceptRepo         = $conceptRepo;
+    $this->relationTypeRepo    = $relationTypeRepo;
   }
 
   /**
@@ -55,6 +83,12 @@ class StudyAreaStatusBuilder
     // Save study area
     $this->studyArea = $studyArea;
 
+    // Retrieve the relation types
+    $this->relationTypes = $this->relationTypeRepo->findBy(['studyArea' => $studyArea]);
+
+    // Retrieve the concepts
+    $this->concepts = $this->conceptRepo->findForStudyAreaOrderedByName($studyArea);
+
     // Create spreadsheet
     $this->spreadsheet = new Spreadsheet();
     $this->spreadsheet->getProperties()->setCreator($this->studyArea->getOwner()->getDisplayName())
@@ -65,6 +99,7 @@ class StudyAreaStatusBuilder
     // Create content
     $this->spreadsheet->removeSheetByIndex(0);
     $this->addGeneralInfoSheet();
+    $this->addGeneralRelationshipStatisticsSheet();
 
     // Create writer
     $writer   = new Xlsx($this->spreadsheet);
@@ -177,5 +212,44 @@ class StudyAreaStatusBuilder
 
     // Todo last edit information
 //    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.last-edit', true);
+  }
+
+  /**
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  private function addGeneralRelationshipStatisticsSheet()
+  {
+    $sheet = $this->createSheet('excel.sheet.general-relationship-statistics._tab');
+
+    $column = 1;
+    $row    = 1;
+
+    $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
+    $sheet->getColumnDimensionByColumn($column + 1)->setAutoSize(true);
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-relationship-statistics.relationships', true);
+    $row++;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.statistics-item', true);
+    $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.general-relationship-statistics.types-number', true);
+    $row++;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-relationship-statistics.types');
+    $this->setCellValue($sheet, $column + 1, $row, count($this->relationTypes));
+    $row++;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.statistics-item', true);
+    $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.general-relationship-statistics.number', true);
+    $row++;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-relationship-statistics.number-per-type');
+    $row++;
+
+    foreach ($this->relationTypes as $relationType) {
+      $this->setCellValue($sheet, $column, $row, sprintf('  %s',
+          $this->translator->trans('excel.sheet.general-relationship-statistics.type', ['%type%' => $relationType->getName()])));
+      $this->setCellValue($sheet, $column + 1, $row, $this->conceptRelationRepo->getByRelationTypeCount($relationType));
+      $row++;
+    }
   }
 }

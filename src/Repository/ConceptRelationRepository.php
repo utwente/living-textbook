@@ -6,6 +6,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ConceptRelationRepository extends ServiceEntityRepository
@@ -22,12 +23,24 @@ class ConceptRelationRepository extends ServiceEntityRepository
    */
   public function getByRelationType(RelationType $relationType)
   {
-    return $this->createQueryBuilder('cr')
-        ->join('cr.source', 'c')
-        ->where('cr.relationType = :relationType')
-        ->orderBy('c.name', 'ASC')
-        ->setParameter('relationType', $relationType)
+    return $this->getByRelationTypeQb($relationType)
         ->getQuery()->getResult();
+  }
+
+  /**
+   * @param RelationType $relationType
+   *
+   * @return int
+   */
+  public function getByRelationTypeCount(RelationType $relationType)
+  {
+    try {
+      return $this->getByRelationTypeQb($relationType)
+          ->select('COUNT(cr.id)')
+          ->getQuery()->getSingleScalarResult();
+    } catch (NonUniqueResultException $e) {
+      return 0;
+    }
   }
 
   /**
@@ -39,11 +52,25 @@ class ConceptRelationRepository extends ServiceEntityRepository
    */
   public function findByConcepts(array $concepts)
   {
-    return $this->createQueryBuilder('l')
+    return $this->createQueryBuilder('cr')
         ->distinct()
-        ->where('l.source IN (:concepts)')
-        ->orWhere('l.target IN (:concepts)')
+        ->where('cr.source IN (:concepts)')
+        ->orWhere('cr.target IN (:concepts)')
         ->setParameter('concepts', $concepts)
         ->getQuery()->getResult();
+  }
+
+  /**
+   * @param RelationType $relationType
+   *
+   * @return \Doctrine\ORM\QueryBuilder
+   */
+  public function getByRelationTypeQb(RelationType $relationType): \Doctrine\ORM\QueryBuilder
+  {
+    return $this->createQueryBuilder('cr')
+        ->join('cr.source', 'c')
+        ->where('cr.relationType = :relationType')
+        ->orderBy('c.name', 'ASC')
+        ->setParameter('relationType', $relationType);
   }
 }
