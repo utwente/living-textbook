@@ -100,7 +100,11 @@ class StudyAreaStatusBuilder
     $this->spreadsheet->removeSheetByIndex(0);
     $this->addGeneralInfoSheet();
     $this->addGeneralRelationshipStatisticsSheet();
+    $this->addDetailedConceptOverviewSheet();
     $this->addDetailedRelationshipsOverviewSheet();
+
+    // Reset active sheet index
+    $this->spreadsheet->setActiveSheetIndex(0);
 
     // Create writer
     $writer   = new Xlsx($this->spreadsheet);
@@ -134,6 +138,17 @@ class StudyAreaStatusBuilder
     $this->spreadsheet->addSheet($sheet);
 
     return $sheet;
+  }
+
+  /**
+   * @param Worksheet $sheet
+   * @param int       $column
+   * @param int       $row
+   * @param bool      $value
+   */
+  private function setCellBooleanValue(Worksheet &$sheet, int $column, int $row, bool $value)
+  {
+    $this->setCellTranslatedValue($sheet, $column, $row, $value ? 'excel.boolean.yes' : 'excel.boolean.no');
   }
 
   /**
@@ -298,6 +313,52 @@ class StudyAreaStatusBuilder
 
     for ($column = 1; $column <= $maxCol; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
+    }
+  }
+
+  /**
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  private function addDetailedConceptOverviewSheet()
+  {
+    $sheet = $this->createSheet('excel.sheet.detailed-concept-overview._tab');
+
+    for ($column = 1; $column <= 11; $column++) {
+      $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
+    }
+
+    $column = 1;
+    $row    = 1;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.detailed-concept-overview.concept-name', true);
+    $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.detailed-concept-overview.definition', true);
+    $this->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
+    $this->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
+    $this->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.detailed-concept-overview.examples', true);
+    $this->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.detailed-concept-overview.learning-outcomes', true);
+    $this->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
+    $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
+    $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.external-links', true);
+    $this->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.number-of-relations', true);
+    // Todo last edit information
+//    $this->setCellTranslatedValue($sheet, $column + 10, $row, 'excel.sheets.detailed-concept-overview.last-edit-time', true);
+//    $this->setCellTranslatedValue($sheet, $column + 11, $row, 'excel.sheets.detailed-concept-overview.last-editor', true);
+
+    foreach ($this->concepts as $concept) {
+      $row++;
+      $this->setCellValue($sheet, $column, $row, $concept->getName());
+      $this->setCellBooleanValue($sheet, $column + 1, $row, $concept->getIntroduction()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 2, $row, $concept->getTheoryExplanation()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 3, $row, !$concept->getPriorKnowledge()->isEmpty());
+      $this->setCellBooleanValue($sheet, $column + 4, $row, $concept->getExamples()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 5, $row, !$concept->getLearningOutcomes()->isEmpty());
+      $this->setCellBooleanValue($sheet, $column + 6, $row, $concept->getHowTo()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 7, $row, $concept->getSelfAssessment()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 8, $row, !$concept->getExternalResources()->isEmpty());
+      $this->setCellValue($sheet, $column + 9, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
+      // Todo last edit information
+//      $this->setCellBooleanValue($sheet, $column + 10, $row, );
+//      $this->setCellBooleanValue($sheet, $column + 11, $row, );
     }
   }
 }

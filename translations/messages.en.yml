@@ -86,10 +86,27 @@ dashboard:
   study-area-switch: 'Search for another study area'
 
 excel:
+  boolean:
+    no: "No"
+    yes: "Yes"
   concept: "Concept"
   description: "Excel status export for the study area \"%item%\"."
   incoming-relations: "Incoming relations"
   sheet:
+    detailed-concept-overview:
+      _tab: "Detailed concept overview"
+      concept-name: "Concept name"
+      definition: "Definition"
+      explanation: "Explanation"
+      prior-knowledge: "Prior knowledge"
+      examples: "Examples"
+      learning-outcomes: "Learning outcomes"
+      how-to: "How to"
+      self-assessment: "Self assessment"
+      external-links: "External links"
+      number-of-relations: "Number of relations"
+      last-edit-time: "Last time of editing"
+      last-editor: "Last editor's name"
     detailed-relationships-overview:
       _tab: "Detailed relation overview"
     general-info:
