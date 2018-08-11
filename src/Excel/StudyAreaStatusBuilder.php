@@ -11,6 +11,7 @@ use App\Repository\RelationTypeRepository;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -103,7 +104,10 @@ class StudyAreaStatusBuilder
     $this->addDetailedConceptOverviewSheet();
     $this->addDetailedRelationshipsOverviewSheet();
 
-    // Reset active sheet index
+    // Reset active sheet index and selected cells
+    foreach ($this->spreadsheet->getAllSheets() as $sheet) {
+      $sheet->setSelectedCellByColumnAndRow(1, 1);
+    }
     $this->spreadsheet->setActiveSheetIndex(0);
 
     // Create writer
@@ -224,10 +228,13 @@ class StudyAreaStatusBuilder
 
     $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.creation-data', true);
     $this->setCellDateTime($sheet, $column + 1, $row, $this->studyArea->getCreatedAt(), true);
-    $row++;
+//    $row++;
 
     // Todo last edit information
 //    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.last-edit', true);
+
+    $sheet->getStyleByColumnAndRow(1, 1, $column + 1, $row)
+        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 
   /**
@@ -259,14 +266,18 @@ class StudyAreaStatusBuilder
     $row++;
 
     $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-relationship-statistics.number-per-type');
-    $row++;
 
     foreach ($this->relationTypes as $relationType) {
+      $row++;
       $this->setCellValue($sheet, $column, $row, sprintf('  %s',
           $this->translator->trans('excel.sheet.general-relationship-statistics.type', ['%type%' => $relationType->getName()])));
       $this->setCellValue($sheet, $column + 1, $row, $this->conceptRelationRepo->getByRelationTypeCount($relationType));
-      $row++;
     }
+
+    $sheet->getStyleByColumnAndRow(1, 1, $column + 1, $row)
+        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyleByColumnAndRow(1, 1)->getBorders()->getRight()->setBorderStyle(Border::BORDER_NONE);
+    $sheet->getStyleByColumnAndRow(2, 1)->getBorders()->getLeft()->setBorderStyle(Border::BORDER_NONE);
   }
 
   /**
@@ -314,6 +325,16 @@ class StudyAreaStatusBuilder
     for ($column = 1; $column <= $maxCol; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
+
+    $sheet->getStyleByColumnAndRow(1, 1, $maxCol, $row)
+        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyleByColumnAndRow(2, 1, $maxCol, 1)
+        ->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
+
+    $sheet->getStyleByColumnAndRow(1, 1 + $conceptCount, $maxCol, $row + $conceptCount)
+        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyleByColumnAndRow(2, 1 + $conceptCount, $maxCol, 1 + $conceptCount)
+        ->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
   }
 
   /**
@@ -360,5 +381,8 @@ class StudyAreaStatusBuilder
 //      $this->setCellBooleanValue($sheet, $column + 10, $row, );
 //      $this->setCellBooleanValue($sheet, $column + 11, $row, );
     }
+
+    $sheet->getStyleByColumnAndRow(1, 1, $column + 9, $row)
+        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 }
