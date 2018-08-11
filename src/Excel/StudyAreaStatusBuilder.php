@@ -100,6 +100,7 @@ class StudyAreaStatusBuilder
     $this->spreadsheet->removeSheetByIndex(0);
     $this->addGeneralInfoSheet();
     $this->addGeneralRelationshipStatisticsSheet();
+    $this->addDetailedRelationshipsOverviewSheet();
 
     // Create writer
     $writer   = new Xlsx($this->spreadsheet);
@@ -250,6 +251,53 @@ class StudyAreaStatusBuilder
           $this->translator->trans('excel.sheet.general-relationship-statistics.type', ['%type%' => $relationType->getName()])));
       $this->setCellValue($sheet, $column + 1, $row, $this->conceptRelationRepo->getByRelationTypeCount($relationType));
       $row++;
+    }
+  }
+
+  /**
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  private function addDetailedRelationshipsOverviewSheet()
+  {
+    $sheet = $this->createSheet('excel.sheet.detailed-relationships-overview._tab');
+
+    $column = 1;
+    $row    = 1;
+
+    // Add two to count for offset
+    $conceptCount = count($this->concepts) + 2;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.concept', true);
+    $this->setCellTranslatedValue($sheet, $column, $row + $conceptCount, 'excel.concept', true);
+    $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.outgoing-relations', true);
+    $this->setCellTranslatedValue($sheet, $column + 1, $row + $conceptCount, 'excel.incoming-relations', true);
+
+    $maxCol = 1;
+    foreach ($this->concepts as $concept) {
+      $row++;
+      $column = 1;
+
+      $this->setCellValue($sheet, $column, $row, $concept->getName());
+      $this->setCellValue($sheet, $column, $row + $conceptCount, $concept->getName());
+
+      foreach ($concept->getOutgoingRelations() as $conceptRelation) {
+        $column++;
+        $this->setCellValue($sheet, $column, $row,
+            sprintf('* %s %s', $conceptRelation->getRelationName(), $conceptRelation->getTarget()->getName()));
+        if ($column > $maxCol) $maxCol = $column;
+      }
+
+      $column = 1;
+      foreach ($concept->getIncomingRelations() as $conceptRelation) {
+        $column++;
+        $this->setCellValue($sheet, $column, $row + $conceptCount,
+            sprintf('%s %s *', $conceptRelation->getSource()->getName(), $conceptRelation->getRelationName()));
+        if ($column > $maxCol) $maxCol = $column;
+      }
+    }
+
+    for ($column = 1; $column <= $maxCol; $column++) {
+      $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
   }
 }

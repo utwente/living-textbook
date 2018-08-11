@@ -86,9 +86,12 @@ dashboard:
   study-area-switch: 'Search for another study area'
 
 excel:
-  subject: "Excel export of study area \"%item%\"."
+  concept: "Concept"
   description: "Excel status export for the study area \"%item%\"."
+  incoming-relations: "Incoming relations"
   sheet:
+    detailed-relationships-overview:
+      _tab: "Detailed relation overview"
     general-info:
       _tab: "General study area info"
       access-type: "Study area access type"
@@ -104,7 +107,9 @@ excel:
       types: "Relationship types"
       types-number: "Number of relationship types"
       relationships: "Relationships statistics"
+  outgoing-relations: "Outgoing relations"
   statistics-item: "Statistics item"
+  subject: "Excel export of study area \"%item%\"."
 
 exception:
   error-title: 'Oops, an error occurred!'
