@@ -8,7 +8,8 @@
     false,
     false,
     is_granted('STUDYAREA_OWNER', studyArea) ? path('app_studyarea_remove', {'studyArea': studyArea.id}) : false,
-    -1
+    -1,
+    true
   ) }}
 {% endblock %}
 

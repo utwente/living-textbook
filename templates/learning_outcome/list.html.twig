@@ -2,8 +2,8 @@
 
 {% block before_title %}
   {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-    {% from '_macro/_action_bar.html.twig' import new_bar %}
-    {{ new_bar(path('app_learningoutcome_add')) }}
+    {% from '_macro/_action_bar.html.twig' import new_bar_with_progress %}
+    {{ new_bar_with_progress(path('app_learningoutcome_add')) }}
   {% endif %}
 {% endblock %}
 

@@ -2,8 +2,8 @@
 
 {% block before_title %}
   {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-    {% from '_macro/_action_bar.html.twig' import new_bar %}
-    {{ new_bar(path('app_concept_add')) }}
+    {% from '_macro/_action_bar.html.twig' import new_bar_with_progress %}
+    {{ new_bar_with_progress(path('app_concept_add')) }}
   {% endif %}
 {% endblock %}
 
@@ -29,7 +29,8 @@
     {% for concept in concepts %}
       <tr>
         <td>
-          <a href="#" onclick="eDispatch.showConcept({{- concept.id -}});" data-toggle="tooltip" title="{{ 'browser.open'|trans }}">{{ concept.name }}</a>
+          <a href="#" onclick="eDispatch.showConcept({{- concept.id -}});" data-toggle="tooltip"
+             title="{{ 'browser.open'|trans }}">{{ concept.name }}</a>
         </td>
         <td>{{ concept.outgoingRelations|length }}</td>
         <td>{{ concept.incomingRelations|length }}</td>

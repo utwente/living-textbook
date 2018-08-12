@@ -1,23 +1,27 @@
-{% macro action_bar(edit_url, show_url, list_url, add_url, remove_url, browser_id ) %}
+{% macro action_bar(edit_url, show_url, list_url, add_url, remove_url, browser_id, progress) %}
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
-  {% if browser_id|default(false) != false %}
-    <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-primary"><i class="fa fa-fw fa-search"></i> {{ 'browser.open'|trans }}</a>
+  {% if browser_id|default(false) %}
+    <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-primary"><i
+          class="fa fa-fw fa-search"></i> {{ 'browser.open'|trans }}</a>
   {% endif %}
-  {% if edit_url|default(false) != false %}
+  {% if progress|default(false) %}
+    {{ _action_button(path('app_data_excelstatus'), 'fa-tasks', 'menu.excel-status', 'primary', true) }}
+  {% endif %}
+  {% if edit_url|default(false) %}
     {{ _action_button(edit_url, 'fa-pencil', 'form.edit') }}
   {% endif %}
-  {% if show_url|default(false) != false %}
+  {% if show_url|default(false) %}
     {{ _action_button(show_url, 'fa-eye', 'form.show', 'primary') }}
   {% endif %}
-  {% if list_url|default(false) != false %}
+  {% if list_url|default(false) %}
     {{ _action_button(list_url, 'fa-list', 'form.list') }}
   {% endif %}
-  {% if add_url|default(false) != false %}
-    {{  _action_button(add_url, 'fa-plus', 'form.add', 'success') }}
+  {% if add_url|default(false) %}
+    {{ _action_button(add_url, 'fa-plus', 'form.add', 'success') }}
   {% endif %}
-  {% if remove_url|default(false) != false %}
-    {{  _action_button(remove_url, 'fa-times', 'form.remove', 'danger') }}
+  {% if remove_url|default(false) %}
+    {{ _action_button(remove_url, 'fa-times', 'form.remove', 'danger') }}
   {% endif %}
   {{ block('_bar_footer') }}
 {% endmacro %}
@@ -29,8 +33,17 @@
   {{ block('_bar_footer') }}
 {% endmacro %}
 
-{% macro _action_button(url, icon, label, color) %}
-  <a href="{{ url }}" class="btn btn-outline-{{ color|default('secondary') }}"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>
+{% macro new_bar_with_progress(new_url) %}
+  {% from _self import _action_button %}
+  {{ block('_bar_header') }}
+  {{ _action_button(path('app_data_excelstatus'), 'fa-tasks', 'menu.excel-status', 'primary', true) }}
+  {{ _action_button(new_url, 'fa-plus', 'form.add', 'success') }}
+  {{ block('_bar_footer') }}
+{% endmacro %}
+
+{% macro _action_button(url, icon, label, color, blank) %}
+  <a href="{{ url }}" {% if blank|default(false) %}target="_blank" {% endif %}
+     class="btn btn-outline-{{ color|default('secondary') }}"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>
 {% endmacro %}
 
 {% block _bar_header %}
@@ -39,5 +52,5 @@
 
   {% block _bar_footer %}
 </div>
-<div class="clearfix d-lg-none"></div>
+  <div class="clearfix d-lg-none"></div>
 {% endblock %}
