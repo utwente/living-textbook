@@ -214,6 +214,7 @@ class StudyAreaStatusBuilder
 
     $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     $sheet->getColumnDimensionByColumn($column + 1)->setAutoSize(true);
+    $sheet->getColumnDimensionByColumn($column + 2)->setAutoSize(true);
 
     $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.name', true);
     $this->setCellTranslatedValue($sheet, $column + 1, $row, $this->studyArea->getName());
@@ -229,12 +230,14 @@ class StudyAreaStatusBuilder
 
     $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.creation-data', true);
     $this->setCellDateTime($sheet, $column + 1, $row, $this->studyArea->getCreatedAt(), true);
-//    $row++;
+    $row++;
 
-    // Todo last edit information
-//    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.last-edit', true);
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.last-edit', true);
+    $lastEditInfo = $this->studyArea->getLastEditInfo();
+    $this->setCellDateTime($sheet, $column + 1, $row, $lastEditInfo[0], true);
+    $this->setCellValue($sheet, $column + 2, $row, $lastEditInfo[1]);
 
-    $sheet->getStyleByColumnAndRow(1, 1, $column + 1, $row)
+    $sheet->getStyleByColumnAndRow(1, 1, $column + 2, $row)
         ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 
@@ -399,7 +402,7 @@ class StudyAreaStatusBuilder
   {
     $sheet = $this->createSheet('excel.sheet.detailed-concept-overview._tab');
 
-    for ($column = 1; $column <= 11; $column++) {
+    for ($column = 1; $column <= 12; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
 
@@ -416,9 +419,8 @@ class StudyAreaStatusBuilder
     $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
     $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.external-links', true);
     $this->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.number-of-relations', true);
-    // Todo last edit information
-//    $this->setCellTranslatedValue($sheet, $column + 10, $row, 'excel.sheets.detailed-concept-overview.last-edit-time', true);
-//    $this->setCellTranslatedValue($sheet, $column + 11, $row, 'excel.sheets.detailed-concept-overview.last-editor', true);
+    $this->setCellTranslatedValue($sheet, $column + 10, $row, 'excel.sheet.detailed-concept-overview.last-edit-time', true);
+    $this->setCellTranslatedValue($sheet, $column + 11, $row, 'excel.sheet.detailed-concept-overview.last-editor', true);
 
     foreach ($this->concepts as $concept) {
       $row++;
@@ -432,12 +434,13 @@ class StudyAreaStatusBuilder
       $this->setCellBooleanValue($sheet, $column + 7, $row, $concept->getSelfAssessment()->hasData());
       $this->setCellBooleanValue($sheet, $column + 8, $row, !$concept->getExternalResources()->isEmpty());
       $this->setCellValue($sheet, $column + 9, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
-      // Todo last edit information
-//      $this->setCellBooleanValue($sheet, $column + 10, $row, );
-//      $this->setCellBooleanValue($sheet, $column + 11, $row, );
+
+      $lastEditInfo = $concept->getLastEditInfo();
+      $this->setCellDateTime($sheet, $column + 10, $row, $lastEditInfo[0]);
+      $this->setCellValue($sheet, $column + 11, $row, $lastEditInfo[1]);
     }
 
-    $sheet->getStyleByColumnAndRow(1, 1, $column + 9, $row)
+    $sheet->getStyleByColumnAndRow(1, 1, $column + 11, $row)
         ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 }

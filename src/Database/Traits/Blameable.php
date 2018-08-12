@@ -40,6 +40,22 @@ trait Blameable
   private $updatedBy;
 
   /**
+   * Get the last update time, which is either creation time or update time
+   */
+  public function getLastUpdated()
+  {
+    return $this->getUpdatedAt() !== NULL ? $this->getUpdatedAt() : $this->getCreatedAt();
+  }
+
+  /**
+   * Get the last updated by, which is either creation by or update by
+   */
+  public function getLastUpdatedBy()
+  {
+    return $this->getUpdatedBy() !== NULL ? $this->getUpdatedBy() : $this->getCreatedBy();
+  }
+
+  /**
    * Set createdAt
    *
    * @param \DateTime $createdAt

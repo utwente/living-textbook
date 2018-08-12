@@ -39,7 +39,7 @@ class LearningOutcome
   /**
    * @var StudyArea|null
    *
-   * @ORM\ManyToOne(targetEntity="StudyArea")
+   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningOutcomes")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()

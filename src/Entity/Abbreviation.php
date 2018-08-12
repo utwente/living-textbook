@@ -27,7 +27,7 @@ class Abbreviation
   /**
    * @var StudyArea|null
    *
-   * @ORM\ManyToOne(targetEntity="StudyArea")
+   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="abbreviations")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()

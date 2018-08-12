@@ -313,6 +313,48 @@ class Concept
   }
 
   /**
+   * @return array Array with DateTime and username
+   */
+  public function getLastEditInfo()
+  {
+    $lastUpdated   = $this->getLastUpdated();
+    $lastUpdatedBy = $this->getLastUpdatedBy();
+
+    // Loop relations to see if they have a newer date set
+    $check = function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
+      /** @var Blameable $entity */
+      if ($entity->getLastUpdated() > $lastUpdated) {
+        $lastUpdated   = $entity->getLastUpdated();
+        $lastUpdatedBy = $entity->getLastUpdatedBy();
+      }
+    };
+
+    // Check direct data
+    $check($this->getExamples());
+    $check($this->getHowTo());
+    $check($this->getIntroduction());
+    $check($this->getSelfAssessment());
+    $check($this->getTheoryExplanation());
+
+    // Check other data
+    foreach ($this->getExternalResources() as $externalResource) {
+      $check($externalResource);
+    }
+    foreach ($this->getIncomingRelations() as $incomingRelation) {
+      $check($incomingRelation);
+    }
+    foreach ($this->getLearningOutcomes() as $learningOutcome) {
+      $check($learningOutcome);
+    }
+    foreach ($this->getOutgoingRelations() as $outgoingRelation) {
+      $check($outgoingRelation);
+    }
+
+    // Return result
+    return [$lastUpdated, $lastUpdatedBy];
+  }
+
+  /**
    * @return string
    *
    * @JMSA\Expose()

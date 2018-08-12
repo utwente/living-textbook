@@ -99,6 +99,27 @@ class StudyArea
   private $relationTypes;
 
   /**
+   * @var Collection|Abbreviation[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\Abbreviation", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private $abbreviations;
+
+  /**
+   * @var Collection|ExternalResource[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\ExternalResource", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private $externalResources;
+
+  /**
+   * @var Collection|LearningOutcome[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\LearningOutcome", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private $learningOutcomes;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -237,6 +258,52 @@ class StudyArea
   public function isEditable(User $user)
   {
     return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_EDITOR);
+  }
+
+  /**
+   * @return array Array with DateTime and username
+   */
+  public function getLastEditInfo()
+  {
+    $lastUpdated   = $this->getLastUpdated();
+    $lastUpdatedBy = $this->getLastUpdatedBy();
+
+    // Loop relations to see if they have a newer date set
+    $check = function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
+      if ($entity instanceof Concept) {
+        $lastEditInfo = $entity->getLastEditInfo();
+        if ($lastEditInfo[0] > $lastUpdated) {
+          $lastUpdated   = $lastEditInfo[0];
+          $lastUpdatedBy = $lastEditInfo[1];
+        }
+      } else {
+        /** @var Blameable $entity */
+        if ($entity->getLastUpdated() > $lastUpdated) {
+          $lastUpdated   = $entity->getLastUpdated();
+          $lastUpdatedBy = $entity->getLastUpdatedBy();
+        }
+      }
+    };
+
+    // Check other data
+    foreach ($this->getConcepts() as $concept) {
+      $check($concept);
+    }
+    foreach ($this->getRelationTypes() as $relationType) {
+      $check($relationType);
+    }
+    foreach ($this->abbreviations as $abbreviation) {
+      $check($abbreviation);
+    }
+    foreach ($this->externalResources as $externalResource) {
+      $check($externalResource);
+    }
+    foreach ($this->learningOutcomes as $learningOutcome) {
+      $check($learningOutcome);
+    }
+
+    // Return result
+    return [$lastUpdated, $lastUpdatedBy];
   }
 
   /**
