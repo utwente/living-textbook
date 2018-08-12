@@ -90,6 +90,7 @@ excel:
     no: "No"
     yes: "Yes"
   concept: "Concept"
+  count: "Count"
   description: "Excel status export for the study area \"%item%\"."
   incoming-relations: "Incoming relations"
   sheet:
@@ -116,6 +117,16 @@ excel:
       last-edit: "Last edit"
       name: "Study area name"
       owner: "Study area owner"
+    general-concept-statistics:
+      _tab: "General concept statistics"
+      no-text: "Without any (text) content"
+      no-definition: "Without definition"
+      no-prior-knowledge: "Without prior knowledge"
+      no-learning-outcomes: "Without learning outcomes"
+      no-relation: "Without relations"
+      more-relations-5: "More than 5 relations"
+      more-relations-10: "More than 10 relations"
+      total-concepts: "Total concepts"
     general-relationship-statistics:
       _tab: "General relation statistics"
       type: "Relationship \"%type%\""

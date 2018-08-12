@@ -301,6 +301,18 @@ class Concept
   }
 
   /**
+   * @return bool
+   */
+  public function hasTextData()
+  {
+    return $this->getIntroduction()->hasData()
+        || $this->getExamples()->hasData()
+        || $this->getHowTo()->hasData()
+        || $this->selfAssessment->hasData()
+        || $this->theoryExplanation->hasData();
+  }
+
+  /**
    * @return string
    *
    * @JMSA\Expose()

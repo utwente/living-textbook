@@ -100,6 +100,7 @@ class StudyAreaStatusBuilder
     // Create content
     $this->spreadsheet->removeSheetByIndex(0);
     $this->addGeneralInfoSheet();
+    $this->addGeneralConceptStatisticsSheet();
     $this->addGeneralRelationshipStatisticsSheet();
     $this->addDetailedConceptOverviewSheet();
     $this->addDetailedRelationshipsOverviewSheet();
@@ -235,6 +236,60 @@ class StudyAreaStatusBuilder
 
     $sheet->getStyleByColumnAndRow(1, 1, $column + 1, $row)
         ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+  }
+
+  /**
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   */
+  private function addGeneralConceptStatisticsSheet()
+  {
+    $sheet = $this->createSheet('excel.sheet.general-concept-statistics._tab');
+
+    $column = 1;
+    $row    = 1;
+
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.statistics-item', true);
+    $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.general-concept-statistics.total-concepts', true);
+    $this->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.general-concept-statistics.no-text', true);
+    $this->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.general-concept-statistics.no-definition', true);
+    $this->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
+    $this->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.general-concept-statistics.no-learning-outcomes', true);
+    $this->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
+    $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
+    $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
+
+    $row++;
+
+    $column = 2;
+    $counts = array_fill(0, 8, 0);
+    $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row) {
+      if ($condition) {
+        $this->setCellValue($sheet, $column + $index, $row + 1 + $counts[$index], $concept->getName());
+        $counts[$index]++;
+      }
+    };
+    foreach ($this->concepts as $concept) {
+      $setter($concept, $counts, 0, true);
+      $setter($concept, $counts, 1, !$concept->hasTextData());
+      $setter($concept, $counts, 2, !$concept->getIntroduction()->hasData());
+      $setter($concept, $counts, 3, $concept->getPriorKnowledge()->isEmpty());
+      $setter($concept, $counts, 4, $concept->getLearningOutcomes()->isEmpty());
+
+      $relationCount = $concept->getOutgoingRelations()->count() + $concept->getIncomingRelations()->count();
+      $setter($concept, $counts, 5, $relationCount == 0);
+      $setter($concept, $counts, 6, $relationCount > 5);
+      $setter($concept, $counts, 7, $relationCount > 10);
+    }
+
+    $column = 1;
+    $this->setCellTranslatedValue($sheet, $column, $row, 'excel.count', true);
+    foreach ($counts as $key => $count) {
+      $this->setCellValue($sheet, $column + 1 + $key, $row, $count);
+    }
+
+    for ($column = 1; $column <= 9; $column++) {
+      $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
+    }
   }
 
   /**
