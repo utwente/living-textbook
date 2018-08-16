@@ -43,7 +43,7 @@ body, #double-column-container {
   width: 100%;
   background-color: $background-color;
 
-  &>div {
+  & > div {
     @include div-center();
     text-align: center;
     font-size: $loader-size;

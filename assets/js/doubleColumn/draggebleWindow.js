@@ -255,17 +255,17 @@
     $container.append($iframe);
   };
 
-  dw.iframeLoader = function(loading) {
+  dw.iframeLoader = function (loading) {
     iframeLoaderUpdate();
     var $loader = $('#left-container-loader');
-    if (loading){
-      $loader.fadeIn();
+    if (loading) {
+      $loader.fadeIn(0);
     } else {
       $loader.fadeOut();
     }
   };
 
-  function iframeLoaderUpdate(){
+  function iframeLoaderUpdate() {
     var $loader = $('#left-container-loader');
     var $iframe = $('#data-iframe');
 
