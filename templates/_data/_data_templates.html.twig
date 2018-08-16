@@ -37,7 +37,9 @@
           {% else %}
             {{ resource.title }}
           {% endif %}
-          <br/>{{ resource.description }}
+          {% if resource.description is not null %}
+            <br/>{{ resource.description }}
+          {% endif %}
         </li>
       {% endfor %}
     </ul>

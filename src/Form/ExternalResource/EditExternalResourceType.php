@@ -24,7 +24,9 @@ class EditExternalResourceType extends AbstractType
             'label' => 'external-resource.title',
         ])
         ->add('description', TextType::class, [
-            'label' => 'external-resource.description',
+            'empty_data' => '',
+            'label'      => 'external-resource.description',
+            'required'   => false,
         ])
         ->add('url', UrlType::class, [
             'label'    => 'external-resource.url',

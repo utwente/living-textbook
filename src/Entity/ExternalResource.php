@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
-use App\Validator\Constraint\Data\WordCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,31 +45,29 @@ class ExternalResource
 
   /**
    * @var string
-   * @ORM\Column(name="title", type="text", length=255, nullable=false)
+   * @ORM\Column(name="title", type="string", length=512, nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(min=1, max=255)
+   * @Assert\Length(min=1, max=512)
    */
   private $title;
 
   /**
-   * @var string
+   * @var string|null
    *
-   * @ORM\Column(name="description", type="text", length=1000, nullable=false)
+   * @ORM\Column(name="description", type="text", nullable=true)
    *
-   * @Assert\NotBlank()
-   * @Assert\Length(max=1000)
-   * @WordCount(min=1)
+   * @Assert\Length(max=1024)
    */
   private $description;
 
   /**
    * @var string|null
    *
-   * @ORM\Column(name="url", type="text", length=1000, nullable=true)
+   * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
    * @Assert\Url()
-   * @Assert\Length(max=1000)
+   * @Assert\Length(max=512)
    */
   private $url;
 
@@ -88,10 +85,8 @@ class ExternalResource
    */
   public function __construct()
   {
-    $this->title       = '';
-    $this->description = '';
-    $this->url         = '';
-    $this->broken      = false;
+    $this->title  = '';
+    $this->broken = false;
 
     $this->concepts = new ArrayCollection();
   }
@@ -125,19 +120,19 @@ class ExternalResource
   }
 
   /**
-   * @return string
+   * @return string|null
    */
-  public function getDescription(): string
+  public function getDescription(): ?string
   {
     return $this->description;
   }
 
   /**
-   * @param string $description
+   * @param string|null $description
    *
    * @return ExternalResource
    */
-  public function setDescription(string $description): ExternalResource
+  public function setDescription(?string $description): ExternalResource
   {
     $this->description = $description;
 
