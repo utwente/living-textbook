@@ -23,16 +23,55 @@
   <p>{{ 'app.welcome-text'|trans }}</p>
 
   {% block enter %}
-    <p>{{ 'app.user-tracking-notice'|trans }}</p>
+    {% if studyAreaForm is defined and studyAreaForm is not null %}
+      <h4>{{ 'dashboard.study-area-landing'|trans }}</h4>
+      {{ form_start(studyAreaForm) }}
+      <div class="row">
+        <div class="col-sm-12 col-md-5 col-lg-3 mt-1">
+          {{ form_widget(studyAreaForm.studyArea) }}
+        </div>
+        <div class="col mt-1">
+          <div class="float-right float-md-left">
+            {{ form_widget(studyAreaForm.submit) }}
+          </div>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        $('#studyarea_form_studyArea').on('change', function () {
+          $('#studyarea_form_submit').removeAttr('disabled');
+        });
+
+        $('#studyarea_form_submit').on('click', function () {
+          window.location.href = Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, true);
+          return false;
+        });
+      </script>
+
+      {{ form_end(studyAreaForm) }}
+    {% else %}
+      <div class="row">
+        <div class="col-sm-12 col-md-5 col-lg-3 mt-1">
+          <a href="{{ path('_home') }}" class="btn btn-outline-primary">{{ 'dashboard.open'|trans }}</a>
+        </div>
+      </div>
+    {% endif %}
+
   {% endblock %}
 
   <div class="spacer"></div>
+
+  <p class="card-text">
+    {{ 'app.user-tracking-notice'|trans }}
+    {{ 'login.privacy-policy-text'|trans }}<a href="https://www.utwente.nl/en/about-our-website/" target="_blank" class="no-block">{{ 'login.privacy-policy'|trans|lower }}</a>.
+  </p>
+
   <p>{{ 'app.delete-notice'|trans }}</p>
 
   <div class="license-notice">
     <div class="license-image"></div>
     <p>
-    {{ block('license') }}
+      {{ block('license') }}
     </p>
   </div>
 

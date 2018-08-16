@@ -99,11 +99,10 @@
       });
 
       $('#studyarea_form_submit').on('click', function () {
-        var url = Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, false);
-        if (inDoubleColumn) {
-          eDispatch.pageLoad(url, {topLevel: true});
+        if (typeof inDoubleColumn !== 'undefined' && inDoubleColumn) {
+          eDispatch.pageLoad(Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, false), {topLevel: true});
         } else {
-          window.location.href = url;
+          window.location.href = Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, true);
         }
         return false;
       });

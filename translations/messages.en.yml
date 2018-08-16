@@ -79,9 +79,11 @@ dashboard:
   concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
   external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
   learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
+  open: 'Open dashboard'
   search-concept: 'Search for concept'
   select-one: 'Select one...'
   study-area-contains: 'This study area has:'
+  study-area-landing: 'Select a study area to start with'
   study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
 

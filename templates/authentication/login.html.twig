@@ -2,10 +2,6 @@
 
 {% block enter %}
   <p class="card-text">{{ 'login.login-text'|trans }}</p>
-  <p class="card-text">
-    {{ 'app.user-tracking-notice'|trans }}
-    {{ 'login.privacy-policy-text'|trans }}<a href="https://www.utwente.nl/en/about-our-website/" target="_blank" class="no-block">{{ 'login.privacy-policy'|trans|lower }}</a>.
-  </p>
 
   {% from '_layout/flashbags.html.twig' import flashbag_alert %}
 
