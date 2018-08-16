@@ -39,7 +39,7 @@ final class Version20180715122232 extends AbstractMigration
     $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
     // Create new table/columns
-    $this->addSql('CREATE TABLE data_external_resources (id INT AUTO_INCREMENT NOT NULL, concept_id INT NOT NULL, created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, deleted_at DATETIME DEFAULT NULL, deleted_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+    $this->addSql('CREATE TABLE data_external_resources (id INT AUTO_INCREMENT NOT NULL, concept_id INT NOT NULL, created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, deleted_at DATETIME DEFAULT NULL, deleted_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     $this->addSql('ALTER TABLE concept ADD external_resources_id INT DEFAULT NULL');
     $this->addSql('ALTER TABLE external_resource ADD collection_id INT DEFAULT NULL, ADD position INT DEFAULT NULL');
 
