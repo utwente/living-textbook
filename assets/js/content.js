@@ -1,7 +1,7 @@
 require('../css/content/content.scss');
 
 let inDoubleColumn = false;
-const inDoubleColumnChecksum = Math.random().toString(36);
+export const inDoubleColumnChecksum = Math.random().toString(36);
 
 export function setDoubleColumnDetected(checksum) {
   if (checksum === inDoubleColumnChecksum) {
@@ -25,6 +25,7 @@ $(function () {
   require('./content/eventHandler');
   require('./content/eventDispatcher');
   require('./content/customTags');
+  require('./content/search');
 
   eDispatch.checkForDoubleColumn(inDoubleColumnChecksum);
 
@@ -38,9 +39,9 @@ $(function () {
 
     e = e || event;
 
-    var from = findParent('a', e.target || e.srcElement);
+    let from = findParent('a', e.target || e.srcElement);
     if (from) {
-      var $from = $(from);
+      let $from = $(from);
 
       // Exclude _blank target links
       if ($from.attr('target') === '_blank') return;
@@ -49,14 +50,14 @@ $(function () {
       if ($from.hasClass('no-block')) return;
 
       // Exclude hash urls
-      var url = $from.attr('href');
+      let url = $from.attr('href');
       if (url.startsWith('#')) return;
 
       // Exclude javascript urls
       if (url.startsWith('javascript')) return;
 
       // Build options
-      var options = {
+      let options = {
         topLevel: $from.hasClass('top-level')
       };
 

@@ -24,8 +24,8 @@ browser:
   actions: 'Actions'
   close: 'Close concept browser'
   fullscreen-toggle: 'Toggle fullscreen'
-  open: 'Open browser'
-  toggle: 'Toggle browser'
+  open: 'Open map'
+  toggle: 'Toggle map'
   readme: 'Open readme'
   refresh: 'Refresh data'
   search: 'Search'
@@ -280,6 +280,10 @@ relation:
   default-1: "is same as"
   default-2: "is a kind of"
   default-3: "is part of"
+
+search:
+  placeholder: 'Search for...'
+  search: 'Search'
 
 study-area:
   access-type: 'Access type'

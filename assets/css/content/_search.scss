@@ -1,0 +1,35 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '../vars/vars';
+
+.global-search-form {
+  display: none;
+
+  position: absolute;
+  width: 80%;
+  max-width: 400px;
+
+  padding: 0.5rem;
+  border-radius: $border-radius;
+
+  background-color: $background-color;
+  z-index: 1500;
+
+  &.show {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    border: 10px solid transparent;
+    border-bottom-color: $background-color;
+    top: -20px;
+    right: 10px;
+  }
+
+  .row {
+    margin-bottom: 0;
+  }
+}

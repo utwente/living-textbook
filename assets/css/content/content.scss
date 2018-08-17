@@ -17,7 +17,7 @@
   width: 100%;
   background-color: $background-color;
 
-  &>div {
+  & > div {
     @include div-center();
     text-align: center;
     font-size: $loader-size;
@@ -29,6 +29,7 @@
 @import '_menu';
 @import 'styleGuide';
 @import '_forms';
+@import '_search';
 
 .ltb-text-container {
   @include styleGuide;

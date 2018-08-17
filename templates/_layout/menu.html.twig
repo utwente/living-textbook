@@ -1,14 +1,25 @@
+<div class="global-search-form">
+  {{ render(controller('App\\Controller\\SearchController::searchForm')) }}
+</div>
+
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
   <a class="navbar-logo-brand" href="{{ path('app_default_dashboard') }}">
     <div class="navbar-logo"></div>
     <div class="navbar-brand">
       Living Textbook
     </div>
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+
+  <div class="navbar-toggler global-search-container">
+    <a class="btn btn-outline-primary global-search" href="#">
+      <i class="fa fa-fw fa-search"></i>
+    </a>
+  </div>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -38,7 +49,8 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="data-dropdown">
           <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
-          <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}" target="_blank">{{ 'menu.excel-status'|trans }}</a>
+          <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}"
+             target="_blank">{{ 'menu.excel-status'|trans }}</a>
           <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
           {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
             <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
@@ -76,8 +88,16 @@
 
     </ul>
 
-    <a class="btn btn-outline-primary ml-lg-2" href="#"
-       onclick="eDispatch.toggleConceptBrowser(); $(this).blur();">{{ 'browser.toggle'|trans }}</a>
+    <div class="navbar-collapse collapse" style="flex-grow: unset">
+      <a class="btn btn-outline-primary ml-lg-2 global-search" href="#">
+        <i class="fa fa-fw fa-search"></i>
+      </a>
+    </div>
+
+    <a class="btn btn-outline-primary ml-lg-2" href="#" onclick="eDispatch.toggleConceptBrowser(); $(this).blur();">
+      <i class="fa fa-fw fa-map"></i>
+      {{ 'browser.toggle'|trans }}
+    </a>
 
     <a class="btn btn-outline-dark ml-lg-2 top-level" href="{{ path('logout') }}">{{ 'login.logout'|trans }}</a>
   </div>

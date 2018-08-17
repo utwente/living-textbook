@@ -3,7 +3,7 @@
   {{ block('_bar_header') }}
   {% if browser_id|default(false) %}
     <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-primary"><i
-          class="fa fa-fw fa-search"></i> {{ 'browser.open'|trans }}</a>
+          class="fa fa-fw fa-map"></i> {{ 'browser.open'|trans }}</a>
   {% endif %}
   {% if progress|default(false) %}
     {{ _action_button(path('app_data_excelstatus'), 'fa-tasks', 'menu.excel-status', 'primary', true) }}

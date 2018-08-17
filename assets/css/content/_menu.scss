@@ -16,4 +16,12 @@ $logo-size: 40px;
       margin: 0 ($spacer / 2) 0 (-($spacer / 2));
     }
   }
+
+  .navbar-toggler.global-search-container {
+    padding: 0;
+    font-size: initial;
+    line-height: initial;
+    background-color: transparent;
+    border: none;
+  }
 }
