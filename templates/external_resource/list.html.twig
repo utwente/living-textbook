@@ -12,38 +12,40 @@
 {% endblock %}
 
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">{{ 'external-resource.title'|trans }}</th>
-      <th scope="col">{{ 'external-resource.url'|trans }}</th>
-      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-        <th scope="col">{{ 'form.edit'|trans }}</th>
-        <th scope="col">{{ 'form.remove'|trans }}</th>
-      {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for externalResource in externalResources %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
       <tr>
-        <td>{{ externalResource.title }}</td>
-        <td>
-          {% if externalResource.url is not empty %}
-            <a href="{{ externalResource.url }}" target="_blank">{{ externalResource.url }}</a>
-          {% else %}
-            {{ 'external-resource.no-url'|trans }}
-          {% endif %}
-        </td>
+        <th scope="col">{{ 'external-resource.title'|trans }}</th>
+        <th scope="col">{{ 'external-resource.url'|trans }}</th>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-          <td><a
-                href="{{ path('app_externalresource_edit', {'externalResource': externalResource.id}) }}">{{ 'form.edit'|trans }}</a>
-          </td>
-          <td><a
-                href="{{ path('app_externalresource_remove', {'externalResource': externalResource.id}) }}">{{ 'form.remove'|trans }}</a>
-          </td>
+          <th scope="col">{{ 'form.edit'|trans }}</th>
+          <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for externalResource in externalResources %}
+        <tr>
+          <td>{{ externalResource.title }}</td>
+          <td>
+            {% if externalResource.url is not empty %}
+              <a href="{{ externalResource.url }}" target="_blank">{{ externalResource.url }}</a>
+            {% else %}
+              {{ 'external-resource.no-url'|trans }}
+            {% endif %}
+          </td>
+          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+            <td><a
+                  href="{{ path('app_externalresource_edit', {'externalResource': externalResource.id}) }}">{{ 'form.edit'|trans }}</a>
+            </td>
+            <td><a
+                  href="{{ path('app_externalresource_remove', {'externalResource': externalResource.id}) }}">{{ 'form.remove'|trans }}</a>
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

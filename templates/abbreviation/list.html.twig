@@ -12,32 +12,34 @@
 {% endblock %}
 
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">{{ 'abbreviation.abbreviation'|trans }}</th>
-      <th scope="col">{{ 'abbreviation.meaning'|trans }}</th>
-      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-        <th scope="col">{{ 'form.edit'|trans }}</th>
-        <th scope="col">{{ 'form.remove'|trans }}</th>
-      {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for abbreviation in abbreviations %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
       <tr>
-        <td>{{ abbreviation.abbreviation }}</td>
-        <td>{{ abbreviation.meaning }}</td>
+        <th scope="col">{{ 'abbreviation.abbreviation'|trans }}</th>
+        <th scope="col">{{ 'abbreviation.meaning'|trans }}</th>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-          <td><a
-                href="{{ path('app_abbreviation_edit', {'abbreviation': abbreviation.id}) }}">{{ 'form.edit'|trans }}</a>
-          </td>
-          <td><a
-                href="{{ path('app_abbreviation_remove', {'abbreviation': abbreviation.id}) }}">{{ 'form.remove'|trans }}</a>
-          </td>
+          <th scope="col">{{ 'form.edit'|trans }}</th>
+          <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for abbreviation in abbreviations %}
+        <tr>
+          <td>{{ abbreviation.abbreviation }}</td>
+          <td>{{ abbreviation.meaning }}</td>
+          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+            <td><a
+                  href="{{ path('app_abbreviation_edit', {'abbreviation': abbreviation.id}) }}">{{ 'form.edit'|trans }}</a>
+            </td>
+            <td><a
+                  href="{{ path('app_abbreviation_remove', {'abbreviation': abbreviation.id}) }}">{{ 'form.remove'|trans }}</a>
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

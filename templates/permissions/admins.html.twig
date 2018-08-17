@@ -10,26 +10,28 @@
 {% endblock %}
 
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">{{ 'user.display-name'|trans }}</th>
-      <th scope="col">{{ 'user.emailaddress'|trans }}</th>
-      <th scope="col">{{ 'form.remove'|trans }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for admin in admins %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
       <tr>
-        <td>{{ admin.displayName }}</td>
-        <td>{{ admin.username }}</td>
-        <td>
-          {% if app.user.id != admin.id %}
-            <a href="{{ path('app_permissions_removeadmin', {'user': admin.id}) }}">{{ 'form.remove'|trans }}</a>
-          {% endif %}
-        </td>
+        <th scope="col">{{ 'user.display-name'|trans }}</th>
+        <th scope="col">{{ 'user.emailaddress'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for admin in admins %}
+        <tr>
+          <td>{{ admin.displayName }}</td>
+          <td>{{ admin.username }}</td>
+          <td>
+            {% if app.user.id != admin.id %}
+              <a href="{{ path('app_permissions_removeadmin', {'user': admin.id}) }}">{{ 'form.remove'|trans }}</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

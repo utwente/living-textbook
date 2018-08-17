@@ -12,37 +12,39 @@
 {% endblock %}
 
 {% macro list(concepts, studyArea) %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">{{ 'concept.name'|trans }}</th>
-      <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
-      <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
-      <th scope="col">{{ 'form.show'|trans }}</th>
-      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-        <th scope="col">{{ 'form.edit'|trans }}</th>
-        <th scope="col">{{ 'form.remove'|trans }}</th>
-      {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for concept in concepts %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
       <tr>
-        <td>
-          <a href="#" onclick="eDispatch.showConcept({{- concept.id -}});" data-toggle="tooltip"
-             title="{{ 'browser.open'|trans }}">{{ concept.name }}</a>
-        </td>
-        <td>{{ concept.outgoingRelations|length }}</td>
-        <td>{{ concept.incomingRelations|length }}</td>
-        <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
+        <th scope="col">{{ 'concept.name'|trans }}</th>
+        <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
+        <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
+        <th scope="col">{{ 'form.show'|trans }}</th>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-          <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
-          <td><a href="{{ path('app_concept_remove', {'concept': concept.id}) }}">{{ 'form.remove'|trans }}</a></td>
+          <th scope="col">{{ 'form.edit'|trans }}</th>
+          <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for concept in concepts %}
+        <tr>
+          <td>
+            <a href="#" onclick="eDispatch.showConcept({{- concept.id -}});" data-toggle="tooltip"
+               title="{{ 'browser.open'|trans }}">{{ concept.name }}</a>
+          </td>
+          <td>{{ concept.outgoingRelations|length }}</td>
+          <td>{{ concept.incomingRelations|length }}</td>
+          <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
+          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+            <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
+            <td><a href="{{ path('app_concept_remove', {'concept': concept.id}) }}">{{ 'form.remove'|trans }}</a></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endmacro %}
 
 {% block content %}

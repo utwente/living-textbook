@@ -12,26 +12,32 @@
 {% endblock %}
 
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">{{ 'relation-type.name'|trans }}</th>
-      {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-        <th scope="col">{{ 'form.edit'|trans }}</th>
-        <th scope="col">{{ 'form.remove'|trans }}</th>
-      {% endif %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for relationType in relationTypes %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
       <tr>
-        <td>{{ relationType.name }}</td>
+        <th scope="col">{{ 'relation-type.name'|trans }}</th>
         {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-          <td><a href="{{ path('app_relationtype_edit', {'relationType': relationType.id}) }}">{{ 'form.edit'|trans }}</a></td>
-          <td><a href="{{ path('app_relationtype_remove', {'relationType': relationType.id}) }}">{{ 'form.remove'|trans }}</a></td>
+          <th scope="col">{{ 'form.edit'|trans }}</th>
+          <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for relationType in relationTypes %}
+        <tr>
+          <td>{{ relationType.name }}</td>
+          {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+            <td><a
+                  href="{{ path('app_relationtype_edit', {'relationType': relationType.id}) }}">{{ 'form.edit'|trans }}</a>
+            </td>
+            <td><a
+                  href="{{ path('app_relationtype_remove', {'relationType': relationType.id}) }}">{{ 'form.remove'|trans }}</a>
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

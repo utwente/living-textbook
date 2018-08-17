@@ -10,32 +10,34 @@
 {% endblock %}
 
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">{{ 'user.display-name'|trans }}</th>
-      <th scope="col">{{ 'login.username'|trans }}</th>
-      <th scope="col">{{ 'form.edit'|trans }}</th>
-      <th scope="col">{{ 'user.fallback.reset-password-short'|trans }}</th>
-      <th scope="col">{{ 'form.remove'|trans }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for user in users %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
       <tr>
-        <td>{{ user.displayName }}</td>
-        <td><a href="mailto:{{ user.username }}">{{ user.username }}</a></td>
-        <td><a href="{{ path('app_user_fallbackedit', {'user': user.id}) }}">{{ 'form.edit'|trans }}</a></td>
-        <td><a
-              href="{{ path('app_user_fallbackresetpassword', {'user': user.id}) }}">{{ 'user.fallback.reset-password-short'|trans }}</a>
-        </td>
-        <td>
-          {% if user.id != app.user.id %}
-            <a href="{{ path('app_user_fallbackremove', {'user': user.id}) }}">{{ 'form.remove'|trans }}</a>
-          {% endif %}
-        </td>
+        <th scope="col">{{ 'user.display-name'|trans }}</th>
+        <th scope="col">{{ 'login.username'|trans }}</th>
+        <th scope="col">{{ 'form.edit'|trans }}</th>
+        <th scope="col">{{ 'user.fallback.reset-password-short'|trans }}</th>
+        <th scope="col">{{ 'form.remove'|trans }}</th>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.displayName }}</td>
+          <td><a href="mailto:{{ user.username }}">{{ user.username }}</a></td>
+          <td><a href="{{ path('app_user_fallbackedit', {'user': user.id}) }}">{{ 'form.edit'|trans }}</a></td>
+          <td><a
+                href="{{ path('app_user_fallbackresetpassword', {'user': user.id}) }}">{{ 'user.fallback.reset-password-short'|trans }}</a>
+          </td>
+          <td>
+            {% if user.id != app.user.id %}
+              <a href="{{ path('app_user_fallbackremove', {'user': user.id}) }}">{{ 'form.remove'|trans }}</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
