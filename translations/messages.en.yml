@@ -55,6 +55,7 @@ concept:
   removed: 'Concept "%item%" has been removed successfully'
   saved: 'Concept "%item%" has been saved successfully.'
   self-assessment: 'Self assessment'
+  synonyms: 'Synonyms'
   theory-explanation: 'Explanation'
   updated: 'Concept "%item%" has been successfully updated.'
 

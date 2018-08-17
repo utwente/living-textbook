@@ -49,7 +49,12 @@ class EditConceptType extends AbstractType
     $editing   = $concept->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
-            'label' => 'concept.name',
+            'label'      => 'concept.name',
+            'empty_data' => '',
+        ])
+        ->add('synonyms', TextType::class, [
+            'label'      => 'concept.synonyms',
+            'empty_data' => '',
         ])
         ->add('introduction', BaseDataTextType::class, [
             'label'      => 'concept.introduction',

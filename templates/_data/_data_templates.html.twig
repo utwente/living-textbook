@@ -11,6 +11,11 @@
   {{ block('data_display_block') }}
 {% endmacro %}
 
+{% macro data_synonyms(data) %}
+  <h2>{{ 'concept.synonyms'|trans }}</h2>
+  <p>{{ data }}</p>
+{% endmacro %}
+
 {% macro data_theory_explanation(data) %}
   {% set title = 'concept.theory-explanation'|trans %}
   {{ block('data_display_block') }}

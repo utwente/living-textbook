@@ -61,6 +61,16 @@ class Concept
   private $introduction;
 
   /**
+   * @var string
+   *
+   * @ORM\Column(name="synonyms", type="string", length=512, nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\Length(max=512)
+   */
+  private $synonyms;
+
+  /**
    * @var Concept[]|Collection
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", inversedBy="priorKnowledgeOf")
@@ -200,6 +210,7 @@ class Concept
   public function __construct()
   {
     $this->name              = '';
+    $this->synonyms          = '';
     $this->outgoingRelations = new ArrayCollection();
     $this->incomingRelations = new ArrayCollection();
 
@@ -384,6 +395,22 @@ class Concept
     $this->name = $name;
 
     return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getSynonyms(): string
+  {
+    return $this->synonyms;
+  }
+
+  /**
+   * @param string $synonyms
+   */
+  public function setSynonyms(string $synonyms): void
+  {
+    $this->synonyms = $synonyms;
   }
 
   /**
