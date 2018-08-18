@@ -68,6 +68,10 @@ services:
     tags:
       - { name: jms_serializer.event_subscriber }
 
+  App\Twig\HighlightExtension:
+    tags:
+      - { name: twig.extension }
+
   Drenso\OidcBundle\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'

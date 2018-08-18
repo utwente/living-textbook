@@ -81,7 +81,7 @@
                     </td>
                   {% endif %}
                   <td>{{ ('concept.' ~ result.property)|trans }}</td>
-                  <td>{{ result.data|striptags|raw }}</td>
+                  <td>{{ result.data|striptags|highlight(search) }}</td>
                 </tr>
               {% endfor %}
             {% endfor %}
@@ -110,10 +110,10 @@
                 <tr>
                   {% if loop.first %}
                     <td rowspan="{{ abbreviation.results|length }}">
-                      {{ abbreviation._title }}
+                      {{ abbreviation._title|highlight(search) }}
                     </td>
                   {% endif %}
-                  <td>{{ abbreviation._data.meaning }}</td>
+                  <td>{{ abbreviation._data.meaning|highlight(search) }}</td>
                 </tr>
               {% endfor %}
             {% endfor %}
@@ -143,15 +143,16 @@
                 <tr>
                   {% if loop.first %}
                     <td rowspan="{{ externalResource.results|length }}">
-                      {{ externalResource._title }}
+                      {{ externalResource._title|highlight(search) }}
                     </td>
                   {% endif %}
                   <td>
                     {% if externalResource._data.url %}
-                      <a href="{{ externalResource._data.url }}" target="_blank">{{ externalResource._data.url }}</a>
-                      <br/>
+                      <a href="{{ externalResource._data.url }}" target="_blank">
+                        {{ externalResource._data.url|highlight(search) }}
+                      </a><br/>
                     {% endif %}
-                    {{ externalResource._data.description }}
+                    {{ externalResource._data.description|highlight(search) }}
                   </td>
                 </tr>
               {% endfor %}
@@ -187,7 +188,7 @@
                     </td>
                   {% endif %}
                   <td>{{ ('learning-outcome.' ~ result.property)|trans }}</td>
-                  <td>{{ result.data|striptags|raw }}</td>
+                  <td>{{ result.data|striptags|highlight(search) }}</td>
                 </tr>
               {% endfor %}
             {% endfor %}
