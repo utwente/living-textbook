@@ -55,6 +55,7 @@ class EditConceptType extends AbstractType
         ->add('synonyms', TextType::class, [
             'label'      => 'concept.synonyms',
             'empty_data' => '',
+            'required'   => false,
         ])
         ->add('introduction', BaseDataTextType::class, [
             'label'      => 'concept.introduction',
