@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -89,6 +90,36 @@ class ExternalResource
     $this->broken = false;
 
     $this->concepts = new ArrayCollection();
+  }
+
+  /**
+   * Searches in the external resource on the given search, returns an array with search result metadata
+   *
+   * @param string $search
+   *
+   * @return array
+   */
+  public function searchIn(string $search): array
+  {
+    // Create result array
+    $results = [];
+
+    // Search in different parts
+    if (stripos($this->getTitle(), $search) !== false) {
+      $results[] = SearchController::createResult(255, 'title', $this->getTitle());
+    }
+    if (stripos($this->getDescription(), $search) !== false) {
+      $results[] = SearchController::createResult(200, 'description', $this->getDescription());
+    }
+    if (stripos($this->getUrl(), $search) !== false) {
+      $results[] = SearchController::createResult(150, 'url', $this->getUrl());
+    }
+
+    return [
+        '_id'     => $this->getId(),
+        '_title'  => $this->getTitle(),
+        'results' => $results,
+    ];
   }
 
   /**

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -94,6 +95,33 @@ class LearningOutcome
   public function getShortName()
   {
     return sprintf('%d - %s', $this->number, $this->name);
+  }
+
+  /**
+   * Searches in the external resource on the given search, returns an array with search result metadata
+   *
+   * @param string $search
+   *
+   * @return array
+   */
+  public function searchIn(string $search): array
+  {
+    // Create result array
+    $results = [];
+
+    // Search in different parts
+    if (stripos($this->getName(), $search) !== false) {
+      $results[] = SearchController::createResult(255, 'name', $this->getName());
+    }
+    if (stripos($this->getText(), $search) !== false) {
+      $results[] = SearchController::createResult(200, 'text', $this->getText());
+    }
+
+    return [
+        '_id'     => $this->getId(),
+        '_title'  => $this->getName(),
+        'results' => $results,
+    ];
   }
 
   /**

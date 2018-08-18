@@ -34,10 +34,10 @@ class AbbreviationRepository extends ServiceEntityRepository
    */
   public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
   {
-    return $this->createQueryBuilder('lo')
-        ->where('lo.studyArea = :studyArea')
+    return $this->createQueryBuilder('a')
+        ->where('a.studyArea = :studyArea')
         ->setParameter('studyArea', $studyArea)
-        ->orderBy('lo.abbreviation', 'ASC');
+        ->orderBy('a.abbreviation', 'ASC');
   }
 
   /**
@@ -48,9 +48,9 @@ class AbbreviationRepository extends ServiceEntityRepository
    */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
-    return $this->createQueryBuilder('lo')
-        ->select('COUNT(lo.id)')
-        ->where('lo.studyArea = :studyArea')
+    return $this->createQueryBuilder('a')
+        ->select('COUNT(a.id)')
+        ->where('a.studyArea = :studyArea')
         ->setParameter('studyArea', $studyArea)
         ->getQuery()->getSingleScalarResult();
   }

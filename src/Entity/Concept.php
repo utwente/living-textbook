@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Data\BaseDataTextObject;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
+use App\Entity\Data\DataInterface;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
@@ -363,6 +366,48 @@ class Concept
 
     // Return result
     return [$lastUpdated, $lastUpdatedBy];
+  }
+
+  /**
+   * Searches in the concept on the given search, returns an array with search result metadata
+   *
+   * @param string $search
+   *
+   * @return array
+   */
+  public function searchIn(string $search): array
+  {
+    // Create result array
+    $results = [];
+
+    // Search in different parts
+    if (stripos($this->getName(), $search) !== false) {
+      $results[] = SearchController::createResult(255, 'name', $this->getName());
+    }
+
+    if (stripos($this->getSynonyms(), $search) !== false) {
+      $results[] = SearchController::createResult(200, 'synonyms', $this->getSynonyms());
+    }
+
+    $this->filterDataOn($results, $this->getIntroduction(), 150, 'introduction', $search);
+    $this->filterDataOn($results, $this->getExamples(), 100, 'examples', $search);
+    $this->filterDataOn($results, $this->getTheoryExplanation(), 80, 'theoryExplanation', $search);
+    $this->filterDataOn($results, $this->getHowTo(), 60, 'howTo', $search);
+    $this->filterDataOn($results, $this->getSelfAssessment(), 40, 'selfAssesment', $search);
+
+    return [
+        '_id'     => $this->getId(),
+        '_title'  => $this->getName(),
+        'results' => $results,
+    ];
+  }
+
+  private function filterDataOn(array &$results, DataInterface $data, int $prio, string $property, string $search)
+  {
+    assert($data instanceof BaseDataTextObject);
+    if ($data->hasData() && stripos($data->getText(), $search) !== false) {
+      $results[] = SearchController::createResult($prio, $property, $data->getText());
+    }
   }
 
   /**

@@ -17,19 +17,6 @@ class ConceptRepository extends ServiceEntityRepository
   }
 
   /**
-   * @return array
-   */
-  public function findAllOrderedByName()
-  {
-    $qb = $this->createQueryBuilder('c')
-        ->orderBy('c.name', 'ASC');
-
-    $this->loadRelations($qb, 'c');
-
-    return $qb->getQuery()->getResult();
-  }
-
-  /**
    * @param StudyArea $studyArea
    *
    * @return QueryBuilder
@@ -44,14 +31,19 @@ class ConceptRepository extends ServiceEntityRepository
 
   /**
    * @param StudyArea $studyArea
+   * @param bool      $preLoadData
    *
    * @return array
    */
-  public function findForStudyAreaOrderedByName(StudyArea $studyArea)
+  public function findForStudyAreaOrderedByName(StudyArea $studyArea, bool $preLoadData = false)
   {
     $qb = $this->findForStudyAreaOrderByNameQb($studyArea);
 
     $this->loadRelations($qb, 'c');
+
+    if ($preLoadData) {
+      $this->preLoadData($qb, 'c');
+    }
 
     return $qb->getQuery()->getResult();
   }
@@ -84,5 +76,26 @@ class ConceptRepository extends ServiceEntityRepository
         ->leftJoin($alias . '.incomingRelations', 'ir')
         ->addSelect('r')
         ->addSelect('ir');
+  }
+
+  /**
+   * Eagerly load the text data
+   *
+   * @param QueryBuilder $qb
+   * @param string       $alias
+   */
+  private function preLoadData(QueryBuilder &$qb, string $alias)
+  {
+    $qb
+        ->join($alias . '.examples', 'de')
+        ->join($alias . '.introduction', 'di')
+        ->join($alias . '.theoryExplanation', 'dt')
+        ->join($alias . '.howTo', 'dh')
+        ->join($alias . '.selfAssessment', 'ds')
+        ->addSelect('de')
+        ->addSelect('di')
+        ->addSelect('dt')
+        ->addSelect('dh')
+        ->addSelect('ds');
   }
 }

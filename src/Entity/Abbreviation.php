@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -64,6 +65,34 @@ class Abbreviation
   {
     $this->abbreviation = '';
     $this->meaning      = '';
+  }
+
+  /**
+   * Searches in the abbreviation on the given search, returns an array with search result metadata
+   *
+   * @param string $search
+   *
+   * @return array
+   */
+  public function searchIn(string $search): array
+  {
+    // Create result array
+    $results = [];
+
+    // Search in different parts
+    if (stripos($this->getAbbreviation(), $search) !== false) {
+      $results[] = SearchController::createResult(255, 'abbreviation', $this->getAbbreviation());
+    }
+
+    if (stripos($this->getMeaning(), $search) !== false) {
+      $results[] = SearchController::createResult(200, 'meaning', $this->getMeaning());
+    }
+
+    return [
+        '_id'     => $this->getId(),
+        '_title'  => $this->getAbbreviation(),
+        'results' => $results,
+    ];
   }
 
   /**
