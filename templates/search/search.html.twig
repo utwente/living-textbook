@@ -1,0 +1,200 @@
+{% extends 'single_column.html.twig' %}
+
+{% macro propertyToText(type, property) %}
+{% endmacro %}
+
+{% block title %}
+  {{ 'search.search'|trans -}}
+{% endblock %}
+
+{% block content %}
+
+  {{ form(form) }}
+
+  {% if search is defined %}
+
+    <h2>{{ 'search.results-for'|trans({'%item%': search}) }}</h2>
+
+    {% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0 and learningOutcomeData|length == 0 %}
+      <p>{{ 'search.no-results-anywhere'|trans }}</p>
+    {% else %}
+      {{ block('searchResults') }}
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}
+
+{% block searchResults %}
+  {% from _self import propertyToText %}
+
+  <ul class="nav nav-tabs nav-fill">
+    <li class="nav-item">
+      <a class="nav-link{% if conceptData|length != 0 %} active{% endif %}" id="tab-concepts-button"
+         href="#tab-concepts" role="tab" data-toggle="tab">
+        {{ 'search.result.concepts'|trans }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
+         id="tab-abbreviations-button" href="#tab-abbreviations" role="tab" data-toggle="tab">
+        {{ 'search.result.abbreviations'|trans }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
+         id="tab-external-resources-button" href="#tab-external-resources" role="tab"
+         data-toggle="tab">
+        {{ 'search.result.external-resources'|trans }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0 %} active{% endif %}"
+         id="tab-learning-outcomes-button" href="#tab-learning-outcomes" role="tab"
+         data-toggle="tab">
+        {{ 'search.result.learning-outcomes'|trans }}
+      </a>
+    </li>
+  </ul>
+  <div class="tab-content" id="search-options">
+    <div class="tab-pane{% if conceptData|length != 0 %} active{% endif %}" id="tab-concepts" role="tabpanel"
+         aria-labelledby="tab-concepts-button">
+      {% if conceptData|length == 0 %}
+        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.concepts'|trans|lower }) }}</p>
+      {% else %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>{{ 'concept.name'|trans }}</th>
+              <th>{{ 'search.found-in'|trans }}</th>
+              <th>{{ 'search.preview'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for concept in conceptData %}
+              {% for result in concept.results %}
+                <tr>
+                  {% if loop.first %}
+                    <td rowspan="{{ concept.results|length }}">
+                      <a href="{{ path('app_concept_show', { 'concept': concept._id }) }}">{{ concept._title }}</a>
+                    </td>
+                  {% endif %}
+                  <td>{{ ('concept.' ~ result.property)|trans }}</td>
+                  <td>{{ result.data|striptags|raw }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="tab-pane{% if conceptData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
+         id="tab-abbreviations" role="tabpanel" aria-labelledby="tab-abbreviations-button">
+      {% if abbreviationData|length == 0 %}
+        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.abbreviations'|trans|lower }) }}</p>
+      {% else %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>{{ 'abbreviation.abbreviation'|trans }}</th>
+              <th>{{ 'abbreviation.meaning'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for abbreviation in abbreviationData %}
+              {% for result in abbreviation.results %}
+                <tr>
+                  {% if loop.first %}
+                    <td rowspan="{{ abbreviation.results|length }}">
+                      {{ abbreviation._title }}
+                    </td>
+                  {% endif %}
+                  <td>{{ abbreviation._data.meaning }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+
+    <div
+        class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
+        id="tab-external-resources" role="tabpanel" aria-labelledby="tab-external-resources-button">
+      {% if externalResourceData|length == 0 %}
+        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.external-resources'|trans|lower }) }}</p>
+      {% else %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>{{ 'external-resource.title'|trans }}</th>
+              <th>{{ 'search.data'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for externalResource in externalResourceData %}
+              {% for result in externalResource.results %}
+                <tr>
+                  {% if loop.first %}
+                    <td rowspan="{{ externalResource.results|length }}">
+                      {{ externalResource._title }}
+                    </td>
+                  {% endif %}
+                  <td>
+                    {% if externalResource._data.url %}
+                      <a href="{{ externalResource._data.url }}" target="_blank">{{ externalResource._data.url }}</a>
+                      <br/>
+                    {% endif %}
+                    {{ externalResource._data.description }}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+
+    <div
+        class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0 %} active{% endif %}"
+        id="tab-learning-outcomes" role="tabpanel" aria-labelledby="tab-learning-outcomes-button">
+      {% if learningOutcomeData|length == 0 %}
+        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.learning-outcomes'|trans|lower }) }}</p>
+      {% else %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>{{ 'learning-outcome.name'|trans }}</th>
+              <th>{{ 'search.found-in'|trans }}</th>
+              <th>{{ 'search.preview'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for learningOutcome in learningOutcomeData %}
+              {% for result in learningOutcome.results %}
+                <tr>
+                  {% if loop.first %}
+                    <td rowspan="{{ learningOutcome.results|length }}">
+                      <a href="{{ path('app_learningoutcome_show', { 'learningOutcome': learningOutcome._id }) }}">{{ learningOutcome._title }}</a>
+                    </td>
+                  {% endif %}
+                  <td>{{ ('learning-outcome.' ~ result.property)|trans }}</td>
+                  <td>{{ result.data|striptags|raw }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -110,7 +110,7 @@ class SearchController extends Controller
     $bp = array_reduce($b['results'], $reduceFunction, 0);
 
     if ($ap == $bp) {
-      return 0;
+      return strcmp($a['_title'], $b['_title']);
     }
 
     return $bp - $ap;

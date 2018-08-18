@@ -391,9 +391,9 @@ class Concept
 
     $this->filterDataOn($results, $this->getIntroduction(), 150, 'introduction', $search);
     $this->filterDataOn($results, $this->getExamples(), 100, 'examples', $search);
-    $this->filterDataOn($results, $this->getTheoryExplanation(), 80, 'theoryExplanation', $search);
-    $this->filterDataOn($results, $this->getHowTo(), 60, 'howTo', $search);
-    $this->filterDataOn($results, $this->getSelfAssessment(), 40, 'selfAssesment', $search);
+    $this->filterDataOn($results, $this->getTheoryExplanation(), 80, 'theory-explanation', $search);
+    $this->filterDataOn($results, $this->getHowTo(), 60, 'how-to', $search);
+    $this->filterDataOn($results, $this->getSelfAssessment(), 40, 'self-assessment', $search);
 
     return [
         '_id'     => $this->getId(),

@@ -116,7 +116,7 @@ class ExternalResource
     }
 
     return [
-        '_id'     => $this->getId(),
+        '_data'   => $this,
         '_title'  => $this->getTitle(),
         'results' => $results,
     ];

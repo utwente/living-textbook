@@ -282,7 +282,20 @@ relation:
   default-3: "is part of"
 
 search:
+  data: 'Data'
+  found-in: 'Found in'
+  invalid-search: 'Invalid search term, try again'
+  no-results: 'No results found in %item%.'
+  no-results-anywhere: 'No results found.'
   placeholder: 'Search for...'
+  preview: 'Preview'
+  result:
+    concepts: "Concepts"
+    abbreviations: "Abbreviations"
+    external-resources: "External resources"
+    learning-outcomes: "Learning outcomes"
+  results: 'Search results'
+  results-for: 'Search results for "%item%"'
   search: 'Search'
 
 study-area:
