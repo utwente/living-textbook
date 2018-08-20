@@ -12,8 +12,10 @@
 {% endmacro %}
 
 {% macro data_synonyms(data) %}
-  <h2>{{ 'concept.synonyms'|trans }}</h2>
-  <p>{{ data }}</p>
+  {% if data|length > 0 %}
+    <h2>{{ 'concept.synonyms'|trans }}</h2>
+    <p>{{ data }}</p>
+  {% endif %}
 {% endmacro %}
 
 {% macro data_theory_explanation(data) %}
