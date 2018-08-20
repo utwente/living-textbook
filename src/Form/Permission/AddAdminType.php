@@ -2,6 +2,7 @@
 
 namespace App\Form\Permission;
 
+use App\Entity\User;
 use App\Form\Type\SaveType;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,7 +16,8 @@ class AddAdminType extends AbstractType
     $builder
         ->add('admin', EntityType::class, [
             'label'         => 'permissions.admin',
-            'class'         => 'App\Entity\User',
+            'class'         => User::class,
+            'choice_label'  => 'selectionName',
             'query_builder' => function (UserRepository $ur) {
               return $ur->createQueryBuilder('u')
                   ->where('u.isAdmin = false')
