@@ -56,6 +56,9 @@ $(function () {
       // Exclude javascript urls
       if (url.startsWith('javascript')) return;
 
+      // Exclude mailto urls
+      if (url.startsWith('mailto:')) return;
+
       // Build options
       let options = {
         topLevel: $from.hasClass('top-level')
