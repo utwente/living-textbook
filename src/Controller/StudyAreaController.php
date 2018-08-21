@@ -197,7 +197,7 @@ class StudyAreaController extends Controller
 
       if ($requestStudyArea->getStudyArea()->getId() == $studyArea->getId()) {
         return $this->render('reloading_fullscreen.html.twig', [
-            'reloadUrl' => $this->generateUrl('app_default_index'),
+            'reloadUrl' => $this->generateUrl('app_default_landing'),
         ]);
       }
 
