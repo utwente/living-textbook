@@ -452,10 +452,14 @@ class Concept
 
   /**
    * @param string $synonyms
+   *
+   * @return Concept
    */
-  public function setSynonyms(string $synonyms): void
+  public function setSynonyms(string $synonyms): Concept
   {
     $this->synonyms = $synonyms;
+
+    return $this;
   }
 
   /**

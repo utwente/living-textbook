@@ -349,6 +349,7 @@ class DataController extends Controller
         $newConcept
             ->setName($concept->getName())
             ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
+            ->setSynonyms($concept->getSynonyms())
             ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
             ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
             ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
