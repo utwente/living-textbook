@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Abbreviation;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\ExternalResource;
@@ -12,6 +13,7 @@ use App\Excel\StudyAreaStatusBuilder;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
+use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
@@ -275,6 +277,7 @@ class DataController extends Controller
    *
    * @param Request                    $request
    * @param RequestStudyArea           $requestStudyArea
+   * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
@@ -283,9 +286,9 @@ class DataController extends Controller
    *
    * @return array|Response
    */
-  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, ConceptRelationRepository $conceptRelationRepo,
-                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                            EntityManagerInterface $em, TranslatorInterface $trans)
+  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, AbbreviationRepository $abbreviationRepo,
+                            ConceptRelationRepository $conceptRelationRepo, ExternalResourceRepository $externalResourceRepo,
+                            LearningOutcomeRepository $learningOutcomeRepo, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
@@ -338,6 +341,17 @@ class DataController extends Controller
 
         $em->persist($newExternalResource);
         $newExternalResources[$externalResource->getId()] = $newExternalResource;
+      }
+
+      // Duplicate the study area abbreviations
+      $abbreviations = $abbreviationRepo->findForStudyArea($studyAreaToDuplicate);
+      foreach ($abbreviations as $abbreviation) {
+        $newAbbreviation = (new Abbreviation())
+            ->setStudyArea($newStudyArea)
+            ->setAbbreviation($abbreviation->getAbbreviation())
+            ->setMeaning($abbreviation->getMeaning());
+
+        $em->persist($newAbbreviation);
       }
 
       // Duplicate the concepts

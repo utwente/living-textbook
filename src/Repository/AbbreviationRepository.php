@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Abbreviation;
-use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -19,7 +18,7 @@ class AbbreviationRepository extends ServiceEntityRepository
   /**
    * @param StudyArea $studyArea
    *
-   * @return LearningOutcome[]
+   * @return Abbreviation[]
    */
   public function findForStudyArea(StudyArea $studyArea)
   {
