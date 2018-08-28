@@ -315,7 +315,7 @@ class DataController extends Controller
       $em->persist($newStudyArea);
 
       // Duplicate the study area learning outcomes
-      $learningOutcomes    = $learningOutcomeRepo->findForStudyArea($studyAreaToDuplicate);
+      $learningOutcomes = $learningOutcomeRepo->findForConcepts($concepts->toArray());;
       $newLearningOutcomes = [];
       foreach ($learningOutcomes as $learningOutcome) {
         $newLearningOutcome = (new LearningOutcome())
@@ -329,7 +329,7 @@ class DataController extends Controller
       }
 
       // Duplicate the study area external resources
-      $externalResources    = $externalResourceRepo->findForStudyArea($studyAreaToDuplicate);
+      $externalResources = $externalResourceRepo->findForConcepts($concepts->toArray());;
       $newExternalResources = [];
       foreach ($externalResources as $externalResource) {
         $newExternalResource = (new ExternalResource())

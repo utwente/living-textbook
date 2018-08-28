@@ -40,6 +40,23 @@ class ExternalResourceRepository extends ServiceEntityRepository
   }
 
   /**
+   * Find external resources for a set of concepts
+   *
+   * @param array $concepts
+   *
+   * @return ExternalResource[]
+   */
+  public function findForConcepts(array $concepts)
+  {
+    return $this->createQueryBuilder('er')
+        ->distinct()
+        ->leftJoin('er.concepts', 'c')
+        ->where('c IN (:concepts)')
+        ->setParameter('concepts', $concepts)
+        ->getQuery()->getResult();
+  }
+
+  /**
    * @param StudyArea $studyArea
    *
    * @return mixed
