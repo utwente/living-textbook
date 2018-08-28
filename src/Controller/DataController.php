@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
@@ -13,6 +14,7 @@ use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
+use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -271,25 +273,27 @@ class DataController extends Controller
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Request                   $request
-   * @param RequestStudyArea          $requestStudyArea
-   * @param ConceptRelationRepository $conceptRelationRepo
-   * @param LearningOutcomeRepository $learningOutcomeRepo
-   * @param EntityManagerInterface    $em
-   * @param TranslatorInterface       $trans
+   * @param Request                    $request
+   * @param RequestStudyArea           $requestStudyArea
+   * @param ConceptRelationRepository  $conceptRelationRepo
+   * @param ExternalResourceRepository $externalResourceRepo
+   * @param LearningOutcomeRepository  $learningOutcomeRepo
+   * @param EntityManagerInterface     $em
+   * @param TranslatorInterface        $trans
    *
    * @return array|Response
    */
-  public function duplicate(Request $request, RequestStudyArea $requestStudyArea,
-                            ConceptRelationRepository $conceptRelationRepo, LearningOutcomeRepository $learningOutcomeRepo,
+  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, ConceptRelationRepository $conceptRelationRepo,
+                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
                             EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Create form to select the concepts for this study area
-    $newStudyArea = (new StudyArea())->setOwner($this->getUser())->setAccessType(StudyArea::ACCESS_PRIVATE);
-    $form         = $this->createForm(DuplicateType::class, [
+    $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
+    $newStudyArea         = (new StudyArea())->setOwner($this->getUser())->setAccessType(StudyArea::ACCESS_PRIVATE);
+    $form                 = $this->createForm(DuplicateType::class, [
         'studyArea' => $newStudyArea,
     ], [
-        'current_study_area' => $requestStudyArea->getStudyArea(),
+        'current_study_area' => $studyAreaToDuplicate,
         'new_study_area'     => $newStudyArea,
     ]);
     $form->handleRequest($request);
@@ -299,7 +303,7 @@ class DataController extends Controller
       $data      = $form->getData();
       $selectAll = $data['select_all'];
       if ($selectAll) {
-        $concepts = $requestStudyArea->getStudyArea()->getConcepts();
+        $concepts = $studyAreaToDuplicate->getConcepts();
       } else {
         $concepts = $data['concepts'];
       }
@@ -308,7 +312,7 @@ class DataController extends Controller
       $em->persist($newStudyArea);
 
       // Duplicate the study area learning outcomes
-      $learningOutcomes    = $learningOutcomeRepo->findForConcepts($concepts->toArray());
+      $learningOutcomes    = $learningOutcomeRepo->findForStudyArea($studyAreaToDuplicate);
       $newLearningOutcomes = [];
       foreach ($learningOutcomes as $learningOutcome) {
         $newLearningOutcome = (new LearningOutcome())
@@ -321,8 +325,20 @@ class DataController extends Controller
         $newLearningOutcomes[$learningOutcome->getId()] = $newLearningOutcome;
       }
 
-      // TODO with #84
-      // Add external resources
+      // Duplicate the study area external resources
+      $externalResources    = $externalResourceRepo->findForStudyArea($studyAreaToDuplicate);
+      $newExternalResources = [];
+      foreach ($externalResources as $externalResource) {
+        $newExternalResource = (new ExternalResource())
+            ->setStudyArea($newStudyArea)
+            ->setTitle($externalResource->getTitle())
+            ->setDescription($externalResource->getDescription())
+            ->setUrl($externalResource->getUrl())
+            ->setBroken($externalResource->isBroken());
+
+        $em->persist($newExternalResource);
+        $newExternalResources[$externalResource->getId()] = $newExternalResource;
+      }
 
       // Duplicate the concepts
       /** @var Concept[] $newConcepts */
@@ -342,6 +358,11 @@ class DataController extends Controller
         // Set learning outcomes
         foreach ($concept->getLearningOutcomes() as $learningOutcome) {
           $newConcept->addLearningOutcome($newLearningOutcomes[$learningOutcome->getId()]);
+        }
+
+        // Set external resources
+        foreach ($concept->getExternalResources() as $externalResource) {
+          $newConcept->addExternalResource($newExternalResources[$externalResource->getId()]);
         }
 
         // Save current prior knowledge to update them later when the concept map is complete
@@ -406,7 +427,7 @@ class DataController extends Controller
 
     return [
         'form'      => $form->createView(),
-        'studyArea' => $requestStudyArea->getStudyArea(),
+        'studyArea' => $studyAreaToDuplicate,
     ];
   }
 
