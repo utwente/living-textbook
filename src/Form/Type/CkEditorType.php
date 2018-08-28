@@ -22,9 +22,17 @@ class CkEditorType extends AbstractType
         ->setDefault('config', function (Options $options) {
           return [
               'filebrowserBrowseRouteParameters' => [
-                  'studyArea' => $options['studyArea']->getId(),
+                // If not given, route generation will fail. In case of 0, the button should be hidden anyways
+                  'studyArea' => $options['studyArea']->getId() ?? 0,
               ],
           ];
+        })
+        ->setNormalizer('config_name', function (Options $options, $value) {
+          if ($value === 'ltb_config' && $options['studyArea']->getId() === NULL) {
+            return 'ltb_no_image';
+          }
+
+          return $value;
         });
   }
 

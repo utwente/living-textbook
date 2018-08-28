@@ -19,6 +19,9 @@ fos_ck_editor:
       extraAllowedContent: "figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id];symbol"
       removePlugins: "dialogadvtab"
       bodyClass: "ltb-text-container"
+    ltb_no_image:
+      <<: *ckeditor_default
+      removeButtons: "Image"
     ltb_concept_config:
       <<: *ckeditor_default
       extraPlugins: "image2,latexeditor,abbreviationselector,conceptselector,ltbbuttons"
