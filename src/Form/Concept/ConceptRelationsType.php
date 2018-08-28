@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConceptRelationsType extends AbstractType
@@ -30,7 +31,7 @@ class ConceptRelationsType extends AbstractType
     $resolver->setAllowedTypes('concept', [Concept::class]);
     $resolver->setAllowedTypes('incoming', ['bool']);
 
-    $resolver->setNormalizer('entry_options', function (OptionsResolver $options, $value) {
+    $resolver->setNormalizer('entry_options', function (Options $options, $value) {
       $value['concept']  = $options->offsetGet('concept');
       $value['incoming'] = $options->offsetGet('incoming');
 
