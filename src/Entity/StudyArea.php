@@ -151,7 +151,7 @@ class StudyArea
   public function isUserInGroup(User $user, string $groupType = NULL)
   {
     foreach ($this->getUserGroups($groupType) as $userGroup) {
-      return $userGroup->getUsers()->contains($user);
+      if ($userGroup->getUsers()->contains($user)) return true;
     }
 
     return false;
