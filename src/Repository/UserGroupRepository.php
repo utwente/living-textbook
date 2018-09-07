@@ -73,7 +73,12 @@ class UserGroupRepository extends ServiceEntityRepository
     $groups = $qb->getQuery()->getResult();
 
     // Remove with entity manager to trigger soft delete
-    array_walk($groups, function ($group) {
+    array_walk($groups, function (UserGroup $group) {
+      $group->getUsers()->clear();
+      foreach ($group->getEmails() as $userGroupEmail) {
+        $this->getEntityManager()->remove($userGroupEmail);
+      }
+      $group->getEmails()->clear();
       $this->getEntityManager()->remove($group);
     });
   }
