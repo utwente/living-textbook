@@ -106,8 +106,8 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     // Check the study area
     if (!$studyAreaId) {
 
-      // Set to -1 to force empty study area
-      $studyAreaId = -1;
+      // Set to NULL to force empty study area
+      $studyAreaId = NULL;
 
       // Try to retrieve it from the session
       if ($session->has(self::STUDY_AREA_KEY)) {
@@ -116,12 +116,12 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         // Check whether it actually still exists, remove from session otherwise
         if (!$this->studyAreaRepository->find($studyAreaId)){
           $session->remove(self::STUDY_AREA_KEY);
-          $studyAreaId = -1;
+          $studyAreaId = NULL;
         }
       }
 
       // Invalid or no result from session
-      if ($studyAreaId == -1) {
+      if ($studyAreaId === NULL) {
         // Try to find a visible study area
         $token = $this->tokenStorage->getToken();
         if ($token !== NULL && ($user = $token->getUser()) instanceof User) {
