@@ -176,7 +176,7 @@ class RelationTypeController extends Controller
 
       // Remove the relation type by setting the deletedAt/By manually
       $relationType->setDeletedAt(new \DateTime());
-      $relationType->setDeletedBy($this->getUser() instanceof UserInterface ? $this->getUser()->getName() : 'anon.');
+      $relationType->setDeletedBy($this->getUser() instanceof UserInterface ? $this->getUser()->getUsername() : 'anon.');
       $em->flush();
 
       $this->addFlash('success', $trans->trans('relation-type.removed', ['%item%' => $relationType->getName()]));
