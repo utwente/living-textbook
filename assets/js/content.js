@@ -1,13 +1,13 @@
 require('../css/content/content.scss');
 
-let inDoubleColumn = false;
+global.inDoubleColumn = false;
 export const inDoubleColumnChecksum = Math.random().toString(36);
 
 export function setDoubleColumnDetected(checksum) {
   if (checksum === inDoubleColumnChecksum) {
     console.info("DoubleColumn context detected!");
     $('#no-browser-warning').slideUp();
-    inDoubleColumn = true;
+    global.inDoubleColumn = true;
   }
 }
 
