@@ -95,7 +95,7 @@ import Routing from 'fos-routing';
     };
 
     // Update or replace the state
-    if (window.location.pathname === newUrl || window.location.pathname === '/') {
+    if (window.location.pathname === newUrl || window.location.pathname === '/' || window.history.state === null) {
       window.history.replaceState(state, '', newUrl);
     } else {
       window.history.pushState(state, '', newUrl);

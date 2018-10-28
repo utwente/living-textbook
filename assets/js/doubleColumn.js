@@ -40,6 +40,8 @@ $(function () {
     // Restore document title and page
     eHandler.onPageLoad({url: event.state.currentUrl});
     document.title = event.state.currentTitle;
+
+    return false;
   });
 
   // Load refresh behavior
