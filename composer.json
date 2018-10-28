@@ -50,6 +50,7 @@
             "*": "dist"
         },
         "component-dir": "public/elfinder-assets",
+        "cache-dir": "/var/cache/composer",
         "sort-packages": true,
         "gitlab-domains": [
             "gitlab.drenso.nl"
