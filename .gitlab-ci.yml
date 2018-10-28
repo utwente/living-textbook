@@ -19,14 +19,13 @@ install-dependencies:
     DATABASE_URL: mysql://user:password@127.0.0.1:3306/db # Temp fix for ckeditor:install, needs to be updated with #69
   before_script:
     - ./install-composer.sh
+    - if [ "$CI_COMMIT_REF_NAME" = "master" ]; then export HTTP_HOST="living-textbook.drenso.nl:60130"; fi # Fix for http-host used in fos-js routing
   script:
     - php composer.phar install --no-interaction --no-progress --no-suggest
   after_script:
     - find vendor/ -name .git -type d -exec rm -rf {} \+
   tags:
     - docker
-  except:
-    - master
 
 php-analysis:
   stage: static
@@ -122,7 +121,25 @@ build-assets:
     - yarn run encore production
   tags:
     - docker
-  except:
+
+deploy-staging:
+  stage: deploy
+  image: kickin/ssh:1.1.0
+  dependencies:
+    - build-assets
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "[living-textbook.drenso.nl]:60003 $SSH_STAGING_HOST_KEY" > ~/.ssh/known_hosts
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_STAGING_PRIVATE_KEY")
+  script:
+    - ssh -tt update@living-textbook.drenso.nl -p 60003 'cd /var/www/013-living-textbook && LC_TOKEN="'$PRIVATE_ACCESS_TOKEN'" LC_PIPELINE_ID="'$CI_PIPELINE_ID'" ./update/deploy'
+  environment:
+    name: Staging
+    url: https://living-textbook.drenso.nl
+  tags:
+    - docker
+  only:
     - master
 
 deploy-prod:
