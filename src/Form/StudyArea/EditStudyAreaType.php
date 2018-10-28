@@ -42,6 +42,7 @@ class EditStudyAreaType extends AbstractType
       $builder
           ->add('submit', SaveType::class, [
               'enable_save_and_list' => !$options['save_only'] && $options['save_and_list'],
+              'save_and_list_label'  => 'form.save-and-dashboard',
               'enable_list'          => !$options['save_only'],
               'list_route'           => $options['list_route'],
               'enable_cancel'        => !$options['save_only'],

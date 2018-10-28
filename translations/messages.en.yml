@@ -179,6 +179,7 @@ form:
   revoke: 'Revoke'
   revoke-all: 'Revoke all'
   save: 'Save'
+  save-and-dashboard: 'Save and open dashboard'
   save-and-list: 'Save and open list'
   show: 'View'
 
