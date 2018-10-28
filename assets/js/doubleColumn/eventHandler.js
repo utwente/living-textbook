@@ -124,8 +124,8 @@ import Routing from 'fos-routing';
    * @param data
    */
   function onShowConcept(data) {
-    if (data.id === -1){
-      dw.openWindow(function() {
+    if (data.id === -1) {
+      dw.openWindow(function () {
         cb.centerView();
       });
     } else {

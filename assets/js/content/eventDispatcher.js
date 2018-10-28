@@ -22,7 +22,7 @@ require('../event/eventTypes');
   /**
    * Send a message to determine if it is executed in a double column environment
    */
-  eDispatch.checkForDoubleColumn = function(checksum) {
+  eDispatch.checkForDoubleColumn = function (checksum) {
     dispatchParent(types.CHECK_DOUBLE_COLUMN, {
       checksum: checksum,
     });
@@ -45,7 +45,7 @@ require('../event/eventTypes');
    */
   eDispatch.pageLoaded = function () {
     // Check current path
-    if (typeof currentUrl === 'undefined') {
+    if (typeof currentPath === 'undefined') {
       currentPath = window.location.pathname;
     }
 
