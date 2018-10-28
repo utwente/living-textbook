@@ -4,7 +4,7 @@
 cp update/controllers/update.php public/index.php
 
 # Pull the new data
-ssh-agent bash -c 'ssh-add /home/x1002348/.ssh/013-gitlab-deploy; git pull'
+ssh-agent bash -c 'ssh-add sshtoken; git pull'
 
 # Retrieve the asset-build artifact
 JOB_ID=`curl -sS --header "PRIVATE-TOKEN: ${LC_TOKEN}" "https://gitlab.drenso.nl/api/v4/projects/extern%2F013-living-textbook/pipelines/${LC_PIPELINE_ID}/jobs" | jq '.[] | select(.name == "build-assets" and .status == "success" and .artifacts_file != null) | .id'`

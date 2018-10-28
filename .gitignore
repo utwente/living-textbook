@@ -2,6 +2,9 @@
 bower_components
 composer.phar
 
+# Ignore sshtoken file (for deployment)
+sshtoken
+
 # Ignore secrets
 .secret*
 
