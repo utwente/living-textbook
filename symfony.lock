@@ -107,9 +107,6 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.32"
     },
-    "guzzlehttp/psr7": {
-        "version": "1.4.2"
-    },
     "helios-ag/fm-elfinder-bundle": {
         "version": "7.0",
         "recipe": {
@@ -118,12 +115,6 @@
             "version": "7.0",
             "ref": "fb9152ee3538f968d9e0f2c763ecbe4ab63eff26"
         }
-    },
-    "helios-ag/fm-elfinder-php-connector": {
-        "version": "2.5.7"
-    },
-    "intervention/image": {
-        "version": "2.4.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -182,9 +173,6 @@
     "psr/container": {
         "version": "1.0.0"
     },
-    "psr/http-message": {
-        "version": "1.0.1"
-    },
     "psr/log": {
         "version": "1.0.2"
     },
@@ -223,6 +211,9 @@
             "version": "1.2",
             "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
         }
+    },
+    "studio-42/elfinder": {
+        "version": "2.1.42"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.0.2"
