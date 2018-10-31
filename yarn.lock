@@ -5644,9 +5644,10 @@ select-hose@^2.0.0:
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
   integrity sha1-Yl2GWPhlr0Psliv8N2o3NZpJlMo=
 
-"select2-bootstrap-theme@https://github.com/angel-vladov/select2-bootstrap-theme.git#master":
-  version "0.1.0-beta.10"
-  resolved "https://github.com/angel-vladov/select2-bootstrap-theme.git#4fb604838e79150161fc636dbeb3b3022c034cda"
+select2-theme-bootstrap4@0.2.0-beta.2:
+  version "0.2.0-beta.2"
+  resolved "https://registry.yarnpkg.com/select2-theme-bootstrap4/-/select2-theme-bootstrap4-0.2.0-beta.2.tgz#4295be07585939d6094b37ce65168d77be99c24b"
+  integrity sha512-wjRigY2XdtnQuiYd6rb7KCmTV/VooAOwj1hT0nURE5Ki/WUC8241elLA17Xv7S5psUihMpHp0E8bnoyE1a+uPg==
 
 select2@4.0.5:
   version "4.0.5"
