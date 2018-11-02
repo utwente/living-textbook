@@ -275,13 +275,18 @@ class DataController extends Controller
    * @param TranslatorInterface $trans
    *
    * @return array|Response
+   * @throws \Exception
    */
   public function duplicate(Request $request, RequestStudyArea $requestStudyArea, StudyAreaDuplicator $duplicator, TranslatorInterface $trans)
   {
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
-    $newStudyArea         = (new StudyArea())->setOwner($this->getUser())->setAccessType(StudyArea::ACCESS_PRIVATE);
-    $form                 = $this->createForm(DuplicateType::class, [
+    $newStudyArea         = (new StudyArea())
+        ->setOwner($this->getUser())
+        ->setAccessType(StudyArea::ACCESS_PRIVATE)
+        ->setDescription($studyAreaToDuplicate->getDescription());
+
+    $form = $this->createForm(DuplicateType::class, [
         'studyArea' => $newStudyArea,
     ], [
         'current_study_area' => $studyAreaToDuplicate,
