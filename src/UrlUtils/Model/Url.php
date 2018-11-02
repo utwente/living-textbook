@@ -13,6 +13,9 @@ class Url
   private $url;
 
   /** @var bool */
+  private $isPath;
+
+  /** @var bool */
   private $internal;
 
   /** @var UrlContext */
@@ -20,8 +23,11 @@ class Url
 
   public function __construct(string $url, bool $internal, UrlContext $context)
   {
+    $internalPath = 0 === mb_stripos($url, '/');
+
     $this->url      = $url;
-    $this->internal = $internal;
+    $this->internal = $internal || $internalPath;
+    $this->isPath   = $this->internal && $internalPath;
     $this->context  = $context;
   }
 
@@ -40,6 +46,16 @@ class Url
   public function getUrl(): string
   {
     return $this->url;
+  }
+
+  /**
+   * Get whether it is a path url (starts with /, and internal)
+   *
+   * @return bool
+   */
+  public function isPath(): bool
+  {
+    return $this->isPath;
   }
 
   /**

@@ -46,4 +46,28 @@ class UrlContext
     return $new;
   }
 
+  /**
+   * @return string
+   */
+  public function getClass(): string
+  {
+    return $this->class;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPath(): string
+  {
+    return $this->path;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isInline(): bool
+  {
+    return $this->inline;
+  }
+
 }

@@ -107,23 +107,23 @@ class UrlScanner
   /**
    * Scan a text for inline links
    *
-   * @param string     $text
-   * @param UrlContext $context
+   * @param string          $text
+   * @param UrlContext|null $context
    *
    * @return Url[]
    */
-  public function scanText(string $text, UrlContext $context): array
+  public function scanText(string $text, ?UrlContext $context = NULL): array
   {
     return array_values(array_unique($this->_scanText($text, $context)));
   }
 
   /**
-   * @param string     $text
-   * @param UrlContext $context
+   * @param string          $text
+   * @param UrlContext|null $context
    *
    * @return array
    */
-  private function _scanText(string $text, UrlContext $context): array
+  private function _scanText(string $text, ?UrlContext $context = NULL): array
   {
     $matches = [];
     $result  = [];
@@ -136,7 +136,8 @@ class UrlScanner
       return $result;
     }
 
-    // Prepare inline context
+    // Prepare context
+    $context       = $context ?? new UrlContext(self::class);
     $inlineContext = $context->asInline();
 
     // Convert matches
@@ -181,11 +182,7 @@ class UrlScanner
   {
     $url = trim($url);
 
-    // Url is internal if it starts with a /, or matches the routing context host
-    $internal =
-        0 === mb_stripos($url, '/') ||
-        1 === preg_match($this->internalPattern, $url);
-
-    return new Url($url, $internal, $context);
+    // Url is internal if it matches the routing context host
+    return new Url($url, 1 === preg_match($this->internalPattern, $url), $context);
   }
 }
