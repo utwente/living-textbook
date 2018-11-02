@@ -363,7 +363,7 @@ class StudyAreaDuplicator
 
       // Test if url actually matches an internal route
       try {
-        $matchedRoute = $this->router->match($url->getUrl());
+        $matchedRoute = $this->router->match($url->getPath());
       } catch (\RuntimeException $e) {
         if ($e instanceof ExceptionInterface) {
           // Route couldn't be matched internally

@@ -59,6 +59,25 @@ class Url
   }
 
   /**
+   * Get path part of the url
+   *
+   * @return string
+   */
+  public function getPath(): string
+  {
+    if ($this->isPath()) {
+      return $this->getUrl();
+    }
+
+    // Source: http://www.ietf.org/rfc/rfc3986.txt
+    $pattern = '/(?i)^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/';
+    $matches = [];
+    preg_match($pattern, $this->getUrl(), $matches);
+
+    return $matches[5];
+  }
+
+  /**
    * @return bool
    */
   public function isInternal(): bool
