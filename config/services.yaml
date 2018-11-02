@@ -72,6 +72,9 @@ services:
     tags:
       - { name: twig.extension }
 
+  App\UrlUtils\UrlScanner:
+    lazy: true
+
   Drenso\OidcBundle\OidcClient:
     arguments:
       $wellKnownUrl: '%oidc.well_known_url%'
