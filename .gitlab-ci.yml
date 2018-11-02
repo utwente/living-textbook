@@ -88,6 +88,23 @@ sass-analysis:
     - master
     - production
 
+phpunit:
+  stage: tests
+  image:
+    name: phpunit/phpunit
+    entrypoint: [ "" ]
+  dependencies:
+    - install-dependencies
+  before_script:
+    - cp phpunit.xml.dist phpunit.xml
+  script:
+    - phpunit
+  tags:
+    - docker
+  except:
+    - master
+    - production
+
 action-security-check:
   stage: tests
   image: drenso/php:7.1-d2

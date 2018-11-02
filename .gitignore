@@ -29,3 +29,8 @@ assets/js/_fos_js_routes.js
 /node_modules/
 /public/build/
 ###< symfony/webpack-encore-pack ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
