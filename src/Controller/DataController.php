@@ -18,6 +18,7 @@ use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -30,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -276,6 +278,8 @@ class DataController extends Controller
    * @param RequestStudyArea           $requestStudyArea
    * @param TranslatorInterface        $trans
    * @param EntityManagerInterface     $em
+   * @param UrlScanner                 $urlScanner
+   * @param RouterInterface            $router
    * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
    * @param ExternalResourceRepository $externalResourceRepo
@@ -285,9 +289,9 @@ class DataController extends Controller
    * @throws \Exception
    */
   public function duplicate(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
-                            EntityManagerInterface $em, AbbreviationRepository $abbreviationRepo,
-                            ConceptRelationRepository $conceptRelationRepo, ExternalResourceRepository $externalResourceRepo,
-                            LearningOutcomeRepository $learningOutcomeRepo)
+                            EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
+                            AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
+                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo)
   {
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
@@ -316,9 +320,9 @@ class DataController extends Controller
 
       // Duplicate the data
       $duplicator = new StudyAreaDuplicator(
-          $this->getParameter('kernel.project_dir'), $em, $abbreviationRepo, $conceptRelationRepo,
-          $externalResourceRepo, $learningOutcomeRepo, $studyAreaToDuplicate, $newStudyArea,
-          $concepts->toArray());
+          $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router,
+          $abbreviationRepo, $conceptRelationRepo, $externalResourceRepo, $learningOutcomeRepo,
+          $studyAreaToDuplicate, $newStudyArea, $concepts->toArray());
       $duplicator->duplicate();
 
       $this->addFlash('success', $trans->trans('data.concepts-duplicated'));

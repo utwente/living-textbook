@@ -13,8 +13,11 @@ use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class StudyAreaDuplicator
 {
@@ -23,6 +26,12 @@ class StudyAreaDuplicator
 
   /** @var EntityManagerInterface */
   private $em;
+
+  /** @var UrlScanner */
+  private $urlScanner;
+
+  /** @var RouterInterface */
+  private $router;
 
   /** @var AbbreviationRepository */
   private $abbreviationRepo;
@@ -50,6 +59,8 @@ class StudyAreaDuplicator
    *
    * @param string                     $projectDir
    * @param EntityManagerInterface     $em
+   * @param UrlScanner                 $urlScanner
+   * @param RouterInterface            $router
    * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
    * @param ExternalResourceRepository $externalResourceRepo
@@ -59,13 +70,15 @@ class StudyAreaDuplicator
    * @param StudyArea                  $newStudyArea         New study area
    * @param Concept[]                  $concepts             Concepts to copy
    */
-  public function __construct(string $projectDir, EntityManagerInterface $em, AbbreviationRepository $abbreviationRepo,
-                              ConceptRelationRepository $conceptRelationRepo, ExternalResourceRepository $externalResourceRepo,
-                              LearningOutcomeRepository $learningOutcomeRepo, StudyArea $studyAreaToDuplicate,
-                              StudyArea $newStudyArea, array $concepts)
+  public function __construct(string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
+                              AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
+                              ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
+                              StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
   {
     $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
     $this->em                   = $em;
+    $this->urlScanner           = $urlScanner;
+    $this->router               = $router;
     $this->abbreviationRepo     = $abbreviationRepo;
     $this->conceptRelationRepo  = $conceptRelationRepo;
     $this->externalResourceRepo = $externalResourceRepo;
@@ -330,12 +343,61 @@ class StudyAreaDuplicator
   /**
    * Replaces study area urls with the id of the area to duplicate with the id of the new study area
    *
-   * @param string $text
+   * @param string|null $text
    *
-   * @return string
+   * @return string|null
    */
-  private function updateUrls(string $text): string
+  private function updateUrls(?string $text): ?string
   {
+    if ($text === NULL) {
+      return NULL;
+    }
+
+    // Scan for urls
+    $urls = $this->urlScanner->scanText($text);
+    foreach ($urls as $url) {
+      if (!$url->isInternal()) {
+        // If not internal, skip
+        continue;
+      }
+
+      // Test if url actually matches an internal route
+      try {
+        $matchedRoute = $this->router->match($url->getUrl());
+      } catch (\RuntimeException $e) {
+        if ($e instanceof ExceptionInterface) {
+          // Route couldn't be matched internally
+          continue;
+        }
+
+        throw $e;
+      }
+
+      // If _route or _studyArea is not defined, no action is required
+      if (!array_key_exists('_route', $matchedRoute) ||
+          !array_key_exists('_studyArea', $matchedRoute)) {
+
+        continue;
+      }
+
+      // Check for null
+      if ($this->newStudyArea->getId() === NULL) {
+        throw new \InvalidArgumentException('New study area id is NULL!');
+      }
+
+      // Update route variables
+      $matchedRoute['_studyArea'] = $this->newStudyArea->getId();
+      $routeName                  = $matchedRoute['_route'];
+      unset($matchedRoute['_route']);
+
+      // Generate new url
+      $newUrl = $this->router->generate($routeName, $matchedRoute,
+          $url->isPath() ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL);
+
+      // Replace url in text
+      $text = str_replace($url->getUrl(), $newUrl, $text);
+    }
+
     return $text;
   }
 }
