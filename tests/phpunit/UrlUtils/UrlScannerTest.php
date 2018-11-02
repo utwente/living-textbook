@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\UrlScanner;
+namespace Tests\UrlUtils;
 
-use App\UrlScanner\Model\Url;
-use App\UrlScanner\Model\UrlContext;
-use App\UrlScanner\UrlScanner;
+use App\UrlUtils\Model\Url;
+use App\UrlUtils\Model\UrlContext;
+use App\UrlUtils\UrlScanner;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;

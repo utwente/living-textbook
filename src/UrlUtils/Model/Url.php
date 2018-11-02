@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UrlScanner\Model;
+namespace App\UrlUtils\Model;
 
 /**
  * Class Url

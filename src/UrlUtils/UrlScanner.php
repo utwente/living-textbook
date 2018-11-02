@@ -1,13 +1,13 @@
 <?php
 
-namespace App\UrlScanner;
+namespace App\UrlUtils;
 
 use App\Entity\Concept;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
-use App\UrlScanner\Model\Url;
-use App\UrlScanner\Model\UrlContext;
+use App\UrlUtils\Model\Url;
+use App\UrlUtils\Model\UrlContext;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
