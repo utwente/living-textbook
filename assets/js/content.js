@@ -134,7 +134,11 @@ $(function () {
 
         // Replace content
         document.open();
-        document.write(data);
+        if (data.hasOwnProperty("responseText")) {
+          document.write(data.responseText);
+        } else {
+          document.write(data);
+        }
         document.close();
       });
 
