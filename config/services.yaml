@@ -52,11 +52,6 @@ services:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
 
-  App\DuplicationUtils\StudyAreaDuplicator:
-    lazy: true
-    arguments:
-      $projectDir: '%kernel.project_dir%'
-
   App\Form\Extension\ButtonExtension:
     tags:
       - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }

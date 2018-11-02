@@ -11,8 +11,11 @@ use App\Excel\StudyAreaStatusBuilder;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
+use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
+use App\Repository\ExternalResourceRepository;
+use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
@@ -269,15 +272,22 @@ class DataController extends Controller
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param StudyAreaDuplicator $duplicator
-   * @param TranslatorInterface $trans
+   * @param Request                    $request
+   * @param RequestStudyArea           $requestStudyArea
+   * @param TranslatorInterface        $trans
+   * @param EntityManagerInterface     $em
+   * @param AbbreviationRepository     $abbreviationRepo
+   * @param ConceptRelationRepository  $conceptRelationRepo
+   * @param ExternalResourceRepository $externalResourceRepo
+   * @param LearningOutcomeRepository  $learningOutcomeRepo
    *
    * @return array|Response
    * @throws \Exception
    */
-  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, StudyAreaDuplicator $duplicator, TranslatorInterface $trans)
+  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
+                            EntityManagerInterface $em, AbbreviationRepository $abbreviationRepo,
+                            ConceptRelationRepository $conceptRelationRepo, ExternalResourceRepository $externalResourceRepo,
+                            LearningOutcomeRepository $learningOutcomeRepo)
   {
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
@@ -305,7 +315,11 @@ class DataController extends Controller
       }
 
       // Duplicate the data
-      $duplicator->duplicate($studyAreaToDuplicate, $newStudyArea, $concepts->toArray());
+      $duplicator = new StudyAreaDuplicator(
+          $this->getParameter('kernel.project_dir'), $em, $abbreviationRepo, $conceptRelationRepo,
+          $externalResourceRepo, $learningOutcomeRepo, $studyAreaToDuplicate, $newStudyArea,
+          $concepts->toArray());
+      $duplicator->duplicate();
 
       $this->addFlash('success', $trans->trans('data.concepts-duplicated'));
 
