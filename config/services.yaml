@@ -54,6 +54,8 @@ services:
 
   App\DuplicationUtils\StudyAreaDuplicator:
     lazy: true
+    arguments:
+      $projectDir: '%kernel.project_dir%'
 
   App\Form\Extension\ButtonExtension:
     tags:

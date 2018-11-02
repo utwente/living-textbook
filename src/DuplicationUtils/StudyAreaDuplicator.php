@@ -14,9 +14,13 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class StudyAreaDuplicator
 {
+
+  /** @var string */
+  private $uploadsPath;
 
   /** @var EntityManagerInterface */
   private $em;
@@ -33,10 +37,21 @@ class StudyAreaDuplicator
   /** @var LearningOutcomeRepository */
   private $learningOutcomeRepo;
 
-  public function __construct(
-      EntityManagerInterface $em, AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-      ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo)
+  /**
+   * StudyAreaDuplicator constructor.
+   *
+   * @param string                     $projectDir
+   * @param EntityManagerInterface     $em
+   * @param AbbreviationRepository     $abbreviationRepo
+   * @param ConceptRelationRepository  $conceptRelationRepo
+   * @param ExternalResourceRepository $externalResourceRepo
+   * @param LearningOutcomeRepository  $learningOutcomeRepo
+   */
+  public function __construct(string $projectDir, EntityManagerInterface $em, AbbreviationRepository $abbreviationRepo,
+                              ConceptRelationRepository $conceptRelationRepo, ExternalResourceRepository $externalResourceRepo,
+                              LearningOutcomeRepository $learningOutcomeRepo)
   {
+    $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
     $this->em                   = $em;
     $this->abbreviationRepo     = $abbreviationRepo;
     $this->conceptRelationRepo  = $conceptRelationRepo;
@@ -45,9 +60,11 @@ class StudyAreaDuplicator
   }
 
   /**
-   * @param StudyArea $studyAreaToDuplicate
-   * @param StudyArea $newStudyArea
-   * @param Concept[] $concepts
+   * Duplicates the given study area into the new study area
+   *
+   * @param StudyArea $studyAreaToDuplicate Study area to duplicate
+   * @param StudyArea $newStudyArea         New study area
+   * @param Concept[] $concepts             Concepts to copy
    *
    * @throws \Exception
    */
@@ -177,14 +194,70 @@ class StudyAreaDuplicator
         $this->em->persist($newConceptRelation);
       }
 
+      // Duplicate the uploads
+      $this->duplicateUploads($studyAreaToDuplicate, $newStudyArea);
+
       // Save the data
       $this->em->flush();
 
       $this->em->getConnection()->commit();
     } catch (\Exception $e) {
+      $this->removeUploads($newStudyArea);
       $this->em->getConnection()->rollBack();
       throw $e;
     }
   }
 
+  /**
+   * Duplicates the uploads directory, if any
+   *
+   * @param StudyArea $studyAreaToDuplicate
+   * @param StudyArea $newStudyArea
+   */
+  private function duplicateUploads(StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea)
+  {
+    $fileSystem = new Filesystem();
+    $source     = $this->getStudyAreaDirectory($studyAreaToDuplicate);
+
+    if (!$fileSystem->exists($source)) {
+      // Nothing to duplicate
+      return;
+    }
+
+    $fileSystem->mirror($source, $this->getStudyAreaDirectory($newStudyArea));
+  }
+
+  /**
+   * Removes the uploads directory, if any
+   *
+   * @param StudyArea $newStudyArea
+   */
+  private function removeUploads(StudyArea $newStudyArea)
+  {
+    $fileSystem = new Filesystem();
+    $directory  = $this->getStudyAreaDirectory($newStudyArea);
+    if (!$fileSystem->exists($directory)) {
+      // Nothing to remove
+      return;
+    }
+
+    $fileSystem->remove($directory);
+  }
+
+  /**
+   * Retrieve the study area uploads path
+   *
+   * @param StudyArea $studyArea
+   *
+   * @return string
+   */
+  private function getStudyAreaDirectory(StudyArea $studyArea)
+  {
+    // Check for null
+    if ($studyArea->getId()) {
+      throw new \InvalidArgumentException('Study area id is NULL!');
+    }
+
+    return sprintf('%s/%d', $this->uploadsPath, $studyArea->getId());
+  }
 }
