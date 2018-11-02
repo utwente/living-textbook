@@ -3,6 +3,7 @@
 namespace Tests\UrlScanner;
 
 use App\UrlScanner\Model\Url;
+use App\UrlScanner\Model\UrlContext;
 use App\UrlScanner\UrlScanner;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
@@ -10,7 +11,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 class UrlScannerTest extends TestCase
 {
-
   /**
    * @dataProvider scanTextProvider
    *
@@ -29,74 +29,131 @@ class UrlScannerTest extends TestCase
     $scanner = new UrlScanner($routerMock);
 
     // Act
-    $urls = $scanner->scanText($val);
+    $urls = $scanner->scanText($val, $this->getContext());
 
     // Assert
     $this->assertEquals($expected, $urls);
+  }
+
+  private function getContext(bool $inline = false): UrlContext
+  {
+    $context = new UrlContext(self::class);
+
+    return $inline ? $context->asInline() : $context;
   }
 
   public function scanTextProvider()
   {
     return [
         [
-            "Text with simple http://google.com url",
+            'Simple: http://google.com',
             [
-                new Url("http://google.com", false),
+                new Url('http://google.com', false, $this->getContext(true)),
             ],
         ],
 
         [
-            "Text with multiple: http://google.com urls, www.google.com en drenso.nl",
+            'Multiple: http://google.com, www.google.com & drenso.nl',
             [
-                new Url("http://google.com", false),
-                new Url("www.google.com", false),
-                new Url("drenso.nl", false),
+                new Url('http://google.com', false, $this->getContext(true)),
+                new Url('www.google.com', false, $this->getContext(true)),
+                new Url('drenso.nl', false, $this->getContext(true)),
             ],
         ],
 
         [
-            "Text with doubles: http://google.com urls, http://google.com en http://google.com",
+            'Duplicates: http://google.com, http://google.com en http://google.com',
             [
-                new Url("http://google.com", false),
+                new Url('http://google.com', false, $this->getContext(true)),
             ],
         ],
 
         [
-            "Text with internal: http://localhost/test urls, www.google.com",
+            'Internal: http://localhost/test',
             [
-                new Url("http://localhost/test", true),
-                new Url("www.google.com", false),
+                new Url('http://localhost/test', true, $this->getContext(true)),
             ],
         ],
 
         [
-            "Text with img <img src='/test'> <img src=\"google.com/test2\">",
+            'Internal with external: http://localhost/test, www.google.com',
             [
-                new Url("google.com/test2", false),
-                new Url("/test", true),
+                new Url('http://localhost/test', true, $this->getContext(true)),
+                new Url('www.google.com', false, $this->getContext(true)),
             ],
         ],
 
         [
-            "Text with a <a href='/test'> <a href=\"google.com/test2\">",
+            'Img tag <img src="google.com/test2">',
             [
-                new Url("google.com/test2", false),
-                new Url("/test", true),
+                new Url('google.com/test2', false, $this->getContext()),
             ],
         ],
 
         [
-            "Text with a <a href='http://localhost/test'> <a href=\"https://google.com/test2\">",
+            'Img tags <img src=\'google.com/test\'> <img src="google.com/test2">',
             [
-                new Url("http://localhost/test", true),
-                new Url("https://google.com/test2", false),
+                new Url('google.com/test', false, $this->getContext()),
+                new Url('google.com/test2', false, $this->getContext()),
             ],
         ],
 
         [
-            "Text with a and doubles <a href='http://localhost/test'> <a href=\"http://localhost/test\">",
+            'Img tags with internal <img src=\'/test\'> <img src="google.com/test2">',
             [
-                new Url("http://localhost/test", true),
+                new Url('google.com/test2', false, $this->getContext()),
+                new Url('/test', true, $this->getContext()),
+            ],
+        ],
+
+        [
+            'A tag <a href="google.com/test2">',
+            [
+                new Url('google.com/test2', false, $this->getContext()),
+            ],
+        ],
+
+        [
+            'A tags <a href="http://localhost/test"> <a href="https://google.com/test2">',
+            [
+                new Url('http://localhost/test', true, $this->getContext()),
+                new Url('https://google.com/test2', false, $this->getContext()),
+            ],
+        ],
+
+        [
+            'A tags with internal <a href=\'/test\'> <a href="google.com/test2">',
+            [
+                new Url('google.com/test2', false, $this->getContext()),
+                new Url('/test', true, $this->getContext()),
+            ],
+        ],
+
+        [
+            'A tag with duplicate <a href="http://localhost/test"> <a href=\'http://localhost/test\'>',
+            [
+                new Url('http://localhost/test', true, $this->getContext()),
+            ],
+        ],
+
+        [
+            'A and inline <a href="http://localhost/test"> & http://localhost/test',
+            [
+                new Url('http://localhost/test', true, $this->getContext()),
+                new Url('http://localhost/test', true, $this->getContext(true)),
+            ],
+        ],
+
+        [
+            'Long text: <a href="http://localhost/test"> <img src="http://localhost/test"> & http://localhost/test & http://localhost/test ' .
+            '<a href="/test"> <img src="/test"> & /test & /test ' .
+            '<a href="http://google.com/test"> <img src="http://google.com/test"> & http://google.com/test & http://google.com/test',
+            [
+                new Url('http://localhost/test', true, $this->getContext()),
+                new Url('http://localhost/test', true, $this->getContext(true)),
+                new Url('http://google.com/test', false, $this->getContext()),
+                new Url('http://google.com/test', false, $this->getContext(true)),
+                new Url('/test', true, $this->getContext()),
             ],
         ],
     ];

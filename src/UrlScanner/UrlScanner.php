@@ -7,6 +7,7 @@ use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
 use App\UrlScanner\Model\Url;
+use App\UrlScanner\Model\UrlContext;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -23,7 +24,7 @@ class UrlScanner
    *
    * @var string
    */
-  private $urlPattern = '(?xi)\b((?:https?:(?:\/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b\/?(?!@)))';
+  private $urlPattern = '#(?xi)(?:(?:src|href)\s*=\s*["\']?\s*)?\b((?:https?:(?:\/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b\/?(?!@)))#';
 
   /**
    * Pattern to determine whether or not the url is internal
@@ -33,14 +34,11 @@ class UrlScanner
   private $internalPattern;
 
   /**
-   * Pattern to retrieve url from src and href attributes
+   * URL pattern to find relative linked urls
    *
    * @var string
    */
-  private $linkedPattern = '(?xi)[src|href]\s*=\s*["|\'](.+?)["|\']';
-
-  /** @var RouterInterface */
-  private $router;
+  private $internalLinkPattern = '#(?xi)(?:src|href)\s*=\s*["\'](\/.+?)["\']#';
 
   /**
    * UrlScanner constructor.
@@ -49,134 +47,145 @@ class UrlScanner
    */
   public function __construct(RouterInterface $router)
   {
-    $this->router          = $router;
-    $this->internalPattern = '(?xi)\b((?:https?:(?:\/{1,3}' . preg_quote($router->getContext()->getHost()) . ')))';
+    $this->internalPattern = '#(?xi)\b((?:https?:(?:\/{1,3}' . preg_quote($router->getContext()->getHost()) . ')))#';
   }
 
   /**
+   * Scan a study area for a inline links
+   *
    * @param StudyArea $studyArea
    *
    * @return Url[]
    */
   public function scanStudyArea(StudyArea $studyArea): array
   {
-    return $this->scanText($studyArea->getDescription());
+    return $this->scanText($studyArea->getDescription(), new UrlContext(StudyArea::class, "description"));
   }
 
   /**
+   * Scan a concept for inline links
+   *
    * @param Concept $concept
    *
    * @return Url[]
    */
   public function scanConcept(Concept $concept): array
   {
-    return array_unique(array_merge(
-        $this->scanText($concept->getIntroduction()->getText()),
-        $this->scanText($concept->getTheoryExplanation()->getText()),
-        $this->scanText($concept->getHowTo()->getText()),
-        $this->scanText($concept->getExamples()->getText()),
-        $this->scanText($concept->getSelfAssessment()->getText())
-    ), SORT_REGULAR);
+    return array_values(array_unique(array_merge(
+        $this->scanText($concept->getIntroduction()->getText(), new UrlContext(Concept::class, "introduction")),
+        $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, "theoryExplanation")),
+        $this->scanText($concept->getHowTo()->getText(), new UrlContext(Concept::class, "howTo")),
+        $this->scanText($concept->getExamples()->getText(), new UrlContext(Concept::class, "examples")),
+        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, "selfAssessment"))
+    )));
   }
 
   /**
+   * Scan external resources for inline links
+   *
    * @param ExternalResource $externalResource
    *
    * @return Url[]
    */
   public function scanExternalResource(ExternalResource $externalResource): array
   {
-    return $this->scanText($externalResource->getDescription());
+    return $this->scanText($externalResource->getDescription(), new UrlContext(ExternalResource::class, "description"));
   }
 
   /**
+   * Scan learning outcomes for inline links
+   *
    * @param LearningOutcome $learningOutcome
    *
    * @return Url[]
    */
   public function scanLearningOutcome(LearningOutcome $learningOutcome): array
   {
-    return $this->scanText($learningOutcome->getText());
+    return $this->scanText($learningOutcome->getText(), new UrlContext(LearningOutcome::class, "text"));
   }
 
   /**
-   * @param string $text
+   * Scan a text for inline links
+   *
+   * @param string     $text
+   * @param UrlContext $context
    *
    * @return Url[]
    */
-  public function scanText(string $text): array
+  public function scanText(string $text, UrlContext $context): array
   {
-    return array_unique(array_merge(
-        $this->_scanForInline($text),
-        $this->_scanForLinked($text)
-    ), SORT_REGULAR);
+    return array_values(array_unique($this->_scanText($text, $context)));
   }
 
   /**
-   * Scan the text for linked urls, in src/href items
-   *
-   * @param string $text
+   * @param string     $text
+   * @param UrlContext $context
    *
    * @return array
    */
-  private function _scanForLinked(string $text): array
-  {
-    return $this->_scan($text, $this->linkedPattern);
-  }
-
-  /**
-   * Scan the text for inline url occurrences
-   *
-   * @param string $text
-   *
-   * @return Url[]
-   */
-  private function _scanForInline(string $text): array
-  {
-    return $this->_scan($text, $this->urlPattern);
-  }
-
-  /**
-   * Scan the text
-   *
-   * @param string $text
-   * @param string $pattern
-   *
-   * @return array
-   */
-  private function _scan(string $text, string $pattern): array
+  private function _scanText(string $text, UrlContext $context): array
   {
     $matches = [];
     $result  = [];
-    if (false === preg_match_all('#' . $pattern . '#', $text, $matches)) {
+    if (false === preg_match_all($this->urlPattern, $text, $matches)) {
       // Regex search failed, ignore
       return $result;
     }
-    if (!isset($matches[1])) {
+    if (!isset($matches[0]) || !isset($matches[1])) {
+      // No results
+      return $result;
+    }
+
+    // Prepare inline context
+    $inlineContext = $context->asInline();
+
+    // Convert matches
+    foreach ($matches[0] as $key => $match) {
+      // If it starts with src or href, it is linked
+      $inline = true;
+      if (0 === mb_stripos($match, 'src') ||
+          0 === mb_stripos($match, 'href')) {
+        $inline = false;
+      }
+
+      $result[] = $this->createUrl($matches[1][$key], $inline ? $inlineContext : $context);
+    }
+
+    // Find linked internals
+    if (false === preg_match_all($this->internalLinkPattern, $text, $matches)) {
+      // Regex failed, ignore
+      return $result;
+    }
+    if (!isset($matches[0]) || !isset($matches[1])) {
       // No results
       return $result;
     }
 
     // Convert matches
-    return array_map(function ($item) {
-      return $this->createUrl($item);
-    }, $matches[1]);
+    foreach ($matches[1] as $match) {
+      $result[] = $this->createUrl($match, $context);
+    }
+
+    return $result;
   }
 
   /**
    * Create an URL class from the given url string
    *
-   * @param string $url
+   * @param string     $url
+   * @param UrlContext $context
    *
    * @return Url
    */
-  private function createUrl(string $url): Url
+  private function createUrl(string $url, UrlContext $context): Url
   {
+    $url = trim($url);
+
     // Url is internal if it starts with a /, or matches the routing context host
     $internal =
         0 === mb_stripos($url, '/') ||
-        1 === preg_match('#' . $this->internalPattern . '#', $url);
+        1 === preg_match($this->internalPattern, $url);
 
-    return new Url($url, $internal);
+    return new Url($url, $internal, $context);
   }
 }
