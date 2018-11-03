@@ -471,6 +471,38 @@ class StudyAreaDuplicator
       $text = str_replace($url->getUrl(), $newUrl->getUrl(), $text);
     }
 
+    // Scan for data attributes
+    $text = $this->updateDataAttributes($text, 'concept', $this->newConcepts);
+    $text = $this->updateDataAttributes($text, 'abbr', $this->newAbbreviations);
+
+    return $text;
+  }
+
+  /**
+   * Replace data-*-id attributes with the new ids in the new study area
+   *
+   * @param string $text
+   * @param string $attribute
+   * @param array  $source
+   *
+   * @return string
+   */
+  private function updateDataAttributes(string $text, string $attribute, array &$source): string
+  {
+    $pattern = '/(?i)data-' . preg_quote($attribute) . '-id\s*=\s*["\']\s*(\d+)\s*["\']/';
+    $matches = [];
+    if (false !== preg_match_all($pattern, $text, $matches) &&
+        isset($matches[0]) && isset($matches[1])) {
+      // Regex search successful
+      foreach ($matches[1] as $key => $match) {
+        // Find new id
+        if (array_key_exists(intval($match), $source)) {
+          $replace = str_replace($match, $source[intval($match)]->getId(), $matches[0][$key]);
+          $text    = str_replace($matches[0][$key], $replace, $text);
+        }
+      }
+    }
+
     return $text;
   }
 
