@@ -422,6 +422,11 @@ class StudyAreaDuplicator
         $routeName = $matchedRouteData['_route'];
       }
 
+      // Check if this url is actually from the area to duplicate
+      if (intval($matchedRouteData['_studyArea']) !== $this->studyAreaToDuplicate->getId()) {
+        continue;
+      }
+
       // Update route parameters
       unset($matchedRouteData['_route']);
       unset($matchedRouteData['_controller']);
