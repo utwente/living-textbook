@@ -54,6 +54,18 @@ class StudyAreaDuplicator
   /** @var Concept[] */
   private $concepts;
 
+  /** @var LearningOutcome[] Array of duplicated learning outcomes ([original id] = new learning outcome) */
+  private $newLearningOutcomes = [];
+
+  /** @var ExternalResource[] Array of duplicated external resources ([original id] = new external resource) */
+  private $newExternalResources = [];
+
+  /** @var Abbreviation[] Array of duplicated abbreviations ([original id] = new abbreviation) */
+  private $newAbbreviations = [];
+
+  /** @var Concept[] Array of duplicated concepts ([original id] = new concept) */
+  private $newConcepts = [];
+
   /**
    * StudyAreaDuplicator constructor.
    *
@@ -102,19 +114,19 @@ class StudyAreaDuplicator
       $this->em->flush();
 
       // Duplicate the study area learning outcomes
-      $newLearningOutcomes = $this->duplicateLearningOutcomes();
+      $this->duplicateLearningOutcomes();
 
       // Duplicate the study area external resources
-      $newExternalResources = $this->duplicateExternalResources();
+      $this->duplicateExternalResources();
 
       // Duplicate the study area abbreviations
       $this->duplicateAbbreviations();
 
       // Duplicate the concepts
-      $newConcepts = $this->duplicateConcepts($newLearningOutcomes, $newExternalResources);
+      $this->duplicateConcepts();
 
       // Duplicate the relations and relation types for the study area
-      $this->duplicateRelations($newConcepts);
+      $this->duplicateRelations();
 
       // Duplicate the uploads
       $this->duplicateUploads();
@@ -131,12 +143,11 @@ class StudyAreaDuplicator
   }
 
   /**
-   * @return LearningOutcome[]
+   * Duplicate the learning outcomes
    */
-  private function duplicateLearningOutcomes(): array
+  private function duplicateLearningOutcomes(): void
   {
-    $newLearningOutcomes = [];
-    $learningOutcomes    = $this->learningOutcomeRepo->findForConcepts($this->concepts);
+    $learningOutcomes = $this->learningOutcomeRepo->findForConcepts($this->concepts);
     foreach ($learningOutcomes as $learningOutcome) {
       $newLearningOutcome = (new LearningOutcome())
           ->setStudyArea($this->newStudyArea)
@@ -145,21 +156,16 @@ class StudyAreaDuplicator
           ->setText($this->updateUrls($learningOutcome->getText()));
 
       $this->em->persist($newLearningOutcome);
-      $newLearningOutcomes[$learningOutcome->getId()] = $newLearningOutcome;
+      $this->newLearningOutcomes[$learningOutcome->getId()] = $newLearningOutcome;
     }
-
-    return $newLearningOutcomes;
   }
 
   /**
    * Duplicate the external resources
-   *
-   * @return ExternalResource[]
    */
-  private function duplicateExternalResources(): array
+  private function duplicateExternalResources(): void
   {
-    $externalResources    = $this->externalResourceRepo->findForConcepts($this->concepts);
-    $newExternalResources = [];
+    $externalResources = $this->externalResourceRepo->findForConcepts($this->concepts);
     foreach ($externalResources as $externalResource) {
       $newExternalResource = (new ExternalResource())
           ->setStudyArea($this->newStudyArea)
@@ -169,10 +175,8 @@ class StudyAreaDuplicator
           ->setBroken($externalResource->isBroken());
 
       $this->em->persist($newExternalResource);
-      $newExternalResources[$externalResource->getId()] = $newExternalResource;
+      $this->newExternalResources[$externalResource->getId()] = $newExternalResource;
     }
-
-    return $newExternalResources;
   }
 
 
@@ -189,21 +193,15 @@ class StudyAreaDuplicator
           ->setMeaning($abbreviation->getMeaning());
 
       $this->em->persist($newAbbreviation);
+      $this->newAbbreviations[$abbreviation->getId()] = $newAbbreviation;
     }
   }
 
   /**
    * Duplicate the concepts
-   *
-   * @param $newLearningOutcomes
-   * @param $newExternalResources
-   *
-   * @return Concept[]
    */
-  private function duplicateConcepts($newLearningOutcomes, $newExternalResources): array
+  private function duplicateConcepts(): void
   {
-    /** @var Concept[] $newConcepts */
-    $newConcepts     = [];
     $priorKnowledges = [];
     foreach ($this->concepts as $concept) {
       $newConcept = new Concept();
@@ -224,46 +222,43 @@ class StudyAreaDuplicator
 
       // Set learning outcomes
       foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
-        $newConcept->addLearningOutcome($newLearningOutcomes[$oldLearningOutcome->getId()]);
+        $newConcept->addLearningOutcome($this->newLearningOutcomes[$oldLearningOutcome->getId()]);
       }
 
       // Set external resources
       foreach ($concept->getExternalResources() as $oldExternalResource) {
-        $newConcept->addExternalResource($newExternalResources[$oldExternalResource->getId()]);
+        $newConcept->addExternalResource($this->newExternalResources[$oldExternalResource->getId()]);
       }
 
       // Save current prior knowledge to update them later when the concept map is complete
       $priorKnowledges[$concept->getId()] = $concept->getPriorKnowledge();
 
-      $newConcepts[$concept->getId()] = $newConcept;
+      $this->newConcepts[$concept->getId()] = $newConcept;
       $this->em->persist($newConcept);
     }
 
     // Loop the concepts again to add the prior knowledge
-    foreach ($newConcepts as $oldId => &$newConcept) {
+    foreach ($this->newConcepts as $oldId => &$newConcept) {
       foreach ($priorKnowledges[$oldId] as $priorKnowledge) {
         /** @var Concept $priorKnowledge */
-        if (array_key_exists($priorKnowledge->getId(), $newConcepts)) {
-          $newConcept->addPriorKnowledge($newConcepts[$priorKnowledge->getId()]);
+        if (array_key_exists($priorKnowledge->getId(), $this->newConcepts)) {
+          $newConcept->addPriorKnowledge($this->newConcepts[$priorKnowledge->getId()]);
         }
       }
     }
-
-    return $newConcepts;
   }
 
   /**
-   * @param $newConcepts
+   * Duplicate the relations
    */
-  private function duplicateRelations($newConcepts): void
+  private function duplicateRelations(): void
   {
-    $conceptRelations    = $this->conceptRelationRepo->findByConcepts($this->concepts);
-    $newRelationTypes    = [];
-    $newConceptRelations = [];
+    $conceptRelations = $this->conceptRelationRepo->findByConcepts($this->concepts);
+    $newRelationTypes = [];
     foreach ($conceptRelations as $conceptRelation) {
       // Skip relation for concepts that aren't duplicated
-      if (!array_key_exists($conceptRelation->getSource()->getId(), $newConcepts)
-          || !array_key_exists($conceptRelation->getTarget()->getId(), $newConcepts)) {
+      if (!array_key_exists($conceptRelation->getSource()->getId(), $this->newConcepts)
+          || !array_key_exists($conceptRelation->getTarget()->getId(), $this->newConcepts)) {
         continue;
       }
 
@@ -281,13 +276,12 @@ class StudyAreaDuplicator
 
       // Duplicate relation
       $newConceptRelation = (new ConceptRelation())
-          ->setSource($newConcepts[$conceptRelation->getSource()->getId()])
-          ->setTarget($newConcepts[$conceptRelation->getTarget()->getId()])
+          ->setSource($this->newConcepts[$conceptRelation->getSource()->getId()])
+          ->setTarget($this->newConcepts[$conceptRelation->getTarget()->getId()])
           ->setRelationType($newRelationTypes[$relationType->getId()])
           ->setIncomingPosition($conceptRelation->getIncomingPosition())
           ->setOutgoingPosition($conceptRelation->getOutgoingPosition());
 
-      $newConceptRelations[] = $conceptRelation;
       $this->em->persist($newConceptRelation);
     }
   }
