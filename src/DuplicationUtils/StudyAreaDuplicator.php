@@ -13,6 +13,8 @@ use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\UrlUtils\Model\Url;
+use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,6 +23,9 @@ use Symfony\Component\Routing\RouterInterface;
 
 class StudyAreaDuplicator
 {
+  /** @var UrlContext */
+  private $urlContext;
+
   /** @var string */
   private $uploadsPath;
 
@@ -87,6 +92,7 @@ class StudyAreaDuplicator
                               ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
                               StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
   {
+    $this->urlContext           = new UrlContext(self::class);
     $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
     $this->em                   = $em;
     $this->urlScanner           = $urlScanner;
@@ -128,10 +134,16 @@ class StudyAreaDuplicator
       // Duplicate the relations and relation types for the study area
       $this->duplicateRelations();
 
+      // Flush to generate id's for the links
+      $this->em->flush();
+
+      // Scan the links
+      $this->scanLinks();
+
       // Duplicate the uploads
       $this->duplicateUploads();
 
-      // Save the data
+      // Save the final data
       $this->em->flush();
 
       $this->em->getConnection()->commit();
@@ -153,7 +165,7 @@ class StudyAreaDuplicator
           ->setStudyArea($this->newStudyArea)
           ->setNumber($learningOutcome->getNumber())
           ->setName($learningOutcome->getName())
-          ->setText($this->updateUrls($learningOutcome->getText()));
+          ->setText($learningOutcome->getText());
 
       $this->em->persist($newLearningOutcome);
       $this->newLearningOutcomes[$learningOutcome->getId()] = $newLearningOutcome;
@@ -207,17 +219,12 @@ class StudyAreaDuplicator
       $newConcept = new Concept();
       $newConcept
           ->setName($concept->getName())
-          ->setIntroduction($newConcept->getIntroduction()->setText(
-              $this->updateUrls($concept->getIntroduction()->getText())))
+          ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
           ->setSynonyms($concept->getSynonyms())
-          ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText(
-              $this->updateUrls($concept->getTheoryExplanation()->getText())))
-          ->setHowTo($newConcept->getHowTo()->setText(
-              $this->updateUrls($concept->getHowTo()->getText())))
-          ->setExamples($newConcept->getExamples()->setText(
-              $this->updateUrls($concept->getExamples()->getText())))
-          ->setSelfAssessment($newConcept->getSelfAssessment()->setText(
-              $this->updateUrls($concept->getSelfAssessment()->getText())))
+          ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
+          ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
+          ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
+          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()))
           ->setStudyArea($this->newStudyArea);
 
       // Set learning outcomes
@@ -284,6 +291,44 @@ class StudyAreaDuplicator
 
       $this->em->persist($newConceptRelation);
     }
+  }
+
+  /**
+   * Scan for links in the newly duplicated data
+   */
+  private function scanLinks(): void
+  {
+    // Check for null
+    if ($this->newStudyArea->getId() === NULL) {
+      throw new \InvalidArgumentException('New study area id is NULL!');
+    }
+
+    // Update learning outcomes
+    foreach ($this->newLearningOutcomes as $newLearningOutcome) {
+      $newLearningOutcome->setText($this->updateUrls($newLearningOutcome->getText()));
+    }
+
+    // Update external resources
+    foreach ($this->newExternalResources as $newExternalResource) {
+      $newExternalResource
+          ->setDescription($this->updateUrls($newExternalResource->getDescription()))
+          ->setUrl($this->updateUrls($newExternalResource->getUrl()));
+    }
+
+    // Update concepts
+    foreach ($this->newConcepts as $newConcept) {
+      $newConcept->getIntroduction()->setText(
+          $this->updateUrls($newConcept->getIntroduction()->getText()));
+      $newConcept->getTheoryExplanation()->setText(
+          $this->updateUrls($newConcept->getTheoryExplanation()->getText()));
+      $newConcept->getHowTo()->setText(
+          $this->updateUrls($newConcept->getHowTo()->getText()));
+      $newConcept->getExamples()->setText(
+          $this->updateUrls($newConcept->getExamples()->getText()));
+      $newConcept->getSelfAssessment()->setText(
+          $this->updateUrls($newConcept->getSelfAssessment()->getText()));
+    }
+
   }
 
   /**
@@ -355,43 +400,102 @@ class StudyAreaDuplicator
         continue;
       }
 
-      // Test if url actually matches an internal route
-      try {
-        $matchedRoute = $this->router->match($url->getPath());
-      } catch (\RuntimeException $e) {
-        if ($e instanceof ExceptionInterface) {
-          // Route couldn't be matched internally
-          continue;
-        }
-
-        throw $e;
-      }
-
-      // If _route or _studyArea is not defined, no action is required
-      if (!array_key_exists('_route', $matchedRoute) ||
-          !array_key_exists('_studyArea', $matchedRoute)) {
-
+      if (false == ($matchedRouteData = $this->matchPath($url->getPath()))) {
         continue;
       }
 
-      // Check for null
-      if ($this->newStudyArea->getId() === NULL) {
-        throw new \InvalidArgumentException('New study area id is NULL!');
+      // Retrieve matched route
+      $routeName = $matchedRouteData['_route'];
+
+      // Check for _home matches
+      $homePath = false;
+      if ($routeName === '_home') {
+        $homePath = true;
+
+        // Redo matching on url without '/page/'
+        $cleanPath = str_replace('/page', '', $url->getPath());
+        if (false == ($matchedRouteData = $this->matchPath($cleanPath))) {
+          continue;
+        }
+
+        // Retrieve new route
+        $routeName = $matchedRouteData['_route'];
       }
 
-      // Update route variables
-      $matchedRoute['_studyArea'] = $this->newStudyArea->getId();
-      $routeName                  = $matchedRoute['_route'];
-      unset($matchedRoute['_route']);
+      // Update route parameters
+      unset($matchedRouteData['_route']);
+      unset($matchedRouteData['_controller']);
+      $matchedRouteData['_studyArea'] = $this->newStudyArea->getId();
+
+      // Update route parameters for specific routes
+      if ($routeName === 'app_concept_show') {
+        // Check whether the new concept is available
+        if (array_key_exists(intval($matchedRouteData['concept']), $this->newConcepts)) {
+          $matchedRouteData['concept'] = $this->newConcepts[intval($matchedRouteData['concept'])]->getId();
+        } else {
+          // Revert to old study area id to not break link completely
+          $matchedRouteData['_studyArea'] = $this->studyAreaToDuplicate->getId();
+        }
+      } else if ($routeName === 'app_learningoutcome_show') {
+        // Check whether the new learning outcome is available
+        if (array_key_exists(intval($matchedRouteData['learningOutcome']), $this->newLearningOutcomes)) {
+          $matchedRouteData['learningOutcome'] = $this->newLearningOutcomes[intval($matchedRouteData['learningOutcome'])]->getId();
+        } else {
+          // Revert to old study area id to not break link completely
+          $matchedRouteData['_studyArea'] = $this->studyAreaToDuplicate->getId();
+        }
+      }
 
       // Generate new url
-      $newUrl = $this->router->generate($routeName, $matchedRoute,
-          $url->isPath() ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL);
+      $newUrl = new Url(
+          $this->router->generate($routeName, $matchedRouteData,
+              $url->isPath() || $homePath ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL),
+          true, $this->urlContext
+      );
+
+
+      // Regenerate route again if _home route was detected
+      if ($homePath) {
+        $newUrl = new Url(
+            $this->router->generate('_home_simple', ['pageUrl' => ltrim($newUrl->getPath(), '/')],
+                $url->isPath() ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL),
+            true, $this->urlContext);
+      }
 
       // Replace url in text
-      $text = str_replace($url->getUrl(), $newUrl, $text);
+      $text = str_replace($url->getUrl(), $newUrl->getUrl(), $text);
     }
 
     return $text;
+  }
+
+  /**
+   * Try to match the given path with the internal routing
+   *
+   * @param string $path
+   *
+   * @return bool|array
+   */
+  private function matchPath(string $path)
+  {
+    // Test if url actually matches an internal route
+    try {
+      $matchedRoute = $this->router->match($path);
+    } catch (\RuntimeException $e) {
+      if ($e instanceof ExceptionInterface) {
+        // Route couldn't be matched internally
+        return false;
+      }
+
+      throw $e;
+    }
+
+    // If _route or _studyArea is not defined, no action is required
+    if (!array_key_exists('_route', $matchedRoute) ||
+        !array_key_exists('_studyArea', $matchedRoute)) {
+      return false;
+    }
+
+    return $matchedRoute;
   }
 }
