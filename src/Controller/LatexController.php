@@ -11,9 +11,10 @@ use Spatie\PdfToImage\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -85,10 +86,19 @@ class LatexController extends Controller
     }
 
     // Return image
-    $response = new BinaryFileResponse($imageLocation);
+    $response = $this->file($imageLocation, NULL, ResponseHeaderBag::DISPOSITION_INLINE);
     if ($cached) {
-      $response->setMaxAge(86400);
-      $response->headers->addCacheControlDirective('max-age', 86400);
+      // Disable symfony's automatic cache control header
+      $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+
+      // Setup cache headers
+      $response->setLastModified(\DateTime::createFromFormat('U', (string)filemtime($imageLocation)));
+      $response->setAutoEtag();
+      $response->setMaxAge(604800); // One week
+      $response->setPrivate();
+
+      // Check if response was cached: if so, the content is automatically purged
+      $response->isNotModified($request);
     }
 
     return $response;
