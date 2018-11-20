@@ -56,7 +56,7 @@ class UserGroup
   /**
    * @var User[]|Collection
    *
-   * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userGroups", fetch="EAGER", cascade={"persist", "remove"})
+   * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userGroups", fetch="EAGER")
    * @ORM\JoinTable(name="user_group_users",
    *   joinColumns={@ORM\JoinColumn(name="user_group_id", referencedColumnName="id")},
    *   inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
