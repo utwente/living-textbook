@@ -18,7 +18,7 @@
         "components/elfinder": "^3.1.1",
         "jms/serializer-bundle": "^2.3",
         "kick-in/exception-handler-bundle": "^1.1",
-        "phpoffice/phpspreadsheet": "^1.4",
+        "phpoffice/phpspreadsheet": "^1.5.1",
         "phpseclib/phpseclib": "^2.0",
         "sensio/framework-extra-bundle": "^5.1",
         "sensiolabs/security-checker": "^4.1",
