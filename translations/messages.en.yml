@@ -347,6 +347,7 @@ user:
     add-title: 'Add local user'
     change-password: 'Change password'
     current-password: 'Current password'
+    edit-title: 'Edit user "%user%"'
     password-updated: 'Password for %user% updated.'
     password-updated-own: 'Your password has been updated!'
     remove: 'Remove local account'
