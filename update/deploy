@@ -23,13 +23,13 @@ rm build.zip
 ./install-composer.sh
 
 # Install vendors (without scripts)
-php composer.phar install -o --apcu-autoloader --no-dev --no-scripts
+COMPOSER_CACHE_DIR=/tmp/composer; php composer.phar install -o --apcu-autoloader --no-dev --no-scripts
 
 # Clear cache
 sudo -u www-data php bin/console cache:clear
 
 # Run install vendors again but now with scripts, effectively only executing the scripts
-php composer.phar install -o --apcu-autoloader --no-dev
+COMPOSER_CACHE_DIR=/tmp/composer; php composer.phar install -o --apcu-autoloader --no-dev
 
 # Execute migrations
 sudo -u www-data php bin/console doctrine:migrations:migrate -n
