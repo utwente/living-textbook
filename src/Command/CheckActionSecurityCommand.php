@@ -5,23 +5,43 @@ namespace App\Command;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CheckActionSecurityCommand extends ContainerAwareCommand
+class CheckActionSecurityCommand extends Command
 {
+  /**
+   * Makes the command lazy loaded
+   *
+   * @var string
+   */
+  protected static $defaultName = 'ltb:check:action-security';
+
+  private $container;
+
+  /**
+   * CheckActionSecurityCommand constructor.
+   *
+   * @param ContainerInterface $container
+   */
+  public function __construct(ContainerInterface $container)
+  {
+    $this->container = $container;
+
+    parent::__construct(NULL);
+  }
+
   /**
    * {@inheritdoc}
    */
   protected function configure()
   {
     $this
-        ->setName('ltb:check:action-security')
         ->setDescription('Check if all actions either have a Secure or a PreAuthorize annotation.');
   }
 
@@ -38,8 +58,7 @@ class CheckActionSecurityCommand extends ContainerAwareCommand
     $checkedControllers = [];
     $annotationReader   = new AnnotationReader();
     // Find all routes
-    $routes = $this->getContainer()->get('router')->getRouteCollection()->all();
-    $this->getContainer()->set('request', new Request());
+    $routes = $this->container->get('router')->getRouteCollection()->all();
 
     foreach ($routes as $route => $param) {
       // Get controller string
@@ -53,7 +72,7 @@ class CheckActionSecurityCommand extends ContainerAwareCommand
         $controllerArray = explode(':', $controller);
         try {
           // Resolve service
-          $controllerObject = $this->getContainer()->get($controllerArray[0]);
+          $controllerObject = $this->container->get($controllerArray[0]);
           $action           = $controllerArray[2] ?? $controllerArray[1];
         } catch (ServiceNotFoundException $e) {
           $controllerObject = $controllerArray[0];
