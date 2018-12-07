@@ -156,7 +156,7 @@ class SearchController extends AbstractController
             'label'       => $label,
             'hide_label'  => $label === false,
             'attr'        => [
-                'placeholder' => $translator->trans('search.placeholder'),
+                'placeholder' => 'search.placeholder',
             ],
             'constraints' => [
                 new Length([
