@@ -38,13 +38,8 @@ class Select2Extension extends AbstractTypeExtension
     $resolver->setAllowedTypes('select2', ['bool']);
   }
 
-  /**
-   * Returns the name of the type being extended.
-   *
-   * @return string The name of the type being extended
-   */
-  public function getExtendedType()
+  public static function getExtendedTypes(): iterable
   {
-    return ChoiceType::class;
+    return [ChoiceType::class];
   }
 }

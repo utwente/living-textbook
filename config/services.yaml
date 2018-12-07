@@ -26,8 +26,8 @@ services:
     autowire: true    # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
     public: false     # Allows optimizing the container by removing unused services; this also means
-              # fetching services directly from the container via $container->get() won't work.
-              # The best practice is to be explicit about your dependencies anyway.
+    # fetching services directly from the container via $container->get() won't work.
+    # The best practice is to be explicit about your dependencies anyway.
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -51,18 +51,6 @@ services:
   App\Database\SoftDeletableSubscriber:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
-
-  App\Form\Extension\ButtonExtension:
-    tags:
-      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
-
-  App\Form\Extension\FormExtension:
-    tags:
-      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
-
-  App\Form\Extension\Select2Extension:
-    tags:
-      - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
 
   App\Serializer\Handler\ConceptHandler:
     tags:

@@ -36,12 +36,8 @@ class ButtonExtension extends AbstractTypeExtension
     $resolver->setAllowedTypes('icon_prefix', ['string']);
   }
 
-  /**
-   * @return mixed
-   */
-  public function getExtendedType()
+  public static function getExtendedTypes(): iterable
   {
-    return ButtonType::class;
+    return [ButtonType::class];
   }
-
 }

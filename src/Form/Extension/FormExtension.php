@@ -55,13 +55,8 @@ class FormExtension extends AbstractTypeExtension
     $resolver->setAllowedTypes('form_header', ['null', 'string']);
   }
 
-  /**
-   * Returns the name of the type being extended.
-   *
-   * @return string The name of the type being extended
-   */
-  public function getExtendedType()
+  public static function getExtendedTypes(): iterable
   {
-    return FormType::class;
+    return [FormType::class];
   }
 }
