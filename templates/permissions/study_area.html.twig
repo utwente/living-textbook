@@ -67,18 +67,18 @@
       {% set viewers = studyArea.viewers %}
       {% set emailViewers = studyArea.emailViewers %}
 
-      <h4>{{ 'permissions.viewer-count'|transchoice(viewers|length + emailViewers|length) }}</h4>
+      <h4>{{ 'permissions.viewer-count'|trans({'%count%': viewers|length + emailViewers|length}) }}</h4>
       {{ print_users(viewers, emailViewers, constant('App\\Entity\\UserGroup::GROUP_VIEWER')) }}
     {% endif %}
 
     {% set editors = studyArea.editors %}
     {% set emailEditors = studyArea.emailEditors %}
-    <h4>{{ 'permissions.editor-count'|transchoice(editors|length + emailEditors|length) }}</h4>
+    <h4>{{ 'permissions.editor-count'|trans({'%count%': editors|length + emailEditors|length}) }}</h4>
     {{ print_users(editors, emailEditors, constant('App\\Entity\\UserGroup::GROUP_EDITOR')) }}
 
     {% set reviewers = studyArea.reviewers %}
     {% set emailReviewers = studyArea.emailReviewers %}
-    <h4>{{ 'permissions.reviewer-count'|transchoice(reviewers|length + emailReviewers|length) }}</h4>
+    <h4>{{ 'permissions.reviewer-count'|trans({'%count%': reviewers|length + emailReviewers|length}) }}</h4>
     {{ print_users(reviewers, emailReviewers, constant('App\\Entity\\UserGroup::GROUP_REVIEWER')) }}
 
   {% endif %}

@@ -31,22 +31,22 @@
   <ul>
     <li>
       {% if conceptCount > 0 %}<a href="{{ path('app_concept_list') }}">{% endif %}
-        {{ 'dashboard.concept-count'|transchoice(conceptCount) }}
+        {{ 'dashboard.concept-count'|trans({'%count%': conceptCount}) }}
         {% if conceptCount > 0 %}</a>{% endif %}
     </li>
     <li>
       {% if abbreviationCount > 0 %}<a href="{{ path('app_abbreviation_list') }}">{% endif %}
-        {{ 'dashboard.abbreviation-count'|transchoice(abbreviationCount) }}
+        {{ 'dashboard.abbreviation-count'|trans({'%count%': abbreviationCount}) }}
         {% if abbreviationCount > 0 %}</a>{% endif %}
     </li>
     <li>
       {% if externalResourceCount > 0 %}<a href="{{ path('app_externalresource_list') }}">{% endif %}
-        {{ 'dashboard.external-resource-count'|transchoice(externalResourceCount) }}
+        {{ 'dashboard.external-resource-count'|trans({'%count%': externalResourceCount}) }}
         {% if externalResourceCount > 0 %}</a>{% endif %}
     </li>
     <li>
       {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
-        {{ 'dashboard.learning-outcome-count'|transchoice(learningOutcomeCount) }}
+        {{ 'dashboard.learning-outcome-count'|trans({'%count%': learningOutcomeCount}) }}
         {% if learningOutcomeCount > 0 %}</a>{% endif %}
     </li>
   </ul>

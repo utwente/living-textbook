@@ -14,11 +14,11 @@ use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class StudyAreaController
@@ -27,7 +27,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @Route("/{_studyArea}/studyarea", requirements={"_studyArea"="\d+"})
  */
-class StudyAreaController extends Controller
+class StudyAreaController extends AbstractController
 {
   /**
    * @Route("/add")

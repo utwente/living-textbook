@@ -12,11 +12,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class ConceptController
@@ -25,7 +25,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @Route("/{_studyArea}/concept", requirements={"_studyArea"="\d+"})
  */
-class ConceptController extends Controller
+class ConceptController extends AbstractController
 {
   /**
    * @Route("/add")

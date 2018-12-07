@@ -14,15 +14,16 @@ use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
   /**
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},
@@ -36,13 +37,16 @@ class DefaultController extends Controller
    * @param RequestStudyArea $requestStudyArea
    * @param string           $pageUrl
    * @param RouterInterface  $router
+   * @param Profiler|null    $profiler
    *
    * @return array|RedirectResponse
    */
-  public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router)
+  public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router, ?Profiler $profiler)
   {
     // Disable profiler on the home page
-    if ($this->has('profiler')) $this->get('profiler')->disable();
+    if ($profiler) {
+      $profiler->disable();
+    }
 
     // Check for empty study area
     if (!$requestStudyArea->hasValue()) {

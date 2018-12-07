@@ -9,20 +9,20 @@ use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class SearchController
  *
  * @Route("/{_studyArea}/search", requirements={"_studyArea"="\d+"})
  */
-class SearchController extends Controller
+class SearchController extends AbstractController
 {
 
   /**

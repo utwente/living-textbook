@@ -8,7 +8,7 @@ use BobV\LatexBundle\Latex\Base\Standalone;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Spatie\PdfToImage\Pdf;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/latex")
  */
-class LatexController extends Controller
+class LatexController extends AbstractController
 {
 
   /**

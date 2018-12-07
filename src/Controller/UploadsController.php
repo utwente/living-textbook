@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @Route("/uploads")
  */
-class UploadsController extends Controller
+class UploadsController extends AbstractController
 {
   /**
    * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"})

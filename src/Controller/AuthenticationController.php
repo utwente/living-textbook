@@ -6,7 +6,7 @@ use App\Form\Authentication\LoginType;
 use Drenso\OidcBundle\OidcClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +14,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AuthenticationController extends Controller
+class AuthenticationController extends AbstractController
 {
 
   /**
@@ -31,7 +32,7 @@ class AuthenticationController extends Controller
    */
   public function checkLogin()
   {
-    if ($this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+    if ($this->isGranted('ROLE_USER')) {
       return $this->redirect($this->generateUrl('_home'));
     } else {
       return $this->redirect($this->generateUrl('login'));
@@ -46,11 +47,12 @@ class AuthenticationController extends Controller
    * @Template
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request $request
+   * @param Request             $request
+   * @param TranslatorInterface $trans
    *
    * @return array|RedirectResponse
    */
-  public function login(Request $request)
+  public function login(Request $request, TranslatorInterface $trans)
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('_home');
@@ -69,7 +71,6 @@ class AuthenticationController extends Controller
       $session->remove(Security::AUTHENTICATION_ERROR);
 
       // Check the actual error
-      $trans = $this->get('translator');
       if ($authError instanceof BadCredentialsException) {
         // Bad credentials given
         $this->addFlash('authError', $trans->trans('login.bad-credentials'));
