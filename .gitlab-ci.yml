@@ -112,8 +112,6 @@ action-security-check:
     - install-dependencies
   variables:
     DATABASE_URL: mysql://user:password@127.0.0.1:3306/db # Temp fix for ckeditor:install, needs to be updated with #69
-  before_script:
-    - cp .env.dist .env
   script:
     - php bin/console ltb:check:action-security
   tags:
