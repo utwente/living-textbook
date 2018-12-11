@@ -1,4 +1,4 @@
-{% macro action_bar(edit_url, show_url, list_url, add_url, remove_url, browser_id, progress) %}
+{% macro action_bar(edit_url, show_url, list_url, add_url, remove_url, browser_id, progress, transfer_owner_url) %}
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
   {% if browser_id|default(false) %}
@@ -10,6 +10,9 @@
   {% endif %}
   {% if edit_url|default(false) %}
     {{ _action_button(edit_url, 'fa-pencil', 'form.edit') }}
+  {% endif %}
+  {% if transfer_owner_url|default(false) %}
+    {{ _action_button(transfer_owner_url, 'fa-exchange', 'study-area.transfer-ownership') }}
   {% endif %}
   {% if show_url|default(false) %}
     {{ _action_button(show_url, 'fa-eye', 'form.show', 'primary') }}
