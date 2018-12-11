@@ -8,7 +8,6 @@ use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\StudyArea\TransferOwnerType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
-use App\Repository\StudyAreaRepository;
 use App\Repository\UserGroupRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
@@ -166,23 +165,14 @@ class StudyAreaController extends AbstractController
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
    * @param StudyArea              $studyArea
-   * @param StudyAreaRepository    $studyAreaRepository
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
-   * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea, StudyAreaRepository $studyAreaRepository,
+  public function remove(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea,
                          EntityManagerInterface $em, TranslatorInterface $trans)
   {
-    // Check if this is the only study area
-    if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
-      $this->addFlash('warning', $trans->trans('study-area.owner-last-remove'));
-
-      return $this->redirectToRoute('app_studyarea_list');
-    }
-
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route'        => 'app_default_dashboard',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
@@ -217,24 +207,13 @@ class StudyAreaController extends AbstractController
    *
    * @param Request                $request
    * @param StudyArea              $studyArea
-   * @param StudyAreaRepository    $studyAreaRepository
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
-   *
-   * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function transferOwner(Request $request, StudyArea $studyArea, StudyAreaRepository $studyAreaRepository,
-                                EntityManagerInterface $em, TranslatorInterface $trans)
+  public function transferOwner(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
   {
-    // Check if this is the only study area
-    if ($studyAreaRepository->getOwnerAmount($this->getUser()) == 1) {
-      $this->addFlash('warning', $trans->trans('study-area.owner-last-transfer'));
-
-      return $this->redirectToRoute('app_studyarea_list');
-    }
-
     $form = $this->createForm(TransferOwnerType::class, $studyArea, [
         'current_owner' => $studyArea->getOwner(),
     ]);

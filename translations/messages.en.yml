@@ -310,8 +310,6 @@ study-area:
   name: 'Name'
   new: 'New study area'
   owner: 'Owner'
-  owner-last-remove: 'You cannot remove your only study area.'
-  owner-last-transfer: 'You cannot transfer the ownership of your only study area.'
   owner-transferred: 'The ownership for study area "%item%" has been transferred to "%owner%".'
   permissions-updated: 'The permissions for the study area "%item%" have been updated.'
   remove: 'Remove study area "%item%"'
