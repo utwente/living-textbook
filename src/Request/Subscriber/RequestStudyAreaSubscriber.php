@@ -99,7 +99,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     $studyAreaId = $request->attributes->get(self::STUDY_AREA_KEY, NULL);
 
     // Check whether it actually exists, throw not found otherwise
-    if ($studyAreaId && !$this->studyAreaRepository->find($studyAreaId)){
+    if ($studyAreaId && !$this->studyAreaRepository->find($studyAreaId)) {
       throw new NotFoundHttpException("Study area not found");
     }
 
@@ -114,7 +114,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         $studyAreaId = $session->get(self::STUDY_AREA_KEY);
 
         // Check whether it actually still exists, remove from session otherwise
-        if (!$this->studyAreaRepository->find($studyAreaId)){
+        if (!$studyAreaId || !$this->studyAreaRepository->find($studyAreaId)) {
           $session->remove(self::STUDY_AREA_KEY);
           $studyAreaId = NULL;
         }

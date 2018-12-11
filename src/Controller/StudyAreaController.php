@@ -206,13 +206,15 @@ class StudyAreaController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    *
    * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
    * @param StudyArea              $studyArea
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function transferOwner(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function transferOwner(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea,
+                                EntityManagerInterface $em, TranslatorInterface $trans)
   {
     $form = $this->createForm(TransferOwnerType::class, $studyArea, [
         'current_owner' => $studyArea->getOwner(),
@@ -226,6 +228,14 @@ class StudyAreaController extends AbstractController
           '%item%'  => $studyArea->getName(),
           '%owner%' => $studyArea->getOwner()->getFullName(),
       ]));
+
+      // Check whether this area is still visible
+      if ($requestStudyArea->getStudyArea()->getId() == $studyArea->getId()
+          && !$this->isGranted('STUDYAREA_SHOW', $studyArea)) {
+        return $this->render('reloading_fullscreen.html.twig', [
+            'reloadUrl' => $this->generateUrl('app_default_landing'),
+        ]);
+      }
 
       return $this->redirectToRoute('app_studyarea_list');
     }
