@@ -327,7 +327,10 @@ class DataController extends AbstractController
 
       $this->addFlash('success', $trans->trans('data.concepts-duplicated'));
 
-      return $this->redirectToRoute('app_default_dashboard');
+      // Load reloading page in order to switch to the duplicated study area
+      return $this->render('reloading_fullscreen.html.twig', [
+          'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $newStudyArea->getId()]),
+      ]);
     }
 
     return [
