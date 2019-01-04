@@ -12,19 +12,23 @@
 
   <ul class="nav nav-tabs nav-fill">
     <li class="nav-item">
-      <a class="nav-link{% if not formActive %} active{% endif %}" id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab" >
+      <a class="nav-link{% if not formActive %} active{% endif %}"
+         id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab">
         {{ 'login.surfconext'|trans }}
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link{% if formActive %} active{% endif %}" id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab" >
+      <a class="nav-link{% if formActive %} active{% endif %}"
+         onclick="focusForm()"
+         id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab">
         {{ 'login.custom-account'|trans }}
       </a>
     </li>
   </ul>
   <div class="tab-content" id="login-option">
     <div class="tab-pane" id="tab-surfconext" role="tabpanel" aria-labelledby="tab-surfconext-button">
-      <a href="{{ path('login_surf') }}" class="top-level" data-toggle="tooltip" data-placement="bottom" title="{{ 'login.surfconext-login'|trans }}">
+      <a href="{{ path('login_surf') }}" class="top-level" data-toggle="tooltip" data-placement="bottom"
+         title="{{ 'login.surfconext-login'|trans }}">
         <div class="login-surfconext"></div>
       </a>
       <p class="card-text text-center">{{ 'login.surfconext-login-text'|trans }}</p>
@@ -39,6 +43,13 @@
 {% block javascripts_bottom %}
   {{ parent() }}
   <script type="text/javascript">
+    // Focus form input
+    function focusForm() {
+      setTimeout(function () {
+        $('#login__username').focus();
+      }, 100);
+    }
+
     // Fixate the tab height
     var maxHeight = 0;
     $(".tab-content .tab-pane").each(function () {
@@ -49,6 +60,7 @@
     });
     {% if formActive %}
       $('#tab-custom-account').addClass("active");
+      focusForm();
     {% else %}
       $(".tab-content .tab-pane:first").addClass("active");
     {% endif %}
