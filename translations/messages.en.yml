@@ -22,7 +22,7 @@ app:
 
 browser:
   actions: 'Actions'
-  close: 'Close concept browser'
+  close: 'Close concept map'
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open map'
   toggle: 'Toggle map'
@@ -186,7 +186,7 @@ form:
 
 general:
   close: "Close"
-  no-browser-warning: "You've loaded this page without browser support, so browser tools will not work. Open this page <a href=%url%>with browser</a> instead."
+  no-browser-warning: "You've loaded this page without map support, so map tools will not work. Open this page <a href=%url%>with map</a> instead."
   reloading: "Reloading"
 
 learning-outcome:
