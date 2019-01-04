@@ -23,7 +23,21 @@ class LearningPathRepository extends ServiceEntityRepository
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
+        ->orderBy('lp.name', 'ASC')
         ->getQuery()->getResult();
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   * @throws \Doctrine\ORM\NonUniqueResultException
+   */
+  public function getCountForStudyArea(StudyArea $studyArea)
+  {
+    return $this->findForStudyAreaQb($studyArea)
+        ->select('COUNT(lp.id)')
+        ->getQuery()->getSingleScalarResult();
   }
 
   /**
@@ -35,7 +49,6 @@ class LearningPathRepository extends ServiceEntityRepository
   {
     return $this->createQueryBuilder('lp')
         ->where('lp.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('lp.name', 'ASC');
+        ->setParameter('studyArea', $studyArea);
   }
 }

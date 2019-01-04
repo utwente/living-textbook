@@ -9,6 +9,7 @@ use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -101,6 +102,7 @@ class DefaultController extends AbstractController
    * @param AbbreviationRepository     $abbreviationRepository
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
+   * @param LearningPathRepository     $learningPathRepo
    *
    * @return array
    *
@@ -108,7 +110,8 @@ class DefaultController extends AbstractController
    */
   public function dashboard(RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
                             ConceptRepository $conceptRepo, AbbreviationRepository $abbreviationRepository,
-                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo)
+                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
+                            LearningPathRepository $learningPathRepo)
   {
     $user       = $this->getUser();
     $studyArea  = $requestStudyArea->getStudyArea();
@@ -148,6 +151,7 @@ class DefaultController extends AbstractController
         'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
+        'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
     ];
   }
 

@@ -50,6 +50,11 @@
         {{ 'dashboard.learning-outcome-count'|trans({'%count%': learningOutcomeCount}) }}
         {% if learningOutcomeCount > 0 %}</a>{% endif %}
     </li>
+    <li>
+      {% if learningPathCount > 0 %}<a href="{{ path('app_learningpath_list') }}">{% endif %}
+        {{ 'dashboard.learning-path-count'|trans({'%count%': learningPathCount}) }}
+        {% if learningPathCount > 0 %}</a>{% endif %}
+    </li>
   </ul>
 
   <h4>{{ 'dashboard.search-concept'|trans }}</h4>

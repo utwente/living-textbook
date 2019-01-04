@@ -80,6 +80,7 @@ dashboard:
   concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
   external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
   learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
+  learning-path-count: '{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths'
   open: 'Open dashboard'
   search-concept: 'Search for concept'
   select-one: 'Select one...'
