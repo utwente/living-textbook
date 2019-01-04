@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'learning-path.remove'|trans({"%item%": learningPath.name}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'learning-path.remove-text'|trans({"%item%": learningPath.name}) }}</p>
+
+  {{ form(form) }}
+{% endblock %}

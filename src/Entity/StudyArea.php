@@ -120,6 +120,13 @@ class StudyArea
   private $learningOutcomes;
 
   /**
+   * @var Collection|LearningPath[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\LearningPath", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private $learningPaths;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -372,6 +379,9 @@ class StudyArea
     }
     foreach ($this->learningOutcomes as $learningOutcome) {
       $check($learningOutcome);
+    }
+    foreach ($this->learningPaths as $learningPath) {
+      $check($learningPath);
     }
 
     // Return result

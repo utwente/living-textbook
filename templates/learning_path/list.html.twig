@@ -1,0 +1,47 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+    {% from '_macro/_action_bar.html.twig' import new_bar_with_progress %}
+    {{ new_bar_with_progress(path('app_learningpath_add')) }}
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ 'learning-path.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">{{ 'learning-path.name'|trans }}</th>
+        <th scope="col">{{ 'form.show'|trans }}</th>
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+          <th scope="col">{{ 'form.edit'|trans }}</th>
+          <th scope="col">{{ 'form.remove'|trans }}</th>
+        {% endif %}
+      </tr>
+      </thead>
+      <tbody>
+      {% for learningPath in learningPaths %}
+        <tr>
+          <td>{{ learningPath.name }}</td>
+          <td>
+            <a href="{{ path('app_learningpath_show', {'learningPath': learningPath.id}) }}">{{ 'form.show'|trans }}</a>
+          </td>
+          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+            <td>
+              <a href="{{ path('app_learningpath_edit', {'learningPath': learningPath.id}) }}">{{ 'form.edit'|trans }}</a>
+            </td>
+            <td>
+              <a href="{{ path('app_learningpath_remove', {'learningPath': learningPath.id}) }}">{{ 'form.remove'|trans }}</a>
+            </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
