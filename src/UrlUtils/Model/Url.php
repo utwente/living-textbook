@@ -7,11 +7,8 @@ namespace App\UrlUtils\Model;
  *
  * Contains found URL metadata
  */
-class Url
+class Url extends AbstractUrl
 {
-  /** @var string */
-  private $url;
-
   /** @var bool */
   private $isPath;
 
@@ -21,18 +18,14 @@ class Url
   /** @var UrlContext */
   private $context;
 
-  /** @var \DateTime */
-  private $timestamp;
-
   public function __construct(string $url, bool $internal, UrlContext $context)
   {
     $internalPath = 0 === mb_stripos($url, '/');
 
-    $this->url       = $url;
     $this->internal  = $internal || $internalPath;
     $this->isPath    = $this->internal && $internalPath;
     $this->context   = $context;
-    $this->timestamp = new \DateTime();
+    parent::__construct($url);
   }
 
   /**
@@ -42,14 +35,6 @@ class Url
   public function __toString()
   {
     return $this->url . '.' . ($this->internal ? '1' : '0') . '.' . $this->context->__toString();
-  }
-
-  /**
-   * @return string
-   */
-  public function getUrl(): string
-  {
-    return $this->url;
   }
 
   /**
@@ -95,25 +80,5 @@ class Url
   public function getContext(): UrlContext
   {
     return $this->context;
-  }
-
-  /**
-   * Timestamp when this URL was found, for checking purposes
-   *
-   * @return \DateTime
-   */
-  public function getTimestamp(): \DateTime
-  {
-    return $this->timestamp;
-  }
-
-  /**
-   * Cache key for storing the object in a filesystem cache
-   *
-   * @return string
-   */
-  public function getCachekey(): string
-  {
-    return md5($this->getUrl());
   }
 }

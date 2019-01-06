@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\StudyAreaRepository;
+use App\UrlUtils\Model\CacheableUrl;
 use App\UrlUtils\Model\Url;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -162,11 +163,12 @@ class UrlChecker
    */
   private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, string $modifyTime = '', ?AdapterInterface $oldCache = NULL): bool
   {
-    $cachekey = $url->getCachekey();
+    $cacheableUrl = $url->toCacheable();
+    $cachekey     = $cacheableUrl->getCachekey();
     if ($oldCache !== NULL) {
       // Check if cache still valid
       $cachedUrl = $oldCache->getItem($cachekey)->get();
-      assert($cachedUrl instanceof Url);
+      assert($cachedUrl instanceof CacheableUrl);
 
       // Test if it is expired
       if ($cachedUrl->getTimestamp() < (new \DateTime())->modify($modifyTime)) {
@@ -178,7 +180,7 @@ class UrlChecker
     // Recheck
     if ($this->_checkUrl($url)) {
       $newItem = $this->goodUrlsCache->getItem($cachekey);
-      $newItem->set($url);
+      $newItem->set($cacheableUrl);
       // Good items expire after 7 days
       $newItem->expiresAfter(7 * 24 * 60 * 60);
       $this->goodUrlsCache->save($newItem);
@@ -186,7 +188,7 @@ class UrlChecker
       return true;
     } else {
       $newItem = $newCache->getItem($cachekey);
-      $newItem->set($url);
+      $newItem->set($cacheableUrl);
       // Bad items expire after 14 days, although they should be deleted if they're no longer valid
       $newItem->expiresAfter(14 * 24 * 60 * 60);
       $newCache->save($newItem);
@@ -207,7 +209,7 @@ class UrlChecker
     if ($force) {
       return $this->checkAndCacheUrl($url, $this->bad0UrlCache);
     }
-    $cachekey = $url->getCachekey();
+    $cachekey = $url->toCacheable()->getCachekey();
     // Don't recheck if the url is still cached
     if ($this->goodUrlsCache->hasItem($cachekey)) {
       return true;
