@@ -107,13 +107,15 @@ class UrlScanner
   /**
    * Scan a text for inline links
    *
-   * @param string          $text
+   * @param string|null     $text
    * @param UrlContext|null $context
    *
    * @return Url[]
    */
-  public function scanText(string $text, ?UrlContext $context = NULL): array
+  public function scanText(?string $text, ?UrlContext $context = NULL): array
   {
+    if ($text === NULL) return [];
+
     return array_values(array_unique($this->_scanText($text, $context)));
   }
 
