@@ -73,6 +73,7 @@ return [
     'plugins'                         => [
         'vendor/drenso/phan-extensions/Plugin/Annotation/SymfonyAnnotationPlugin.php',
         'vendor/drenso/phan-extensions/Plugin/DocComment/ThrowsPlugin.php',
+        'vendor/drenso/phan-extensions/Plugin/DocComment/InlineVarPlugin.php',
     ],
 
   // A list of directories that should be parsed for class and
