@@ -115,9 +115,25 @@
     <ul>
       {% for learningOutcome in data %}
         <li>
-          <b>{{ learningOutcome.shortName }}</b>
+          <a href="{{ path('app_learningoutcome_show', { learningOutcome: learningOutcome.id }) }}"><b>{{ learningOutcome.shortName }}</b></a>
           <div class="ltb-text-container">
             {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro data_concepts(data) %}
+  {% if data|length > 0 %}
+    <h2>{{ 'menu.concept'|trans }}</h2>
+    <ul>
+      {% for concept in data %}
+        <li>
+          <a href="{{ path('app_concept_show', { concept: concept.id}) }}"><b>{{ concept.name }}</b></a>
+          <div class="ltb-text-container">
+            {{ concept.introduction.text|striptags(allowed_ckeditor_tags)|raw }}
           </div>
         </li>
       {% endfor %}

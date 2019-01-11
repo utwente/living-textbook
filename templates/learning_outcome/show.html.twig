@@ -19,4 +19,7 @@
   <div class="ltb-text-container">
     {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
   </div>
+
+  {% import '_data/_data_templates.html.twig' as macros %}
+  {{ macros.data_concepts(learningOutcome.concepts) }}
 {% endblock %}
