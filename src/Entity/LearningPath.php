@@ -134,11 +134,30 @@ class LearningPath
   }
 
   /**
+   * Retrieve the ordered element list
+   *
    * @return LearningPathElement[]|Collection
    */
   public function getElements()
   {
-    return $this->elements;
+    $result      = [];
+    $mappingNext = [];
+    foreach ($this->elements as $element) {
+      if ($element->getNext()) {
+        $mappingNext[$element->getNext()->getId()] = $element;
+      } else {
+        // No next, so is last element
+        $result[] = $element;
+      }
+    }
+
+    while (count($mappingNext) > 0) {
+      $nextId   = end($result)->getId();
+      $result[] = $mappingNext[$nextId];
+      unset($mappingNext[$nextId]);
+    }
+
+    return new ArrayCollection(array_reverse($result));
   }
 
   /**
