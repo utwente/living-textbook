@@ -11,6 +11,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,6 +27,7 @@ class LearningPathElementsType extends AbstractType
         function (array $formData) use ($options) : ArrayCollection {
           /** @var LearningPathElement[] $formData */
           $previousElement = NULL;
+          $formData        = array_values($formData);
           for ($i = count($formData) - 1; $i >= 0; $i--) {
             // Update the next element
             $formData[$i]->setNext($previousElement);
@@ -36,6 +39,11 @@ class LearningPathElementsType extends AbstractType
     ));
   }
 
+  public function buildView(FormView $view, FormInterface $form, array $options)
+  {
+    $view->vars['sortable_id'] = $options['sortable_id'];
+  }
+
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
@@ -43,6 +51,8 @@ class LearningPathElementsType extends AbstractType
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningPath')
         ->setAllowedTypes('learningPath', LearningPath::class)
+        ->setRequired('sortable_id')
+        ->setAllowedTypes('sortable_id', 'string')
         ->setDefaults([
             'by_reference' => false,
             'entry_type'   => LearningPathElementType::class,

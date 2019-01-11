@@ -11,6 +11,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathElementSelectorType extends AbstractType
@@ -20,12 +22,12 @@ class LearningPathElementSelectorType extends AbstractType
     $studyArea = $options['studyArea'];
 
     $builder
-        ->add('concept', EntityType::class, [
+        ->add('concepts', EntityType::class, [
             'label'         => 'menu.concept',
             'class'         => Concept::class,
             'choice_label'  => 'name',
             'required'      => false,
-            'multiple'      => false,
+            'multiple'      => true,
             'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
               return $conceptRepository->createQueryBuilder('c')
                   ->where('c.studyArea = :studyArea')
@@ -34,7 +36,7 @@ class LearningPathElementSelectorType extends AbstractType
             },
             'select2'       => true,
         ])
-        ->add('learningOutcome', EntityType::class, [
+        ->add('learningOutcomes', EntityType::class, [
             'label'         => 'menu.learning-outcomes',
             'class'         => LearningOutcome::class,
             'choice_label'  => 'name',
@@ -51,16 +53,24 @@ class LearningPathElementSelectorType extends AbstractType
         ->add('add', ButtonType::class, [
             'icon' => 'fa-plus',
             'attr' => [
-                'class' => 'btn-outline-success float-right',
+                'class'   => 'btn-outline-success float-right',
+                'onclick' => 'addLearningPathConcepts_' . $options['sortable_id'] . '();',
             ],
         ]);
+  }
+
+  public function buildView(FormView $view, FormInterface $form, array $options)
+  {
+    $view->vars['sortable_id'] = $options['sortable_id'];
   }
 
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
         ->setRequired('studyArea')
-        ->setAllowedTypes('studyArea', StudyArea::class);
+        ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setRequired('sortable_id')
+        ->setAllowedTypes('sortable_id', 'string');
   }
 
 }

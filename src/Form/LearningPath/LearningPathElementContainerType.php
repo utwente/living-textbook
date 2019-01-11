@@ -16,12 +16,14 @@ class LearningPathElementContainerType extends AbstractType
   {
     $builder
         ->add('selector', LearningPathElementSelectorType::class, [
-            'mapped'    => false,
-            'studyArea' => $options['studyArea'],
+            'mapped'      => false,
+            'studyArea'   => $options['studyArea'],
+            'sortable_id' => $options['sortable_id'],
         ])
         ->add('elements', LearningPathElementsType::class, [
             'studyArea'    => $options['studyArea'],
             'learningPath' => $options['learningPath'],
+            'sortable_id'  => $options['sortable_id'],
         ]);
 
     $builder->addModelTransformer(new CallbackTransformer(
@@ -42,7 +44,13 @@ class LearningPathElementContainerType extends AbstractType
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningPath')
-        ->setAllowedTypes('learningPath', LearningPath::class);
+        ->setAllowedTypes('learningPath', LearningPath::class)
+        ->setDefault('sortable_id', '')
+        ->setAllowedTypes('sortable_id', 'string');
+
+    $resolver->setNormalizer('sortable_id', function () {
+      return bin2hex(random_bytes(16));
+    });
   }
 
 }

@@ -66,7 +66,7 @@ class LearningPathElementType extends AbstractType
         function (array $viewData) use ($options): ?LearningPathElement {
           $concept               = $this->getConcept(intval($viewData['conceptId']), $options['studyArea']);
           $learningPathElementId = intval($viewData['id']);
-          $element               = $learningPathElementId === -1
+          $element               = $learningPathElementId === -1 || empty($learningPathElementId)
               ? new LearningPathElement()
               : $this->learningPathElementRepository->findOneBy(['id' => $learningPathElementId, 'learningPath' => $options['learningPath']]);
 
@@ -87,8 +87,12 @@ class LearningPathElementType extends AbstractType
         ->setAllowedTypes('learningPath', LearningPath::class);
   }
 
-  private function getConcept(int $id, StudyArea $studyArea): ?Concept
+  private function getConcept(?int $id, StudyArea $studyArea): ?Concept
   {
+    if ($id == NULL) {
+      return NULL;
+    }
+
     $concept = $this->conceptRepository->findOneBy(['id' => $id, 'studyArea' => $studyArea]);
     assert($concept == NULL || $concept instanceof Concept);
 
