@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Form\LearningPath;
+
+use App\Entity\LearningPath;
+use App\Entity\StudyArea;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class LearningPathElementContainerType extends AbstractType
+{
+  public function buildForm(FormBuilderInterface $builder, array $options)
+  {
+    $builder
+        ->add('selector', LearningPathElementSelectorType::class, [
+            'mapped'    => false,
+            'studyArea' => $options['studyArea'],
+        ])
+        ->add('elements', LearningPathElementsType::class, [
+            'studyArea'    => $options['studyArea'],
+            'learningPath' => $options['learningPath'],
+        ]);
+
+    $builder->addModelTransformer(new CallbackTransformer(
+        function (Collection $modelData): array {
+          return [
+              'elements' => $modelData,
+          ];
+        },
+        function (array $viewData): Collection {
+          return $viewData['elements'];
+        }
+    ));
+  }
+
+  public function configureOptions(OptionsResolver $resolver)
+  {
+    $resolver
+        ->setRequired('studyArea')
+        ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setRequired('learningPath')
+        ->setAllowedTypes('learningPath', LearningPath::class);
+  }
+
+}

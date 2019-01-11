@@ -26,7 +26,8 @@ class EditLearningPathType extends AbstractType
         ->add('question', TextareaType::class, [
             'label' => 'learning-path.question',
         ])
-        ->add('elements', LearningPathElementsType::class, [
+        ->add('elements', LearningPathElementContainerType::class, [
+            'label'        => 'learning-path.elements',
             'studyArea'    => $options['studyArea'],
             'learningPath' => $options['learningPath'],
         ])

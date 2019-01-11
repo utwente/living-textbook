@@ -205,7 +205,10 @@ learning-outcome:
 
 learning-path:
   add-title: 'Add new learning path'
+  current-elements: 'Current elements'
   edit-title: 'Edit learning path "%item%"'
+  elements: 'Elements'
+  elements-info: 'Select either concepts or learning outcomes (which will add the containing concepts) below to add them to the learning path elements.'
   list-title: 'Learning path list'
   name: 'Name'
   question: 'Question'

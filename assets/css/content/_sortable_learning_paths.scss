@@ -10,7 +10,11 @@ $spacer: 5px;
 
   margin-bottom: -$spacer;
 
-  ul {
+  label, legend {
+    font-weight: normal;
+  }
+
+  ul.sortable-list {
     margin: -$spacer 0 0;
     padding: 0;
     list-style: none;

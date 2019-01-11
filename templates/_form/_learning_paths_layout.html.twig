@@ -1,45 +1,70 @@
-{% block learning_path_elements_row %}
+{% block learning_path_element_container_row %}
   <div class="form-group row">
     {{ form_label(form) }}
+    <div class="col-12">
+      {{ 'learning-path.elements-info'|trans }}
+    </div>
     <div class="col-12">
       {{ form_widget(form) }}
     </div>
   </div>
 {% endblock %}
 
-{% block learning_path_elements_widget %}
+{% block learning_path_element_container_widget %}
   <div class="row sortable-learning-path">
     <div class="col-12 col-md-4">
-      Select
+      {{ form(form.selector) }}
     </div>
     <div class="col-12 col-md-8">
-      <ul id="{{ id }}_sortable" data-prototype="{{- form_row(prototype)|e -}}">
-        {# Render normal widget #}
-        {{- block('form_rows') -}}
-      </ul>
-
-      <script type="application/javascript">
-        $(function () {
-          if (window.slp) {
-            var elem = '#{{ id }}_sortable';
-            window.slp.registerSortable(elem);
-            $(elem).on('sortupdate', function () {
-              // Update the item numbering for every item
-              var counter = 0;
-              $(elem).find('li').each(function () {
-                $(this).find(':input').each(function () {
-                  var value = $(this).attr('name').replace(/\[(\d+)](\[[^\[\]]+])$/, '[' + counter + ']$2');
-                  console.info(value);
-                  $(this).attr('name', value)
-                });
-                counter++;
-              })
-            });
-          }
-        });
-      </script>
+      {{ form(form.elements) }}
     </div>
   </div>
+{% endblock %}
+
+{% block learning_path_element_selector_widget %}
+  <div class="form-group row">
+    <label class="col-form-label col-12" for="{{ form.concept.vars.id }}">
+      {{ form.concept.vars.label|trans }}</label>
+    <div class="col-12">
+      {{ form_widget(form.concept) }}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-form-label col-12" for="{{ form.learningOutcome.vars.id }}">
+      {{ form.learningOutcome.vars.label|trans }}</label>
+    <div class="col-12">
+      {{ form_widget(form.learningOutcome) }}
+    </div>
+  </div>
+{% endblock %}
+
+{% block learning_path_elements_widget %}
+  <legend class="col-form-label">{{ 'learning-path.current-elements'|trans }}</legend>
+  <ul id="{{ id }}_sortable" class="sortable-list" data-prototype="{{- form_row(prototype)|e -}}">
+    {# Render normal widget #}
+    {{- block('form_rows') -}}
+  </ul>
+
+  <script type="application/javascript">
+    $(function () {
+      if (window.slp) {
+        var elem = '#{{ id }}_sortable';
+        window.slp.registerSortable(elem);
+        $(elem).on('sortupdate', function () {
+          // Update the item numbering for every item
+          var counter = 0;
+          $(elem).find('li').each(function () {
+            $(this).find(':input').each(function () {
+              var value = $(this).attr('name').replace(/\[(\d+)](\[[^\[\]]+])$/, '[' + counter + ']$2');
+              console.info(value);
+              $(this).attr('name', value)
+            });
+            counter++;
+          })
+        });
+      }
+    });
+  </script>
 {% endblock %}
 
 {% block learning_path_element_row %}
