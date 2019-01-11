@@ -42,13 +42,24 @@
     const $conceptField = $('#' + conceptsFieldId);
     const $learningOutcomesField = $('#' + learningOutcomesFieldId);
 
-    // Todo: retrieve learning path concepts
+    const addConceptId = function (conceptId) {
+      conceptId = parseInt(conceptId);
+      const conceptName = $('#' + conceptsFieldId + ' option[value="' + conceptId + '"]').html();
+      slp.addConcept(sortableId, conceptId, conceptName);
+    };
 
     // Retrieve concepts
     $($conceptField.val()).each(function () {
-      const conceptId = parseInt(this);
-      const conceptName = $('#' + conceptsFieldId + ' option[value="' + conceptId + '"]').html();
-      slp.addConcept(sortableId, conceptId, conceptName);
+      addConceptId(this);
+    });
+
+    // Add learning outcome concepts
+    const learningOutcomeConceptIds = JSON.parse($('#' + learningOutcomesFieldId + 'Concepts').val());
+    $($learningOutcomesField.val()).each(function () {
+      const learningOutcomeId = parseInt(this);
+      $(learningOutcomeConceptIds[learningOutcomeId]).each(function () {
+        addConceptId(this);
+      })
     });
 
     // Clear current selection

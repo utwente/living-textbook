@@ -70,4 +70,27 @@ class LearningOutcomeRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea)
         ->getQuery()->getSingleScalarResult();
   }
+
+  /**
+   * Find the concepts ids used in every learning outcome in the given study area
+   *
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   */
+  public function findUsedConceptIdsForStudyArea(StudyArea $studyArea)
+  {
+    $result = $this->findForStudyAreaQb($studyArea)
+        ->innerJoin('lo.concepts', 'c')
+        ->select('lo.id, c.id AS cid')
+        ->getQuery()->getResult();
+
+    $return = [];
+    array_walk($result, function ($item) use (&$return) {
+      if (!isset($return[$item['id']])) $return[$item['id']] = [];
+      $return[$item['id']][] = $item['cid'];
+    });
+
+    return $return;
+  }
 }

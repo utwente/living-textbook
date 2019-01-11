@@ -99,5 +99,4 @@ class LearningPathElementType extends AbstractType
     return $concept;
   }
 
-
 }
