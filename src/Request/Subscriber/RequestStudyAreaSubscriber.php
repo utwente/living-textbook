@@ -80,7 +80,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
             array('injectStudyAreaInControllerArguments', 0),
         ],
         KernelEvents::VIEW                 => [
-            array('injectStudyAreaInView', 0),
+            array('injectStudyAreaInView', 255),
         ],
     );
   }
