@@ -8,6 +8,8 @@
         "fos-routing": "^0.0.4",
         "jquery": "^3.2.1",
         "jquery-contextmenu": "^2.6.3",
+        "jquery-ui": "^1.12.1",
+        "jquery-ui-touch-punch": "^0.2.3",
         "node-sass": "^4.7.2",
         "popper.js": "^1.12.9",
         "sass-loader": "^6.0.6",

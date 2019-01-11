@@ -1,0 +1,51 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '~bootstrap/scss/mixins/_buttons.scss';
+@import '../vars/vars';
+
+$baseSize: 25px;
+$spacer: 5px;
+
+.sortable-learning-path {
+
+  margin-bottom: -$spacer;
+
+  ul {
+    margin: -$spacer 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      border: 1px solid $drag-stripes-color;
+      border-radius: 0.25em;
+      background-color: $card-bg;
+
+      min-height: $baseSize;
+      padding: $spacer;
+      margin: $spacer 0;
+
+      &.ui-sortable-placeholder {
+        height: $baseSize * 2;
+      }
+
+      .handle {
+        float: left;
+        width: $baseSize;
+        font-size: $baseSize;
+        line-height: $baseSize;
+        cursor: move;
+
+        .fa {
+          vertical-align: top;
+          padding-top: 1px;
+          width: 100%;
+        }
+      }
+
+      .item {
+        width: 100%;
+        padding-left: $baseSize + $spacer;
+      }
+    }
+  }
+}

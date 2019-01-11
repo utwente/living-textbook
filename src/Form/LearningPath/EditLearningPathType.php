@@ -3,6 +3,7 @@
 namespace App\Form\LearningPath;
 
 use App\Entity\LearningPath;
+use App\Entity\StudyArea;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -25,6 +26,10 @@ class EditLearningPathType extends AbstractType
         ->add('question', TextareaType::class, [
             'label' => 'learning-path.question',
         ])
+        ->add('elements', LearningPathElementsType::class, [
+            'studyArea'    => $options['studyArea'],
+            'learningPath' => $options['learningPath'],
+        ])
         ->add('submit', SaveType::class, [
             'list_route'           => 'app_learningpath_list',
             'enable_cancel'        => true,
@@ -40,6 +45,10 @@ class EditLearningPathType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
+        ->setRequired('studyArea')
+        ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setRequired('learningPath')
+        ->setAllowedTypes('learningPath', LearningPath::class)
         ->setDefault('data_class', LearningPath::class);
   }
 }

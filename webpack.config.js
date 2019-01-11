@@ -29,6 +29,10 @@ Encore
 
     .createSharedEntry('vendor', [
       'jquery',
+      'jquery-ui',
+      'jquery-ui/ui/widgets/mouse.js',
+      'jquery-ui/ui/widgets/sortable.js',
+      'jquery-ui-touch-punch',
       'jquery-contextmenu',
       'jquery-contextmenu/dist/jquery.contextMenu.css',
       'popper.js',

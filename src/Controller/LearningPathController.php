@@ -41,7 +41,10 @@ class LearningPathController extends AbstractController
     // Create new object
     $learningPath = (new LearningPath())->setStudyArea($requestStudyArea->getStudyArea());
 
-    $form = $this->createForm(EditLearningPathType::class, $learningPath);
+    $form = $this->createForm(EditLearningPathType::class, $learningPath, [
+        'studyArea'    => $requestStudyArea->getStudyArea(),
+        'learningPath' => $learningPath,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -79,7 +82,10 @@ class LearningPathController extends AbstractController
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
     // Create form and handle request
-    $form = $this->createForm(EditLearningPathType::class, $learningPath);
+    $form = $this->createForm(EditLearningPathType::class, $learningPath, [
+        'studyArea'    => $requestStudyArea->getStudyArea(),
+        'learningPath' => $learningPath,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
