@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,7 +45,7 @@ class LearningPath
    * @Assert\NotBlank()
    * @Assert\Length(max=255)
    */
-  private $name = '';
+  private $name;
 
   /**
    * Learning path question
@@ -55,7 +57,21 @@ class LearningPath
    * @Assert\NotBlank()
    * @Assert\Length(max=1024)
    */
-  private $question = '';
+  private $question;
+
+  /**
+   * @var Collection|LearningPathElement[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath", cascade={"persist"})
+   */
+  private $elements;
+
+  public function __construct()
+  {
+    $this->name     = '';
+    $this->question = '';
+    $this->elements = new ArrayCollection();
+  }
 
   /**
    * @return StudyArea|null
@@ -113,6 +129,42 @@ class LearningPath
   public function setQuestion(string $question): LearningPath
   {
     $this->question = $question;
+
+    return $this;
+  }
+
+  /**
+   * @return LearningPathElement[]|Collection
+   */
+  public function getElements()
+  {
+    return $this->elements;
+  }
+
+  /**
+   * @param LearningPathElement $element
+   *
+   * @return LearningPath
+   */
+  public function addElement(LearningPathElement $element): LearningPath
+  {
+    if (!$element->getLearningPath()) {
+      $element->setLearningPath($this);
+    }
+
+    $this->elements->add($element);
+
+    return $this;
+  }
+
+  /**
+   * @param LearningPathElement $element
+   *
+   * @return LearningPath
+   */
+  public function removeElement(LearningPathElement $element): LearningPath
+  {
+    $this->elements->removeElement($element);
 
     return $this;
   }
