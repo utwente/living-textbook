@@ -31,6 +31,10 @@ class LearningPathElementsType extends AbstractType
           for ($i = count($formData) - 1; $i >= 0; $i--) {
             // Update the next element
             $formData[$i]->setNext($previousElement);
+            if ($previousElement == NULL) {
+              // Clear description for last element, as it is not possible to have it there
+              $formData[$i]->setDescription(NULL);
+            }
             $previousElement = $formData[$i];
           }
 

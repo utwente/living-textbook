@@ -29,8 +29,26 @@ $spacer: 10px;
       padding: $spacer;
       margin: $spacer 0;
 
+      // Make placeholder have comfortable size
       &.ui-sortable-placeholder {
         height: $baseSize * 2;
+      }
+
+      // Hide description field when it is the last item, and update icon
+      &:last-of-type:not(.ui-sortable-helper) {
+        .item {
+          .form-group {
+            margin-bottom: 0;
+
+            &:last-of-type {
+              display: none;
+            }
+          }
+        }
+
+        .path-layout {
+          background-image: url('../../img/content/learning-path-element-concept-only.svg');
+        }
       }
 
       .handle {
@@ -48,20 +66,33 @@ $spacer: 10px;
         }
       }
 
-      .remove-handle {
+      .path-layout {
         position: absolute;
         top: $spacer;
-        right: $spacer;
+        bottom: $spacer;
+        left: 2 * $baseSize;
+        width: $baseSize + 3 * $spacer;
+
+        background-image: url('../../img/content/learning-path-element.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
       }
 
       .item {
         width: 100%;
-        padding-left: $baseSize + $spacer;
-        padding-right: 2 * ($baseSize + $spacer);
+        padding-left: 4 * $baseSize + 2 * $spacer;
+        padding-right: 2 * $baseSize + $spacer;
 
         .form-group:last-of-type {
           margin-bottom: 0;
         }
+      }
+
+      .remove-handle {
+        position: absolute;
+        top: $spacer;
+        right: $spacer;
       }
     }
   }

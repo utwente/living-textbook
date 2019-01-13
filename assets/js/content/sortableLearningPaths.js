@@ -40,8 +40,9 @@
     let $elem = $(elemId);
 
     $elem.sortable({
-      axis: "y",
-      handle: '.handle'
+      axis: 'y',
+      handle: '.handle',
+      helper: 'clone',
     });
     _sortables[sortableId] = {
       formId: formId,
