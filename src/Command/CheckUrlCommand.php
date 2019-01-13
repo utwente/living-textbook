@@ -63,7 +63,7 @@ class CheckUrlCommand extends Command
           assert($childUrl instanceof Url);
           $studyArea = $this->studyAreaRepository->find($id);
           assert($studyArea instanceof StudyArea);
-          echo($childUrl->getUrl() . ' in ' . $childUrl->getContext()->getClass() . ' called ' . $name . ' property ' . $childUrl->getContext()->getPath() . ' in study area ' . $studyArea->getName() . ' owned by ' . $studyArea->getOwner()->getFullName() . "\n");
+          echo(($childUrl->isInternal() ? '[Internal] ' : '') . $childUrl->getUrl() . ' in ' . $childUrl->getContext()->getClass() . ' called ' . $name . ' property ' . $childUrl->getContext()->getPath() . ' in study area ' . $studyArea->getName() . ' owned by ' . $studyArea->getOwner()->getFullName() . "\n");
         }
       }
     }

@@ -108,7 +108,7 @@ class UrlChecker
    * @param StudyArea $studyArea
    * @param bool      $force
    *
-   * @return array
+   * @return Url[]
    */
   public function checkStudyArea(StudyArea $studyArea, $force = false): array
   {
@@ -127,7 +127,7 @@ class UrlChecker
     foreach ($urls as $name => $url) {
       foreach ($url as $urlObject) {
         assert($urlObject instanceof Url);
-        if (!$this->checkUrl($urlObject, $force)) $badUrls[$name][] = $urlObject;
+        if (!$this->checkUrl($urlObject, $studyArea, $force)) $badUrls[$name][] = $urlObject;
       }
     }
 
@@ -135,22 +135,32 @@ class UrlChecker
   }
 
   /**
-   *
    * @param Url $url
    *
    * @return bool
    */
   private function _checkUrl(Url $url): bool
   {
-    if ($url->isInternal()) {//TODO check internal URL
-      return true;
-    } else {
-      // get_headers will follow redirects, so checking for status 200 is sufficient
-      $headers       = @get_headers($url->getUrl());
-      $stringHeaders = (is_array($headers)) ? implode("\n ", $headers) : $headers;
+    // get_headers will follow redirects, so checking for status 200 will also check if a redirected URL doesn't function anymore
+    $headers       = @get_headers($url->getUrl());
+    $stringHeaders = (is_array($headers)) ? implode("\n ", $headers) : $headers;
 
-      return (bool)preg_match('(HTTP/.*\s+200\s)', $stringHeaders);
-    }
+    return (bool)preg_match('(HTTP/.*\s+200\s)', $stringHeaders);
+  }
+
+  /**
+   * @param CacheableUrl     $cacheableUrl
+   * @param AdapterInterface $cache
+   * @param                  $expiry
+   *
+   * @throws \Psr\Cache\InvalidArgumentException
+   */
+  private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
+  {
+    $newItem = $cache->getItem($cacheableUrl->getCachekey());
+    $newItem->set($cacheableUrl);
+    $newItem->expiresAfter($expiry);
+    $cache->save($newItem);
   }
 
   /**
@@ -163,14 +173,14 @@ class UrlChecker
    */
   private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, string $modifyTime = '', ?AdapterInterface $oldCache = NULL): bool
   {
-    $cacheableUrl = $url->toCacheable();
+    $cacheableUrl = CacheableUrl::fromUrl($url);
     $cachekey     = $cacheableUrl->getCachekey();
     if ($oldCache !== NULL) {
       // Check if cache still valid
       $cachedUrl = $oldCache->getItem($cachekey)->get();
       assert($cachedUrl instanceof CacheableUrl);
 
-      // Test if it is expired
+      // Test whether it is expired
       if ($cachedUrl->getTimestamp() < (new \DateTime())->modify($modifyTime)) {
         $oldCache->deleteItem($cachekey);
       } else {
@@ -179,37 +189,57 @@ class UrlChecker
     }
     // Recheck
     if ($this->_checkUrl($url)) {
-      $newItem = $this->goodUrlsCache->getItem($cachekey);
-      $newItem->set($cacheableUrl);
       // Good items expire after 7 days
-      $newItem->expiresAfter(7 * 24 * 60 * 60);
-      $this->goodUrlsCache->save($newItem);
+      $this->cacheUrl($cacheableUrl, $this->goodUrlsCache, 7 * 24 * 60 * 60);
 
       return true;
     } else {
-      $newItem = $newCache->getItem($cachekey);
-      $newItem->set($cacheableUrl);
       // Bad items expire after 14 days, although they should be deleted if they're no longer valid
-      $newItem->expiresAfter(14 * 24 * 60 * 60);
-      $newCache->save($newItem);
+      $this->cacheUrl($cacheableUrl, $newCache, 14 * 24 * 60 * 60);
 
       return false;
     }
   }
 
   /**
-   * @param Url  $url
-   * @param bool $force
+   * @param Url       $url
+   * @param StudyArea $studyArea
    *
    * @return bool
    */
-  private function checkUrl(Url $url, bool $force): bool
+  private function checkInternalUrl(Url $url, StudyArea $studyArea): bool
   {
+    $urlParts = explode('/', $url->getPath());
+    // Check if uploaded to current study area
+    if ($urlParts[1] === 'uploads') {
+      return $urlParts[2] === 'studyarea' ? $urlParts[3] == $studyArea->getId() : true;
+    } else if (is_numeric($studyAreaId = $urlParts[1]) || ($urlParts[1] === 'page' && is_numeric($studyAreaId = $urlParts[2]))) {
+      // No upload, check study area
+      return $studyAreaId == $studyArea->getId();
+    }
+
+    // Not in a study area
+    return true;
+  }
+
+  /**
+   * @param Url       $url
+   * @param StudyArea $studyArea
+   * @param bool      $force
+   *
+   * @return bool
+   */
+  private function checkUrl(Url $url, StudyArea $studyArea, bool $force): bool
+  {
+    // Check internal URLs for the right study area
+    if ($url->isInternal()) {
+      return $this->checkInternalUrl($url, $studyArea);
+    }
     // Force recheck, don't use the cache
     if ($force) {
       return $this->checkAndCacheUrl($url, $this->bad0UrlCache);
     }
-    $cachekey = $url->toCacheable()->getCachekey();
+    $cachekey = CacheableUrl::fromUrl($url)->getCachekey();
     // Don't recheck if the url is still cached
     if ($this->goodUrlsCache->hasItem($cachekey)) {
       return true;
