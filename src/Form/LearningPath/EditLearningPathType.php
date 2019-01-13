@@ -34,7 +34,7 @@ class EditLearningPathType extends AbstractType
         ->add('submit', SaveType::class, [
             'list_route'           => 'app_learningpath_list',
             'enable_cancel'        => true,
-            'enable_save_and_list' => false,
+            'enable_save_and_list' => $options['save-and-list'],
             'cancel_label'         => 'form.discard',
             'cancel_route'         => 'app_learningpath_list',
         ]);
@@ -50,6 +50,7 @@ class EditLearningPathType extends AbstractType
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningPath')
         ->setAllowedTypes('learningPath', LearningPath::class)
-        ->setDefault('data_class', LearningPath::class);
+        ->setDefault('data_class', LearningPath::class)
+        ->setDefault('save-and-list', false);
   }
 }

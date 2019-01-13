@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\LearningPath;
 use App\Form\LearningPath\EditLearningPathType;
 use App\Form\Type\RemoveType;
+use App\Form\Type\SaveType;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -89,8 +90,9 @@ class LearningPathController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'    => $requestStudyArea->getStudyArea(),
-        'learningPath' => $learningPath,
+        'studyArea'     => $requestStudyArea->getStudyArea(),
+        'learningPath'  => $learningPath,
+        'save-and-list' => true,
     ]);
     $form->handleRequest($request);
 
@@ -108,7 +110,11 @@ class LearningPathController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.updated', ['%item%' => $learningPath->getName()]));
 
-      return $this->redirectToRoute('app_learningpath_list');
+      if (SaveType::isListClicked($form)) {
+        return $this->redirectToRoute('app_learningpath_list');
+      } else {
+        return $this->redirectToRoute('app_learningpath_edit', ['learningPath' => $learningPath->getId()]);
+      }
     }
 
     return [
