@@ -6,6 +6,44 @@
 $baseSize: 25px;
 $spacer: 10px;
 
+// Display layout
+.ltb-learning-path-element {
+  position: relative;
+  min-height: 3 * $baseSize;
+
+  &.no-description {
+    min-height: 2 * $baseSize;
+
+    .path-layout {
+      background-image: url('../../img/content/learning-path-element-no-description.svg');
+    }
+  }
+
+  &:last-of-type {
+    .path-layout {
+      background-image: url('../../img/content/learning-path-element-concept-only.svg');
+    }
+  }
+
+  .path-layout {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: $spacer;
+    width: $baseSize;
+
+    background-image: url('../../img/content/learning-path-element.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .item {
+    padding-left: $baseSize + 5 * $spacer
+  }
+}
+
+// Sortable (form) layout
 .sortable-learning-path {
 
   margin-bottom: -$spacer;

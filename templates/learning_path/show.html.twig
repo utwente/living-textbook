@@ -19,4 +19,14 @@
   <div class="ltb-text-container">
     {{ learningPath.question }}
   </div>
+
+  {% for element in learningPath.elements %}
+    <div class="ltb-learning-path-element{% if element.description is null %} no-description{% endif %}">
+      <div class="path-layout"></div>
+      <div class="item">
+        <b><a href="{{ path('app_concept_show', {concept: element.concept.id}) }}">{{ element.concept.name }}</a></b>
+        <p>{{ element.description }}</p>
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}
