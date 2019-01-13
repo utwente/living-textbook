@@ -51,6 +51,8 @@ concept:
   prior-knowledge: 'Prior knowledge'
   relations: 'Relations'
   remove: 'Remove concept "%item%"'
+  remove-in-learning-path: '{1} Beware! This concept is used in a learning path.|]1,Inf[ Beware! This concept is used in %count% learning paths.'
+  remove-in-learning-path-warning: 'When removing this concept, it will also be removed from any linked learning path.'
   remove-text: 'Are you sure you want to remove the concept "%item%" and all of its relations?'
   removed: 'Concept "%item%" has been removed successfully'
   saved: 'Concept "%item%" has been saved successfully.'

@@ -7,5 +7,20 @@
 {% block content %}
   <p>{{ 'concept.remove-text'|trans({"%item%": concept.name}) }}</p>
 
+  {% if learningPaths|length > 0 %}
+    <div class="alert alert-danger fade-in" role="alert">
+      <span class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></span>
+      {{ 'concept.remove-in-learning-path'|trans({'%count%': learningPaths|length}) }}
+      {{ 'concept.remove-in-learning-path-warning'|trans }}
+      <ul style="margin-bottom: 0">
+        {% for learningPath in learningPaths %}
+          <li>
+            <a href="{{ path('app_learningpath_show', {learningPath: learningPath.id}) }}">{{ learningPath.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
   {{ form(form) }}
 {% endblock %}

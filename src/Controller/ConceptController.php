@@ -7,6 +7,7 @@ use App\Form\Concept\EditConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
+use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -166,12 +167,15 @@ class ConceptController extends AbstractController
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
    * @param Concept                $concept
+   * @param LearningPathRepository $learningPathRepository
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @throws \Doctrine\ORM\ORMException
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(Request $request, RequestStudyArea $requestStudyArea, Concept $concept,
+                         LearningPathRepository $learningPathRepository, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -184,6 +188,7 @@ class ConceptController extends AbstractController
     ]);
     $form->handleRequest($request);
     if (RemoveType::isRemoveClicked($form)) {
+      $learningPathRepository->removeElementBasedOnConcept($concept);
       $em->remove($concept);
       $em->flush();
 
@@ -193,8 +198,9 @@ class ConceptController extends AbstractController
     }
 
     return [
-        'concept' => $concept,
-        'form'    => $form->createView(),
+        'concept'       => $concept,
+        'learningPaths' => $learningPathRepository->findForConcept($concept),
+        'form'          => $form->createView(),
     ];
   }
 
