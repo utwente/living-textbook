@@ -62,7 +62,8 @@ class LearningPath
   /**
    * @var Collection|LearningPathElement[]
    *
-   * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath", cascade={"persist"})
+   * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath",
+   *   cascade={"persist", "remove"})
    */
   private $elements;
 
@@ -140,9 +141,31 @@ class LearningPath
    */
   public function getElements()
   {
+    return $this->elements;
+  }
+
+  /**
+   * Get the elements ordered
+   *
+   * @return LearningPathElement[]|Collection
+   */
+  public function getElementsOrdered()
+  {
+    return self::OrderElements($this->elements);
+  }
+
+  /**
+   * Get the elements ordered
+   *
+   * @param Collection $elements
+   *
+   * @return LearningPathElement[]|Collection
+   */
+  public static function OrderElements(Collection $elements)
+  {
     $result      = [];
     $mappingNext = [];
-    foreach ($this->elements as $element) {
+    foreach ($elements as $element) {
       if ($element->getNext()) {
         $mappingNext[$element->getNext()->getId()] = $element;
       } else {

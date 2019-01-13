@@ -8,36 +8,59 @@
   let _sortables = {};
 
   /**
+   * Updates the sortable indexes to make sure the browser submits it in the correct order
+   *
+   * @param sortableId
+   */
+  function updateSortableIndexes(sortableId) {
+    let $elem = $(_sortables[sortableId].elemId);
+
+    // Update the item numbering for every item
+    let counter = 0;
+    $elem.find('li').each(function () {
+      $(this).find(':input').each(function () {
+        let nameAttr = $(this).attr('name');
+        if (typeof nameAttr !== 'undefined') {
+          const value = nameAttr.replace(/\[(\d+)](\[[^\[\]]+])$/, '[' + counter + ']$2');
+          $(this).attr('name', value)
+        }
+      });
+      counter++;
+    });
+  }
+
+  /**
    * Registers the sortable behavior for the given selector
    *
    * @param sortableId Unique identifer
    * @param formId Symfony form id
    */
   slp.registerSortable = function (sortableId, formId) {
-    let $elem = $('#' + sortableId + '_sortable');
+    const elemId = '#' + sortableId + '_sortable';
+    let $elem = $(elemId);
+
     $elem.sortable({
       axis: "y",
       handle: '.handle'
     });
     _sortables[sortableId] = {
       formId: formId,
-      elem: $elem
+      elemId: elemId
     };
 
     // Register sort update handler
     $elem.on('sortupdate', function () {
-      // Update the item numbering for every item
-      let counter = 0;
-      $elem.find('li').each(function () {
-        $(this).find(':input').each(function () {
-          const value = $(this).attr('name').replace(/\[(\d+)](\[[^\[\]]+])$/, '[' + counter + ']$2');
-          $(this).attr('name', value)
-        });
-        counter++;
-      })
+      updateSortableIndexes(sortableId);
     });
   };
 
+  /**
+   * Add new concepts to the learning path, based on the input form
+   *
+   * @param sortableId
+   * @param conceptsFieldId
+   * @param learningOutcomesFieldId
+   */
   slp.addLearningPathConcepts = function (sortableId, conceptsFieldId, learningOutcomesFieldId) {
     const $conceptField = $('#' + conceptsFieldId);
     const $learningOutcomesField = $('#' + learningOutcomesFieldId);
@@ -67,9 +90,16 @@
     $learningOutcomesField.val(null).trigger('change');
   };
 
+  /**
+   * Add a single concept to the bottom of the learning path
+   *
+   * @param sortableId
+   * @param conceptId
+   * @param name
+   */
   slp.addConcept = function (sortableId, conceptId, name) {
     // Create prototype element
-    let $elem = _sortables[sortableId].elem;
+    let $elem = $(_sortables[sortableId].elemId);
     const index = parseInt($elem.data('index'));
     const prototype = $($elem.data('prototype').replace(/__name__/g, index));
 
@@ -77,10 +107,26 @@
     prototype.find('#' + _sortables[sortableId].formId + '_' + index + '_id').val(-1);
     prototype.find('#' + _sortables[sortableId].formId + '_' + index + '_conceptId').val(conceptId);
     prototype.find('#' + _sortables[sortableId].formId + '_' + index + '_concept').val(name);
+    prototype.find('[data-toggle="tooltip"]').tooltip();
     $elem.append(prototype);
 
     // Update index for next
     $elem.data('index', index + 1);
+  };
+
+  /**
+   * Remove a concept from the learning path
+   *
+   * @param removeButton
+   * @param sortableId
+   */
+  slp.removeConcept = function (removeButton, sortableId) {
+    // Remove element
+    $(removeButton).tooltip('dispose');
+    $(removeButton).closest('li').remove();
+
+    // Update indexes
+    updateSortableIndexes(sortableId);
   };
 
 }(window.slp = window.slp || {}, $));

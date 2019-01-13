@@ -14,6 +14,8 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -78,13 +80,20 @@ class LearningPathElementType extends AbstractType
     ));
   }
 
+  public function buildView(FormView $view, FormInterface $form, array $options)
+  {
+    $view->vars['sortable_id'] = $options['sortable_id'];
+  }
+
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningPath')
-        ->setAllowedTypes('learningPath', LearningPath::class);
+        ->setAllowedTypes('learningPath', LearningPath::class)
+        ->setRequired('sortable_id')
+        ->setAllowedTypes('sortable_id', 'string');
   }
 
   private function getConcept(?int $id, StudyArea $studyArea): ?Concept

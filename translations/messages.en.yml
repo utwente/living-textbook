@@ -176,6 +176,7 @@ form:
   discard: 'Discard'
   edit: 'Edit'
   list: 'List'
+  move: 'Move'
   remove: 'Remove'
   revoke: 'Revoke'
   revoke-all: 'Revoke all'

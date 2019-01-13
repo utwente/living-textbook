@@ -7,6 +7,7 @@ use App\Form\LearningPath\EditLearningPathType;
 use App\Form\Type\RemoveType;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -81,6 +82,11 @@ class LearningPathController extends AbstractController
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
+    $originalElements = new ArrayCollection();
+    foreach ($learningPath->getElements() as $element) {
+      $originalElements->add($element);
+    }
+
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
         'studyArea'    => $requestStudyArea->getStudyArea(),
@@ -89,6 +95,13 @@ class LearningPathController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      // Remove elements no longer used
+      foreach ($originalElements as $element) {
+        if (false === $learningPath->getElements()->contains($element)) {
+          $em->remove($element);
+        }
+      }
+
       // Save the data
       $em->flush();
 

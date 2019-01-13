@@ -22,7 +22,7 @@ class LearningPathElementsType extends AbstractType
   {
     $builder->addModelTransformer(new CallbackTransformer(
         function (Collection $modelData): array {
-          return $modelData->toArray();
+          return LearningPath::OrderElements($modelData)->toArray();
         },
         function (array $formData) use ($options) : ArrayCollection {
           /** @var LearningPathElement[] $formData */
@@ -63,6 +63,7 @@ class LearningPathElementsType extends AbstractType
     $resolver->setNormalizer('entry_options', function (Options $options, $value) {
       $value['studyArea']    = $options->offsetGet('studyArea');
       $value['learningPath'] = $options->offsetGet('learningPath');
+      $value['sortable_id']  = $options->offsetGet('sortable_id');
 
       return $value;
     });
