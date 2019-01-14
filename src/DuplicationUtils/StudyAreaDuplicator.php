@@ -7,12 +7,15 @@ use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
+use App\Entity\LearningPath;
+use App\Entity\LearningPathElement;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\Repository\LearningPathRepository;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
@@ -50,6 +53,9 @@ class StudyAreaDuplicator
   /** @var LearningOutcomeRepository */
   private $learningOutcomeRepo;
 
+  /** @var LearningPathRepository */
+  private $learningPathRepo;
+
   /** @var StudyArea */
   private $studyAreaToDuplicate;
 
@@ -83,6 +89,7 @@ class StudyAreaDuplicator
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    *
+   * @param LearningPathRepository     $learningPathRepository
    * @param StudyArea                  $studyAreaToDuplicate Study area to duplicate
    * @param StudyArea                  $newStudyArea         New study area
    * @param Concept[]                  $concepts             Concepts to copy
@@ -90,7 +97,8 @@ class StudyAreaDuplicator
   public function __construct(string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
                               AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
                               ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                              StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
+                              LearningPathRepository $learningPathRepository, StudyArea $studyAreaToDuplicate,
+                              StudyArea $newStudyArea, array $concepts)
   {
     $this->urlContext           = new UrlContext(self::class);
     $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
@@ -101,6 +109,7 @@ class StudyAreaDuplicator
     $this->conceptRelationRepo  = $conceptRelationRepo;
     $this->externalResourceRepo = $externalResourceRepo;
     $this->learningOutcomeRepo  = $learningOutcomeRepo;
+    $this->learningPathRepo     = $learningPathRepository;
     $this->studyAreaToDuplicate = $studyAreaToDuplicate;
     $this->newStudyArea         = $newStudyArea;
     $this->concepts             = $concepts;
@@ -133,6 +142,9 @@ class StudyAreaDuplicator
 
       // Duplicate the relations and relation types for the study area
       $this->duplicateRelations();
+
+      // Duplicate the learning paths
+      $this->duplicateLearningPaths();
 
       // Flush to generate id's for the links
       $this->em->flush();
@@ -173,6 +185,49 @@ class StudyAreaDuplicator
   }
 
   /**
+   * Duplicate the learning paths
+   */
+  private function duplicateLearningPaths(): void
+  {
+    $learningPaths = $this->learningPathRepo->findForStudyArea($this->studyAreaToDuplicate);
+    foreach ($learningPaths as $learningPath) {
+      $newLearningPath = (new LearningPath())
+          ->setStudyArea($this->newStudyArea)
+          ->setName($learningPath->getName())
+          ->setQuestion($learningPath->getQuestion());
+
+      /** @var LearningPathElement $previousElement */
+      $previousElement = NULL;
+      $setNextNull     = false;
+      /** @var LearningPathElement[] $currentElements */
+      $currentElements = $learningPath->getElementsOrdered()->toArray();
+      for ($i = count($currentElements) - 1; $i >= 0; $i--) {
+        $element = $currentElements[$i];
+
+        // Only copy element when the concept has been copied as well
+        if (!array_key_exists($element->getConcept()->getId(), $this->newConcepts)) {
+          // Set next description to null when skipping an element
+          $setNextNull = true;
+          continue;
+        }
+
+        $newElement = (new LearningPathElement())
+            ->setNext($previousElement)
+            ->setConcept($this->newConcepts[$element->getConcept()->getId()])
+            ->setDescription($setNextNull ? NULL : $element->getDescription());
+        $newLearningPath->addElement($newElement);
+        $setNextNull     = false;
+        $previousElement = $newElement;
+      }
+
+      // Only save learning path when it still has elements left to save
+      if ($newLearningPath->getElements()->count() > 0) {
+        $this->em->persist($newLearningPath);
+      }
+    }
+  }
+
+  /**
    * Duplicate the external resources
    */
   private function duplicateExternalResources(): void
@@ -190,7 +245,6 @@ class StudyAreaDuplicator
       $this->newExternalResources[$externalResource->getId()] = $newExternalResource;
     }
   }
-
 
   /**
    * Duplicate the abbreviations

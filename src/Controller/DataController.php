@@ -16,6 +16,7 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\Repository\LearningPathRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\UrlScanner;
@@ -284,6 +285,7 @@ class DataController extends AbstractController
    * @param ConceptRelationRepository  $conceptRelationRepo
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
+   * @param LearningPathRepository     $learningPathRepo
    *
    * @return array|Response
    * @throws \Exception
@@ -291,7 +293,8 @@ class DataController extends AbstractController
   public function duplicate(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
                             EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
                             AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo)
+                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
+                            LearningPathRepository $learningPathRepo)
   {
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
@@ -322,7 +325,7 @@ class DataController extends AbstractController
       $duplicator = new StudyAreaDuplicator(
           $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router,
           $abbreviationRepo, $conceptRelationRepo, $externalResourceRepo, $learningOutcomeRepo,
-          $studyAreaToDuplicate, $newStudyArea, $concepts->toArray());
+          $learningPathRepo, $studyAreaToDuplicate, $newStudyArea, $concepts->toArray());
       $duplicator->duplicate();
 
       $this->addFlash('success', $trans->trans('data.concepts-duplicated'));

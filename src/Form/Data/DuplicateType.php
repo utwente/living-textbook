@@ -48,6 +48,7 @@ class DuplicateType extends AbstractType
         ->add('select_all', CheckboxType::class, [
             'label'    => 'data.select-all',
             'required' => false,
+            'help'     => 'data.select-all-info',
         ])
         ->add('submit', SaveType::class, [
             'list_route'           => 'app_concept_list',
