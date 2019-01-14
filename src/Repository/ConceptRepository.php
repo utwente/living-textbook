@@ -26,7 +26,7 @@ class ConceptRepository extends ServiceEntityRepository
     return $this->createQueryBuilder('c')
         ->where('c.studyArea = :studyArea')
         ->setParameter(':studyArea', $studyArea)
-        ->orderBy('c.name', 'asc');
+        ->orderBy('c.name', 'ASC');
   }
 
   /**

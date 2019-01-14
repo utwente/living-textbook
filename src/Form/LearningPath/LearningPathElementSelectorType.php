@@ -42,10 +42,7 @@ class LearningPathElementSelectorType extends AbstractType
             'required'      => false,
             'multiple'      => true,
             'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
-              return $conceptRepository->createQueryBuilder('c')
-                  ->where('c.studyArea = :studyArea')
-                  ->setParameter('studyArea', $studyArea)
-                  ->orderBy('c.name');
+              return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea);
             },
             'select2'       => true,
         ])
@@ -56,10 +53,7 @@ class LearningPathElementSelectorType extends AbstractType
             'required'      => false,
             'multiple'      => true,
             'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
-              return $learningOutcomeRepository->createQueryBuilder('lo')
-                  ->where('lo.studyArea = :studyArea')
-                  ->setParameter('studyArea', $studyArea)
-                  ->orderBy('lo.name');
+              return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
             },
             'select2'       => true,
         ])
