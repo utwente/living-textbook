@@ -20,7 +20,7 @@
     {{ learningPath.question }}
   </div>
 
-  {% for element in learningPath.elements %}
+  {% for element in learningPath.elementsOrdered %}
     <div class="ltb-learning-path-element{% if element.description is null %} no-description{% endif %}">
       <div class="path-layout"></div>
       <div class="item">
