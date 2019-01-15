@@ -43,10 +43,6 @@
              href="{{ path('app_externalresource_list') }}">{{ 'menu.external-resources'|trans }}</a>
           <a class="dropdown-item"
              href="{{ path('app_learningoutcome_list') }}">{{ 'menu.learning-outcomes'|trans }}</a>
-          {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
-            <a class="dropdown-item"
-               href="{{ path('app_studyarea_urlOverview') }}">{{ 'menu.urls'|trans }}</a>
-          {% endif %}
         </div>
       </li>
 
@@ -60,6 +56,8 @@
           {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
             <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}"
                target="_blank">{{ 'menu.excel-status'|trans }}</a>
+            <a class="dropdown-item"
+               href="{{ path('app_default_urloverview') }}">{{ 'menu.urls'|trans }}</a>
           {% endif %}
           <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
           {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}

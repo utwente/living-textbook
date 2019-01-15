@@ -163,7 +163,6 @@ class DefaultController extends AbstractController
 
   /**
    * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"})
-   * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"}, name="app_studyarea_urlOverview")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
@@ -189,8 +188,7 @@ class DefaultController extends AbstractController
   }
 
   /**
-   * @Route("/{_studyArea}/rescanUrl/{url}", requirements={"_studyArea"="\d+"})
-   * @Route("/{_studyArea}/rescanUrl/{url}", requirements={"_studyArea"="\d+"}, name="app_studyarea_rescanUrl")
+   * @Route("/{_studyArea}/rescanurl/{url}", requirements={"_studyArea"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param RequestStudyArea    $requestStudyArea
@@ -204,15 +202,16 @@ class DefaultController extends AbstractController
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
   {
     $url    = $urlScanner->scanText(urldecode($url));
-    $result = strtolower($urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true) ? $translator->trans('url.good') : $translator->trans('url.bad'));
-    $this->addFlash('info', $translator->trans('url.rescanned') . $result);
+    $result = $urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true) ?
+        $translator->trans('url.good') :
+        $translator->trans('url.bad');
+    $this->addFlash('info', $translator->trans('url.rescanned', ['%result%' => strtolower($result)]));
 
-    return $this->redirect($this->generateUrl('app_studyarea_urlOverview'));
+    return $this->redirect($this->generateUrl('app_default_urloverview'));
   }
 
   /**
-   * @Route("/{_studyArea}/rescanUrls", requirements={"_studyArea"="\d+"})
-   * @Route("/{_studyArea}/rescanUrls", requirements={"_studyArea"="\d+"}, name="app_studyarea_rescanUrls")
+   * @Route("/{_studyArea}/rescanurls", requirements={"_studyArea"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param RequestStudyArea    $requestStudyArea
@@ -226,7 +225,7 @@ class DefaultController extends AbstractController
     $urlChecker->checkStudyArea($requestStudyArea->getStudyArea(), true);
     $this->addFlash('info', $translator->trans('url.rescanned-study-area'));
 
-    return $this->redirect($this->generateUrl('app_studyarea_urlOverview'));
+    return $this->redirect($this->generateUrl('app_default_urloverview'));
   }
 
   /**

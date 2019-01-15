@@ -63,6 +63,16 @@ class UrlContext
   }
 
   /**
+   * Change the camelCase of the property path to snake-case, as that is used in the translations
+   *
+   * @return string
+   */
+  public function getPathAsTransKey(): string
+  {
+    return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $this->getPath()));
+  }
+
+  /**
    * @return bool
    */
   public function isInline(): bool

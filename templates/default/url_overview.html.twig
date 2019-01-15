@@ -1,8 +1,8 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-    {% from '_macro/_action_bar.html.twig' import action_button %}
-    {{ action_button(path('app_studyarea_rescanUrls'), 'fa-repeat', 'url.rescan-study-area'|trans, 'warning') }}
+  {% from '_macro/_action_bar.html.twig' import action_button %}
+  {{ action_button(path('app_default_urlrescanstudyarea'), 'fa-repeat', 'url.rescan-study-area'|trans, 'warning') }}
 {% endblock %}
 
 {% block title %}
@@ -22,31 +22,51 @@
       </thead>
       <tbody>
       {% for id, urlDescription in urls %}
+        {# Remove class indicator #}
+        {% set id = id[1:] %}
         {% for url in urlDescription %}
-          {% set descriptionArgs = {'%path%': url.context.path} %}
           {% if url.context.class == 'App\\Entity\\StudyArea' %}
             {% set description = 'url.study-area-path' %}
             {% set editUrl = path('app_studyarea_edit', {'studyArea': id}) %}
+            {% set descriptionArgs = {'%path%': ('study-area.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\Concept' %}
             {% set description = 'url.concept-path' %}
             {% set editUrl = path('app_concept_edit', {'concept': id}) %}
+            {% set descriptionArgs = {'%path%': ('concept.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\LearningOutcome' %}
             {% set description = 'url.learning-outcome-path' %}
             {% set editUrl = path('app_learningoutcome_edit', {'learningOutcome': id}) %}
+            {% set descriptionArgs = {'%path%': ('learning-outcome.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\ExternalResource' %}
             {% set description = 'url.external-resource-path' %}
             {% set editUrl = path('app_externalresource_edit', {'externalResource': id}) %}
+            {% set descriptionArgs = {'%path%': ('external-resource.' ~ url.context.pathAsTransKey)|trans} %}
           {% else %}
             {% set description = 'url.unknown' %}
             {% set editUrl = '' %}
           {% endif %}
           <tr>
             <td><a href="{{ url.url }}">{{ url.url }}</a></td>
-            <td>{% if url.url in badUrls %}{% if url.internal %}{{ 'url.internal-wrong'|trans }}{% else %}{{ 'url.bad'|trans }}{% endif %}{% else %}{{ 'url.good'|trans }}{% endif %}</td>
-            <td>{% if editUrl != '' %}<a href="{{ editUrl }}">{{ description|trans(descriptionArgs) }}</a>{% else %}{{ description|trans }}{% endif %}
+            <td>
+              {% if url.url in badUrls %}
+                {% if url.internal %}
+                  {{ 'url.internal-wrong'|trans }}
+                {% else %}
+                  {{ 'url.bad'|trans }}
+                {% endif %}
+              {% else %}
+                {{ 'url.good'|trans }}
+              {% endif %}
             </td>
             <td>
-              <a href="{{ path('app_studyarea_rescanUrl', {'url': url.url|url_encode}) }}">{{ 'url.rescan'|trans }}</a>
+              {% if editUrl != '' %}
+                <a href="{{ editUrl }}">{{ description|trans(descriptionArgs) }}</a>
+              {% else %}
+                {{ description|trans }}
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ path('app_default_urlrescan', {'url': url.url|url_encode}) }}">{{ 'url.rescan'|trans }}</a>
             </td>
           </tr>
         {% endfor %}

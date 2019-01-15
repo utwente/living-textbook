@@ -57,7 +57,7 @@
     </li>
     {% if is_granted('STUDYAREA_EDIT', studyArea) %}
       <li>
-        {% if urlCount > 0 %}<a href="{{ path('app_studyarea_urlOverview') }}">{% endif %}
+        {% if urlCount > 0 %}<a href="{{ path('app_default_urloverview') }}">{% endif %}
           {{ 'dashboard.url-count'|trans({'%count%': urlCount, '%brokenCount%': brokenUrlCount}) }}
           {% if urlCount > 0 %}</a>{% endif %}
       </li>

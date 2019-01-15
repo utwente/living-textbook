@@ -87,9 +87,12 @@ class UrlChecker
   }
 
   /**
+   * Check all the URLs in the whole application
+   *
    * @param bool $force
    *
    * @return array
+   * Returns an array with structure [studyarea_id][(s|c|l|e)item_id][url] to maintain origin
    */
   public function checkAllUrls($force = false): array
   {
@@ -101,14 +104,16 @@ class UrlChecker
     }
 
     return $badUrls;
-
   }
 
   /**
+   * Check the URLs used within one study area
+   *
    * @param StudyArea $studyArea
    * @param bool      $force
    *
    * @return array
+   * Returns an array with structure [(s|c|l|e)item_id[url] to maintain origin
    */
   public function checkStudyArea(StudyArea $studyArea, $force = false): array
   {
@@ -123,10 +128,13 @@ class UrlChecker
   }
 
   /**
+   * Check the URLs used within one study area
+   *
    * @param StudyArea $studyArea
    * @param bool      $force
    *
    * @return Url[]
+   * Returns a flat array of URLs without origin
    */
   public function checkStudyAreaFlat(StudyArea $studyArea, $force = false): array
   {
@@ -137,11 +145,13 @@ class UrlChecker
   }
 
   /**
-   * @param           $urls
+   * Find bad urls within an array of urls
+   *
+   * @param Url[]     $urls
    * @param StudyArea $studyArea
    * @param           $force
    *
-   * @return array
+   * @return Url[]
    */
   public function findBadUrls($urls, StudyArea $studyArea, $force): array
   {
@@ -155,30 +165,37 @@ class UrlChecker
   }
 
   /**
+   * Find the used URLs within one study area
+   *
    * @param StudyArea $studyArea
    *
-   * @return mixed
+   * @return array
+   * Returns an array with structure [(s|c|l|e)item_id][url] to maintain origin
    */
   public function getUrlsForStudyArea(StudyArea $studyArea)
   {
-    $urls[$studyArea->getId()] = $this->urlScanner->scanStudyArea($studyArea);
+    $urls                            = [];
+    $urls['s' . $studyArea->getId()] = $this->urlScanner->scanStudyArea($studyArea);
     foreach ($studyArea->getConcepts() as $concept) {
-      $urls[$concept->getId()] = $this->urlScanner->scanConcept($concept);
+      $urls['c' . $concept->getId()] = $this->urlScanner->scanConcept($concept);
     }
     foreach ($this->learningOutcomeRepository->findForStudyArea($studyArea) as $learningOutcome) {
-      $urls[$learningOutcome->getId()] = $this->urlScanner->scanLearningOutcome($learningOutcome);
+      $urls['l' . $learningOutcome->getId()] = $this->urlScanner->scanLearningOutcome($learningOutcome);
     }
     foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
-      $urls[$externalResource->getId()] = $this->urlScanner->scanExternalResource($externalResource);
+      $urls['e' . $externalResource->getId()] = $this->urlScanner->scanExternalResource($externalResource);
     }
 
     return $urls;
   }
 
   /**
+   * Find the used URLs within one study area
+   *
    * @param StudyArea $studyArea
    *
    * @return Url[]|array
+   * Returns a flat array of URLs without origin
    */
   public function getUrlsForStudyAreaFlat(StudyArea $studyArea)
   {
@@ -197,20 +214,36 @@ class UrlChecker
   }
 
   /**
+   * Check if a given Url gives a correct response, based on
+   * https://stackoverflow.com/questions/15770903/check-if-links-are-broken-in-php
+   *
    * @param Url $url
    *
    * @return bool
    */
   private function _checkUrl(Url $url): bool
   {
-    // get_headers will follow redirects, so checking for status 200 will also check if a redirected URL doesn't function anymore
-    $headers       = @get_headers($url->getUrl());
-    $stringHeaders = (is_array($headers)) ? implode("\n ", $headers) : $headers;
+    $ch = curl_init();
+    // Set URL
+    curl_setopt($ch, CURLOPT_URL, $url->getUrl());
+    // Get headers
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    // Mute output of cURL
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // Follow redirects, so checking for status 200 will also check if a redirected URL doesn't function anymore
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_exec($ch);
+    // Get headers
+    $headers = curl_getinfo($ch);
+    curl_close($ch);
 
-    return (bool)preg_match('(HTTP/.*\s+200\s)', $stringHeaders);
+    // Verify HTTP code
+    return $headers['http_code'] === 200;
   }
 
   /**
+   * Cache a URL in the given cache
+   *
    * @param CacheableUrl     $cacheableUrl
    * @param AdapterInterface $cache
    * @param                  $expiry
@@ -219,13 +252,16 @@ class UrlChecker
    */
   private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
   {
-    $newItem = $cache->getItem($cacheableUrl->getCachekey());
-    $newItem->set($cacheableUrl);
-    $newItem->expiresAfter($expiry);
-    $cache->save($newItem);
+    $cache->save(
+        $cache->getItem($cacheableUrl->getCachekey())
+            ->set($cacheableUrl)
+            ->expiresAfter($expiry)
+    );
   }
 
   /**
+   * Check a URL and cache it
+   *
    * @param Url                   $url
    * @param AdapterInterface      $newCache
    * @param string                $modifyTime
