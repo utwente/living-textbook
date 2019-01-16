@@ -265,7 +265,7 @@ menu:
 
 permissions:
   admin: 'Administrator'
-  add-admin-title: 'Add new adminstrator'
+  add-admin-title: 'Add new administrator'
   add-permissions: 'Add "%type%" permissions'
   add-permissions-text: "You can add permissions based on user accounts and/or based on e-mail addresses.\
                           When an account is found or created for any supplied e-mail address, it will be automatically converted to a full user."
