@@ -12,6 +12,8 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\UrlUtils\UrlChecker;
+use App\UrlUtils\UrlScanner;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,6 +25,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefaultController extends AbstractController
 {
@@ -103,6 +106,7 @@ class DefaultController extends AbstractController
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    * @param LearningPathRepository     $learningPathRepo
+   * @param UrlChecker                 $urlChecker
    *
    * @return array
    *
@@ -111,7 +115,7 @@ class DefaultController extends AbstractController
   public function dashboard(RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
                             ConceptRepository $conceptRepo, AbbreviationRepository $abbreviationRepository,
                             ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                            LearningPathRepository $learningPathRepo)
+                            LearningPathRepository $learningPathRepo, UrlChecker $urlChecker)
   {
     $user       = $this->getUser();
     $studyArea  = $requestStudyArea->getStudyArea();
@@ -152,7 +156,77 @@ class DefaultController extends AbstractController
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
         'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
+        'urlCount'              => count($urlChecker->getUrlsForStudyAreaFlat($studyArea)),
+        'brokenUrlCount'        => count($urlChecker->checkStudyAreaFlat($studyArea)),
     ];
+  }
+
+  /**
+   * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"})
+   * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"}, name="app_studyarea_urlOverview")
+   * @Template
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea $requestStudyArea
+   * @param UrlChecker       $urlChecker
+   *
+   * @return array
+   */
+  public function urlOverview(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker)
+  {
+    $studyArea    = $requestStudyArea->getStudyArea();
+    $urls         = $urlChecker->getUrlsForStudyArea($studyArea);
+    $badUrls      = $urlChecker->checkStudyAreaFlat($studyArea);
+    $flatBadLinks = [];
+    foreach ($badUrls as $badUrl) {
+      $flatBadLinks[] = $badUrl->getUrl();
+    }
+
+    return [
+        'urls'    => $urls,
+        'badUrls' => $flatBadLinks,
+    ];
+  }
+
+  /**
+   * @Route("/{_studyArea}/rescanUrl/{url}", requirements={"_studyArea"="\d+"})
+   * @Route("/{_studyArea}/rescanUrl/{url}", requirements={"_studyArea"="\d+"}, name="app_studyarea_rescanUrl")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea    $requestStudyArea
+   * @param UrlChecker          $urlChecker
+   * @param UrlScanner          $urlScanner
+   * @param TranslatorInterface $translator
+   * @param                     $url
+   *
+   * @return RedirectResponse
+   */
+  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
+  {
+    $url    = $urlScanner->scanText(urldecode($url));
+    $result = strtolower($urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true) ? $translator->trans('url.good') : $translator->trans('url.bad'));
+    $this->addFlash('info', $translator->trans('url.rescanned') . $result);
+
+    return $this->redirect($this->generateUrl('app_studyarea_urlOverview'));
+  }
+
+  /**
+   * @Route("/{_studyArea}/rescanUrls", requirements={"_studyArea"="\d+"})
+   * @Route("/{_studyArea}/rescanUrls", requirements={"_studyArea"="\d+"}, name="app_studyarea_rescanUrls")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea    $requestStudyArea
+   * @param UrlChecker          $urlChecker
+   * @param TranslatorInterface $translator
+   *
+   * @return RedirectResponse
+   */
+  public function urlRescanStudyArea(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, TranslatorInterface $translator)
+  {
+    $urlChecker->checkStudyArea($requestStudyArea->getStudyArea(), true);
+    $this->addFlash('info', $translator->trans('url.rescanned-study-area'));
+
+    return $this->redirect($this->generateUrl('app_studyarea_urlOverview'));
   }
 
   /**

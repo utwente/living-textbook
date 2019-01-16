@@ -108,30 +108,92 @@ class UrlChecker
    * @param StudyArea $studyArea
    * @param bool      $force
    *
-   * @return Url[]
+   * @return array
    */
   public function checkStudyArea(StudyArea $studyArea, $force = false): array
   {
     // Get all used URLs
-    $urls[$studyArea->getName()] = $this->urlScanner->scanStudyArea($studyArea);
-    foreach ($studyArea->getConcepts() as $concept) {
-      $urls[$concept->getName()] = $this->urlScanner->scanConcept($concept);
-    }
-    foreach ($this->learningOutcomeRepository->findForStudyArea($studyArea) as $learningOutcome) {
-      $urls[$learningOutcome->getName()] = $this->urlScanner->scanLearningOutcome($learningOutcome);
-    }
-    foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
-      $urls[$externalResource->getTitle()] = $this->urlScanner->scanExternalResource($externalResource);
-    }
+    $urls    = $this->getUrlsForStudyArea($studyArea);
     $badUrls = [];
-    foreach ($urls as $name => $url) {
-      foreach ($url as $urlObject) {
-        assert($urlObject instanceof Url);
-        if (!$this->checkUrl($urlObject, $studyArea, $force)) $badUrls[$name][] = $urlObject;
-      }
+    foreach ($urls as $id => $subUrls) {
+      $badUrls[$id] = $this->findBadUrls($subUrls, $studyArea, $force);
     }
 
     return $badUrls;
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   * @param bool      $force
+   *
+   * @return Url[]
+   */
+  public function checkStudyAreaFlat(StudyArea $studyArea, $force = false): array
+  {
+    // Get all used URLs
+    $urls = $this->getUrlsForStudyAreaFlat($studyArea);
+
+    return $this->findBadUrls($urls, $studyArea, $force);
+  }
+
+  /**
+   * @param           $urls
+   * @param StudyArea $studyArea
+   * @param           $force
+   *
+   * @return array
+   */
+  public function findBadUrls($urls, StudyArea $studyArea, $force): array
+  {
+    $badUrls = [];
+    foreach ($urls as $url) {
+      assert($url instanceof Url);
+      if (!$this->checkUrl($url, $studyArea, $force)) $badUrls[] = $url;
+    }
+
+    return $badUrls;
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   */
+  public function getUrlsForStudyArea(StudyArea $studyArea)
+  {
+    $urls[$studyArea->getId()] = $this->urlScanner->scanStudyArea($studyArea);
+    foreach ($studyArea->getConcepts() as $concept) {
+      $urls[$concept->getId()] = $this->urlScanner->scanConcept($concept);
+    }
+    foreach ($this->learningOutcomeRepository->findForStudyArea($studyArea) as $learningOutcome) {
+      $urls[$learningOutcome->getId()] = $this->urlScanner->scanLearningOutcome($learningOutcome);
+    }
+    foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
+      $urls[$externalResource->getId()] = $this->urlScanner->scanExternalResource($externalResource);
+    }
+
+    return $urls;
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return Url[]|array
+   */
+  public function getUrlsForStudyAreaFlat(StudyArea $studyArea)
+  {
+    $urls = $this->urlScanner->scanStudyArea($studyArea);
+    foreach ($studyArea->getConcepts() as $concept) {
+      $urls = array_merge($urls, $this->urlScanner->scanConcept($concept));
+    }
+    foreach ($this->learningOutcomeRepository->findForStudyArea($studyArea) as $learningOutcome) {
+      $urls = array_merge($urls, $this->urlScanner->scanLearningOutcome($learningOutcome));
+    }
+    foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
+      $urls = array_merge($urls, $this->urlScanner->scanExternalResource($externalResource));
+    }
+
+    return $urls;
   }
 
   /**
@@ -229,7 +291,7 @@ class UrlChecker
    *
    * @return bool
    */
-  private function checkUrl(Url $url, StudyArea $studyArea, bool $force): bool
+  public function checkUrl(Url $url, StudyArea $studyArea, bool $force): bool
   {
     // Check internal URLs for the right study area
     if ($url->isInternal()) {

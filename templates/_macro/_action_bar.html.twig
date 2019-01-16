@@ -44,6 +44,13 @@
   {{ block('_bar_footer') }}
 {% endmacro %}
 
+{% macro action_button(url, icon, label, color, blank) %}
+  {% from _self import _action_button %}
+  {{ block('_bar_header') }}
+  {{ _action_button(url, icon, label, color|default('secondary'), blank|default(false)) }}
+  {{ block('_bar_footer') }}
+{% endmacro %}
+
 {% macro _action_button(url, icon, label, color, blank) %}
   <a href="{{ url }}" {% if blank|default(false) %}target="_blank" {% endif %}
      class="btn btn-outline-{{ color|default('secondary') }}"><i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}</a>

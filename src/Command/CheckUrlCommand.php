@@ -57,13 +57,14 @@ class CheckUrlCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $urls = $this->urlChecker->checkAllUrls();
-    foreach ($urls as $id => $studyAreaUrls) {
-      foreach ($studyAreaUrls as $name => $childUrls) {
+    foreach ($urls as $studyAreaId => $studyAreaUrls) {
+      foreach ($studyAreaUrls as $id => $childUrls) {
         foreach ($childUrls as $childUrl) {
           assert($childUrl instanceof Url);
-          $studyArea = $this->studyAreaRepository->find($id);
+          $studyArea = $this->studyAreaRepository->find($studyAreaId);
           assert($studyArea instanceof StudyArea);
-          echo(($childUrl->isInternal() ? '[Internal] ' : '') . $childUrl->getUrl() . ' in ' . $childUrl->getContext()->getClass() . ' called ' . $name . ' property ' . $childUrl->getContext()->getPath() . ' in study area ' . $studyArea->getName() . ' owned by ' . $studyArea->getOwner()->getFullName() . "\n");
+          // TODO implement notification
+//          echo(($childUrl->isInternal() ? '[Internal] ' : '') . $childUrl->getUrl() . ' in ' . $childUrl->getContext()->getClass() . ' with id ' . $id . ' property ' . $childUrl->getContext()->getPath() . ' in study area ' . $studyArea->getName() . ' owned by ' . $studyArea->getOwner()->getFullName() . "\n");
         }
       }
     }

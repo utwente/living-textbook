@@ -43,6 +43,10 @@
              href="{{ path('app_externalresource_list') }}">{{ 'menu.external-resources'|trans }}</a>
           <a class="dropdown-item"
              href="{{ path('app_learningoutcome_list') }}">{{ 'menu.learning-outcomes'|trans }}</a>
+          {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+            <a class="dropdown-item"
+               href="{{ path('app_studyarea_urlOverview') }}">{{ 'menu.urls'|trans }}</a>
+          {% endif %}
         </div>
       </li>
 

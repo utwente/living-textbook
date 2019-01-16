@@ -55,6 +55,13 @@
         {{ 'dashboard.learning-path-count'|trans({'%count%': learningPathCount}) }}
         {% if learningPathCount > 0 %}</a>{% endif %}
     </li>
+    {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+      <li>
+        {% if urlCount > 0 %}<a href="{{ path('app_studyarea_urlOverview') }}">{% endif %}
+          {{ 'dashboard.url-count'|trans({'%count%': urlCount, '%brokenCount%': brokenUrlCount}) }}
+          {% if urlCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
   </ul>
 
   <h4>{{ 'dashboard.search-concept'|trans }}</h4>

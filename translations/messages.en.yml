@@ -91,6 +91,7 @@ dashboard:
   study-area-landing: 'Select a study area to start with'
   study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
+  url-count: '{0} No URLs|{1} One URL of which %brokenCount% broken|]1,Inf[ %count% URLs of which %brokenCount% broken'
 
 excel:
   boolean:
@@ -260,6 +261,7 @@ menu:
   relation-type: 'Relation types'
   show: 'Show'
   study-area: 'Study areas'
+  urls: 'URLs'
 
 permissions:
   admin: 'Administrator'
@@ -357,6 +359,23 @@ relation-type:
   removed-already: 'The relation type "%item%" was already removed'
   saved: 'Relation type "%item%" has been saved successfully.'
   updated: 'Relation type "%item%" has been successfully updated.'
+
+url:
+  bad: 'Broken'
+  concept-path: 'Concept:%path%'
+  external-resource-path: 'External resource:%path%'
+  good: 'Good'
+  internal-wrong: 'Internal URL, wrong study area'
+  learning-outcome-path: 'Learning outcome:%path%'
+  rescan: 'Rescan'
+  rescan-study-area: 'Rescan all URLs in study area'
+  rescanned: 'URL rescanned, result: '
+  rescanned-study-area: 'Rescanned all URLs in study area'
+  status: 'Status'
+  study-area-path: 'Study area:%path%'
+  overview-title: 'URL list'
+  unknown: 'Unknown origin'
+  url: 'URL'
 
 user:
   display-name: 'Name'
