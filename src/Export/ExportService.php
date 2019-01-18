@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Export;
+
+use App\Entity\StudyArea;
+use App\Export\Provider\LinkedSimpleNodeProvider;
+use Symfony\Component\HttpFoundation\Response;
+
+class ExportService
+{
+  /**
+   * Available export types, and their providers
+   *
+   * @var ProviderInterface[]
+   */
+  private $providers = [];
+
+  public function __construct(LinkedSimpleNodeProvider $p1)
+  {
+    $key = 0;
+    foreach (func_get_args() as $provider) {
+      /** @var ProviderInterface $provider */
+      $this->providers['p' . ++$key] = $provider;
+    }
+  }
+
+  /**
+   * Get the available choices, to be used in a ChoiceType
+   *
+   * @return array
+   */
+  public function getChoices()
+  {
+    $data = [];
+    foreach ($this->providers as $key => $provider) {
+      $providerName = strtolower($provider::getName());
+      $choiceName   = 'data.download.provider.' . $providerName;
+      if (array_key_exists($choiceName, $data)) {
+        throw new \InvalidArgumentException("Non-unique download providers registered");
+      }
+      $data[$choiceName] = $key;
+    }
+
+    ksort($data);
+
+    return $data;
+  }
+
+  /**
+   * Retrieve the export data
+   *
+   * @param StudyArea $studyArea
+   * @param string    $exportProvider
+   *
+   * @return Response
+   */
+  public function export(StudyArea $studyArea, string $exportProvider): Response
+  {
+    if (!array_key_exists($exportProvider, $this->providers)) {
+      throw new \InvalidArgumentException(sprintf("Requested provider %s is not registered!", $exportProvider));
+    }
+
+    return $this->providers[$exportProvider]->export($studyArea);
+  }
+}

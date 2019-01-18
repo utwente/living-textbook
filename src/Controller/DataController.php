@@ -8,6 +8,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Excel\StudyAreaStatusBuilder;
+use App\Export\ExportService;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
@@ -30,7 +31,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -46,6 +46,8 @@ class DataController extends AbstractController
 {
 
   /**
+   * Export for concept browser and search. Search part currently isn't used, but it kept for now.
+   *
    * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
    * @Route("/search", name="app_data_search", options={"expose"=true}, defaults={"export"=false})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -205,17 +207,13 @@ class DataController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Request                   $request
-   * @param RequestStudyArea          $requestStudyArea
-   * @param SerializerInterface       $serializer
-   * @param ConceptRepository         $conceptRepo
-   * @param ConceptRelationRepository $conceptRelationRepo
-   * @param RelationTypeRepository    $relationTypeRepo
+   * @param Request          $request
+   * @param RequestStudyArea $requestStudyArea
+   * @param ExportService    $exportService
    *
    * @return array|Response
    */
-  public function download(Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer,
-                           ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo)
+  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService)
   {
     // Use a form due to the fact that in the future, there will probably be a type selection here (json/owl)
     $form = $this->createForm(DownloadType::class);
@@ -223,45 +221,7 @@ class DataController extends AbstractController
 
     $studyArea = $requestStudyArea->getStudyArea();
     if ($form->isSubmitted()) {
-      /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
-      $relationTypes = $relationTypeRepo->findBy(['studyArea' => $studyArea]);
-
-      // Retrieve the concepts
-      $concepts = $conceptRepo->findForStudyAreaOrderedByName($studyArea);
-      $links    = $conceptRelationRepo->findByConcepts($concepts);
-
-      // Detach the data from the ORM
-      $idMap = [];
-      foreach ($concepts as $key => $concept) {
-        assert($concept instanceof Concept);
-        $idMap[$concept->getId()] = $key;
-      }
-      $mappedLinks = [];
-      foreach ($links as &$link) {
-        assert($link instanceof ConceptRelation);
-        $mappedLinks[] = [
-            'target'       => $idMap[$link->getTargetId()],
-            'source'       => $idMap[$link->getSourceId()],
-            'relationName' => $link->getRelationName(),
-        ];
-      }
-
-      // Create JSON data
-      {
-        // Return as JSON
-        $json = $serializer->serialize([
-            'nodes' => $concepts,
-            'links' => $mappedLinks,
-        ], 'json', SerializationContext::create()->setGroups(['download_json']));
-
-        $response = new JsonResponse($json, Response::HTTP_OK, [], true);
-        $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            sprintf('%s_export.json', mb_strtolower(preg_replace('/[^\p{L}\p{N}]/u', '_', $studyArea->getName())))
-        ));
-
-        return $response;
-      }
+      return $exportService->export($studyArea, $form->getData()['type']);
     }
 
     return [

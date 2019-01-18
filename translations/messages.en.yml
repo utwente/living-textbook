@@ -65,8 +65,12 @@ data:
   concepts: 'Concepts'
   concepts-duplicated: 'The study area has been duplicated successfully. Start browsing it directly!'
   concepts-to-duplicate: 'Concepts to duplicate'
-  download: 'Download'
-  download-text: 'You can download the current study area as JSON. Note that the wiki content will not be exported!'
+  download:
+    text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
+    title: 'Export'
+    type: 'Export type'
+    provider:
+      linked-simple-node: 'Simple linked node export'
   duplicate: 'Duplicate'
   duplicate-text: 'Here you can duplicate (parts of) the study area "%item%" into a new study area. You can either select a concept subset, or tick "Select all" to duplicate all concepts.'
   json-file: 'JSON data file'
@@ -246,7 +250,7 @@ menu:
   change-password: 'Change password'
   config: 'Configuration'
   data: 'Data'
-  download: 'Download'
+  download: 'Export'
   duplicate: 'Duplicate'
   edit: 'Edit'
   excel-status: 'Progress export'

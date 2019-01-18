@@ -2,19 +2,32 @@
 
 namespace App\Form\Data;
 
+use App\Export\ExportService;
 use App\Form\Type\SingleSubmitType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DownloadType extends AbstractType
 {
+  /** @var ExportService */
+  private $exportService;
+
+  public function __construct(ExportService $exportService)
+  {
+    $this->exportService = $exportService;
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        // In the future, there will probably be a type selection here (json/owl)
+        ->add('type', ChoiceType::class, [
+            'label'   => 'data.download.type',
+            'choices' => $this->exportService->getChoices(),
+        ])
         ->add('submit', SingleSubmitType::class, [
-            'label' => 'data.download',
+            'label' => 'data.download.title',
             'icon'  => 'fa-download',
             'attr'  => array(
                 'class' => 'btn btn-outline-success',
