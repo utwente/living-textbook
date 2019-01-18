@@ -27,10 +27,11 @@
 
 @import '_landing';
 @import '_menu';
-@import 'styleGuide';
+@import '_styleGuide';
 @import '_forms';
 @import '_search';
 @import '_sortable_learning_paths';
+@import '_download_preview';
 
 .ltb-text-container {
   @include styleGuide;

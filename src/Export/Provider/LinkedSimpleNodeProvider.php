@@ -35,17 +35,41 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->serializer                = $serializer;
   }
 
-  public static function getName(): string
+  /**
+   * @inheritdoc
+   */
+  public function getName(): string
   {
     return 'linked-simple-node';
   }
 
   /**
-   * Export the data, and return a response
-   *
-   * @param StudyArea $studyArea
-   *
-   * @return Response
+   * @inheritdoc
+   */
+  public function getPreview(): string
+  {
+    return <<<'EOT'
+{
+    "nodes": [
+        {
+            "numberOfLinks": <number-of-relations>,
+            "label": "<concept-name>",
+            "link": "<concept-url>"
+        }
+    ],
+    "links": [
+        {
+            "target": <target-id>,
+            "source": <source-id>,
+            "relationName": "<relation-name>"
+        }
+    ]
+}
+EOT;
+  }
+
+  /**
+   * @inheritdoc
    */
   public function export(StudyArea $studyArea): Response
   {

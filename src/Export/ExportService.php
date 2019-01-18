@@ -33,7 +33,7 @@ class ExportService
   {
     $data = [];
     foreach ($this->providers as $key => $provider) {
-      $providerName = strtolower($provider::getName());
+      $providerName = strtolower($provider->getName());
       $choiceName   = 'data.download.provider.' . $providerName;
       if (array_key_exists($choiceName, $data)) {
         throw new \InvalidArgumentException("Non-unique download providers registered");
@@ -42,6 +42,21 @@ class ExportService
     }
 
     ksort($data);
+
+    return $data;
+  }
+
+  /**
+   * Retrieve the previews from the providers
+   *
+   * @return array
+   */
+  public function getPreviews(): array
+  {
+    $data = [];
+    foreach ($this->providers as $key => $provider) {
+      $data[$key] = $provider->getPreview();
+    }
 
     return $data;
   }

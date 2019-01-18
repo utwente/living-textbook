@@ -1,0 +1,18 @@
+{% block download_preview_widget %}
+  {% for key,preview in preview_data %}
+    <pre class="download-preview" data-id="{{ id }}" data-pid="{{ key }}">{{ preview }}</pre>
+  {% endfor %}
+  <script type="text/javascript">
+    var $previews = $('.download-preview[data-id="{{ id }}"]');
+    var $selector = $previews.first().closest('form').find('.download-type');
+
+    function updatePreview_{{ id }}() {
+      $previews.hide();
+      var selected = $selector.val();
+      $('.download-preview[data-pid="' + selected + '"]').show();
+    }
+
+    updatePreview_{{ id }}();
+    $selector.on('change', updatePreview_{{ id }});
+  </script>
+{% endblock %}

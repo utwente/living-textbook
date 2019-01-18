@@ -12,7 +12,14 @@ interface ProviderInterface
    *
    * @return string
    */
-  public static function getName(): string;
+  public function getName(): string;
+
+  /**
+   * Provider preview, based on single concept from study area
+   *
+   * @return string
+   */
+  public function getPreview(): string;
 
   /**
    * Export the data, and return a response

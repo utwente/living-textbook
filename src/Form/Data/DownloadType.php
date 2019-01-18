@@ -25,7 +25,11 @@ class DownloadType extends AbstractType
         ->add('type', ChoiceType::class, [
             'label'   => 'data.download.type',
             'choices' => $this->exportService->getChoices(),
+            'attr'    => [
+                'class' => 'download-type',
+            ],
         ])
+        ->add('preview', DownloadPreviewType::class)
         ->add('submit', SingleSubmitType::class, [
             'label' => 'data.download.title',
             'icon'  => 'fa-download',

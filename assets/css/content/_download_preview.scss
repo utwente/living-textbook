@@ -1,0 +1,9 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '../vars/vars';
+
+pre.download-preview {
+  background-color: $background-color;
+  padding: 1em;
+  display: none;
+}
