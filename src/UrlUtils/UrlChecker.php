@@ -232,6 +232,8 @@ class UrlChecker
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     // Follow redirects, so checking for status 200 will also check if a redirected URL doesn't function anymore
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    // Set host header to lowercase host part of URL, to fix some issues with server not understanding uppercase hosts
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [sprintf('Host: %s', strtolower($url->getHost()))]);
     curl_exec($ch);
     // Get headers
     $headers = curl_getinfo($ch);

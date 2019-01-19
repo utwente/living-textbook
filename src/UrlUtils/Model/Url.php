@@ -42,6 +42,19 @@ class Url extends AbstractUrl
   }
 
   /**
+   * @return array
+   */
+  protected function getUrlParts(): array
+  {
+    // Source: http://www.ietf.org/rfc/rfc3986.txt
+    $pattern = '/(?i)^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/';
+    $matches = [];
+    preg_match($pattern, $this->getUrl(), $matches);
+
+    return $matches;
+  }
+
+  /**
    * Get whether it is a path url (starts with /, and internal)
    *
    * @return bool
@@ -62,12 +75,15 @@ class Url extends AbstractUrl
       return $this->getUrl();
     }
 
-    // Source: http://www.ietf.org/rfc/rfc3986.txt
-    $pattern = '/(?i)^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/';
-    $matches = [];
-    preg_match($pattern, $this->getUrl(), $matches);
+    return $this->getUrlParts()[5];
+  }
 
-    return $matches[5];
+  public function getHost(): string
+  {
+    if ($this->isPath()) {
+      return '';
+    }
+    return $this->getUrlParts()[4];
   }
 
   /**
