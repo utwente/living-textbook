@@ -22,9 +22,13 @@ class Url extends AbstractUrl
   {
     $internalPath = 0 === mb_stripos($url, '/');
 
-    $this->internal  = $internal || $internalPath;
-    $this->isPath    = $this->internal && $internalPath;
-    $this->context   = $context;
+    $this->internal = $internal || $internalPath;
+    $this->isPath   = $this->internal && $internalPath;
+    $this->context  = $context;
+    // Add http scheme to non-internal URLs for better path detection
+    if (!$this->internal && 0 === preg_match('(://)', $url)) {
+      $url = 'http://' . $url;
+    }
     parent::__construct($url);
   }
 
