@@ -70,9 +70,9 @@ data:
     title: 'Export'
     type: 'Export type'
     provider:
-      concept-id-name: '"ID-Concept name" export'
-      linked-simple-node: 'Simple linked node export'
-      relation: 'Relation export'
+      concept-id-name: 'Concept (with id)'
+      linked-simple-node: 'Simple linked node'
+      relation: 'Concept relations'
   duplicate: 'Duplicate'
   duplicate-text: 'Here you can duplicate (parts of) the study area "%item%" into a new study area. You can either select a concept subset, or tick "Select all" to duplicate all concepts.'
   json-file: 'JSON data file'
