@@ -4,6 +4,7 @@ namespace App\Export\Provider;
 
 use App\Entity\Concept;
 use App\Entity\StudyArea;
+use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -72,8 +73,7 @@ EOT;
       $writer->save('php://output');
     });
     $response->headers->set('Content-Type', 'application/csv; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment;filename="' . str_replace(' ', '_', strtolower($studyArea->getName())) . '_concept_id_name_export.csv"');
-
+    ExportService::contentDisposition($response, sprintf('%s_concept_id_name_export.csv', $studyArea->getName()));
 
     return $response;
   }

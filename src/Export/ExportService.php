@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Export\Provider\ConceptIdNameProvider;
 use App\Export\Provider\LinkedSimpleNodeProvider;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ExportService
 {
@@ -77,5 +78,19 @@ class ExportService
     }
 
     return $this->providers[$exportProvider]->export($studyArea);
+  }
+
+  /**
+   * Create a correct content disposition
+   *
+   * @param Response $response
+   * @param string   $filename
+   */
+  public static function contentDisposition(Response $response, string $filename): void
+  {
+    $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
+        ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        mb_strtolower(preg_replace('/[^\p{L}\p{N}.]/u', '_', $filename))
+    ));
   }
 }

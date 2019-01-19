@@ -5,6 +5,7 @@ namespace App\Excel;
 use App\Entity\Concept;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Export\ExportService;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
@@ -118,7 +119,7 @@ class StudyAreaStatusBuilder
           $writer->save('php://output');
         });
     $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8');
-    $response->headers->set('Content-Disposition', 'attachment;filename="' . str_replace(' ', '_', strtolower($this->studyArea->getName())) . '_status.xlsx"');
+    ExportService::contentDisposition($response, sprintf('%s_status.xlsx', $studyArea->getName()));
 
     // Return the response
     $response->prepare($request);

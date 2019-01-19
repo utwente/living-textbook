@@ -5,6 +5,7 @@ namespace App\Export\Provider;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\StudyArea;
+use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
@@ -13,7 +14,6 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
@@ -105,10 +105,7 @@ EOT;
       ], 'json', SerializationContext::create()->setGroups(['download_json']));
 
       $response = new JsonResponse($json, Response::HTTP_OK, [], true);
-      $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
-          ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-          sprintf('%s_export.json', mb_strtolower(preg_replace('/[^\p{L}\p{N}]/u', '_', $studyArea->getName())))
-      ));
+      ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));
 
       return $response;
     }
