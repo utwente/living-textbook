@@ -145,6 +145,10 @@ class DefaultController extends AbstractController
         ])
         ->getForm();
 
+    $urls    = $urlChecker->getUrlsForStudyArea($studyArea);
+    $badUrls = $urlChecker->checkStudyArea($studyArea);
+    $urlsScanned = $urls !== NULL;
+
     return [
         'conceptForm'           => $conceptForm->createView(),
         'studyAreaForm'         => $studyAreaForm ? $studyAreaForm->createView() : NULL,
@@ -156,8 +160,10 @@ class DefaultController extends AbstractController
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
         'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
-        'urlCount'              => count($urlChecker->getUrlsForStudyAreaFlat($studyArea)),
-        'brokenUrlCount'        => count($urlChecker->checkStudyAreaFlat($studyArea)),
+        'urlScanned'            => $urlsScanned,
+        'urlScanProgress'       => ($urlsScanned ? $urls['urls'] === NULL : false),
+        'urlCount'              => ($urlsScanned ? count($urls['urls']) : -1),
+        'brokenUrlCount'        => ($badUrls !== NULL ? count($badUrls['bad']) : -1),
     ];
   }
 
@@ -173,17 +179,22 @@ class DefaultController extends AbstractController
    */
   public function urlOverview(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker)
   {
-    $studyArea    = $requestStudyArea->getStudyArea();
-    $urls         = $urlChecker->getUrlsForStudyArea($studyArea);
-    $badUrls      = $urlChecker->checkStudyAreaFlat($studyArea);
-    $flatBadLinks = [];
-    foreach ($badUrls as $badUrl) {
+    $studyArea          = $requestStudyArea->getStudyArea();
+    $urls               = $urlChecker->getUrlsForStudyArea($studyArea);
+    $badUrls            = $urlChecker->checkStudyArea($studyArea) ?? ['bad' => [], 'unscanned' => []];
+    $flatBadLinks       = [];
+    $flatUnscannedLinks = [];
+    foreach ($badUrls['bad'] as $badUrl) {
       $flatBadLinks[] = $badUrl->getUrl();
+    }
+    foreach ($badUrls['unscanned'] as $unscannedUrl) {
+      $flatUnscannedLinks[] = $unscannedUrl->getUrl();
     }
 
     return [
-        'urls'    => $urls,
-        'badUrls' => $flatBadLinks,
+        'urls'          => $urls,
+        'badUrls'       => $flatBadLinks,
+        'unscannedUrls' => $flatUnscannedLinks,
     ];
   }
 
@@ -202,7 +213,7 @@ class DefaultController extends AbstractController
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
   {
     $url    = $urlScanner->scanText(urldecode($url));
-    $result = $urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true) ?
+    $result = $urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true, false) ?
         $translator->trans('url.good') :
         $translator->trans('url.bad');
     $this->addFlash('info', $translator->trans('url.rescanned', ['%result%' => strtolower($result)]));
@@ -222,7 +233,7 @@ class DefaultController extends AbstractController
    */
   public function urlRescanStudyArea(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, TranslatorInterface $translator)
   {
-    $urlChecker->checkStudyArea($requestStudyArea->getStudyArea(), true);
+    $urlChecker->checkStudyArea($requestStudyArea->getStudyArea(), false, false);
     $this->addFlash('info', $translator->trans('url.rescanned-study-area'));
 
     return $this->redirect($this->generateUrl('app_default_urloverview'));

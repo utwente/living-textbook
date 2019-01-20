@@ -42,11 +42,12 @@ class Url extends AbstractUrl
   }
 
   /**
+   * Get parts of an URL, see http://www.ietf.org/rfc/rfc3986.txt
+   *
    * @return array
    */
   protected function getUrlParts(): array
   {
-    // Source: http://www.ietf.org/rfc/rfc3986.txt
     $pattern = '/(?i)^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/';
     $matches = [];
     preg_match($pattern, $this->getUrl(), $matches);
@@ -78,11 +79,17 @@ class Url extends AbstractUrl
     return $this->getUrlParts()[5];
   }
 
+  /**
+   * Get host part of the url
+   *
+   * @return string
+   */
   public function getHost(): string
   {
     if ($this->isPath()) {
       return '';
     }
+
     return $this->getUrlParts()[4];
   }
 

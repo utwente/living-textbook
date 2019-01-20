@@ -57,9 +57,23 @@
     </li>
     {% if is_granted('STUDYAREA_EDIT', studyArea) %}
       <li>
-        {% if urlCount > 0 %}<a href="{{ path('app_default_urloverview') }}">{% endif %}
-          {{ 'dashboard.url-count'|trans({'%count%': urlCount, '%brokenCount%': brokenUrlCount}) }}
-          {% if urlCount > 0 %}</a>{% endif %}
+        {% if urlScanProgress %}
+          <a href="{{ path('app_default_urlrescanstudyarea') }}">
+            {{ 'dashboard.url-scan-progress'|trans }}
+          </a>
+        {% elseif urlScanned %}
+          <a href="{{ path('app_default_urloverview') }}">
+            {% if brokenUrlCount == -1 %}
+              {{ 'dashboard.url-count-broken-not-scanned'|trans({'%count%': urlCount}) }}
+            {% else %}
+              {{ 'dashboard.url-count'|trans({'%count%': urlCount, '%brokenCount%': brokenUrlCount}) }}
+            {% endif %}
+          </a>
+        {% else %}
+          <a href="{{ path('app_default_urlrescanstudyarea') }}">
+            {{ 'dashboard.url-not-scanned'|trans }}
+          </a>
+        {% endif %}
       </li>
     {% endif %}
   </ul>

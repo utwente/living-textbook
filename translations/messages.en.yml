@@ -98,6 +98,9 @@ dashboard:
   study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
   url-count: '{0} No URLs|{1} One URL of which %brokenCount% broken|]1,Inf[ %count% URLs of which %brokenCount% broken'
+  url-count-broken-not-scanned: '{0} No URLs|{1} One URL, not yet scanned for broken URLs|]1,Inf[ %count% URLs, not yet scanned for broken URLs'
+  url-not-scanned: 'URLs not scanned yet, click to scan.'
+  url-scan-progress: 'URLs being scanned, please be patient. If it takes too long click here to rescan.'
 
 excel:
   boolean:
@@ -372,16 +375,20 @@ url:
   external-resource-path: 'External resource - %path%'
   good: 'Healthy'
   internal-wrong: 'Internal URL, wrong study area'
+  last-scanned: 'Last scanned: %date%'
   learning-outcome-path: 'Learning outcome - %path%'
   rescan: 'Recheck'
   rescan-study-area: 'Rescan complete study area'
   rescanned: 'URL rescanned, result: %result%'
   rescanned-study-area: 'Rescanned all URLs in study area'
+  scan-progress: 'Scan in progress, please be patient.'
   status: 'Status'
   study-area-path: 'Study area - %path%'
   overview-title: 'URL list'
   unknown: 'Unknown origin'
+  unscanned: 'Not scanned yet'
   url: 'URL'
+  urls-unscanned: 'URLs not scanned yet.'
 
 user:
   display-name: 'Name'

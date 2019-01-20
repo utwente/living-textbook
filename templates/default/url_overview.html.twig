@@ -3,6 +3,11 @@
 {% block before_title %}
   {% from '_macro/_action_bar.html.twig' import action_button %}
   {{ action_button(path('app_default_urlrescanstudyarea'), 'fa-repeat', 'url.rescan-study-area'|trans, 'warning') }}
+  {% if urls is iterable %}
+    <div class="pull-right">
+      {{ 'url.last-scanned'|trans({'%date%': urls.lastScanned|date('d M Y H:i')}) }}
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block title %}
@@ -10,36 +15,34 @@
 {% endblock %}
 
 {% block content %}
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">{{ 'url.url'|trans }}</th>
-        <th scope="col">{{ 'url.status'|trans }}</th>
-        <th scope="col">{{ 'form.edit'|trans }}</th>
-        <th scope="col">{{ 'url.rescan'|trans }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for id, urlDescription in urls %}
-        {# Remove class indicator #}
-        {% set id = id[1:] %}
-        {% for url in urlDescription %}
+  {% if urls is iterable %}
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">{{ 'url.url'|trans }}</th>
+          <th scope="col">{{ 'url.status'|trans }}</th>
+          <th scope="col">{{ 'form.edit'|trans }}</th>
+          <th scope="col">{{ 'url.rescan'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for url in urls.urls %}
           {% if url.context.class == 'App\\Entity\\StudyArea' %}
             {% set description = 'url.study-area-path' %}
-            {% set editUrl = path('app_studyarea_edit', {'studyArea': id}) %}
+            {% set editUrl = path('app_studyarea_edit', {'studyArea': url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('study-area.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\Concept' %}
             {% set description = 'url.concept-path' %}
-            {% set editUrl = path('app_concept_edit', {'concept': id}) %}
+            {% set editUrl = path('app_concept_edit', {'concept': url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('concept.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\LearningOutcome' %}
             {% set description = 'url.learning-outcome-path' %}
-            {% set editUrl = path('app_learningoutcome_edit', {'learningOutcome': id}) %}
+            {% set editUrl = path('app_learningoutcome_edit', {'learningOutcome': url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('learning-outcome.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\ExternalResource' %}
             {% set description = 'url.external-resource-path' %}
-            {% set editUrl = path('app_externalresource_edit', {'externalResource': id}) %}
+            {% set editUrl = path('app_externalresource_edit', {'externalResource': url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('external-resource.' ~ url.context.pathAsTransKey)|trans} %}
           {% else %}
             {% set description = 'url.unknown' %}
@@ -54,6 +57,8 @@
                 {% else %}
                   {{ 'url.bad'|trans }}
                 {% endif %}
+              {% elseif url.url in unscannedUrls %}
+                {{ 'url.unscanned'|trans }}
               {% else %}
                 {{ 'url.good'|trans }}
               {% endif %}
@@ -73,8 +78,10 @@
             </td>
           </tr>
         {% endfor %}
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    {{ 'url.urls-unscanned'|trans }}
+  {% endif %}
 {% endblock %}

@@ -59,7 +59,7 @@ class UrlScanner
    */
   public function scanStudyArea(StudyArea $studyArea): array
   {
-    return $this->scanText($studyArea->getDescription(), new UrlContext(StudyArea::class, "description"));
+    return $this->scanText($studyArea->getDescription(), new UrlContext(StudyArea::class, $studyArea->getId(), "description"));
   }
 
   /**
@@ -71,12 +71,13 @@ class UrlScanner
    */
   public function scanConcept(Concept $concept): array
   {
+    $id = $concept->getId();
     return array_values(array_unique(array_merge(
-        $this->scanText($concept->getIntroduction()->getText(), new UrlContext(Concept::class, "introduction")),
-        $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, "theoryExplanation")),
-        $this->scanText($concept->getHowTo()->getText(), new UrlContext(Concept::class, "howTo")),
-        $this->scanText($concept->getExamples()->getText(), new UrlContext(Concept::class, "examples")),
-        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, "selfAssessment"))
+        $this->scanText($concept->getIntroduction()->getText(), new UrlContext(Concept::class, $id, "introduction")),
+        $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, $id, "theoryExplanation")),
+        $this->scanText($concept->getHowTo()->getText(), new UrlContext(Concept::class, $id, "howTo")),
+        $this->scanText($concept->getExamples()->getText(), new UrlContext(Concept::class, $id, "examples")),
+        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, $id, "selfAssessment"))
     )));
   }
 
@@ -89,7 +90,7 @@ class UrlScanner
    */
   public function scanExternalResource(ExternalResource $externalResource): array
   {
-    return $this->scanText($externalResource->getDescription(), new UrlContext(ExternalResource::class, "description"));
+    return $this->scanText($externalResource->getDescription(), new UrlContext(ExternalResource::class, $externalResource->getId(), "description"));
   }
 
   /**
@@ -101,7 +102,7 @@ class UrlScanner
    */
   public function scanLearningOutcome(LearningOutcome $learningOutcome): array
   {
-    return $this->scanText($learningOutcome->getText(), new UrlContext(LearningOutcome::class, "text"));
+    return $this->scanText($learningOutcome->getText(), new UrlContext(LearningOutcome::class, $learningOutcome->getId(), "text"));
   }
 
   /**

@@ -2,9 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
-use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,17 +54,7 @@ class CheckUrlCommand extends Command
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $urls = $this->urlChecker->checkAllUrls();
-    foreach ($urls as $studyAreaId => $studyAreaUrls) {
-      foreach ($studyAreaUrls as $id => $childUrls) {
-        foreach ($childUrls as $childUrl) {
-          assert($childUrl instanceof Url);
-          $studyArea = $this->studyAreaRepository->find($studyAreaId);
-          assert($studyArea instanceof StudyArea);
-          // TODO implement notification
-//          echo(($childUrl->isInternal() ? '[Internal] ' : '') . $childUrl->getUrl() . ' in ' . $childUrl->getContext()->getClass() . ' with id ' . $id . ' property ' . $childUrl->getContext()->getPath() . ' in study area ' . $studyArea->getName() . ' owned by ' . $studyArea->getOwner()->getFullName() . "\n");
-        }
-      }
-    }
+    $urls = $this->urlChecker->checkAllUrls(false, false);
+
   }
 }

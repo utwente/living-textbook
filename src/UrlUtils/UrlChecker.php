@@ -45,6 +45,11 @@ class UrlChecker
   private $goodUrlsCache;
 
   /**
+   * @var FilesystemAdapter
+   */
+  private $studyAreaCache;
+
+  /**
    * @var ExternalResourceRepository
    */
   private $externalResourceRepository;
@@ -84,23 +89,25 @@ class UrlChecker
     $this->bad2UrlCache               = new FilesystemAdapter('app.url.bad.2');
     $this->bad4UrlCache               = new FilesystemAdapter('app.url.bad.4');
     $this->bad7UrlCache               = new FilesystemAdapter('app.url.bad.7');
+    $this->studyAreaCache             = new FilesystemAdapter('app.studyarea');
   }
 
   /**
    * Check all the URLs in the whole application
    *
    * @param bool $force
+   * @param bool $fromCache
    *
    * @return array
-   * Returns an array with structure [studyarea_id][(s|c|l|e)item_id][url] to maintain origin
+   * Returns an array with structure [studyarea_id]['bad'|'unscanned'][url]
    */
-  public function checkAllUrls($force = false): array
+  public function checkAllUrls(bool $force = false, bool $fromCache = true): array
   {
     $studyAreas = $this->studyAreaRepository->findAll();
     $badUrls    = [];
     foreach ($studyAreas as $studyArea) {
       assert($studyArea instanceof StudyArea);
-      $badUrls[$studyArea->getId()] = $this->checkStudyArea($studyArea, $force);
+      $badUrls[$studyArea->getId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
     }
 
     return $badUrls;
@@ -111,37 +118,49 @@ class UrlChecker
    *
    * @param StudyArea $studyArea
    * @param bool      $force
+   * @param bool      $fromCache
    *
-   * @return array
-   * Returns an array with structure [(s|c|l|e)item_id[url] to maintain origin
+   * @return array|null
    */
-  public function checkStudyArea(StudyArea $studyArea, $force = false): array
+  public function checkStudyArea(StudyArea $studyArea, bool $force = false, bool $fromCache = true): ?array
   {
-    // Get all used URLs
-    $urls    = $this->getUrlsForStudyArea($studyArea);
-    $badUrls = [];
-    foreach ($urls as $id => $subUrls) {
-      $badUrls[$id] = $this->findBadUrls($subUrls, $studyArea, $force);
-    }
+    $cacheItem = $this->getUrlsForStudyArea($studyArea, $fromCache);
+    if ($cacheItem === null || $cacheItem['urls'] === null) return null;
+    $badUrls   = $this->findBadUrls($cacheItem['urls'], $studyArea, $force, $fromCache);
 
     return $badUrls;
   }
 
   /**
-   * Check the URLs used within one study area
+   * Get all urls for a given study area, from cache if wanted
    *
    * @param StudyArea $studyArea
-   * @param bool      $force
+   * @param bool      $fromCache
    *
-   * @return Url[]
-   * Returns a flat array of URLs without origin
+   * @return array|null
+   * Returns array with urls and last scanned time if it is cached or not retrieved from cache,
+   * null if cache doesn't contain urls for this study area
    */
-  public function checkStudyAreaFlat(StudyArea $studyArea, $force = false): array
+  public function getUrlsForStudyArea(StudyArea $studyArea, bool $fromCache = true): ?array
   {
     // Get all used URLs
-    $urls = $this->getUrlsForStudyAreaFlat($studyArea);
+    $studyAreaId = (string)$studyArea->getId();
+    if ($fromCache) {
+      if ($this->studyAreaCache->hasItem($studyAreaId)) {
+        $cacheItem = $this->studyAreaCache->getItem($studyAreaId)->get();
+      } else {
+        return NULL;
+      }
+    } else {
+      $cacheItem = ['urls' => NULL, 'lastScanned' => new \DateTime()];
+      // Early commit to cache, so it is clear scanning has commenced
+      $this->studyAreaCache->save($this->studyAreaCache->getItem($studyAreaId)->set($cacheItem));
+      $urls              = $this->scanStudyArea($studyArea);
+      $cacheItem['urls'] = $urls;
+      $this->studyAreaCache->save($this->studyAreaCache->getItem($studyAreaId)->set($cacheItem));
+    }
 
-    return $this->findBadUrls($urls, $studyArea, $force);
+    return $cacheItem;
   }
 
   /**
@@ -149,44 +168,24 @@ class UrlChecker
    *
    * @param Url[]     $urls
    * @param StudyArea $studyArea
-   * @param           $force
-   *
-   * @return Url[]
-   */
-  public function findBadUrls($urls, StudyArea $studyArea, $force): array
-  {
-    $badUrls = [];
-    foreach ($urls as $url) {
-      assert($url instanceof Url);
-      if (!$this->checkUrl($url, $studyArea, $force)) $badUrls[] = $url;
-    }
-
-    return $badUrls;
-  }
-
-  /**
-   * Find the used URLs within one study area
-   *
-   * @param StudyArea $studyArea
+   * @param bool      $force      Rescan all urls
+   * @param bool      $fromCache  Only show results that have been cached
    *
    * @return array
-   * Returns an array with structure [(s|c|l|e)item_id][url] to maintain origin
+   * Returns two arrays, one with unscanned urls and one with bad urls
    */
-  public function getUrlsForStudyArea(StudyArea $studyArea)
+  public function findBadUrls(array $urls, StudyArea $studyArea, bool $force, bool $fromCache): array
   {
-    $urls                            = [];
-    $urls['s' . $studyArea->getId()] = $this->urlScanner->scanStudyArea($studyArea);
-    foreach ($studyArea->getConcepts() as $concept) {
-      $urls['c' . $concept->getId()] = $this->urlScanner->scanConcept($concept);
-    }
-    foreach ($this->learningOutcomeRepository->findForStudyArea($studyArea) as $learningOutcome) {
-      $urls['l' . $learningOutcome->getId()] = $this->urlScanner->scanLearningOutcome($learningOutcome);
-    }
-    foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
-      $urls['e' . $externalResource->getId()] = $this->urlScanner->scanExternalResource($externalResource);
+    $badUrls = [];
+    $unscannedUrls = [];
+    foreach ($urls as $url) {
+      assert($url instanceof Url);
+      $urlStatus = $this->checkUrl($url, $studyArea, $force, $fromCache);
+      if ($urlStatus === false) $badUrls[] = $url;
+      else if ($urlStatus === null) $unscannedUrls[] = $url;
     }
 
-    return $urls;
+    return ['bad' => $badUrls, 'unscanned' => $unscannedUrls];
   }
 
   /**
@@ -197,7 +196,7 @@ class UrlChecker
    * @return Url[]|array
    * Returns a flat array of URLs without origin
    */
-  public function getUrlsForStudyAreaFlat(StudyArea $studyArea)
+  private function scanStudyArea(StudyArea $studyArea)
   {
     $urls = $this->urlScanner->scanStudyArea($studyArea);
     foreach ($studyArea->getConcepts() as $concept) {
@@ -266,12 +265,13 @@ class UrlChecker
    *
    * @param Url                   $url
    * @param AdapterInterface      $newCache
+   * @param bool                  $fromCache
    * @param string                $modifyTime
    * @param AdapterInterface|null $oldCache
    *
    * @return bool
    */
-  private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, string $modifyTime = '', ?AdapterInterface $oldCache = NULL): bool
+  private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, bool $fromCache = false, string $modifyTime = '', ?AdapterInterface $oldCache = NULL): bool
   {
     $cacheableUrl = CacheableUrl::fromUrl($url);
     $cachekey     = $cacheableUrl->getCachekey();
@@ -280,8 +280,8 @@ class UrlChecker
       $cachedUrl = $oldCache->getItem($cachekey)->get();
       assert($cachedUrl instanceof CacheableUrl);
 
-      // Test whether it is expired
-      if ($cachedUrl->getTimestamp() < (new \DateTime())->modify($modifyTime)) {
+      // Test whether it is expired, always return false if forced from cache
+      if ($cachedUrl->getTimestamp() < (new \DateTime())->modify($modifyTime) && !$fromCache) {
         $oldCache->deleteItem($cachekey);
       } else {
         return false;
@@ -326,10 +326,11 @@ class UrlChecker
    * @param Url       $url
    * @param StudyArea $studyArea
    * @param bool      $force
+   * @param bool      $fromCache
    *
-   * @return bool
+   * @return bool|null
    */
-  public function checkUrl(Url $url, StudyArea $studyArea, bool $force): bool
+  public function checkUrl(Url $url, StudyArea $studyArea, bool $force, bool $fromCache = true): ?bool
   {
     // Check internal URLs for the right study area
     if ($url->isInternal()) {
@@ -346,23 +347,23 @@ class UrlChecker
     }
     // Check if it exists in the bad URL caches
     if ($this->bad0UrlCache->hasItem($cachekey)) {
-      return $this->checkAndCacheUrl($url, $this->bad1UrlCache, '-1 hour', $this->bad0UrlCache);
+      return $this->checkAndCacheUrl($url, $this->bad1UrlCache, $fromCache, '-1 hour', $this->bad0UrlCache);
     }
     if ($this->bad1UrlCache->hasItem($cachekey)) {
-      return $this->checkAndCacheUrl($url, $this->bad2UrlCache, '-1 day', $this->bad1UrlCache);
+      return $this->checkAndCacheUrl($url, $this->bad2UrlCache, $fromCache, '-1 day', $this->bad1UrlCache);
     }
     if ($this->bad2UrlCache->hasItem($cachekey)) {
-      return $this->checkAndCacheUrl($url, $this->bad4UrlCache, '-2 days', $this->bad2UrlCache);
+      return $this->checkAndCacheUrl($url, $this->bad4UrlCache, $fromCache, '-2 days', $this->bad2UrlCache);
     }
     if ($this->bad4UrlCache->hasItem($cachekey)) {
-      return $this->checkAndCacheUrl($url, $this->bad7UrlCache, '-4 days', $this->bad4UrlCache);
+      return $this->checkAndCacheUrl($url, $this->bad7UrlCache, $fromCache, '-4 days', $this->bad4UrlCache);
     }
     if ($this->bad7UrlCache->hasItem($cachekey)) {
-      return $this->checkAndCacheUrl($url, $this->bad7UrlCache, '-7 days', $this->bad7UrlCache);
+      return $this->checkAndCacheUrl($url, $this->bad7UrlCache, $fromCache, '-7 days', $this->bad7UrlCache);
     }
 
-    // Not cached, check now
-    return $this->checkAndCacheUrl($url, $this->bad0UrlCache);
+    // Not cached, check now. return null if forced from cache
+    return $fromCache ? null : $this->checkAndCacheUrl($url, $this->bad0UrlCache);
 
   }
 }
