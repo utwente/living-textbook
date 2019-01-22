@@ -3,11 +3,6 @@
 {% block before_title %}
   {% from '_macro/_action_bar.html.twig' import action_button %}
   {{ action_button(path('app_default_urlrescanstudyarea'), 'fa-repeat', 'url.rescan-study-area'|trans, 'warning') }}
-  {% if urls is iterable %}
-    <div class="pull-right">
-      {{ 'url.last-scanned'|trans({'%date%': urls.lastScanned|date('d M Y H:i')}) }}
-    </div>
-  {% endif %}
 {% endblock %}
 
 {% block title %}
@@ -16,6 +11,10 @@
 
 {% block content %}
   {% if urls is iterable %}
+    <p>
+      {{ 'url.last-scanned'|trans({'%date%': urls.lastScanned|date('d M Y H:i')}) }}
+    </p>
+
     <div class="table-responsive">
       <table class="table">
         <thead>

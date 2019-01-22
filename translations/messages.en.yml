@@ -384,7 +384,7 @@ url:
   scan-progress: 'Scan in progress, please be patient.'
   status: 'Status'
   study-area-path: 'Study area - %path%'
-  overview-title: 'URL list'
+  overview-title: 'Used URLs'
   unknown: 'Unknown origin'
   unscanned: 'Not scanned yet'
   url: 'URL'
