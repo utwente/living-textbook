@@ -74,10 +74,10 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   {
     return array(
         KernelEvents::CONTROLLER           => [
-            array('determineStudyArea', 0),
+            array('determineStudyArea', 100),
         ],
         KernelEvents::CONTROLLER_ARGUMENTS => [
-            array('injectStudyAreaInControllerArguments', 0),
+            array('injectStudyAreaInControllerArguments', 100),
         ],
         KernelEvents::VIEW                 => [
             array('injectStudyAreaInView', 255),
