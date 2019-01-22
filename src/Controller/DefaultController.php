@@ -145,11 +145,22 @@ class DefaultController extends AbstractController
         ])
         ->getForm();
 
-    $urls    = $urlChecker->getUrlsForStudyArea($studyArea);
-    $badUrls = $urlChecker->checkStudyArea($studyArea);
-    $urlsScanned = $urls !== NULL;
+    // Check for urls, if one has edit roles
+    $urlData = [];
+    if ($this->isGranted('STUDYAREA_EDIT', $studyArea)) {
+      $urls        = $urlChecker->getUrlsForStudyArea($studyArea);
+      $badUrls     = $urlChecker->checkStudyArea($studyArea);
+      $urlsScanned = $urls !== NULL;
 
-    return [
+      $urlData = [
+          'urlScanned'      => $urlsScanned,
+          'urlScanProgress' => ($urlsScanned ? $urls['urls'] === NULL : false),
+          'urlCount'        => ($urlsScanned ? count($urls['urls']) : -1),
+          'brokenUrlCount'  => ($badUrls !== NULL ? count($badUrls['bad']) : -1),
+      ];
+    }
+
+    return array_merge([
         'conceptForm'           => $conceptForm->createView(),
         'studyAreaForm'         => $studyAreaForm ? $studyAreaForm->createView() : NULL,
         'studyArea'             => $studyArea,
@@ -160,11 +171,7 @@ class DefaultController extends AbstractController
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
         'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
-        'urlScanned'            => $urlsScanned,
-        'urlScanProgress'       => ($urlsScanned ? $urls['urls'] === NULL : false),
-        'urlCount'              => ($urlsScanned ? count($urls['urls']) : -1),
-        'brokenUrlCount'        => ($badUrls !== NULL ? count($badUrls['bad']) : -1),
-    ];
+    ], $urlData);
   }
 
   /**
