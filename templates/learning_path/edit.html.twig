@@ -4,7 +4,7 @@
   {% from '_macro/_action_bar.html.twig' import action_bar %}
   {{ action_bar(
     false,
-    false,
+    path('app_learningpath_show', {'learningPath': learningPath.id}),
     path('app_learningpath_list')
   ) }}
 {% endblock %}
