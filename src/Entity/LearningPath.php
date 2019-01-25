@@ -48,6 +48,17 @@ class LearningPath
   private $name;
 
   /**
+   * Learning path introduction
+   *
+   * @var string|null
+   *
+   * @ORM\Column(name="introduction", type="text", nullable=true)
+   *
+   * @Assert\NotBlank();
+   */
+  private $introduction;
+
+  /**
    * Learning path question
    *
    * @var string
@@ -130,6 +141,26 @@ class LearningPath
   public function setQuestion(string $question): LearningPath
   {
     $this->question = $question;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getIntroduction(): ?string
+  {
+    return $this->introduction;
+  }
+
+  /**
+   * @param string|null $introduction
+   *
+   * @return LearningPath
+   */
+  public function setIntroduction(?string $introduction): LearningPath
+  {
+    $this->introduction = $introduction;
 
     return $this;
   }

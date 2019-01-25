@@ -16,10 +16,19 @@
 {% endblock %}
 
 {% block content %}
+
+  {% if learningPath.introduction %}
+    <div class="ltb-text-container">
+      {{ learningPath.introduction|striptags(allowed_ckeditor_tags)|raw }}
+    </div>
+
+    <h3>{{ 'learning-path.question'|trans }}</h3>
+  {% endif %}
   <div class="ltb-text-container">
     {{ learningPath.question }}
   </div>
 
+  <h2>{{ 'learning-path.path'|trans }}</h2>
   {% for element in learningPath.elementsOrdered %}
     <div class="ltb-learning-path-element{% if element.description is null %} no-description{% endif %}">
       <div class="path-layout"></div>
