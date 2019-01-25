@@ -19,7 +19,7 @@ CKEDITOR.dialog.add('conceptSelectorDialog', function (editor) {
             id: 'selector-concept-text',
             type: 'text',
             label: lang.selectorText,
-            setup: function(element){
+            setup: function (element) {
               this.setValue(element.getText());
             }
           },
@@ -32,7 +32,7 @@ CKEDITOR.dialog.add('conceptSelectorDialog', function (editor) {
             type: 'html',
             label: lang.selector,
             html: '<select></select>',
-            setup: function(element) {
+            setup: function (element) {
               currentConceptId = element.getAttribute('data-concept-id');
             },
             onShow: function () {
@@ -41,10 +41,15 @@ CKEDITOR.dialog.add('conceptSelectorDialog', function (editor) {
               selectElem.children().remove();
 
               // Re-use values from page below as hack
-              $('#edit_concept_priorKnowledge').children().clone().appendTo(selectElem);
+              $('[data-ckeditor-selector="concepts"]').children().clone().each(function () {
+                var elem = $(this);
+                if (elem.val() !== "") {
+                  elem.appendTo(selectElem);
+                }
+              });
 
               // Restore val if set
-              if (currentConceptId){
+              if (currentConceptId) {
                 selectElem.val(currentConceptId);
               }
               currentConceptTextValue = selectElem.find('option:selected').text();
@@ -77,7 +82,7 @@ CKEDITOR.dialog.add('conceptSelectorDialog', function (editor) {
       }
     ],
 
-    onShow: function() {
+    onShow: function () {
       // Reset state
       currentConceptId = null;
       currentConceptTextValue = '';

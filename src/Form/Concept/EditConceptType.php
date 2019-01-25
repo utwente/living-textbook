@@ -85,6 +85,9 @@ class EditConceptType extends AbstractType
               return $qb;
             },
             'select2'       => true,
+            'attr'          => [
+                'data-ckeditor-selector' => 'concepts', // Register for ckeditor
+            ],
         ])
         ->add('learningOutcomes', EntityType::class, [
             'label'         => 'concept.learning-outcomes',
@@ -173,7 +176,6 @@ class EditConceptType extends AbstractType
             'class'         => Abbreviation::class,
             'choice_label'  => 'abbreviation',
             'required'      => false,
-            'multiple'      => true,
             'mapped'        => false,
             'query_builder' => function (AbbreviationRepository $abbreviationRepository) use ($concept) {
               return $abbreviationRepository->createQueryBuilder('a')
@@ -181,6 +183,9 @@ class EditConceptType extends AbstractType
                   ->setParameter('studyArea', $concept->getStudyArea())
                   ->orderBy('a.abbreviation');
             },
+            'attr'          => [
+                'data-ckeditor-selector' => 'abbreviations', // Register for ckeditor
+            ],
         ]);
   }
 

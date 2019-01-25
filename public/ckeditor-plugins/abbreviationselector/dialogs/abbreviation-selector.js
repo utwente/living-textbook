@@ -24,7 +24,7 @@ CKEDITOR.dialog.add('abbreviationSelectorDialog', function (editor) {
             type: 'html',
             label: lang.selector,
             html: '<select></select>',
-            setup: function(element) {
+            setup: function (element) {
               currentAbbreviationId = element.getAttribute('data-abbr-id');
             },
             onShow: function () {
@@ -33,10 +33,15 @@ CKEDITOR.dialog.add('abbreviationSelectorDialog', function (editor) {
               selectElem.children().remove();
 
               // Re-use values from page below as hack
-              $('#edit_concept_abbreviations').children().clone().appendTo(selectElem);
+              $('[data-ckeditor-selector="abbreviations"]').children().clone().each(function () {
+                var elem = $(this);
+                if (elem.val() !== "") {
+                  elem.appendTo(selectElem);
+                }
+              });
 
               // Restore val if set
-              if (currentAbbreviationId){
+              if (currentAbbreviationId) {
                 selectElem.val(currentAbbreviationId);
               }
               currentAbbreviationTextValue = selectElem.find('option:selected').text();
@@ -57,7 +62,7 @@ CKEDITOR.dialog.add('abbreviationSelectorDialog', function (editor) {
       }
     ],
 
-    onShow: function() {
+    onShow: function () {
       // Reset state
       currentAbbreviationId = null;
       currentAbbreviationTextValue = '';
