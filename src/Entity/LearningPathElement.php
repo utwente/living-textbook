@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathElementRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @JMSA\ExclusionPolicy("all")
  */
 class LearningPathElement
 {
@@ -45,6 +47,8 @@ class LearningPathElement
    * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
    */
   private $concept;
 
@@ -65,6 +69,8 @@ class LearningPathElement
    *
    * @ORM\Column(type="string", length=1024, nullable=true)
    * @Assert\Length(max=1024)
+   *
+   * @JMSA\Expose()
    */
   private $description;
 
@@ -114,6 +120,18 @@ class LearningPathElement
   public function getNext(): ?LearningPathElement
   {
     return $this->next;
+  }
+
+  /**
+   * @return int|null
+   *
+   * @JMSA\Expose()
+   * @JMSA\VirtualProperty()
+   * @JMSA\SerializedName("next")
+   */
+  public function getNextId(): ?int
+  {
+    return $this->next ? $this->next->getId() : NULL;
   }
 
   /**

@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,7 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @JMSA\ExclusionPolicy("all")
  */
 class LearningPath
 {
@@ -44,6 +47,8 @@ class LearningPath
    *
    * @Assert\NotBlank()
    * @Assert\Length(max=255)
+   *
+   * @JMSA\Expose()
    */
   private $name;
 
@@ -67,6 +72,8 @@ class LearningPath
    *
    * @Assert\NotBlank()
    * @Assert\Length(max=1024)
+   *
+   * @JMSA\Expose()
    */
   private $question;
 
@@ -179,6 +186,10 @@ class LearningPath
    * Get the elements ordered
    *
    * @return LearningPathElement[]|Collection
+   *
+   * @JMSA\Expose()
+   * @JMSA\VirtualProperty()
+   * @JMSA\SerializedName("elements")
    */
   public function getElementsOrdered()
   {

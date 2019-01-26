@@ -11,9 +11,12 @@ use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -125,6 +128,27 @@ class LearningPathController extends AbstractController
         'learningPath' => $learningPath,
         'form'         => $form->createView(),
     ];
+  }
+
+  /**
+   * @Route("/data/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
+   * @Template()
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea    $requestStudyArea
+   * @param LearningPath        $learningPath
+   * @param SerializerInterface $serializer
+   *
+   * @return JsonResponse
+   */
+  public function data(
+    /** @noinspection PhpUnusedParameterInspection Used for auth */
+      RequestStudyArea $requestStudyArea,
+      LearningPath $learningPath, SerializerInterface $serializer)
+  {
+    $json = $serializer->serialize($learningPath, 'json', SerializationContext::create()->setGroups(["Default"]));
+
+    return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
   /**
