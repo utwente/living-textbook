@@ -20,6 +20,8 @@ require('../event/eventTypes');
       case types.CHECK_DOUBLE_COLUMN_RETURN:
         onDoubleColumnReturn(data);
         break;
+      default:
+        console.warn('Unknown event!', type);
     }
   });
 

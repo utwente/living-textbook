@@ -50,8 +50,11 @@ $(function () {
       // Exclude 'no-link' class from handler
       if ($from.hasClass('no-block')) return;
 
-      // Exclude hash urls
+      // Retrieve url
       let url = $from.attr('href');
+      if (typeof url === 'undefined') return;
+
+      // Exclude hash urls
       if (url.startsWith('#')) return;
 
       // Exclude javascript urls

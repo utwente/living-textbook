@@ -42,6 +42,14 @@ import Routing from 'fos-routing';
       case types.SHOW_CONCEPT:
         onShowConcept(data);
         break;
+      case types.OPEN_LEARNING_PATH_BROWSER:
+        onOpenLearningPath(data);
+        break;
+      case types.CLOSE_LEARNING_PATH_BROWSER:
+        onCloseLearningPath(data);
+        break;
+      default:
+        console.warn('Unknown event!', type);
     }
   });
 
@@ -133,6 +141,22 @@ import Routing from 'fos-routing';
         cb.moveToConceptById(data.id);
       });
     }
+  }
+
+  /**
+   * Opens the learning path
+   * @param data
+   */
+  function onOpenLearningPath(data) {
+    lpb.openBrowser();
+  }
+
+  /**
+   * Closes the learning path
+   * @param data
+   */
+  function onCloseLearningPath(data) {
+    lpb.closeBrowser();
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType));

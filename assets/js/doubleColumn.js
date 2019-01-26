@@ -16,6 +16,7 @@ $(function () {
   require('./doubleColumn/eventHandler');
   require('./doubleColumn/eventDispatcher');
   require('./doubleColumn/draggebleWindow');
+  require('./doubleColumn/learningPathBrowser');
   require('./search/conceptSearch');
   require('./conceptBrowser/conceptBrowser');
 

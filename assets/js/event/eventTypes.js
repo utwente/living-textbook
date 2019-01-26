@@ -15,4 +15,8 @@
   eType.TOGGLE_CONCEPT_BROWSER = 'open_concept_browser';
   eType.CONCEPT_SELECTED = 'concept_selected';
   eType.SHOW_CONCEPT = 'show_concept';
+
+  // Toggle learning path browser
+  eType.OPEN_LEARNING_PATH_BROWSER = 'open_learning_path_browser';
+  eType.CLOSE_LEARNING_PATH_BROWSER = 'close_learning_path_browser';
 }(window.eType = window.eType || {}));
