@@ -9,12 +9,9 @@
   {{ 'url.overview-title'|trans }}
 {% endblock %}
 
-{% block content %}
-  {% if urls is iterable %}
-    <p>
-      {{ 'url.last-scanned'|trans({'%date%': urls.lastScanned|date('d M Y H:i')}) }}
-    </p>
-
+{% macro urlTable(urls, status, title, learningPathElements) %}
+  {% if urls is not empty %}
+    <h3>{{ title|trans }}</h3>
     <div class="table-responsive">
       <table class="table">
         <thead>
@@ -26,7 +23,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for url in urls.urls %}
+        {% for url in urls %}
           {% if url.context.class == 'App\\Entity\\StudyArea' %}
             {% set description = 'url.study-area-path' %}
             {% set editUrl = path('app_studyarea_edit', {'studyArea': url.context.id}) %}
@@ -54,17 +51,7 @@
           <tr>
             <td><a href="{{ url.url }}" target="_blank">{{ url.url }}</a></td>
             <td>
-              {% if url.url in badUrls %}
-                {% if url.internal %}
-                  {{ 'url.internal-wrong'|trans }}
-                {% else %}
-                  {{ 'url.bad'|trans }}
-                {% endif %}
-              {% elseif url.url in unscannedUrls %}
-                {{ 'url.unscanned'|trans }}
-              {% else %}
-                {{ 'url.good'|trans }}
-              {% endif %}
+              {{ status|trans }}
             </td>
             <td>
               {% if editUrl != '' %}
@@ -84,6 +71,22 @@
         </tbody>
       </table>
     </div>
+  {% endif %}
+{% endmacro %}
+
+{% block content %}
+  {% if lastScanned is not null %}
+    <p>
+      {{ 'url.last-scanned'|trans({'%date%': lastScanned|date('d M Y H:i')}) }}
+    </p>
+    {% from _self import urlTable %}
+    {{ urlTable(badExternalUrls, 'url.bad', 'url.bad-external') }}
+    {{ urlTable(badInternalUrls, 'url.internal-wrong', 'url.bad-internal') }}
+    {{ urlTable(goodExternalUrls, 'url.good', 'url.good-external') }}
+    {{ urlTable(goodInternalUrls, 'url.good', 'url.good-internal') }}
+    {{ urlTable(unscannedExternalUrls, 'url.unscanned', 'url.unscanned-external') }}
+    {{ urlTable(unscannedInternalUrls, 'url.unscanned', 'url.unscanned-internal') }}
+
   {% else %}
     {{ 'url.urls-unscanned'|trans }}
   {% endif %}

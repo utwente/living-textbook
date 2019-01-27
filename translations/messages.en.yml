@@ -375,9 +375,13 @@ relation-type:
 
 url:
   bad: 'Broken'
+  bad-external: 'Broken external URLs'
+  bad-internal: 'Internal URLs linking to the wrong study area'
   concept-path: 'Concept - %path%'
   external-resource-path: 'External resource - %path%'
   good: 'Healthy'
+  good-external: 'Healthy external URLs'
+  good-internal: 'Healthy internal URLs'
   internal-wrong: 'Internal URL, wrong study area'
   last-scanned: 'Last scanned: %date%'
   learning-outcome-path: 'Learning outcome - %path%'
@@ -392,6 +396,8 @@ url:
   overview-title: 'Used URLs'
   unknown: 'Unknown origin'
   unscanned: 'Not scanned yet'
+  unscanned-external: 'External URLs - not scanned yet'
+  unscanned-internal: 'Internal URLs - not scanned yet'
   url: 'URL'
   urls-unscanned: 'URLs not scanned yet.'
 

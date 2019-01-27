@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
+use App\Entity\ExternalResource;
+use App\Entity\LearningOutcome;
+use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Repository\AbbreviationRepository;
@@ -12,6 +15,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
 use App\UrlUtils\UrlScanner;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -29,6 +33,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefaultController extends AbstractController
 {
+  /** @var Concept[] */
+  private $concepts;
+
+  /** @var LearningOutcome[] */
+  private $learningOutcomes;
+
+  /** @var ExternalResource[] */
+  private $externalResources;
+
+  /** @var LearningPath[] */
+  private $learningPaths;
   /**
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},
    *                                        requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home",
@@ -179,29 +194,45 @@ class DefaultController extends AbstractController
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param UrlChecker       $urlChecker
+   * @param RequestStudyArea              $requestStudyArea
+   * @param UrlChecker                    $urlChecker
+   * @param ConceptRepository             $conceptRepository
+   * @param LearningOutcomeRepository     $learningOutcomeRepository
+   * @param ExternalResourceRepository    $externalResourceRepository
+   * @param LearningPathRepository        $learningPathRepository
    *
    * @return array
    */
-  public function urlOverview(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker)
+  public function urlOverview(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
+                              LearningOutcomeRepository $learningOutcomeRepository, ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
   {
-    $studyArea          = $requestStudyArea->getStudyArea();
-    $urls               = $urlChecker->getUrlsForStudyArea($studyArea);
-    $badUrls            = $urlChecker->checkStudyArea($studyArea) ?? ['bad' => [], 'unscanned' => []];
-    $flatBadLinks       = [];
-    $flatUnscannedLinks = [];
-    foreach ($badUrls['bad'] as $badUrl) {
-      $flatBadLinks[] = $badUrl->getUrl();
-    }
-    foreach ($badUrls['unscanned'] as $unscannedUrl) {
-      $flatUnscannedLinks[] = $unscannedUrl->getUrl();
-    }
+    $studyArea = $requestStudyArea->getStudyArea();
+    $urls      = $urlChecker->getUrlsForStudyArea($studyArea);
+    // Not scanned yet, early return
+    if ($urls === NULL) return ['lastScanned' => NULL];
+    $badUrls = $urlChecker->checkStudyArea($studyArea) ?? ['bad' => [], 'unscanned' => []];
+    // Get good urls
+    $goodUrls = array_diff($urls['urls'], $badUrls['bad'], $badUrls['unscanned']);
+
+    // Get linked objects
+    $this->concepts             = $this->mapArrayById($conceptRepository->findForStudyAreaOrderedByName($studyArea));
+    $this->learningOutcomes     = $this->mapArrayById($learningOutcomeRepository->findForStudyArea($studyArea));
+    $this->externalResources    = $this->mapArrayById($externalResourceRepository->findForStudyArea($studyArea));
+    $this->learningPaths        = $this->mapArrayById($learningPathRepository->findForStudyArea($studyArea));
+
+    // Split the various arrays, while simultaneously sorting them
+    list($badInternalUrls, $badExternalUrls) = $this->splitUrlLocation($badUrls['bad']);
+    list($unscannedInternalUrls, $unscannedExternalUrls) = $this->splitUrlLocation($badUrls['unscanned']);
+    list($goodInternalUrls, $goodExternalUrls) = $this->splitUrlLocation($goodUrls);
 
     return [
-        'urls'          => $urls,
-        'badUrls'       => $flatBadLinks,
-        'unscannedUrls' => $flatUnscannedLinks,
+        'lastScanned'           => $urls['lastScanned'],
+        'badInternalUrls'       => $badInternalUrls,
+        'badExternalUrls'       => $badExternalUrls,
+        'unscannedInternalUrls' => $unscannedInternalUrls,
+        'unscannedExternalUrls' => $unscannedExternalUrls,
+        'goodInternalUrls'      => $goodInternalUrls,
+        'goodExternalUrls'      => $goodExternalUrls,
     ];
   }
 
@@ -282,6 +313,138 @@ class DefaultController extends AbstractController
             ),
         ])
         ->getForm();
+  }
+
+  /**
+   * Filter an Url based on it being internal or not
+   *
+   * @param $entry
+   *
+   * @return bool
+   */
+  private function filterInternal(Url $entry): bool
+  {
+    return $entry->isInternal();
+  }
+
+  /**
+   * Get the Id of an object if it exists.
+   *
+   * @param $entry
+   *
+   * @return int
+   */
+  private function findId($entry): int
+  {
+    return method_exists($entry, 'getId') ? $entry->getId() : -1;
+  }
+
+  /**
+   * Add the Id of an array of objects as key, for easier searching of arrays.
+   *
+   * @param array $objects
+   *
+   * @return array
+   */
+  private function mapArrayById(array $objects): array
+  {
+    $objectIds = array_map([$this, 'findId'], $objects);
+    $mapped    = array_combine($objectIds, $objects);
+
+    return $mapped;
+  }
+
+  /**
+   * Sort an array of urls for viewing in the overview, then split them according to location.
+   *
+   * @param array|null $urls
+   *
+   * @return array
+   */
+  private function splitUrlLocation(?array $urls): array
+  {
+    usort($urls, [$this, 'sortUrls']);
+    $internalUrls = array_filter($urls, [$this, 'filterInternal']);
+    $externalUrls = array_diff($urls, $internalUrls);
+
+    return array($internalUrls, $externalUrls);
+  }
+
+  /**
+   * Sort two urls for in the overview page. First they are ordered based on class, then on entity name or number, then
+   * on property name.
+   *
+   * @param $a
+   * @param $b
+   *
+   * @return int
+   */
+  private function sortUrls(Url $a, Url $b): int
+  {
+    $aContext = $a->getContext();
+    $bContext = $b->getContext();
+    $aId      = $aContext->getId();
+    $bId      = $bContext->getId();
+    $aClass   = $aContext->getClass();
+    $bClass   = $bContext->getClass();
+    $aPath    = $aContext->getPath();
+    $bPath    = $bContext->getPath();
+    switch ($aClass) {
+      case StudyArea::class:
+        return $bClass === StudyArea::class ? strcasecmp($aPath, $bPath) : -1;
+      case Concept::class:
+        switch ($bClass) {
+          case StudyArea::class:
+            return 1;
+          case Concept::class:
+            if ($aId === $bId) return strcasecmp($aPath, $bPath);
+
+            return strcasecmp($this->concepts[$aId]->getName(), $this->concepts[$bId]->getName());
+          default:
+            return -1;
+        }
+      case LearningOutcome::class:
+        switch ($bClass) {
+          case StudyArea::class:
+          case Concept::class:
+            return 1;
+          case LearningOutcome::class:
+            if ($aId === $bId) return strcasecmp($aPath, $bPath);
+
+            return $this->learningOutcomes[$aId]->getNumber() <=> $this->learningOutcomes[$bId]->getNumber();
+          default:
+            return -1;
+        }
+      case LearningPath::class:
+        switch ($bClass) {
+          case StudyArea::class:
+          case Concept::class:
+          case LearningOutcome::class:
+            return 1;
+          case LearningPath::class:
+            if ($aId === $bId) return strcasecmp($aPath, $bPath);
+
+            return strcasecmp($this->learningPaths[$aId]->getName(), $this->learningPaths[$bId]->getName());
+          default:
+            return -1;
+        }
+      case ExternalResource::class:
+        switch ($bClass) {
+          case StudyArea::class:
+          case Concept::class:
+          case LearningOutcome::class:
+          case LearningPath::class:
+            return 1;
+          case ExternalResource::class:
+            if ($aId === $bId) return strcasecmp($aPath, $bPath);
+
+            return strcasecmp($this->externalResources[$aId]->getTitle(), $this->externalResources[$bId]->getTitle());
+          default:
+            return -1;
+        }
+      default:
+        return 1;
+    }
   }
 
 }
