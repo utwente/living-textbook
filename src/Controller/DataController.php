@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\DuplicationUtils\StudyAreaDuplicator;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
@@ -98,6 +99,7 @@ class DataController extends AbstractController
    * @Route("/upload")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Abbreviation;
 use App\Form\Abbreviation\EditAbbreviationType;
 use App\Form\Type\RemoveType;
@@ -32,6 +33,7 @@ class AbbreviationController extends AbstractController
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -93,6 +95,7 @@ class AbbreviationController extends AbstractController
    * @Route("/edit/{abbreviation}", requirements={"abbreviation"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -151,6 +154,7 @@ class AbbreviationController extends AbstractController
    * @Route("/remove/{abbreviation}", requirements={"abbreviation"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

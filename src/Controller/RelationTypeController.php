@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\Form\RelationType\EditRelationTypeType;
 use App\Form\Type\RemoveType;
@@ -31,6 +32,7 @@ class RelationTypeController extends AbstractController
    * @Route("/add")
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -73,6 +75,7 @@ class RelationTypeController extends AbstractController
    * @Route("/edit/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -142,6 +145,7 @@ class RelationTypeController extends AbstractController
    * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                   $request
    * @param RequestStudyArea          $requestStudyArea

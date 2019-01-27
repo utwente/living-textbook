@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Concept;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
@@ -130,7 +131,7 @@ class DefaultController extends AbstractController
   public function dashboard(RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
                             ConceptRepository $conceptRepo, AbbreviationRepository $abbreviationRepository,
                             ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                            LearningPathRepository $learningPathRepo, UrlChecker $urlChecker)
+                            LearningPathRepository $learningPathRepo, UrlChecker $urlChecker, TranslatorInterface $translator)
   {
     $user       = $this->getUser();
     $studyArea  = $requestStudyArea->getStudyArea();
@@ -138,6 +139,11 @@ class DefaultController extends AbstractController
 
     // Only show switch form when there is more than 1 visible study area
     $studyAreaForm = count($studyAreas) > 1 ? $this->createStudyAreaForm($formFactory, $user, $studyArea) : NULL;
+
+    $frozenOn = $studyArea->getFrozenOn();
+    if ($frozenOn !== NULL) {
+      $this->addFlash('error', $translator->trans('study-area.frozen', ['%date%' => $frozenOn->format('d-m-Y H:i')]));
+    }
 
     $conceptForm = $formFactory->createNamedBuilder('concept_form')
         ->add('concept', EntityType::class, [
@@ -193,6 +199,7 @@ class DefaultController extends AbstractController
    * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"})
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea
    *
    * @param RequestStudyArea              $requestStudyArea
    * @param UrlChecker                    $urlChecker

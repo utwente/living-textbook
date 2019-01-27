@@ -127,6 +127,13 @@ class StudyArea
   private $learningPaths;
 
   /**
+   * @var \DateTime
+   *
+   * @ORM\Column(name="frozen_on", type="datetime", nullable=true)
+   */
+  private $frozenOn;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -546,6 +553,26 @@ class StudyArea
   public function getRelationTypes()
   {
     return $this->relationTypes;
+  }
+
+  /**
+   * @param \DateTime $frozenOn
+   *
+   * @return $this
+   */
+  public function setFrozenOn(\DateTime $frozenOn)
+  {
+    $this->frozenOn = $frozenOn;
+
+    return $this;
+  }
+
+  /**
+   * @return \DateTime|null
+   */
+  public function getFrozenOn(): ?\DateTime
+  {
+    return $this->frozenOn;
   }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\ExternalResource;
 use App\Form\ExternalResource\EditExternalResourceType;
 use App\Form\Type\RemoveType;
@@ -30,6 +31,7 @@ class ExternalResourceController extends AbstractController
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -66,6 +68,7 @@ class ExternalResourceController extends AbstractController
    * @Route("/edit/{externalResource}", requirements={"externalResource"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -124,6 +127,7 @@ class ExternalResourceController extends AbstractController
    * @Route("/remove/{externalResource}", requirements={"externalResource"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

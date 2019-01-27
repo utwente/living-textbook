@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'study-area.freeze'|trans({"%item%": studyArea.name}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'study-area.freeze-text'|trans({"%item%": studyArea.name}) }}</p>
+
+  {{ form(form) }}
+{% endblock %}

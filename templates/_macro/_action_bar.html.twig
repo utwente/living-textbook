@@ -1,4 +1,4 @@
-{% macro action_bar(edit_url, show_url, list_url, add_url, remove_url, browser_id, progress, transfer_owner_url) %}
+{% macro action_bar(edit_url, show_url, list_url, add_url, remove_url, browser_id, progress, transfer_owner_url, freeze_url) %}
   {% from _self import _action_button %}
   {{ block('_bar_header') }}
   {% if browser_id|default(false) %}
@@ -22,6 +22,9 @@
   {% endif %}
   {% if add_url|default(false) %}
     {{ _action_button(add_url, 'fa-plus', 'form.add', 'success') }}
+  {% endif %}
+  {% if freeze_url|default(false) %}
+    {{ _action_button(freeze_url, 'fa-lock', 'form.freeze', 'warning') }}
   {% endif %}
   {% if remove_url|default(false) %}
     {{ _action_button(remove_url, 'fa-times', 'form.remove', 'danger') }}

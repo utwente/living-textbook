@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Concept;
 use App\Form\Concept\EditConceptType;
 use App\Form\Type\RemoveType;
@@ -32,6 +33,7 @@ class ConceptController extends AbstractController
    * @Route("/add")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -77,6 +79,7 @@ class ConceptController extends AbstractController
    * @Route("/edit/{concept}", requirements={"concept"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -163,6 +166,7 @@ class ConceptController extends AbstractController
    * @Route("/remove/{concept}", requirements={"concept"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

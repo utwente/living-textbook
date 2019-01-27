@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\LearningPath;
 use App\Form\LearningPath\EditLearningPathType;
 use App\Form\Type\RemoveType;
@@ -30,6 +31,7 @@ class LearningPathController extends AbstractController
    * @Route("/add")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -69,6 +71,7 @@ class LearningPathController extends AbstractController
    * @Route("/edit/{learningPath}", requirements={"learningPath"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -145,6 +148,7 @@ class LearningPathController extends AbstractController
    * @Route("/remove/{learningPath}", requirements={"learningPath"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

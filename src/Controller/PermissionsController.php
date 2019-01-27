@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Entity\UserGroup;
@@ -152,6 +153,7 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/add/{groupType}",requirements={"groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -240,6 +242,7 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/all/{groupType}",requirements={"groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -291,6 +294,7 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/{user}/{groupType}",requirements={"user"="\d+", "groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -345,6 +349,7 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/{email}/{groupType}",requirements={"groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

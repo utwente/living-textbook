@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\LearningOutcome;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
 use App\Form\Type\RemoveType;
@@ -30,6 +31,7 @@ class LearningOutcomeController extends AbstractController
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -66,6 +68,7 @@ class LearningOutcomeController extends AbstractController
    * @Route("/edit/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -124,6 +127,7 @@ class LearningOutcomeController extends AbstractController
    * @Route("/remove/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
