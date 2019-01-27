@@ -10,6 +10,8 @@ use App\UrlUtils\Model\CacheableUrl;
 use App\UrlUtils\Model\Url;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 
 class UrlChecker
 {
@@ -70,19 +72,26 @@ class UrlChecker
   private $urlScanner;
 
   /**
+   * @var RouterInterface
+   */
+  private $router;
+
+  /**
    * UrlChecker constructor.
    *
    * @param ExternalResourceRepository $externalResourceRepository
    * @param LearningOutcomeRepository  $learningOutcomeRepository
    * @param StudyAreaRepository        $studyAreaRepository
    * @param UrlScanner                 $urlScanner
+   * @param RouterInterface            $router
    */
-  public function __construct(ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository, StudyAreaRepository $studyAreaRepository, UrlScanner $urlScanner)
+  public function __construct(ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository, StudyAreaRepository $studyAreaRepository, UrlScanner $urlScanner, RouterInterface $router)
   {
     $this->externalResourceRepository = $externalResourceRepository;
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
     $this->studyAreaRepository        = $studyAreaRepository;
     $this->urlScanner                 = $urlScanner;
+    $this->router                     = $router;
     $this->goodUrlsCache              = new FilesystemAdapter('app.url.good');
     $this->bad0UrlCache               = new FilesystemAdapter('app.url.bad.0');
     $this->bad1UrlCache               = new FilesystemAdapter('app.url.bad.1');
@@ -125,8 +134,8 @@ class UrlChecker
   public function checkStudyArea(StudyArea $studyArea, bool $force = false, bool $fromCache = true): ?array
   {
     $cacheItem = $this->getUrlsForStudyArea($studyArea, $fromCache);
-    if ($cacheItem === null || $cacheItem['urls'] === null) return null;
-    $badUrls   = $this->findBadUrls($cacheItem['urls'], $studyArea, $force, $fromCache);
+    if ($cacheItem === NULL || $cacheItem['urls'] === NULL) return NULL;
+    $badUrls = $this->findBadUrls($cacheItem['urls'], $studyArea, $force, $fromCache);
 
     return $badUrls;
   }
@@ -168,21 +177,21 @@ class UrlChecker
    *
    * @param Url[]     $urls
    * @param StudyArea $studyArea
-   * @param bool      $force      Rescan all urls
-   * @param bool      $fromCache  Only show results that have been cached
+   * @param bool      $force     Rescan all urls
+   * @param bool      $fromCache Only show results that have been cached
    *
    * @return array
    * Returns two arrays, one with unscanned urls and one with bad urls
    */
   public function findBadUrls(array $urls, StudyArea $studyArea, bool $force, bool $fromCache): array
   {
-    $badUrls = [];
+    $badUrls       = [];
     $unscannedUrls = [];
     foreach ($urls as $url) {
       assert($url instanceof Url);
       $urlStatus = $this->checkUrl($url, $studyArea, $force, $fromCache);
       if ($urlStatus === false) $badUrls[] = $url;
-      else if ($urlStatus === null) $unscannedUrls[] = $url;
+      else if ($urlStatus === NULL) $unscannedUrls[] = $url;
     }
 
     return ['bad' => $badUrls, 'unscanned' => $unscannedUrls];
@@ -208,6 +217,20 @@ class UrlChecker
     foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
       $urls = array_merge($urls, $this->urlScanner->scanExternalResource($externalResource));
     }
+
+    $router = $this->router;
+    // Exclude latex URLs
+    $urls   = array_filter($urls, function (Url $entry) use ($router) {
+      if (!$entry->isInternal()) return true;
+      $cleanPath = strstr($entry->getPath(), '?', true) ?: $entry->getPath();
+      try {
+        $urlInfo = $router->match($cleanPath);
+      } catch (ResourceNotFoundException $e) {
+        return true;
+      }
+
+      return $urlInfo['_route'] !== 'app_latex_renderlatex';
+    });
 
     return $urls;
   }
@@ -363,7 +386,7 @@ class UrlChecker
     }
 
     // Not cached, check now. return null if forced from cache
-    return $fromCache ? null : $this->checkAndCacheUrl($url, $this->bad0UrlCache);
+    return $fromCache ? NULL : $this->checkAndCacheUrl($url, $this->bad0UrlCache);
 
   }
 }
