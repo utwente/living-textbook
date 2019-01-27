@@ -61,8 +61,9 @@ class LearningPathElementSelectorType extends AbstractType
             'data' => $this->serializer->serialize($this->learningOutcomeRepository->findUsedConceptIdsForStudyArea($studyArea), 'json'),
         ])
         ->add('add', ButtonType::class, [
-            'icon' => 'fa-plus',
-            'attr' => [
+            'label' => 'form.add',
+            'icon'  => 'fa-plus',
+            'attr'  => [
                 'class'   => 'btn-outline-success float-right',
                 'onclick' => 'addLearningPathConcepts_' . $options['sortable_id'] . '();',
             ],

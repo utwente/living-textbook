@@ -49,9 +49,12 @@ class LearningPathElementType extends AbstractType
               }
             }),
         ])
-        ->add('concept', PrintedTextType::class)
+        ->add('concept', PrintedTextType::class, [
+            'label' => 'learning-path.element-concept',
+        ])
         ->add('description', TextareaType::class, [
             'required' => false,
+            'label'    => 'learning-path.element-description',
         ]);
 
     $builder->addModelTransformer(new CallbackTransformer(

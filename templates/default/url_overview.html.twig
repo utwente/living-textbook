@@ -43,6 +43,10 @@
             {% set description = 'url.external-resource-path' %}
             {% set editUrl = path('app_externalresource_edit', {'externalResource': url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('external-resource.' ~ url.context.pathAsTransKey)|trans} %}
+          {% elseif url.context.class == 'App\\Entity\\LearningPath' %}
+            {% set description = 'url.learning-path-path' %}
+            {% set editUrl = path('app_learningpath_edit', {'learningPath': url.context.id}) %}
+            {% set descriptionArgs = {'%path%': ('learning-path.' ~ url.context.pathAsTransKey)|trans} %}
           {% else %}
             {% set description = 'url.unknown' %}
             {% set editUrl = '' %}
