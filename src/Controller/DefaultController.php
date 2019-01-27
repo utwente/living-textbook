@@ -219,7 +219,7 @@ class DefaultController extends AbstractController
    */
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
   {
-    $url    = $urlScanner->scanText(urldecode($url));
+    $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode($url)));
     $result = $urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true, false) ?
         $translator->trans('url.good') :
         $translator->trans('url.bad');
