@@ -5,6 +5,7 @@ namespace App\UrlUtils;
 use App\Entity\Concept;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
+use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
@@ -72,6 +73,7 @@ class UrlScanner
   public function scanConcept(Concept $concept): array
   {
     $id = $concept->getId();
+
     return array_values(array_unique(array_merge(
         $this->scanText($concept->getIntroduction()->getText(), new UrlContext(Concept::class, $id, "introduction")),
         $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, $id, "theoryExplanation")),
@@ -103,6 +105,18 @@ class UrlScanner
   public function scanLearningOutcome(LearningOutcome $learningOutcome): array
   {
     return $this->scanText($learningOutcome->getText(), new UrlContext(LearningOutcome::class, $learningOutcome->getId(), "text"));
+  }
+
+  /**
+   * Scan learning path for inline links
+   *
+   * @param LearningPath $learningPath
+   *
+   * @return Url[]
+   */
+  public function scanLearningPath(LearningPath $learningPath): array
+  {
+    return $this->scanText($learningPath->getIntroduction(), new UrlContext(LearningPath::class, $learningPath->getId(), "introduction"));
   }
 
   /**

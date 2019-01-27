@@ -65,6 +65,9 @@ class StudyAreaDuplicator
   /** @var Concept[] */
   private $concepts;
 
+  /** @var LearningPath[] Array of duplicated learning paths ([original id] = new learning path) */
+  private $newLearningPaths = [];
+
   /** @var LearningOutcome[] Array of duplicated learning outcomes ([original id] = new learning outcome) */
   private $newLearningOutcomes = [];
 
@@ -194,6 +197,7 @@ class StudyAreaDuplicator
       $newLearningPath = (new LearningPath())
           ->setStudyArea($this->newStudyArea)
           ->setName($learningPath->getName())
+          ->setIntroduction($learningPath->getIntroduction())
           ->setQuestion($learningPath->getQuestion());
 
       /** @var LearningPathElement $previousElement */
@@ -223,6 +227,7 @@ class StudyAreaDuplicator
       // Only save learning path when it still has elements left to save
       if ($newLearningPath->getElements()->count() > 0) {
         $this->em->persist($newLearningPath);
+        $this->newLearningPaths[$learningPath->getId()] = $newLearningPath;
       }
     }
   }
@@ -237,8 +242,8 @@ class StudyAreaDuplicator
       $newExternalResource = (new ExternalResource())
           ->setStudyArea($this->newStudyArea)
           ->setTitle($externalResource->getTitle())
-          ->setDescription($this->updateUrls($externalResource->getDescription()))
-          ->setUrl($this->updateUrls($externalResource->getUrl()))
+          ->setDescription($externalResource->getDescription())
+          ->setUrl($externalResource->getUrl())
           ->setBroken($externalResource->isBroken());
 
       $this->em->persist($newExternalResource);
@@ -355,6 +360,11 @@ class StudyAreaDuplicator
     // Check for null
     if ($this->newStudyArea->getId() === NULL) {
       throw new \InvalidArgumentException('New study area id is NULL!');
+    }
+
+    // Update learning paths
+    foreach ($this->newLearningPaths as $newLearningPath) {
+      $newLearningPath->setIntroduction($this->updateUrls($newLearningPath->getIntroduction()));
     }
 
     // Update learning outcomes
