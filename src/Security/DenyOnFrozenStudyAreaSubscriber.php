@@ -94,7 +94,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 
       $session = $request->getSession();
       assert($session instanceof Session);
-      $session->getFlashBag()->add('error', $this->translator->trans('study-area.frozen', ['%date%' => $studyArea->getFrozenOn()->format('d-m-Y H:i')]));
+      $session->getFlashBag()->add('error', $this->translator->trans('study-area.frozen'));
 
       // Parse route params
       $routeParams = [];

@@ -79,6 +79,10 @@
     {% endif %}
   </ul>
 
+  {% if studyArea.frozenOn %}
+    <p>{{ 'dashboard.study-area-frozen'|trans({'%since%': studyArea.frozenOn|localizeddate('medium', 'short') }) }}</p>
+  {% endif %}
+
   <h4>{{ 'dashboard.search-concept'|trans }}</h4>
   {{ form_start(conceptForm) }}
   <div class="row">
