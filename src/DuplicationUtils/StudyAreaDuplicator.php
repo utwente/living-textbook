@@ -495,6 +495,7 @@ class StudyAreaDuplicator
       unset($matchedRouteData['_route']);
       unset($matchedRouteData['_controller']);
       $matchedRouteData['_studyArea'] = $this->newStudyArea->getId();
+      $revertStudyArea                = false;
 
       // Update route parameters for specific routes
       if ($routeName === 'app_concept_show') {
@@ -503,7 +504,7 @@ class StudyAreaDuplicator
           $matchedRouteData['concept'] = $this->newConcepts[intval($matchedRouteData['concept'])]->getId();
         } else {
           // Revert to old study area id to not break link completely
-          $matchedRouteData['_studyArea'] = $this->studyAreaToDuplicate->getId();
+          $revertStudyArea = true;
         }
       } else if ($routeName === 'app_learningoutcome_show') {
         // Check whether the new learning outcome is available
@@ -511,8 +512,21 @@ class StudyAreaDuplicator
           $matchedRouteData['learningOutcome'] = $this->newLearningOutcomes[intval($matchedRouteData['learningOutcome'])]->getId();
         } else {
           // Revert to old study area id to not break link completely
-          $matchedRouteData['_studyArea'] = $this->studyAreaToDuplicate->getId();
+          $revertStudyArea = true;
         }
+      } else if ($routeName === 'app_learningpath_show') {
+        // Check whether the new learning path is available
+        if (array_key_exists(intval($matchedRouteData['learningPath']), $this->newLearningPaths)) {
+          $matchedRouteData['learningPath'] = $this->newLearningPaths[intval($matchedRouteData['learningPath'])]->getId();
+        } else {
+          // Revert to old study area id to not break link completely
+          $revertStudyArea = true;
+        }
+      }
+
+      // Revert updated study area link if requested
+      if ($revertStudyArea) {
+        $matchedRouteData['_studyArea'] = $this->studyAreaToDuplicate->getId();
       }
 
       // Generate new url
