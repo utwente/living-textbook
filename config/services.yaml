@@ -55,6 +55,10 @@ services:
   jms_serializer.naming_strategy:
     alias: App\Serializer\Metadata\PropertyMetadata\SerializedNameWithIdenticalPropertyNamingStrategy
 
+  # Register this service explicitly, as it is not autowired
+  Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter:
+    alias: framework_extra_bundle.argument_name_convertor
+
   App\Database\SoftDeletableSubscriber:
     tags:
       - { name: doctrine.event_subscriber, connection: default }

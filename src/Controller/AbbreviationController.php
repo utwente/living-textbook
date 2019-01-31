@@ -33,7 +33,7 @@ class AbbreviationController extends AbstractController
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -95,7 +95,7 @@ class AbbreviationController extends AbstractController
    * @Route("/edit/{abbreviation}", requirements={"abbreviation"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -154,7 +154,7 @@ class AbbreviationController extends AbstractController
    * @Route("/remove/{abbreviation}", requirements={"abbreviation"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

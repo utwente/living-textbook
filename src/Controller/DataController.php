@@ -99,7 +99,7 @@ class DataController extends AbstractController
    * @Route("/upload")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

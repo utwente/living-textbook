@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Concept;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
@@ -199,7 +198,6 @@ class DefaultController extends AbstractController
    * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"})
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea
    *
    * @param RequestStudyArea              $requestStudyArea
    * @param UrlChecker                    $urlChecker

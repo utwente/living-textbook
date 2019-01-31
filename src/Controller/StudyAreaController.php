@@ -107,7 +107,7 @@ class StudyAreaController extends AbstractController
    * @Route("/edit/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
    *
    * @param Request                $request
    * @param StudyArea              $studyArea
@@ -160,21 +160,21 @@ class StudyAreaController extends AbstractController
   }
 
   /**
-   * @Route("/freeze")
+   * @Route("/freeze/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
    *
    * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
+   * @param StudyArea              $studyArea
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $translator
    *
    * @return array|Response
+   * @throws \Exception
    */
-  public function freeze(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $translator)
+  public function freeze(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $translator)
   {
-    $studyArea = $requestStudyArea->getStudyArea();
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route'        => 'app_default_dashboard',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
@@ -201,7 +201,6 @@ class StudyAreaController extends AbstractController
    * @Route("/remove/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -245,7 +244,6 @@ class StudyAreaController extends AbstractController
    * @Route("/transfer/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   * @DenyOnFrozenStudyArea()
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea

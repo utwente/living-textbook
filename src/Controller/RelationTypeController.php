@@ -32,7 +32,7 @@ class RelationTypeController extends AbstractController
    * @Route("/add")
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -75,7 +75,7 @@ class RelationTypeController extends AbstractController
    * @Route("/edit/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -145,7 +145,7 @@ class RelationTypeController extends AbstractController
    * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    *
    * @param Request                   $request
    * @param RequestStudyArea          $requestStudyArea
@@ -155,6 +155,7 @@ class RelationTypeController extends AbstractController
    * @param TranslatorInterface       $trans
    *
    * @return array|RedirectResponse
+   * @throws \Exception
    */
   public function remove(Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType,
                          ConceptRelationRepository $conceptRelationRepository, EntityManagerInterface $em, TranslatorInterface $trans)

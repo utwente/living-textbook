@@ -31,7 +31,7 @@ class LearningOutcomeController extends AbstractController
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -68,7 +68,8 @@ class LearningOutcomeController extends AbstractController
    * @Route("/edit/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
+   *                                                          subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -127,7 +128,8 @@ class LearningOutcomeController extends AbstractController
    * @Route("/remove/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea()
+   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
+   *                                                          subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
