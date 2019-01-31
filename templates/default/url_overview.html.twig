@@ -49,7 +49,9 @@
             {% set editUrl = '' %}
           {% endif %}
           <tr>
-            <td><a href="{{ url.url }}" target="_blank">{{ url.url }}</a></td>
+            <td class="break-all ba-60">
+              <a href="{{ url.url }}" target="_blank">{{ url.url }}</a>
+            </td>
             <td>
               {{ status|trans }}
             </td>
