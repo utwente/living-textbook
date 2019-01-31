@@ -1,12 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% from '_macro/_action_bar.html.twig' import action_bar %}
-  {{ action_bar(
-    false,
-    false,
-    path('app_relationtype_list')
-  ) }}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.header() }}
+  {{ buttons.list_button(path('app_relationtype_list')) }}
+  {{ buttons.remove_button(path('app_relationtype_remove', {'relationType': relationType.id})) }}
+  {{ buttons.footer() }}
 {% endblock %}
 
 {% block title %}

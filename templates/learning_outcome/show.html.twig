@@ -1,14 +1,15 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% from '_macro/_action_bar.html.twig' import action_bar %}
-  {{ action_bar(
-    is_granted('STUDYAREA_EDIT', _twigStudyArea) ? path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}): false,
-    false,
-    path('app_learningoutcome_list'),
-    false,
-    is_granted('STUDYAREA_EDIT', _twigStudyArea) ? path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}) : false
-  ) }}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.header() }}
+  {{ buttons.list_button(path('app_learningoutcome_list')) }}
+  {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) and not _twigStudyArea.isFrozen %}
+    {{ buttons.edit_button(path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id})) }}
+    {{ buttons.remove_button(path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id})) }}
+    {{ buttons.add_button(path('app_learningoutcome_add')) }}
+  {% endif %}
+  {{ buttons.footer() }}
 {% endblock %}
 
 {% block title %}

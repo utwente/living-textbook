@@ -1,9 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-    {% from '_macro/_action_bar.html.twig' import new_bar %}
-    {{ new_bar(path('app_relationtype_add')) }}
+  {% if is_granted('STUDYAREA_OWNER', studyArea) and not studyArea.isFrozen %}
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
+    {{ buttons.header() }}
+    {{ buttons.add_button(path('app_relationtype_add')) }}
+    {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
 
@@ -17,7 +19,7 @@
       <thead>
       <tr>
         <th scope="col">{{ 'relation-type.name'|trans }}</th>
-        {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+        {% if is_granted('STUDYAREA_OWNER', studyArea) and not studyArea.isFrozen %}
           <th scope="col">{{ 'form.edit'|trans }}</th>
           <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
@@ -27,7 +29,7 @@
       {% for relationType in relationTypes %}
         <tr>
           <td>{{ relationType.name }}</td>
-          {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+          {% if is_granted('STUDYAREA_OWNER', studyArea) and not studyArea.isFrozen %}
             <td><a
                   href="{{ path('app_relationtype_edit', {'relationType': relationType.id}) }}">{{ 'form.edit'|trans }}</a>
             </td>

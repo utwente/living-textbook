@@ -1,0 +1,61 @@
+{% macro browser_button(browser_id) %}
+  <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-primary">
+    <i class="fa fa-fw fa-map"></i> {{ 'browser.open'|trans }}
+  </a>
+{% endmacro %}
+
+{% macro progress_button() %}
+  {% from _self import _action_button %}
+  {{ _action_button(path('app_data_excelstatus'), 'fa-tasks', 'menu.excel-status', 'primary', true) }}
+{% endmacro %}
+
+{% macro list_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-list', 'form.list', 'dark') }}
+{% endmacro %}
+
+{% macro show_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-eye', 'form.show', 'primary') }}
+{% endmacro %}
+
+{% macro add_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-plus', 'form.add', 'success') }}
+{% endmacro %}
+
+{% macro edit_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-pencil', 'form.edit') }}
+{% endmacro %}
+
+{% macro remove_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-times', 'form.remove', 'danger') }}
+{% endmacro %}
+
+{% macro transfer_owner_button(url, disabled) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-exchange', 'study-area.transfer-ownership') }}
+{% endmacro %}
+
+{% macro freeze_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-lock', 'form.freeze', 'warning') }}
+{% endmacro %}
+
+{% macro _action_button(url, icon, label, color, blank) %}
+  <a href="{{ url }}" {% if blank|default(false) %}target="_blank" {% endif %}
+     class="btn btn-outline-{{ color|default('secondary') }}">
+    <i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}
+  </a>
+{% endmacro %}
+
+{% macro header() %}
+<div class="float-right" role="group" aria-label="{{ 'form.action-bar'|trans }}">
+  {% endmacro %}
+
+  {% macro footer() %}
+</div>
+  <div class="clearfix d-lg-none"></div>
+{% endmacro %}

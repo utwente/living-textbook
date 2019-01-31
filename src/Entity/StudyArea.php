@@ -575,4 +575,12 @@ class StudyArea
     return $this->frozenOn;
   }
 
+  /**
+   * @return bool
+   */
+  public function isFrozen(): bool
+  {
+    return $this->getFrozenOn() !== NULL;
+  }
+
 }
