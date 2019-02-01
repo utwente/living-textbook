@@ -29,3 +29,15 @@
     color: $loader-color;
   }
 }
+
+#bottom-container-content {
+  padding: 0.25rem;
+
+  #learning-path-title {
+    font-size: 1.5rem;
+  }
+
+  #learning-path-canvas {
+    width: 100%;
+  }
+}

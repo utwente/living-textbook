@@ -818,7 +818,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Zoom to the new scale, which is limited
    * @param newScale New scale
    */
-  function zoomFromButton(newScale){
+  function zoomFromButton(newScale) {
     var transform = d3.zoomIdentity
         .translate(halfCanvasWidth, halfCanvasHeight)
         .scale(Math.max(cb.zoomExtent[0], Math.min(cb.zoomExtent[1], newScale)))
@@ -1198,7 +1198,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function filterNodeOnColor(color) {
     return function (node) {
-      if (color === -1){
+      if (color === -1) {
         return node.empty;
       }
       return !node.empty && node.color === color;
@@ -1213,7 +1213,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function colorNode(node, color) {
     node.color = color;
 
-    if (typeof(Storage) !== 'undefined') {
+    if (typeof (Storage) !== 'undefined') {
       localStorage.setItem('nodeColor.' + node.id, color);
     }
   }
@@ -1227,7 +1227,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     });
 
     // Clear local storage
-    if (typeof(Storage) !== 'undefined') {
+    if (typeof (Storage) !== 'undefined') {
       localStorage.clear();
     }
   }
@@ -1237,7 +1237,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function loadNodeColor(node) {
     node.color = 0;
-    if (typeof(Storage) !== 'undefined') {
+    if (typeof (Storage) !== 'undefined') {
       var color = localStorage.getItem('nodeColor.' + node.id);
       if (color !== null) {
         node.color = parseInt(color);
@@ -1453,7 +1453,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     $('#zoom-in-button').on('click', function () {
       zoomFromButton(cbTransform.k * cb.zoomButtonFactor);
     });
-    $('#zoom-out-button').on('click', function(){
+    $('#zoom-out-button').on('click', function () {
       zoomFromButton(cbTransform.k / cb.zoomButtonFactor);
     });
 
