@@ -17,7 +17,7 @@ fos_ck_editor:
       format_tags: "p;h1;h2;citation;reference"
       extraPlugins: "latexeditor,image2"
       extraAllowedContent: "figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id];symbol"
-      removePlugins: "dialogadvtab"
+      removePlugins: "image,dialogadvtab"
       bodyClass: "ltb-text-container"
     ltb_no_image:
       <<: *ckeditor_default
