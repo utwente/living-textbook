@@ -19,6 +19,7 @@
       <thead>
       <tr>
         <th scope="col">{{ 'learning-path.name'|trans }}</th>
+        <th scope="col">{{ 'learning-path.open'|trans }}</th>
         <th scope="col">{{ 'form.show'|trans }}</th>
         {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
           <th scope="col">{{ 'form.edit'|trans }}</th>
@@ -30,6 +31,10 @@
       {% for learningPath in learningPaths %}
         <tr>
           <td>{{ learningPath.name }}</td>
+          <td>
+            <a href="#"
+               onclick="eDispatch.openLearningPath({{- learningPath.id -}})">{{ 'learning-path.open'|trans }}</a>
+          </td>
           <td>
             <a href="{{ path('app_learningpath_show', {'learningPath': learningPath.id}) }}">{{ 'form.show'|trans }}</a>
           </td>

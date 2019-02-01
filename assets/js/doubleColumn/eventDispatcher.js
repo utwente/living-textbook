@@ -54,10 +54,13 @@ require('../event/eventTypes');
   };
 
   /**
-   * Close learning path browser
+   * Navigate to a specific learning path in the content window
+   * @param id
    */
-  eDispatch.closeLearningPath = function () {
-    dispatchParent(types.CLOSE_LEARNING_PATH_BROWSER);
+  eDispatch.navigateToLearningPath = function (id) {
+    dispatchParent(types.NAVIGATE_LEARNING_PATH, {
+      id: id
+    });
   };
 
 }(window.eDispatch = window.eDispatch || {}, window.eType));

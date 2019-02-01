@@ -210,7 +210,7 @@ class LearningPathController extends AbstractController
   }
 
   /**
-   * @Route("/show/{learningPath}", requirements={"learningPath"="\d+"})
+   * @Route("/show/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *

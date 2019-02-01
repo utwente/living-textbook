@@ -4,11 +4,28 @@
 #learning-path-browser-controls {
   z-index: $bar-width - 10;
   position: absolute;
+  width: 50px;
+  right: 0;
 
   .action-container {
-    width: 40%;
-    max-width: 300px;
+    width: 100%;
     padding: 2px;
     text-align: right;
+  }
+}
+
+#bottom-container-loader {
+  position: absolute;
+  top: $bar-width;
+  z-index: $bar-z-index - 5;
+  height: calc(100% - #{$bar-width});
+  width: 100%;
+  background-color: $background-color;
+
+  & > div {
+    @include div-center();
+    text-align: center;
+    font-size: $loader-size;
+    color: $loader-color;
   }
 }

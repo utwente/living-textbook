@@ -48,6 +48,9 @@ import Routing from 'fos-routing';
       case types.CLOSE_LEARNING_PATH_BROWSER:
         onCloseLearningPath(data);
         break;
+      case types.NAVIGATE_LEARNING_PATH:
+        onNavigateLearningPath(data);
+        break;
       default:
         console.warn('Unknown event!', type);
     }
@@ -157,6 +160,15 @@ import Routing from 'fos-routing';
    */
   function onCloseLearningPath(data) {
     lpb.closeBrowser();
+  }
+
+  /**
+   * Load the requested learning path url
+   * @param data
+   */
+  function onNavigateLearningPath(data) {
+    // Forward to page load
+    onPageLoad({url: Routing.generate('app_learningpath_show', {_studyArea: _studyArea, learningPath: data.id})})
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType));
