@@ -1,3 +1,5 @@
+require('../../css/learningPathBrowser/learningPathBrowser.scss');
+
 /**
  * Register lpb namespace in the browser, for usage of the learning path browser object
  *
@@ -9,11 +11,17 @@
   const closedSize = '100%';
   const $doubleColumn = $('#double-column-container');
   const $bottomRow = $('#bottom-row');
+  const $closeButton = $('#learning-path-close-button');
+
+  /**
+   * Register event handlers
+   */
+  $closeButton.click(() => lpb.closeBrowser());
 
   /**
    * Handler to open the learning path browser
    */
-  lpb.openBrowser = function () {
+  lpb.openBrowser = function (id) {
     // CSS animations are used to make it fluent
     $doubleColumn.css('height', openSize);
     $bottomRow.css('top', openSize);
@@ -35,7 +43,9 @@
    */
   function triggerResize() {
     $doubleColumn.one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", function () {
-      $(window).trigger('resize');
+      setTimeout(function () {
+        $(window).trigger('resize');
+      }, 100);
     });
   }
 }(window.lpb = window.lpb || {}, $));

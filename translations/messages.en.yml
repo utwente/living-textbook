@@ -222,6 +222,7 @@ learning-outcome:
 
 learning-path:
   add-title: 'Add new learning path'
+  close: 'Close learning path'
   current-elements: 'Current elements'
   edit-title: 'Edit learning path "%item%"'
   element-concept: 'Concept'
@@ -231,6 +232,7 @@ learning-path:
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
+  open: 'Follow path'
   path: 'Path'
   question: 'Question'
   remove: 'Remove learning path "%item%"'

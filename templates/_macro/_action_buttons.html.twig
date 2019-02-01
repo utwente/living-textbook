@@ -1,7 +1,11 @@
 {% macro browser_button(browser_id) %}
-  <a href="#" onclick="eDispatch.showConcept({{- browser_id -}});" class="btn btn-outline-primary">
-    <i class="fa fa-fw fa-map"></i> {{ 'browser.open'|trans }}
-  </a>
+  {% from _self import _action_button %}
+  {{ _action_button('#', 'fa-map', 'browser.open', 'primary', false, 'eDispatch.showConcept(' ~ browser_id ~ ');') }}
+{% endmacro %}
+
+{% macro learning_path_button(learningpath_id) %}
+  {% from _self import _action_button %}
+  {{ _action_button('#', 'fa-map', 'learning-path.open', 'primary', false, 'eDispatch.openLearningPath(' ~ learningpath_id ~ ');') }}
 {% endmacro %}
 
 {% macro progress_button() %}
@@ -44,8 +48,8 @@
   {{ _action_button(url, 'fa-lock', 'form.freeze', 'warning') }}
 {% endmacro %}
 
-{% macro _action_button(url, icon, label, color, blank) %}
-  <a href="{{ url }}" {% if blank|default(false) %}target="_blank" {% endif %}
+{% macro _action_button(url, icon, label, color, blank, onclick) %}
+  <a href="{{ url }}"{% if onclick|default(false) %} onclick="{{ onclick }}" {% endif %}{% if blank|default(false) %} target="_blank" {% endif %}
      class="btn btn-outline-{{ color|default('secondary') }}">
     <i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}
   </a>

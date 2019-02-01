@@ -16,9 +16,9 @@ $(function () {
   require('./doubleColumn/eventHandler');
   require('./doubleColumn/eventDispatcher');
   require('./doubleColumn/draggebleWindow');
-  require('./doubleColumn/learningPathBrowser');
   require('./search/conceptSearch');
   require('./conceptBrowser/conceptBrowser');
+  require('./learningPathBrowser/learningPathBrowser');
 
   $.get({
     url: Routing.generate('app_data_export', {_studyArea: _studyArea}),

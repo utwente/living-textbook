@@ -148,7 +148,7 @@ import Routing from 'fos-routing';
    * @param data
    */
   function onOpenLearningPath(data) {
-    lpb.openBrowser();
+    lpb.openBrowser(data.id);
   }
 
   /**

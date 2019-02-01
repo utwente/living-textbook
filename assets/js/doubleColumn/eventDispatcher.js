@@ -53,4 +53,11 @@ require('../event/eventTypes');
     });
   };
 
+  /**
+   * Close learning path browser
+   */
+  eDispatch.closeLearningPath = function () {
+    dispatchParent(types.CLOSE_LEARNING_PATH_BROWSER);
+  };
+
 }(window.eDispatch = window.eDispatch || {}, window.eType));

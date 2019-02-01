@@ -1,0 +1,14 @@
+@import '../vars/vars';
+@import '../mixins/mixins';
+
+#learning-path-browser-controls {
+  z-index: $bar-width - 10;
+  position: absolute;
+
+  .action-container {
+    width: 40%;
+    max-width: 300px;
+    padding: 2px;
+    text-align: right;
+  }
+}
