@@ -25,7 +25,7 @@ class UserListener
     $em = $event->getEntityManager();
 
     // Find any UserGroupEmail to upgrade
-    $userGroupEmails = $em->getRepository(UserGroupEmail::class)->findBy(['email' => $user->getUsername()]);
+    $userGroupEmails = $em->getRepository(UserGroupEmail::class)->findByEmail($user->getUsername());
     if (count($userGroupEmails) == 0) {
       return;
     }

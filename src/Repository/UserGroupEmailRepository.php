@@ -13,4 +13,19 @@ class UserGroupEmailRepository extends ServiceEntityRepository
     parent::__construct($registry, UserGroupEmail::class);
   }
 
+  /**
+   * @param string $email
+   *
+   * @return UserGroupEmail[]
+   */
+  public function findByEmail(string $email)
+  {
+    return $this->createQueryBuilder('uge')
+        // Inner join to filter removed user groups
+        ->innerJoin('uge.userGroup', 'ug')
+        ->where('uge.email = :email')
+        ->setParameter('email', $email)
+        ->getQuery()->getResult();
+  }
+
 }
