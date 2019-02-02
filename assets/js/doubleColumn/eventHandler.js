@@ -51,6 +51,9 @@ import Routing from 'fos-routing';
       case types.NAVIGATE_LEARNING_PATH:
         onNavigateLearningPath(data);
         break;
+      case types.OPEN_CONCEPT_FROM_LEARNING_PATH:
+        onOpenConceptFromLearningPath(data);
+        break;
       default:
         console.warn('Unknown event!', type);
     }
@@ -169,6 +172,17 @@ import Routing from 'fos-routing';
   function onNavigateLearningPath(data) {
     // Forward to page load
     onPageLoad({url: Routing.generate('app_learningpath_show', {_studyArea: _studyArea, learningPath: data.id})})
+  }
+
+  /**
+   * Open a concept from the learning path
+   * @param data
+   */
+  function onOpenConceptFromLearningPath(data) {
+    onConceptSelected(data);
+    if (dw.isOpened()) {
+      onShowConcept(data);
+    }
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType));

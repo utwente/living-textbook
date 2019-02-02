@@ -63,4 +63,14 @@ require('../event/eventTypes');
     });
   };
 
+  /**
+   * Open a concept from the learning path
+   * @param id
+   */
+  eDispatch.openConceptFromLearningPath = function (id) {
+    dispatchParent(types.OPEN_CONCEPT_FROM_LEARNING_PATH, {
+      id: id
+    });
+  };
+
 }(window.eDispatch = window.eDispatch || {}, window.eType));

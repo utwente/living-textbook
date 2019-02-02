@@ -21,6 +21,14 @@
   var lastX = -1;
   var firstOpen = true;
 
+  /**
+   * Verify whether the window is opened
+   * @returns {boolean}
+   */
+  dw.isOpened = function () {
+    return opened;
+  };
+
   ////////////////////////////////
   // Layout handlers
   ////////////////////////////////

@@ -1,9 +1,10 @@
+require('./configuration.js');
 require('../../css/conceptBrowser/conceptBrowser.scss');
 
 /**
  * Register cb (concept browser) namespace for usage
  */
-(function (cb, $, d3, dispatcher, undefined) {
+(function (cb, bConfig, $, d3, dispatcher, undefined) {
 
   /******************************************************************************************************
    * Configuration variables
@@ -37,125 +38,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Style configuration variables
    *****************************************************************************************************/
 
-  // Fixed node layout
-  cb.baseNodeRadius = 8; // Node base radius
-  cb.extendNodeRatio = 3;
-  cb.nodeLineWidth = 2;
-
-  // Fixed link styles
-  cb.linkLineWidth = 1;
-
-  // Fixed node label layout
-  cb.minCharCount = 12;
-  cb.defaultNodeLabelFontSize = 10;
-  cb.activeNodeLabelLineWidth = 1.5;
-  cb.defaultNodeLabelFont = cb.defaultNodeLabelFontSize + 'px';
-  cb.activeNodeLabelFont = 'bold ' + cb.defaultNodeLabelFont;
-
-  // Node styles
-  cb.defaultNodeFillStyle = '';
-  cb.defaultNodeStrokeStyle = '';
-  cb.draggedNodeFillStyle = '';
-  cb.draggedNodeStrokeStyle = '';
-  cb.fadedNodeFillStyle = '';
-  cb.fadedNodeStrokeStyle = '';
-  cb.highlightedNodeFillStyle = '';
-  cb.highlightedNodeStrokeStyle = '';
-
-  // Link styles
-  cb.linkLineWidth = 1;
-  cb.defaultLinkStrokeStyle = '#696969';
-  cb.draggedLinkStrokeStyle = '#333';
-  cb.fadedLinksStrokeStyle = '#E0E0E0';
-  cb.highlightedLinkStrokeStyle = cb.draggedLinkStrokeStyle;
-
-  // Node label styles
-  cb.defaultNodeLabelColor = '#000';
-  cb.activeNodeLabelStrokeStyle = '#fff';
-
   cb.applyStyle = function (style) {
-    switch (style) {
-      case -1: { // Grey 'empty' state
-        // Node styles
-        cb.defaultNodeFillStyle = '#8e8e8e';
-        cb.defaultNodeStrokeStyle = '#d5d5d5';
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#737373';
-        cb.fadedNodeFillStyle = '#bdbdbd';
-        cb.fadedNodeStrokeStyle = '#e1e1e1';
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        break;
-      }
-      case 1: {
-        // Node styles
-        cb.defaultNodeFillStyle = '#de5356';
-        cb.defaultNodeStrokeStyle = '#fff';
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#ff2340';
-        cb.fadedNodeFillStyle = '#bc6d73';
-        cb.fadedNodeStrokeStyle = '#fff';
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        break;
-      }
-      case 2: {
-        // Node styles
-        cb.defaultNodeFillStyle = '#75de79';
-        cb.defaultNodeStrokeStyle = '#fff';
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#1ac321';
-        cb.fadedNodeFillStyle = '#9ebc9d';
-        cb.fadedNodeStrokeStyle = '#fff';
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        break;
-      }
-      case 3: {
-        // Node styles
-        cb.defaultNodeFillStyle = '#a4a5fe';
-        cb.defaultNodeStrokeStyle = '#fff';
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#1513ff';
-        cb.fadedNodeFillStyle = '#55557a';
-        cb.fadedNodeStrokeStyle = '#fff';
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        break;
-      }
-      case 4: {
-        // Node styles
-        cb.defaultNodeFillStyle = '#deaf6c';
-        cb.defaultNodeStrokeStyle = '#fff';
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#ff5d00';
-        cb.fadedNodeFillStyle = '#bcac9b';
-        cb.fadedNodeStrokeStyle = cb.fadedNodeFillStyle;
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        break;
-      }
-      case 0:
-        /* falls through */
-      default: {
-        // Node styles
-        cb.defaultNodeFillStyle = '#b1ded2';
-        cb.defaultNodeStrokeStyle = '#fff';
-        cb.draggedNodeFillStyle = cb.defaultNodeFillStyle;
-        cb.draggedNodeStrokeStyle = '#2359ff';
-        cb.fadedNodeFillStyle = '#E6ECE4';
-        cb.fadedNodeStrokeStyle = '#fff';
-        cb.highlightedNodeFillStyle = cb.draggedNodeFillStyle;
-        cb.highlightedNodeStrokeStyle = cb.draggedNodeStrokeStyle;
-
-        break;
-      }
-    }
+    bConfig.applyStyle(style);
 
     if (d3.event && !d3.event.active) cbSimulation.restart();
   };
@@ -368,7 +252,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       return cb.linkNodeRadius;
     }
 
-    node.radius = cb.baseNodeRadius + cb.extendNodeRatio * (node.numberOfLinks ? node.numberOfLinks : 1);
+    node.radius = bConfig.baseNodeRadius + bConfig.extendNodeRatio * (node.numberOfLinks ? node.numberOfLinks : 1);
     return node.radius + cb.nodeRadiusMargin;
   }
 
@@ -385,13 +269,13 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Calculate node text lines
     var lines = node.label.split(' ');
-    if (lines.length <= 2 && node.label.length <= (cb.minCharCount + 1)) {
+    if (lines.length <= 2 && node.label.length <= (bConfig.minCharCount + 1)) {
       node.expandedLabel = lines;
     } else {
       // Check if next line can be combined with the last line
       node.expandedLabel.push(lines[0]);
       for (var i = 1; i < lines.length; i++) {
-        if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= cb.minCharCount) {
+        if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= bConfig.minCharCount) {
           node.expandedLabel[node.expandedLabel.length - 1] += ' ' + lines[i];
         } else {
           node.expandedLabel.push(lines[i]);
@@ -400,7 +284,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     }
 
     // Calculate offset for the amount of lines
-    node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * cb.defaultNodeLabelFontSize);
+    node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * bConfig.defaultNodeLabelFontSize);
   }
 
   /**
@@ -888,8 +772,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw normal links
     context.beginPath();
-    context.lineWidth = cb.linkLineWidth;
-    context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    context.lineWidth = bConfig.linkLineWidth;
+    context.strokeStyle = isDragging || highlightedNode !== null ? bConfig.fadedLinksStrokeStyle : bConfig.defaultLinkStrokeStyle;
     cbGraph.links.map(drawNormalLink);
     context.stroke();
 
@@ -897,9 +781,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     for (var nn = -1; nn <= 4; nn++) {
       cb.applyStyle(nn);
       context.beginPath();
-      context.lineWidth = cb.nodeLineWidth;
-      context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedNodeFillStyle : cb.defaultNodeFillStyle;
-      context.strokeStyle = isDragging || highlightedNode !== null ? cb.fadedNodeStrokeStyle : cb.defaultNodeStrokeStyle;
+      context.lineWidth = bConfig.nodeLineWidth;
+      context.fillStyle = isDragging || highlightedNode !== null ? bConfig.fadedNodeFillStyle : bConfig.defaultNodeFillStyle;
+      context.strokeStyle = isDragging || highlightedNode !== null ? bConfig.fadedNodeStrokeStyle : bConfig.defaultNodeStrokeStyle;
       cbGraph.nodes.filter(filterNodeOnColor(nn)).map(drawNormalNode);
       context.fill();
       context.stroke();
@@ -908,16 +792,16 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Draw link nodes
     if (cb.drawLinkNodes) {
       context.beginPath();
-      context.lineWidth = cb.nodeLineWidth;
-      context.fillStyle = cb.fadedNodeFillStyle;
-      context.strokeStyle = cb.fadedNodeStrokeStyle;
+      context.lineWidth = bConfig.nodeLineWidth;
+      context.fillStyle = bConfig.fadedNodeFillStyle;
+      context.strokeStyle = bConfig.fadedNodeStrokeStyle;
       cbGraph.linkNodes.map(drawNormalNode);
       context.fill();
       context.stroke();
     }
 
     // Draw normal link arrows
-    context.fillStyle = isDragging || highlightedNode !== null ? cb.fadedLinksStrokeStyle : cb.defaultLinkStrokeStyle;
+    context.fillStyle = isDragging || highlightedNode !== null ? bConfig.fadedLinksStrokeStyle : bConfig.defaultLinkStrokeStyle;
     cbGraph.links.map(drawNormalLinkArrow);
 
     //////////////////////
@@ -927,8 +811,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Draw dragged links
     if (isDragging) {
       context.beginPath();
-      context.lineWidth = cb.linkLineWidth;
-      context.strokeStyle = cb.draggedLinkStrokeStyle;
+      context.lineWidth = bConfig.linkLineWidth;
+      context.strokeStyle = bConfig.draggedLinkStrokeStyle;
       cbGraph.links.map(drawDraggedLink);
       context.stroke();
     }
@@ -938,9 +822,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       for (var dn = -1; dn <= 4; dn++) {
         cb.applyStyle(dn);
         context.beginPath();
-        context.lineWidth = cb.nodeLineWidth;
-        context.fillStyle = cb.draggedNodeFillStyle;
-        context.strokeStyle = cb.draggedNodeStrokeStyle;
+        context.lineWidth = bConfig.nodeLineWidth;
+        context.fillStyle = bConfig.draggedNodeFillStyle;
+        context.strokeStyle = bConfig.draggedNodeStrokeStyle;
         cbGraph.nodes.filter(filterNodeOnColor(dn)).map(drawDraggedNode);
         context.fill();
         context.stroke();
@@ -949,7 +833,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw dragged link arrows
     if (isDragging) {
-      context.fillStyle = cb.draggedLinkStrokeStyle;
+      context.fillStyle = bConfig.draggedLinkStrokeStyle;
       cbGraph.links.map(drawDraggedLinkArrow);
     }
 
@@ -960,8 +844,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Draw highlighted links
     if (highlightedNode !== null) {
       context.beginPath();
-      context.lineWidth = cb.linkLineWidth;
-      context.strokeStyle = cb.highlightedLinkStrokeStyle;
+      context.lineWidth = bConfig.linkLineWidth;
+      context.strokeStyle = bConfig.highlightedLinkStrokeStyle;
       cbGraph.links.map(drawHighlightedLink);
       context.stroke();
     }
@@ -970,9 +854,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     for (var hn = -1; hn <= 4; hn++) {
       cb.applyStyle(hn);
       context.beginPath();
-      context.lineWidth = cb.nodeLineWidth;
-      context.fillStyle = cb.highlightedNodeFillStyle;
-      context.strokeStyle = cb.highlightedNodeStrokeStyle;
+      context.lineWidth = bConfig.nodeLineWidth;
+      context.fillStyle = bConfig.highlightedNodeFillStyle;
+      context.strokeStyle = bConfig.highlightedNodeStrokeStyle;
       cbGraph.nodes.filter(filterNodeOnColor(hn)).map(drawHighlightedNode);
       context.fill();
       context.stroke();
@@ -980,7 +864,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw highlighted link arrows
     if (highlightedNode !== null) {
-      context.fillStyle = cb.highlightedLinkStrokeStyle;
+      context.fillStyle = bConfig.highlightedLinkStrokeStyle;
       cbGraph.links.map(drawHighlightedLinkArrow);
     }
 
@@ -994,21 +878,21 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw link labels
     if (isDragging || highlightedNode !== null) {
-      context.fillStyle = cb.defaultNodeLabelColor;
-      context.font = cb.defaultNodeLabelFont;
+      context.fillStyle = bConfig.defaultNodeLabelColor;
+      context.font = bConfig.defaultNodeLabelFont;
       context.textBaseline = 'top';
-      context.lineWidth = cb.activeNodeLabelLineWidth;
-      context.strokeStyle = cb.activeNodeLabelStrokeStyle;
+      context.lineWidth = bConfig.activeNodeLabelLineWidth;
+      context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
       cbGraph.links.map(drawLinkText);
     }
 
     // Draw node labels
-    context.fillStyle = cb.defaultNodeLabelColor;
-    context.font = cb.defaultNodeLabelFont;
+    context.fillStyle = bConfig.defaultNodeLabelColor;
+    context.font = bConfig.defaultNodeLabelFont;
     context.textBaseline = 'middle';
     context.textAlign = 'center';
-    context.lineWidth = cb.activeNodeLabelLineWidth;
-    context.strokeStyle = cb.activeNodeLabelStrokeStyle;
+    context.lineWidth = bConfig.activeNodeLabelLineWidth;
+    context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
     cbGraph.nodes.map(drawNodeText);
 
     // Restore state
@@ -1173,7 +1057,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function drawNodeText(node) {
     // Adjust font if necessary, or skip if not
     if ((isDragging && node.dragged) || ((highlightedNode !== null || isDragging) && node.highlighted)) {
-      context.font = cb.activeNodeLabelFont;
+      context.font = bConfig.activeNodeLabelFont;
     } else {
       if (isDragging || highlightedNode !== null) return;
     }
@@ -1183,7 +1067,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     node.expandedLabel.map(function (line) {
       if (node.dragged || node.highlighted) context.strokeText(line, node.x, yStart);
       context.fillText(line, node.x, yStart);
-      yStart += cb.defaultNodeLabelFontSize;
+      yStart += bConfig.defaultNodeLabelFontSize;
     });
   }
 
@@ -1576,4 +1460,4 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     }
   }
 
-}(window.cb = window.cb || {}, jQuery, d3, eDispatch));
+}(window.cb = window.cb || {}, bConfig, jQuery, d3, eDispatch));

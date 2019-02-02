@@ -1,3 +1,4 @@
+require('../conceptBrowser/configuration.js');
 require('../../css/learningPathBrowser/learningPathBrowser.scss');
 
 // Import routing
@@ -8,7 +9,7 @@ import Routing from 'fos-routing';
  *
  * $ has been defined globally in the app.js
  */
-(function (lpb, dispatcher, $, d3, undefined) {
+(function (lpb, bConfig, dispatcher, $, d3, undefined) {
 
   /******************************************************************************************************
    * Configuration variables
@@ -39,8 +40,24 @@ import Routing from 'fos-routing';
 
   let lpbCanvas, context, canvasWidth, canvasHeight;
   let elements = [];
-  let dx = 0, cx = 0;
+  let dx = 0;
   let elementPadding, elementLine, elementRadius, elementSpacing, totalElementLength;
+  let clickSend = false;
+
+  /******************************************************************************************************
+   * Data types
+   * Required for JS-hinting
+   *****************************************************************************************************/
+  let Types = {};
+  Types.ElementType = {
+    x: 0,
+    y: 0,
+    label: '',
+    expandedLabel: [],
+    expandedLabelStart: 0,
+    color: 0,
+    highlighted: false,
+  };
 
   /******************************************************************************************************
    * External browser control
@@ -51,7 +68,7 @@ import Routing from 'fos-routing';
    */
   lpb.openBrowser = function (id) {
     // Clear content and show
-    updateContents();
+    doLoadData();
     $loader.show();
 
     // CSS animations are used to make it fluent
@@ -85,7 +102,7 @@ import Routing from 'fos-routing';
       url: Routing.generate('app_learningpath_data', {_studyArea: _studyArea, learningPath: id}),
       dataType: 'json'
     }).done(function (data) {
-      updateContents(data);
+      doLoadData(data);
       drawGraph();
       $loader.hide();
     }).fail(function (error) {
@@ -97,7 +114,7 @@ import Routing from 'fos-routing';
    * Update the data contents
    * @param data
    */
-  function updateContents(data) {
+  function doLoadData(data) {
     const dataSet = typeof data !== 'undefined';
 
     $titleLink.html(data ? data.name : '');
@@ -110,6 +127,9 @@ import Routing from 'fos-routing';
       $titleLink.removeData('learning-path-id');
       elements = [];
     }
+
+    // Set the nodes
+    updateElementLocations();
 
     dx = 0;
     totalElementLength = (2 * elementPadding)
@@ -150,7 +170,7 @@ import Routing from 'fos-routing';
 
     // Clear canvas
     context.clearRect(0, 0, canvasWidth, canvasHeight);
-    cx = elementPadding;
+
 
     // Draw grid lines
     if (lpb.drawGrid) {
@@ -178,17 +198,98 @@ import Routing from 'fos-routing';
   }
 
   /**
-   * Draw the node
-   * @param node
+   * Draw the element
+   * @param element
    */
-  function drawElement(node) {
-    let x = dx + cx + elementRadius;
-    context.moveTo(x, elementLine);
-    context.arc(x, elementLine, elementRadius, 0, 2 * Math.PI);
-
-    cx += elementSpacing;
+  function drawElement(element) {
+    context.moveTo(element.x, element.y);
+    context.arc(element.x, element.y, elementRadius, 0, 2 * Math.PI);
   }
 
+
+  /******************************************************************************************************
+   * Element functions
+   *****************************************************************************************************/
+
+  /**
+   * Find an element
+   */
+  function findElement() {
+    // Retrieve the actual location
+    let rect = canvas.getBoundingClientRect(),
+        ox = d3.event.pageX - rect.left - canvas.clientLeft - window.pageXOffset,
+        oy = d3.event.pageY - rect.top - canvas.clientTop - window.pageYOffset;
+
+    // Find the element
+    let i,
+        dx,
+        dy,
+        d2,
+        element,
+        closest,
+        searchRadius = elementRadius * elementRadius;
+
+    for (i = 0; i < elements.length; ++i) {
+      element = elements[i];
+      dx = ox - element.x;
+      dy = oy - element.y;
+      d2 = dx * dx + dy * dy;
+      if (d2 < searchRadius) {
+        closest = element;
+        searchRadius = d2;
+      }
+    }
+
+    return closest;
+  }
+
+  /**
+   * Updates the element locations
+   */
+  function updateElementLocations() {
+    let cx = elementPadding;
+    elements.map(function (element) {
+      element.x = dx + cx + elementRadius;
+      element.y = elementLine;
+      cx += elementSpacing;
+    });
+  }
+
+  /******************************************************************************************************
+   * Event handlers
+   *****************************************************************************************************/
+
+  /**
+   * Drag event handler, which updates the dx being used in the render loop
+   */
+  function onDrag() {
+    if (totalElementLength > canvasWidth) {
+      dx = Math.max(-totalElementLength + canvasWidth, Math.min(0, dx + d3.event.dx));
+    } else {
+      dx = 0;
+    }
+    updateElementLocations();
+    drawGraph();
+  }
+
+  function onMouseMove() {
+    let node = findElement();
+  }
+
+  function onClick() {
+    let element = findElement();
+    if (element === undefined) {
+      return;
+    }
+
+    if (!clickSend) {
+      clickSend = true;
+      dispatcher.openConceptFromLearningPath(element.concept.id);
+      setTimeout(function () {
+        clickSend = false;
+      }, 250);
+    }
+  }
 
   /******************************************************************************************************
    * Register event handlers
@@ -215,23 +316,18 @@ import Routing from 'fos-routing';
   elementRadius = canvasHeight / 3;
   elementSpacing = elementRadius * 4;
 
+  /******************************************************************************************************
+   * Initialize processing
+   *****************************************************************************************************/
+
+
   // Load canvas and processing
   context = canvas.getContext('2d');
   lpbCanvas = d3.select(canvas);
   lpbCanvas
-      .call(d3.drag().on('drag', dragged))
-      .call(drawGraph);
+      .call(d3.drag().on('drag', onDrag))
+      .call(drawGraph)
+      .on('mousemove', onMouseMove)
+      .on('click', onClick);
 
-  /**
-   * Drag event handler, which updates the dx being used in the render loop
-   */
-  function dragged() {
-    if (totalElementLength > canvasWidth) {
-      dx = Math.max(-totalElementLength + canvasWidth, Math.min(0, dx + d3.event.dx));
-    } else {
-      dx = 0;
-    }
-    drawGraph();
-  }
-
-}(window.lpb = window.lpb || {}, eDispatch, jQuery, d3));
+}(window.lpb = window.lpb || {}, bConfig, eDispatch, jQuery, d3));
