@@ -44,6 +44,7 @@ class DefaultController extends AbstractController
 
   /** @var LearningPath[] */
   private $learningPaths;
+
   /**
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},
    *                                        requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home",
@@ -194,12 +195,12 @@ class DefaultController extends AbstractController
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
-   * @param RequestStudyArea              $requestStudyArea
-   * @param UrlChecker                    $urlChecker
-   * @param ConceptRepository             $conceptRepository
-   * @param LearningOutcomeRepository     $learningOutcomeRepository
-   * @param ExternalResourceRepository    $externalResourceRepository
-   * @param LearningPathRepository        $learningPathRepository
+   * @param RequestStudyArea           $requestStudyArea
+   * @param UrlChecker                 $urlChecker
+   * @param ConceptRepository          $conceptRepository
+   * @param LearningOutcomeRepository  $learningOutcomeRepository
+   * @param ExternalResourceRepository $externalResourceRepository
+   * @param LearningPathRepository     $learningPathRepository
    *
    * @return array
    */
@@ -215,10 +216,10 @@ class DefaultController extends AbstractController
     $goodUrls = array_diff($urls['urls'], $badUrls['bad'], $badUrls['unscanned']);
 
     // Get linked objects
-    $this->concepts             = $this->mapArrayById($conceptRepository->findForStudyAreaOrderedByName($studyArea));
-    $this->learningOutcomes     = $this->mapArrayById($learningOutcomeRepository->findForStudyArea($studyArea));
-    $this->externalResources    = $this->mapArrayById($externalResourceRepository->findForStudyArea($studyArea));
-    $this->learningPaths        = $this->mapArrayById($learningPathRepository->findForStudyArea($studyArea));
+    $this->concepts          = $this->mapArrayById($conceptRepository->findForStudyAreaOrderedByName($studyArea));
+    $this->learningOutcomes  = $this->mapArrayById($learningOutcomeRepository->findForStudyArea($studyArea));
+    $this->externalResources = $this->mapArrayById($externalResourceRepository->findForStudyArea($studyArea));
+    $this->learningPaths     = $this->mapArrayById($learningPathRepository->findForStudyArea($studyArea));
 
     // Split the various arrays, while simultaneously sorting them
     list($badInternalUrls, $badExternalUrls) = $this->splitUrlLocation($badUrls['bad']);
@@ -233,6 +234,12 @@ class DefaultController extends AbstractController
         'unscannedExternalUrls' => $unscannedExternalUrls,
         'goodInternalUrls'      => $goodInternalUrls,
         'goodExternalUrls'      => $goodExternalUrls,
+        'objects'               => [
+            'concepts'          => $this->concepts,
+            'learningOutcomes'  => $this->learningOutcomes,
+            'externalResources' => $this->externalResources,
+            'learningPaths'     => $this->learningPaths,
+        ],
     ];
   }
 

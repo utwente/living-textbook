@@ -11,7 +11,7 @@
   {{ 'url.overview-title'|trans }}
 {% endblock %}
 
-{% macro urlTable(urls, status, title, learningPathElements) %}
+{% macro urlTable(urls, status, title, objects) %}
   {% if urls is not empty %}
     <h3>{{ title|trans }}</h3>
     <div class="table-responsive">
@@ -33,19 +33,19 @@
           {% elseif url.context.class == 'App\\Entity\\Concept' %}
             {% set description = 'url.concept-path' %}
             {% set editUrl = path('app_concept_edit', {'concept': url.context.id}) %}
-            {% set descriptionArgs = {'%path%': ('concept.' ~ url.context.pathAsTransKey)|trans} %}
+            {% set descriptionArgs = {'%path%': ('concept.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['concepts'][url.context.id].name} %}
           {% elseif url.context.class == 'App\\Entity\\LearningOutcome' %}
             {% set description = 'url.learning-outcome-path' %}
             {% set editUrl = path('app_learningoutcome_edit', {'learningOutcome': url.context.id}) %}
-            {% set descriptionArgs = {'%path%': ('learning-outcome.' ~ url.context.pathAsTransKey)|trans} %}
+            {% set descriptionArgs = {'%path%': ('learning-outcome.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['learningOutcomes'][url.context.id].name} %}
           {% elseif url.context.class == 'App\\Entity\\ExternalResource' %}
             {% set description = 'url.external-resource-path' %}
             {% set editUrl = path('app_externalresource_edit', {'externalResource': url.context.id}) %}
-            {% set descriptionArgs = {'%path%': ('external-resource.' ~ url.context.pathAsTransKey)|trans} %}
+            {% set descriptionArgs = {'%path%': ('external-resource.' ~ url.context.pathAsTransKey)|trans, '%title%': objects['externalResources'][url.context.id].title} %}
           {% elseif url.context.class == 'App\\Entity\\LearningPath' %}
             {% set description = 'url.learning-path-path' %}
             {% set editUrl = path('app_learningpath_edit', {'learningPath': url.context.id}) %}
-            {% set descriptionArgs = {'%path%': ('learning-path.' ~ url.context.pathAsTransKey)|trans} %}
+            {% set descriptionArgs = {'%path%': ('learning-path.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['learningPaths'][url.context.id].name} %}
           {% else %}
             {% set description = 'url.unknown' %}
             {% set editUrl = '' %}
@@ -84,12 +84,12 @@
       {{ 'url.last-scanned'|trans({'%date%': lastScanned|date('d M Y H:i')}) }}
     </p>
     {% from _self import urlTable %}
-    {{ urlTable(badExternalUrls, 'url.bad', 'url.bad-external') }}
-    {{ urlTable(badInternalUrls, 'url.internal-wrong', 'url.bad-internal') }}
-    {{ urlTable(goodExternalUrls, 'url.good', 'url.good-external') }}
-    {{ urlTable(goodInternalUrls, 'url.good', 'url.good-internal') }}
-    {{ urlTable(unscannedExternalUrls, 'url.unscanned', 'url.unscanned-external') }}
-    {{ urlTable(unscannedInternalUrls, 'url.unscanned', 'url.unscanned-internal') }}
+    {{ urlTable(badExternalUrls, 'url.bad', 'url.bad-external', objects) }}
+    {{ urlTable(badInternalUrls, 'url.internal-wrong', 'url.bad-internal', objects) }}
+    {{ urlTable(goodExternalUrls, 'url.good', 'url.good-external', objects) }}
+    {{ urlTable(goodInternalUrls, 'url.good', 'url.good-internal', objects) }}
+    {{ urlTable(unscannedExternalUrls, 'url.unscanned', 'url.unscanned-external', objects) }}
+    {{ urlTable(unscannedInternalUrls, 'url.unscanned', 'url.unscanned-internal', objects) }}
 
   {% else %}
     {{ 'url.urls-unscanned'|trans }}
