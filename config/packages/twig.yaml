@@ -9,5 +9,6 @@ twig:
     - "_form/_download_preview_layout.html.twig"
     - "_form/_learning_paths_layout.html.twig"
     - "_form/_custom_types_layout.html.twig"
+    - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
   globals:
     allowed_ckeditor_tags: '%ckeditor_tags%'
