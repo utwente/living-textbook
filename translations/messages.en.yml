@@ -371,6 +371,7 @@ study-area:
 
 relation-type:
   add-title: 'Add new relation type'
+  description: 'Description'
   edit-title: 'Edit relation type "%item%"'
   list-title: 'Relation type list'
   name: 'Name'

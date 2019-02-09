@@ -48,11 +48,48 @@ class RelationType
   private $name;
 
   /**
+   * @var string|null
+   *
+   * @ORM\Column(name="description", type="text", nullable=true)
+   */
+  private $description;
+
+  /**
    * RelationType constructor.
    */
   public function __construct()
   {
     $this->name = '';
+  }
+
+  /**
+   * Get camelized name, for usage in RDF export
+   *
+   * @return string
+   */
+  public function getCamelizedName(): string
+  {
+    return lcfirst(str_replace(' ', '', ucwords($this->getName())));
+  }
+
+  /**
+   * @return null|string
+   */
+  public function getDescription(): ?string
+  {
+    return $this->description;
+  }
+
+  /**
+   * @param null|string $description
+   *
+   * @return RelationType
+   */
+  public function setDescription(?string $description): RelationType
+  {
+    $this->description = $description;
+
+    return $this;
   }
 
   /**
@@ -66,9 +103,9 @@ class RelationType
   /**
    * @param string $name
    *
-   * @return RelationType|null
+   * @return RelationType
    */
-  public function setName(string $name): ?RelationType
+  public function setName(string $name): RelationType
   {
     $this->name = $name;
 
