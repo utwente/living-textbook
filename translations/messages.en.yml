@@ -383,7 +383,8 @@ relation-type:
 url:
   bad: 'Broken'
   bad-external: 'Broken external URLs'
-  bad-internal: 'Internal URLs linking to the wrong study area'
+  bad-internal: 'Broken internal URLs'
+  bad-internal-wrong: 'Internal URLs linking to the wrong study area'
   concept-path: 'Concept: %name% - %path%'
   external-resource-path: 'External resource: %title% - %path%'
   good: 'Healthy'

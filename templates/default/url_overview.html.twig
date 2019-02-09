@@ -85,7 +85,8 @@
     </p>
     {% from _self import urlTable %}
     {{ urlTable(badExternalUrls, 'url.bad', 'url.bad-external', objects) }}
-    {{ urlTable(badInternalUrls, 'url.internal-wrong', 'url.bad-internal', objects) }}
+    {{ urlTable(badInternalUrls, 'url.bad', 'url.bad-internal', objects) }}
+    {{ urlTable(wrongStudyAreaUrls, 'url.internal-wrong', 'url.bad-internal-wrong', objects) }}
     {{ urlTable(goodExternalUrls, 'url.good', 'url.good-external', objects) }}
     {{ urlTable(goodInternalUrls, 'url.good', 'url.good-internal', objects) }}
     {{ urlTable(unscannedExternalUrls, 'url.unscanned', 'url.unscanned-external', objects) }}

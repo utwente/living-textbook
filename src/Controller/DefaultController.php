@@ -211,9 +211,9 @@ class DefaultController extends AbstractController
     $urls      = $urlChecker->getUrlsForStudyArea($studyArea);
     // Not scanned yet, early return
     if ($urls === NULL) return ['lastScanned' => NULL];
-    $badUrls = $urlChecker->checkStudyArea($studyArea) ?? ['bad' => [], 'unscanned' => []];
+    $badUrls = $urlChecker->checkStudyArea($studyArea) ?? ['bad' => [], 'unscanned' => [], 'wrongStudyArea' => []];
     // Get good urls
-    $goodUrls = array_diff($urls['urls'], $badUrls['bad'], $badUrls['unscanned']);
+    $goodUrls = array_diff($urls['urls'], $badUrls['bad'], $badUrls['unscanned'], $badUrls['wrongStudyArea']);
 
     // Get linked objects
     $this->concepts          = $this->mapArrayById($conceptRepository->findForStudyAreaOrderedByName($studyArea));
@@ -229,6 +229,7 @@ class DefaultController extends AbstractController
     return [
         'lastScanned'           => $urls['lastScanned'],
         'badInternalUrls'       => $badInternalUrls,
+        'wrongStudyAreaUrls'    => $badUrls['wrongStudyArea'],
         'badExternalUrls'       => $badExternalUrls,
         'unscannedInternalUrls' => $unscannedInternalUrls,
         'unscannedExternalUrls' => $unscannedExternalUrls,
@@ -258,7 +259,7 @@ class DefaultController extends AbstractController
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
   {
     $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode($url)));
-    $result = $urlChecker->checkUrl($url[0], $requestStudyArea->getStudyArea(), true, false) ?
+    $result = $urlChecker->checkUrl($url[0], true, false) ?
         $translator->trans('url.good') :
         $translator->trans('url.bad');
     $this->addFlash('info', $translator->trans('url.rescanned', ['%result%' => strtolower($result)]));

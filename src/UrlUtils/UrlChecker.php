@@ -93,7 +93,7 @@ class UrlChecker
    * @param RouterInterface            $router
    */
   public function __construct(ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-                              StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository, UrlScanner $urlScanner, 
+                              StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository, UrlScanner $urlScanner,
                               RouterInterface $router)
   {
     $this->externalResourceRepository = $externalResourceRepository;
@@ -195,16 +195,23 @@ class UrlChecker
    */
   public function findBadUrls(array $urls, StudyArea $studyArea, bool $force, bool $fromCache): array
   {
-    $badUrls       = [];
-    $unscannedUrls = [];
+    $badUrls            = [];
+    $wrongStudyAreaUrls = [];
+    $unscannedUrls      = [];
     foreach ($urls as $url) {
       assert($url instanceof Url);
-      $urlStatus = $this->checkUrl($url, $studyArea, $force, $fromCache);
-      if ($urlStatus === false) $badUrls[] = $url;
-      else if ($urlStatus === NULL) $unscannedUrls[] = $url;
+      if ($url->isInternal()) {
+        $urlStatus = $this->checkInternalUrl($url, $studyArea);
+        if ($urlStatus === false) $wrongStudyAreaUrls[] = $url;
+        else if ($urlStatus === NULL) $badUrls[] = $url;
+      } else {
+        $urlStatus = $this->checkUrl($url, $force, $fromCache);
+        if ($urlStatus === false) $badUrls[] = $url;
+        else if ($urlStatus === NULL) $unscannedUrls[] = $url;
+      }
     }
 
-    return ['bad' => $badUrls, 'unscanned' => $unscannedUrls];
+    return ['bad' => $badUrls, 'unscanned' => $unscannedUrls, 'wrongStudyArea' => $wrongStudyAreaUrls];
   }
 
   /**
@@ -233,7 +240,7 @@ class UrlChecker
 
     $router = $this->router;
     // Exclude latex URLs
-    $urls   = array_filter($urls, function (Url $entry) use ($router) {
+    $urls = array_filter($urls, function (Url $entry) use ($router) {
       if (!$entry->isInternal()) return true;
       $cleanPath = strstr($entry->getPath(), '?', true) ?: $entry->getPath();
       try {
@@ -341,37 +348,39 @@ class UrlChecker
    * @param Url       $url
    * @param StudyArea $studyArea
    *
-   * @return bool
+   * @return null|bool
    */
-  private function checkInternalUrl(Url $url, StudyArea $studyArea): bool
+  private function checkInternalUrl(Url $url, StudyArea $studyArea): ?bool
   {
-    $urlParts = explode('/', $url->getPath());
-    // Check if uploaded to current study area
-    if ($urlParts[1] === 'uploads') {
-      return $urlParts[2] === 'studyarea' ? $urlParts[3] == $studyArea->getId() : true;
-    } else if (is_numeric($studyAreaId = $urlParts[1]) || ($urlParts[1] === 'page' && is_numeric($studyAreaId = $urlParts[2]))) {
-      // No upload, check study area
-      return $studyAreaId == $studyArea->getId();
+    $cleanPath = strstr($url->getPath(), '?', true) ?: $url->getPath();
+    // Try to match, if that fails the URL is broken
+    try {
+      $urlInfo = $this->router->match($cleanPath);
+      // If page is in the URL, it will always match to route _home. If that is the case, retry without page.
+      if($urlInfo['_route'] === '_home') {
+        $urlInfo = $this->router->match(str_replace('/page', '', $cleanPath));
+      }
+
+    } catch (ResourceNotFoundException $e) {
+      return NULL;
     }
+    // Check if the URL is in the right study area
+    if (array_key_exists('_studyArea', $urlInfo)) return $urlInfo['_studyArea'] == $studyArea->getId();
 
     // Not in a study area
     return true;
   }
 
   /**
-   * @param Url       $url
-   * @param StudyArea $studyArea
-   * @param bool      $force
-   * @param bool      $fromCache
+   * @param Url  $url
+   * @param bool $force
+   * @param bool $fromCache
    *
    * @return bool|null
    */
-  public function checkUrl(Url $url, StudyArea $studyArea, bool $force, bool $fromCache = true): ?bool
+  public function checkUrl(Url $url, bool $force, bool $fromCache = true): ?bool
   {
-    // Check internal URLs for the right study area
-    if ($url->isInternal()) {
-      return $this->checkInternalUrl($url, $studyArea);
-    }
+
     // Force recheck, don't use the cache
     if ($force) {
       return $this->checkAndCacheUrl($url, $this->bad0UrlCache);
