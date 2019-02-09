@@ -6,8 +6,10 @@ namespace App\Controller;
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
-use App\Entity\StudyArea;
 use App\Export\Provider\RdfProvider;
+use App\Request\Wrapper\RequestStudyArea;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,20 +17,23 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class ResourceController
  *
- * @Route("/resource")
+ * @Route("/resource/{_studyArea}", requirements={"_studyArea"="\d+"})
  */
-class ResourceController
+class ResourceController extends AbstractController
 {
   /**
    * @Route("/concept/{concept}", requirements={"concept"="\d+"})
-   * @param Concept     $concept
-   * @param RdfProvider $provider
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @param Concept          $concept
+   * @param RdfProvider      $provider
+   * @param RequestStudyArea $requestStudyArea
    *
    * @return JsonResponse
    * @throws \EasyRdf_Exception
    */
-  public function concept(Concept $concept, RdfProvider $provider): JsonResponse
+  public function concept(Concept $concept, RdfProvider $provider, RequestStudyArea $requestStudyArea): JsonResponse
   {
+    if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
     $graph = new \EasyRdf_Graph($provider->generateConceptResourceUrl($concept));
     $provider->addConceptResource($concept, $graph);
 
@@ -37,14 +42,18 @@ class ResourceController
 
   /**
    * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"})
-   * @param LearningPath $learningPath
-   * @param RdfProvider  $provider
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @param LearningPath     $learningPath
+   * @param RdfProvider      $provider
+   *
+   * @param RequestStudyArea $requestStudyArea
    *
    * @return JsonResponse
    * @throws \EasyRdf_Exception
    */
-  public function learningPath(LearningPath $learningPath, RdfProvider $provider): JsonResponse
+  public function learningPath(LearningPath $learningPath, RdfProvider $provider, RequestStudyArea $requestStudyArea): JsonResponse
   {
+    if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
     $graph = new \EasyRdf_Graph($provider->generateLearningPathResourceUrl($learningPath));
     $provider->addLearningPathResource($learningPath, $graph);
 
@@ -53,14 +62,18 @@ class ResourceController
 
   /**
    * @Route("/learningoutcome/{learningOutcome}", requirements={"learningOutcome"="\d+"})
-   * @param LearningOutcome $learningOutcome
-   * @param RdfProvider     $provider
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @param LearningOutcome  $learningOutcome
+   * @param RdfProvider      $provider
+   *
+   * @param RequestStudyArea $requestStudyArea
    *
    * @return JsonResponse
    * @throws \EasyRdf_Exception
    */
-  public function learningOutcome(LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
+  public function learningOutcome(LearningOutcome $learningOutcome, RdfProvider $provider, RequestStudyArea $requestStudyArea): JsonResponse
   {
+    if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
     $graph = new \EasyRdf_Graph($provider->generateLearningOutcomeResourceUrl($learningOutcome));
     $provider->addLearningOutcomeResource($learningOutcome, $graph);
 
@@ -68,15 +81,18 @@ class ResourceController
   }
 
   /**
-   * @Route("/studyarea/{studyArea}", requirements={"studyArea"="\d+"})
-   * @param StudyArea   $studyArea
-   * @param RdfProvider $provider
+   * @Route("/studyarea")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @param RequestStudyArea $requestStudyArea
+   * @param RdfProvider      $provider
    *
    * @return Response
    * @throws \EasyRdf_Exception
    */
-  public function studyArea(StudyArea $studyArea, RdfProvider $provider): Response
+  public function studyArea(RequestStudyArea $requestStudyArea, RdfProvider $provider): Response
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     return $provider->exportStudyArea($studyArea);
   }
 }

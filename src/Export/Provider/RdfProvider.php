@@ -175,7 +175,7 @@ EOT;
     $relationTypeResource->add('rdfs:domain', ['type' => 'uri', 'value' => \EasyRdf_Namespace::expand('skos:Concept')]);
     $relationTypeResource->addLiteral('rdfs:label', $relationType->getName(), 'en');
     $relationTypeResource->add('rdfs:range', ['type' => 'uri', 'value' => \EasyRdf_Namespace::expand('skos:Concept')]);
-    $relationTypeResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl($relationType->getStudyArea())]);
+    $relationTypeResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl()]);
   }
 
   /**
@@ -184,7 +184,7 @@ EOT;
    */
   public function addStudyAreaResource(StudyArea $studyArea, \EasyRdf_Graph $graph): void
   {
-    $studyAreaResource = $graph->resource($this->generateStudyAreaResourceUrl($studyArea));
+    $studyAreaResource = $graph->resource($this->generateStudyAreaResourceUrl());
     $studyAreaResource->addType('skos:ConceptScheme');
     $studyAreaResource->addType('https://ltb.itc.utwente.nl/resource/studyarea');
     $studyAreaResource->addLiteral('dcterms:creator', $studyArea->getOwner()->getFullName());
@@ -216,7 +216,7 @@ EOT;
       if ($label !== '') $conceptResource->addLiteral('rdfs:label', $label, 'en');
     }
     if ($concept->getSynonyms() !== '') $conceptResource->addLiteral('skos:altLabel', $concept->getSynonyms(), 'en');
-    $conceptResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl($concept->getStudyArea())]);
+    $conceptResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl()]);
     $conceptResource->addLiteral('skos:prefLabel', $concept->getName(), 'en');
   }
 
@@ -257,13 +257,11 @@ EOT;
   }
 
   /**
-   * @param StudyArea $studyArea
-   *
    * @return string
    */
-  public function generateStudyAreaResourceUrl(StudyArea $studyArea): string
+  public function generateStudyAreaResourceUrl(): string
   {
-    return $this->router->generate('app_resource_studyarea', ['studyArea' => $studyArea->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+    return $this->router->generate('app_resource_studyarea', [], UrlGeneratorInterface::ABSOLUTE_URL);
   }
 
   /**
