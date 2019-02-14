@@ -140,10 +140,17 @@ import Routing from 'fos-routing';
     updateElementLocations();
 
     // Load element colors
+    let counter = 0;
     elements.map(function (element) {
       element.label = element.concept.name;
       loadElementColor(element);
       bConfig.updateLabel(element, textScale);
+
+      // Add number (this is done after label splitting to prevent the number being put on a separate line)
+      element.label = ++counter + ". " + element.label;
+      if (element.expandedLabel.length > 0) {
+        element.expandedLabel[0] = counter + ". " + element.expandedLabel[0];
+      }
     });
 
     dx = 0;
