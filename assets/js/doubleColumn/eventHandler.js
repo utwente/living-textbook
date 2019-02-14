@@ -144,7 +144,7 @@ import Routing from 'fos-routing';
       });
     } else {
       dw.openWindow(function () {
-        cb.moveToConceptById(data.id);
+        cb.moveToConceptById(data.id, data.nodeOnly);
       });
     }
   }
@@ -181,6 +181,7 @@ import Routing from 'fos-routing';
   function onOpenConceptFromLearningPath(data) {
     onConceptSelected(data);
     if (dw.isOpened()) {
+      data.nodeOnly = true;
       onShowConcept(data);
     }
   }

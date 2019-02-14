@@ -109,7 +109,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   var halfMapWidth = cb.mapWidth / 2, halfMapHeight = cb.mapHeight / 2;
   var cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
   var dragPosY, dragPosX, isDragging = false;
-  var highlightedNode = null, mouseMoveDisabled = false;
+  var highlightedNode = null, specialHighlightedNode = null, mouseMoveDisabled = false;
   var clickSend = false;
   var contextMenuNode = null, lastTransformed;
   var isLoaded = false;
@@ -140,15 +140,15 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   /**
    * Search and focus on a node based on a concept id
    * @param id
+   * @param nodeOnly Only set the actual node as highlighted
    */
-  cb.moveToConceptById = function (id) {
+  cb.moveToConceptById = function (id, nodeOnly) {
     // Find the node by id
     var node = getNodeById(id);
 
     // If found, move to it
     if (node) {
-      moveToNode(node);
-      setNodeAsHighlight(node);
+      moveToNode(node, nodeOnly);
     }
   };
 
@@ -381,19 +381,29 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   /**
    * Mark the given node as being highlighted
    * @param node
+   * @param nodeOnly If true, only the supplied node is marked as highlighted
    */
-  function setNodeAsHighlight(node) {
+  function setNodeAsHighlight(node, nodeOnly) {
     // Check if node the same
     if (highlightedNode && highlightedNode.index === node.index) return;
+    if (nodeOnly && specialHighlightedNode && specialHighlightedNode.index === node.index) return;
 
     // Check for previous highlight
     clearNodeHighlight();
 
-    // Set as highlighted
+    // Check whether the given node exists
     if (node === undefined) return;
-    highlightedNode = node;
-    node.highlighted = true;
-    setHighlightsByNode(node);
+
+    // Only set other highlight when nodeOnly is not set
+    if (nodeOnly !== true) {
+      // Set as highlighted
+      highlightedNode = node;
+      node.highlighted = true;
+      setHighlightsByNode(node);
+    } else {
+      specialHighlightedNode = node;
+      node.specialHilight = true;
+    }
   }
 
   /**
@@ -404,6 +414,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       highlightedNode.highlighted = false;
       clearHighlightsByNode(highlightedNode);
       highlightedNode = null;
+    }
+    if (specialHighlightedNode !== null) {
+      specialHighlightedNode.specialHilight = false;
+      specialHighlightedNode = null;
     }
   }
 
@@ -632,8 +646,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Move the view to the given node
    * It keeps the relations inside the view
    * @param node
+   * @param nodeOnly
    */
-  function moveToNode(node) {
+  function moveToNode(node, nodeOnly) {
     // Check for node existence
     if (node === undefined) return;
 
@@ -642,20 +657,29 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbSimulation.stop();
 
     // Set clicked node as highlighted
-    setNodeAsHighlight(node);
+    setNodeAsHighlight(node, nodeOnly);
 
-    // Find current locations of highlighted nodes
-    var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
-    cbGraph.nodes.map(function (node) {
-      if (!node.highlighted) return;
-      minX = Math.min(minX, node.x - node.radius - cb.zoomMargin);
-      maxX = Math.max(maxX, node.x + node.radius + cb.zoomMargin);
-      minY = Math.min(minY, node.y - node.radius - cb.zoomMargin);
-      maxY = Math.max(maxY, node.y + node.radius + cb.zoomMargin);
-    });
+    let minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
+    if (nodeOnly !== true) {
+      // Find current locations of highlighted nodes
+      cbGraph.nodes.map(function (node) {
+        if (!node.highlighted) return;
+        minX = Math.min(minX, node.x - node.radius - cb.zoomMargin);
+        maxX = Math.max(maxX, node.x + node.radius + cb.zoomMargin);
+        minY = Math.min(minY, node.y - node.radius - cb.zoomMargin);
+        maxY = Math.max(maxY, node.y + node.radius + cb.zoomMargin);
+      });
 
-    // Do the actual move
-    moveToPosition(minX, maxX, minY, maxY);
+      // Do the actual move
+      moveToPosition(minX, maxX, minY, maxY);
+    } else {
+      // Calculate transform for move without zoom change
+      let transform = d3.zoomIdentity
+          .translate(halfCanvasWidth, halfCanvasHeight)
+          .scale(cbTransform.k)
+          .translate(-node.x, -node.y);
+      moveToTransform(transform);
+    }
   }
 
   /**
@@ -669,20 +693,29 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function moveToPosition(minX, maxX, minY, maxY, duration) {
     if (!isLoaded) return;
 
-    // Check duration
-    duration = typeof duration !== 'undefined' ? duration : 3000;
-
     // Calculate scale
     var scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
     scale = Math.min(cb.zoomExtent[1], Math.max(1, scale));
 
-    // Calculate zoom identify
+    // Calculate zoom identity
     var transform = d3.zoomIdentity
         .translate(halfCanvasWidth, halfCanvasHeight)
         .scale(scale)
         .translate(-(minX + maxX) / 2, -(minY + maxY) / 2);
 
     // Move to it
+    moveToTransform(transform, duration);
+  }
+
+  /**
+   * Move the view to the given transform in the given duration
+   * @param transform
+   * @param duration
+   */
+  function moveToTransform(transform, duration) {
+    // Check duration
+    duration = typeof duration !== 'undefined' ? duration : 3000;
+
     cbCanvas
         .transition()
         .duration(duration)
@@ -1047,7 +1080,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawHighlightedNode(node) {
-    if (node.highlighted) drawNode(node);
+    if (node.highlighted || node.specialHilight) drawNode(node);
   }
 
   /**
@@ -1056,7 +1089,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function drawNodeText(node) {
     // Adjust font if necessary, or skip if not
-    if ((isDragging && node.dragged) || ((highlightedNode !== null || isDragging) && node.highlighted)) {
+    if ((isDragging && node.dragged)
+        || ((highlightedNode !== null || isDragging) && node.highlighted)
+        || (specialHighlightedNode !== null && node.specialHilight)) {
       context.font = bConfig.activeNodeLabelFont;
     } else {
       if (isDragging || highlightedNode !== null) return;
@@ -1065,7 +1100,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Draw the actual text (which can be multiple lines)
     var yStart = node.y - node.expandedLabelStart;
     node.expandedLabel.map(function (line) {
-      if (node.dragged || node.highlighted) context.strokeText(line, node.x, yStart);
+      if (node.dragged || node.highlighted || node.specialHilight) context.strokeText(line, node.x, yStart);
       context.fillText(line, node.x, yStart);
       yStart += bConfig.defaultNodeLabelFontSize;
     });
