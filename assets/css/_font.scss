@@ -1,7 +1,7 @@
 @import 'vars/vars';
 
 @font-face {
-  font-family: 'Droid Sans';
+  font-family: 'DroidSans';
   font-style: normal;
   font-weight: 400;
   src: local('Droid Sans Regular'), local('DroidSans-Regular'), url(font/droid-sans.woff2) format('woff2');
@@ -9,5 +9,6 @@
 }
 
 body {
-  font-family: 'Droid Sans', arial, serif;
+  font-family: DroidSans, arial, serif;
+  --font-family-sans-serif: DroidSans, arial, serif;
 }
