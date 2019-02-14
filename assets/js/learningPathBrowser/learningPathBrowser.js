@@ -128,8 +128,11 @@ import Routing from 'fos-routing';
       elements = [];
     }
 
-    // Set the nodes
+    // Set the element locations
     updateElementLocations();
+
+    // Load element colors
+    elements.map(loadElementColor);
 
     dx = 0;
     totalElementLength = (2 * elementPadding)
@@ -191,10 +194,55 @@ import Routing from 'fos-routing';
     // NORMAL           //
     //////////////////////
 
-    context.beginPath();
-    elements.map(drawElement);
-    context.fill();
-    context.stroke();
+    // Draw normal nodes
+    for (let nn = -1; nn <= 4; nn++) {
+      bConfig.applyStyle(nn);
+      context.beginPath();
+      context.lineWidth = bConfig.nodeLineWidth;
+      context.fillStyle = bConfig.defaultNodeFillStyle;
+      context.strokeStyle = bConfig.defaultNodeStrokeStyle;
+      elements.filter(filterElementOnColor(nn)).map(drawNormalElement);
+      context.fill();
+      context.stroke();
+    }
+
+    //////////////////////
+    // HIGHLIGHT        //
+    //////////////////////
+
+    // Draw highlighted nodes
+    for (let hn = -1; hn <= 4; hn++) {
+      bConfig.applyStyle(hn);
+      context.beginPath();
+      context.lineWidth = bConfig.nodeLineWidth;
+      context.fillStyle = bConfig.highlightedNodeFillStyle;
+      context.strokeStyle = bConfig.highlightedNodeStrokeStyle;
+      elements.filter(filterElementOnColor(hn)).map(drawHighlightedElement);
+      context.fill();
+      context.stroke();
+    }
+  }
+
+  /**
+   * Draw an element if it's normal
+   * @param element
+   */
+  function drawNormalElement(element) {
+    if (element.highlighted) {
+      return;
+    }
+    drawElement(element);
+  }
+
+  /**
+   * Draw an element if it's highlighted
+   * @param element
+   */
+  function drawHighlightedElement(element) {
+    if (!element.highlighted) {
+      return;
+    }
+    drawElement(element);
   }
 
   /**
@@ -202,10 +250,64 @@ import Routing from 'fos-routing';
    * @param element
    */
   function drawElement(element) {
-    context.moveTo(element.x, element.y);
+    context.moveTo(element.x + elementRadius, element.y);
     context.arc(element.x, element.y, elementRadius, 0, 2 * Math.PI);
   }
 
+  /******************************************************************************************************
+   * Color functions
+   *****************************************************************************************************/
+
+  /**
+   * Function to filter elements on a given color index
+   * @param color
+   * @returns {Function}
+   */
+  function filterElementOnColor(color) {
+    return function (element) {
+      return element.color === color;
+    };
+  }
+
+  /**
+   * Color the given element and save in the local storage
+   * @param element
+   * @param color
+   */
+  function colorElement(element, color) {
+    element.color = color;
+
+    if (typeof (Storage) !== 'undefined') {
+      localStorage.setItem('lpbElementColor.' + element.id, color);
+    }
+  }
+
+  /**
+   * Resets all element colors and clears the local storage
+   */
+  function resetElementColors() {
+    elements.map(function (element) {
+      element.color = 0;
+    });
+
+    // Clear local storage
+    if (typeof (Storage) !== 'undefined') {
+      localStorage.clear();
+    }
+  }
+
+  /**
+   * Load element colors from the local storage
+   */
+  function loadElementColor(element) {
+    element.color = 0;
+    if (typeof (Storage) !== 'undefined') {
+      const color = localStorage.getItem('lpbElementColor.' + element.id);
+      if (color !== null) {
+        element.color = parseInt(color);
+      }
+    }
+  }
 
   /******************************************************************************************************
    * Element functions
@@ -273,7 +375,22 @@ import Routing from 'fos-routing';
   }
 
   function onMouseMove() {
-    let node = findElement();
+    let element = findElement();
+    if (element === undefined) {
+      return;
+    }
+
+    // Do not set again
+    if (element.highlighted) {
+      return;
+    }
+
+    // Set element as highlighted
+    elements.map(function (element) {
+      element.highlighted = false;
+    });
+    element.highlighted = true;
+    drawGraph();
   }
 
   function onClick() {
