@@ -36,6 +36,10 @@ import Routing from 'fos-routing';
 
   const contextMenuContainer = '#learning-path-canvas-div';
 
+
+  const textScale = 2;
+  const fontSize = bConfig.defaultNodeLabelFontSize * textScale;
+
   /******************************************************************************************************
    * Internal variables
    *****************************************************************************************************/
@@ -136,7 +140,11 @@ import Routing from 'fos-routing';
     updateElementLocations();
 
     // Load element colors
-    elements.map(loadElementColor);
+    elements.map(function (element) {
+      element.label = element.concept.name;
+      loadElementColor(element);
+      bConfig.updateLabel(element, textScale);
+    });
 
     dx = 0;
     totalElementLength = (2 * elementPadding)
@@ -197,11 +205,11 @@ import Routing from 'fos-routing';
     // NORMAL           //
     //////////////////////
 
-    // Draw normal nodes
+    // Draw normal elements
     for (let nn = -1; nn <= 4; nn++) {
       bConfig.applyStyle(nn);
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth;
+      context.lineWidth = bConfig.nodeLineWidth * 2;
       context.fillStyle = bConfig.defaultNodeFillStyle;
       context.strokeStyle = bConfig.defaultNodeStrokeStyle;
       elements.filter(filterElementOnColor(nn)).map(drawNormalElement);
@@ -213,17 +221,36 @@ import Routing from 'fos-routing';
     // HIGHLIGHT        //
     //////////////////////
 
-    // Draw highlighted nodes
+    // Draw highlighted elements
     for (let hn = -1; hn <= 4; hn++) {
       bConfig.applyStyle(hn);
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth;
+      context.lineWidth = bConfig.nodeLineWidth * 2;
       context.fillStyle = bConfig.highlightedNodeFillStyle;
       context.strokeStyle = bConfig.highlightedNodeStrokeStyle;
       elements.filter(filterElementOnColor(hn)).map(drawHighlightedElement);
       context.fill();
       context.stroke();
     }
+
+    //////////////////////
+    // LABELS           //
+    //////////////////////
+
+    // Set this lower to prevent horns on M/W letters
+    // https://github.com/CreateJS/EaselJS/issues/781
+    context.miterLimit = 2.5;
+
+    // Draw element labels
+    context.fillStyle = bConfig.defaultNodeLabelColor;
+    context.textBaseline = 'middle';
+    context.textAlign = 'center';
+    context.lineWidth = bConfig.activeNodeLabelLineWidth * textScale;
+    context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
+    elements.map(drawElementText);
+
+    // Restore state
+    context.restore();
   }
 
   /**
@@ -255,6 +282,28 @@ import Routing from 'fos-routing';
   function drawElement(element) {
     context.moveTo(element.x + elementRadius, element.y);
     context.arc(element.x, element.y, elementRadius, 0, 2 * Math.PI);
+  }
+
+
+  /**
+   * Draw the element text
+   * @param element
+   */
+  function drawElementText(element) {
+
+    // Set font accordingly
+    context.font = fontSize + 'px "DroidSans, arial, serif"';
+    if (element.highlighted) {
+      context.font = 'bold ' + context.font;
+    }
+
+    // Draw the actual text (which can be multiple lines)
+    let yStart = element.y - element.expandedLabelStart;
+    element.expandedLabel.map(function (line) {
+      if (element.highlighted) context.strokeText(line, element.x, yStart);
+      context.fillText(line, element.x, yStart);
+      yStart += fontSize;
+    });
   }
 
   /******************************************************************************************************
@@ -514,7 +563,7 @@ import Routing from 'fos-routing';
         'quit': {name: 'Close', icon: 'fa-times'}
       };
     } else {
-      // Node
+      // Element
       let elementItems = {};
 
       // Color data

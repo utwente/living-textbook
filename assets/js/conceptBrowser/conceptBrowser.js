@@ -257,37 +257,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   }
 
   /**
-   * Load the node label
-   *
-   * @param node
-   */
-  function updateNodeLabel(node) {
-    // Set default label values
-    node.expandedLabelStart = 0;
-    node.expandedLabel = [];
-    if (node.label === '') return;
-
-    // Calculate node text lines
-    var lines = node.label.split(' ');
-    if (lines.length <= 2 && node.label.length <= (bConfig.minCharCount + 1)) {
-      node.expandedLabel = lines;
-    } else {
-      // Check if next line can be combined with the last line
-      node.expandedLabel.push(lines[0]);
-      for (var i = 1; i < lines.length; i++) {
-        if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= bConfig.minCharCount) {
-          node.expandedLabel[node.expandedLabel.length - 1] += ' ' + lines[i];
-        } else {
-          node.expandedLabel.push(lines[i]);
-        }
-      }
-    }
-
-    // Calculate offset for the amount of lines
-    node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * bConfig.defaultNodeLabelFontSize);
-  }
-
-  /**
    * Generate the link nodes to avoid overlap (http://bl.ocks.org/couchand/7190660)
    */
   function generateLinkNodes() {
@@ -921,7 +890,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw node labels
     context.fillStyle = bConfig.defaultNodeLabelColor;
-    context.font = bConfig.defaultNodeLabelFont;
     context.textBaseline = 'middle';
     context.textAlign = 'center';
     context.lineWidth = bConfig.activeNodeLabelLineWidth;
@@ -1088,13 +1056,15 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawNodeText(node) {
-    // Adjust font if necessary, or skip if not
+    // Set font if accordingly, or skip if not
     if ((isDragging && node.dragged)
         || ((highlightedNode !== null || isDragging) && node.highlighted)
         || (specialHighlightedNode !== null && node.specialHilight)) {
       context.font = bConfig.activeNodeLabelFont;
     } else {
+      // Skip this text if not required to render
       if (isDragging || highlightedNode !== null) return;
+      context.font = bConfig.defaultNodeLabelFont;
     }
 
     // Draw the actual text (which can be multiple lines)
@@ -1204,7 +1174,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     if (node) {
       node.label = name;
-      updateNodeLabel(node);
+      bConfig.updateLabel(node, 1);
       cbSimulation.restart();
     }
   };
@@ -1241,7 +1211,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       node.empty = concept.isEmpty;
       getNodeRadius(node);
       loadNodeColor(node);
-      updateNodeLabel(node);
+      bConfig.updateLabel(node, 1);
 
       // Update relations
       concept.relations.map(function (relation) {
@@ -1347,7 +1317,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbGraph.nodes.map(function (node) {
       getNodeRadius(node);
       loadNodeColor(node);
-      updateNodeLabel(node);
+      bConfig.updateLabel(node, 1);
     });
 
     generateLinkNodes();

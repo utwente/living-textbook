@@ -119,5 +119,37 @@
         break;
       }
     }
-  }
+  };
+
+  /**
+   * Load the node label
+   *
+   * @param node
+   * @param scaleFactor
+   */
+  bConfig.updateLabel = function (node, scaleFactor) {
+    // Set default label values
+    node.expandedLabelStart = 0;
+    node.expandedLabel = [];
+    if (node.label === '') return;
+
+    // Calculate node text lines
+    const lines = node.label.split(' ');
+    if (lines.length <= 2 && node.label.length <= (bConfig.minCharCount + 1)) {
+      node.expandedLabel = lines;
+    } else {
+      // Check if next line can be combined with the last line
+      node.expandedLabel.push(lines[0]);
+      for (let i = 1; i < lines.length; i++) {
+        if (node.expandedLabel[node.expandedLabel.length - 1].length + lines[i].length <= bConfig.minCharCount) {
+          node.expandedLabel[node.expandedLabel.length - 1] += ' ' + lines[i];
+        } else {
+          node.expandedLabel.push(lines[i]);
+        }
+      }
+    }
+
+    // Calculate offset for the amount of lines
+    node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * bConfig.defaultNodeLabelFontSize * scaleFactor);
+  };
 }(window.bConfig = window.bConfig || {}));
