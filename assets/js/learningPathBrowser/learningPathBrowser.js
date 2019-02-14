@@ -34,15 +34,18 @@ import Routing from 'fos-routing';
   const $question = $('#learning-path-question');
   const canvas = document.getElementById('learning-path-canvas');
 
+  const contextMenuContainer = '#learning-path-canvas-div';
+
   /******************************************************************************************************
    * Internal variables
    *****************************************************************************************************/
 
   let lpbCanvas, context, canvasWidth, canvasHeight;
-  let elements = [];
+  let elements = [], pathId = -1;
   let dx = 0;
   let elementPadding, elementLine, elementRadius, elementSpacing, totalElementLength;
   let clickSend = false;
+  let contextMenuElement = null;
 
   /******************************************************************************************************
    * Data types
@@ -117,6 +120,7 @@ import Routing from 'fos-routing';
   function doLoadData(data) {
     const dataSet = typeof data !== 'undefined';
 
+    pathId = data ? data.id : -1;
     $titleLink.html(data ? data.name : '');
     $question.html(data ? data.question : '');
 
@@ -155,12 +159,11 @@ import Routing from 'fos-routing';
    * Function to open the learning path in the content pane
    */
   function openLearningPath() {
-    const id = $titleLink.data('learning-path-id');
-    if (id === undefined) {
+    if (pathId === -1) {
       return;
     }
 
-    dispatcher.navigateToLearningPath(id);
+    dispatcher.navigateToLearningPath(pathId);
   }
 
   /******************************************************************************************************
@@ -278,7 +281,10 @@ import Routing from 'fos-routing';
     element.color = color;
 
     if (typeof (Storage) !== 'undefined') {
-      localStorage.setItem('lpbElementColor.' + element.id, color);
+      const colorsJson = localStorage.getItem(colorStoragePath());
+      let colorsObject = colorsJson !== null ? JSON.parse(colorsJson) : {};
+      colorsObject['e.' + element.id] = color;
+      localStorage.setItem(colorStoragePath(), JSON.stringify(colorsObject));
     }
   }
 
@@ -292,7 +298,7 @@ import Routing from 'fos-routing';
 
     // Clear local storage
     if (typeof (Storage) !== 'undefined') {
-      localStorage.clear();
+      localStorage.removeItem(colorStoragePath());
     }
   }
 
@@ -302,11 +308,22 @@ import Routing from 'fos-routing';
   function loadElementColor(element) {
     element.color = 0;
     if (typeof (Storage) !== 'undefined') {
-      const color = localStorage.getItem('lpbElementColor.' + element.id);
-      if (color !== null) {
-        element.color = parseInt(color);
+      const colorsJson = localStorage.getItem(colorStoragePath());
+      if (colorsJson !== null) {
+        const elementColor = JSON.parse(colorsJson)['e.' + element.id];
+        if (typeof elementColor !== 'undefined') {
+          element.color = parseInt(elementColor);
+        }
       }
     }
+  }
+
+  /**
+   * Local storage path
+   * @returns {string}
+   */
+  function colorStoragePath() {
+    return 'lpbElementColors.' + pathId;
   }
 
   /******************************************************************************************************
@@ -374,6 +391,9 @@ import Routing from 'fos-routing';
     drawGraph();
   }
 
+  /**
+   * Mouse move event handler, which sets elements as highlighted when hovered
+   */
   function onMouseMove() {
     let element = findElement();
     if (element === undefined) {
@@ -393,6 +413,9 @@ import Routing from 'fos-routing';
     drawGraph();
   }
 
+  /**
+   * Mouse left click handler, opens the clicked element in the reader and browser
+   */
   function onClick() {
     let element = findElement();
     if (element === undefined) {
@@ -406,6 +429,17 @@ import Routing from 'fos-routing';
         clickSend = false;
       }, 250);
     }
+  }
+
+  /**
+   * Mouse right click handler, opens the context menu with color options
+   */
+  function onRightClick() {
+    d3.event.preventDefault();
+
+    let element = findElement();
+    contextMenuElement = element === undefined ? null : element;
+    $(contextMenuContainer).contextMenu({x: d3.event.clientX, y: d3.event.clientY});
   }
 
   /******************************************************************************************************
@@ -437,7 +471,6 @@ import Routing from 'fos-routing';
    * Initialize processing
    *****************************************************************************************************/
 
-
   // Load canvas and processing
   context = canvas.getContext('2d');
   lpbCanvas = d3.select(canvas);
@@ -445,6 +478,73 @@ import Routing from 'fos-routing';
       .call(d3.drag().on('drag', onDrag))
       .call(drawGraph)
       .on('mousemove', onMouseMove)
-      .on('click', onClick);
+      .on('click', onClick)
+      .on('contextmenu', onRightClick);
+
+  // Define context menu
+  //noinspection JSUnusedGlobalSymbols
+  $.contextMenu({
+    selector: contextMenuContainer,
+    trigger: 'none',
+    build: function () {
+      //noinspection JSUnusedGlobalSymbols
+      return {
+        callback: function (key) {
+          if (key === 'quit') return;
+          if (key.startsWith('style')) colorElement(contextMenuElement, parseInt(key.substr(6)));
+          if (key === 'reset') resetElementColors();
+          if (key === 'center') cb.centerView();
+          drawGraph();
+        },
+        items: getContextMenuItems()
+      };
+    }
+  });
+
+  /**
+   * Context menu builder
+   * @returns {*}
+   */
+  function getContextMenuItems() {
+    if (contextMenuElement === null) {
+      // Global
+      return {
+        'reset': {name: 'Reset node colors', icon: 'fa-undo'},
+        'sep1': '---------',
+        'quit': {name: 'Close', icon: 'fa-times'}
+      };
+    } else {
+      // Node
+      let elementItems = {};
+
+      // Color data
+      if (!contextMenuElement.empty) {
+        const colorData = {
+          'styles': {
+            name: 'Change color',
+            icon: 'fa-paint-brush',
+            items: {
+              'style-1': {name: 'Red', icon: contextMenuElement.color === 1 ? 'fa-check' : ''},
+              'style-2': {name: 'Green', icon: contextMenuElement.color === 2 ? 'fa-check' : ''},
+              'style-3': {name: 'Blue', icon: contextMenuElement.color === 3 ? 'fa-check' : ''},
+              'style-4': {name: 'Orange', icon: contextMenuElement.color === 4 ? 'fa-check' : ''},
+              'sep1': '---------',
+              'style-0': {name: 'Default', icon: contextMenuElement.color === 0 ? 'fa-check' : 'fa-undo'}
+            }
+          },
+          'sep2': '---------',
+        };
+
+        elementItems = $.extend(elementItems, colorData);
+      }
+
+      // Merge with default data
+      const defaultData = {
+        'quit': {name: 'Close', icon: 'fa-times'}
+      };
+
+      return $.extend(elementItems, defaultData);
+    }
+  }
 
 }(window.lpb = window.lpb || {}, bConfig, eDispatch, jQuery, d3));
