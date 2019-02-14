@@ -1110,9 +1110,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       node.color = 0;
     });
 
-    // Clear local storage
+    // Clear local storage for loaded nodes only
     if (typeof (Storage) !== 'undefined') {
-      localStorage.clear();
+      cbGraph.nodes.map(function (node) {
+        localStorage.removeItem('nodeColor.' + node.id);
+      })
     }
   }
 
