@@ -28,6 +28,7 @@ import Routing from 'fos-routing';
   const $bottomRow = $('#bottom-row');
   const $loader = $('#bottom-container-loader');
   const $closeButton = $('#learning-path-close-button');
+  const $tooltipHandle = $('#learning-path-tooltip-handle');
 
   const content = document.getElementById('bottom-container-content');
   const $titleLink = $('#learning-path-title-link');
@@ -46,9 +47,9 @@ import Routing from 'fos-routing';
   let lpbCanvas, context, canvasWidth, canvasHeight;
   let elements = [], pathId = -1;
   let dx = 0;
-  let elementPadding, elementLine, elementRadius, elementSpacing, totalElementLength;
+  let elementPadding, elementLine, elementRadius, pathDescriptionRadius, elementSpacing, totalElementLength;
   let clickSend = false;
-  let contextMenuElement = null;
+  let contextMenuElement = null, tooltipElement = null;
 
   /******************************************************************************************************
    * Data types
@@ -128,21 +129,35 @@ import Routing from 'fos-routing';
     $question.html(data ? data.question : '');
 
     if (dataSet) {
-      $titleLink.data('learning-path-id', data.id);
       elements = data.elements;
     } else {
-      $titleLink.removeData('learning-path-id');
       elements = [];
     }
+
+    // Enrich element data
+    doEnrichElementData();
 
     // Set the element locations
     updateElementLocations();
 
-    // Load element colors
+    // (Re)set draw parameters
+    dx = 0;
+    totalElementLength = (2 * elementPadding)
+        + (elements.length * elementRadius * 2)
+        + ((elements.length - 1) * (elementSpacing - (elementRadius * 2)));
+  }
+
+  /**
+   * Enrich the element data
+   */
+  function doEnrichElementData() {
     let counter = 0;
     elements.map(function (element) {
-      element.label = element.concept.name;
+      // Load color
       loadElementColor(element);
+
+      // Load label data
+      element.label = element.concept.name;
       bConfig.updateLabel(element, textScale);
 
       // Add number (this is done after label splitting to prevent the number being put on a separate line)
@@ -151,11 +166,6 @@ import Routing from 'fos-routing';
         element.expandedLabel[0] = counter + ". " + element.expandedLabel[0];
       }
     });
-
-    dx = 0;
-    totalElementLength = (2 * elementPadding)
-        + (elements.length * elementRadius * 2)
-        + ((elements.length - 1) * (elementSpacing - (elementRadius * 2)));
   }
 
   /**
@@ -236,6 +246,15 @@ import Routing from 'fos-routing';
     }
 
     //////////////////////
+    // DESCRIPTIONS     //
+    //////////////////////
+    bConfig.applyStyle(-1);
+    context.beginPath();
+    context.fillStyle = bConfig.defaultLinkStrokeStyle;
+    elements.map(drawPathDescription);
+    context.fill();
+
+    //////////////////////
     // HIGHLIGHT        //
     //////////////////////
 
@@ -275,6 +294,15 @@ import Routing from 'fos-routing';
     context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
     elements.map(drawElementText);
 
+    // Draw path description question marks
+    context.fillStyle = bConfig.whiteNodeLabelColor;
+    context.font = fontSize + 'px "DroidSans, arial, serif"';
+    elements.map(function (element) {
+      if (typeof element.description === "undefined") return;
+
+      context.fillText("?", pathDescriptionX(element), element.y);
+    });
+
     // Restore state
     context.restore();
   }
@@ -311,6 +339,18 @@ import Routing from 'fos-routing';
   }
 
   /**
+   * Draw the path description
+   * @param element
+   */
+  function drawPathDescription(element) {
+    if (typeof element.description === "undefined") return;
+
+    let x = pathDescriptionX(element);
+    context.moveTo(x, element.y);
+    context.arc(x, element.y, pathDescriptionRadius, 0, 2 * Math.PI);
+  }
+
+  /**
    * Draw the element arrow
    * @param element
    */
@@ -332,7 +372,6 @@ import Routing from 'fos-routing';
    * @param element
    */
   function drawElementText(element) {
-
     // Set font accordingly
     context.font = fontSize + 'px "DroidSans, arial, serif"';
     if (element.highlighted) {
@@ -422,13 +461,24 @@ import Routing from 'fos-routing';
    *****************************************************************************************************/
 
   /**
-   * Find an element
+   * Retrieve the actual event location
+   * @returns {{ox: number, oy: number}}
+   */
+  function getEventLocation() {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      ox: d3.event.pageX - rect.left - canvas.clientLeft - window.pageXOffset,
+      oy: d3.event.pageY - rect.top - canvas.clientTop - window.pageYOffset
+    }
+  }
+
+  /**
+   * Find an element base on the event location
+   * @returns {*}
    */
   function findElement() {
     // Retrieve the actual location
-    let rect = canvas.getBoundingClientRect(),
-        ox = d3.event.pageX - rect.left - canvas.clientLeft - window.pageXOffset,
-        oy = d3.event.pageY - rect.top - canvas.clientTop - window.pageYOffset;
+    const loc = getEventLocation();
 
     // Find the element
     let i,
@@ -441,8 +491,41 @@ import Routing from 'fos-routing';
 
     for (i = 0; i < elements.length; ++i) {
       element = elements[i];
-      dx = ox - element.x;
-      dy = oy - element.y;
+      dx = loc.ox - element.x;
+      dy = loc.oy - element.y;
+      d2 = dx * dx + dy * dy;
+      if (d2 < searchRadius) {
+        closest = element;
+        searchRadius = d2;
+      }
+    }
+
+    return closest;
+  }
+
+  /**
+   * Find an description based on the event location
+   * @returns {*}
+   */
+  function findDescription() {
+    // Retrieve the actual location
+    const loc = getEventLocation();
+
+    // Find the description
+    let i,
+        dx,
+        dy,
+        d2,
+        element,
+        closest,
+        searchRadius = pathDescriptionRadius * pathDescriptionRadius;
+
+    for (i = 0; i < elements.length; ++i) {
+      element = elements[i];
+      if (typeof element.description === "undefined") continue;
+
+      dx = loc.ox - pathDescriptionX(element);
+      dy = loc.oy - element.y;
       d2 = dx * dx + dy * dy;
       if (d2 < searchRadius) {
         closest = element;
@@ -463,6 +546,15 @@ import Routing from 'fos-routing';
       element.y = elementLine;
       cx += elementSpacing;
     });
+  }
+
+  /**
+   * Path description x location
+   * @param element
+   * @returns {*}
+   */
+  function pathDescriptionX(element) {
+    return element.x + (elementSpacing / 2);
   }
 
   /******************************************************************************************************
@@ -487,21 +579,37 @@ import Routing from 'fos-routing';
    */
   function onMouseMove() {
     let element = findElement();
-    if (element === undefined) {
+    if (element !== undefined) {
+      // Do not set again
+      if (element.highlighted) {
+        return;
+      }
+
+      // Set element as highlighted
+      elements.map(function (element) {
+        element.highlighted = false;
+      });
+      element.highlighted = true;
+      drawGraph();
+    }
+
+    let description = findDescription();
+    if (description === undefined) {
+      if (tooltipElement !== null) {
+        tooltipElement = null;
+        $tooltipHandle.tooltip('hide');
+      }
       return;
     }
 
-    // Do not set again
-    if (element.highlighted) {
-      return;
+    if (tooltipElement === null) {
+      tooltipElement = description;
+      $tooltipHandle.css({
+        top: (description.y - pathDescriptionRadius) + "px",
+        left: pathDescriptionX(description)
+      });
+      $tooltipHandle.tooltip('show');
     }
-
-    // Set element as highlighted
-    elements.map(function (element) {
-      element.highlighted = false;
-    });
-    element.highlighted = true;
-    drawGraph();
   }
 
   /**
@@ -540,6 +648,14 @@ import Routing from 'fos-routing';
   $closeButton.click(() => lpb.closeBrowser());
   $titleLink.click(() => openLearningPath());
 
+  $tooltipHandle.tooltip({
+    title: function () {
+      return tooltipElement.description;
+    },
+    placement: "top",
+    trigger: "manual"
+  });
+
   /******************************************************************************************************
    * Initialize canvas
    *****************************************************************************************************/
@@ -556,6 +672,7 @@ import Routing from 'fos-routing';
   elementPadding = canvasHeight / 10;
   elementLine = canvasHeight / 2;
   elementRadius = canvasHeight / 3;
+  pathDescriptionRadius = elementRadius / 5;
   elementSpacing = elementRadius * 4;
 
   /******************************************************************************************************

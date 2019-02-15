@@ -34,6 +34,7 @@
 
   // Node label styles
   bConfig.defaultNodeLabelColor = '#000';
+  bConfig.whiteNodeLabelColor = '#fff';
   bConfig.activeNodeLabelStrokeStyle = '#fff';
 
   bConfig.applyStyle = function (style) {

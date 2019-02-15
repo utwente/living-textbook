@@ -37,7 +37,17 @@
     font-size: 1.5rem;
   }
 
-  #learning-path-canvas {
-    width: 100%;
+  #learning-path-canvas-div {
+    position: relative;
+
+    #learning-path-canvas {
+      width: 100%;
+    }
+
+    #learning-path-tooltip-handle {
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
   }
 }
