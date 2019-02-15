@@ -32,7 +32,6 @@ import Routing from 'fos-routing';
 
   const content = document.getElementById('bottom-container-content');
   const $titleLink = $('#learning-path-title-link');
-  const $question = $('#learning-path-question');
   const canvas = document.getElementById('learning-path-canvas');
 
   const contextMenuContainer = '#learning-path-canvas-div';
@@ -124,7 +123,6 @@ import Routing from 'fos-routing';
 
     pathId = data ? data.id : -1;
     $titleLink.html(data ? data.name : '');
-    $question.html(data ? data.question : '');
 
     if (dataSet) {
       elements = data.elements;
@@ -740,14 +738,14 @@ import Routing from 'fos-routing';
     canvas.width = canvasWidth;
 
     // Determine element sizes
-    elementPadding = canvasHeight / 10;
-    elementLine = canvasHeight / 2;
-    elementRadius = canvasHeight / 3;
-    pathDescriptionRadius = elementRadius / 5;
+    elementPadding = Math.ceil(canvasHeight / 10);
+    elementLine = Math.floor(canvasHeight / 2);
+    elementRadius = Math.floor((canvasHeight / 2) - (elementPadding / 2));
+    pathDescriptionRadius = Math.ceil(elementRadius / 5);
     elementSpacing = elementRadius * 4;
 
     // Determine font/line sizes
-    lineScale = elementRadius / 30;
+    lineScale = Math.ceil(elementRadius / 30);
     textScale = lineScale;
     fontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * textScale);
   }
