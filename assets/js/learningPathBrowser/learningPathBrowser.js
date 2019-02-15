@@ -36,8 +36,7 @@ import Routing from 'fos-routing';
 
   const contextMenuContainer = '#learning-path-canvas-div';
 
-
-  const textScale = 2;
+  const lineScale = 2, textScale = 2;
   const fontSize = bConfig.defaultNodeLabelFontSize * textScale;
 
   /******************************************************************************************************
@@ -212,11 +211,23 @@ import Routing from 'fos-routing';
     // NORMAL           //
     //////////////////////
 
+    // Draw links
+    if (elements.length >= 2) {
+      let first = elements[0];
+      let last = elements[elements.length - 1];
+      context.beginPath();
+      context.lineWidth = bConfig.linkLineWidth * 3;
+      context.strokeStyle = bConfig.defaultLinkStrokeStyle;
+      context.moveTo(first.x, first.y);
+      context.lineTo(last.x, last.y);
+      context.stroke();
+    }
+
     // Draw normal elements
     for (let nn = -1; nn <= 4; nn++) {
       bConfig.applyStyle(nn);
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth * 2;
+      context.lineWidth = bConfig.nodeLineWidth * lineScale;
       context.fillStyle = bConfig.defaultNodeFillStyle;
       context.strokeStyle = bConfig.defaultNodeStrokeStyle;
       elements.filter(filterElementOnColor(nn)).map(drawNormalElement);
@@ -232,13 +243,21 @@ import Routing from 'fos-routing';
     for (let hn = -1; hn <= 4; hn++) {
       bConfig.applyStyle(hn);
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth * 2;
+      context.lineWidth = bConfig.nodeLineWidth * lineScale;
       context.fillStyle = bConfig.highlightedNodeFillStyle;
       context.strokeStyle = bConfig.highlightedNodeStrokeStyle;
       elements.filter(filterElementOnColor(hn)).map(drawHighlightedElement);
       context.fill();
       context.stroke();
     }
+
+    //////////////////////
+    // ARROWS           //
+    //////////////////////
+
+    // Draw path arrows
+    context.fillStyle = bConfig.defaultLinkStrokeStyle;
+    elements.slice(1).map(drawElementArrow);
 
     //////////////////////
     // LABELS           //
@@ -291,6 +310,22 @@ import Routing from 'fos-routing';
     context.arc(element.x, element.y, elementRadius, 0, 2 * Math.PI);
   }
 
+  /**
+   * Draw the element arrow
+   * @param element
+   */
+  function drawElementArrow(element) {
+    // Draw the triangle
+    context.save();
+    context.beginPath();
+    context.translate(element.x, element.y);
+    context.moveTo(-elementRadius + 1, 0);
+    context.lineTo(-16 - elementRadius, 8);
+    context.lineTo(-16 - elementRadius, -8);
+    context.closePath();
+    context.restore();
+    context.fill();
+  }
 
   /**
    * Draw the element text
