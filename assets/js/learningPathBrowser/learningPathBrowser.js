@@ -37,9 +37,6 @@ import Routing from 'fos-routing';
 
   const contextMenuContainer = '#learning-path-canvas-div';
 
-  const lineScale = 2, textScale = 2;
-  const fontSize = bConfig.defaultNodeLabelFontSize * textScale;
-
   /******************************************************************************************************
    * Internal variables
    *****************************************************************************************************/
@@ -47,6 +44,7 @@ import Routing from 'fos-routing';
   let lpbCanvas, context, canvasWidth, canvasHeight;
   let elements = [], pathId = -1;
   let dx = 0;
+  let lineScale, textScale, fontSize;
   let elementPadding, elementLine, elementRadius, pathDescriptionRadius, elementSpacing, totalElementLength;
   let clickSend = false;
   let contextMenuElement = null, tooltipElement = null;
@@ -110,8 +108,8 @@ import Routing from 'fos-routing';
       dataType: 'json'
     }).done(function (data) {
       doLoadData(data);
-      drawGraph();
       $loader.hide();
+      onResize();
     }).fail(function (error) {
       throw error;
     });
@@ -136,15 +134,6 @@ import Routing from 'fos-routing';
 
     // Enrich element data
     doEnrichElementData();
-
-    // Set the element locations
-    updateElementLocations();
-
-    // (Re)set draw parameters
-    dx = 0;
-    totalElementLength = (2 * elementPadding)
-        + (elements.length * elementRadius * 2)
-        + ((elements.length - 1) * (elementSpacing - (elementRadius * 2)));
   }
 
   /**
@@ -300,7 +289,7 @@ import Routing from 'fos-routing';
     elements.map(function (element) {
       if (typeof element.description === "undefined") return;
 
-      context.fillText("?", pathDescriptionX(element), element.y);
+      context.fillText("?", pathDescriptionX(element), element.y + 1);
     });
 
     // Restore state
@@ -360,8 +349,8 @@ import Routing from 'fos-routing';
     context.beginPath();
     context.translate(element.x, element.y);
     context.moveTo(-elementRadius + 1, 0);
-    context.lineTo(-16 - elementRadius, 8);
-    context.lineTo(-16 - elementRadius, -8);
+    context.lineTo(-(elementRadius / 4) - elementRadius, (elementRadius / 8));
+    context.lineTo(-(elementRadius / 4) - elementRadius, -(elementRadius / 8));
     context.closePath();
     context.restore();
     context.fill();
@@ -446,6 +435,16 @@ import Routing from 'fos-routing';
         }
       }
     }
+  }
+
+  /**
+   * Calculate the total element width
+   */
+  function calculateTotalElementWidth() {
+    dx = 0;
+    totalElementLength = (2 * elementPadding)
+        + (elements.length * elementRadius * 2)
+        + ((elements.length - 1) * (elementSpacing - (elementRadius * 2)));
   }
 
   /**
@@ -641,53 +640,25 @@ import Routing from 'fos-routing';
     $(contextMenuContainer).contextMenu({x: d3.event.clientX, y: d3.event.clientY});
   }
 
-  /******************************************************************************************************
-   * Register event handlers
-   *****************************************************************************************************/
+  /**
+   * Update sizes on resize
+   */
+  function onResize() {
+    initCanvas();
 
-  $closeButton.click(() => lpb.closeBrowser());
-  $titleLink.click(() => openLearningPath());
-
-  $tooltipHandle.tooltip({
-    title: function () {
-      return tooltipElement.description;
-    },
-    placement: "top",
-    trigger: "manual"
-  });
-
-  /******************************************************************************************************
-   * Initialize canvas
-   *****************************************************************************************************/
-
-      // Setup sizes
-  const contentRect = content.getBoundingClientRect();
-  const canvasRect = canvas.getBoundingClientRect();
-  canvasWidth = canvasRect.width;
-  canvasHeight = contentRect.height - (canvasRect.y - contentRect.y) - 5;
-  canvas.height = canvasHeight;
-  canvas.width = canvasWidth;
-
-  // Determine element sizes
-  elementPadding = canvasHeight / 10;
-  elementLine = canvasHeight / 2;
-  elementRadius = canvasHeight / 3;
-  pathDescriptionRadius = elementRadius / 5;
-  elementSpacing = elementRadius * 4;
+    if (pathId === -1) return;
+    dx = 0;
+    calculateTotalElementWidth();
+    updateElementLocations();
+    elements.map(function (element) {
+      bConfig.updateLabel(element, textScale);
+    });
+    drawGraph();
+  }
 
   /******************************************************************************************************
-   * Initialize processing
+   * Context menu
    *****************************************************************************************************/
-
-  // Load canvas and processing
-  context = canvas.getContext('2d');
-  lpbCanvas = d3.select(canvas);
-  lpbCanvas
-      .call(d3.drag().on('drag', onDrag))
-      .call(drawGraph)
-      .on('mousemove', onMouseMove)
-      .on('click', onClick)
-      .on('contextmenu', onRightClick);
 
   // Define context menu
   //noinspection JSUnusedGlobalSymbols
@@ -754,5 +725,72 @@ import Routing from 'fos-routing';
       return $.extend(elementItems, defaultData);
     }
   }
+
+  /******************************************************************************************************
+   * Initialize canvas
+   *****************************************************************************************************/
+
+  function initCanvas() {
+    // Setup sizes
+    const contentRect = content.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+    canvasWidth = canvasRect.width;
+    canvasHeight = contentRect.height - (canvasRect.y - contentRect.y) - 5;
+    canvas.height = canvasHeight;
+    canvas.width = canvasWidth;
+
+    // Determine element sizes
+    elementPadding = canvasHeight / 10;
+    elementLine = canvasHeight / 2;
+    elementRadius = canvasHeight / 3;
+    pathDescriptionRadius = elementRadius / 5;
+    elementSpacing = elementRadius * 4;
+
+    // Determine font/line sizes
+    lineScale = elementRadius / 30;
+    textScale = lineScale;
+    fontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * textScale);
+  }
+
+  /******************************************************************************************************
+   * Initialize processing
+   *****************************************************************************************************/
+
+  function initProcessing() {
+    // Load canvas and processing
+    context = canvas.getContext('2d');
+    lpbCanvas = d3.select(canvas);
+    lpbCanvas
+        .call(d3.drag().on('drag', onDrag))
+        .call(drawGraph)
+        .on('mousemove', onMouseMove)
+        .on('click', onClick)
+        .on('contextmenu', onRightClick);
+  }
+
+  /******************************************************************************************************
+   * Register event handlers
+   *****************************************************************************************************/
+
+  // Button handlers
+  $closeButton.click(() => lpb.closeBrowser());
+  $titleLink.click(() => openLearningPath());
+
+  // Tooltip
+  $tooltipHandle.tooltip({
+    title: function () {
+      return tooltipElement.description;
+    },
+    placement: "top",
+    trigger: "manual"
+  });
+
+  // Window handlers
+  $(window).on('resize', function () {
+    onResize();
+  });
+
+  initCanvas();
+  initProcessing();
 
 }(window.lpb = window.lpb || {}, bConfig, eDispatch, jQuery, d3));
