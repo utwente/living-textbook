@@ -52,7 +52,9 @@
           {{ 'menu.data'|trans }}
         </a>
         <div class="dropdown-menu" aria-labelledby="data-dropdown">
-          <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
+          {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+            <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
+          {% endif %}
           {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
             <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}"
                target="_blank">{{ 'menu.excel-status'|trans }}</a>

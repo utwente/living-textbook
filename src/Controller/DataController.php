@@ -235,7 +235,7 @@ class DataController extends AbstractController
   /**
    * @Route("/duplicate")
    * @Template()
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                    $request
    * @param RequestStudyArea           $requestStudyArea
