@@ -59,9 +59,7 @@ class RdfProvider implements ProviderInterface
       $this->addConceptResource($concept, $graph);
     }
 
-    $response = $this->exportGraph($graph);
-
-    return $response;
+    return $this->exportGraph($graph);
   }
 
   public function getName(): string

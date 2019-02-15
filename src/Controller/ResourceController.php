@@ -24,14 +24,15 @@ class ResourceController extends AbstractController
   /**
    * @Route("/concept/{concept}", requirements={"concept"="\d+"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea $requestStudyArea
    * @param Concept          $concept
    * @param RdfProvider      $provider
-   * @param RequestStudyArea $requestStudyArea
    *
    * @return JsonResponse
    * @throws \EasyRdf_Exception
    */
-  public function concept(Concept $concept, RdfProvider $provider, RequestStudyArea $requestStudyArea): JsonResponse
+  public function concept(RequestStudyArea $requestStudyArea, Concept $concept, RdfProvider $provider): JsonResponse
   {
     if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
     $graph = new \EasyRdf_Graph($provider->generateConceptResourceUrl($concept));
@@ -43,15 +44,15 @@ class ResourceController extends AbstractController
   /**
    * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   * @param LearningPath     $learningPath
-   * @param RdfProvider      $provider
    *
    * @param RequestStudyArea $requestStudyArea
+   * @param LearningPath     $learningPath
+   * @param RdfProvider      $provider
    *
    * @return JsonResponse
    * @throws \EasyRdf_Exception
    */
-  public function learningPath(LearningPath $learningPath, RdfProvider $provider, RequestStudyArea $requestStudyArea): JsonResponse
+  public function learningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, RdfProvider $provider): JsonResponse
   {
     if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
     $graph = new \EasyRdf_Graph($provider->generateLearningPathResourceUrl($learningPath));
@@ -63,15 +64,15 @@ class ResourceController extends AbstractController
   /**
    * @Route("/learningoutcome/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   * @param LearningOutcome  $learningOutcome
-   * @param RdfProvider      $provider
    *
    * @param RequestStudyArea $requestStudyArea
+   * @param LearningOutcome  $learningOutcome
+   * @param RdfProvider      $provider
    *
    * @return JsonResponse
    * @throws \EasyRdf_Exception
    */
-  public function learningOutcome(LearningOutcome $learningOutcome, RdfProvider $provider, RequestStudyArea $requestStudyArea): JsonResponse
+  public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
   {
     if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
     $graph = new \EasyRdf_Graph($provider->generateLearningOutcomeResourceUrl($learningOutcome));
@@ -83,6 +84,7 @@ class ResourceController extends AbstractController
   /**
    * @Route("/studyarea")
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
    * @param RequestStudyArea $requestStudyArea
    * @param RdfProvider      $provider
    *
