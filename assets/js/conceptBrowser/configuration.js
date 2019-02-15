@@ -123,6 +123,57 @@
   };
 
   /**
+   * Darken theme node color
+   * @param color
+   * @returns {string}
+   */
+  bConfig.darkenedNodeColor = function (color) {
+    let colorCode;
+    switch (color) {
+      case -1: { // Grey 'empty' state
+        colorCode = '#8e8e8e';
+        break;
+      }
+      case 1: {
+        colorCode = '#de5356';
+        break;
+      }
+      case 2: {
+        colorCode = '#75de79';
+        break;
+      }
+      case 3: {
+        colorCode = '#a4a5fe';
+        break;
+      }
+      case 4: {
+        colorCode = '#deaf6c';
+        break;
+      }
+      case 0:
+        /* falls through */
+      default: {
+        colorCode = '#b1ded2';
+      }
+    }
+
+    return shadeHexColor(colorCode, -0.2);
+  };
+
+  /**
+   * Shade color
+   * Source: https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+   * @param color
+   * @param percent
+   * @returns {string}
+   */
+  function shadeHexColor(color, percent) {
+    const f = parseInt(color.slice(1), 16), t = percent < 0 ? 0 : 255, p = percent < 0 ? percent * -1 : percent,
+        R = f >> 16, G = f >> 8 & 0x00FF, B = f & 0x0000FF;
+    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
+  }
+
+  /**
    * Load the node label
    *
    * @param node

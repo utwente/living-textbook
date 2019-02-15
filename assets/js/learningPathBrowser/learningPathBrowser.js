@@ -138,7 +138,6 @@ import Routing from 'fos-routing';
    * Enrich the element data
    */
   function doEnrichElementData() {
-    let counter = 0;
     elements.map(function (element) {
       // Load color
       loadElementColor(element);
@@ -146,12 +145,6 @@ import Routing from 'fos-routing';
       // Load label data
       element.label = element.concept.name;
       bConfig.updateLabel(element, textScale);
-
-      // Add number (this is done after label splitting to prevent the number being put on a separate line)
-      element.label = ++counter + ". " + element.label;
-      if (element.expandedLabel.length > 0) {
-        element.expandedLabel[0] = counter + ". " + element.expandedLabel[0];
-      }
     });
   }
 
@@ -233,15 +226,6 @@ import Routing from 'fos-routing';
     }
 
     //////////////////////
-    // DESCRIPTIONS     //
-    //////////////////////
-    bConfig.applyStyle(-1);
-    context.beginPath();
-    context.fillStyle = bConfig.defaultLinkStrokeStyle;
-    elements.map(drawPathDescription);
-    context.fill();
-
-    //////////////////////
     // HIGHLIGHT        //
     //////////////////////
 
@@ -256,6 +240,15 @@ import Routing from 'fos-routing';
       context.fill();
       context.stroke();
     }
+
+    //////////////////////
+    // DESCRIPTIONS     //
+    //////////////////////
+    bConfig.applyStyle(0);
+    context.beginPath();
+    context.fillStyle = bConfig.defaultLinkStrokeStyle;
+    elements.map(drawPathDescription);
+    context.fill();
 
     //////////////////////
     // ARROWS           //
@@ -273,10 +266,23 @@ import Routing from 'fos-routing';
     // https://github.com/CreateJS/EaselJS/issues/781
     context.miterLimit = 2.5;
 
-    // Draw element labels
-    context.fillStyle = bConfig.defaultNodeLabelColor;
+    // Default text location
     context.textBaseline = 'middle';
     context.textAlign = 'center';
+
+    // Draw element numbers
+    let elementCount = 0;
+    let numberSize = Math.ceil(elementRadius * 1.5);
+    let numberPositionAdjust = (numberSize / 12);
+    context.beginPath();
+    context.font = "bold " + numberSize + 'px "DroidSans, arial, serif"';
+    elements.map(function (element) {
+      context.fillStyle = bConfig.darkenedNodeColor(element.color);
+      context.fillText(++elementCount, element.x, element.y + numberPositionAdjust);
+    });
+
+    // Draw element labels
+    context.fillStyle = bConfig.defaultNodeLabelColor;
     context.lineWidth = bConfig.activeNodeLabelLineWidth * textScale;
     context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
     elements.map(drawElementText);
