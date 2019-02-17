@@ -207,7 +207,7 @@ class DataController extends AbstractController
   /**
    * @Route("/download")
    * @Template()
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @param Request          $request
    * @param RequestStudyArea $requestStudyArea
@@ -217,7 +217,6 @@ class DataController extends AbstractController
    */
   public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService)
   {
-    // Use a form due to the fact that in the future, there will probably be a type selection here (json/owl)
     $form = $this->createForm(DownloadType::class);
     $form->handleRequest($request);
 

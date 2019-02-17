@@ -46,27 +46,26 @@
         </div>
       </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="data-dropdown" role="button" data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
-          {{ 'menu.data'|trans }}
-        </a>
-        <div class="dropdown-menu" aria-labelledby="data-dropdown">
-          {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
-            <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
-          {% endif %}
-          {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+      {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="data-dropdown" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            {{ 'menu.data'|trans }}
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="data-dropdown">
+            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+              <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
+            {% endif %}
             <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}"
                target="_blank">{{ 'menu.excel-status'|trans }}</a>
             <a class="dropdown-item"
                href="{{ path('app_default_urloverview') }}">{{ 'menu.urls'|trans }}</a>
-          {% endif %}
-          <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
-          {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+            <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
             <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
-          {% endif %}
-        </div>
-      </li>
+          </div>
+        </li>
+      {% endif %}
 
       {% if not app.user.isOidc or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">
