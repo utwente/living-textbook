@@ -5,10 +5,10 @@
   {{ buttons.header() }}
   {{ buttons.list_button(path('app_concept_list')) }}
   {{ buttons.browser_button(concept.id) }}
-  {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) and not _twigStudyArea.isFrozen %}
-    {{ buttons.edit_button(path('app_concept_edit', {'concept': concept.id})) }}
-    {{ buttons.remove_button(path('app_concept_remove', {'concept': concept.id})) }}
-    {{ buttons.add_button(path('app_concept_add')) }}
+  {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
+    {{ buttons.edit_button(path('app_concept_edit', {'concept': concept.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.remove_button(path('app_concept_remove', {'concept': concept.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.add_button(path('app_concept_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
   {% endif %}
   {{ buttons.footer() }}
 

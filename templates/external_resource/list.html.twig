@@ -1,11 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block before_title %}
-  {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {% import '_macro/_action_buttons.html.twig' as buttons %}
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
-    {{ buttons.add_button(path('app_externalresource_add')) }}
+    {{ buttons.add_button(path('app_externalresource_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
@@ -21,7 +21,7 @@
       <tr>
         <th scope="col">{{ 'external-resource.title'|trans }}</th>
         <th scope="col">{{ 'external-resource.url'|trans }}</th>
-        {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <th scope="col">{{ 'form.edit'|trans }}</th>
           <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
@@ -38,13 +38,10 @@
               {{ 'external-resource.no-url'|trans }}
             {% endif %}
           </td>
-          {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
-            <td><a
-                  href="{{ path('app_externalresource_edit', {'externalResource': externalResource.id}) }}">{{ 'form.edit'|trans }}</a>
-            </td>
-            <td><a
-                  href="{{ path('app_externalresource_remove', {'externalResource': externalResource.id}) }}">{{ 'form.remove'|trans }}</a>
-            </td>
+          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+            {% from 'concept/list.html.twig' import linkDisabledWhenFrozen %}
+            {{ linkDisabledWhenFrozen('app_externalresource_edit', {'externalResource': externalResource.id}, 'form.edit') }}
+            {{ linkDisabledWhenFrozen('app_externalresource_remove', {'externalResource': externalResource.id}, 'form.remove') }}
           {% endif %}
         </tr>
       {% endfor %}

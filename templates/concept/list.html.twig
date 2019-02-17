@@ -1,11 +1,27 @@
 {% extends 'single_column.html.twig' %}
 
+{% macro linkDisabledWhenFrozen(path, pathOptions, label) %}
+  <td>
+    {% if _twigStudyArea.isFrozen %}
+      <div class="d-inline-block" data-toggle="tooltip" data-placement="bottom" title="{{ 'study-area.frozen'|trans }}">
+    {% else %}
+      <a href="{{ path(path, pathOptions) }}">
+    {% endif %}
+        {{ label|trans }}
+    {% if _twigStudyArea.isFrozen %}
+      </div>
+    {% else %}
+      </a>
+    {% endif %}
+  </td>
+{% endmacro %}
+
 {% block before_title %}
-  {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {% import '_macro/_action_buttons.html.twig' as buttons %}
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
-    {{ buttons.add_button(path('app_concept_add')) }}
+    {{ buttons.add_button(path('app_concept_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
@@ -23,7 +39,7 @@
         <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
         <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
         <th scope="col">{{ 'form.show'|trans }}</th>
-        {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <th scope="col">{{ 'form.edit'|trans }}</th>
           <th scope="col">{{ 'form.remove'|trans }}</th>
         {% endif %}
@@ -39,9 +55,10 @@
           <td>{{ concept.outgoingRelations|length }}</td>
           <td>{{ concept.incomingRelations|length }}</td>
           <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
-          {% if is_granted('STUDYAREA_EDIT', studyArea) and not studyArea.isFrozen %}
-            <td><a href="{{ path('app_concept_edit', {'concept': concept.id}) }}">{{ 'form.edit'|trans }}</a></td>
-            <td><a href="{{ path('app_concept_remove', {'concept': concept.id}) }}">{{ 'form.remove'|trans }}</a></td>
+          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+            {% from _self import linkDisabledWhenFrozen %}
+            {{ linkDisabledWhenFrozen('app_concept_edit', {'concept': concept.id}, 'form.edit') }}
+            {{ linkDisabledWhenFrozen('app_concept_remove', {'concept': concept.id}, 'form.remove') }}
           {% endif %}
         </tr>
       {% endfor %}

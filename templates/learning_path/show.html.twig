@@ -5,10 +5,10 @@
   {{ buttons.header() }}
   {{ buttons.list_button(path('app_learningpath_list')) }}
   {{ buttons.learning_path_button(learningPath.id) }}
-  {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) and not _twigStudyArea.isFrozen %}
-    {{ buttons.edit_button(path('app_learningpath_edit', {'learningPath': learningPath.id})) }}
-    {{ buttons.remove_button(path('app_learningpath_remove', {'learningPath': learningPath.id})) }}
-    {{ buttons.add_button(path('app_learningpath_add')) }}
+  {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
+    {{ buttons.edit_button(path('app_learningpath_edit', {'learningPath': learningPath.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.remove_button(path('app_learningpath_remove', {'learningPath': learningPath.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.add_button(path('app_learningpath_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
   {% endif %}
   {{ buttons.footer() }}
 {% endblock %}

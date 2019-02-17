@@ -7,10 +7,8 @@
   {{ is_granted('STUDYAREA_EDIT', studyArea) ? buttons.progress_button() : '' }}
   {% if is_granted('STUDYAREA_OWNER', studyArea) %}
     {{ buttons.transfer_owner_button(path('app_studyarea_transferowner', { studyArea: studyArea.id })) }}
-    {% if not studyArea.isFrozen %}
-      {{ buttons.edit_button(path('app_studyarea_edit', {'studyArea': studyArea.id})) }}
-      {{ buttons.freeze_button(path('app_studyarea_freeze', { studyArea: studyArea.id })) }}
-    {% endif %}
+    {{ buttons.edit_button(path('app_studyarea_edit', {'studyArea': studyArea.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.freeze_button(path('app_studyarea_freeze', { studyArea: studyArea.id }), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
     {{ buttons.remove_button(path('app_studyarea_remove', {'studyArea': studyArea.id})) }}
   {% endif %}
   {{ buttons.footer() }}
