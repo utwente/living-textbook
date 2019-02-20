@@ -5,7 +5,7 @@
     {% import '_macro/_action_buttons.html.twig' as buttons %}
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
-    {{ buttons.add_button(path('app_abbreviation_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.add_button(path('app_abbreviation_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
@@ -33,9 +33,9 @@
           <td>{{ abbreviation.abbreviation }}</td>
           <td>{{ abbreviation.meaning }}</td>
           {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {% from 'concept/list.html.twig' import linkDisabledWhenFrozen %}
-            {{ linkDisabledWhenFrozen('app_abbreviation_edit', {'abbreviation': abbreviation.id}, 'form.edit') }}
-            {{ linkDisabledWhenFrozen('app_abbreviation_remove', {'abbreviation': abbreviation.id}, 'form.remove') }}
+            {% from '_macro/_links.html.twig' import linkDisabledWhenFrozen %}
+            <td>{{ linkDisabledWhenFrozen('app_abbreviation_edit', {'abbreviation': abbreviation.id}, 'form.edit') }}</td>
+            <td>{{ linkDisabledWhenFrozen('app_abbreviation_remove', {'abbreviation': abbreviation.id}, 'form.remove') }}</td>
           {% endif %}
         </tr>
       {% endfor %}

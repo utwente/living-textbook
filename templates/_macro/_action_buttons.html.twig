@@ -23,41 +23,41 @@
   {{ _action_button(url, 'fa-eye', 'form.show', 'primary') }}
 {% endmacro %}
 
-{% macro add_button(url, disabled, disabledText) %}
+{% macro add_button(url, disabled) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-plus', 'form.add', 'success', false, false, disabled|default(false), disabledText|default('')) }}
+  {{ _action_button(url, 'fa-plus', 'form.add', 'success', false, false, disabled) }}
 {% endmacro %}
 
-{% macro edit_button(url, disabled, disabledText) %}
+{% macro edit_button(url, disabled) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-pencil', 'form.edit', '', false, false, disabled|default(false), disabledText|default('')) }}
+  {{ _action_button(url, 'fa-pencil', 'form.edit', '', false, false, disabled) }}
 {% endmacro %}
 
-{% macro remove_button(url, disabled, disabledText) %}
+{% macro remove_button(url, disabled) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-times', 'form.remove', 'danger', false, false, disabled|default(false), disabledText|default('')) }}
+  {{ _action_button(url, 'fa-times', 'form.remove', 'danger', false, false, disabled) }}
 {% endmacro %}
 
-{% macro transfer_owner_button(url, disabled, disabledText) %}
+{% macro transfer_owner_button(url) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-exchange', 'study-area.transfer-ownership', '', false, false, disabled|default(false), disabledText|default('')) }}
+  {{ _action_button(url, 'fa-exchange', 'study-area.transfer-ownership') }}
 {% endmacro %}
 
-{% macro freeze_button(url, disabled, disabledText) %}
+{% macro freeze_button(url, disabled) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-lock', 'form.freeze', 'warning', false, false, disabled|default(false), disabledText|default('')) }}
+  {{ _action_button(url, 'fa-lock', 'form.freeze', 'warning', false, false, disabled) }}
 {% endmacro %}
 
-{% macro _action_button(url, icon, label, color, blank, onclick, disabled, disabledText) %}
-  {% set disabled = disabled|default(false) %}
-  {% if disabled %}
-    <div class="d-inline-block" data-toggle="tooltip" title="{{ disabledText|default('') }}">
+{% macro _action_button(url, icon, label, color, blank, onclick, disabled) %}
+  {% set disabled = disabled|default('') %}
+  {% if disabled is not empty %}
+    <div class="d-inline-block" data-toggle="tooltip" title="{{ disabled }}">
   {% endif %}
-  <a href="{{ disabled ? '#' : url }}"{% if onclick|default(false) %} onclick="{{ onclick }}" {% endif %}{% if blank|default(false) %} target="_blank" {% endif %}
-     class="btn btn-outline-{{ color|default('secondary') }}{% if disabled %} disabled{% endif %}">
+  <a href="{{ url }}"{% if onclick|default(false) %} onclick="{{ onclick }}" {% endif %}{% if blank|default(false) %} target="_blank" {% endif %}
+     class="btn btn-outline-{{ color|default('secondary') }}{% if disabled is not empty %} disabled{% endif %}">
     <i class="fa fa-fw {{ icon }}"></i> {{ label|trans }}
   </a>
-  {% if disabled %}
+  {% if disabled is not empty %}
     </div>
   {% endif %}
 {% endmacro %}

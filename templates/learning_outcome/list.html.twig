@@ -5,7 +5,7 @@
     {% import '_macro/_action_buttons.html.twig' as buttons %}
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
-    {{ buttons.add_button(path('app_learningoutcome_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.add_button(path('app_learningoutcome_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
@@ -37,9 +37,9 @@
                 href="{{ path('app_learningoutcome_show', {'learningOutcome': learningOutcome.id}) }}">{{ 'form.show'|trans }}</a>
           </td>
           {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {% from 'concept/list.html.twig' import linkDisabledWhenFrozen %}
-            {{ linkDisabledWhenFrozen('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}, 'form.edit') }}
-            {{ linkDisabledWhenFrozen('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}, 'form.remove') }}
+            {% from '_macro/_links.html.twig' import linkDisabledWhenFrozen %}
+            <td>{{ linkDisabledWhenFrozen('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}, 'form.edit') }}</td>
+            <td>{{ linkDisabledWhenFrozen('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}, 'form.remove') }}</td>
           {% endif %}
         </tr>
       {% endfor %}

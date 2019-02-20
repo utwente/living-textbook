@@ -5,9 +5,9 @@
   {{ buttons.header() }}
   {{ buttons.list_button(path('app_learningoutcome_list')) }}
   {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
-    {{ buttons.edit_button(path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
-    {{ buttons.remove_button(path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
-    {{ buttons.add_button(path('app_learningoutcome_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.edit_button(path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {{ buttons.remove_button(path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {{ buttons.add_button(path('app_learningoutcome_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
   {% endif %}
   {{ buttons.footer() }}
 {% endblock %}

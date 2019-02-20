@@ -5,7 +5,7 @@
     {% import '_macro/_action_buttons.html.twig' as buttons %}
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
-    {{ buttons.add_button(path('app_externalresource_add'), _twigStudyArea.isFrozen, 'study-area.frozen'|trans) }}
+    {{ buttons.add_button(path('app_externalresource_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
@@ -39,9 +39,9 @@
             {% endif %}
           </td>
           {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {% from 'concept/list.html.twig' import linkDisabledWhenFrozen %}
-            {{ linkDisabledWhenFrozen('app_externalresource_edit', {'externalResource': externalResource.id}, 'form.edit') }}
-            {{ linkDisabledWhenFrozen('app_externalresource_remove', {'externalResource': externalResource.id}, 'form.remove') }}
+            {% from '_macro/_links.html.twig' import linkDisabledWhenFrozen %}
+            <td>{{ linkDisabledWhenFrozen('app_externalresource_edit', {'externalResource': externalResource.id}, 'form.edit') }}</td>
+            <td>{{ linkDisabledWhenFrozen('app_externalresource_remove', {'externalResource': externalResource.id}, 'form.remove') }}</td>
           {% endif %}
         </tr>
       {% endfor %}
