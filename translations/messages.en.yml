@@ -222,6 +222,7 @@ learning-outcome:
   updated: 'Learning outcome "%item%" has been successfully updated.'
 
 learning-path:
+  add-element: 'Add element'
   add-title: 'Add new learning path'
   close: 'Close learning path'
   current-elements: 'Current elements'
