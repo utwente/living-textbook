@@ -35,7 +35,7 @@
 
 {% macro remove_button(url, disabled, label) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-times', label|default('form.remove'), 'danger', false, false, disabled) }}
+  {{ _action_button(url, 'fa-trash', label|default('form.remove'), 'danger', false, false, disabled) }}
 {% endmacro %}
 
 {% macro transfer_owner_button(url) %}
@@ -74,4 +74,22 @@
   {% macro footer() %}
 </div>
   <div class="clearfix d-lg-none"></div>
+{% endmacro %}
+
+{% macro add_row(listUrl) %}
+  {% from _self import header, footer, list_button %}
+  {{ header() }}
+  {{ list_button(listUrl) }}
+  {{ footer() }}
+{% endmacro %}
+
+{% macro edit_row(showUrl, removeUrl, listUrl) %}
+  {% from _self import header, footer, show_button, remove_button, list_button %}
+  {{ header() }}
+  {% if showUrl is not null %}
+    {{ show_button(showUrl) }}
+  {% endif %}
+  {{ remove_button(removeUrl) }}
+  {{ list_button(listUrl) }}
+  {{ footer() }}
 {% endmacro %}

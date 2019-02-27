@@ -3,13 +3,13 @@
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {{ buttons.header() }}
-  {{ buttons.list_button(path('app_learningpath_list')) }}
   {{ buttons.learning_path_button(learningPath.id) }}
   {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
+    {{ buttons.add_button(path('app_learningpath_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.edit_button(path('app_learningpath_edit', {'learningPath': learningPath.id}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.remove_button(path('app_learningpath_remove', {'learningPath': learningPath.id}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
-    {{ buttons.add_button(path('app_learningpath_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
   {% endif %}
+  {{ buttons.list_button(path('app_learningpath_list')) }}
   {{ buttons.footer() }}
 {% endblock %}
 
