@@ -133,8 +133,6 @@ action-security-check:
 build-assets:
   stage: build
   image: node:9.11
-  dependencies:
-    - install-dependencies
   cache:
     key: ${CI_JOB_NAME}
     paths:
