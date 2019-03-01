@@ -2,8 +2,10 @@
 bower_components
 composer.phar
 
-# Ignore sshtoken file (for deployment)
-sshtoken
+# Ignore deployment files
+.deploy
+.ssh-token
+.deploy-token
 
 # Ignore secrets
 .secrets.json
