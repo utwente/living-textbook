@@ -176,11 +176,13 @@ deploy-prod:
     - build-assets
   before_script:
     - mkdir -p ~/.ssh
-    - echo "${PRODUCTION_HOST} ${PRODUCTION_HOST_SSH_FINGERPRINT}" > ~/.ssh/known_hosts
+    - echo "${JUMP_HOST} ${JUMP_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - echo "${PRODUCTION_HOST_SSH} ${PRODUCTION_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
     - eval $(ssh-agent -s)
     - ssh-add <(echo "${PRODUCTION_HOST_SSH_PRIVATE_KEY}")
+    - ssh-add <(echo "${JUMP_HOST_SSH_PRIVATE_KEY}")
   script:
-    - ssh -tt -J ${JUMP_USER}@${JUMP_HOST} ${PRODUCTION_USER}@${PRODUCTION_HOST} ${CI_PIPELINE_ID}
+    - ssh -tt -J ${JUMP_USER}@${JUMP_HOST} ${PRODUCTION_USER}@${PRODUCTION_HOST_SSH} ${CI_PIPELINE_ID}
   environment:
     name: Production
     url: https://${PRODUCTION_HOST}
@@ -188,3 +190,5 @@ deploy-prod:
     - docker
   only:
     - production
+  except:
+    - schedules
