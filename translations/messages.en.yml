@@ -189,6 +189,7 @@ form:
   cancel: 'Cancel'
   confirm-freeze: 'Yes, I want to freeze this'
   confirm-remove: 'Yes, I want to delete this'
+  confirm-unfreeze: 'Yes, I want to unfreeze this'
   discard: 'Discard'
   edit: 'Edit'
   freeze: 'Freeze'
@@ -201,6 +202,7 @@ form:
   save-and-dashboard: 'Save and open dashboard'
   save-and-list: 'Save and open list'
   show: 'View'
+  unfreeze: 'Unfreeze'
 
 general:
   close: "Close"
@@ -350,7 +352,7 @@ study-area:
   description: 'Description'
   edit-title: 'Edit study area "%item%"'
   freeze: 'Freeze study area "%item%"'
-  freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone.'
+  freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone without risking data loss.'
   freeze-succeeded: 'Study area "%item%" has been frozen successfully.'
   frozen: 'This study area has been frozen, editing is prohibited.'
   list-title: 'Study area list'
@@ -369,6 +371,9 @@ study-area:
   show: 'This study area is owned by %owner%. It contains the following concepts:'
   switch-to: 'Switch'
   transfer-ownership: 'Transfer ownership'
+  unfreeze: 'Unfreeze study area'
+  unfreeze-text: 'Are you sure you want to unfreeze the study area "%item%"? This could lead to data loss for users of this study area when data is edited, please use this feature responsibly!'
+  unfreeze-succeeded: 'Study area "%item%" has been unfrozen successfully.'
   updated: 'Study area "%item%" has been successfully updated.'
 
 relation-type:

@@ -286,4 +286,40 @@ class StudyAreaController extends AbstractController
     ];
   }
 
+  /**
+   * @Route("/unfreeze/{studyArea}", requirements={"studyArea"="\d+"})
+   * @Template()
+   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
+   *
+   * @param StudyArea              $studyArea
+   * @param Request                $request
+   * @param TranslatorInterface    $translator
+   * @param EntityManagerInterface $em
+   *
+   * @return array|Response
+   */
+  public function unfreeze(StudyArea $studyArea, Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
+  {
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route'        => 'app_default_dashboard',
+        'cancel_route_params' => ['studyArea' => $studyArea->getId()],
+        'remove_label'        => 'form.confirm-unfreeze',
+    ]);
+    $form->handleRequest($request);
+
+    if (RemoveType::isRemoveClicked($form)) {
+      $studyArea->setFrozenOn(NULL);
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('study-area.unfreeze-succeeded', ['%item%' => $studyArea->getName()]));
+
+      return $this->redirectToRoute('app_default_dashboard', ['studyArea' => $studyArea]);
+    }
+
+    return [
+        'form'      => $form->createView(),
+        'studyArea' => $studyArea,
+    ];
+  }
+
 }

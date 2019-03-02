@@ -556,11 +556,11 @@ class StudyArea
   }
 
   /**
-   * @param \DateTime $frozenOn
+   * @param \DateTime|null $frozenOn
    *
    * @return $this
    */
-  public function setFrozenOn(\DateTime $frozenOn)
+  public function setFrozenOn(?\DateTime $frozenOn)
   {
     $this->frozenOn = $frozenOn;
 

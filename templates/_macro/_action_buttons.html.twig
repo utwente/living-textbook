@@ -48,6 +48,11 @@
   {{ _action_button(url, 'fa-lock', 'form.freeze', 'warning', false, false, disabled) }}
 {% endmacro %}
 
+{% macro unfreeze_button(url, disabled) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-unlock', 'form.unfreeze', 'warning', false, false, disabled) }}
+{% endmacro %}
+
 {% macro _action_button(url, icon, label, color, blank, onclick, disabled) %}
   {% set disabled = disabled|default('') %}
   {% if disabled is not empty %}
