@@ -231,6 +231,7 @@ learning-path:
   edit-title: 'Edit learning path "%item%"'
   element-concept: 'Concept'
   element-description: 'Description'
+  element-errors: 'One or more elements contain errors'
   elements: 'Elements'
   elements-info: 'Select concepts and/or learning outcomes (which will add the containing concepts) below to add them to the learning path elements.'
   introduction: 'Introduction'

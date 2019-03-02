@@ -57,7 +57,7 @@ $spacer: 10px;
     padding: 0;
     list-style: none;
 
-    li {
+    > li {
       position: relative;
       border: 1px solid $drag-stripes-color;
       border-radius: 0.25em;

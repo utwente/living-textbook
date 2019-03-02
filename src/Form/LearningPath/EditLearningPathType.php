@@ -38,9 +38,10 @@ class EditLearningPathType extends AbstractType
             'label' => 'learning-path.question',
         ])
         ->add('elements', LearningPathElementContainerType::class, [
-            'label'        => 'learning-path.elements',
-            'studyArea'    => $options['studyArea'],
-            'learningPath' => $options['learningPath'],
+            'label'          => 'learning-path.elements',
+            'studyArea'      => $options['studyArea'],
+            'learningPath'   => $options['learningPath'],
+            'error_bubbling' => false,
         ])
         ->add('submit', SaveType::class, [
             'list_route'           => 'app_learningpath_list',

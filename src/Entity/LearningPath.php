@@ -82,6 +82,8 @@ class LearningPath
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath",
    *   cascade={"persist", "remove"})
+   *
+   * @Assert\Valid()
    */
   private $elements;
 

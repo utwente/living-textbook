@@ -5,6 +5,13 @@
       {{ 'learning-path.elements-info'|trans }}
     </div>
     <div class="col-12">
+      {%- if errors|length > 0 -%}
+        <div class="alert alert-danger">
+          <ul class="list-unstyled mb-0">
+              <li><i class="fa fa-exclamation-circle"></i> {{ 'learning-path.element-errors'|trans }}</li>
+          </ul>
+        </div>
+      {%- endif %}
       {{ form_widget(form) }}
     </div>
   </div>

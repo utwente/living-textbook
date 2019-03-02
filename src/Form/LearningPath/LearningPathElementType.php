@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class LearningPathElementType extends AbstractType
@@ -53,8 +54,11 @@ class LearningPathElementType extends AbstractType
             'label' => 'learning-path.element-concept',
         ])
         ->add('description', TextareaType::class, [
-            'required' => false,
-            'label'    => 'learning-path.element-description',
+            'required'    => false,
+            'label'       => 'learning-path.element-description',
+            'constraints' => [
+                new Length(['max' => 1024]),
+            ],
         ]);
 
     $builder->addModelTransformer(new CallbackTransformer(
