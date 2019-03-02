@@ -213,12 +213,13 @@ class ConceptController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Concept          $concept
-   * @param RequestStudyArea $requestStudyArea
+   * @param Concept                $concept
+   * @param RequestStudyArea       $requestStudyArea
+   * @param LearningPathRepository $learningPathRepository
    *
    * @return array
    */
-  public function show(Concept $concept, RequestStudyArea $requestStudyArea)
+  public function show(Concept $concept, RequestStudyArea $requestStudyArea, LearningPathRepository $learningPathRepository)
   {
     // Check study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -226,7 +227,8 @@ class ConceptController extends AbstractController
     }
 
     return [
-        'concept' => $concept,
+        'concept'       => $concept,
+        'learningPaths' => $learningPathRepository->findForConcept($concept),
     ];
   }
 

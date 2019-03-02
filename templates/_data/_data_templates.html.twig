@@ -140,3 +140,16 @@
     </ul>
   {% endif %}
 {% endmacro %}
+
+{% macro data_learning_paths(data) %}
+  {% if data|length > 0 %}
+    <h2>{{ 'menu.learning-paths'|trans }}</h2>
+    <ul>
+      {% for learningPath in data %}
+        <li>
+          <a href="{{ path('app_learningpath_show', { learningPath: learningPath.id }) }}">{{ learningPath.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
