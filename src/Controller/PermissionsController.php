@@ -17,6 +17,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -288,6 +289,58 @@ class PermissionsController extends AbstractController
   }
 
   /**
+   * @Route("/studyarea/revoke/self")
+   * @Template
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param TranslatorInterface    $translator
+   * @param EntityManagerInterface $entityManager
+   *
+   * @return array|RedirectResponse
+   */
+  public function removeSelf(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator, EntityManagerInterface $entityManager)
+  {
+    // Not allowed for study area owners
+    if ($this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
+      $this->addFlash('notice', $translator->trans('permissions.cannot-remove-self'));
+
+      return $this->redirectToRoute('app_default_dashboard');
+    }
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'remove_label' => 'permissions.remove-self-confirm',
+        'cancel_route' => 'app_default_dashboard',
+    ]);
+
+    $form->handleRequest($request);
+
+    if (RemoveType::isRemoveClicked($form)) {
+
+      $user       = $this->getUser();
+      $userGroups = $user->getUserGroups()->filter(function (UserGroup $group) use ($studyArea) {
+        return $group->getStudyArea()->getId() === $studyArea->getId();
+      });
+
+      /** @var UserGroup[] $userGroups */
+      foreach ($userGroups as $userGroup) {
+        $userGroup->removeUser($user);
+      }
+      $entityManager->flush();
+      $this->addFlash('notice', $translator->trans('permissions.removed-self', ['%studyArea%' => $studyArea->getName()]));
+
+      return $this->redirectToRoute('app_default_landing');
+    }
+
+    return [
+        'form'      => $form->createView(),
+        'studyArea' => $studyArea,
+    ];
+  }
+
+  /**
    * @Route("/studyarea/revoke/{user}/{groupType}",requirements={"user"="\d+", "groupType"="viewer|editor|reviewer"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
@@ -300,7 +353,7 @@ class PermissionsController extends AbstractController
    * @param UserGroupRepository    $userGroupRepository
    * @param TranslatorInterface    $trans
    *
-   * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @return array|RedirectResponse
    *
    * @throws NonUniqueResultException
    */
@@ -354,7 +407,7 @@ class PermissionsController extends AbstractController
    * @param UserGroupRepository    $userGroupRepository
    * @param TranslatorInterface    $trans
    *
-   * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @return array|RedirectResponse
    *
    * @throws NonUniqueResultException
    */

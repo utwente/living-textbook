@@ -5,6 +5,7 @@
   {{ buttons.header() }}
   {{ buttons.browser_button(-1) }}
   {{ is_granted('STUDYAREA_EDIT', studyArea) ? buttons.progress_button() : '' }}
+  {{ is_granted('STUDYAREA_OWNER', studyArea) ? '' : buttons.remove_button(path('app_permissions_removeself'), false, 'permissions.remove-self'|trans) }}
   {% if is_granted('STUDYAREA_OWNER', studyArea) %}
     {{ buttons.transfer_owner_button(path('app_studyarea_transferowner', { studyArea: studyArea.id })) }}
     {{ buttons.edit_button(path('app_studyarea_edit', {'studyArea': studyArea.id}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}

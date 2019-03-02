@@ -33,9 +33,9 @@
   {{ _action_button(url, 'fa-pencil', 'form.edit', '', false, false, disabled) }}
 {% endmacro %}
 
-{% macro remove_button(url, disabled) %}
+{% macro remove_button(url, disabled, label) %}
   {% from _self import _action_button %}
-  {{ _action_button(url, 'fa-times', 'form.remove', 'danger', false, false, disabled) }}
+  {{ _action_button(url, 'fa-times', label|default('form.remove'), 'danger', false, false, disabled) }}
 {% endmacro %}
 
 {% macro transfer_owner_button(url) %}

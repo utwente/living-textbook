@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'permissions.remove-self'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'permissions.remove-self-text'|trans({ '%studyArea%': studyArea.name }) }}</p>
+
+  {{ form(form) }}
+{% endblock %}
