@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b55f9adce6d3738bedd2212976263c0",
+    "content-hash": "404787cc85fde2a6298204fd18c78098",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1538,7 +1538,7 @@
             "version": "v1.1.1",
             "source": {
                 "type": "git",
-                "url": "git@gitlab.drenso.nl:intern/symfony-oidc.git",
+                "url": "git@gitlab.drenso.dev:intern/symfony-oidc.git",
                 "reference": "1e918a391b9eb52ee19ba57fedbf41030147b48b"
             },
             "dist": {

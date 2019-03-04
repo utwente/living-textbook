@@ -4,7 +4,7 @@
     "repositories": [
         {
             "type": "gitlab",
-            "url":  "git@gitlab.drenso.nl:intern/symfony-oidc.git"
+            "url":  "git@gitlab.drenso.dev:intern/symfony-oidc.git"
         }
     ],
     "require": {
@@ -60,9 +60,9 @@
         "cache-dir": "/var/cache/composer",
         "sort-packages": true,
         "gitlab-domains": [
-            "gitlab.drenso.nl"
+            "gitlab.drenso.dev"
         ],
-        "gitlab-token": {"gitlab.drenso.nl": "YMzbSnVVjy_jLkGGYbeF"}
+        "gitlab-token": {"gitlab.drenso.dev": "YMzbSnVVjy_jLkGGYbeF"}
     },
     "autoload": {
         "psr-4": {
