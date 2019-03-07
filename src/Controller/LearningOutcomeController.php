@@ -6,6 +6,7 @@ use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\LearningOutcome;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
 use App\Form\Type\RemoveType;
+use App\Form\Type\SaveType;
 use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +46,10 @@ class LearningOutcomeController extends AbstractController
     // Create new object
     $learningOutcome = (new LearningOutcome())->setStudyArea($requestStudyArea->getStudyArea());
 
-    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
+        'studyArea'       => $requestStudyArea->getStudyArea(),
+        'learningOutcome' => $learningOutcome,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -56,7 +60,11 @@ class LearningOutcomeController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.saved', ['%item%' => $learningOutcome->getShortName()]));
 
-      return $this->redirectToRoute('app_learningoutcome_list');
+      if (SaveType::isListClicked($form)) {
+        return $this->redirectToRoute('app_learningoutcome_list');
+      }
+
+      return $this->redirectToRoute('app_learningoutcome_show', ['learningOutcome' => $learningOutcome->getId()]);
     }
 
     return [
@@ -87,7 +95,10 @@ class LearningOutcomeController extends AbstractController
     }
 
     // Create form and handle request
-    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
+        'studyArea'       => $requestStudyArea->getStudyArea(),
+        'learningOutcome' => $learningOutcome,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +108,11 @@ class LearningOutcomeController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.updated', ['%item%' => $learningOutcome->getShortName()]));
 
-      return $this->redirectToRoute('app_learningoutcome_list');
+      if (SaveType::isListClicked($form)) {
+        return $this->redirectToRoute('app_learningoutcome_list');
+      }
+
+      return $this->redirectToRoute('app_learningoutcome_show', ['learningOutcome' => $learningOutcome->getId()]);
     }
 
     return [
@@ -147,7 +162,8 @@ class LearningOutcomeController extends AbstractController
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [
-        'cancel_route' => 'app_learningoutcome_list',
+        'cancel_route'        => 'app_learningoutcome_show',
+        'cancel_route_params' => ['learningOutcome' => $learningOutcome->getId()],
     ]);
     $form->handleRequest($request);
 

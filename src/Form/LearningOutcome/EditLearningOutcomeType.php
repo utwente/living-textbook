@@ -20,6 +20,8 @@ class EditLearningOutcomeType extends AbstractType
    */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    $learningOutcome = $options['learningOutcome'];
+    $editing         = $learningOutcome->getId() !== NULL;
     $builder
         ->add('number', NumberType::class, [
             'label' => 'learning-outcome.number',
@@ -33,9 +35,10 @@ class EditLearningOutcomeType extends AbstractType
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
-            'enable_save_and_list' => false,
+            'enable_save_and_list' => true,
             'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_learningoutcome_list',
+            'cancel_route'         => $editing ? 'app_learningoutcome_show' : 'app_learningoutcome_list',
+            'cancel_route_params'  => $editing ? ['learningOutcome' => $learningOutcome->getId()] : [],
         ]);
   }
 
@@ -47,6 +50,8 @@ class EditLearningOutcomeType extends AbstractType
     $resolver
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setRequired('learningOutcome')
+        ->setAllowedTypes('learningOutcome', LearningOutcome::class)
         ->setDefault('data_class', LearningOutcome::class);
   }
 }

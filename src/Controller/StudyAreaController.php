@@ -80,15 +80,15 @@ class StudyAreaController extends AbstractController
         return $this->redirectToRoute('_home', ['_studyArea' => $studyArea->getId()]);
       }
 
-      // Check for forward to list
+      // Check for forward to dashboard (via list button)
       if (SaveType::isListClicked($form)) {
-        return $this->redirectToRoute('app_studyarea_list');
+        // Load reloading page in order to switch to the new study area
+        return $this->render('reloading_fullscreen.html.twig', [
+            'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $studyArea->getId()]),
+        ]);
       }
 
-      // Load reloading page in order to switch to the new study area
-      return $this->render('reloading_fullscreen.html.twig', [
-          'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $studyArea->getId()]),
-      ]);
+      return $this->redirectToRoute('app_studyarea_list');
     }
 
     $params = [
@@ -143,14 +143,16 @@ class StudyAreaController extends AbstractController
 
       $this->addFlash('success', $trans->trans('study-area.updated', ['%item%' => $studyArea->getName()]));
 
-      // Check for forward to list
-      if (SaveType::isListClicked($form)) {
-        return $this->redirectToRoute('app_studyarea_list');
+      // Check for forward to dashboard (via list button)
+      if (!$permissions && SaveType::isListClicked($form)) {
+        // Load reloading page in order to switch to the new study area
+        return $this->render('reloading_fullscreen.html.twig', [
+            'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $studyArea->getId()]),
+        ]);
       }
 
-      // Forward to show
-      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_studyarea_edit',
-          ['studyArea' => $studyArea->getId()]);
+      // Always return to list (or permissions page) as there is no show
+      return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_studyarea_list');
     }
 
     return [

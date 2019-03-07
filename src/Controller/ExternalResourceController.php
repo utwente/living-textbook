@@ -56,6 +56,7 @@ class ExternalResourceController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('external-resource.saved', ['%item%' => $externalResource->getTitle()]));
 
+      // Always return to list as there is no show
       return $this->redirectToRoute('app_externalresource_list');
     }
 
@@ -96,6 +97,7 @@ class ExternalResourceController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('external-resource.updated', ['%item%' => $externalResource->getTitle()]));
 
+      // Always return to list as there is no show
       return $this->redirectToRoute('app_externalresource_list');
     }
 

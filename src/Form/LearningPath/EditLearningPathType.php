@@ -25,6 +25,8 @@ class EditLearningPathType extends AbstractType
    */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    $learningPath = $options['learningPath'];
+    $editing      = $learningPath->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
             'label' => 'learning-path.name',
@@ -40,14 +42,15 @@ class EditLearningPathType extends AbstractType
         ->add('elements', LearningPathElementContainerType::class, [
             'label'          => 'learning-path.elements',
             'studyArea'      => $options['studyArea'],
-            'learningPath'   => $options['learningPath'],
+            'learningPath'   => $learningPath,
             'error_bubbling' => false,
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
-            'enable_save_and_list' => $options['save-and-list'],
+            'enable_save_and_list' => true,
             'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_learningpath_list',
+            'cancel_route'         => $editing ? 'app_learningpath_show' : 'app_learningpath_list',
+            'cancel_route_params'  => $editing ? ['learningPath' => $learningPath->getId()] : [],
         ]);
 
     // Fields below are hidden fields, which are used for ckeditor plugins to have the data available on the page
@@ -89,7 +92,6 @@ class EditLearningPathType extends AbstractType
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningPath')
         ->setAllowedTypes('learningPath', LearningPath::class)
-        ->setDefault('data_class', LearningPath::class)
-        ->setDefault('save-and-list', false);
+        ->setDefault('data_class', LearningPath::class);
   }
 }

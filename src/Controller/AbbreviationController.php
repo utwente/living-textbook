@@ -58,6 +58,7 @@ class AbbreviationController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('abbreviation.saved', ['%item%' => $abbreviation->getAbbreviation()]));
 
+      // Always return to list as there is no show
       return $this->redirectToRoute('app_abbreviation_list');
     }
 
@@ -123,6 +124,7 @@ class AbbreviationController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('abbreviation.updated', ['%item%' => $abbreviation->getAbbreviation()]));
 
+      // Always return to list as there is no show
       return $this->redirectToRoute('app_abbreviation_list');
     }
 

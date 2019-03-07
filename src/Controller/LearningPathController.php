@@ -62,7 +62,11 @@ class LearningPathController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.saved', ['%item%' => $learningPath->getName()]));
 
-      return $this->redirectToRoute('app_learningpath_list');
+      if (SaveType::isListClicked($form)) {
+        return $this->redirectToRoute('app_learningpath_list');
+      }
+
+      return $this->redirectToRoute('app_learningpath_show', ['learningPath' => $learningPath->getId()]);
     }
 
     return [
@@ -97,9 +101,8 @@ class LearningPathController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'     => $requestStudyArea->getStudyArea(),
-        'learningPath'  => $learningPath,
-        'save-and-list' => true,
+        'studyArea'    => $requestStudyArea->getStudyArea(),
+        'learningPath' => $learningPath,
     ]);
     $form->handleRequest($request);
 
@@ -119,9 +122,9 @@ class LearningPathController extends AbstractController
 
       if (SaveType::isListClicked($form)) {
         return $this->redirectToRoute('app_learningpath_list');
-      } else {
-        return $this->redirectToRoute('app_learningpath_edit', ['learningPath' => $learningPath->getId()]);
       }
+
+      return $this->redirectToRoute('app_learningpath_show', ['learningPath' => $learningPath->getId()]);
     }
 
     return [
@@ -190,7 +193,8 @@ class LearningPathController extends AbstractController
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
     $form = $this->createForm(RemoveType::class, NULL, [
-        'cancel_route' => 'app_learningpath_list',
+        'cancel_route'        => 'app_learningpath_show',
+        'cancel_route_params' => ['learningPath' => $learningPath->getId()],
     ]);
     $form->handleRequest($request);
 

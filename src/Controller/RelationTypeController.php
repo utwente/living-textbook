@@ -6,7 +6,6 @@ use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\Form\RelationType\EditRelationTypeType;
 use App\Form\Type\RemoveType;
-use App\Form\Type\SaveType;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -57,13 +56,8 @@ class RelationTypeController extends AbstractController
 
       $this->addFlash('success', $trans->trans('relation-type.saved', ['%item%' => $relationType->getName()]));
 
-      // Check for forward to list
-      if (SaveType::isListClicked($form)) {
-        return $this->redirectToRoute('app_relationtype_list');
-      }
-
-      // Forward to show page
-      return $this->redirectToRoute('app_relationtype_edit', ['relationType' => $relationType->getId()]);
+      // Always return to list as there is no show
+      return $this->redirectToRoute('app_relationtype_list');
     }
 
     return [
@@ -108,13 +102,8 @@ class RelationTypeController extends AbstractController
 
       $this->addFlash('success', $trans->trans('relation-type.updated', ['%item%' => $relationType->getName()]));
 
-      // Check for forward to list
-      if (SaveType::isListClicked($form)) {
-        return $this->redirectToRoute('app_relationtype_list');
-      }
-
-      // Forward to show
-      return $this->redirectToRoute('app_relationtype_edit', ['relationType' => $relationType->getId()]);
+      // Always return to list as there is no show
+      return $this->redirectToRoute('app_relationtype_list');
     }
 
     return [
