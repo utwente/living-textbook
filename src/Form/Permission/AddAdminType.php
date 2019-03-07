@@ -26,7 +26,6 @@ class AddAdminType extends AbstractType
             'select2'       => true,
         ])
         ->add('submit', SaveType::class, [
-            'list_route'           => 'app_concept_list',
             'enable_save_and_list' => false,
             'enable_cancel'        => true,
             'cancel_label'         => 'form.discard',

@@ -26,7 +26,6 @@ class EditAbbreviationType extends AbstractType
             'label' => 'abbreviation.meaning',
         ])
         ->add('submit', SaveType::class, [
-            'list_route'           => 'app_abbreviation_list',
             'enable_cancel'        => true,
             'enable_save_and_list' => false,
             'cancel_label'         => 'form.discard',

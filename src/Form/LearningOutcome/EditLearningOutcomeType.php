@@ -32,7 +32,6 @@ class EditLearningOutcomeType extends AbstractType
             'studyArea' => $options['studyArea'],
         ])
         ->add('submit', SaveType::class, [
-            'list_route'           => 'app_learningoutcome_list',
             'enable_cancel'        => true,
             'enable_save_and_list' => false,
             'cancel_label'         => 'form.discard',

@@ -40,7 +40,6 @@ class ChangePasswordType extends AbstractType
             'locate_static'        => false,
             'enable_save_and_list' => false,
             'enable_cancel'        => true,
-            'enable_list'          => false,
             'cancel_label'         => 'form.discard',
             'cancel_route'         => 'app_user_fallbacklist',
             'cancel_route_params'  => [],

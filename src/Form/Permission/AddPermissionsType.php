@@ -47,7 +47,6 @@ class AddPermissionsType extends AbstractType
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
             'cancel_route'         => 'app_permissions_studyarea',
-            'enable_list'          => false,
             'enable_save_and_list' => false,
         ]);
   }

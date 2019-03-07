@@ -20,10 +20,10 @@ class EditRelationTypeType extends AbstractType
             'label' => 'relation-type.description',
         ])
         ->add('submit', SaveType::class, [
-            'list_route'    => 'app_relationtype_list',
-            'enable_cancel' => true,
-            'cancel_label'  => 'form.discard',
-            'cancel_route'  => 'app_relationtype_list',
+            'enable_save_and_list' => false,
+            'enable_cancel'        => true,
+            'cancel_label'         => 'form.discard',
+            'cancel_route'         => 'app_relationtype_list',
         ]);
   }
 }

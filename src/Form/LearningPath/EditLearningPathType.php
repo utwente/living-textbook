@@ -44,7 +44,6 @@ class EditLearningPathType extends AbstractType
             'error_bubbling' => false,
         ])
         ->add('submit', SaveType::class, [
-            'list_route'           => 'app_learningpath_list',
             'enable_cancel'        => true,
             'enable_save_and_list' => $options['save-and-list'],
             'cancel_label'         => 'form.discard',

@@ -32,7 +32,6 @@ class TransferOwnerType extends AbstractType
         ])
         ->add('submit', SaveType::class, [
             'enable_save_and_list' => false,
-            'enable_list'          => false,
             'enable_cancel'        => true,
             'cancel_route'         => 'app_studyarea_list',
         ]);

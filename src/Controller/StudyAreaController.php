@@ -92,7 +92,8 @@ class StudyAreaController extends AbstractController
     }
 
     $params = [
-        'form' => $form->createView(),
+        'form'       => $form->createView(),
+        'list_route' => 'app_studyarea_list',
     ];
 
     // Check for first
@@ -129,7 +130,6 @@ class StudyAreaController extends AbstractController
         'select_owner'      => false,
         'save_and_list'     => !$permissions,
         'cancel_route_edit' => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
-        'list_route'        => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
     ]);
     $form->handleRequest($request);
 
@@ -154,8 +154,9 @@ class StudyAreaController extends AbstractController
     }
 
     return [
-        'studyArea' => $studyArea,
-        'form'      => $form->createView(),
+        'studyArea'  => $studyArea,
+        'form'       => $form->createView(),
+        'list_route' => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
     ];
   }
 

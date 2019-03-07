@@ -162,7 +162,6 @@ class EditConceptType extends AbstractType
     $builder
         ->add('submit', SaveType::class, [
             'locate_static'       => true,
-            'list_route'          => 'app_concept_list',
             'enable_cancel'       => true,
             'cancel_label'        => 'form.discard',
             'cancel_route'        => $editing ? 'app_concept_show' : 'app_concept_list',

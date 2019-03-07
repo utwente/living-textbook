@@ -2,7 +2,6 @@
 
 namespace App\Form\StudyArea;
 
-
 use App\Entity\StudyArea;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
@@ -43,8 +42,6 @@ class EditStudyAreaType extends AbstractType
           ->add('submit', SaveType::class, [
               'enable_save_and_list' => !$options['save_only'] && $options['save_and_list'],
               'save_and_list_label'  => 'form.save-and-dashboard',
-              'enable_list'          => !$options['save_only'],
-              'list_route'           => $options['list_route'],
               'enable_cancel'        => !$options['save_only'],
               'cancel_label'         => 'form.discard',
               'cancel_route'         => $editing ? $options['cancel_route_edit'] : $options['cancel_route'],
@@ -60,7 +57,6 @@ class EditStudyAreaType extends AbstractType
             'data_class'        => StudyArea::class,
             'save_only'         => false,
             'save_and_list'     => true,
-            'list_route'        => 'app_studyarea_list',
             'cancel_route'      => 'app_studyarea_list',
             'cancel_route_edit' => 'app_default_dashboard',
             'hide_submit'       => false,
@@ -69,7 +65,6 @@ class EditStudyAreaType extends AbstractType
         ->setAllowedTypes('save_and_list', 'bool')
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
-        ->setAllowedTypes('list_route', 'string')
         ->setAllowedTypes('cancel_route', 'string')
         ->setAllowedTypes('cancel_route_edit', 'string')
         ->setRequired('select_owner')

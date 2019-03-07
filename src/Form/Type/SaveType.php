@@ -59,16 +59,6 @@ class SaveType extends AbstractType
           ),
       ));
     }
-
-    // Add the list button if required
-    if ($options['enable_list']) {
-      $builder->add('_list', ButtonUrlType::class, array(
-          'label'        => $options['list_label'],
-          'route'        => $options['list_route'],
-          'route_params' => $options['list_route_params'],
-          'icon'         => $options['list_icon'],
-      ));
-    }
   }
 
   /**
@@ -121,10 +111,7 @@ class SaveType extends AbstractType
         'cancel_icon'          => 'fa-times',
         'enable_save'          => true,
         'enable_save_and_list' => true,
-        'enable_list'          => true,
         'enable_cancel'        => false,
-        'list_route'           => NULL,
-        'list_route_params'    => array(),
         'cancel_route'         => NULL,
         'cancel_route_params'  => array(),
         'locate_static'        => false,
@@ -135,21 +122,10 @@ class SaveType extends AbstractType
     $resolver->setAllowedTypes('list_label', 'string');
     $resolver->setAllowedTypes('enable_save', 'bool');
     $resolver->setAllowedTypes('enable_save_and_list', 'bool');
-    $resolver->setAllowedTypes('enable_list', 'bool');
     $resolver->setAllowedTypes('enable_cancel', 'bool');
-    $resolver->setAllowedTypes('list_route', array('null', 'string'));
-    $resolver->setAllowedTypes('list_route_params', 'array');
     $resolver->setAllowedTypes('cancel_route', array('null', 'string'));
     $resolver->setAllowedTypes('cancel_route_params', 'array');
     $resolver->setAllowedTypes('locate_static', 'bool');
-
-    $resolver->setNormalizer('list_route', function (Options $options, $value) {
-      if ($options['enable_list'] === true && $value === NULL) {
-        throw new MissingOptionsException('The option "list_route" is not set, while the list button is enabled.');
-      }
-
-      return $value;
-    });
 
     $resolver->setNormalizer('cancel_route', function (Options $options, $value) {
       if ($options['enable_cancel'] === true && $value === NULL) {

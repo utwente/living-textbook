@@ -51,12 +51,10 @@ class DuplicateType extends AbstractType
             'help'     => 'data.select-all-info',
         ])
         ->add('submit', SaveType::class, [
-            'list_route'           => 'app_concept_list',
             'enable_save'          => true,
             'save_label'           => 'data.duplicate',
             'save_icon'            => 'fa-copy',
             'enable_save_and_list' => false,
-            'enable_list'          => false,
             'enable_cancel'        => true,
             'cancel_route'         => 'app_concept_list',
             'cancel_route_params'  => [],

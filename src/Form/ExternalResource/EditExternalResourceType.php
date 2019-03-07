@@ -33,7 +33,6 @@ class EditExternalResourceType extends AbstractType
             'required' => false,
         ])
         ->add('submit', SaveType::class, [
-            'list_route'           => 'app_externalresource_list',
             'enable_cancel'        => true,
             'enable_save_and_list' => false,
             'cancel_label'         => 'form.discard',
