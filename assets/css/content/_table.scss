@@ -1,4 +1,15 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '~bootstrap/scss/mixins/_buttons.scss';
+
 table.table {
+  th, td {
+    &.fit, &.actions {
+      white-space: nowrap;
+      width: 1%;
+    }
+  }
+
   td {
     &.break-all {
       max-width: 0;
@@ -10,6 +21,11 @@ table.table {
       &.ba-60 {
         max-width: 60vw;
       }
+    }
+
+    .btn {
+      @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, 1.2, $btn-border-radius-sm);
+      border: none;
     }
   }
 }

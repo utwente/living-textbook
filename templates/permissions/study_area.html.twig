@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% macro print_users(users, emailUsers, type) %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
   {% if (users|length + emailUsers|length) > 0 %}
     <div class="table-responsive">
       <table class="table">
@@ -12,7 +13,7 @@
         <tr>
           <th scope="col">{{ 'user.display-name'|trans }}</th>
           <th scope="col">{{ 'user.emailaddress'|trans }}</th>
-          <th scope="col">{{ 'form.revoke'|trans }}</th>
+          <th scope="col" class="actions">{{ 'form.revoke'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -20,8 +21,8 @@
           <tr>
             <td>{{ user.displayName }}</td>
             <td>{{ user.username }}</td>
-            <td>
-              <a href="{{ path('app_permissions_removepermission', {'user': user.id, 'groupType': type}) }}">{{ 'form.revoke'|trans }}</a>
+            <td class="actions">
+              {{ buttons.remove_button(path('app_permissions_removepermission', {'user': user.id, 'groupType': type}), false, 'form.revoke'|trans) }}
             </td>
           </tr>
         {% endfor %}
@@ -29,8 +30,8 @@
           <tr>
             <td></td>
             <td>{{ emailUser.email }}</td>
-            <td>
-              <a href="{{ path('app_permissions_removeemailpermission', {'email': emailUser.email|url_encode, 'groupType': type}) }}">{{ 'form.revoke'|trans }}</a>
+            <td class="actions">
+              {{ buttons.remove_button(path('app_permissions_removeemailpermission', {'email': emailUser.email|url_encode, 'groupType': type}), false, 'form.revoke'|trans) }}
             </td>
           </tr>
         {% endfor %}

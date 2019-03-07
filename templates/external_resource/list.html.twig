@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block content %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -22,8 +23,7 @@
         <th scope="col">{{ 'external-resource.title'|trans }}</th>
         <th scope="col">{{ 'external-resource.url'|trans }}</th>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-          <th scope="col">{{ 'form.edit'|trans }}</th>
-          <th scope="col">{{ 'form.remove'|trans }}</th>
+          <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
         {% endif %}
       </tr>
       </thead>
@@ -39,9 +39,10 @@
             {% endif %}
           </td>
           {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {% from '_macro/_links.html.twig' import linkDisabledWhenFrozen %}
-            <td>{{ linkDisabledWhenFrozen('app_externalresource_edit', {'externalResource': externalResource.id}, 'form.edit') }}</td>
-            <td>{{ linkDisabledWhenFrozen('app_externalresource_remove', {'externalResource': externalResource.id}, 'form.remove') }}</td>
+            <td class="actions">
+              {{ buttons.edit_button_disabled_when_frozen(path('app_externalresource_edit', {'externalResource': externalResource.id})) }}
+              {{ buttons.remove_button_disabled_when_frozen(path('app_externalresource_remove', {'externalResource': externalResource.id})) }}
+            </td>
           {% endif %}
         </tr>
       {% endfor %}

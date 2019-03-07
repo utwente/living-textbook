@@ -146,6 +146,7 @@
 
 {% block second_content %}
   {% if studyAreaForm is not null %}
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
     <div class="card container-card">
       <div class="card-body">
         {% import '_macro/_action_buttons.html.twig' as buttons %}
@@ -162,9 +163,7 @@
               <th scope="col">{{ 'study-area.name'|trans }}</th>
               <th scope="col">{{ 'study-area.owner'|trans }}</th>
               <th scope="col">{{ 'study-area.access-type'|trans }}</th>
-              <th scope="col">{{ 'study-area.switch-to'|trans }}</th>
-              <th scope="col">{{ 'form.edit'|trans }}</th>
-              <th scope="col">{{ 'form.remove'|trans }}</th>
+              <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
@@ -181,27 +180,17 @@
                   {% endif %}
                 </td>
                 <td>{{ studyArea.accessType|capitalize }}</td>
-                <td>
-                  {% if studyArea.id == currentStudyArea.id %}
-                    {{ 'study-area.current'|trans }}
-                  {% else %}
-                    <a class="top-level"
-                       href="{{ path('_home', {'_studyArea': studyArea.id}) }}">{{ 'study-area.switch-to'|trans }}</a>
+                <td class="actions">
+                  {{ buttons._action_button(
+                    path('_home', {'_studyArea': studyArea.id}), 'fa-exchange', 'study-area.switch-to'|trans,
+                    'primary top-level', false, false, studyArea.id == currentStudyArea.id ? 'study-area.current'|trans : false
+                  ) }}
+
+                  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+                    {{ buttons.edit_button(path('app_studyarea_edit', {'studyArea': studyArea.id}), studyArea.isFrozen ? 'study-area.frozen'|trans : false) }}
+                    {{ buttons.remove_button(path('app_studyarea_remove', {'studyArea': studyArea.id})) }}
                   {% endif %}
                 </td>
-                {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-                  <td>
-                    {% if not studyArea.isFrozen %}
-                      <a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id}) }}">{{ 'form.edit'|trans }}</a>
-                    {% endif %}
-                  </td>
-                  <td><a
-                        href="{{ path('app_studyarea_remove', {'studyArea': studyArea.id}) }}">{{ 'form.remove'|trans }}</a>
-                  </td>
-                {% else %}
-                  <td></td>
-                  <td></td>
-                {% endif %}
               </tr>
             {% endfor %}
             </tbody>

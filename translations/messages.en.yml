@@ -185,6 +185,7 @@ external-resource:
 
 form:
   action-bar: 'Action bar'
+  actions: 'Actions'
   add: 'Add'
   cancel: 'Cancel'
   confirm-freeze: 'Yes, I want to freeze this'

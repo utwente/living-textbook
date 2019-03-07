@@ -28,9 +28,19 @@
   {{ _action_button(url, 'fa-plus', 'form.add', 'success', false, false, disabled) }}
 {% endmacro %}
 
+{% macro edit_button_disabled_when_frozen(url) %}
+  {% from _self import edit_button %}
+  {{ edit_button(url, _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : false) }}
+{% endmacro %}
+
 {% macro edit_button(url, disabled) %}
   {% from _self import _action_button %}
   {{ _action_button(url, 'fa-pencil', 'form.edit', '', false, false, disabled) }}
+{% endmacro %}
+
+{% macro remove_button_disabled_when_frozen(url, label) %}
+  {% from _self import remove_button %}
+  {{ remove_button(url, _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : false, label) }}
 {% endmacro %}
 
 {% macro remove_button(url, disabled, label) %}

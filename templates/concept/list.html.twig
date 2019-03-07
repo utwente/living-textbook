@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% macro list(concepts, studyArea) %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -22,11 +23,7 @@
         <th scope="col">{{ 'concept.name'|trans }}</th>
         <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
         <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
-        <th scope="col">{{ 'form.show'|trans }}</th>
-        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-          <th scope="col">{{ 'form.edit'|trans }}</th>
-          <th scope="col">{{ 'form.remove'|trans }}</th>
-        {% endif %}
+        <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
       </tr>
       </thead>
       <tbody>
@@ -38,12 +35,13 @@
           </td>
           <td>{{ concept.outgoingRelations|length }}</td>
           <td>{{ concept.incomingRelations|length }}</td>
-          <td><a href="{{ path('app_concept_show', {'concept': concept.id}) }}">{{ 'form.show'|trans }}</a></td>
-          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {% from '_macro/_links.html.twig' import linkDisabledWhenFrozen %}
-            <td>{{ linkDisabledWhenFrozen('app_concept_edit', {'concept': concept.id}, 'form.edit') }}</td>
-            <td>{{ linkDisabledWhenFrozen('app_concept_remove', {'concept': concept.id}, 'form.remove') }}</td>
-          {% endif %}
+          <td class="actions">
+            {{ buttons.show_button(path('app_concept_show', {'concept': concept.id})) }}
+            {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+              {{ buttons.edit_button_disabled_when_frozen(path('app_concept_edit', {'concept': concept.id})) }}
+              {{ buttons.remove_button_disabled_when_frozen(path('app_concept_remove', {'concept': concept.id})) }}
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
       </tbody>

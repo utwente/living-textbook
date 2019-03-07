@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% macro urlTable(urls, status, title, objects) %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
   {% if urls is not empty %}
     <h3>{{ title|trans }}</h3>
     <div class="table-responsive">
@@ -21,7 +22,7 @@
           <th scope="col">{{ 'url.url'|trans }}</th>
           <th scope="col">{{ 'url.status'|trans }}</th>
           <th scope="col">{{ 'form.edit'|trans }}</th>
-          <th scope="col">{{ 'url.rescan'|trans }}</th>
+          <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -65,10 +66,7 @@
               {% endif %}
             </td>
             <td>
-              <a class="btn btn-outline-primary"
-                 href="{{ path('app_default_urlrescan', {'url': url.url|url_encode}) }}">
-                <i class="fa fa-fw fa-repeat"></i>
-                {{ 'url.rescan'|trans }}</a>
+              {{ buttons._action_button(path('app_default_urlrescan', {'url': url.url|url_encode}), 'fa-repeat', 'url.rescan'|trans, 'primary') }}
             </td>
           </tr>
         {% endfor %}

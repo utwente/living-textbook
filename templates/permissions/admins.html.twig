@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -28,7 +29,7 @@
           <td>{{ admin.username }}</td>
           <td>
             {% if app.user.id != admin.id %}
-              <a href="{{ path('app_permissions_removeadmin', {'user': admin.id}) }}">{{ 'form.remove'|trans }}</a>
+              {{ buttons.remove_button(path('app_permissions_removeadmin', {'user': admin.id})) }}
             {% endif %}
           </td>
         </tr>
