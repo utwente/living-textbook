@@ -17,6 +17,7 @@ import Routing from 'fos-routing';
 
   // General settings
   lpb.drawGrid = false;
+  lpb.arrowColor = '#007bff';
 
   /******************************************************************************************************
    * Internal constants
@@ -207,7 +208,7 @@ import Routing from 'fos-routing';
       let last = elements[elements.length - 1];
       context.beginPath();
       context.lineWidth = bConfig.linkLineWidth * 3;
-      context.strokeStyle = bConfig.defaultLinkStrokeStyle;
+      context.strokeStyle = lpb.arrowColor;
       context.moveTo(first.x, first.y);
       context.lineTo(last.x, last.y);
       context.stroke();
@@ -255,7 +256,7 @@ import Routing from 'fos-routing';
     //////////////////////
 
     // Draw path arrows
-    context.fillStyle = bConfig.defaultLinkStrokeStyle;
+    context.fillStyle = lpb.arrowColor;
     elements.slice(1).map(drawElementArrow);
 
     //////////////////////
