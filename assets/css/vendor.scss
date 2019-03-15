@@ -75,3 +75,7 @@ $dropdown-link-hover-bg: #d2d2d2;
 .select2-container.select2-container--bootstrap.select2-container--open {
   z-index: 10011; // Higher than 10010 in ckeditor
 }
+
+.tooltip-wide .tooltip-inner {
+  max-width: 60vw;
+}

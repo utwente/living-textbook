@@ -789,7 +789,8 @@ import Routing from 'fos-routing';
       return tooltipElement.description;
     },
     placement: "top",
-    trigger: "manual"
+    trigger: "manual",
+    template: '<div class="tooltip tooltip-wide" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
   });
 
   // Window handlers
