@@ -7,7 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 
 /**
  * Place this annotation on a method which should not be invoked when a study area is frozen. Handled by
- * App\Security\FreezeSubscriber, depends on the FrameworkExtraBundle to register it in the request attributes.
+ * App\Security\DenyOnFrozenStudyAreaSubscriber, depends on the FrameworkExtraBundle to register it in the request
+ * attributes.
  *
  * @Annotation
  * @Target("METHOD")

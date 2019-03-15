@@ -12,7 +12,8 @@
   bConfig.minCharCount = 12;
   bConfig.defaultNodeLabelFontSize = 10;
   bConfig.activeNodeLabelLineWidth = 1.5;
-  bConfig.defaultNodeLabelFont = bConfig.defaultNodeLabelFontSize + 'px "DroidSans, arial, serif"';
+  bConfig.fontFamily = 'DroidSans, Arial, sans-serif';
+  bConfig.defaultNodeLabelFont = bConfig.defaultNodeLabelFontSize + 'px ' + bConfig.fontFamily;
   bConfig.activeNodeLabelFont = 'bold ' + bConfig.defaultNodeLabelFont;
 
   // Node styles

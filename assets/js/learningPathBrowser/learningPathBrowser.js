@@ -276,7 +276,8 @@ import Routing from 'fos-routing';
     let numberSize = Math.ceil(elementRadius * 1.5);
     let numberPositionAdjust = (numberSize / 12);
     context.beginPath();
-    context.font = "bold " + numberSize + 'px "DroidSans, arial, serif"';
+    context.font = "bold " + numberSize + 'px ' + bConfig.fontFamily;
+    console.info(context.font);
     elements.map(function (element) {
       context.fillStyle = bConfig.darkenedNodeColor(element.color);
       context.fillText(++elementCount, element.x, element.y + numberPositionAdjust);
@@ -289,12 +290,13 @@ import Routing from 'fos-routing';
     elements.map(drawElementText);
 
     // Draw path description question marks
+    let questionFontSize = Math.ceil(fontSize * 0.8);
     context.fillStyle = bConfig.whiteNodeLabelColor;
-    context.font = fontSize + 'px "DroidSans, arial, serif"';
+    context.font = questionFontSize + 'px ' + bConfig.fontFamily;
     elements.map(function (element) {
       if (typeof element.description === "undefined") return;
 
-      context.fillText("?", pathDescriptionX(element), element.y + 1);
+      context.fillText("?", pathDescriptionX(element), element.y + Math.floor(questionFontSize / 10));
     });
 
     // Restore state
@@ -367,7 +369,7 @@ import Routing from 'fos-routing';
    */
   function drawElementText(element) {
     // Set font accordingly
-    context.font = fontSize + 'px "DroidSans, arial, serif"';
+    context.font = fontSize + 'px ' + bConfig.fontFamily;
     if (element.highlighted) {
       context.font = 'bold ' + context.font;
     }

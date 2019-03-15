@@ -18,6 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 {
 
+  /** @var ArgumentNameConverter */
   private $argumentNameConverter;
 
   /** @var TranslatorInterface */
