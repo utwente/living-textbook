@@ -116,17 +116,19 @@ $(function () {
         action = window.location.href;
       }
 
-      // Serialize form data
-      let formData = $form.serialize();
+      let formData = new FormData($form[0]);
 
-      // Retrieve clicked button data
-      formData += '&' + encodeURIComponent($(':input[type=submit][clicked=true]').attr('name')) + '=';
+      // Retrieve clicked button and put it in the form data
+      let clickedButton = $(':input[type=submit][clicked=true]');
+      formData.append(clickedButton.attr('name'), '');
 
       // Send actual POST request
       $.ajax({
         type: method,
         url: action,
-        data: formData
+        data: formData,
+        processData: false,
+        contentType: false,
       }).always(function (data) {
         // Before loading the new data, make sure to unload ckeditor instances
         for (let instanceName in CKEDITOR.instances) {
