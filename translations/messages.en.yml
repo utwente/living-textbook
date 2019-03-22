@@ -34,13 +34,14 @@ browser:
 
 concept:
   add-title: 'Add new concept'
+  definition: 'Definition'
   edit-title: 'Edit concept "%item%"'
   examples: 'Examples'
   external-resources: 'External resources'
   how-to: 'How to'
   incoming-relations: 'Incoming relations'
   indirect-relations: 'Indirect relations'
-  introduction: 'Introduction and definition'
+  introduction: 'Introduction'
   learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
   name: 'Name'
@@ -117,6 +118,7 @@ excel:
       _tab: "Detailed concept overview"
       concept-name: "Concept name"
       definition: "Definition"
+      introduction: "Introduction"
       explanation: "Explanation"
       prior-knowledge: "Prior knowledge"
       examples: "Examples"
@@ -140,6 +142,7 @@ excel:
       _tab: "General concept statistics"
       no-text: "Without any (text) content"
       no-definition: "Without definition"
+      no-introduction: "Without introduction"
       no-prior-knowledge: "Without prior knowledge"
       no-learning-outcomes: "Without learning outcomes"
       no-relation: "Without relations"

@@ -19,8 +19,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class StudyAreaStatusBuilder
@@ -256,16 +256,17 @@ class StudyAreaStatusBuilder
     $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.general-concept-statistics.total-concepts', true);
     $this->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.general-concept-statistics.no-text', true);
     $this->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.general-concept-statistics.no-definition', true);
-    $this->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
-    $this->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.general-concept-statistics.no-learning-outcomes', true);
-    $this->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
-    $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
-    $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
+    $this->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.general-concept-statistics.no-introduction', true);
+    $this->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
+    $this->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.general-concept-statistics.no-learning-outcomes', true);
+    $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
+    $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
+    $this->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
 
     $row++;
 
     $column = 2;
-    $counts = array_fill(0, 8, 0);
+    $counts = array_fill(0, 9, 0);
     $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row) {
       if ($condition) {
         $this->setCellValue($sheet, $column + $index, $row + 1 + $counts[$index], $concept->getName());
@@ -275,14 +276,15 @@ class StudyAreaStatusBuilder
     foreach ($this->concepts as $concept) {
       $setter($concept, $counts, 0, true);
       $setter($concept, $counts, 1, !$concept->hasTextData());
-      $setter($concept, $counts, 2, !$concept->getIntroduction()->hasData());
-      $setter($concept, $counts, 3, $concept->getPriorKnowledge()->isEmpty());
-      $setter($concept, $counts, 4, $concept->getLearningOutcomes()->isEmpty());
+      $setter($concept, $counts, 2, $concept->getDefinition() == '');
+      $setter($concept, $counts, 3, !$concept->getIntroduction()->hasData());
+      $setter($concept, $counts, 4, $concept->getPriorKnowledge()->isEmpty());
+      $setter($concept, $counts, 5, $concept->getLearningOutcomes()->isEmpty());
 
       $relationCount = $concept->getOutgoingRelations()->count() + $concept->getIncomingRelations()->count();
-      $setter($concept, $counts, 5, $relationCount == 0);
-      $setter($concept, $counts, 6, $relationCount > 5);
-      $setter($concept, $counts, 7, $relationCount > 10);
+      $setter($concept, $counts, 6, $relationCount == 0);
+      $setter($concept, $counts, 7, $relationCount > 5);
+      $setter($concept, $counts, 8, $relationCount > 10);
     }
 
     $column = 1;
@@ -291,7 +293,7 @@ class StudyAreaStatusBuilder
       $this->setCellValue($sheet, $column + 1 + $key, $row, $count);
     }
 
-    for ($column = 1; $column <= 9; $column++) {
+    for ($column = 1; $column <= 10; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
   }
@@ -403,7 +405,7 @@ class StudyAreaStatusBuilder
   {
     $sheet = $this->createSheet('excel.sheet.detailed-concept-overview._tab');
 
-    for ($column = 1; $column <= 12; $column++) {
+    for ($column = 1; $column <= 13; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
 
@@ -412,36 +414,38 @@ class StudyAreaStatusBuilder
 
     $this->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.detailed-concept-overview.concept-name', true);
     $this->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.detailed-concept-overview.definition', true);
-    $this->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
-    $this->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
-    $this->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.detailed-concept-overview.examples', true);
-    $this->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.detailed-concept-overview.learning-outcomes', true);
-    $this->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
-    $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
-    $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.external-links', true);
-    $this->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.number-of-relations', true);
-    $this->setCellTranslatedValue($sheet, $column + 10, $row, 'excel.sheet.detailed-concept-overview.last-edit-time', true);
-    $this->setCellTranslatedValue($sheet, $column + 11, $row, 'excel.sheet.detailed-concept-overview.last-editor', true);
+    $this->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.detailed-concept-overview.introduction', true);
+    $this->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
+    $this->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
+    $this->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.detailed-concept-overview.examples', true);
+    $this->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.detailed-concept-overview.learning-outcomes', true);
+    $this->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
+    $this->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
+    $this->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.external-links', true);
+    $this->setCellTranslatedValue($sheet, $column + 10, $row, 'excel.sheet.detailed-concept-overview.number-of-relations', true);
+    $this->setCellTranslatedValue($sheet, $column + 11, $row, 'excel.sheet.detailed-concept-overview.last-edit-time', true);
+    $this->setCellTranslatedValue($sheet, $column + 12, $row, 'excel.sheet.detailed-concept-overview.last-editor', true);
 
     foreach ($this->concepts as $concept) {
       $row++;
       $this->setCellValue($sheet, $column, $row, $concept->getName());
-      $this->setCellBooleanValue($sheet, $column + 1, $row, $concept->getIntroduction()->hasData());
-      $this->setCellBooleanValue($sheet, $column + 2, $row, $concept->getTheoryExplanation()->hasData());
-      $this->setCellBooleanValue($sheet, $column + 3, $row, !$concept->getPriorKnowledge()->isEmpty());
-      $this->setCellBooleanValue($sheet, $column + 4, $row, $concept->getExamples()->hasData());
-      $this->setCellBooleanValue($sheet, $column + 5, $row, !$concept->getLearningOutcomes()->isEmpty());
-      $this->setCellBooleanValue($sheet, $column + 6, $row, $concept->getHowTo()->hasData());
-      $this->setCellBooleanValue($sheet, $column + 7, $row, $concept->getSelfAssessment()->hasData());
-      $this->setCellBooleanValue($sheet, $column + 8, $row, !$concept->getExternalResources()->isEmpty());
-      $this->setCellValue($sheet, $column + 9, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
+      $this->setCellBooleanValue($sheet, $column + 1, $row, $concept->getDefinition() != '');
+      $this->setCellBooleanValue($sheet, $column + 2, $row, $concept->getIntroduction()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 3, $row, $concept->getTheoryExplanation()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 4, $row, !$concept->getPriorKnowledge()->isEmpty());
+      $this->setCellBooleanValue($sheet, $column + 5, $row, $concept->getExamples()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 6, $row, !$concept->getLearningOutcomes()->isEmpty());
+      $this->setCellBooleanValue($sheet, $column + 7, $row, $concept->getHowTo()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 8, $row, $concept->getSelfAssessment()->hasData());
+      $this->setCellBooleanValue($sheet, $column + 9, $row, !$concept->getExternalResources()->isEmpty());
+      $this->setCellValue($sheet, $column + 10, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
 
       $lastEditInfo = $concept->getLastEditInfo();
-      $this->setCellDateTime($sheet, $column + 10, $row, $lastEditInfo[0]);
-      $this->setCellValue($sheet, $column + 11, $row, $lastEditInfo[1]);
+      $this->setCellDateTime($sheet, $column + 11, $row, $lastEditInfo[0]);
+      $this->setCellValue($sheet, $column + 12, $row, $lastEditInfo[1]);
     }
 
-    $sheet->getStyleByColumnAndRow(1, 1, $column + 11, $row)
+    $sheet->getStyleByColumnAndRow(1, 1, $column + 12, $row)
         ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 }

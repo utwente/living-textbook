@@ -53,6 +53,15 @@ class Concept
   private $name;
 
   /**
+   * @var string
+   *
+   * @ORM\Column(name="definition", type="text", nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  private $definition;
+
+  /**
    * @var DataIntroduction
    *
    * @ORM\OneToOne(targetEntity="App\Entity\Data\DataIntroduction", cascade={"persist","remove"})
@@ -213,6 +222,7 @@ class Concept
   public function __construct()
   {
     $this->name              = '';
+    $this->definition        = '';
     $this->synonyms          = '';
     $this->outgoingRelations = new ArrayCollection();
     $this->incomingRelations = new ArrayCollection();
@@ -311,7 +321,7 @@ class Concept
    */
   public function isEmpty()
   {
-    return !$this->getIntroduction()->hasData();
+    return $this->getDefinition() == '' && !$this->getIntroduction()->hasData();
   }
 
   /**
@@ -319,7 +329,8 @@ class Concept
    */
   public function hasTextData()
   {
-    return $this->getIntroduction()->hasData()
+    return $this->getDefinition() != ''
+        || $this->getIntroduction()->hasData()
         || $this->getExamples()->hasData()
         || $this->getHowTo()->hasData()
         || $this->selfAssessment->hasData()
@@ -385,6 +396,10 @@ class Concept
       $results[] = SearchController::createResult(255, 'name', $this->getName());
     }
 
+    if (stripos($this->getDefinition(), $search) !== false) {
+      $results[] = SearchController::createResult(255, 'definition', $this->getDefinition());
+    }
+
     if (stripos($this->getSynonyms(), $search) !== false) {
       $results[] = SearchController::createResult(200, 'synonyms', $this->getSynonyms());
     }
@@ -438,6 +453,26 @@ class Concept
   public function setName(string $name): Concept
   {
     $this->name = $name;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getDefinition(): string
+  {
+    return $this->definition;
+  }
+
+  /**
+   * @param string $definition
+   *
+   * @return Concept
+   */
+  public function setDefinition(string $definition): Concept
+  {
+    $this->definition = $definition;
 
     return $this;
   }

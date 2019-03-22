@@ -20,6 +20,7 @@ use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,6 +52,11 @@ class EditConceptType extends AbstractType
         ->add('name', TextType::class, [
             'label'      => 'concept.name',
             'empty_data' => '',
+        ])
+        ->add('definition', TextareaType::class, [
+            'label'      => 'concept.definition',
+            'empty_data' => '',
+            'required'   => false,
         ])
         ->add('synonyms', TextType::class, [
             'label'      => 'concept.synonyms',

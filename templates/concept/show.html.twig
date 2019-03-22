@@ -20,6 +20,7 @@
 
 {% block content %}
   {% import '_data/_data_templates.html.twig' as macros %}
+  {{ macros.data_definition(concept.definition) }}
   {{ macros.data_introduction(concept.introduction) }}
   {{ macros.data_synonyms(concept.synonyms) }}
   {{ macros.data_prior_knowledge(concept.priorKnowledge) }}

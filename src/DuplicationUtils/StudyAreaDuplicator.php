@@ -278,6 +278,7 @@ class StudyAreaDuplicator
       $newConcept = new Concept();
       $newConcept
           ->setName($concept->getName())
+          ->setDefinition($concept->getDefinition())
           ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
           ->setSynonyms($concept->getSynonyms())
           ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
