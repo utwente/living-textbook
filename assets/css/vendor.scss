@@ -54,6 +54,14 @@ $dropdown-link-hover-bg: #d2d2d2;
   width: inherit;
   height: inherit;
   opacity: inherit;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.custom-file-label {
+  font-weight: normal;
 }
 
 // Fix select 2 in ckeditor
@@ -62,6 +70,7 @@ $dropdown-link-hover-bg: #d2d2d2;
     .select2-container {
 
     }
+
     .select2-selection {
       position: relative;
 

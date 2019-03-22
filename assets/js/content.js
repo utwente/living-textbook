@@ -152,6 +152,17 @@ $(function () {
     return true;
   });
 
+  // Fix file selector label text
+  $loadedForms.find('.custom-file-input').on('change', function () {
+    let files = $(this)[0].files;
+    let $fileLabel = $('label[for="' + $(this).attr('id') + '"].custom-file-label');
+    if (files.length > 0) {
+      $fileLabel.text($(this)[0].files[0].name);
+    } else {
+      $fileLabel.text('');
+    }
+  });
+
   // Auto focus first form field
   $loadedForms.find('input').first().focus();
 
