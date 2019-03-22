@@ -4,6 +4,7 @@
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {{ buttons.header() }}
   {{ buttons.browser_button(concept.id) }}
+  {{ buttons.print_button(path('app_print_printsingleconcept', {'concept': concept.id})) }}
   {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
     {{ buttons.add_button(path('app_concept_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.edit_button(path('app_concept_edit', {'concept': concept.id}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}

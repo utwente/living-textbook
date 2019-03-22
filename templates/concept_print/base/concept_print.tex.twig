@@ -1,0 +1,59 @@
+{% block bobv_latex_article %}
+  \documentclass{% if options != null %}[{{ options }}]{% endif %}{letter}
+
+  % Geometry to fix page margins
+  \usepackage[a4paper,includeheadfoot,
+  headsep={{- headsep }},
+  footskip={{- footskip }},
+  top={{- topmargin }},
+  left={{- leftmargin }},
+  right={{- rightmargin }},
+  bottom={{- bottommargin }}]{geometry}
+  \usepackage{fancyhdr} % Required for custom headers
+  \usepackage{lastpage} % Required to determine the last page for the footer
+  \usepackage{extramarks} % Required for headers and footers
+  \usepackage{graphicx} % Required to insert images
+  \usepackage{xcolor} % Requried for coloring of hyperlinks
+  \usepackage[colorlinks = true, linkcolor = black, urlcolor = blue]{hyperref} % Required for hyperlinks
+  \usepackage[export]{adjustbox} % Required for license image alignment
+
+  % Added packages
+  {% for package in packages -%}
+    \usepackage[ {{- package.o -}} ]{ {{- package.p -}} }
+  {%- endfor %}
+
+  % Make url style same as text
+  \urlstyle{same}
+
+  \linespread{ {{- linespread -}} } % Line spacing
+
+  % Set up the header and footer
+  \pagestyle{fancy}
+  \lhead{ {{- head|raw -}} } % Header
+  \chead{}
+  \rhead{}
+  \lfoot{ {{- lfoot|raw -}} } % Bottom left footer
+  \cfoot{}
+  \rfoot{ {{- rfoot|raw -}} } % Bottom right footer
+
+  \renewcommand\headrulewidth{ {{- headrulewidth -}} } % Size of the header rule
+  \renewcommand\footrulewidth{ {{- footrulewidth -}} } % Size of the footer rule
+
+  \setlength\parindent{ {{- parindent -}} } % Removes all indentation from paragraphs
+
+  {% include '@BobVLatex/extra_commands.twig.twig' %}
+
+  \begin{document}
+  {% if licenseimage %}
+    \vspace*{8pt}
+    \includegraphics[width=2.1cm,valign=c]{ {{- licenseimage|raw -}} }
+    \begin{tabular}{l}
+    This print is made available under the \href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\
+    \href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license.
+    \end{tabular}
+  {% endif %}
+
+  {% include '@BobVLatex/elements.twig.twig' %}
+
+  \end{document}
+{% endblock bobv_latex_article %}

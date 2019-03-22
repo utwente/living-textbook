@@ -13,6 +13,11 @@
   {{ _action_button(path('app_data_excelstatus'), 'fa-tasks', 'menu.excel-status', 'primary', true) }}
 {% endmacro %}
 
+{% macro print_button(url) %}
+  {% from _self import _action_button %}
+  {{ _action_button(url, 'fa-print', 'menu.print', 'primary', true) }}
+{% endmacro %}
+
 {% macro list_button(url) %}
   {% from _self import _action_button %}
   {{ _action_button(url, 'fa-list', 'form.list', 'dark') }}
