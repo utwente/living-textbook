@@ -124,7 +124,8 @@ class DataController extends AbstractController
       if ($data['json'] instanceof UploadedFile) {
         try {
           try {
-            $jsonData = $serializer->deserialize(file_get_contents($data['json']->getPathname()), 'array', 'json');
+            $contents = mb_convert_encoding(file_get_contents($data['json']->getPathname()), 'UTF-8', 'UTF-8');
+            $jsonData = $serializer->deserialize($contents, 'array', 'json');
           } catch (\Exception $e) {
             throw new \InvalidArgumentException("", 0, $e);
           }
@@ -170,6 +171,9 @@ class DataController extends AbstractController
             }
 
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
+            if (array_key_exists('definition', $jsonNode)) {
+              $concepts[$key]->setDefinition($jsonNode['definition']);
+            }
             $concepts[$key]->setStudyArea($data['studyArea']);
             $em->persist($concepts[$key]);
           }
