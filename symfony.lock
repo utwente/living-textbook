@@ -194,6 +194,9 @@
     "robloach/component-installer": {
         "version": "0.2.3"
     },
+    "ryakad/pandoc-php": {
+        "version": "v1.0.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "4.0",
         "recipe": {

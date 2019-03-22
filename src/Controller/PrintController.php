@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\ConceptPrint\Base\ConceptPrint;
+use App\ConceptPrint\Section\ConceptSection;
 use App\Entity\Concept;
 use App\Request\Wrapper\RequestStudyArea;
 use BobV\LatexBundle\Generator\LatexGeneratorInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class PrintController
@@ -30,11 +32,13 @@ class PrintController extends AbstractController
    * @param RequestStudyArea        $requestStudyArea
    * @param Concept                 $concept
    * @param LatexGeneratorInterface $generator
+   * @param KernelInterface         $kernel
+   * @param TranslatorInterface     $translator
    *
    * @return Response
    * @throws \Exception
    */
-  public function printSingleConcept(RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator, KernelInterface $kernel)
+  public function printSingleConcept(RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator, KernelInterface $kernel, TranslatorInterface $translator)
   {
     // Check if correct study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -44,7 +48,8 @@ class PrintController extends AbstractController
     // Create LaTeX document
     $document = (new ConceptPrint($this->filename($concept->getName())))
         ->useLicenseImage($kernel->getProjectDir())
-        ->setConcept($concept, $this->generateUrl('app_default_landing', [], UrlGeneratorInterface::ABSOLUTE_URL));
+        ->setConcept($concept, $this->generateUrl('app_default_landing', [], UrlGeneratorInterface::ABSOLUTE_URL))
+        ->addElement(new ConceptSection($concept, $translator, $kernel));
 
     // Return PDF
     return $generator->createPdfResponse($document, false);

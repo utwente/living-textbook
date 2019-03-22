@@ -23,6 +23,7 @@
         "ml/json-ld": "^1.1",
         "phpoffice/phpspreadsheet": "^1.5.1",
         "phpseclib/phpseclib": "^2.0",
+        "ryakad/pandoc-php": "^1.0",
         "sensio/framework-extra-bundle": "^5.1",
         "sensiolabs/security-checker": "^5.0",
         "spatie/pdf-to-image": "^1.6",

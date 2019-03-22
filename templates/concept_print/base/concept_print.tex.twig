@@ -1,5 +1,5 @@
 {% block bobv_latex_article %}
-  \documentclass{% if options != null %}[{{ options }}]{% endif %}{letter}
+  \documentclass{% if options != null %}[{{ options }}]{% endif %}{article}
 
   % Geometry to fix page margins
   \usepackage[a4paper,includeheadfoot,
@@ -40,6 +40,20 @@
   \renewcommand\footrulewidth{ {{- footrulewidth -}} } % Size of the footer rule
 
   \setlength\parindent{ {{- parindent -}} } % Removes all indentation from paragraphs
+
+  % Remove section numbers globally
+  \makeatletter
+  \renewcommand{\@seccntformat}[1]{}
+  \makeatother
+
+  % Limit image width globally
+  \let\oldincludegraphics\includegraphics
+  \renewcommand{\includegraphics}[2][]{ %
+  \oldincludegraphics[#1,max width=\linewidth]{{ "{#2}}"|raw }} {# Print with twig due to conflicts #}
+
+  % Custom commands for pandoc conversion
+  \providecommand{\tightlist}{ %
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
   {% include '@BobVLatex/extra_commands.twig.twig' %}
 
