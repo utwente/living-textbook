@@ -4,10 +4,12 @@ namespace App\ConceptPrint\Section;
 
 use App\Entity\Concept;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
+use BobV\LatexBundle\Latex\Element\Text;
 use BobV\LatexBundle\Latex\Section\Section;
 use BobV\LatexBundle\Latex\Section\SubSection;
 use Pandoc\Pandoc;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptSection extends Section
@@ -15,6 +17,9 @@ class ConceptSection extends Section
 
   /** @var Pandoc */
   private $pandoc;
+
+  /** @var RouterInterface */
+  private $router;
 
   /** @var TranslatorInterface */
   private $translator;
@@ -26,20 +31,27 @@ class ConceptSection extends Section
    * Concept constructor.
    *
    * @param Concept             $concept
+   * @param RouterInterface     $router
    * @param TranslatorInterface $translator
    * @param KernelInterface     $kernel
    *
    * @throws \BobV\LatexBundle\Exception\LatexException
    * @throws \Pandoc\PandocException
    */
-  public function __construct(Concept $concept, TranslatorInterface $translator, KernelInterface $kernel)
+  public function __construct(Concept $concept, RouterInterface $router, TranslatorInterface $translator, KernelInterface $kernel)
   {
     $this->pandoc     = new Pandoc();
+    $this->router     = $router;
     $this->translator = $translator;
     $this->kernel     = $kernel;
 
     parent::__construct($concept->getName());
     $this->setParam('newpage', false);
+
+    $this->addElement(new Text(sprintf('\href{%s}{%s}\\\\',
+        $this->router->generate('app_concept_show', ['concept' => $concept->getId()], RouterInterface::ABSOLUTE_URL),
+        $this->translator->trans('concept.online-source')
+    )));
 
     // Add concept data
     if ($concept->getIntroduction()->hasData()) {
