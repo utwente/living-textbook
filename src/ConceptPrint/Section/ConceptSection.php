@@ -53,8 +53,11 @@ class ConceptSection extends Section
     )));
 
     // Add concept data
+    if ($concept->getDefinition() != '') {
+      $this->addElement(new Text($concept->getDefinition()));
+    }
     if ($concept->getIntroduction()->hasData()) {
-      $this->addElement(new CustomCommand($this->convertToLatex($concept->getIntroduction()->getText())));
+      $this->addSection($translator->trans('concept.introduction'), $concept->getIntroduction()->getText());
     }
     if ($concept->getTheoryExplanation()->hasData()) {
       $this->addSection($translator->trans('concept.theory-explanation'), $concept->getTheoryExplanation()->getText());
