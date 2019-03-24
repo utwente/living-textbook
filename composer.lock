@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "09a01c7eff8de7daa24ec8a559002ec5",
+    "content-hash": "88f9c6c2db05b976575563fe180f318a",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -52,16 +52,16 @@
         },
         {
             "name": "bobv/latex-bundle",
-            "version": "v1.3.4",
+            "version": "v1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "5683b88326170e00e43b414ff8a29a69ceb0c4d9"
+                "reference": "d71ab6170b8090105c19c97a800c1cd604ffde81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/5683b88326170e00e43b414ff8a29a69ceb0c4d9",
-                "reference": "5683b88326170e00e43b414ff8a29a69ceb0c4d9",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/d71ab6170b8090105c19c97a800c1cd604ffde81",
+                "reference": "d71ab6170b8090105c19c97a800c1cd604ffde81",
                 "shasum": ""
             },
             "require": {
@@ -106,7 +106,7 @@
                 "pdf",
                 "symfony"
             ],
-            "time": "2019-03-15T16:58:50+00:00"
+            "time": "2019-03-22T10:35:51+00:00"
         },
         {
             "name": "components/elfinder",

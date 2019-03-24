@@ -11,7 +11,6 @@ use BobV\LatexBundle\Helper\Sanitize;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -33,7 +32,6 @@ class PrintController extends AbstractController
    * @param RequestStudyArea        $requestStudyArea
    * @param Concept                 $concept
    * @param LatexGeneratorInterface $generator
-   * @param KernelInterface         $kernel
    * @param TranslatorInterface     $translator
    * @param RouterInterface         $router
    *
@@ -41,18 +39,22 @@ class PrintController extends AbstractController
    * @throws \Exception
    */
   public function printSingleConcept(RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
-                                     KernelInterface $kernel, TranslatorInterface $translator, RouterInterface $router)
+                                     TranslatorInterface $translator, RouterInterface $router)
   {
     // Check if correct study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
+    $projectDir = $this->getParameter('kernel.project_dir');
+
     // Create LaTeX document
     $document = (new ConceptPrint($this->filename($concept->getName())))
-        ->useLicenseImage($kernel->getProjectDir())
-        ->setConcept($concept, $this->generateUrl('app_default_landing', [], UrlGeneratorInterface::ABSOLUTE_URL))
-        ->addElement(new ConceptSection($concept, $router, $translator, $kernel));
+        ->useLicenseImage($projectDir)
+        ->setConcept($concept,
+            $this->generateUrl('app_default_landing', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $translator)
+        ->addElement(new ConceptSection($concept, $router, $translator, $projectDir));
 
     // Return PDF
     return $generator->createPdfResponse($document, false);

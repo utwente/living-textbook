@@ -331,6 +331,11 @@ permissions:
   viewer-count: '{0} No viewers|{1} One viewer|]1,Inf[ %count% viewers'
   users: 'Users'
 
+print:
+  copyright: "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
+                  \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
+  header: "%owner% et al (%year%). %concept%. Enschede: University of Twente, Faculty ITC. \\url{%url%}"
+
 relation:
   source: 'Source'
   target: 'Target'

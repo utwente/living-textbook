@@ -5,6 +5,7 @@ namespace App\ConceptPrint\Base;
 use App\Entity\Concept;
 use BobV\LatexBundle\Helper\Parser;
 use BobV\LatexBundle\Latex\LatexBase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptPrint extends LatexBase
 {
@@ -72,20 +73,22 @@ class ConceptPrint extends LatexBase
   }
 
   /**
-   * @param Concept $concept
-   * @param string  $baseUrl
+   * @param Concept             $concept
+   * @param string              $baseUrl
+   * @param TranslatorInterface $translator
    *
    * @return ConceptPrint
    * @throws \BobV\LatexBundle\Exception\LatexException
    */
-  public function setConcept(Concept $concept, string $baseUrl)
+  public function setConcept(Concept $concept, string $baseUrl, TranslatorInterface $translator)
   {
     $baseUrl    = substr($baseUrl, strlen($baseUrl) - 1) == '/' ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
-    $baseHeader = sprintf('%s et al (%d). %s. Enschede: University of Twente, Faculty ITC. \url{%s}',
-        $this->parser->parseText($concept->getStudyArea()->getOwner()->getFamilyName()),
-        $concept->getUpdatedAt()->format('Y'),
-        $this->parser->parseText($concept->getName()),
-        $baseUrl);
+    $baseHeader = $translator->trans('print.header', [
+        '%owner%'   => $this->parser->parseText($concept->getStudyArea()->getOwner()->getFamilyName()),
+        '%year%'    => $concept->getUpdatedAt()->format('Y'),
+        '%concept%' => $this->parser->parseText($concept->getName()),
+        '%url%'     => $baseUrl,
+    ]);
 
     $this->setParam('head', $baseHeader);
 

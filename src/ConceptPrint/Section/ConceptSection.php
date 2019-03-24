@@ -8,7 +8,6 @@ use BobV\LatexBundle\Latex\Element\Text;
 use BobV\LatexBundle\Latex\Section\Section;
 use BobV\LatexBundle\Latex\Section\SubSection;
 use Pandoc\Pandoc;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,8 +23,8 @@ class ConceptSection extends Section
   /** @var TranslatorInterface */
   private $translator;
 
-  /** @var KernelInterface */
-  private $kernel;
+  /** @var string */
+  private $projectDir;
 
   /**
    * Concept constructor.
@@ -33,17 +32,17 @@ class ConceptSection extends Section
    * @param Concept             $concept
    * @param RouterInterface     $router
    * @param TranslatorInterface $translator
-   * @param KernelInterface     $kernel
+   * @param string              $projectDir
    *
    * @throws \BobV\LatexBundle\Exception\LatexException
    * @throws \Pandoc\PandocException
    */
-  public function __construct(Concept $concept, RouterInterface $router, TranslatorInterface $translator, KernelInterface $kernel)
+  public function __construct(Concept $concept, RouterInterface $router, TranslatorInterface $translator, string $projectDir)
   {
     $this->pandoc     = new Pandoc();
     $this->router     = $router;
     $this->translator = $translator;
-    $this->kernel     = $kernel;
+    $this->projectDir = $projectDir;
 
     parent::__construct($concept->getName());
     $this->setParam('newpage', false);
@@ -79,7 +78,7 @@ class ConceptSection extends Section
     $latex = $this->pandoc->convert($text, 'html', 'latex');
 
     // Generated latex can contain uploaded images, so we need to detect those and update them to reference the actual path on disk
-    $latex = preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s%spublic$1', $this->kernel->getProjectDir(), DIRECTORY_SEPARATOR), $latex);
+    $latex = preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s%spublic$1', $this->projectDir, DIRECTORY_SEPARATOR), $latex);
 
     return $latex;
   }
