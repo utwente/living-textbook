@@ -27,6 +27,8 @@
   \usepackage{esint}
   \usepackage{caption}
 
+  \usepackage[section]{placeins} % Figure placement (floatbarrier)
+
   % Added packages
   {% for package in packages -%}
     \usepackage[ {{- package.o -}} ]{ {{- package.p -}} }

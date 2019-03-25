@@ -154,8 +154,8 @@ class ConceptSection extends Section
     $latex = $this->pandoc->convert($html, 'html', 'latex');
 
     // Replace latex image placeholders with action LaTeX code
-    $latex = $this->replacePlaceholder($latex, $latexImages, '\\begin{figure}[!ht]\\begin{displaymath}\boxed{%s}\\end{displaymath}\\caption*{%s}\\end{figure}');
-    $latex = $this->replacePlaceholder($latex, $normalImages, '\\begin{figure}[!ht]\\includegraphics[frame]{%s}\\caption*{%s}\\end{figure}');
+    $latex = $this->replacePlaceholder($latex, $latexImages, '\\begin{figure}[!htb]\\begin{displaymath}\boxed{%s}\\end{displaymath}\\caption*{%s}\\end{figure}');
+    $latex = $this->replacePlaceholder($latex, $normalImages, '\\begin{figure}[!htb]\\includegraphics[frame]{%s}\\caption*{%s}\\end{figure}');
 
     // Replace local urls with full-path versions
     $latex = preg_replace('/\\\\href\{\/([^}]+)\}/ui', sprintf('\\\\href{%s$1}', $this->baseUrl), $latex);
@@ -172,6 +172,8 @@ class ConceptSection extends Section
    */
   private function addSection(string $title, string $html)
   {
+    // See https://tex.stackexchange.com/a/282/110054
+    $this->addElement((new CustomCommand('\\FloatBarrier')));
     $this->addElement((new SubSection($title))->addElement(new CustomCommand($this->convertHtmlToLatex($html))));
   }
 
