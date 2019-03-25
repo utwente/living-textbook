@@ -17,6 +17,12 @@
   \usepackage[colorlinks = true, linkcolor = black, urlcolor = blue]{hyperref} % Required for hyperlinks
   \usepackage[export]{adjustbox} % Required for license image alignment
 
+  % Math packages
+  \usepackage{mathtools}
+  \usepackage{amssymb}
+  \usepackage{esint}
+  \usepackage{caption}
+
   % Added packages
   {% for package in packages -%}
     \usepackage[ {{- package.o -}} ]{ {{- package.p -}} }
@@ -54,6 +60,8 @@
   % Custom commands for pandoc conversion
   \providecommand{\tightlist}{ %
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+  \setlength{\abovecaptionskip}{0.05in}
 
   {% include '@BobVLatex/extra_commands.twig.twig' %}
 

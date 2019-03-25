@@ -41,7 +41,7 @@ class ConceptPrint extends LatexBase
         'rightmargin'  => '0.8in', // Some document margins
         'bottommargin' => '0.5in', // Some document margins
 
-        'headsep'  => '0.1in',
+        'headsep'  => '0.2in',
         'footskip' => '0.2in',
 
         'linespread' => '1.1', // Line spacing
