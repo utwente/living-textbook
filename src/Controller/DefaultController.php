@@ -87,6 +87,7 @@ class DefaultController extends AbstractController
 
   /**
    * @Route("/")
+   * @Route("", name="base_url")
    * @Template()
    * @IsGranted("ROLE_USER")
    *

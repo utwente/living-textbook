@@ -52,7 +52,7 @@ class PrintController extends AbstractController
     $document = (new ConceptPrint($this->filename($concept->getName())))
         ->useLicenseImage($projectDir)
         ->setConcept($concept,
-            $this->generateUrl('app_default_landing', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL),
             $translator)
         ->addElement(new ConceptSection($concept, $router, $translator, $projectDir));
 

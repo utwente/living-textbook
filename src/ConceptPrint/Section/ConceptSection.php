@@ -8,6 +8,7 @@ use BobV\LatexBundle\Latex\Element\Text;
 use BobV\LatexBundle\Latex\Section\Section;
 use BobV\LatexBundle\Latex\Section\SubSection;
 use Pandoc\Pandoc;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -26,6 +27,9 @@ class ConceptSection extends Section
   /** @var string */
   private $projectDir;
 
+  /** @var string */
+  private $baseUrl;
+
   /**
    * Concept constructor.
    *
@@ -43,6 +47,9 @@ class ConceptSection extends Section
     $this->router     = $router;
     $this->translator = $translator;
     $this->projectDir = $projectDir;
+
+    // Generate base url
+    $this->baseUrl = $router->generate('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
     parent::__construct($concept->getName());
     $this->setParam('newpage', false);
@@ -149,6 +156,9 @@ class ConceptSection extends Section
     // Replace latex image placeholders with action LaTeX code
     $latex = $this->replacePlaceholder($latex, $latexImages, '\\begin{figure}[!ht]\\begin{displaymath}\boxed{%s}\\end{displaymath}\\caption*{%s}\\end{figure}');
     $latex = $this->replacePlaceholder($latex, $normalImages, '\\begin{figure}[!ht]\\includegraphics[frame]{%s}\\caption*{%s}\\end{figure}');
+
+    // Replace local urls with full-path versions
+    $latex = preg_replace('/\\\\href\{\/([^}]+)\}/ui', sprintf('\\\\href{%s$1}', $this->baseUrl), $latex);
 
     return $latex;
   }
