@@ -123,6 +123,10 @@ class DataController extends AbstractController
       // Check file format, then load json data
       if ($data['json'] instanceof UploadedFile) {
         try {
+
+          // Expand default time limit for large imports
+          set_time_limit(600); // 10 minutes
+
           try {
             $contents = mb_convert_encoding(file_get_contents($data['json']->getPathname()), 'UTF-8', 'UTF-8');
             $jsonData = $serializer->deserialize($contents, 'array', 'json');
