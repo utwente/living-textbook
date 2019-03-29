@@ -23,8 +23,10 @@ use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use PhpOffice\PhpSpreadsheet\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -82,17 +84,16 @@ class DataController extends AbstractController
    * @Route("/excel")
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
-   * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
    * @param StudyAreaStatusBuilder $builder
    *
    * @return Response
    *
-   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   * @throws Exception
    */
-  public function excelStatus(Request $request, RequestStudyArea $requestStudyArea, StudyAreaStatusBuilder $builder)
+  public function excelStatus(RequestStudyArea $requestStudyArea, StudyAreaStatusBuilder $builder)
   {
-    return $builder->build($request, $requestStudyArea->getStudyArea());
+    return $builder->build($requestStudyArea->getStudyArea());
   }
 
   /**
@@ -131,14 +132,14 @@ class DataController extends AbstractController
             $contents = mb_convert_encoding(file_get_contents($data['json']->getPathname()), 'UTF-8', 'UTF-8');
             $jsonData = $serializer->deserialize($contents, 'array', 'json');
           } catch (\Exception $e) {
-            throw new \InvalidArgumentException("", 0, $e);
+            throw new InvalidArgumentException("", 0, $e);
           }
 
           // Check fields
           if (!array_key_exists('nodes', $jsonData) ||
               !array_key_exists('links', $jsonData)
           ) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
           }
 
           // Resolve the link types
@@ -146,7 +147,7 @@ class DataController extends AbstractController
           foreach ($jsonData['links'] as $jsonLink) {
 
             if (!array_key_exists('relationName', $jsonLink)) {
-              throw new \InvalidArgumentException();
+              throw new InvalidArgumentException();
             }
 
             // Check whether already cached
@@ -171,7 +172,7 @@ class DataController extends AbstractController
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
             if (!array_key_exists('label', $jsonNode)) {
-              throw new \InvalidArgumentException();
+              throw new InvalidArgumentException();
             }
 
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
@@ -187,7 +188,7 @@ class DataController extends AbstractController
             if (!array_key_exists('target', $jsonLink) ||
                 !array_key_exists('relationName', $jsonLink) ||
                 !array_key_exists('source', $jsonLink)) {
-              throw new \InvalidArgumentException();
+              throw new InvalidArgumentException();
             }
 
             $relation = new ConceptRelation();
@@ -201,7 +202,7 @@ class DataController extends AbstractController
           $this->addFlash('success', $translator->trans('data.json-uploaded'));
           $this->redirectToRoute('app_data_upload');
 
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
           $this->addFlash('error', $translator->trans('data.json-incorrect'));
         }
       }

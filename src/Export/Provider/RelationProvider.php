@@ -4,15 +4,14 @@ namespace App\Export\Provider;
 
 use App\Entity\ConceptRelation;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
+use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class RelationProvider implements ProviderInterface
 {
@@ -22,13 +21,16 @@ class RelationProvider implements ProviderInterface
   private $conceptRelationRepository;
   /** @var RelationTypeRepository */
   private $relationTypeRepository;
+  /** @var SpreadsheetHelper */
+  private $spreadsheetHelper;
 
   public function __construct(ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-                              RelationTypeRepository $relationTypeRepository)
+                              RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)
   {
     $this->conceptRepository         = $conceptRepository;
     $this->conceptRelationRepository = $conceptRelationRepository;
     $this->relationTypeRepository    = $relationTypeRepository;
+    $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
   /**
@@ -54,7 +56,7 @@ EOT;
 
   /**
    * @inheritdoc
-   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   * @throws Exception
    */
   public function export(StudyArea $studyArea): Response
   {
@@ -92,17 +94,7 @@ EOT;
       $sheet->setCellValueByColumnAndRow($column, $row++, $link->getRelationName());
     }
 
-    $writer = (new Csv($spreadSheet))
-        ->setDelimiter(';')
-        ->setUseBOM(true)
-        ->setSheetIndex(0);
-
-    $response = new StreamedResponse(function () use ($writer) {
-      $writer->save('php://output');
-    });
-    $response->headers->set('Content-Type', 'application/csv; charset=utf-8');
-    ExportService::contentDisposition($response, sprintf('%s_concept_relation_export.csv', $studyArea->getName()));
-
-    return $response;
+    return $this->spreadsheetHelper->createCsvResponse($spreadSheet,
+        sprintf('%s_concept_relation_export.csv', $studyArea->getName()));
   }
 }

@@ -4,13 +4,12 @@ namespace App\Export\Provider;
 
 use App\Entity\Concept;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
+use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ConceptIdNameProvider implements ProviderInterface
 {
@@ -18,9 +17,13 @@ class ConceptIdNameProvider implements ProviderInterface
   /** @var ConceptRepository */
   private $conceptRepository;
 
-  public function __construct(ConceptRepository $conceptRepository)
+  /** @var SpreadsheetHelper */
+  private $spreadsheetHelper;
+
+  public function __construct(ConceptRepository $conceptRepository, SpreadsheetHelper $spreadsheetHelper)
   {
     $this->conceptRepository = $conceptRepository;
+    $this->spreadsheetHelper = $spreadsheetHelper;
   }
 
   /**
@@ -45,7 +48,7 @@ EOT;
 
   /**
    * @inheritdoc
-   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   * @throws Exception
    */
   public function export(StudyArea $studyArea): Response
   {
@@ -64,17 +67,7 @@ EOT;
       $sheet->setCellValueByColumnAndRow($column, $row++, $concept->getName());
     }
 
-    $writer = (new Csv($spreadSheet))
-        ->setDelimiter(';')
-        ->setUseBOM(true)
-        ->setSheetIndex(0);
-
-    $response = new StreamedResponse(function () use ($writer) {
-      $writer->save('php://output');
-    });
-    $response->headers->set('Content-Type', 'application/csv; charset=utf-8');
-    ExportService::contentDisposition($response, sprintf('%s_concept_id_name_export.csv', $studyArea->getName()));
-
-    return $response;
+    return $this->spreadsheetHelper->createCsvResponse($spreadSheet,
+        sprintf('%s_concept_id_name_export.csv', $studyArea->getName()));
   }
 }
