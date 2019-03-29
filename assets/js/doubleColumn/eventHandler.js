@@ -6,9 +6,12 @@ import Routing from 'fos-routing';
 /**
  * This module handles events from the content of the application
  */
-(function (eHandler, types) {
+(function (eHandler, types, $) {
+  const uuidV1 = require('uuid/v1');
 
-  // Initialize current url
+  // Initialize current state
+  eHandler.sessionId = uuidV1();
+  eHandler.previousUrl = null;
   eHandler.currentUrl = $('#data-iframe').attr('src');
 
   /**
@@ -101,9 +104,13 @@ import Routing from 'fos-routing';
    */
   function onPageLoaded(data) {
     // Calculate new url
-    var newUrl = '/page' + data.url;
+    const newUrl = '/page' + data.url;
+
+    // Update the page state
+    const firstRequest = eHandler.previousUrl == null;
+    eHandler.previousUrl = eHandler.currentUrl;
     eHandler.currentUrl = data.url;
-    var state = {
+    const state = {
       currentUrl: eHandler.currentUrl,
       currentTitle: document.title
     };
@@ -117,6 +124,20 @@ import Routing from 'fos-routing';
 
     // Set the title
     document.title = data.title;
+
+    // Post page load back to server
+    $.ajax({
+      type: "POST",
+      url: Routing.generate('app_tracking_pageload', {_studyArea: _studyArea}),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      data: JSON.stringify({
+        sessionId: eHandler.sessionId,
+        timestamp: new Date().toISOString().split('.')[0] + 'Z', // remove milliseconds
+        path: eHandler.currentUrl,
+        origin: firstRequest ? null : eHandler.previousUrl
+      })
+    });
   }
 
   /**
@@ -186,4 +207,4 @@ import Routing from 'fos-routing';
     }
   }
 
-}(window.eHandler = window.eHandler || {}, window.eType));
+}(window.eHandler = window.eHandler || {}, window.eType, $));
