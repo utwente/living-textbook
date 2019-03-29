@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
+use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
@@ -72,5 +73,21 @@ class ConceptRelationRepository extends ServiceEntityRepository
         ->where('cr.relationType = :relationType')
         ->orderBy('c.name', 'ASC')
         ->setParameter('relationType', $relationType);
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return ConceptRelation[]|Collection
+   */
+  public function getByStudyArea(StudyArea $studyArea)
+  {
+    return $this->createQueryBuilder('cr')
+        ->join('cr.source', 's')
+        ->join('cr.target', 't')
+        ->where('s.studyArea = :studyArea')
+        ->andWhere('t.studyArea = :studyArea')
+        ->setParameter('studyArea', $studyArea)
+        ->getQuery()->getResult();
   }
 }

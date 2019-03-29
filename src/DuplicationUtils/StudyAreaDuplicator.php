@@ -174,7 +174,7 @@ class StudyAreaDuplicator
    */
   private function duplicateLearningOutcomes(): void
   {
-    $learningOutcomes = $this->learningOutcomeRepo->findForConcepts($this->concepts);
+    $learningOutcomes = $this->learningOutcomeRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($learningOutcomes as $learningOutcome) {
       $newLearningOutcome = (new LearningOutcome())
           ->setStudyArea($this->newStudyArea)
@@ -237,7 +237,7 @@ class StudyAreaDuplicator
    */
   private function duplicateExternalResources(): void
   {
-    $externalResources = $this->externalResourceRepo->findForConcepts($this->concepts);
+    $externalResources = $this->externalResourceRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($externalResources as $externalResource) {
       $newExternalResource = (new ExternalResource())
           ->setStudyArea($this->newStudyArea)
@@ -320,18 +320,11 @@ class StudyAreaDuplicator
    */
   private function duplicateRelations(): void
   {
-    $conceptRelations = $this->conceptRelationRepo->findByConcepts($this->concepts);
+    $conceptRelations = $this->conceptRelationRepo->getByStudyArea($this->studyAreaToDuplicate);
     $newRelationTypes = [];
     foreach ($conceptRelations as $conceptRelation) {
-      // Skip relation for concepts that aren't duplicated
-      if (!array_key_exists($conceptRelation->getSource()->getId(), $this->newConcepts)
-          || !array_key_exists($conceptRelation->getTarget()->getId(), $this->newConcepts)) {
-        continue;
-      }
-
-      $relationType = $conceptRelation->getRelationType();
-
       // Duplicate relation type, if not done yet
+      $relationType = $conceptRelation->getRelationType();
       if (!array_key_exists($relationType->getId(), $newRelationTypes)) {
         $newRelationType = (new RelationType())
             ->setStudyArea($this->newStudyArea)
@@ -339,6 +332,12 @@ class StudyAreaDuplicator
 
         $newRelationTypes[$relationType->getId()] = $newRelationType;
         $this->em->persist($newRelationType);
+      }
+
+      // Skip relation for concepts that aren't duplicated
+      if (!array_key_exists($conceptRelation->getSource()->getId(), $this->newConcepts)
+          || !array_key_exists($conceptRelation->getTarget()->getId(), $this->newConcepts)) {
+        continue;
       }
 
       // Duplicate relation
