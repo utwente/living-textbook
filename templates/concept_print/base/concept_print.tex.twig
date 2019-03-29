@@ -29,6 +29,11 @@
 
   \usepackage[section]{placeins} % Figure placement (floatbarrier)
 
+  % Use Droid Sans font
+  \usepackage[defaultsans]{droidsans}
+  \renewcommand*\familydefault{\sfdefault} %% Only if the base font of the document is to be typewriter style
+  \usepackage[T1]{fontenc}
+
   % Added packages
   {% for package in packages -%}
     \usepackage[ {{- package.o -}} ]{ {{- package.p -}} }
