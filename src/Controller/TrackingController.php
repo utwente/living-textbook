@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\PageLoad;
 use App\Entity\User;
+use App\Excel\TrackingExportBuilder;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
+use PhpOffice\PhpSpreadsheet\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class TrackingController extends AbstractController
 {
+
+  /**
+   * @Route("/export")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea      $requestStudyArea
+   * @param TrackingExportBuilder $builder
+   *
+   * @return Response
+   * @throws Exception
+   */
+  public function export(RequestStudyArea $requestStudyArea, TrackingExportBuilder $builder)
+  {
+    return $builder->build($requestStudyArea->getStudyArea());
+  }
+
   /**
    * @Route("/pageload", methods={"POST"}, options={"expose"="true"})
    * @IsGranted("ROLE_USER")

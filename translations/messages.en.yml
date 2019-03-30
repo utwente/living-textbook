@@ -290,6 +290,7 @@ menu:
   relation-type: 'Relation types'
   show: 'Show'
   study-area: 'Study areas'
+  tracking-export: 'Tracking data'
   urls: 'URLs'
 
 permissions:
@@ -406,6 +407,21 @@ relation-type:
   removed-already: 'The relation type "%item%" was already removed'
   saved: 'Relation type "%item%" has been saved successfully.'
   updated: 'Relation type "%item%" has been successfully updated.'
+
+tracking:
+  export:
+    concept: 'Concept'
+    description: "Tracking detail export for the study area \"%item%\"."
+    learning-outcome: 'Learning outcome'
+    learning-path: 'Learning path'
+    origin: "Origin"
+    path: "Path"
+    route: "Internal route"
+    session-id: "Session ID"
+    study-area: 'Study area'
+    subject: "Tracking export of study area \"%item%\"."
+    timestamp: "Timestamp"
+    user-id: "User ID"
 
 url:
   bad: 'Broken'

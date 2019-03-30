@@ -54,13 +54,14 @@
           </a>
 
           <div class="dropdown-menu" aria-labelledby="data-dropdown">
-            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
-              <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
-            {% endif %}
             <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}"
                target="_blank">{{ 'menu.excel-status'|trans }}</a>
             <a class="dropdown-item"
                href="{{ path('app_default_urloverview') }}">{{ 'menu.urls'|trans }}</a>
+            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+              <a class="dropdown-item" href="{{ path('app_tracking_export') }}">{{ 'menu.tracking-export'|trans }}</a>
+              <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
+            {% endif %}
             <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
             <a class="dropdown-item" href="{{ path('app_data_upload') }}">{{ 'menu.import-data'|trans }}</a>
           </div>
