@@ -3,8 +3,6 @@
 parameters:
   locale: 'en'
 
-  kickin.exceptionhandler.configuration.class: App\ExceptionHandler\ExceptionHandlerConfiguration
-
   database_password: '%env(string:key:database:json:file:resolve:SECRETS_FILE)%'
 
   app_version: '%env(APP_VERSION)%'
@@ -79,6 +77,9 @@ services:
       $wellKnownUrl: '%oidc.well_known_url%'
       $clientId: '%oidc.client_id%'
       $clientSecret: '%oidc.client_secret%'
+
+  Kickin\ExceptionHandlerBundle\Configuration\ConfigurationInterface:
+    alias: 'App\ExceptionHandler\ExceptionHandlerConfiguration'
 
   security.authentication.provider.oidc:
     class: Drenso\OidcBundle\Security\Authentication\Provider\OidcProvider

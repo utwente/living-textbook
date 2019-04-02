@@ -3,23 +3,37 @@
 namespace App\ExceptionHandler;
 
 use Kickin\ExceptionHandlerBundle\Configuration\ConfigurationInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ExceptionHandlerConfiguration implements ConfigurationInterface
 {
 
-  /**
-   * @var ContainerInterface
-   */
-  private $container;
+  /** @var bool */
+  private $productionServer;
+
+  /** @var string */
+  private $cacheDir;
+
+  /** @var string */
+  private $exceptionSender;
+
+  /** @var string */
+  private $exceptionReceiver;
+
+  /** @var string */
+  private $appVersion;
 
   /**
    * @inheritdoc
    */
-  public function __construct(ContainerInterface $container)
+  public function __construct(ParameterBagInterface $parameterBag)
   {
-    $this->container = $container;
+    $this->productionServer  = $parameterBag->get('production_server');
+    $this->cacheDir          = $parameterBag->get('kernel.cache_dir');
+    $this->exceptionSender   = $parameterBag->get('exception_sender');
+    $this->exceptionReceiver = $parameterBag->get('exception_receiver');
+    $this->appVersion        = $parameterBag->get('app_version');
   }
 
   /**
@@ -29,7 +43,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    */
   public function isProductionEnvironment()
   {
-    return $this->container->getParameter('production_server');
+    return $this->productionServer;
   }
 
   /**
@@ -39,7 +53,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    */
   public function getBacktraceFolder()
   {
-    return $this->container->getParameter('kernel.cache_dir') . '/exception_handler';
+    return $this->cacheDir . '/exception_handler';
   }
 
   /**
@@ -49,7 +63,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    */
   public function getSender()
   {
-    return array($this->container->getParameter('exception_sender') => 'Living Textbook');
+    return array($this->exceptionSender => 'Living Textbook');
   }
 
   /**
@@ -59,7 +73,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    */
   public function getReceiver()
   {
-    return array($this->container->getParameter('exception_receiver') => 'Living Textbook');
+    return array($this->exceptionReceiver => 'Living Textbook');
   }
 
   /**
@@ -69,7 +83,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    *
    * @return string
    */
-  public function getUserInformation(TokenInterface $token = null)
+  public function getUserInformation(TokenInterface $token = NULL)
   {
     if ($token !== NULL) {
       return $token->getUsername();
@@ -85,6 +99,6 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
    */
   public function getSystemVersion()
   {
-    return $this->container->getParameter('app_version');
+    return $this->appVersion;
   }
 }
