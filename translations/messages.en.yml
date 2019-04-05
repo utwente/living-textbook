@@ -242,6 +242,7 @@ learning-path:
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
+  online-source: 'Visit online'
   open: 'Follow path'
   path: 'Path'
   question: 'Question'
@@ -335,7 +336,7 @@ permissions:
 print:
   copyright: "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
                   \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
-  header: "%owner% et al (%year%). %concept%. Enschede: University of Twente, Faculty ITC. \\url{%url%}"
+  header: "%owner% et al (%year%). %title%. Enschede: University of Twente, Faculty ITC. \\url{%url%}"
 
 relation:
   source: 'Source'

@@ -3,27 +3,37 @@
 namespace App\ConceptPrint\Base;
 
 use App\Entity\Concept;
+use App\Entity\LearningPath;
+use App\Entity\StudyArea;
+use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Helper\Parser;
 use BobV\LatexBundle\Latex\LatexBase;
+use DateTime;
+use Exception;
+use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptPrint extends LatexBase
 {
 
+  /** @var Parser */
   private $parser;
+
+  /** @var string */
+  private $baseUrl;
 
   /**
    * Article constructor, sets defaults
    *
    * @param string $filename
    *
-   * @throws \Exception
+   * @throws Exception
    */
   public function __construct($filename)
   {
     // Define standard values
     $this->parser   = new Parser();
-    $dateTime       = new \DateTime();
+    $dateTime       = new DateTime();
     $this->template = 'concept_print/base/concept_print.tex.twig';
 
     $this->params = array(
@@ -41,7 +51,7 @@ class ConceptPrint extends LatexBase
         'rightmargin'  => '0.8in', // Some document margins
         'bottommargin' => '0.5in', // Some document margins
 
-        'headsep'  => '0.2in',
+        'headsep'  => '0.3in',
         'footskip' => '0.2in',
 
         'linespread' => '1.1', // Line spacing
@@ -63,7 +73,7 @@ class ConceptPrint extends LatexBase
    * @param string $projectDir
    *
    * @return ConceptPrint
-   * @throws \BobV\LatexBundle\Exception\LatexException
+   * @throws LatexException
    */
   public function useLicenseImage(string $projectDir)
   {
@@ -73,21 +83,74 @@ class ConceptPrint extends LatexBase
   }
 
   /**
+   * Set the base url for the header
+   *
+   * @param string $baseUrl
+   *
+   * @return ConceptPrint
+   */
+  public function setBaseUrl(string $baseUrl)
+  {
+    $this->baseUrl = substr($baseUrl, strlen($baseUrl) - 1) == '/' ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
+
+    return $this;
+  }
+
+  /**
    * @param Concept             $concept
-   * @param string              $baseUrl
    * @param TranslatorInterface $translator
    *
    * @return ConceptPrint
-   * @throws \BobV\LatexBundle\Exception\LatexException
+   * @throws LatexException
    */
-  public function setConcept(Concept $concept, string $baseUrl, TranslatorInterface $translator)
+  public function setTitleFromConcept(Concept $concept, TranslatorInterface $translator)
   {
-    $baseUrl    = substr($baseUrl, strlen($baseUrl) - 1) == '/' ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
+    return $this->setTitle(
+        $concept->getName(),
+        $concept->getStudyArea(),
+        $concept->getUpdatedAt(),
+        $translator
+    );
+  }
+
+  /**
+   * @param LearningPath        $learningPath
+   * @param TranslatorInterface $translator
+   *
+   * @return ConceptPrint
+   * @throws LatexException
+   */
+  public function setTitleFromLearningPath(LearningPath $learningPath, TranslatorInterface $translator)
+  {
+    return $this->setTitle(
+        $learningPath->getName(),
+        $learningPath->getStudyArea(),
+        $learningPath->getLastUpdated(),
+        $translator
+    );
+  }
+
+  /**
+   * @param string              $title
+   * @param StudyArea           $owner
+   * @param DateTime            $lastUpdate
+   * @param TranslatorInterface $translator
+   *
+   * @return $this
+   * @throws LatexException
+   */
+  private function setTitle(string $title, StudyArea $owner, DateTime $lastUpdate, TranslatorInterface $translator)
+  {
+
+    if ($this->baseUrl == NULL) {
+      throw new InvalidArgumentException('Missing base url, make sure to set it before calling this method!');
+    }
+
     $baseHeader = $translator->trans('print.header', [
-        '%owner%'   => $this->parser->parseText($concept->getStudyArea()->getOwner()->getFamilyName()),
-        '%year%'    => $concept->getUpdatedAt()->format('Y'),
-        '%concept%' => $this->parser->parseText($concept->getName()),
-        '%url%'     => $baseUrl,
+        '%title%' => $this->parser->parseText($title),
+        '%owner%' => $this->parser->parseText($owner->getOwner()->getFamilyName()),
+        '%year%'  => $lastUpdate->format('Y'),
+        '%url%'   => $this->parser->parseText($this->baseUrl),
     ]);
 
     $this->setParam('head', $baseHeader);
