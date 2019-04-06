@@ -80,13 +80,14 @@ class Annotation
 
   /**
    * Annotation start
+   * If -1, the complete section is annotated
    *
    * @var int
    *
    * @ORM\Column(name="start", type="integer", nullable=false)
    *
    * @Assert\NotNull()
-   * @Assert\Range(min="0")
+   * @Assert\Range(min="-1")
    *
    * @JMSA\Expose()
    */
@@ -110,14 +111,12 @@ class Annotation
   private $end = 0;
 
   /**
-   * The selected text at time of creation
+   * The selected text at time of creation.
+   * If there is no selection, it means the header/complete context is annotated
    *
-   * @var string
+   * @var string|null
    *
-   * @ORM\Column(name="selected_text", type="text", nullable=false)
-   *
-   * @Assert\NotNull()
-   * @Assert\NotBlank()
+   * @ORM\Column(name="selected_text", type="text", nullable=true)
    *
    * @JMSA\Expose()
    */
@@ -125,12 +124,11 @@ class Annotation
 
   /**
    * Annotation version, linked to context version to detect changes since annotation
+   * This can only be null if the complete context is annotated.
    *
-   * @var DateTime
+   * @var DateTime|null
    *
-   * @ORM\Column(name="version", type="datetime", nullable=false)
-   *
-   * @Assert\NotNull()
+   * @ORM\Column(name="version", type="datetime", nullable=true)
    *
    * @JMSA\Expose()
    */
@@ -289,39 +287,39 @@ class Annotation
   }
 
   /**
-   * @return string
+   * @return string|null
    */
-  public function getSelectedText(): string
+  public function getSelectedText(): ?string
   {
     return $this->selectedText;
   }
 
   /**
-   * @param string $selectedText
+   * @param string|null $selectedText
    *
    * @return Annotation
    */
-  public function setSelectedText(string $selectedText): Annotation
+  public function setSelectedText(?string $selectedText): Annotation
   {
-    $this->selectedText = $selectedText;
+    $this->selectedText = strlen($selectedText) > 0 ? $selectedText : NULL;
 
     return $this;
   }
 
   /**
-   * @return DateTime
+   * @return DateTime|null
    */
-  public function getVersion(): DateTime
+  public function getVersion(): ?DateTime
   {
     return $this->version;
   }
 
   /**
-   * @param DateTime $version
+   * @param DateTime|null $version
    *
    * @return Annotation
    */
-  public function setVersion(DateTime $version): Annotation
+  public function setVersion(?DateTime $version): Annotation
   {
     $this->version = $version;
 
