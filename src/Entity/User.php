@@ -5,12 +5,14 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -29,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity({"username", "isOidc"}, message="user.email-used", errorPath="username")
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, Serializable
 {
 
   use IdTrait;
@@ -124,7 +126,7 @@ class User implements UserInterface, \Serializable
   /**
    * Datetime on which the user registered
    *
-   * @var \DateTime
+   * @var DateTime
    *
    * @ORM\Column(name="registered_on", type="datetime")
    *
@@ -135,7 +137,7 @@ class User implements UserInterface, \Serializable
   /**
    * DateTime on which the user has lastly logged on
    *
-   * @var \DateTime|null
+   * @var DateTime|null
    *
    * @ORM\Column(name="last_used", type="datetime", nullable=true)
    */
@@ -168,6 +170,13 @@ class User implements UserInterface, \Serializable
   private $userGroups;
 
   /**
+   * @var Annotation[]|Collection
+   *
+   * @ORM\OneToMany(targetEntity="Annotation", mappedBy="user")
+   */
+  private $annotations;
+
+  /**
    * User constructor.
    */
   public function __construct()
@@ -175,11 +184,12 @@ class User implements UserInterface, \Serializable
     $this->givenName     = '';
     $this->familyName    = '';
     $this->fullName      = '';
-    $this->registeredOn  = new \DateTime();
+    $this->registeredOn  = new DateTime();
     $this->isOidc        = false;
     $this->isAdmin       = false;
     $this->securityRoles = array();
     $this->userGroups    = new ArrayCollection();
+    $this->annotations   = new ArrayCollection();
   }
 
   /**
@@ -411,7 +421,7 @@ class User implements UserInterface, \Serializable
   /**
    * Get registeredOn
    *
-   * @return \DateTime
+   * @return DateTime
    */
   public function getRegisteredOn()
   {
@@ -419,19 +429,19 @@ class User implements UserInterface, \Serializable
   }
 
   /**
-   * @return \DateTime|null
+   * @return DateTime|null
    */
-  public function getLastUsed(): ?\DateTime
+  public function getLastUsed(): ?DateTime
   {
     return $this->lastUsed;
   }
 
   /**
-   * @param \DateTime $lastUsed
+   * @param DateTime $lastUsed
    *
    * @return User
    */
-  public function setLastUsed(\DateTime $lastUsed): User
+  public function setLastUsed(DateTime $lastUsed): User
   {
     $this->lastUsed = $lastUsed;
 
@@ -569,6 +579,14 @@ class User implements UserInterface, \Serializable
   public function getUserGroups()
   {
     return $this->userGroups;
+  }
+
+  /**
+   * @return Annotation[]|Collection
+   */
+  public function getAnnotations()
+  {
+    return $this->annotations;
   }
 
 }

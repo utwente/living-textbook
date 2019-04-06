@@ -1,3 +1,6 @@
+annotation:
+  start-end-identical: "The start and end of the annotation is identical."
+
 concept:
   duplicated-relation: 'A duplicate relation exist between "%c1%" and "%c2%".'
   inversed-relation: 'The relation between "%c1%" and "%c2%" in also available as inversed relation.'
