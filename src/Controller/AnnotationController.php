@@ -28,7 +28,7 @@ class AnnotationController extends AbstractController
 {
 
   /**
-   * @Route("/{concept}/all", requirements={"concept"="\d+"})
+   * @Route("/{concept}/all", requirements={"concept"="\d+"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param RequestStudyArea     $requestStudyArea
@@ -53,7 +53,7 @@ class AnnotationController extends AbstractController
   }
 
   /**
-   * @Route("/{concept}/add", requirements={"concept"="\d+"}, methods={"POST"})
+   * @Route("/{concept}/add", requirements={"concept"="\d+"}, methods={"POST"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param Request                $request

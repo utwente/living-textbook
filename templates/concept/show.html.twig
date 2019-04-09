@@ -21,17 +21,21 @@
 
 {% block content %}
   {% import '_data/_data_templates.html.twig' as macros %}
-  {{ macros.data_definition(concept.definition) }}
-  {{ macros.data_introduction(concept.introduction) }}
-  {{ macros.data_synonyms(concept.synonyms) }}
-  {{ macros.data_prior_knowledge(concept.priorKnowledge) }}
-  {{ macros.data_learning_outcomes(concept.learningOutcomes) }}
-  {{ macros.data_theory_explanation(concept.theoryExplanation) }}
-  {{ macros.data_how_to(concept.howTo) }}
-  {{ macros.data_examples(concept.examples) }}
-  {{ macros.data_external_resources(concept.externalResources) }}
-  {{ macros.data_self_assessment(concept.selfAssessment) }}
-  {{ macros.data_outgoing_relations(concept.outgoingRelations) }}
-  {{ macros.data_incoming_relations(concept.incomingRelations) }}
-  {{ macros.data_learning_paths(learningPaths) }}
+  <div class="annotations-container"
+       data-annotations-study-area-id="{{ concept.studyArea.id }}"
+       data-annotations-concept-id="{{ concept.id }}">
+    {{ macros.data_definition(concept) }}
+    {{ macros.data_introduction(concept.introduction) }}
+    {{ macros.data_synonyms(concept.synonyms) }}
+    {{ macros.data_prior_knowledge(concept.priorKnowledge) }}
+    {{ macros.data_learning_outcomes(concept.learningOutcomes) }}
+    {{ macros.data_theory_explanation(concept.theoryExplanation) }}
+    {{ macros.data_how_to(concept.howTo) }}
+    {{ macros.data_examples(concept.examples) }}
+    {{ macros.data_external_resources(concept.externalResources) }}
+    {{ macros.data_self_assessment(concept.selfAssessment) }}
+    {{ macros.data_outgoing_relations(concept.outgoingRelations) }}
+    {{ macros.data_incoming_relations(concept.incomingRelations) }}
+    {{ macros.data_learning_paths(learningPaths) }}
+  </div>
 {% endblock %}

@@ -28,6 +28,9 @@ class AnnotationRepository extends ServiceEntityRepository
     return $this->findBy([
         'user'    => $user,
         'concept' => $concept,
+    ], [
+        'context' => 'ASC',
+        'start'   => 'ASC',
     ]);
   }
 

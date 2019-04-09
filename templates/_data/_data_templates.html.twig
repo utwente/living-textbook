@@ -1,20 +1,26 @@
 {% block data_display_block %}
   {% if data.hasData %}
     {% if title is defined %}<h2>{{ title }}</h2>{% endif %}
-    <div class="ltb-text-container">
+    <div class="ltb-text-container"
+         data-annotations-context="{{ annotationContext|default('') }}"
+         data-annotations-version="{{ data.lastUpdated|default('now'|date)|date('c') }}">
       {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
     </div>
   {% endif %}
 {% endblock %}
 
-{% macro data_definition(data) %}
-  {% if data|length > 0 %}
-    <p>{{ data }}</p>
+{% macro data_definition(concept) %}
+  {% if concept.definition|length > 0 %}
+    <p data-annotations-context="definition">
+      data-annotations-version="{{ concept.lastUpdated|default('now'|date)|date('c') }}"
+      {{ concept.definition }}
+    </p>
   {% endif %}
 {% endmacro %}
 
 {% macro data_introduction(data) %}
   {% set title = 'concept.introduction'|trans %}
+  {% set annotationContext = 'introduction' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
@@ -27,16 +33,19 @@
 
 {% macro data_theory_explanation(data) %}
   {% set title = 'concept.theory-explanation'|trans %}
+  {% set annotationContext = 'theory_explanation' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_how_to(data) %}
   {% set title = 'concept.how-to'|trans %}
+  {% set annotationContext = 'how-to' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_examples(data) %}
   {% set title = 'concept.examples'|trans %}
+  {% set annotationContext = 'examples' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
@@ -62,6 +71,7 @@
 
 {% macro data_self_assessment(data) %}
   {% set title = 'concept.self-assessment'|trans %}
+  {% set annotationContext = 'self-assesment' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 

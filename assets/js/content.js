@@ -25,6 +25,7 @@ function findParent(tag, el) {
 $(function () {
   require('./content/eventHandler');
   require('./content/eventDispatcher');
+  require('./content/annotations');
   require('./content/customTags');
   require('./content/search');
   require('./content/sortableLearningPaths');
@@ -176,7 +177,11 @@ $(function () {
   // Check in double column has been detected (after timeout)
   setTimeout(() => {
     if (!inDoubleColumn) {
-      $('#no-browser-warning').slideDown();
+      $('#no-browser-warning').slideDown({
+        done: function () {
+          $(window).trigger('resize')
+        }
+      });
     }
   }, 5000)
 });
