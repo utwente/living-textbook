@@ -1,0 +1,35 @@
+@import '~bootstrap/scss/_functions.scss';
+@import '~bootstrap/scss/_variables.scss';
+@import '../vars/vars';
+
+.annotations-container {
+
+  .annotations-buttons {
+    position: absolute;
+    margin: 0.2em;
+    padding: 0.2em;
+    display: none;
+
+    .fa {
+      font-size: 1.5em;
+    }
+  }
+
+  .annotations-modal {
+    @media (min-width: 576px) {
+      .modal-dialog {
+        max-width: 95%;
+      }
+    }
+    @media (min-width: 1024px) {
+      .modal-dialog {
+        max-width: 1000px;
+      }
+    }
+
+    .annotations-selected-text {
+      white-space: pre-wrap;
+    }
+  }
+
+}

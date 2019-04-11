@@ -1,0 +1,48 @@
+{% macro button() %}
+  <div class="annotations-buttons">
+    <button class="btn btn-dark annotations-button-text" data-toggle="tooltip" title="{{ 'annotations.create'|trans }}">
+      <i class="fa fa-fw fa-comments"></i>
+    </button>
+    <button class="btn btn-dark annotations-button-mark" data-toggle="tooltip" title="{{ 'annotations.mark'|trans }}">
+      <i class="fa fa-fw fa-flag"></i>
+      <i class="fa fa-fw fa-spinner fa-spin"></i>
+    </button>
+  </div>
+{% endmacro %}
+
+{% macro addPrototype() %}
+  <div class="modal annotations-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ 'annotations.create'|trans }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="annotations-add-form">
+            <div class="row">
+              <label class="col-form-label col-12" for="annotation">{{ 'annotations.annotation'|trans }}</label>
+              <div class="col-12"><textarea id="annotation" class="form-control"></textarea></div>
+            </div>
+            <div class="row">
+              <label class="col-form-label col-12">{{ 'annotations.selected'|trans }}</label>
+              <span class="annotations-selected-text col-12"></span>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-success annotations-save">
+            <i class="fa fa-fw fa-plus"></i>
+            <i class="fa fa-fw fa-spinner fa-spin"></i>
+            {{ 'form.add'|trans }}
+          </button>
+          <button class="btn btn-outline-danger" data-dismiss="modal">
+            <i class="fa fa-fw fa-times"></i> {{ 'form.cancel'|trans }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
