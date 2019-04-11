@@ -59,7 +59,8 @@
             <a class="dropdown-item"
                href="{{ path('app_default_urloverview') }}">{{ 'menu.urls'|trans }}</a>
             {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
-              <a class="dropdown-item" href="{{ path('app_tracking_export') }}">{{ 'menu.tracking-export'|trans }}</a>
+              <a class="dropdown-item" href="{{ path('app_tracking_export') }}"
+                 target="_blank">{{ 'menu.tracking-export'|trans }}</a>
               <a class="dropdown-item" href="{{ path('app_data_duplicate') }}">{{ 'menu.duplicate'|trans }}</a>
             {% endif %}
             <a class="dropdown-item" href="{{ path('app_data_download') }}">{{ 'menu.download'|trans }}</a>
