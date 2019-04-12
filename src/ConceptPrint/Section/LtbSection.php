@@ -97,7 +97,16 @@ abstract class LtbSection extends Section
     libxml_use_internal_errors(true);
     if ($dom->loadHTML($html)) {
       $figures = $dom->getElementsByTagName('figure');
+
+      // We need to extract the figures here, as replacing them in the dom removes them from the
+      // original node list, which in turns ensures the loop does not complete
+      $extractedFigures = [];
       foreach ($figures as $figure) {
+        $extractedFigures[] = $figure;
+      }
+
+      // Loop the extracted figures
+      foreach ($extractedFigures as $figure) {
         /** @var DOMElement $figure */
         if (!$figure->hasAttribute('class')) continue;
 
@@ -147,7 +156,10 @@ abstract class LtbSection extends Section
         // Place the placeholder
         $figure->parentNode->replaceChild($dom->createElement('span', sprintf('placeholder-%s', $id)), $figure);
       }
-      $html = $dom->saveHTML($dom);
+
+      if (count($extractedFigures) > 0) {
+        $html = $dom->saveHTML($dom);
+      }
     }
 
     // Restore errors
