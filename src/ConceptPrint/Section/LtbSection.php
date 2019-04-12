@@ -3,6 +3,7 @@
 namespace App\ConceptPrint\Section;
 
 use BobV\LatexBundle\Exception\LatexException;
+use BobV\LatexBundle\Helper\Parser;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
 use BobV\LatexBundle\Latex\Section\Section;
 use BobV\LatexBundle\Latex\Section\SubSection;
@@ -23,6 +24,9 @@ abstract class LtbSection extends Section
 
   /** @var Filesystem */
   protected $fileSystem;
+
+  /** @var Parser */
+  protected $parser;
 
   /** @var RouterInterface */
   protected $router;
@@ -51,6 +55,7 @@ abstract class LtbSection extends Section
   {
     $this->pandoc     = new Pandoc();
     $this->fileSystem = new Filesystem();
+    $this->parser     = new Parser();
 
     $this->router     = $router;
     $this->translator = $translator;
@@ -208,7 +213,7 @@ abstract class LtbSection extends Section
   private function replacePlaceholder(string $latex, array $replaceInfo, $replacement)
   {
     foreach ($replaceInfo as $id => $toReplace) {
-      $new   = sprintf($replacement, $toReplace['replace'], $toReplace['caption']);
+      $new   = sprintf($replacement, $toReplace['replace'], $this->parser->parseText($toReplace['caption']));
       $latex = str_replace(sprintf('{placeholder-%s}', $id), $new, $latex);
     }
 
