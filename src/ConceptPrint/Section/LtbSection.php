@@ -121,8 +121,8 @@ abstract class LtbSection extends Section
         $caption = $figure->getElementsByTagName('figcaption');
 
         // Check tag attributes
-        if (count($img) < 1 || count($caption) < 1) continue;
-        if (count($caption->item(0)->childNodes) < 1) continue;
+        if ($img->length < 1 || $caption->length < 1) continue;
+        if ($caption->item(0)->childNodes->length < 1) continue;
 
         // Retrieve nodes
         /** @var DOMElement $imgElement */
@@ -155,6 +155,17 @@ abstract class LtbSection extends Section
 
         // Place the placeholder
         $figure->parentNode->replaceChild($dom->createElement('span', sprintf('placeholder-%s', $id)), $figure);
+      }
+
+      // Remove any remaining, unprocessed images tags to prevent errors
+      $remainingImages = $dom->getElementsByTagName('img');
+      $images          = [];
+      foreach ($remainingImages as $image) {
+        $images[] = $image;
+      }
+      foreach ($images as $image) {
+        /** @var DOMElement $image */
+        $image->parentNode->removeChild($image);
       }
 
       if (count($extractedFigures) > 0) {
