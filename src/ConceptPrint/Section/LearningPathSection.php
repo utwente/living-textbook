@@ -32,8 +32,9 @@ class LearningPathSection extends LtbSection
   {
     parent::__construct($learningPath->getName(), $router, $translator, $projectDir);
 
+    $pathWithoutMap = $this->router->generate('app_learningpath_show', ['learningPath' => $learningPath->getId()], RouterInterface::ABSOLUTE_PATH);
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
-        $this->router->generate('app_learningpath_show', ['learningPath' => $learningPath->getId()], RouterInterface::ABSOLUTE_URL),
+        $this->router->generate('_home_simple', ['pageUrl' => ltrim($pathWithoutMap, '/')], RouterInterface::ABSOLUTE_URL),
         $this->translator->trans('learning-path.online-source')
     )));
 
