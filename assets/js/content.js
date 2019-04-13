@@ -87,7 +87,8 @@ $(function () {
   // Disable submit buttons on submit
   $loadedForms.submit(function () {
     let $form = $(this);
-    if ($form.attr('target') === '_blank') return;
+    let target = $form.attr('target');
+    if (target === '_blank' || target === '_parent') return;
 
     // Find buttons and disable them by binding a new handler
     // If this is not done, the default submit action wouldn't be executed
