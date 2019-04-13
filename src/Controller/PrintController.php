@@ -55,7 +55,8 @@ class PrintController extends AbstractController
     $document = (new ConceptPrint($this->filename($concept->getName())))
         ->useLicenseImage($projectDir)
         ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
-        ->setTitleFromConcept($concept, $translator)
+        ->setHeader($concept->getStudyArea(), $translator)
+        ->addIntroduction($concept->getStudyArea(), $translator)
         ->addElement(new ConceptSection($concept, $router, $translator, $projectDir));
 
     // Return PDF
@@ -90,7 +91,8 @@ class PrintController extends AbstractController
     $document = (new ConceptPrint($this->filename($learningPath->getName())))
         ->useLicenseImage($projectDir)
         ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
-        ->setTitleFromLearningPath($learningPath, $translator)
+        ->setHeader($learningPath->getStudyArea(), $translator)
+        ->addIntroduction($learningPath->getStudyArea(), $translator)
         ->addElement(new LearningPathSection($learningPath, $router, $translator, $projectDir));
 
     // Return PDF

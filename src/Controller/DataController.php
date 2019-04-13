@@ -271,7 +271,9 @@ class DataController extends AbstractController
     $newStudyArea         = (new StudyArea())
         ->setOwner($this->getUser())
         ->setAccessType(StudyArea::ACCESS_PRIVATE)
-        ->setDescription($studyAreaToDuplicate->getDescription());
+        ->setDescription($studyAreaToDuplicate->getDescription())
+        ->setPrintHeader($studyAreaToDuplicate->getPrintHeader())
+        ->setPrintIntroduction($studyAreaToDuplicate->getPrintIntroduction());
 
     $form = $this->createForm(DuplicateType::class, [
         'studyArea' => $newStudyArea,

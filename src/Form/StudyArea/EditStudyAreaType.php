@@ -7,6 +7,7 @@ use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,6 +37,16 @@ class EditStudyAreaType extends AbstractType
             'label'     => 'study-area.description',
             'required'  => false,
             'studyArea' => $studyArea,
+        ])
+        ->add('printHeader', TextType::class, [
+            'label'    => 'study-area.print-header',
+            'help'     => 'study-area.print-header-help',
+            'required' => false,
+        ])
+        ->add('printIntroduction', TextareaType::class, [
+            'label'    => 'study-area.print-introduction',
+            'help'     => 'study-area.print-introduction-help',
+            'required' => false,
         ]);
     if (!$options['hide_submit']) {
       $builder

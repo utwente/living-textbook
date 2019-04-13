@@ -2,12 +2,13 @@
 
 namespace App\ConceptPrint\Base;
 
-use App\Entity\Concept;
-use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Helper\Parser;
+use BobV\LatexBundle\Latex\Element\CustomCommand;
+use BobV\LatexBundle\Latex\Element\Text;
 use BobV\LatexBundle\Latex\LatexBase;
+use BobV\LatexBundle\Latex\Section\SubSection;
 use DateTime;
 use Exception;
 use InvalidArgumentException;
@@ -97,49 +98,15 @@ class ConceptPrint extends LatexBase
   }
 
   /**
-   * @param Concept             $concept
+   * Set the header for a print
+   *
+   * @param StudyArea           $studyArea
    * @param TranslatorInterface $translator
    *
    * @return ConceptPrint
    * @throws LatexException
    */
-  public function setTitleFromConcept(Concept $concept, TranslatorInterface $translator)
-  {
-    return $this->setTitle(
-        $concept->getName(),
-        $concept->getStudyArea(),
-        $concept->getUpdatedAt(),
-        $translator
-    );
-  }
-
-  /**
-   * @param LearningPath        $learningPath
-   * @param TranslatorInterface $translator
-   *
-   * @return ConceptPrint
-   * @throws LatexException
-   */
-  public function setTitleFromLearningPath(LearningPath $learningPath, TranslatorInterface $translator)
-  {
-    return $this->setTitle(
-        $learningPath->getName(),
-        $learningPath->getStudyArea(),
-        $learningPath->getLastUpdated(),
-        $translator
-    );
-  }
-
-  /**
-   * @param string              $title
-   * @param StudyArea           $owner
-   * @param DateTime            $lastUpdate
-   * @param TranslatorInterface $translator
-   *
-   * @return $this
-   * @throws LatexException
-   */
-  private function setTitle(string $title, StudyArea $owner, DateTime $lastUpdate, TranslatorInterface $translator)
+  public function setHeader(StudyArea $studyArea, TranslatorInterface $translator)
   {
 
     if ($this->baseUrl == NULL) {
@@ -147,13 +114,32 @@ class ConceptPrint extends LatexBase
     }
 
     $baseHeader = $translator->trans('print.header', [
-        '%title%' => $this->parser->parseText($title),
-        '%owner%' => $this->parser->parseText($owner->getOwner()->getFamilyName()),
-        '%year%'  => $lastUpdate->format('Y'),
-        '%url%'   => $this->parser->parseText($this->baseUrl),
+        '%header%' => $studyArea->getPrintHeader() ? $this->parser->parseText($studyArea->getPrintHeader()) : '',
+        '%url%'    => $this->parser->parseText($this->baseUrl),
     ]);
 
     $this->setParam('head', $baseHeader);
+
+    return $this;
+  }
+
+  /**
+   * Add the introduction text for a print
+   *
+   * @param StudyArea           $studyArea
+   * @param TranslatorInterface $translator
+   *
+   * @return ConceptPrint
+   * @throws LatexException
+   */
+  public function addIntroduction(StudyArea $studyArea, TranslatorInterface $translator)
+  {
+    // Only add the introduction when one is defined
+    if ($studyArea->getPrintIntroduction()) {
+      $this->addElement((new SubSection($translator->trans('study-area.print-introduction-header')))
+          ->addElement(new Text($studyArea->getPrintIntroduction())));
+      $this->addElement(new CustomCommand('\\newpage'));
+    }
 
     return $this;
   }

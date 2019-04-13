@@ -336,7 +336,7 @@ permissions:
 print:
   copyright: "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
                   \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
-  header: "%owner% et al (%year%). %title%. Enschede: University of Twente, Faculty ITC. \\url{%url%}"
+  header: "%header% \\url{%url%}"
 
 relation:
   source: 'Source'
@@ -380,6 +380,11 @@ study-area:
   owner: 'Owner'
   owner-transferred: 'The ownership for study area "%item%" has been transferred to "%owner%".'
   permissions-updated: 'The permissions for the study area "%item%" have been updated.'
+  print-header: "Print header"
+  print-header-help: 'Value will be used as header in any printed content. Will always be combined with the system URL.'
+  print-introduction: "Print introduction"
+  print-introduction-header: "Print introduction"
+  print-introduction-help: "Value will be displayed as introduction page in any printed content. If empty, it will be skipped."
   remove: 'Remove study area "%item%"'
   remove-impossible: 'It is impossible to remove this study area, because there are concepts which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'

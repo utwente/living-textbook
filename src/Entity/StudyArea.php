@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -127,11 +128,28 @@ class StudyArea
   private $learningPaths;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    *
    * @ORM\Column(name="frozen_on", type="datetime", nullable=true)
    */
   private $frozenOn;
+
+  /**
+   * @var string|null
+   *
+   * @ORM\Column(name="print_header", type="string", length=100, nullable=true)
+   *
+   * @Assert\Length(max=100)
+   */
+  private $printHeader;
+
+  /**
+   * @var string|null
+   *
+   * @ORM\Column(name="print_introduction", type="text", nullable=true)
+   */
+  private $printIntroduction;
+
 
   /**
    * StudyArea constructor.
@@ -556,11 +574,11 @@ class StudyArea
   }
 
   /**
-   * @param \DateTime|null $frozenOn
+   * @param DateTime|null $frozenOn
    *
    * @return $this
    */
-  public function setFrozenOn(?\DateTime $frozenOn)
+  public function setFrozenOn(?DateTime $frozenOn)
   {
     $this->frozenOn = $frozenOn;
 
@@ -568,9 +586,9 @@ class StudyArea
   }
 
   /**
-   * @return \DateTime|null
+   * @return DateTime|null
    */
-  public function getFrozenOn(): ?\DateTime
+  public function getFrozenOn(): ?DateTime
   {
     return $this->frozenOn;
   }
@@ -581,6 +599,46 @@ class StudyArea
   public function isFrozen(): bool
   {
     return $this->getFrozenOn() !== NULL;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getPrintHeader(): ?string
+  {
+    return $this->printHeader;
+  }
+
+  /**
+   * @param string|null $printHeader
+   *
+   * @return StudyArea
+   */
+  public function setPrintHeader(?string $printHeader): StudyArea
+  {
+    $this->printHeader = $printHeader;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getPrintIntroduction(): ?string
+  {
+    return $this->printIntroduction;
+  }
+
+  /**
+   * @param string|null $printIntroduction
+   *
+   * @return StudyArea
+   */
+  public function setPrintIntroduction(?string $printIntroduction): StudyArea
+  {
+    $this->printIntroduction = $printIntroduction;
+
+    return $this;
   }
 
 }
