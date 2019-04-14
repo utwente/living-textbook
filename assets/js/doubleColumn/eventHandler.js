@@ -8,6 +8,7 @@ import Routing from 'fos-routing';
  */
 (function (eHandler, types, $) {
   const uuidV1 = require('uuid/v1');
+  let sessionConsent = null;
 
   // Initialize current state
   eHandler.sessionId = uuidV1();
@@ -125,24 +126,8 @@ import Routing from 'fos-routing';
     // Set the title
     document.title = data.title;
 
-    // Verify whether tracking is enabled
-    if (!_trackUser) {
-      return;
-    }
-
-    // Post page load back to server
-    $.ajax({
-      type: "POST",
-      url: Routing.generate('app_tracking_pageload', {_studyArea: _studyArea}),
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      data: JSON.stringify({
-        sessionId: eHandler.sessionId,
-        timestamp: new Date().toISOString().split('.')[0] + 'Z', // remove milliseconds
-        path: eHandler.currentUrl,
-        origin: firstRequest ? null : eHandler.previousUrl
-      })
-    });
+    // Trigger tracking
+    trackUser(firstRequest);
   }
 
   /**
@@ -210,6 +195,94 @@ import Routing from 'fos-routing';
       data.nodeOnly = true;
       onShowConcept(data);
     }
+  }
+
+  /**
+   * Track the user' page load
+   * @param firstRequest
+   */
+  function trackUser(firstRequest) {
+    // Verify whether tracking is enabled
+    if (!_trackUser) {
+      return;
+    }
+
+    // Retrieve consent status, sessionConsent holds the session cached value
+    if (sessionConsent === null && typeof (Storage) !== 'undefined') {
+      // Retrieve from local storage for this study area
+      sessionConsent = localStorage.getItem('tracking-consent.' + _studyArea);
+    }
+
+    // Check whether consent is granted
+    if (sessionConsent === "false") {
+      // Denied, return;
+      return;
+    }
+
+    if (sessionConsent === null) {
+      // Opt-in question not yet asked, ask now. Disabled backdrop and keyboard modal exit.
+      let $trackingModal = $('#tracking-modal');
+      $trackingModal.modal({
+        backdrop: 'static',
+        keyboard: false,
+      });
+      $('#tracking-modal-agree').on('click', function () {
+        // Save and send tracking data
+        saveTrackingConsent(true);
+        $trackingModal.modal('hide');
+        sendTrackingData(firstRequest);
+      });
+      $('#tracking-modal-disagree').on('click', function () {
+        // Save only
+        saveTrackingConsent(false);
+        $trackingModal.modal('hide');
+      });
+
+      return;
+    }
+
+    // Try to send data
+    sendTrackingData(firstRequest);
+  }
+
+  /**
+   * Save tracking consent
+   *
+   * @param agree
+   */
+  function saveTrackingConsent(agree) {
+    sessionConsent = agree ? "true" : "false";
+
+    // Store in browser if possible
+    if (typeof (Storage) !== 'undefined') {
+      localStorage.setItem('tracking-consent.' + _studyArea, sessionConsent);
+    }
+  }
+
+  /**
+   * Sends the actual tracking data
+   *
+   * @param firstRequest
+   */
+  function sendTrackingData(firstRequest) {
+    // Validate consent before sending
+    if (sessionConsent !== "true") {
+      return;
+    }
+
+    // Post page load back to server
+    $.ajax({
+      type: "POST",
+      url: Routing.generate('app_tracking_pageload', {_studyArea: _studyArea}),
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      data: JSON.stringify({
+        sessionId: eHandler.sessionId,
+        timestamp: new Date().toISOString().split('.')[0] + 'Z', // remove milliseconds
+        path: eHandler.currentUrl,
+        origin: firstRequest ? null : eHandler.previousUrl
+      })
+    });
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType, $));
