@@ -150,6 +150,17 @@ class StudyArea
    */
   private $printIntroduction;
 
+  /**
+   * If set, user interaction will be tracked (with user opt-in)
+   *
+   * @var bool
+   *
+   * @ORM\Column(name="track_users", type="boolean", nullable=false)
+   *
+   * @Assert\NotNull()
+   * @Assert\Type("bool")
+   */
+  private $trackUsers;
 
   /**
    * StudyArea constructor.
@@ -160,6 +171,7 @@ class StudyArea
     $this->concepts   = new ArrayCollection();
     $this->userGroups = new ArrayCollection();
     $this->accessType = self::ACCESS_PUBLIC;
+    $this->trackUsers = false;
   }
 
   /**
@@ -637,6 +649,26 @@ class StudyArea
   public function setPrintIntroduction(?string $printIntroduction): StudyArea
   {
     $this->printIntroduction = $printIntroduction;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isTrackUsers(): bool
+  {
+    return $this->trackUsers;
+  }
+
+  /**
+   * @param bool $trackUsers
+   *
+   * @return StudyArea
+   */
+  public function setTrackUsers(bool $trackUsers): StudyArea
+  {
+    $this->trackUsers = $trackUsers;
 
     return $this;
   }

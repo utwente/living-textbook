@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,6 +47,11 @@ class EditStudyAreaType extends AbstractType
         ->add('printIntroduction', TextareaType::class, [
             'label'    => 'study-area.print-introduction',
             'help'     => 'study-area.print-introduction-help',
+            'required' => false,
+        ])
+        ->add('trackUsers', CheckboxType::class, [
+            'label'    => 'study-area.track-users',
+            'help'     => 'study-area.track-users-help',
             'required' => false,
         ]);
     if (!$options['hide_submit']) {

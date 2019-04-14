@@ -9,6 +9,7 @@ use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\StudyArea\TransferOwnerType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
+use App\Repository\PageLoadRepository;
 use App\Repository\UserGroupRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
@@ -114,11 +115,13 @@ class StudyAreaController extends AbstractController
    * @param StudyArea              $studyArea
    * @param EntityManagerInterface $em
    * @param UserGroupRepository    $userGroupRepo
+   * @param PageLoadRepository     $pageLoadRepository
    * @param TranslatorInterface    $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em, UserGroupRepository $userGroupRepo, TranslatorInterface $trans)
+  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em,
+                       UserGroupRepository $userGroupRepo, PageLoadRepository $pageLoadRepository, TranslatorInterface $trans)
   {
 
     // Check whether permissions flag is set
@@ -137,6 +140,11 @@ class StudyAreaController extends AbstractController
 
       // Check if permissions must be reset
       $userGroupRepo->removeObsoleteGroups($studyArea);
+
+      // Remove tracking data if tracking is disabled
+      if (!$studyArea->isTrackUsers()) {
+        $pageLoadRepository->purgeForStudyArea($studyArea);
+      }
 
       // Save the data
       $em->flush();

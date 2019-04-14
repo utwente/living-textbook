@@ -38,7 +38,13 @@ class TrackingController extends AbstractController
    */
   public function export(RequestStudyArea $requestStudyArea, TrackingExportBuilder $builder)
   {
-    return $builder->build($requestStudyArea->getStudyArea());
+    // Verify whether tracking is actually enabled
+    $studyArea = $requestStudyArea->getStudyArea();
+    if (!$studyArea->isTrackUsers()) {
+      return $this->render('tracking/not_enabled.html.twig', ['studyArea' => $studyArea]);
+    }
+
+    return $builder->build($studyArea);
   }
 
   /**
@@ -57,6 +63,12 @@ class TrackingController extends AbstractController
   public function pageload(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
                            SerializerInterface $serializer, ValidatorInterface $validator, RouterInterface $router)
   {
+    // Verify whether tracking is actually enabled
+    $studyArea = $requestStudyArea->getStudyArea();
+    if (!$studyArea->isTrackUsers()) {
+      throw new BadRequestHttpException();
+    }
+
     $pageLoad = $serializer->deserialize($request->getContent(), PageLoad::class, 'json');
     assert($pageLoad instanceof PageLoad);
     /** @var User $user */
@@ -64,7 +76,7 @@ class TrackingController extends AbstractController
 
     // Add more context to object
     $pageLoad
-        ->setStudyArea($requestStudyArea->getStudyArea())
+        ->setStudyArea($studyArea)
         ->setUserId($user->getUsername())
         ->setPathContext($router->match($pageLoad->getPath()))
         ->setOriginContext($pageLoad->getOrigin() ? $router->match($pageLoad->getOrigin()) : NULL);

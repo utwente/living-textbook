@@ -125,6 +125,11 @@ import Routing from 'fos-routing';
     // Set the title
     document.title = data.title;
 
+    // Verify whether tracking is enabled
+    if (!_trackUser) {
+      return;
+    }
+
     // Post page load back to server
     $.ajax({
       type: "POST",

@@ -1,0 +1,11 @@
+{% extends 'simple_card.html.twig' %}
+
+{% block title %}
+  {{ 'study-area.tracking-disabled'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{ 'study-area.tracking-disabled-text'|trans({'%url_start%': '<a href="' ~ path('_home_simple', { 'pageUrl': path('app_studyarea_edit', {'studyArea': studyArea.id})|trim('/', 'left') }) ~ '">', '%url_end%': '</a>'})|striptags('<a>')|raw }}
+  </p>
+{% endblock %}
