@@ -199,6 +199,11 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
    */
   public function injectStudyAreaInView()
   {
+    // Cache study area during request
+    if ($this->studyArea == NULL && $this->studyAreaId !== -1) {
+      $this->studyArea = $this->studyAreaRepository->find($this->studyAreaId);
+    }
+
     $this->twig->addGlobal(self::TWIG_STUDY_AREA_KEY, $this->studyArea);
   }
 }

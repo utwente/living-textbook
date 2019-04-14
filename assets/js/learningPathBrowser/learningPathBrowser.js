@@ -277,7 +277,6 @@ import Routing from 'fos-routing';
     let numberPositionAdjust = (numberSize / 12);
     context.beginPath();
     context.font = "bold " + numberSize + 'px ' + bConfig.fontFamily;
-    console.info(context.font);
     elements.map(function (element) {
       context.fillStyle = bConfig.darkenedNodeColor(element.color);
       context.fillText(++elementCount, element.x, element.y + numberPositionAdjust);
