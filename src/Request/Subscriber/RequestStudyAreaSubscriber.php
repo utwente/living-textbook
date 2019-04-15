@@ -200,7 +200,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   public function injectStudyAreaInView()
   {
     // Cache study area during request
-    if ($this->studyArea == NULL && $this->studyAreaId !== -1) {
+    if ($this->studyArea == NULL && $this->studyAreaId !== NULL && $this->studyAreaId !== -1) {
       $this->studyArea = $this->studyAreaRepository->find($this->studyAreaId);
     }
 
