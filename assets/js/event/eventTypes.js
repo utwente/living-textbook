@@ -21,4 +21,8 @@
   eType.CLOSE_LEARNING_PATH_BROWSER = 'close_learning_path_browser';
   eType.NAVIGATE_LEARNING_PATH = 'navigate_learning_path';
   eType.OPEN_CONCEPT_FROM_LEARNING_PATH = 'open_concept_from_learning_path';
+
+  // Tracking consent
+  eType.TRACKING_CONSENT = 'tracking_consent';
+  eType.TRACKING_CONSENT_UPDATED = 'tracking_consent_updated';
 }(window.eType = window.eType || {}));

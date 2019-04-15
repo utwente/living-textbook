@@ -91,4 +91,14 @@ require('../event/eventTypes');
     });
   };
 
+  /**
+   * Update tracking consent for the current study area
+   * @param agree
+   */
+  eDispatch.updateTrackingConsent = function (agree) {
+    dispatchParent(types.TRACKING_CONSENT, {
+      agree: agree
+    });
+  };
+
 }(window.eDispatch = window.eDispatch || {}, window.eType));

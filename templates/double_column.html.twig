@@ -123,7 +123,7 @@
           <h5 class="modal-title" id="tracking-modal-label">{{ 'study-area.tracking-consent-title'|trans }}</h5>
         </div>
         <div class="modal-body">
-          {{ 'study-area.tracking-consent'|trans({ '%studyArea%': studyArea.name }) }}
+          {{ 'study-area.tracking-consent'|trans({ '%studyArea%': studyArea.name })|nl2br }}
         </div>
         <div class="modal-footer">
           <button id="tracking-modal-agree" type="button" class="btn btn-success mr-auto">

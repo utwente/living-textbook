@@ -8,6 +8,7 @@ export function setDoubleColumnDetected(checksum) {
     console.info("DoubleColumn context detected!");
     $('#no-browser-warning').slideUp();
     global.inDoubleColumn = true;
+    window.dispatchEvent(new Event('double_column_detected'));
   }
 }
 

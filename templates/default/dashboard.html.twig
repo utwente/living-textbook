@@ -1,5 +1,39 @@
 {% extends 'single_column.html.twig' %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    #tracking-consent-dashboard {
+      position: relative;
+      display: none;
+    }
+
+    #tracking-consent-dashboard .tcd {
+      display: none;
+    }
+
+    #tracking-consent-dashboard .tcd.tcd-unknown {
+      display: block;
+    }
+
+    #tracking-consent-dashboard .tcd-loader {
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(255, 255, 255, 0.9);
+      text-align: center;
+    }
+
+    #tracking-consent-dashboard .tcd-loader > i {
+      position: absolute;
+      top: 40%
+    }
+  </style>
+{% endblock %}
+
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {{ buttons.header() }}
@@ -14,7 +48,6 @@
   {% endif %}
   {{ buttons.footer() }}
 {% endblock %}
-
 
 {% block title %}
   {{ studyArea.name }}
@@ -81,6 +114,76 @@
 
   {% if studyArea.frozenOn %}
     <p>{{ 'dashboard.study-area-frozen'|trans({'%since%': studyArea.frozenOn|localizeddate('medium', 'short') }) }}</p>
+  {% endif %}
+
+  {% if studyArea.trackUsers %}
+    <div id="tracking-consent-dashboard">
+      <h4>{{ 'study-area.tracking-consent-title'|trans }}</h4>
+      <p>
+        <span>{{ 'study-area.tracking-consent-dashboard'|trans }}</span>
+        <span class="tcd tcd-unknown">
+        {{ 'study-area.tracking-consent-dashboard-unknown'|trans }}
+      </span>
+        <span class="tcd tcd-agreed">
+          {{ 'study-area.tracking-consent-dashboard-agreed'|trans|striptags('<b>')|raw }}
+          {{ 'study-area.tracking-consent-dashboard-toggle'|trans({'%url_start%': '<a href="#" onclick="toggleTrackingConsent(false)">', '%url_end%': '</a>'})|striptags('<a>')|raw }}
+        </span>
+        <span class="tcd tcd-disagreed">
+          {{ 'study-area.tracking-consent-dashboard-disagreed'|trans|striptags('<b>')|raw }}
+          {{ 'study-area.tracking-consent-dashboard-toggle'|trans({'%url_start%': '<a href="#" onclick="toggleTrackingConsent(true)">', '%url_end%': '</a>'})|striptags('<a>')|raw }}
+       </span>
+      </p>
+      <div class="tcd tcd-loader">
+        <i class="fa fa-spinner fa-spin"></i>
+      </div>
+    </div>
+
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+      function toggleTrackingConsent(agree) {
+        $('.tcd-loader').show();
+        eDispatch.updateTrackingConsent(agree);
+      }
+
+      $(function () {
+        var $tracking = $('#tracking-consent-dashboard');
+        var $unknown = $tracking.find('.tcd-unknown');
+        var $agreed = $tracking.find('.tcd-agreed');
+        var $disagreed = $tracking.find('.tcd-disagreed');
+        var $loader = $tracking.find('.tcd-loader');
+
+        function loadTrackingConsent(agree) {
+          $loader.hide();
+
+          if (agree === null) {
+            $unknown.show();
+            $agreed.hide();
+            $disagreed.hide();
+          } else if (agree === "true") {
+            $unknown.hide();
+            $agreed.show();
+            $disagreed.hide();
+          } else {
+            $unknown.hide();
+            $agreed.hide();
+            $disagreed.show();
+          }
+        }
+
+        // Only show when double column is detected
+        window.addEventListener('double_column_detected', function () {
+          $('#tracking-consent-dashboard').show();
+
+          // Trigger null update to retrieve value through events
+          eDispatch.updateTrackingConsent(null);
+        });
+
+        // Register event handler for changes
+        window.addEventListener('tracking_consent', function (evt) {
+          loadTrackingConsent(evt.detail);
+        });
+      });
+    </script>
   {% endif %}
 
   <h4>{{ 'dashboard.search-concept'|trans }}</h4>

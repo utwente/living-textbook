@@ -1,4 +1,4 @@
-import {inDoubleColumnChecksum, setDoubleColumnDetected} from "../content";
+import {setDoubleColumnDetected} from "../content";
 
 require('../event/eventTypes');
 
@@ -20,6 +20,9 @@ require('../event/eventTypes');
       case types.CHECK_DOUBLE_COLUMN_RETURN:
         onDoubleColumnReturn(data);
         break;
+      case types.TRACKING_CONSENT_UPDATED:
+        onTrackingConsentUpdated(data);
+        break;
       default:
         console.warn('Unknown event!', type);
     }
@@ -31,6 +34,13 @@ require('../event/eventTypes');
    */
   function onDoubleColumnReturn(data) {
     setDoubleColumnDetected(data.checksum);
+  }
+
+  /**
+   * Handle tracking consent update event
+   */
+  function onTrackingConsentUpdated(data) {
+    window.dispatchEvent(new CustomEvent('tracking_consent', {detail: data.agree}));
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType));

@@ -395,9 +395,22 @@ study-area:
   show: 'This study area is owned by %owner%. It contains the following concepts:'
   switch-to: 'Switch'
   track-users: 'Track study area usage'
-  track-users-help: 'When enabled, the usage of this study area will be tracked for users that opt-in for the tracking. Even through this setting has effect directly, users will see a tracking request being send until they reload the complete browser. Note that disabling this setting will remove all existing tracking data!'
-  tracking-consent: 'I allow the owner of this study area (%studyArea%) to collect my personal usage of the system by tracking every opened page.'
+  track-users-help: >-
+    The usage of this study area will be tracked for users that opt-in for the tracking when this setting is enabled.
+    When enabled, already existing settings will not be tracked until the complete browser has been reloaded.
+    When disabled, existing sessions will keep sending a tracking request until the complete browser is reloaded,
+    but the request data will no longer be saved.
+    Note that disabling this setting will remove all existing tracking data!
+  tracking-consent: |-
+    This study area would like to track your usage of its content in order to improve the provided material and system interaction.
+
+    I allow the owner of this study area (%studyArea%) to collect my personal usage of the system by tracking every opened page.
   tracking-consent-agree: 'I agree'
+  tracking-consent-dashboard: 'This study area is configured to track user interaction.'
+  tracking-consent-dashboard-agreed: "Your interaction is currently <b>being</b> tracked as you've agreed with the conditions."
+  tracking-consent-dashboard-disagreed: "Your interaction will <b>not</b> be tracked, as you've disagreed with the conditions."
+  tracking-consent-dashboard-toggle: "You can toggle your preference by clicking %url_start%here%url_end%."
+  tracking-consent-dashboard-unknown: "Your tracking status is unknown. If this continues to be shown, please contact us."
   tracking-consent-disagree: 'I disagree'
   tracking-consent-title: 'Tracking consent'
   tracking-disabled: 'Tracking disabled'

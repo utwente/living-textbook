@@ -58,6 +58,9 @@ import Routing from 'fos-routing';
       case types.OPEN_CONCEPT_FROM_LEARNING_PATH:
         onOpenConceptFromLearningPath(data);
         break;
+      case types.TRACKING_CONSENT:
+        onTrackingConsent(data);
+        break;
       default:
         console.warn('Unknown event!', type);
     }
@@ -198,6 +201,21 @@ import Routing from 'fos-routing';
   }
 
   /**
+   * Update tracking consent based on browser setting
+   * @param data
+   */
+  function onTrackingConsent(data) {
+    // Check for special null event to only retrieve the status
+    if (data.agree === null) {
+      // Create event
+      eDispatch.trackingConsentUpdated(sessionConsent);
+      return;
+    }
+
+    saveTrackingConsent(data.agree);
+  }
+
+  /**
    * Track the user' page load
    * @param firstRequest
    */
@@ -226,13 +244,20 @@ import Routing from 'fos-routing';
         backdrop: 'static',
         keyboard: false,
       });
-      $('#tracking-modal-agree').on('click', function () {
+
+      // Register event handlers to modal buttons. Use off to ensure they are not bound multiple times
+      // when a previous consent is reset.
+      let $agreeButton = $('#tracking-modal-agree');
+      $agreeButton.off('click');
+      $agreeButton.on('click', function () {
         // Save and send tracking data
         saveTrackingConsent(true);
         $trackingModal.modal('hide');
         sendTrackingData(firstRequest);
       });
-      $('#tracking-modal-disagree').on('click', function () {
+      let $disagreeButton = $('#tracking-modal-disagree');
+      $disagreeButton.off('click');
+      $disagreeButton.on('click', function () {
         // Save only
         saveTrackingConsent(false);
         $trackingModal.modal('hide');
@@ -257,6 +282,9 @@ import Routing from 'fos-routing';
     if (typeof (Storage) !== 'undefined') {
       localStorage.setItem('tracking-consent.' + _studyArea, sessionConsent);
     }
+
+    // Create event
+    eDispatch.trackingConsentUpdated(sessionConsent);
   }
 
   /**

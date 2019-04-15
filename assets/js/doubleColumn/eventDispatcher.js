@@ -73,4 +73,12 @@ require('../event/eventTypes');
     });
   };
 
+  /**
+   * Dispatch event that indicates that the tracking consent has been updated
+   */
+  eDispatch.trackingConsentUpdated = function (agree) {
+    dispatchIframe(types.TRACKING_CONSENT_UPDATED, {agree: agree});
+    window.dispatchEvent(new CustomEvent('tracking_consent', {detail: agree}));
+  }
+
 }(window.eDispatch = window.eDispatch || {}, window.eType));
