@@ -8,6 +8,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -83,9 +84,10 @@ class SaveType extends AbstractType
   public static function isListClicked(FormInterface $form)
   {
     assert($form instanceof Form);
+    $clickedButton = $form->getClickedButton();
     if ($form->isSubmitted()
-        && $form->getClickedButton()
-        && $form->getClickedButton()->getName() === '_save_and_list'
+        && $clickedButton instanceof SubmitButton
+        && $clickedButton->getName() === '_save_and_list'
     ) {
       return true;
     }

@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -45,9 +46,11 @@ class RemoveType extends AbstractType
   public static function isRemoveClicked(FormInterface $form)
   {
     assert($form instanceof Form);
+    $clickedButton = $form->getClickedButton();
+
     if ($form->isSubmitted()
-        && $form->getClickedButton()
-        && $form->getClickedButton()->getName() === '_remove'
+        && $clickedButton instanceof SubmitButton
+        && $clickedButton->getName() === '_remove'
     ) {
       return true;
     }
