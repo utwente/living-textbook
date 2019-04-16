@@ -12,13 +12,21 @@
   let studyAreaId = 0;
   let conceptId = 0;
   let mouseDown = false;
-  let currentSelection = null;
-  let $currentSelectionContainer = null;
+  const annotationsData = {
+    current: null,
+    working: false,
+    onButton: false,
+    containsText: false,
+    selectedText: '', // When containsText is set to false, this holds the title
+    context: null,
+    version: null
+  };
 
   /** Annotations button */
   let $annotationsButtons = null;
   const markerTextChar = "\ufeff";
   let hiddenMarkerElement, markerId = "sel_" + new Date().getTime() + "_" + Math.random().toString().substr(2);
+  let hideAnnotationsButtonTimeout = null;
 
   /** Annotations modal **/
   let $annotationsModal = null;
@@ -32,7 +40,6 @@
       console.warn("Selection not available, not loading annotations");
       return;
     }
-    currentSelection = window.getSelection();
 
     // Locate elements
     $annotationsContainer = $('.annotations-container').first();
@@ -62,25 +69,38 @@
         })
         .on('mouseup', function () {
           mouseDown = false;
-          renderAnnotationButton();
+          renderAnnotationButtonForSelection();
         })
-        // Rerender on resize event, as the button will need to be repositioned if still shown
-        .on('resize', renderAnnotationButton);
+        // Reposition on resize event, as the button will need to be repositioned if still shown
+        .on('resize', repositionAnnotationButtons);
+
+    // Find headers which can be annotated, to register hover action
+    $annotationsContainer.find('h2[data-annotations-context]')
+        .hover(renderAnnotationButtonForHeader, hideAnnotationButtons);
 
     // Register events on the annotation button
     $annotationsButtons
         .on('mousedown', function (e) {
           e.preventDefault();
           e.stopPropagation();
+        })
+        .hover(function () {
+          annotationsData.onButton = true;
+        }, function () {
+          annotationsData.onButton = false;
         });
     $annotationsButtons.find('.annotations-button-text').on('click', openTextAnnotationModel);
     $annotationsButtons.find('.annotations-button-mark').on('click', saveMarkAnnotation);
 
     // Register events on the annotation modal
     $annotationsModal.find('button.annotations-save').on('click', saveTextAnnotation);
+    $annotationsModal.find('button.annotations-cancel').on('click', function () {
+      annotationsData.working = false;
+      repositionAnnotationButtons();
+    });
 
     // Register on selectionchange event
-    document.addEventListener('selectionchange', renderAnnotationButton);
+    document.addEventListener('selectionchange', renderAnnotationButtonForSelection);
 
     // Load current annotations from server
     loadAnnotations();
@@ -130,25 +150,89 @@
   }
 
   /**
-   * Render a annotation button
+   * Reposition the rendered buttons
+   */
+  function repositionAnnotationButtons() {
+    if (annotationsData.current === 'text') {
+      renderAnnotationButtonForSelection();
+    } else if (annotationsData.current === 'header') {
+      // Reposition data is not available for header buttons, so close it directly
+      annotationsData.current = null;
+      hideAnnotationButtons();
+    }
+  }
+
+  /**
+   * Render an annotation button for a context header
+   */
+  function renderAnnotationButtonForHeader() {
+    // Don't do anything while working
+    if (annotationsData.working) {
+      return;
+    }
+
+    // Find hidden markerElement position http://www.quirksmode.org/js/findpos.html
+    const $hoveredHeader = $(this);
+    if ($hoveredHeader.length === 0) {
+      return;
+    }
+
+    // Clear current selection, if any
+    window.getSelection().removeAllRanges();
+
+    // Find hidden markerElement position http://www.quirksmode.org/js/findpos.html
+    let obj = $hoveredHeader.find('.header-marker')[0];
+    let left = 0, top = obj.offsetHeight;
+
+    // noinspection JSAssignmentUsedAsCondition This is the correct assignment for this loop
+    do {
+      left += obj.offsetLeft;
+      top += obj.offsetTop;
+    } while (obj = obj.offsetParent);
+
+    // Update state
+    annotationsData.current = 'header';
+    annotationsData.containsText = false;
+    annotationsData.selectedText = $hoveredHeader.text().trim();
+    annotationsData.context = $hoveredHeader.data('annotations-context');
+    annotationsData.version = null;
+
+    // Move the button into place and show it
+    clearTimeout(hideAnnotationsButtonTimeout);
+    $annotationsButtons.find('.fa').show();
+    $annotationsButtons.find('.fa-spin').hide();
+    $annotationsButtons.show();
+    $annotationsButtons.offset({left: left, top: top - $annotationsButtons.height()});
+  }
+
+  /**
+   * Render an annotation button for a user selection.
+   * The selection must be within a single context
+   *
    * Based on https://stackoverflow.com/questions/1589721/how-can-i-position-an-element-next-to-user-text-selection
    */
-  function renderAnnotationButton() {
+  function renderAnnotationButtonForSelection() {
     // Store current selection
-    currentSelection = window.getSelection();
+    const currentSelection = window.getSelection();
 
     // Check for range in selection. If there is none, nothing is selected
     if (currentSelection.rangeCount === 0) {
-      $currentSelectionContainer = null;
-      hideAnnotationButton();
+      hideAnnotationButtons();
       return;
     }
+
+    // Don't continue while working
+    if (annotationsData.working) {
+      return;
+    }
+
     let range = currentSelection.getRangeAt(0);
 
     // Only show when in annotations context, the selection is not collapsed and it actually contains text
-    $currentSelectionContainer = $(range.commonAncestorContainer).closest('[data-annotations-context]');
-    if ($currentSelectionContainer.length === 0 || currentSelection.isCollapsed || currentSelection.toString().trim().length === 0) {
-      hideAnnotationButton();
+    const $currentSelectionContainer = $(range.commonAncestorContainer).closest('[data-annotations-context]');
+    if ($currentSelectionContainer.length === 0 || !$currentSelectionContainer.data('annotations-contains-text')
+        || currentSelection.isCollapsed || currentSelection.toString().trim().length === 0) {
+      hideAnnotationButtons();
       return;
     }
 
@@ -170,8 +254,11 @@
 
     // If marker could not be created, ignore this selection
     if (!hiddenMarkerElement) {
-      return
+      return;
     }
+
+    // Clear hide timeout
+    clearTimeout(hideAnnotationsButtonTimeout);
 
     // Find hidden markerElement position http://www.quirksmode.org/js/findpos.html
     let obj = hiddenMarkerElement;
@@ -183,11 +270,21 @@
       top += obj.offsetTop;
     } while (obj = obj.offsetParent);
 
+    // Update state
+    annotationsData.current = 'text';
+    annotationsData.containsText = true;
+    annotationsData.selectedText = currentSelection.toString().trim();
+    annotationsData.context = $currentSelectionContainer.data('annotations-context');
+    annotationsData.version = $currentSelectionContainer.data('annotations-version');
+
     // Move the button into place and show it
     $annotationsButtons.find('.fa').show();
     $annotationsButtons.find('.fa-spin').hide();
     $annotationsButtons.show();
-    $annotationsButtons.offset({left: left - $annotationsButtons.width(), top: top});
+    $annotationsButtons.offset({
+      left: Math.max($currentSelectionContainer[0].getBoundingClientRect().left, left - $annotationsButtons.width()),
+      top: top
+    });
 
     // Remove invisible marker
     hiddenMarkerElement.parentNode.removeChild(hiddenMarkerElement);
@@ -196,9 +293,34 @@
   /**
    * Remove the annotation button, if any
    */
-  function hideAnnotationButton() {
+  function hideAnnotationButtons() {
+    clearTimeout(hideAnnotationsButtonTimeout);
     if ($annotationsButtons && !mouseDown) {
-      $annotationsButtons.hide();
+
+      const doHide = function () {
+        $annotationsButtons.hide();
+        annotationsData.current = null;
+      };
+
+      if (annotationsData.onButton || annotationsData.working) {
+        hideAnnotationsButtonTimeout = setTimeout(hideAnnotationButtons, 500);
+        return;
+      }
+
+      if (annotationsData.current === 'text'
+          && annotationsData.selectedText !== window.getSelection().toString().trim()) {
+        doHide();
+      }
+
+      if (annotationsData.current === 'header') {
+        hideAnnotationsButtonTimeout = setTimeout(function () {
+          annotationsData.current = null;
+          hideAnnotationButtons()
+        }, 2000);
+        return;
+      }
+
+      doHide();
     }
   }
 
@@ -206,13 +328,27 @@
    * Add a new annotation at the current selection
    */
   function openTextAnnotationModel() {
-    $annotationsModal.modal();
-    $annotationsModal.find('.annotations-selected-text').html(currentSelection.toString().trim());
-    $annotationsModal.data('annotations-context', $currentSelectionContainer.data('annotations-context'));
-    $annotationsModal.data('annotations-version', $currentSelectionContainer.data('annotations-version'));
+    // Update text field in modal
+    let $selectedTextField = $annotationsModal.find('.annotations-selected-text');
+    if (annotationsData.containsText) {
+      $selectedTextField.html(annotationsData.selectedText);
+    } else {
+      $selectedTextField.html('Complete "' + annotationsData.selectedText + '"');
+    }
+
+    // Update state
+    annotationsData.working = true;
+    annotationsData.onButton = false;
+
+    // Focus and show
     $annotationsModal.find('textarea').first().focus();
     $annotationsModal.find('.fa-plus').show();
     $annotationsModal.find('.fa-spin').hide();
+    $annotationsModal.modal({
+      backdrop: 'static',
+      keyboard: false,
+      focus: false
+    });
   }
 
   /**
@@ -226,21 +362,24 @@
     $modalButtons.find('.fa-plus').hide();
     $modalButtons.find('.fa-spin').show();
 
+    annotationsData.working = true;
     $.ajax(
         {
           type: "POST",
           url: Routing.generate('app_annotation_add', {_studyArea: studyAreaId, concept: conceptId}),
           data: {
             'text': $annotationsModal.find('textarea#annotation').val(),
-            'context': $annotationsModal.data('annotations-context'),
-            'start': 0, // todo: determine start/end
-            'end': 1, // todo: determine start/end
-            'selectedText': $annotationsModal.find('.annotations-selected-text').html(),
-            'version': $annotationsModal.data('annotations-version')
+            'context': annotationsData.context,
+            'start': annotationsData.containsText ? 0 : -1, // todo: determine start/end
+            'end': annotationsData.containsText ? 1 : 0, // todo: determine start/end
+            'selectedText': annotationsData.containsText ? annotationsData.selectedText : null,
+            'version': annotationsData.version
           }
         })
         .done(function () {
+          annotationsData.working = false;
           $annotationsModal.modal('hide');
+          hideAnnotationButtons();
         })
         .fail(function (err) {
           console.error('Error saving annotation');
@@ -249,6 +388,7 @@
           $modalButtons.find('.fa-plus').show();
           $modalButtons.find('.fa-spin').hide();
           $modalButtons.prop('disabled', false);
+          $annotationsModal.find('textarea#annotation').val('');
         });
   }
 
@@ -257,25 +397,31 @@
     $annotationsButtons.find('.fa-flag').hide();
     $annotationsButtons.find('.fa-spin').show();
 
+    // Update state
+    annotationsData.working = true;
+    annotationsData.onButton = false;
+
     // Generate request
     $.ajax(
         {
           type: 'POST',
           url: Routing.generate('app_annotation_add', {_studyArea: studyAreaId, concept: conceptId}),
           data: {
-            'context': $currentSelectionContainer.data('annotations-context'),
-            'start': 0, // todo: determine start/end
-            'end': 1, // todo: determine start/end
-            'selectedText': currentSelection.toString().trim(),
-            'version': $currentSelectionContainer.data('annotations-version')
+            'context': annotationsData.context,
+            'start': annotationsData.containsText ? 0 : -1, // todo: determine start/end
+            'end': annotationsData.containsText ? 1 : 0, // todo: determine start/end
+            'selectedText': annotationsData.containsText ? annotationsData.selectedText : null,
+            'version': annotationsData.version
           }
         })
         .done(function () {
+          annotationsData.working = false;
           if (window.getSelection().empty) {  // Chrome
             window.getSelection().empty();
           } else if (window.getSelection().removeAllRanges) {  // Firefox
             window.getSelection().removeAllRanges();
           }
+          hideAnnotationButtons();
         })
         .fail(function (err) {
           console.error("Error saving annotations");

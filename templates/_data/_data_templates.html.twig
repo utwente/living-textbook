@@ -1,7 +1,13 @@
 {% block data_display_block %}
   {% if data.hasData %}
-    {% if title is defined %}<h2>{{ title }}</h2>{% endif %}
+    {% if title is defined %}
+      <h2 data-annotations-contains-text="false"
+          data-annotations-context="{{ annotationContext|default('') }}">
+        {{ title }}<span class="header-marker">&#xfeff;</span>
+      </h2>
+    {% endif %}
     <div class="ltb-text-container"
+         data-annotations-contains-text="true"
          data-annotations-context="{{ annotationContext|default('') }}"
          data-annotations-version="{{ data.lastUpdated|default('now'|date)|date('c') }}">
       {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
@@ -11,8 +17,9 @@
 
 {% macro data_definition(concept) %}
   {% if concept.definition|length > 0 %}
-    <p data-annotations-context="definition">
-      data-annotations-version="{{ concept.lastUpdated|default('now'|date)|date('c') }}"
+    <p data-annotations-contains-text="true"
+       data-annotations-context="definition"
+       data-annotations-version="{{ concept.lastUpdated|default('now'|date)|date('c') }}">
       {{ concept.definition }}
     </p>
   {% endif %}

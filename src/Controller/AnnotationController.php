@@ -84,10 +84,10 @@ class AnnotationController extends AbstractController
     $annotation = (new Annotation())
         ->setUser($this->getUser())
         ->setConcept($concept)
-        ->setText($request->request->getAlnum('text', NULL))
+        ->setText($request->request->get('text', NULL))
         ->setContext($request->request->get('context', ''))
-        ->setStart(intval($request->request->getDigits('start', '0')))
-        ->setEnd(intval($request->request->getDigits('end', '0')))
+        ->setStart($request->request->getInt('start', 0))
+        ->setEnd($request->request->getInt('end', 0))
         ->setSelectedText($request->request->get('selectedText', NULL))
         ->setVersion($version);
 
