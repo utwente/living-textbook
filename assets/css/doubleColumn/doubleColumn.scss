@@ -2,6 +2,9 @@
 @import '../mixins/mixins';
 
 $bottom-transition: 0.4s ease-in-out;
+$bottom-row-size: 30%;
+$bottom-row-size-large-screen: 195px;
+$bottom-row-size-large-screen-breakpoint: 650px;
 
 body, #double-column-container, #bottom-container {
   margin: 0;
@@ -17,6 +20,14 @@ body, #double-column-container, #bottom-container {
   height: 100%;
   width: 100%;
   transition: height $bottom-transition;
+
+  &.lpb-opened {
+    height: 100% - $bottom-row-size;
+
+    @media(min-height: $bottom-row-size-large-screen-breakpoint) {
+      height: calc(100% - #{$bottom-row-size-large-screen});
+    }
+  }
 
   #invisible-frame {
     background-color: unset;
@@ -147,9 +158,21 @@ body, #double-column-container, #bottom-container {
   position: absolute;
   top: 100%;
   left: 0;
-  height: 30%;
+  height: $bottom-row-size;
   width: 100%;
   transition: top $bottom-transition;
+
+  @media(min-height: $bottom-row-size-large-screen-breakpoint) {
+    height: $bottom-row-size-large-screen;
+  }
+
+  &.lpb-opened {
+    top: 100% - $bottom-row-size;
+
+    @media (min-height: $bottom-row-size-large-screen-breakpoint) {
+      top: calc(100% - #{$bottom-row-size-large-screen});
+    }
+  }
 
   > div#bottom-row-container {
     position: relative;

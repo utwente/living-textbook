@@ -77,8 +77,8 @@ import Routing from 'fos-routing';
     $loader.show();
 
     // CSS animations are used to make it fluent
-    $doubleColumn.css('height', openSize);
-    $bottomRow.css('top', openSize);
+    $doubleColumn.addClass('lpb-opened');
+    $bottomRow.addClass('lpb-opened');
     triggerResize();
 
     // Load the data
@@ -90,8 +90,8 @@ import Routing from 'fos-routing';
    */
   lpb.closeBrowser = function () {
     // CSS animations are used to make it fluent
-    $doubleColumn.css('height', closedSize);
-    $bottomRow.css('top', closedSize);
+    $doubleColumn.removeClass('lpb-opened');
+    $bottomRow.removeClass('lpb-opened');
     triggerResize();
   };
 
