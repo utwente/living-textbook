@@ -32,6 +32,7 @@
 
   /** Annotations modal **/
   let $annotationsModal = null;
+  let $failedModal = null;
 
   /**
    * Annotation plugin loader, executed on page load.
@@ -56,6 +57,11 @@
     $annotationsModal = $annotationsContainer.find('.annotations-modal').first();
     if ($annotationsModal.length === 0) {
       console.error('Annotation modal not found!');
+      return;
+    }
+    $failedModal = $annotationsContainer.find('.failed-modal').first();
+    if ($failedModal.length === 0) {
+      console.error('Failed modal not found!');
       return;
     }
 
@@ -347,13 +353,15 @@
     annotationsData.onButton = false;
 
     // Focus and show
-    $annotationsModal.find('textarea').first().focus();
+    $annotationsModal.find('textarea#annotation').val('');
     $annotationsModal.find('.fa-plus').show();
     $annotationsModal.find('.fa-spin').hide();
+    $annotationsModal.one('shown.bs.modal', function () {
+      $annotationsModal.find('textarea').first().focus();
+    });
     $annotationsModal.modal({
       backdrop: 'static',
-      keyboard: false,
-      focus: false
+      keyboard: false
     });
   }
 
@@ -387,14 +395,14 @@
           hideAnnotationButtons();
         })
         .fail(function (err) {
-          console.error('Error saving annotation');
+          console.error('Error saving annotation', err);
+          $failedModal.modal();
         })
         .always(function () {
           annotationsData.working = false;
           $modalButtons.find('.fa-plus').show();
           $modalButtons.find('.fa-spin').hide();
           $modalButtons.prop('disabled', false);
-          $annotationsModal.find('textarea#annotation').val('');
         });
   }
 
@@ -429,7 +437,8 @@
           hideAnnotationButtons();
         })
         .fail(function (err) {
-          console.error("Error saving annotations");
+          console.error("Error saving annotations", err);
+          $failedModal.modal();
         })
         .always(function () {
           annotationsData.working = false;

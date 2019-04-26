@@ -294,6 +294,11 @@ menu:
   tracking-export: 'Tracking data'
   urls: 'URLs'
 
+modal:
+  failed:
+    body: "Your requested operation failed. Please try again later."
+    title: "Action failed"
+
 permissions:
   admin: 'Administrator'
   add-admin-title: 'Add new administrator'
