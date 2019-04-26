@@ -1,4 +1,5 @@
 annotation:
+  selection-incorrect: "The selected text should be empty"
   start-end-identical: "The start and end of the annotation is identical."
 
 concept:

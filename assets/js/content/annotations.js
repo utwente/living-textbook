@@ -18,6 +18,8 @@
     onButton: false,
     containsText: false,
     selectedText: '', // When containsText is set to false, this holds the title
+    start: 0,
+    end: 0,
     context: null,
     version: null
   };
@@ -194,6 +196,8 @@
     annotationsData.current = 'header';
     annotationsData.containsText = false;
     annotationsData.selectedText = $hoveredHeader.text().trim();
+    annotationsData.start = -1;
+    annotationsData.end = 0;
     annotationsData.context = $hoveredHeader.data('annotations-context');
     annotationsData.version = null;
 
@@ -274,6 +278,8 @@
     annotationsData.current = 'text';
     annotationsData.containsText = true;
     annotationsData.selectedText = currentSelection.toString().trim();
+    annotationsData.start = $currentSelectionContainer.text().trim().indexOf(annotationsData.selectedText);
+    annotationsData.end = annotationsData.start + annotationsData.selectedText.length;
     annotationsData.context = $currentSelectionContainer.data('annotations-context');
     annotationsData.version = $currentSelectionContainer.data('annotations-version');
 
@@ -370,14 +376,13 @@
           data: {
             'text': $annotationsModal.find('textarea#annotation').val(),
             'context': annotationsData.context,
-            'start': annotationsData.containsText ? 0 : -1, // todo: determine start/end
-            'end': annotationsData.containsText ? 1 : 0, // todo: determine start/end
+            'start': annotationsData.start,
+            'end': annotationsData.end,
             'selectedText': annotationsData.containsText ? annotationsData.selectedText : null,
             'version': annotationsData.version
           }
         })
         .done(function () {
-          annotationsData.working = false;
           $annotationsModal.modal('hide');
           hideAnnotationButtons();
         })
@@ -385,6 +390,7 @@
           console.error('Error saving annotation');
         })
         .always(function () {
+          annotationsData.working = false;
           $modalButtons.find('.fa-plus').show();
           $modalButtons.find('.fa-spin').hide();
           $modalButtons.prop('disabled', false);
@@ -408,14 +414,13 @@
           url: Routing.generate('app_annotation_add', {_studyArea: studyAreaId, concept: conceptId}),
           data: {
             'context': annotationsData.context,
-            'start': annotationsData.containsText ? 0 : -1, // todo: determine start/end
-            'end': annotationsData.containsText ? 1 : 0, // todo: determine start/end
+            'start': annotationsData.start,
+            'end': annotationsData.end,
             'selectedText': annotationsData.containsText ? annotationsData.selectedText : null,
             'version': annotationsData.version
           }
         })
         .done(function () {
-          annotationsData.working = false;
           if (window.getSelection().empty) {  // Chrome
             window.getSelection().empty();
           } else if (window.getSelection().removeAllRanges) {  // Firefox
@@ -427,6 +432,7 @@
           console.error("Error saving annotations");
         })
         .always(function () {
+          annotationsData.working = false;
           $('[data-toggle="tooltip"]').tooltip('hide');
           $annotationsButtons.find('.fa-flag').show();
           $annotationsButtons.find('.fa-spin').hide();

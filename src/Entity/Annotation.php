@@ -79,7 +79,7 @@ class Annotation
   private $context = '';
 
   /**
-   * Annotation start
+   * Annotation start. This is without any HTML tags!
    * If -1, the complete section is annotated
    *
    * @var int
@@ -94,7 +94,8 @@ class Annotation
   private $start = 0;
 
   /**
-   * Annotation end
+   * Annotation end. This is without any HTML tags!
+   * If there is no selection, it means the header/complete context is annotated
    *
    * @var int
    *
@@ -112,15 +113,18 @@ class Annotation
 
   /**
    * The selected text at time of creation.
-   * If there is no selection, it means the header/complete context is annotated
    *
    * @var string|null
    *
    * @ORM\Column(name="selected_text", type="text", nullable=true)
    *
+   * @Assert\Expression(
+   *   "(value === null && this.getStart() === -1) || (value !== null && this.getStart() >= 0)",
+   *   message="annotation.selection-incorrect")
+   *
    * @JMSA\Expose()
    */
-  private $selectedText = '';
+  private $selectedText;
 
   /**
    * Annotation version, linked to context version to detect changes since annotation
