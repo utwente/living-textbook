@@ -171,12 +171,12 @@ class DataController extends AbstractController
           /** @var Concept[] $concepts */
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
-            if (!array_key_exists('label', $jsonNode)) {
+            if (!array_key_exists('label', $jsonNode) || $jsonNode['label'] === NULL) {
               throw new InvalidArgumentException();
             }
 
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
-            if (array_key_exists('definition', $jsonNode)) {
+            if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== NULL) {
               $concepts[$key]->setDefinition($jsonNode['definition']);
             }
             $concepts[$key]->setStudyArea($data['studyArea']);
