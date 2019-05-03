@@ -132,7 +132,7 @@ action-security-check:
 
 build-assets:
   stage: build
-  image: node:9.11
+  image: node:10
   cache:
     key: ${CI_JOB_NAME}
     paths:
