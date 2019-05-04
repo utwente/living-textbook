@@ -1,7 +1,7 @@
 var Encore = require('@symfony/webpack-encore');
 
 Encore
-    // the project directory where compiled assets will be stored
+// the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
@@ -36,6 +36,7 @@ Encore
       'jquery-ui-touch-punch',
       'jquery-contextmenu',
       'jquery-contextmenu/dist/jquery.contextMenu.css',
+      'mark.js/dist/jquery.mark.js',
       'popper.js',
       'bootstrap',
       'bootstrap-3-typeahead',

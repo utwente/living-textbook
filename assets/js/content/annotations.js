@@ -141,19 +141,55 @@
       const annotation = annotations[i];
       console.info("Rendering annotation", annotation);
 
-      // Find the context
-      const $context = $('[data-annotations-context="' + annotation.context + '"]');
-      if ($context.length === 0) {
-        console.warn('Annotation context not found');
-        continue;
-      }
-
-      // Check annotation version
-      if (Date.parse($context.data('annotations-version')) > Date.parse(annotation.version)) {
-        console.log("Outdated comment!");
+      if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
+        // todo Header annotation
       } else {
-        // todo: render the annotation
+        renderTextAnnotation(annotation);
       }
+    }
+  }
+
+  /**
+   * Renders the text annotation in the text on the correct place
+   *
+   * @param annotation
+   */
+  function renderTextAnnotation(annotation) {
+    const $context = $('[data-annotations-contains-text="true"][data-annotations-context="' + annotation.context + '"]');
+    if ($context.length === 0) {
+      console.warn('Annotation context not found');
+      return;
+    }
+
+    // Check annotation version
+    if (Date.parse($context.data('annotations-version')) > Date.parse(annotation.version)) {
+      console.log("Outdated comment!");
+
+      // todo: render outdated annotations at top?
+    } else {
+      $context.markRanges([{
+        start: annotation.start,
+        length: annotation.end - annotation.start
+      }], {
+        className: 'ltb-annotation-' + annotation.id + ' ' + (typeof annotation.text == "undefined" ? "mark" : "note"),
+        acrossElements: true,
+        accuracy: "exactly",
+        caseSensitive: true,
+        separateWordSearch: false,
+        ignoreJoiners: true,
+        each: function (node) {
+          node.setAttribute('data-annotation', JSON.stringify(annotation));
+          node.setAttribute('data-annotation-id', annotation.id);
+          node.setAttribute('data-annotation-text', annotation.text);
+        },
+        done: function () {
+          $context.find('mark').each(function () {
+            if (this.innerHTML.trim() === "") {
+              $(this).remove();
+            }
+          });
+        }
+      });
     }
   }
 
@@ -259,7 +295,6 @@
     hiddenMarkerElement = document.createElement("span");
     hiddenMarkerElement.id = markerId;
     hiddenMarkerElement.appendChild(document.createTextNode(markerTextChar));
-    hiddenMarkerElement.appendChild(document.createTextNode(markerTextChar));
     clonedRange.insertNode(hiddenMarkerElement);
 
     // If marker could not be created, ignore this selection
@@ -280,12 +315,26 @@
       top += obj.offsetTop;
     } while (obj = obj.offsetParent);
 
+    // Determine selection start
+    let selectedTextOffsetStart = findNode($currentSelectionContainer[0], range.startContainer).start
+        + range.startOffset;
+
+    // Determine selection end
+    let selectedTextOffsetEnd = findNode($currentSelectionContainer[0], range.endContainer).start
+        + range.endOffset;
+
+    // Compensate the start element for the trimmed characters
+    let selectedText = currentSelection.toString();
+    let originalLength = selectedText.length;
+    selectedTextOffsetStart = selectedTextOffsetStart + originalLength - selectedText.trimLeft().length;
+    selectedTextOffsetEnd = selectedTextOffsetEnd - originalLength + selectedText.trimRight().length;
+
     // Update state
     annotationsData.current = 'text';
     annotationsData.containsText = true;
-    annotationsData.selectedText = currentSelection.toString().trim();
-    annotationsData.start = $currentSelectionContainer.text().trim().indexOf(annotationsData.selectedText);
-    annotationsData.end = annotationsData.start + annotationsData.selectedText.length;
+    annotationsData.selectedText = selectedText.trim();
+    annotationsData.start = selectedTextOffsetStart;
+    annotationsData.end = selectedTextOffsetEnd;
     annotationsData.context = $currentSelectionContainer.data('annotations-context');
     annotationsData.version = $currentSelectionContainer.data('annotations-version');
 
@@ -300,6 +349,47 @@
 
     // Remove invisible marker
     hiddenMarkerElement.parentNode.removeChild(hiddenMarkerElement);
+  }
+
+  /**
+   * Find the start of the node in the given container
+   * @param container
+   * @param node
+   * @param context
+   * @returns {{found: boolean, start: number}}
+   */
+  function findNode(container, node, context) {
+    // Set default context
+    context = context || {start: 0, found: false};
+
+    // Skip marker nodes
+    if (container.isSameNode(hiddenMarkerElement)) {
+      return context;
+    }
+
+    // Check if this is the correct node
+    if (container.isSameNode(node)) {
+      return {
+        start: context.start,
+        found: true
+      }
+    }
+
+    let nodes = container.childNodes;
+    if (nodes.length === 0) {
+      return {
+        start: context.start + container.length,
+        found: false
+      };
+    }
+
+    // Loop node list
+    for (let i = 0; i < nodes.length; i++) {
+      context = findNode(nodes[i], node, context);
+      if (context.found) break;
+    }
+
+    return context;
   }
 
   /**
@@ -390,9 +480,10 @@
             'version': annotationsData.version
           }
         })
-        .done(function () {
+        .done(function (annotation) {
           $annotationsModal.modal('hide');
           hideAnnotationButtons();
+          renderAnnotations([annotation]);
         })
         .fail(function (err) {
           console.error('Error saving annotation', err);
@@ -428,13 +519,14 @@
             'version': annotationsData.version
           }
         })
-        .done(function () {
+        .done(function (annotation) {
           if (window.getSelection().empty) {  // Chrome
             window.getSelection().empty();
           } else if (window.getSelection().removeAllRanges) {  // Firefox
             window.getSelection().removeAllRanges();
           }
           hideAnnotationButtons();
+          renderAnnotations([annotation]);
         })
         .fail(function (err) {
           console.error("Error saving annotations", err);

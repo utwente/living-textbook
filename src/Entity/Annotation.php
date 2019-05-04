@@ -113,6 +113,7 @@ class Annotation
 
   /**
    * The selected text at time of creation.
+   * Should be null when the header is selected
    *
    * @var string|null
    *

@@ -2,6 +2,9 @@
 @import '~bootstrap/scss/_variables.scss';
 @import '../vars/vars';
 
+$mark-color: #fff256;
+$note-color: #91ff6d;
+
 .annotations-container {
 
   .annotations-buttons {
@@ -25,6 +28,19 @@
 
     .annotations-selected-text {
       white-space: pre-wrap;
+    }
+  }
+
+  mark {
+    padding: 0.25rem 0;
+    border-radius: 0.25rem;
+
+    &.mark {
+      background-color: $mark-color;
+    }
+
+    &.note {
+      background-color: $note-color;
     }
   }
 
