@@ -1540,16 +1540,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.drenso.dev:intern/symfony-oidc.git",
-                "reference": "1e918a391b9eb52ee19ba57fedbf41030147b48b"
+                "reference": "404cc998ed2c4e7b2d08761a3d6bd238eb7d587e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.drenso.nl/api/v4/projects/intern%2Fsymfony-oidc/repository/archive.zip?sha=1e918a391b9eb52ee19ba57fedbf41030147b48b",
-                "reference": "1e918a391b9eb52ee19ba57fedbf41030147b48b",
+                "url": "https://gitlab.drenso.dev/api/v4/projects/intern%2Fsymfony-oidc/repository/archive.zip?sha=404cc998ed2c4e7b2d08761a3d6bd238eb7d587e",
+                "reference": "404cc998ed2c4e7b2d08761a3d6bd238eb7d587e",
                 "shasum": ""
             },
             "require": {
@@ -1590,7 +1590,7 @@
                 "openid connect",
                 "symfony"
             ],
-            "time": "2018-06-25T14:10:59+00:00"
+            "time": "2019-02-22T10:43:02+01:00"
         },
         {
             "name": "easyrdf/easyrdf",
