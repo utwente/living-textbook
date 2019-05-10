@@ -15,16 +15,18 @@ fos_ck_editor:
       toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
       format_tags: "p;h1;h2;citation;reference"
-      extraPlugins: "latexeditor,image2"
+      extraPlugins: "image2,wordcount,latexeditor"
       extraAllowedContent: "figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id];symbol"
       removePlugins: "image,dialogadvtab"
       bodyClass: "ltb-text-container"
+      wordcount:
+        showParagraphs: false
     ltb_no_image:
       <<: *ckeditor_default
       removeButtons: "Image"
     ltb_concept_config:
       <<: *ckeditor_default
-      extraPlugins: "image2,latexeditor,abbreviationselector,conceptselector,ltbbuttons"
+      extraPlugins: "image2,wordcount,latexeditor,abbreviationselector,conceptselector,ltbbuttons"
   toolbars:
     configs:
       ltb_toolbar: [ "@text_tools", "@ltb_tools", "/", "@font_tools", "@edit_tools" ]
@@ -34,18 +36,21 @@ fos_ck_editor:
       ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector", "AbbreviationSelector" ]
       font_tools: [ "Format", "TextColor" ]
   plugins:
-    latexeditor:
-      path:     "/ckeditor-plugins/latexeditor/"
-      filename: "plugin.js"
-    image2:
-      path:     "/ckeditor-plugins/image2/"
-      filename: "plugin.js"
     abbreviationselector:
       path:     "/ckeditor-plugins/abbreviationselector/"
       filename: "plugin.js"
     conceptselector:
       path:     "/ckeditor-plugins/conceptselector/"
       filename: "plugin.js"
+    image2:
+      path:     "/ckeditor-plugins/image2/"
+      filename: "plugin.js"
+    latexeditor:
+      path:     "/ckeditor-plugins/latexeditor/"
+      filename: "plugin.js"
     ltbbuttons:
       path:     "/ckeditor-plugins/ltbbuttons/"
+      filename: "plugin.js"
+    wordcount:
+      path:     "/ckeditor-plugins/wordcount/"
       filename: "plugin.js"
