@@ -1212,7 +1212,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       getNodeRadius(node);
       loadNodeColor(node);
       bConfig.updateLabel(node, 1);
+    });
 
+    // Loop data again, as now we have all nodes available to create the links
+    data.map(function (concept) {
       // Update relations
       concept.relations.map(function (relation) {
         availLinks.push(relation.id);
@@ -1221,7 +1224,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
           // Create
           link = {
             id: relation.id,
-            source: node,
+            source: getNodeById(concept.id),
             target: getNodeById(relation.target)
           };
           cbGraph.links.push(link);
@@ -1231,6 +1234,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         link.relationName = relation.relationName;
       });
     });
+
 
     // Remove missing nodes
     cbGraph.nodes = cbGraph.nodes.filter(function (node) {
