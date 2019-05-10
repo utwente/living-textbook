@@ -21,7 +21,7 @@
         "friendsofsymfony/jsrouting-bundle": "^2.1",
         "helios-ag/fm-elfinder-bundle": "^9.1.1",
         "jms/serializer-bundle": "^2.3",
-        "kick-in/exception-handler-bundle": "^2.0",
+        "kick-in/exception-handler-bundle": "^2.0.1",
         "ml/json-ld": "^1.1",
         "phpoffice/phpspreadsheet": "^1.5.1",
         "phpseclib/phpseclib": "^2.0",

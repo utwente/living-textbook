@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "729847e6ad0d3d70330ccd5a538dabe4",
+    "content-hash": "ea561e10153a3a23b8f62d1998b1036d",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2304,16 +2304,16 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "8e8f9868547cfccbc08f233272d400a797c31f78"
+                "reference": "29a98e9e36034eff329c851ce12053d4ffc7cde7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/8e8f9868547cfccbc08f233272d400a797c31f78",
-                "reference": "8e8f9868547cfccbc08f233272d400a797c31f78",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/29a98e9e36034eff329c851ce12053d4ffc7cde7",
+                "reference": "29a98e9e36034eff329c851ce12053d4ffc7cde7",
                 "shasum": ""
             },
             "require": {
@@ -2354,7 +2354,7 @@
                 "exception handler",
                 "symfony"
             ],
-            "time": "2019-02-11T21:18:42+00:00"
+            "time": "2019-05-10T11:12:55+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
