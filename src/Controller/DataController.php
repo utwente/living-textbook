@@ -36,6 +36,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -108,11 +109,12 @@ class DataController extends AbstractController
    * @param TranslatorInterface    $translator
    * @param EntityManagerInterface $em
    * @param RelationTypeRepository $relationTypeRepo
+   * @param ValidatorInterface     $validator
    *
    * @return array
    */
   public function upload(Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
-                         EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo)
+                         EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator)
   {
     $form = $this->createForm(JsonUploadType::class, ['studyArea' => $requestStudyArea->getStudyArea()]);
     $form->handleRequest($request);
@@ -161,6 +163,9 @@ class DataController extends AbstractController
               } else {
                 // Create new link type
                 $linkTypes[$linkName] = (new RelationType())->setStudyArea($data['studyArea'])->setName($linkName);
+                if (count($validator->validate($linkTypes[$linkName])) > 0) {
+                  throw new InvalidArgumentException();
+                };
                 $em->persist($linkTypes[$linkName]);
               }
             }
@@ -180,6 +185,9 @@ class DataController extends AbstractController
               $concepts[$key]->setDefinition($jsonNode['definition']);
             }
             $concepts[$key]->setStudyArea($data['studyArea']);
+            if (count($validator->validate($concepts[$key])) > 0) {
+              throw new InvalidArgumentException();
+            };
             $em->persist($concepts[$key]);
           }
 
@@ -195,6 +203,9 @@ class DataController extends AbstractController
             $relation->setTarget($concepts[$jsonLink['target']]);
             $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
             $concepts[$jsonLink['source']]->addOutgoingRelation($relation);
+            if (count($validator->validate($relation)) > 0) {
+              throw new InvalidArgumentException();
+            };
           }
 
           // Save the data
