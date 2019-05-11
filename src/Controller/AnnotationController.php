@@ -111,4 +111,36 @@ class AnnotationController extends AbstractController
 
     return new JsonResponse($serializer->serialize($annotation, 'json'), 200, [], true);
   }
+
+  /**
+   * @Route("/{concept}/annotation/{annotation}/remove", requirements={"concept"="\d+", "annotation"="\d+"},
+   *   methods={"DELETE"}, options={"expose"="true"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Concept                $concept
+   * @param Annotation             $annotation
+   * @param EntityManagerInterface $em
+   *
+   * @return JsonResponse
+   * @throws Exception
+   */
+  public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em)
+  {
+    // Check study area
+    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    // Validate credentials
+    if ($annotation->getUserId() != $this->getUser()->getId()) {
+      throw $this->createAccessDeniedException();
+    }
+
+    // Save the entity
+    $em->remove($annotation);
+    $em->flush();
+
+    return new JsonResponse();
+  }
 }

@@ -1,10 +1,24 @@
-{% macro button() %}
+{% macro createButtons() %}
   <div class="annotations-buttons">
     <button class="btn btn-dark annotations-button-text" data-toggle="tooltip" title="{{ 'annotations.create'|trans }}">
       <i class="fa fa-fw fa-comments"></i>
     </button>
     <button class="btn btn-dark annotations-button-mark" data-toggle="tooltip" title="{{ 'annotations.mark'|trans }}">
       <i class="fa fa-fw fa-flag"></i>
+      <i class="fa fa-fw fa-spinner fa-spin"></i>
+    </button>
+  </div>
+{% endmacro %}
+
+{% macro contextButtons() %}
+  <div class="annotation-context-buttons">
+    <button class="btn btn-dark annotation-note-button"
+            data-toggle="tooltip" title="{{ 'annotations.count'|trans }}">
+      <i class="fa fa-fw fa-comments"></i><span class="note-count"></span>
+    </button>
+    <button class="btn btn-dark annotation-remove-button"
+            data-toggle="tooltip" title="{{ 'annotations.remove'|trans }}">
+      <i class="fa fa-fw fa-times"></i>
       <i class="fa fa-fw fa-spinner fa-spin"></i>
     </button>
   </div>

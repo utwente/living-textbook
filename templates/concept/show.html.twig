@@ -39,7 +39,8 @@
     {{ macros.data_incoming_relations(concept.incomingRelations) }}
     {{ macros.data_learning_paths(learningPaths) }}
 
-    {{ annotations.button() }}
+    {{ annotations.createButtons() }}
+    {{ annotations.contextButtons() }}
     {{ annotations.addPrototype() }}
     {{ annotations.failedModal() }}
   </div>

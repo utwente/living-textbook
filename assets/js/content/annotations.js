@@ -23,12 +23,18 @@
     context: null,
     version: null
   };
+  const annotationContextData = {
+    current: null,
+    working: false,
+    onButton: false,
+    id: 0
+  };
 
   /** Annotations button */
-  let $annotationsButtons = null;
+  let $annotationsButtons = null, $annotationContextButtons = null;
   const markerTextChar = "\ufeff";
   let hiddenMarkerElement, markerId = "sel_" + new Date().getTime() + "_" + Math.random().toString().substr(2);
-  let hideAnnotationsButtonTimeout = null;
+  let hideAnnotationsButtonTimeout = null, hideAnnotationContextButtonsTimeout = null;
 
   /** Annotations modal **/
   let $annotationsModal = null;
@@ -47,11 +53,17 @@
     // Locate elements
     $annotationsContainer = $('.annotations-container').first();
     if ($annotationsContainer.length === 0) {
+      console.error('Annotations container not found!');
       return;
     }
     $annotationsButtons = $annotationsContainer.find('.annotations-buttons').first();
     if ($annotationsButtons.length === 0) {
-      console.error("Annotation buttons not found!");
+      console.error('Annotation buttons not found!');
+      return;
+    }
+    $annotationContextButtons = $annotationsContainer.find('.annotation-context-buttons').first();
+    if ($annotationContextButtons.length === 0) {
+      console.error('Annotation discuss button not found!');
       return;
     }
     $annotationsModal = $annotationsContainer.find('.annotations-modal').first();
@@ -79,14 +91,17 @@
           mouseDown = false;
           renderAnnotationButtonForSelection();
         })
-        // Reposition on resize event, as the button will need to be repositioned if still shown
-        .on('resize', repositionAnnotationButtons);
+        // Reposition on resize event, as the buttons will need to be repositioned if still shown
+        .on('resize', function () {
+          repositionAnnotationButtons();
+          repositionAnnotationContextButtons();
+        });
 
     // Find headers which can be annotated, to register hover action
     $annotationsContainer.find('h2[data-annotations-context]')
         .hover(renderAnnotationButtonForHeader, hideAnnotationButtons);
 
-    // Register events on the annotation button
+    // Register events on the annotation buttons
     $annotationsButtons
         .on('mousedown', function (e) {
           e.preventDefault();
@@ -99,6 +114,20 @@
         });
     $annotationsButtons.find('.annotations-button-text').on('click', openTextAnnotationModel);
     $annotationsButtons.find('.annotations-button-mark').on('click', saveMarkAnnotation);
+
+    // Register events on the annotation context buttons
+    $annotationContextButtons
+        .on('mousedown', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        })
+        .hover(function () {
+          annotationContextData.onButton = true;
+        }, function () {
+          annotationContextData.onButton = false;
+        });
+    // $annotationContextButtons.find('.annotation-note-button').on('click', openAnnotationNotes);
+    $annotationContextButtons.find('.annotation-remove-button').on('click', removeAnnotation);
 
     // Register events on the annotation modal
     $annotationsModal.find('button.annotations-save').on('click', saveTextAnnotation);
@@ -125,8 +154,9 @@
           url: Routing.generate('app_annotation_all', {_studyArea: studyAreaId, concept: conceptId}),
         })
         .done(renderAnnotations)
-        .fail(function (err) {
+        .fail(function () {
           console.error("Error loading annotations");
+          $failedModal.show();
         });
   }
 
@@ -171,7 +201,7 @@
         start: annotation.start,
         length: annotation.end - annotation.start
       }], {
-        className: 'ltb-annotation-' + annotation.id + ' ' + (typeof annotation.text == "undefined" ? "mark" : "note"),
+        className: 'ltb-annotation ' + (typeof annotation.text == "undefined" ? "mark" : "note"),
         acrossElements: true,
         accuracy: "exactly",
         caseSensitive: true,
@@ -181,6 +211,9 @@
           node.setAttribute('data-annotation', JSON.stringify(annotation));
           node.setAttribute('data-annotation-id', annotation.id);
           node.setAttribute('data-annotation-text', annotation.text);
+          $(node).hover(function () {
+            showAnnotationContextButtons(annotation.id);
+          }, hideAnnotationContextButtons);
         },
         done: function () {
           $context.find('mark').each(function () {
@@ -194,7 +227,49 @@
   }
 
   /**
-   * Reposition the rendered buttons
+   * Show the annotation context buttons
+   * @param annotationId
+   */
+  function showAnnotationContextButtons(annotationId) {
+    // Do not show them when working
+    if (annotationsData.working || annotationContextData.working) {
+      return;
+    }
+
+    clearTimeout(hideAnnotationContextButtonsTimeout);
+    const $mark = $('mark[data-annotation-id="' + annotationId + '"]').last();
+    const $noteButton = $annotationContextButtons.find('.annotation-note-button');
+
+    annotationContextData.id = annotationId;
+
+    if ($mark.hasClass('mark')) {
+      annotationContextData.current = 'mark';
+      $noteButton.hide();
+    } else {
+      annotationContextData.current = 'note';
+      $noteButton.find('.note-count').html(" 1"); // Todo: set actual value once we support discussions
+      $noteButton.show();
+    }
+
+    let obj = $mark[0];
+    let left = 0, top = obj.offsetHeight;
+
+    // noinspection JSAssignmentUsedAsCondition This is the correct assignment for this loop
+    do {
+      left += obj.offsetLeft;
+      top += obj.offsetTop;
+    } while (obj = obj.offsetParent);
+
+    $annotationContextButtons.find('.fa-spin').hide();
+    $annotationContextButtons.show();
+    $annotationContextButtons.offset({
+      left: Math.max($mark[0].getBoundingClientRect().left, left + $mark.innerWidth() - $annotationContextButtons.width()),
+      top: top
+    });
+  }
+
+  /**
+   * Reposition the rendered selection buttons
    */
   function repositionAnnotationButtons() {
     if (annotationsData.current === 'text') {
@@ -207,11 +282,20 @@
   }
 
   /**
+   * Reposition the rendered context buttons
+   */
+  function repositionAnnotationContextButtons() {
+    if (annotationContextData.current !== null && annotationContextData.id !== 0) {
+      showAnnotationContextButtons(annotationContextData.id);
+    }
+  }
+
+  /**
    * Render an annotation button for a context header
    */
   function renderAnnotationButtonForHeader() {
     // Don't do anything while working
-    if (annotationsData.working) {
+    if (annotationsData.working || annotationContextData.working) {
       return;
     }
 
@@ -268,7 +352,7 @@
     }
 
     // Don't continue while working
-    if (annotationsData.working) {
+    if (annotationsData.working || annotationContextData.working) {
       return;
     }
 
@@ -304,6 +388,13 @@
 
     // Clear hide timeout
     clearTimeout(hideAnnotationsButtonTimeout);
+
+    // Remove context buttons if any
+    clearTimeout(hideAnnotationContextButtonsTimeout);
+    annotationContextData.current = null;
+    annotationContextData.id = 0;
+    annotationContextData.onButton = false;
+    hideAnnotationContextButtons();
 
     // Find hidden markerElement position http://www.quirksmode.org/js/findpos.html
     let obj = hiddenMarkerElement;
@@ -393,7 +484,7 @@
   }
 
   /**
-   * Remove the annotation button, if any
+   * Remove the annotation buttons, if any
    */
   function hideAnnotationButtons() {
     clearTimeout(hideAnnotationsButtonTimeout);
@@ -412,12 +503,42 @@
       if (annotationsData.current === 'text'
           && annotationsData.selectedText !== window.getSelection().toString().trim()) {
         doHide();
+        return;
       }
 
       if (annotationsData.current === 'header') {
         hideAnnotationsButtonTimeout = setTimeout(function () {
           annotationsData.current = null;
-          hideAnnotationButtons()
+          hideAnnotationButtons();
+        }, 2000);
+        return;
+      }
+
+      doHide();
+    }
+  }
+
+  /**
+   * Remove the annotation context buttons, if any
+   */
+  function hideAnnotationContextButtons() {
+    clearTimeout(hideAnnotationContextButtonsTimeout);
+    if ($annotationContextButtons && !mouseDown) {
+      const doHide = function () {
+        $annotationContextButtons.hide();
+        annotationContextData.current = null;
+        annotationContextData.id = 0;
+      };
+
+      if (annotationContextData.onButton || annotationContextData.working) {
+        hideAnnotationContextButtonsTimeout = setTimeout(hideAnnotationContextButtons, 500);
+        return;
+      }
+
+      if (annotationContextData.current !== null) {
+        hideAnnotationContextButtonsTimeout = setTimeout(function () {
+          annotationContextData.current = null;
+          hideAnnotationContextButtons();
         }, 2000);
         return;
       }
@@ -497,6 +618,9 @@
         });
   }
 
+  /**
+   * Save a new mark annotation
+   */
   function saveMarkAnnotation() {
     $annotationsButtons.find('button').prop('disabled', true);
     $annotationsButtons.find('.fa-flag').hide();
@@ -539,5 +663,47 @@
           $annotationsButtons.find('.fa-spin').hide();
           $annotationsButtons.find('button').prop('disabled', false);
         })
+  }
+
+  /**
+   * Remove the selected annotation
+   */
+  function removeAnnotation() {
+    $annotationContextButtons.find('button').prop('disabled', true);
+    $annotationContextButtons.find('.fa-times').hide();
+    $annotationContextButtons.find('.fa-spin').show();
+
+    // Update state
+    annotationContextData.working = true;
+    annotationContextData.onButton = false;
+
+    // Generate request
+    let removeId = annotationContextData.id;
+    $.ajax(
+        {
+          type: 'DELETE',
+          url: Routing.generate('app_annotation_remove', {
+            _studyArea: studyAreaId,
+            concept: conceptId,
+            annotation: removeId
+          }),
+        })
+        .done(function () {
+          $('mark[data-annotation-id="' + removeId + '"]').contents()
+              .unwrap('mark[data-annotation-id="' + removeId + '"]');
+          annotationContextData.id = 0;
+          annotationContextData.current = null;
+        })
+        .fail(function (err) {
+          console.error("Error removing annotation", err);
+          $failedModal.modal();
+        })
+        .always(function () {
+          annotationContextData.working = false;
+          $('[data-toggle="tooltip"]').tooltip('hide');
+          $annotationContextButtons.find('button').prop('disabled', false);
+          $annotationContextButtons.find('.fa-times').show();
+          $annotationContextButtons.find('.fa-spin').hide();
+        });
   }
 }(window.annotations = window.annotations || {}, $));
