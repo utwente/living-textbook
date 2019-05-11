@@ -21,7 +21,7 @@
 
 {% block content %}
   {% import '_data/_data_templates.html.twig' as macros %}
-  {% import '_macro/_annotations.html.twig' as annotations %}
+  {% from '_macro/_annotations.html.twig' import all as annotations %}
   <div class="annotations-container"
        data-annotations-study-area-id="{{ concept.studyArea.id }}"
        data-annotations-concept-id="{{ concept.id }}">
@@ -39,9 +39,6 @@
     {{ macros.data_incoming_relations(concept.incomingRelations) }}
     {{ macros.data_learning_paths(learningPaths) }}
 
-    {{ annotations.createButtons() }}
-    {{ annotations.contextButtons() }}
-    {{ annotations.addPrototype() }}
-    {{ annotations.failedModal() }}
+    {{ annotations() }}
   </div>
 {% endblock %}

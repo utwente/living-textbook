@@ -160,12 +160,34 @@ class Annotation
   /**
    * @return int
    *
-   * @JMSA\VirtualProperty("user")
+   * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
   public function getUserId(): int
   {
     return $this->user->getId();
+  }
+
+  /**
+   * @return string
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\Expose()
+   */
+  public function getUserName(): string
+  {
+    return $this->user->getDisplayName();
+  }
+
+  /**
+   * @return DateTime
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\Expose()
+   */
+  public function getAuthoredTime(): DateTime
+  {
+    return $this->createdAt;
   }
 
   /**

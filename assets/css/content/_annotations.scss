@@ -26,8 +26,28 @@ $note-color: #91ff6d;
       }
     }
 
-    .annotations-selected-text {
-      white-space: pre-wrap;
+    &.add {
+      .annotations-selected-text {
+        white-space: pre-wrap;
+      }
+    }
+  }
+
+  .annotations-note {
+    display: none;
+
+    .author-information {
+      font-size: 0.75rem;
+    }
+
+    .card-body, .card-header {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+
+  .annotations-note-container {
+    .annotations-note {
+      display: block;
     }
   }
 

@@ -1,4 +1,4 @@
-{% macro createButtons() %}
+{% macro _createButtons() %}
   <div class="annotations-buttons">
     <button class="btn btn-dark annotations-button-text" data-toggle="tooltip" title="{{ 'annotations.create'|trans }}">
       <i class="fa fa-fw fa-comments"></i>
@@ -10,7 +10,7 @@
   </div>
 {% endmacro %}
 
-{% macro contextButtons() %}
+{% macro _contextButtons() %}
   <div class="annotation-context-buttons">
     <button class="btn btn-dark annotation-note-button"
             data-toggle="tooltip" title="{{ 'annotations.count'|trans }}">
@@ -24,8 +24,8 @@
   </div>
 {% endmacro %}
 
-{% macro addPrototype() %}
-  <div class="modal fade annotations-modal" tabindex="-1" role="dialog">
+{% macro _addModal() %}
+  <div class="modal fade annotations-modal add" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -61,7 +61,52 @@
   </div>
 {% endmacro %}
 
-{% macro failedModal() %}
+{% macro _notesModal() %}
+  <div class="modal fade annotations-modal notes" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ 'annotations.note'|trans }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form> {# Keep form here for nice label formatting #}
+            <div class="row">
+              <label class="col-form-label col-12">{{ 'annotations.annotation'|trans }}</label>
+              <div class="col-12" id="note-text"></div>
+            </div>
+            <div class="row">
+              <label class="col-form-label col-12">{{ 'annotations.discussion'|trans }}</label>
+              <div class="col-12 annotations-note-container"></div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-danger annotations-close" data-dismiss="modal">
+            <i class="fa fa-fw fa-times"></i> {{ 'general.close'|trans }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro _notePrototype() %}
+  <div class="annotations-note">
+    <div class="card">
+      <div class="card-header author-information">
+        <span class="author"></span> @ <span class="authored-time"></span>
+      </div>
+      <div class="card-body">
+        <p class="card-text note"></p>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro _failedModal() %}
   <div class="modal fade failed-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -81,4 +126,14 @@
       </div>
     </div>
   </div>
+{% endmacro %}
+
+{% macro all() %}
+  {% import _self as annotations %}
+  {{ annotations._createButtons() }}
+  {{ annotations._contextButtons() }}
+  {{ annotations._addModal() }}
+  {{ annotations._notesModal() }}
+  {{ annotations._notePrototype() }}
+  {{ annotations._failedModal() }}
 {% endmacro %}

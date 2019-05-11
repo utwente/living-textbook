@@ -27,6 +27,7 @@
     current: null,
     working: false,
     onButton: false,
+    context: null,
     id: 0
   };
 
@@ -36,8 +37,10 @@
   let hiddenMarkerElement, markerId = "sel_" + new Date().getTime() + "_" + Math.random().toString().substr(2);
   let hideAnnotationsButtonTimeout = null, hideAnnotationContextButtonsTimeout = null;
 
-  /** Annotations modal **/
-  let $annotationsModal = null;
+  /** Annotations modals **/
+  let $addModal = null;
+  let $notesModal = null;
+  let $noteProto = null;
   let $failedModal = null;
 
   /**
@@ -66,9 +69,19 @@
       console.error('Annotation discuss button not found!');
       return;
     }
-    $annotationsModal = $annotationsContainer.find('.annotations-modal').first();
-    if ($annotationsModal.length === 0) {
-      console.error('Annotation modal not found!');
+    $addModal = $annotationsContainer.find('.annotations-modal.add').first();
+    if ($addModal.length === 0) {
+      console.error('Add modal not found!');
+      return;
+    }
+    $notesModal = $annotationsContainer.find('.annotations-modal.notes').first();
+    if ($notesModal.length === 0) {
+      console.error('Notes modal not found!');
+      return;
+    }
+    $noteProto = $annotationsContainer.find('.annotations-note').first();
+    if ($noteProto.length === 0) {
+      console.error('Note prototype not found!');
       return;
     }
     $failedModal = $annotationsContainer.find('.failed-modal').first();
@@ -112,7 +125,7 @@
         }, function () {
           annotationsData.onButton = false;
         });
-    $annotationsButtons.find('.annotations-button-text').on('click', openTextAnnotationModel);
+    $annotationsButtons.find('.annotations-button-text').on('click', openTextAnnotationModal);
     $annotationsButtons.find('.annotations-button-mark').on('click', saveMarkAnnotation);
 
     // Register events on the annotation context buttons
@@ -126,12 +139,12 @@
         }, function () {
           annotationContextData.onButton = false;
         });
-    // $annotationContextButtons.find('.annotation-note-button').on('click', openAnnotationNotes);
+    $annotationContextButtons.find('.annotation-note-button').on('click', openNotesModal);
     $annotationContextButtons.find('.annotation-remove-button').on('click', removeAnnotation);
 
     // Register events on the annotation modal
-    $annotationsModal.find('button.annotations-save').on('click', saveTextAnnotation);
-    $annotationsModal.find('button.annotations-cancel').on('click', function () {
+    $addModal.find('button.annotations-save').on('click', saveTextAnnotation);
+    $addModal.find('button.annotations-cancel').on('click', function () {
       annotationsData.working = false;
       repositionAnnotationButtons();
     });
@@ -242,6 +255,7 @@
 
     annotationContextData.id = annotationId;
 
+    annotationContextData.context = $mark.data('annotation');
     if ($mark.hasClass('mark')) {
       annotationContextData.current = 'mark';
       $noteButton.hide();
@@ -550,9 +564,9 @@
   /**
    * Add a new annotation at the current selection
    */
-  function openTextAnnotationModel() {
+  function openTextAnnotationModal() {
     // Update text field in modal
-    let $selectedTextField = $annotationsModal.find('.annotations-selected-text');
+    let $selectedTextField = $addModal.find('.annotations-selected-text');
     if (annotationsData.containsText) {
       $selectedTextField.html(annotationsData.selectedText);
     } else {
@@ -564,13 +578,48 @@
     annotationsData.onButton = false;
 
     // Focus and show
-    $annotationsModal.find('textarea#annotation').val('');
-    $annotationsModal.find('.fa-plus').show();
-    $annotationsModal.find('.fa-spin').hide();
-    $annotationsModal.one('shown.bs.modal', function () {
-      $annotationsModal.find('textarea').first().focus();
+    $addModal.find('textarea#annotation').val('');
+    $addModal.find('.fa-plus').show();
+    $addModal.find('.fa-spin').hide();
+    $addModal.one('shown.bs.modal', function () {
+      $addModal.find('textarea').first().focus();
     });
-    $annotationsModal.modal({
+    $addModal.modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+  }
+
+  /**
+   * Opens the notes modal
+   */
+  function openNotesModal() {
+    const context = annotationContextData.context;
+
+    // Update state
+    annotationContextData.working = true;
+    annotationContextData.onButton = false;
+
+    // Set selection in modal
+    let $textContainer = $notesModal.find('#note-text');
+    $textContainer.text(context.selectedText);
+
+    // Clear existing notes in the modal
+    let $container = $notesModal.find('.annotations-note-container');
+    $container.empty();
+
+    // Load annotation data in modal
+    let note = $noteProto.clone();
+    note.find('.author').text(context.userName);
+    note.find('.authored-time').text(new Date(context.authoredTime).toLocaleString());
+    note.find('.note').text(context.text);
+    $container.append(note);
+
+    // Show modal
+    $notesModal.one('hide.bs.modal', function () {
+      annotationContextData.working = false;
+    });
+    $notesModal.modal({
       backdrop: 'static',
       keyboard: false
     });
@@ -582,7 +631,7 @@
    * Note that the current selection is no longer set in this method!
    */
   function saveTextAnnotation() {
-    let $modalButtons = $annotationsModal.find('button');
+    let $modalButtons = $addModal.find('button');
     $modalButtons.prop('disabled', true);
     $modalButtons.find('.fa-plus').hide();
     $modalButtons.find('.fa-spin').show();
@@ -593,7 +642,7 @@
           type: "POST",
           url: Routing.generate('app_annotation_add', {_studyArea: studyAreaId, concept: conceptId}),
           data: {
-            'text': $annotationsModal.find('textarea#annotation').val(),
+            'text': $addModal.find('textarea#annotation').val(),
             'context': annotationsData.context,
             'start': annotationsData.start,
             'end': annotationsData.end,
@@ -602,7 +651,7 @@
           }
         })
         .done(function (annotation) {
-          $annotationsModal.modal('hide');
+          $addModal.modal('hide');
           hideAnnotationButtons();
           renderAnnotations([annotation]);
         })
