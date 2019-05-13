@@ -7,6 +7,7 @@ use App\Export\Provider\ConceptIdNameProvider;
 use App\Export\Provider\LinkedSimpleNodeProvider;
 use App\Export\Provider\RdfProvider;
 use App\Export\Provider\RelationProvider;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
@@ -40,7 +41,7 @@ class ExportService
       $providerName = strtolower($provider->getName());
       $choiceName   = 'data.download.provider.' . $providerName;
       if (array_key_exists($choiceName, $data)) {
-        throw new \InvalidArgumentException("Non-unique download providers registered");
+        throw new InvalidArgumentException("Non-unique download providers registered");
       }
       $data[$choiceName] = $key;
     }
@@ -76,7 +77,7 @@ class ExportService
   public function export(StudyArea $studyArea, string $exportProvider): Response
   {
     if (!array_key_exists($exportProvider, $this->providers)) {
-      throw new \InvalidArgumentException(sprintf("Requested provider %s is not registered!", $exportProvider));
+      throw new InvalidArgumentException(sprintf("Requested provider %s is not registered!", $exportProvider));
     }
 
     return $this->providers[$exportProvider]->export($studyArea);
@@ -90,9 +91,11 @@ class ExportService
    */
   public static function contentDisposition(Response $response, string $filename): void
   {
+    // Set locale required for the iconv conversion to work correctly
+    setlocale(LC_CTYPE, 'en_US.UTF-8');
     $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
         ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        mb_strtolower(preg_replace('/[^\p{L}\p{N}.]/u', '_', $filename))
+        mb_strtolower(preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
     ));
   }
 }
