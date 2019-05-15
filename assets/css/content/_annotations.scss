@@ -33,7 +33,7 @@ $note-color: #91ff6d;
     }
   }
 
-  .annotations-note {
+  .annotations-note, .annotations-note-collection {
     display: none;
 
     .author-information {
@@ -46,22 +46,44 @@ $note-color: #91ff6d;
   }
 
   .annotations-note-container {
-    .annotations-note {
+    .annotations-note, .annotations-note-collection {
       display: block;
     }
-  }
 
-  mark {
-    padding: 0.25rem 0;
-    border-radius: 0.25rem;
-
-    &.mark {
-      background-color: $mark-color;
-    }
-
-    &.note {
-      background-color: $note-color;
+    .card {
+      &:not(:last-of-type) {
+        margin-bottom: 1rem;
+      }
     }
   }
 
+  .annotations-outdated-button {
+    display: none;
+    text-align: right;
+
+    &[data-annotations-context] {
+      display: block;
+    }
+
+    .btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.2;
+      border-radius: 0.2rem;
+      border: none;
+    }
+  }
+}
+
+mark {
+  padding: 0.25rem 0;
+  border-radius: 0.25rem;
+
+  &.mark {
+    background-color: $mark-color;
+  }
+
+  &.note {
+    background-color: $note-color;
+  }
 }

@@ -1,6 +1,6 @@
 {% macro _createButtons() %}
   <div class="annotations-buttons">
-    <button class="btn btn-dark annotations-button-text" data-toggle="tooltip" title="{{ 'annotations.create'|trans }}">
+    <button class="btn btn-dark annotations-button-text" data-toggle="tooltip" title="{{ 'annotations.note'|trans }}">
       <i class="fa fa-fw fa-comments"></i>
     </button>
     <button class="btn btn-dark annotations-button-mark" data-toggle="tooltip" title="{{ 'annotations.mark'|trans }}">
@@ -74,7 +74,7 @@
         <div class="modal-body">
           <form> {# Keep form here for nice label formatting #}
             <div class="row">
-              <label class="col-form-label col-12">{{ 'annotations.annotation'|trans }}</label>
+              <label class="col-form-label col-12">{{ 'annotations.selected'|trans }}</label>
               <div class="col-12" id="note-text"></div>
             </div>
             <div class="row">
@@ -103,6 +103,64 @@
         <p class="card-text note"></p>
       </div>
     </div>
+  </div>
+{% endmacro %}
+
+{% macro _noteCollectionModal() %}
+  <div class="modal fade annotations-modal collection" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title normal">{{ 'annotations.annotations'|trans }}</h5>
+          <h5 class="modal-title outdated">{{ 'annotations.outdated-annotations'|trans }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body annotations-note-container"></div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-danger annotations-close" data-dismiss="modal">
+            <i class="fa fa-fw fa-times"></i> {{ 'general.close'|trans }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro _collectionNotePrototype() %}
+  <div class="card annotations-note-collection">
+    <div class="card-header">
+      <span class="note-header">{{ 'annotations.note'|trans }}</span>
+      <span class="mark-header">{{ 'annotations.mark'|trans }}</span>
+    </div>
+    <div class="card-body">
+      <form> {# Keep form here for nice label formatting #}
+        <div class="row">
+          <label class="col-form-label col-12">{{ 'annotations.selected'|trans }}</label>
+          <div class="col-12 selected-text"></div>
+        </div>
+        <div class="row">
+          <label class="col-form-label col-12">{{ 'annotations.discussion'|trans }}</label>
+          <div class="col-12 annotations-note-container"></div>
+        </div>
+        <div class="mt-2"></div>
+        <div class="float-right" role="group" aria-label="Action bar">
+          <button class="btn btn-outline-danger">
+            <i class="fa fa-fw fa-trash"></i> Remove
+          </button>
+        </div>
+        <div class="clearfix"></div>
+      </form>
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro _outdatedButtonPrototype() %}
+  <div class="annotations-outdated-button">
+    <button class="btn btn-outline-secondary">
+      <i class="fa fa-fw fa-exclamation-triangle"></i> {{ 'annotations.outdated-button'|trans }}
+    </button>
   </div>
 {% endmacro %}
 
@@ -135,5 +193,8 @@
   {{ annotations._addModal() }}
   {{ annotations._notesModal() }}
   {{ annotations._notePrototype() }}
+  {{ annotations._noteCollectionModal() }}
+  {{ annotations._collectionNotePrototype() }}
+  {{ annotations._outdatedButtonPrototype() }}
   {{ annotations._failedModal() }}
 {% endmacro %}

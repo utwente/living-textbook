@@ -41,6 +41,9 @@
   let $addModal = null;
   let $notesModal = null;
   let $noteProto = null;
+  let $noteCollectionModal = null;
+  let $collectionNoteProto = null;
+  let $outdatedButtonProto = null;
   let $failedModal = null;
 
   /**
@@ -82,6 +85,21 @@
     $noteProto = $annotationsContainer.find('.annotations-note').first();
     if ($noteProto.length === 0) {
       console.error('Note prototype not found!');
+      return;
+    }
+    $noteCollectionModal = $annotationsContainer.find('.annotations-modal.collection').first();
+    if ($noteCollectionModal.length === 0) {
+      console.error('Note collection modal not found!');
+      return;
+    }
+    $collectionNoteProto = $annotationsContainer.find('.annotations-note-collection').first();
+    if ($collectionNoteProto.length === 0) {
+      console.error('Collection note prototype not found!');
+      return;
+    }
+    $outdatedButtonProto = $annotationsContainer.find('.annotations-outdated-button').first();
+    if ($outdatedButtonProto.length === 0) {
+      console.error('Outdated button prototype not found!');
       return;
     }
     $failedModal = $annotationsContainer.find('.failed-modal').first();
@@ -182,10 +200,9 @@
     // Loop the annotations
     for (let i = 0; i < annotations.length; i++) {
       const annotation = annotations[i];
-      console.info("Rendering annotation", annotation);
-
       if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
         // todo Header annotation
+        console.log("Header annotation", annotation);
       } else {
         renderTextAnnotation(annotation);
       }
@@ -206,10 +223,27 @@
 
     // Check annotation version
     if (Date.parse($context.data('annotations-version')) > Date.parse(annotation.version)) {
-      console.log("Outdated comment!");
+      console.log("Rendering outdated annotation", annotation);
 
-      // todo: render outdated annotations at top?
+      // Find whether there already is a notification rendered
+      const $container = $context.parent();
+      let $outdatedNotification = $container.find('div.annotations-outdated-button[data-annotations-context="' + annotation.context + '"]');
+      if ($outdatedNotification.length === 0) {
+        // Create and insert node
+        $outdatedNotification = $outdatedButtonProto.clone();
+        $outdatedNotification.attr('data-annotations-context', annotation.context);
+        $outdatedNotification.insertAfter($container.find('h2[data-annotations-context="' + annotation.context + '"]').first());
+        $outdatedNotification.on('click', openOutdatedAnnotationsModal);
+      }
+
+      // Update the annotation context
+      let annotationData = $outdatedNotification.data('annotations') || [];
+      annotationData.push(annotation);
+      $outdatedNotification.data('annotations', annotationData);
+
     } else {
+      console.info("Rendering text annotation", annotation);
+
       $context.markRanges([{
         start: annotation.start,
         length: annotation.end - annotation.start
@@ -591,6 +625,20 @@
   }
 
   /**
+   * Create a note element
+   * @param context
+   * @returns {*}
+   */
+  function createNote(context) {
+    const $note = $noteProto.clone();
+    $note.find('.author').text(context.userName);
+    $note.find('.authored-time').text(new Date(context.authoredTime).toLocaleString());
+    $note.find('.note').text(context.text);
+
+    return $note;
+  }
+
+  /**
    * Opens the notes modal
    */
   function openNotesModal() {
@@ -609,17 +657,58 @@
     $container.empty();
 
     // Load annotation data in modal
-    let note = $noteProto.clone();
-    note.find('.author').text(context.userName);
-    note.find('.authored-time').text(new Date(context.authoredTime).toLocaleString());
-    note.find('.note').text(context.text);
-    $container.append(note);
+    $container.append(createNote(context));
 
     // Show modal
     $notesModal.one('hide.bs.modal', function () {
       annotationContextData.working = false;
     });
     $notesModal.modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+  }
+
+  /**
+   * Show the outdated annotations modal, which displays all outdated annotations
+   */
+  function openOutdatedAnnotationsModal() {
+    let $button = $(this);
+    let annotationsData = $button.data('annotations').sort(function (annotation) {
+      return typeof annotation.text != "undefined";
+    });
+
+    // Clear current annotations from modal
+    let $modalBody = $noteCollectionModal.find('.modal-body');
+    $modalBody.empty();
+
+    // Place the annotations in the modal
+    for (let i = 0; i < annotationsData.length; i++) {
+      const annotation = annotationsData[i];
+      const $annotationElement = $collectionNoteProto.clone();
+      if (typeof annotation.text == "undefined") {
+        $annotationElement.find('.note-header').remove();
+        $annotationElement.find('.annotations-note-container').parent().remove();
+      } else {
+        $annotationElement.find('.mark-header').remove();
+
+        // Add textual notes
+        const $container = $annotationElement.find('.annotations-note-container');
+        $container.append(createNote(annotation));
+      }
+
+      $annotationElement.find('.selected-text').text(annotation.selectedText);
+      $annotationElement.find('button').on('click', function () {
+        // Todo: implement removal of outdated annotation
+        console.info("remove outdated annotation", annotation.id);
+      });
+
+      $modalBody.append($annotationElement);
+    }
+
+    $noteCollectionModal.find('.modal-title.outdated').show();
+    $noteCollectionModal.find('.modal-title.normal').hide();
+    $noteCollectionModal.modal({
       backdrop: 'static',
       keyboard: false
     });

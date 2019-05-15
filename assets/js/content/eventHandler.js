@@ -23,6 +23,19 @@ require('../event/eventTypes');
       case types.TRACKING_CONSENT_UPDATED:
         onTrackingConsentUpdated(data);
         break;
+      case types.CHECK_DOUBLE_COLUMN:
+      case types.PAGE_LOADED:
+      case types.PAGE_SUBMIT:
+      case types.TOGGLE_CONCEPT_BROWSER:
+      case types.CONCEPT_SELECTED:
+      case types.SHOW_CONCEPT:
+      case types.OPEN_LEARNING_PATH_BROWSER:
+      case types.CLOSE_LEARNING_PATH_BROWSER:
+      case types.NAVIGATE_LEARNING_PATH:
+      case types.OPEN_CONCEPT_FROM_LEARNING_PATH:
+      case types.TRACKING_CONSENT:
+        // These are not handled from here, but do trigger the handler
+        break;
       default:
         console.warn('Unknown event!', type);
     }
