@@ -13,6 +13,20 @@ abbreviation:
   removed: 'Abbreviation "%item%" has been removed successfully.'
   updated: 'Abbreviation "%item%" has been successfully updated.'
 
+annotations:
+  annotation: "Annotation"
+  annotations: "Annotations"
+  count: "Count"
+  create-mark: "Create mark"
+  create-note: "Create note"
+  discussion: "Discussion"
+  note: "Note"
+  mark: "Mark"
+  outdated-annotations: "Outdated annotations"
+  outdated-button: "You have outdated annotations"
+  remove: "Remove"
+  selected: "Selected text"
+
 app:
   dashboard: 'Dashboard'
   delete-notice: 'If you create your private study area in this application, please note that these might be deleted after 6 months of inactivity'
