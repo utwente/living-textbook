@@ -1,7 +1,7 @@
 {% macro _createButtons() %}
   <div class="annotations-buttons">
     <button class="btn btn-dark annotations-button-text" data-toggle="tooltip" title="{{ 'annotations.note'|trans }}">
-      <i class="fa fa-fw fa-comments"></i>
+      <i class="fa fa-fw fa-comment"></i>
     </button>
     <button class="btn btn-dark annotations-button-mark" data-toggle="tooltip" title="{{ 'annotations.mark'|trans }}">
       <i class="fa fa-fw fa-flag"></i>
@@ -20,6 +20,15 @@
             data-toggle="tooltip" title="{{ 'annotations.remove'|trans }}">
       <i class="fa fa-fw fa-times"></i>
       <i class="fa fa-fw fa-spinner fa-spin"></i>
+    </button>
+  </div>
+{% endmacro %}
+
+{% macro _headerContextButton() %}
+  <div class="annotation-header-context-button">
+    <button class="btn btn-dark annotation-header-note-button"
+            data-toggle="tooltip" title="{{ 'annotations.count'|trans }}">
+      <i class="fa fa-fw fa-comments"></i><span class="note-count"></span>
     </button>
   </div>
 {% endmacro %}
@@ -158,7 +167,7 @@
 {% endmacro %}
 
 {% macro _outdatedButtonPrototype() %}
-  <div class="annotations-outdated-button">
+  <div class="annotations-outdated-button remove-on-empty">
     <button class="btn btn-outline-secondary">
       <i class="fa fa-fw fa-exclamation-triangle"></i> {{ 'annotations.outdated-button'|trans }}
     </button>
@@ -191,6 +200,7 @@
   {% import _self as annotations %}
   {{ annotations._createButtons() }}
   {{ annotations._contextButtons() }}
+  {{ annotations._headerContextButton() }}
   {{ annotations._addModal() }}
   {{ annotations._notesModal() }}
   {{ annotations._notePrototype() }}

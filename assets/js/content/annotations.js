@@ -30,12 +30,16 @@
     context: null,
     id: 0
   };
+  const annotationHeaderContextData = {
+    onButton: false
+  };
 
   /** Annotations button */
-  let $annotationsButtons = null, $annotationContextButtons = null;
+  let $annotationsButtons = null, $annotationContextButtons = null, $annotationHeaderContextButton = null;
   const markerTextChar = "\ufeff";
   let hiddenMarkerElement, markerId = "sel_" + new Date().getTime() + "_" + Math.random().toString().substr(2);
-  let hideAnnotationsButtonTimeout = null, hideAnnotationContextButtonsTimeout = null;
+  let hideAnnotationsButtonTimeout = null, hideAnnotationContextButtonsTimeout = null,
+      hideAnnotationHeaderContextButtonsTimeout = null;
 
   /** Annotations modals **/
   let $addModal = null;
@@ -69,7 +73,12 @@
     }
     $annotationContextButtons = $annotationsContainer.find('.annotation-context-buttons').first();
     if ($annotationContextButtons.length === 0) {
-      console.error('Annotation discuss button not found!');
+      console.error('Annotation context button not found!');
+      return;
+    }
+    $annotationHeaderContextButton = $annotationsContainer.find('.annotation-header-context-button').first();
+    if ($annotationHeaderContextButton.length === 0) {
+      console.error('Annotation header context button not found!');
       return;
     }
     $addModal = $annotationsContainer.find('.annotations-modal.add').first();
@@ -160,6 +169,21 @@
     $annotationContextButtons.find('.annotation-note-button').on('click', openNotesModal);
     $annotationContextButtons.find('.annotation-remove-button').on('click', removeAnnotation);
 
+    // Register events on the annotation header context buttons
+    $annotationHeaderContextButton
+        .on('mousedown', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        })
+        .hover(function () {
+          annotationHeaderContextData.onButton = true;
+        }, function () {
+          annotationHeaderContextData.onButton = false;
+        });
+    $annotationHeaderContextButton.find('.annotation-header-note-button').on('click', function () {
+      openCollectionAnnotationsModal($(this), false);
+    });
+
     // Register events on the annotation modal
     $addModal.find('button.annotations-save').on('click', saveTextAnnotation);
     $addModal.find('button.annotations-cancel').on('click', function () {
@@ -201,12 +225,97 @@
     for (let i = 0; i < annotations.length; i++) {
       const annotation = annotations[i];
       if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
-        // todo Header annotation
-        console.info("Header annotation", annotation);
+        renderHeaderAnnotation(annotation);
       } else {
         renderTextAnnotation(annotation);
       }
     }
+  }
+
+  function rerenderHeaderAnnotations(context, annotations) {
+    const $context = $('[data-annotations-contains-text="false"][data-annotations-context="' + context + '"]');
+    if ($context.length === 0) {
+      console.warn('Annotation context not found');
+      return;
+    }
+
+    console.info('Rerendering header annotations');
+
+    // Remove all markup
+    $context.removeClass('mark');
+    $context.removeClass('note');
+    $context.removeClass('annotated');
+    $context.data('annotations', []);
+
+    // Rerender all
+    for (let i = 0; i < annotations.length; i++) {
+      renderHeaderAnnotation(annotations[i]);
+    }
+  }
+
+  /**
+   * Render the header annotation
+   * @param annotation
+   */
+  function renderHeaderAnnotation(annotation) {
+    const $context = $('[data-annotations-contains-text="false"][data-annotations-context="' + annotation.context + '"]');
+    if ($context.length === 0) {
+      console.warn('Annotation context not found');
+      return;
+    }
+
+    console.info("Rendering header annotation", annotation);
+
+    // Update annotations data
+    const annotations = $context.data('annotations') || [];
+    annotations.push(annotation);
+    $context.data('annotations', annotations);
+
+    // Update styling, add hover
+    $context.addClass(typeof annotation.text == "undefined" ? "mark" : "note");
+    if (!$context.hasClass('annotated')) {
+      $context.addClass('annotated');
+      $context.hover(function () {
+        showAnnotationHeaderContextButton(annotation.context);
+      }, function () {
+        hideAnnotationHeaderContextButtonsTimeout = setTimeout(hideAnnotationHeaderContextButton, 200);
+      });
+    }
+  }
+
+  /**
+   * Show the annotation header context button
+   * @param context
+   */
+  function showAnnotationHeaderContextButton(context) {
+    // Do not show them when working
+    if (annotationsData.working || annotationContextData.working) {
+      return;
+    }
+
+    clearTimeout(hideAnnotationHeaderContextButtonsTimeout);
+
+    // Set data on the right places
+    const $mark = $('h2.annotated[data-annotations-context="' + context + '"]').first();
+    const $noteButton = $annotationHeaderContextButton.find('.annotation-header-note-button');
+    let annotations = $mark.data('annotations');
+    $noteButton.data('annotations', annotations);
+    $noteButton.data('annotations-context', context);
+    $noteButton.find('.note-count').html(" " + annotations.length);
+
+    let obj = $mark[0];
+    let top = obj.offsetHeight;
+
+    // noinspection JSAssignmentUsedAsCondition This is the correct assignment for this loop
+    do {
+      top += obj.offsetTop;
+    } while (obj = obj.offsetParent);
+
+    $annotationHeaderContextButton.show();
+    $annotationHeaderContextButton.offset({
+      left: $mark[0].getBoundingClientRect().left,
+      top: top
+    });
   }
 
   /**
@@ -228,18 +337,22 @@
       // Find whether there already is a notification rendered
       const $container = $context.parent();
       let $outdatedNotification = $container.find('div.annotations-outdated-button[data-annotations-context="' + annotation.context + '"]');
+      let $outdatedNotificationButton = $outdatedNotification.find('button');
       if ($outdatedNotification.length === 0) {
         // Create and insert node
         $outdatedNotification = $outdatedButtonProto.clone();
         $outdatedNotification.attr('data-annotations-context', annotation.context);
+        $outdatedNotificationButton = $outdatedNotification.find('button');
+        $outdatedNotificationButton.on('click', function () {
+          openCollectionAnnotationsModal($(this), true);
+        });
         $outdatedNotification.insertAfter($container.find('h2[data-annotations-context="' + annotation.context + '"]').first());
-        $outdatedNotification.on('click', openCollectionAnnotationsModal);
       }
 
       // Update the annotation context
-      let annotationData = $outdatedNotification.data('annotations') || [];
+      let annotationData = $outdatedNotificationButton.data('annotations') || [];
       annotationData.push(annotation);
-      $outdatedNotification.data('annotations', annotationData);
+      $outdatedNotificationButton.data('annotations', annotationData);
 
     } else {
       console.info("Rendering text annotation", annotation);
@@ -558,7 +671,7 @@
         hideAnnotationsButtonTimeout = setTimeout(function () {
           annotationsData.current = null;
           hideAnnotationButtons();
-        }, 2000);
+        }, 500);
         return;
       }
 
@@ -587,7 +700,26 @@
         hideAnnotationContextButtonsTimeout = setTimeout(function () {
           annotationContextData.current = null;
           hideAnnotationContextButtons();
-        }, 2000);
+        }, 500);
+        return;
+      }
+
+      doHide();
+    }
+  }
+
+  /**
+   * Remove the annotation header context button, if any
+   */
+  function hideAnnotationHeaderContextButton() {
+    clearTimeout(hideAnnotationHeaderContextButtonsTimeout);
+    if ($annotationHeaderContextButton && !mouseDown) {
+      const doHide = function () {
+        $annotationHeaderContextButton.hide();
+      };
+
+      if (annotationHeaderContextData.onButton || (annotationsData.onButton && annotationsData.current === 'header')) {
+        hideAnnotationHeaderContextButtonsTimeout = setTimeout(hideAnnotationHeaderContextButton, 500);
         return;
       }
 
@@ -672,8 +804,7 @@
   /**
    * Show the outdated annotations modal, which displays all outdated annotations
    */
-  function openCollectionAnnotationsModal(outdated) {
-    const $button = $(this);
+  function openCollectionAnnotationsModal($button, isOutdatedNotes) {
     const annotationsData = $button.data('annotations').sort(function (annotation) {
       return typeof annotation.text != "undefined";
     });
@@ -697,7 +828,11 @@
         $container.append(createNote(annotation));
       }
 
-      $annotationElement.find('.selected-text').text(annotation.selectedText);
+      if (typeof annotation.selectedText !== 'undefined' && annotation.selectedText.length > 0) {
+        $annotationElement.find('.selected-text').text(annotation.selectedText);
+      } else {
+        $annotationElement.find('.selected-text').closest('.row').remove();
+      }
       $annotationElement.find('button').on('click', function (e) {
         e.preventDefault();
         removeAnnotationFromCollection($button, $(this), annotation.id);
@@ -706,7 +841,7 @@
       $modalBody.append($annotationElement);
     }
 
-    if (outdated) {
+    if (isOutdatedNotes === true) {
       $noteCollectionModal.find('.modal-title.outdated').show();
       $noteCollectionModal.find('.modal-title.normal').hide();
     } else {
@@ -888,12 +1023,21 @@
             return annotation.id !== removeId;
           });
 
-          if (newAnnotations.length === 0) {
-            // Close modal and remove container when all annotations are removed
-            $collectionContainer.remove();
-            $noteCollectionModal.modal('hide');
+          // Rerender in case of header
+          if ($collectionContainer.hasClass('annotation-header-note-button')) {
+            rerenderHeaderAnnotations($collectionContainer.data('annotations-context'), newAnnotations);
           } else {
             $collectionContainer.data('annotations', newAnnotations);
+          }
+
+          if (newAnnotations.length === 0) {
+            // Remove container when all annotations are removed
+            if (!$collectionContainer.hasClass('annotation-header-note-button')) {
+              $collectionContainer.closest('.remove-on-empty').remove();
+            }
+
+            // Close modal
+            $noteCollectionModal.modal('hide');
           }
         })
         .fail(function (err) {
