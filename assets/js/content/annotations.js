@@ -52,7 +52,7 @@
    */
   $(function () {
     if (!window.Selection) {
-      console.warn("Selection not available, not loading annotations");
+      console.error("Selection not available, not loading annotations");
       return;
     }
 
@@ -202,7 +202,7 @@
       const annotation = annotations[i];
       if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
         // todo Header annotation
-        console.log("Header annotation", annotation);
+        console.info("Header annotation", annotation);
       } else {
         renderTextAnnotation(annotation);
       }
@@ -223,7 +223,7 @@
 
     // Check annotation version
     if (Date.parse($context.data('annotations-version')) > Date.parse(annotation.version)) {
-      console.log("Rendering outdated annotation", annotation);
+      console.info("Rendering outdated annotation", annotation);
 
       // Find whether there already is a notification rendered
       const $container = $context.parent();
@@ -233,7 +233,7 @@
         $outdatedNotification = $outdatedButtonProto.clone();
         $outdatedNotification.attr('data-annotations-context', annotation.context);
         $outdatedNotification.insertAfter($container.find('h2[data-annotations-context="' + annotation.context + '"]').first());
-        $outdatedNotification.on('click', openOutdatedAnnotationsModal);
+        $outdatedNotification.on('click', openCollectionAnnotationsModal);
       }
 
       // Update the annotation context
@@ -672,14 +672,14 @@
   /**
    * Show the outdated annotations modal, which displays all outdated annotations
    */
-  function openOutdatedAnnotationsModal() {
-    let $button = $(this);
-    let annotationsData = $button.data('annotations').sort(function (annotation) {
+  function openCollectionAnnotationsModal(outdated) {
+    const $button = $(this);
+    const annotationsData = $button.data('annotations').sort(function (annotation) {
       return typeof annotation.text != "undefined";
     });
 
     // Clear current annotations from modal
-    let $modalBody = $noteCollectionModal.find('.modal-body');
+    const $modalBody = $noteCollectionModal.find('.modal-body');
     $modalBody.empty();
 
     // Place the annotations in the modal
@@ -698,16 +698,22 @@
       }
 
       $annotationElement.find('.selected-text').text(annotation.selectedText);
-      $annotationElement.find('button').on('click', function () {
-        // Todo: implement removal of outdated annotation
-        console.info("remove outdated annotation", annotation.id);
+      $annotationElement.find('button').on('click', function (e) {
+        e.preventDefault();
+        removeAnnotationFromCollection($button, $(this), annotation.id);
       });
 
       $modalBody.append($annotationElement);
     }
 
-    $noteCollectionModal.find('.modal-title.outdated').show();
-    $noteCollectionModal.find('.modal-title.normal').hide();
+    if (outdated) {
+      $noteCollectionModal.find('.modal-title.outdated').show();
+      $noteCollectionModal.find('.modal-title.normal').hide();
+    } else {
+      $noteCollectionModal.find('.modal-title.outdated').hide();
+      $noteCollectionModal.find('.modal-title.normal').show();
+    }
+
     $noteCollectionModal.modal({
       backdrop: 'static',
       keyboard: false
@@ -807,6 +813,8 @@
    * Remove the selected annotation
    */
   function removeAnnotation() {
+    console.info("Removing annotation", annotationContextData);
+
     $annotationContextButtons.find('button').prop('disabled', true);
     $annotationContextButtons.find('.fa-times').hide();
     $annotationContextButtons.find('.fa-spin').show();
@@ -842,6 +850,61 @@
           $annotationContextButtons.find('button').prop('disabled', false);
           $annotationContextButtons.find('.fa-times').show();
           $annotationContextButtons.find('.fa-spin').hide();
+        });
+  }
+
+  /**
+   * Remove the selected annotation from the collection
+   * @param $collectionContainer
+   * @param $button
+   * @param removeId
+   */
+  function removeAnnotationFromCollection($collectionContainer, $button, removeId) {
+    const annotationsData = $collectionContainer.data('annotations');
+    const annotation = annotationsData.filter(function (annotation) {
+      return annotation.id === removeId;
+    })[0];
+    console.info("Removing annotation from collection", annotation);
+
+    // Disable the buttons, and show the loader
+    $noteCollectionModal.find('button').prop('disabled', true);
+    $button.find('.fa-spin').addClass('show');
+    $button.find('.fa-trash').hide();
+
+    // Generate the request
+    $.ajax(
+        {
+          type: 'DELETE',
+          url: Routing.generate('app_annotation_remove', {
+            _studyArea: studyAreaId,
+            concept: conceptId,
+            annotation: removeId
+          }),
+        })
+        .done(function () {
+          // Remove the removed annotation from the view
+          $button.closest('.annotations-note-collection').remove();
+          const newAnnotations = $collectionContainer.data('annotations').filter(function (annotation) {
+            return annotation.id !== removeId;
+          });
+
+          if (newAnnotations.length === 0) {
+            // Close modal and remove container when all annotations are removed
+            $collectionContainer.remove();
+            $noteCollectionModal.modal('hide');
+          } else {
+            $collectionContainer.data('annotations', newAnnotations);
+          }
+        })
+        .fail(function (err) {
+          console.error("Error removing annotation", err);
+          $failedModal.modal();
+        })
+        .always(function () {
+          // Restore the buttons
+          $noteCollectionModal.find('button').prop('disabled', false);
+          $button.find('.fa-spin').removeClass('show');
+          $button.find('.fa-trash').show();
         });
   }
 }(window.annotations = window.annotations || {}, $));

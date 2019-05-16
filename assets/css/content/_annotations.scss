@@ -43,6 +43,16 @@ $note-color: #91ff6d;
     .card-body, .card-header {
       padding: 0.25rem 0.5rem;
     }
+
+    button {
+      .fa-spin {
+        display: none;
+
+        &.show {
+          display: inline-block;
+        }
+      }
+    }
   }
 
   .annotations-note-container {
