@@ -630,7 +630,7 @@
     let nodes = container.childNodes;
     if (nodes.length === 0) {
       return {
-        start: context.start + container.length,
+        start: context.start + (container.length !== undefined ? container.length : 0),
         found: false
       };
     }
