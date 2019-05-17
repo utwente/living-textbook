@@ -22,9 +22,13 @@
 {% block content %}
   {% import '_data/_data_templates.html.twig' as macros %}
   {% from '_macro/_annotations.html.twig' import all as annotations %}
+  {% from '_macro/_annotations.html.twig' import toggle as annotationsToggle %}
+
   <div class="annotations-container"
        data-annotations-study-area-id="{{ concept.studyArea.id }}"
        data-annotations-concept-id="{{ concept.id }}">
+    {{ annotationsToggle() }}
+
     {{ macros.data_definition(concept) }}
     {{ macros.data_introduction(concept.introduction) }}
     {{ macros.data_synonyms(concept.synonyms) }}

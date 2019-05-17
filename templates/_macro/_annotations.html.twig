@@ -211,3 +211,11 @@
   {{ annotations._outdatedButtonPrototype() }}
   {{ annotations._failedModal() }}
 {% endmacro %}
+
+{% macro toggle() %}
+  <div class="annotations-toggle">
+    <input type="checkbox" data-toggle="toggle" data-size="sm"
+           data-on="{{ 'annotations.enabled'|trans }}" data-off="{{ 'annotations.disabled'|trans }}"
+           data-onstyle="primary" data-offstyle="secondary">
+  </div>
+{% endmacro %}

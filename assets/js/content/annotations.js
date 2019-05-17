@@ -6,7 +6,8 @@
   /** Selection constants */
   const dataStudyAreaId = 'annotations-study-area-id';
   const dataConceptId = 'annotations-concept-id';
-  let $annotationsContainer = null;
+  const showAnnotationsId = 'show-annotations';
+  let $annotationsContainer = null, $annotationsToggle = null;
 
   /** State parameters */
   let studyAreaId = 0;
@@ -33,6 +34,7 @@
   const annotationHeaderContextData = {
     onButton: false
   };
+  let showAnnotations = true;
 
   /** Annotations button */
   let $annotationsButtons = null, $annotationContextButtons = null, $annotationHeaderContextButton = null;
@@ -64,6 +66,11 @@
     $annotationsContainer = $('.annotations-container').first();
     if ($annotationsContainer.length === 0) {
       console.error('Annotations container not found!');
+      return;
+    }
+    $annotationsToggle = $('.annotations-toggle').first();
+    if ($annotationsToggle.length === 0) {
+      console.error('Annotations toggle not found!');
       return;
     }
     $annotationsButtons = $annotationsContainer.find('.annotations-buttons').first();
@@ -194,9 +201,37 @@
     // Register on selectionchange event
     document.addEventListener('selectionchange', renderAnnotationButtonForSelection);
 
+    // Set annotations toggle button, based on local storage
+    const $toggleButton = $annotationsToggle.find('input[data-toggle]');
+    if (typeof (Storage) !== 'undefined') {
+      // Set state
+      showAnnotations = localStorage.getItem(showAnnotationsId + '.' + studyAreaId);
+      $toggleButton.bootstrapToggle(showAnnotations ? 'on' : 'off');
+    }
+    $toggleButton.change(toggleAnnotationVisibility);
+
     // Load current annotations from server
     loadAnnotations();
   });
+
+  /**
+   * Toggle the annotation visibility. Disabling the visibility will also disable all interaction.
+   * @param newState
+   */
+  function toggleAnnotationVisibility(newState) {
+    // Determine new state
+    showAnnotations = $annotationsToggle.find('[data-toggle]').is(':checked');
+
+    // Save state in local storage
+    if (typeof (Storage) !== 'undefined') {
+      localStorage.setItem(showAnnotationsId + '.' + studyAreaId, showAnnotations);
+    }
+
+    // Update disabled class on container
+    showAnnotations
+        ? $annotationsContainer.removeClass('annotations-disabled')
+        : $annotationsContainer.addClass('annotations-disabled');
+  }
 
   /**
    * Load all annotations for the current concept
@@ -232,6 +267,11 @@
     }
   }
 
+  /**
+   * Rerender header annotations after annotation change
+   * @param context
+   * @param annotations
+   */
   function rerenderHeaderAnnotations(context, annotations) {
     const $context = $('[data-annotations-contains-text="false"][data-annotations-context="' + context + '"]');
     if ($context.length === 0) {
@@ -288,6 +328,11 @@
    * @param context
    */
   function showAnnotationHeaderContextButton(context) {
+    // Never open when disabled
+    if (!showAnnotations) {
+      return;
+    }
+
     // Do not show them when working
     if (annotationsData.working || annotationContextData.working) {
       return;
@@ -391,6 +436,11 @@
    * @param annotationId
    */
   function showAnnotationContextButtons(annotationId) {
+    // Never open when disabled
+    if (!showAnnotations) {
+      return;
+    }
+
     // Do not show them when working
     if (annotationsData.working || annotationContextData.working) {
       return;
@@ -455,6 +505,11 @@
    * Render an annotation button for a context header
    */
   function renderAnnotationButtonForHeader() {
+    // Never open when disabled
+    if (!showAnnotations) {
+      return;
+    }
+
     // Don't do anything while working
     if (annotationsData.working || annotationContextData.working) {
       return;
@@ -503,6 +558,11 @@
    * Based on https://stackoverflow.com/questions/1589721/how-can-i-position-an-element-next-to-user-text-selection
    */
   function renderAnnotationButtonForSelection() {
+    // Never open when disabled
+    if (!showAnnotations) {
+      return;
+    }
+
     // Store current selection
     const currentSelection = window.getSelection();
 

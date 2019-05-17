@@ -7,6 +7,10 @@ $note-color: #91ff6d;
 
 .annotations-container {
 
+  .annotations-toggle {
+    float: right;
+  }
+
   .annotations-buttons, .annotation-context-buttons, .annotation-header-context-button {
     position: absolute;
     margin: 0.2em;
@@ -83,17 +87,30 @@ $note-color: #91ff6d;
       border: none;
     }
   }
-}
 
-mark, h2.annotated {
-  padding: 0.25rem 0;
-  border-radius: 0.25rem;
+  mark, h2.annotated {
+    padding: 0.25rem 0;
+    border-radius: 0.25rem;
 
-  &.mark {
-    background-color: $mark-color;
+    &.mark {
+      background-color: $mark-color;
+    }
+
+    &.note {
+      background-color: $note-color;
+    }
   }
 
-  &.note {
-    background-color: $note-color;
+  // Disabled annotation display when required
+  &.annotations-disabled {
+    mark, h2.annotated {
+      &.mark, &.note {
+        background-color: transparent !important;
+      }
+    }
+
+    .annotations-outdated-button {
+      display: none !important;
+    }
   }
 }

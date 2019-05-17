@@ -40,6 +40,8 @@ Encore
       'popper.js',
       'bootstrap',
       'bootstrap-3-typeahead',
+      'bootstrap4-toggle',
+      'bootstrap4-toggle/css/bootstrap4-toggle.css',
       'select2',
       'select2/dist/css/select2.css',
       'font-awesome/css/font-awesome.css',

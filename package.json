@@ -15,6 +15,7 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "bootstrap-3-typeahead": "^4.0.2",
+    "bootstrap4-toggle": "^3.4.0",
     "d3": "^4.12.2",
     "font-awesome": "^4.7.0",
     "fos-routing": "^0.0.4",
