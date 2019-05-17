@@ -10,7 +10,9 @@
 
   <a class="navbar-logo-brand" href="{{ path('app_default_dashboard') }}">
     <div class="navbar-logo"></div>
-    <div class="navbar-brand">
+    <div class="navbar-brand"
+         {% if _twigStudyArea is not empty %}data-toggle="tooltip"
+         title="{{ 'study-area.current-area'|trans({'%item%': _twigStudyArea.name}) }}"{% endif %}>
       Living Textbook
     </div>
   </a>

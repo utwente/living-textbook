@@ -55,4 +55,10 @@ div.spacer {
   margin-bottom: $spacer;
 }
 
+.header-bar {
+  .btn {
+    margin-bottom: $spacer / 2;
+  }
+}
+
 @import '_footer';

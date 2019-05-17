@@ -49,9 +49,7 @@
   {{ buttons.footer() }}
 {% endblock %}
 
-{% block title %}
-  {{ studyArea.name }}
-{% endblock %}
+{% block content_title %}{% endblock %}
 
 {% block content %}
   <h2>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</h2>

@@ -389,6 +389,7 @@ study-area:
   access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!'
   add-title: 'Add new study area'
   current: 'Current'
+  current-area: 'Now browsing "%item%"'
   description: 'Description'
   edit-title: 'Edit study area "%item%"'
   freeze: 'Freeze study area "%item%"'
