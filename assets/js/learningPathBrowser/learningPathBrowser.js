@@ -35,6 +35,10 @@ import Routing from 'fos-routing';
   const $titleLink = $('#learning-path-title-link');
   const canvas = document.getElementById('learning-path-canvas');
 
+  const $scrollLeftButton = $('#learning-path-scroll-left button');
+  const $scrollRightButton = $('#learning-path-scroll-right button');
+  const $scrollButtons = $scrollLeftButton.add($scrollRightButton);
+
   const contextMenuContainer = '#learning-path-canvas-div';
 
   /******************************************************************************************************
@@ -551,6 +555,25 @@ import Routing from 'fos-routing';
       element.y = elementLine;
       cx += elementSpacing;
     });
+
+    // Update button state
+    if (dx === 0) {
+      $scrollLeftButton.tooltip('disable');
+      $scrollLeftButton.tooltip('hide');
+      $scrollLeftButton.prop('disabled', true);
+    } else {
+      $scrollLeftButton.tooltip('enable');
+      $scrollLeftButton.prop('disabled', false);
+    }
+
+    if (dx === (-totalElementLength + canvasWidth) || totalElementLength < canvasWidth) {
+      $scrollRightButton.tooltip('disable');
+      $scrollRightButton.tooltip('hide');
+      $scrollRightButton.prop('disabled', true);
+    } else {
+      $scrollRightButton.tooltip('enable');
+      $scrollRightButton.prop('disabled', false);
+    }
   }
 
   /**
@@ -662,6 +685,21 @@ import Routing from 'fos-routing';
     drawGraph();
   }
 
+  /**
+   * Manual scroll handling
+   * @param direction
+   */
+  function onScrollClick(direction) {
+    if (totalElementLength > canvasWidth) {
+      dx = Math.max(-totalElementLength + canvasWidth, Math.min(0, dx + (direction * elementSpacing)));
+    } else {
+      dx = 0;
+    }
+
+    updateElementLocations();
+    drawGraph();
+  }
+
   /******************************************************************************************************
    * Context menu
    *****************************************************************************************************/
@@ -745,6 +783,9 @@ import Routing from 'fos-routing';
     canvas.height = canvasHeight;
     canvas.width = canvasWidth;
 
+    // Resize scroll buttons
+    $scrollButtons.height(canvasHeight);
+
     // Determine element sizes
     elementPadding = Math.ceil(canvasHeight / 10);
     elementLine = Math.floor(canvasHeight / 2);
@@ -795,6 +836,14 @@ import Routing from 'fos-routing';
   // Window handlers
   $(window).on('resize', function () {
     onResize();
+  });
+
+  // Scroll handlers
+  $scrollLeftButton.on('click', function () {
+    onScrollClick(1);
+  });
+  $scrollRightButton.on('click', function () {
+    onScrollClick(-1);
   });
 
   initCanvas();

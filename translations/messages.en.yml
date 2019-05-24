@@ -266,6 +266,8 @@ learning-path:
   remove-text: 'Are you sure you want to remove the learning path "%item%"?'
   removed: 'Learning path "%item%" has been removed successfully.'
   saved: 'Learning path "%item%" has been saved successfully.'
+  scroll-left: 'Previous'
+  scroll-right: 'Next'
   updated: 'Learning path "%item%" has been successfully updated.'
 
 login:

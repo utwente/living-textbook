@@ -31,14 +31,31 @@
 }
 
 #bottom-container-content {
-  padding: 0.25rem;
+  padding: 0.25rem 0;
 
   #learning-path-title {
+    padding: 0 0.25rem;
     font-size: 1.5rem;
+  }
+
+  #learning-path-scroll-left, #learning-path-scroll-right {
+    display: inline-block;
+    width: 2.5rem;
+  }
+
+  #learning-path-scroll-left {
+    float: left;
+  }
+
+  #learning-path-scroll-right {
+    float: right;
+    text-align: right;
   }
 
   #learning-path-canvas-div {
     position: relative;
+    display: inline-block;
+    width: calc(100% - 5rem);
 
     #learning-path-canvas {
       width: 100%;
