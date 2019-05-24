@@ -81,6 +81,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     label: '',
     expandedLabel: [],
     expandedLabelStart: 0,
+    fontScale: 1,
     link: '',
     numberOfLinks: 0,
     individuals: '',
@@ -252,8 +253,28 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       return cb.linkNodeRadius;
     }
 
-    node.radius = bConfig.baseNodeRadius + bConfig.extendNodeRatio * (node.numberOfLinks ? node.numberOfLinks : 1);
+    // Update radius
+    let linkCount = node.numberOfLinks ? node.numberOfLinks : 1;
+    node.radius = bConfig.baseNodeRadius + bConfig.extendNodeRatio * linkCount;
+
     return node.radius + cb.nodeRadiusMargin;
+  }
+
+  /**
+   * Updated the node font scale
+   * @param node
+   */
+  function updateNodeFontScale(node) {
+    // Check whether link node
+    if (node.linkNode === true) {
+      node.fontScale = 1;
+      return;
+    }
+
+    // Calculate the new font scale
+    let linkCount = node.numberOfLinks ? node.numberOfLinks : 1;
+    let scaleFactor = Math.max(0, Math.min(Math.floor(linkCount / bConfig.nodeLabelFontScaleStep), 3)) - 3;
+    node.fontScale = (bConfig.defaultNodeLabelFontSize + (scaleFactor * bConfig.nodeLabelFontScaleStepSize)) / bConfig.defaultNodeLabelFontSize;
   }
 
   /**
@@ -1056,23 +1077,26 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawNodeText(node) {
+    // Calculate font(size)
+    let scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * node.fontScale);
+    context.font = scaledFontSize + 'px ' + bConfig.fontFamily;
+
     // Set font if accordingly, or skip if not
-    if ((isDragging && node.dragged)
+    if (!((isDragging && node.dragged)
         || ((highlightedNode !== null || isDragging) && node.highlighted)
-        || (specialHighlightedNode !== null && node.specialHilight)) {
-      context.font = bConfig.activeNodeLabelFont;
-    } else {
+        || (specialHighlightedNode !== null && node.specialHilight))) {
       // Skip this text if not required to render
       if (isDragging || highlightedNode !== null) return;
-      context.font = bConfig.defaultNodeLabelFont;
+
+      context.font = 'bold ' + context.font;
     }
 
     // Draw the actual text (which can be multiple lines)
-    var yStart = node.y - node.expandedLabelStart;
+    let yStart = node.y - node.expandedLabelStart;
     node.expandedLabel.map(function (line) {
       if (node.dragged || node.highlighted || node.specialHilight) context.strokeText(line, node.x, yStart);
       context.fillText(line, node.x, yStart);
-      yStart += bConfig.defaultNodeLabelFontSize;
+      yStart += scaledFontSize;
     });
   }
 
@@ -1174,7 +1198,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     if (node) {
       node.label = name;
-      bConfig.updateLabel(node, 1);
+      updateNodeFontScale(node);
+      bConfig.updateLabel(node, node.fontScale);
       cbSimulation.restart();
     }
   };
@@ -1211,7 +1236,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       node.empty = concept.isEmpty;
       getNodeRadius(node);
       loadNodeColor(node);
-      bConfig.updateLabel(node, 1);
+      updateNodeFontScale(node);
+      bConfig.updateLabel(node, node.fontScale);
     });
 
     // Loop data again, as now we have all nodes available to create the links
@@ -1321,7 +1347,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbGraph.nodes.map(function (node) {
       getNodeRadius(node);
       loadNodeColor(node);
-      bConfig.updateLabel(node, 1);
+      updateNodeFontScale(node);
+      bConfig.updateLabel(node, node.fontScale);
     });
 
     generateLinkNodes();

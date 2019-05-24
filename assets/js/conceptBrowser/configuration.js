@@ -15,6 +15,8 @@
   bConfig.fontFamily = 'DroidSans, Arial, sans-serif';
   bConfig.defaultNodeLabelFont = bConfig.defaultNodeLabelFontSize + 'px ' + bConfig.fontFamily;
   bConfig.activeNodeLabelFont = 'bold ' + bConfig.defaultNodeLabelFont;
+  bConfig.nodeLabelFontScaleStep = 3; // Each step amount of links, the step size is subtracted from the font size
+  bConfig.nodeLabelFontScaleStepSize = 2;
 
   // Node styles
   bConfig.defaultNodeFillStyle = '';
