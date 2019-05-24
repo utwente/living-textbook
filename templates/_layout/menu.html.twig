@@ -109,10 +109,23 @@
       </a>
     </div>
 
-    <a class="btn btn-outline-primary ml-lg-2" href="#" onclick="eDispatch.toggleConceptBrowser(); $(this).blur();">
-      <i class="fa fa-fw fa-map"></i>
-      {{ 'browser.toggle'|trans }}
-    </a>
+    <div class="menu-toggle ml-lg-2" id="learning-path-browser-toggle"
+         data-toggle="tooltip" title="{{ 'browser.toggle-learningpath'|trans }}">
+      <input type="checkbox" data-toggle="toggle"
+             data-size="sm" data-width="55px" data-height="38px" {# Are required for correct rendering #}
+             data-on="<span class='fa-stack'><i class='fa fa-road fa-stack-1x'></i></span>"
+             data-off="<span class='fa-stack'><i class='fa fa-road fa-stack-1x'></i><i class='fa fa-times fa-stack-1x text-danger'></i></span>"
+             data-onstyle="primary" data-offstyle="secondary">
+    </div>
+
+    <div class="menu-toggle ml-lg-2" id="concept-browser-toggle"
+         data-toggle="tooltip" title="{{ 'browser.toggle'|trans }}">
+      <input type="checkbox" data-toggle="toggle"
+             data-size="sm" data-width="55px" data-height="38px" {# Are required for correct rendering #}
+             data-on="<span class='fa-stack'><i class='fa fa-map fa-stack-1x'></i></span>"
+             data-off="<span class='fa-stack'><i class='fa fa-map fa-stack-1x'></i><i class='fa fa-times fa-stack-1x text-danger'></i></span>"
+             data-onstyle="primary" data-offstyle="secondary">
+    </div>
 
     <a class="btn btn-outline-dark ml-lg-2 top-level" href="{{ path('logout') }}">{{ 'login.logout'|trans }}</a>
   </div>

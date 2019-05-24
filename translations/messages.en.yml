@@ -42,6 +42,7 @@ browser:
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open map'
   toggle: 'Toggle map'
+  toggle-learningpath: 'Toggle learning path'
   readme: 'Open readme'
   refresh: 'Refresh data'
   search: 'Search'

@@ -65,7 +65,7 @@
     // Locate elements
     $annotationsContainer = $('.annotations-container').first();
     if ($annotationsContainer.length === 0) {
-      console.error('Annotations container not found!');
+      console.info('Annotations container not found!');
       return;
     }
     $annotationsToggle = $('.annotations-toggle').first();
@@ -220,7 +220,7 @@
    */
   function toggleAnnotationVisibility(newState) {
     // Determine new state
-    showAnnotations = $annotationsToggle.find('[data-toggle]').is(':checked');
+    showAnnotations = $annotationsToggle.find('input[data-toggle]').is(':checked');
 
     // Save state in local storage
     if (typeof (Storage) !== 'undefined') {

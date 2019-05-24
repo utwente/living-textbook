@@ -29,6 +29,7 @@ $(function () {
   require('./content/customTags');
   require('./content/search');
   require('./content/sortableLearningPaths');
+  require('./content/browserToggles');
 
   eDispatch.checkForDoubleColumn(inDoubleColumnChecksum);
 
