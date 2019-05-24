@@ -9,6 +9,7 @@ use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Repository\AbbreviationRepository;
+use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
@@ -119,6 +120,7 @@ class DefaultController extends AbstractController
    * @param FormFactoryInterface       $formFactory
    * @param StudyAreaRepository        $studyAreaRepository
    * @param ConceptRepository          $conceptRepo
+   * @param ConceptRelationRepository  $conceptRelationRepo
    * @param AbbreviationRepository     $abbreviationRepository
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
@@ -129,10 +131,11 @@ class DefaultController extends AbstractController
    *
    * @throws \Doctrine\ORM\NonUniqueResultException
    */
-  public function dashboard(RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
-                            ConceptRepository $conceptRepo, AbbreviationRepository $abbreviationRepository,
-                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                            LearningPathRepository $learningPathRepo, UrlChecker $urlChecker)
+  public function dashboard(
+      RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
+      ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo, AbbreviationRepository $abbreviationRepository,
+      ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
+      LearningPathRepository $learningPathRepo, UrlChecker $urlChecker)
   {
     $user       = $this->getUser();
     $studyArea  = $requestStudyArea->getStudyArea();
@@ -184,6 +187,7 @@ class DefaultController extends AbstractController
         'studyAreas'            => $studyAreas,
         'currentStudyArea'      => $requestStudyArea->getStudyArea(),
         'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea),
+        'relationCount'         => $conceptRelationRepo->getCountForStudyArea($studyArea),
         'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),

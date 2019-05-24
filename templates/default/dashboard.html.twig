@@ -68,6 +68,9 @@
         {% if conceptCount > 0 %}</a>{% endif %}
     </li>
     <li>
+      {{ 'dashboard.relation-count'|trans({'%count%': relationCount}) }}
+    </li>
+    <li>
       {% if abbreviationCount > 0 %}<a href="{{ path('app_abbreviation_list') }}">{% endif %}
         {{ 'dashboard.abbreviation-count'|trans({'%count%': abbreviationCount}) }}
         {% if abbreviationCount > 0 %}</a>{% endif %}

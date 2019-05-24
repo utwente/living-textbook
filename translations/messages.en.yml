@@ -110,6 +110,7 @@ dashboard:
   learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
   learning-path-count: '{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths'
   open: 'Open dashboard'
+  relation-count: '{0} No relations|{1} One relation|]1,Inf[ %count% relations'
   search-concept: 'Search for concept'
   select-one: 'Select one...'
   study-area-contains: 'This study area has:'

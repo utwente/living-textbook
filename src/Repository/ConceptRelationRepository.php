@@ -8,6 +8,7 @@ use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ConceptRelationRepository extends ServiceEntityRepository
@@ -78,16 +79,39 @@ class ConceptRelationRepository extends ServiceEntityRepository
   /**
    * @param StudyArea $studyArea
    *
-   * @return ConceptRelation[]|Collection
+   * @return QueryBuilder
    */
-  public function getByStudyArea(StudyArea $studyArea)
+  public function getByStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('cr')
         ->join('cr.source', 's')
         ->join('cr.target', 't')
         ->where('s.studyArea = :studyArea')
         ->andWhere('t.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
+        ->setParameter('studyArea', $studyArea);
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return ConceptRelation[]|Collection
+   */
+  public function getByStudyArea(StudyArea $studyArea)
+  {
+    return $this->getByStudyAreaQb($studyArea)
         ->getQuery()->getResult();
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
+   * @return integer
+   * @throws NonUniqueResultException
+   */
+  public function getCountForStudyArea(StudyArea $studyArea): int
+  {
+    return $this->getByStudyAreaQb($studyArea)
+        ->select('COUNT(cr.id)')
+        ->getQuery()->getSingleScalarResult();
   }
 }
