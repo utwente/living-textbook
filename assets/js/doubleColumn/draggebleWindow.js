@@ -5,21 +5,21 @@
  */
 (function (dw, $, undefined) {
 
-  var openWidth = 760;
-  var opened = false;
-  var openedX = 0;
-  var fullScreen = false;
-  var fullScreenX = 0;
-  var closeButton = $('#close-button');
-  var fullScreenButton = $('#fullscreen-button');
-  var dragButton = $('#drag-button');
-  var leftFrame = $('#left-container');
-  var rightFrame = $('#right-container');
-  var moveContainersInner = $('#draggable-bar-inner');
-  var animationCount = 0;
-  var invisibleFrame = $('#invisible-frame');
-  var lastX = -1;
-  var firstOpen = true;
+  let openWidth = 760;
+  let opened = false;
+  let openedX = 0;
+  let fullScreen = false;
+  let fullScreenX = 0;
+  let closeButton = $('#close-button');
+  let fullScreenButton = $('#fullscreen-button');
+  let dragButton = $('#drag-button');
+  let leftFrame = $('#left-container');
+  let rightFrame = $('#right-container');
+  let moveContainersInner = $('#draggable-bar-inner');
+  let animationCount = 0;
+  let invisibleFrame = $('#invisible-frame');
+  let lastX = -1;
+  let firstOpen = true;
 
   /**
    * Verify whether the window is opened
@@ -66,6 +66,9 @@
         firstOpen = false;
       });
     }
+
+    // Sent event
+    window.eDispatch.openedConceptBrowser();
   };
 
   /**
@@ -79,6 +82,9 @@
     // Resize the window in order to close it
     dragButton.doResize($(window).width() + (moveContainersInner.innerWidth() / 2) - 1, 0, $('body').width(), true);
     moveContainersInner.fadeIn();
+
+    // Sent event
+    window.eDispatch.closedConceptBrowser();
   };
 
   /**
@@ -133,8 +139,8 @@
     if (force !== true && x === lastX) return;
 
     // Get information
-    var centerWidth = $('#draggable-bar-inner').innerWidth();
-    var clientWidth = $('body').width();
+    let centerWidth = $('#draggable-bar-inner').innerWidth();
+    let clientWidth = $('body').width();
 
     // Check input
     minWidth = typeof minWidth !== 'undefined' ? minWidth : 0.25 * clientWidth;
@@ -147,16 +153,16 @@
     lastX = x - (centerWidth / 2) < minWidth ? minWidth : x;
 
     // Calculate new widths
-    var leftWidth = x - (centerWidth / 2);
+    let leftWidth = x - (centerWidth / 2);
     leftWidth = Math.min(leftWidth, maxWidth);
     leftWidth = Math.max(leftWidth, minWidth);
-    var rightWidth = clientWidth - leftWidth - centerWidth;
+    let rightWidth = clientWidth - leftWidth - centerWidth;
 
     // Move the window (with or without animation)
     if (animate) {
       animationCount = 3;
-      var animationDuration = 1000;
-      var completeFunction = function () {
+      let animationDuration = 1000;
+      let completeFunction = function () {
         animationCount--;
         if (animationCount === 0) {
           callback();
@@ -256,8 +262,8 @@
    */
   dw.iframeLoad = function (url) {
     dw.iframeLoader(true);
-    var $iframe = $('#data-iframe');
-    var $container = $iframe.parent();
+    const $iframe = $('#data-iframe');
+    const $container = $iframe.parent();
     $iframe.remove();
     $iframe.attr('src', url);
     $container.append($iframe);
@@ -265,7 +271,7 @@
 
   dw.iframeLoader = function (loading) {
     iframeLoaderUpdate();
-    var $loader = $('#left-container-loader');
+    const $loader = $('#left-container-loader');
     if (loading) {
       $loader.fadeIn(0);
     } else {
@@ -274,8 +280,8 @@
   };
 
   function iframeLoaderUpdate() {
-    var $loader = $('#left-container-loader');
-    var $iframe = $('#data-iframe');
+    const $loader = $('#left-container-loader');
+    const $iframe = $('#data-iframe');
 
     $loader.height($iframe.height());
     $loader.width($iframe.width());

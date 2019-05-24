@@ -67,8 +67,15 @@ require('../event/eventTypes');
   /**
    * Open concept browser event
    */
-  eDispatch.toggleConceptBrowser = function () {
-    dispatchParent(types.TOGGLE_CONCEPT_BROWSER);
+  eDispatch.openConceptBrowser = function () {
+    dispatchParent(types.OPEN_CONCEPT_BROWSER);
+  };
+
+  /**
+   * Open concept browser event
+   */
+  eDispatch.closeConceptBrowser = function () {
+    dispatchParent(types.CLOSE_CONCEPT_BROWSER);
   };
 
   /**

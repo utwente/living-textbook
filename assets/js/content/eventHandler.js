@@ -23,10 +23,17 @@ require('../event/eventTypes');
       case types.TRACKING_CONSENT_UPDATED:
         onTrackingConsentUpdated(data);
         break;
+      case types.OPENED_CONCEPT_BROWSER:
+        onChangedConceptBrowser(true);
+        break;
+      case types.CLOSED_CONCEPT_BROWSER:
+        onChangedConceptBrowser(false);
+        break;
       case types.CHECK_DOUBLE_COLUMN:
       case types.PAGE_LOADED:
       case types.PAGE_SUBMIT:
-      case types.TOGGLE_CONCEPT_BROWSER:
+      case types.OPEN_CONCEPT_BROWSER:
+      case types.CLOSE_CONCEPT_BROWSER:
       case types.CONCEPT_SELECTED:
       case types.SHOW_CONCEPT:
       case types.OPEN_LEARNING_PATH_BROWSER:
@@ -47,6 +54,14 @@ require('../event/eventTypes');
    */
   function onDoubleColumnReturn(data) {
     setDoubleColumnDetected(data.checksum);
+    window.btoggles.loadState(data.browserStates);
+  }
+
+  /**
+   * Handle concept browser change
+   */
+  function onChangedConceptBrowser(isOpened) {
+    window.btoggles.loadConceptState(isOpened);
   }
 
   /**

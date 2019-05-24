@@ -37,8 +37,11 @@ import Routing from 'fos-routing';
       case types.PAGE_SUBMIT:
         onPageSubmit();
         break;
-      case types.TOGGLE_CONCEPT_BROWSER:
-        onToggleConceptBrowser();
+      case types.OPEN_CONCEPT_BROWSER:
+        onOpenConceptBrowser();
+        break;
+      case types.CLOSE_CONCEPT_BROWSER:
+        onCloseConceptBrowser();
         break;
       case types.CONCEPT_SELECTED:
         onConceptSelected(data);
@@ -141,10 +144,17 @@ import Routing from 'fos-routing';
   }
 
   /**
-   * Toggle concept browser state
+   * Open concept browser state
    */
-  function onToggleConceptBrowser() {
-    dw.toggleWindow();
+  function onOpenConceptBrowser() {
+    dw.openWindow();
+  }
+
+  /**
+   * Close concept browser state
+   */
+  function onCloseConceptBrowser() {
+    dw.closeWindow();
   }
 
   /**

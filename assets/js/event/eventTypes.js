@@ -12,7 +12,10 @@
   eType.PAGE_SUBMIT = 'page_submit';
 
   // Concept browser actions/states
-  eType.TOGGLE_CONCEPT_BROWSER = 'open_concept_browser';
+  eType.OPEN_CONCEPT_BROWSER = 'open_concept_browser';
+  eType.OPENED_CONCEPT_BROWSER = 'opened_concept_browser';
+  eType.CLOSE_CONCEPT_BROWSER = 'close_concept_browser';
+  eType.CLOSED_CONCEPT_BROWSER = 'closed_concept_browser';
   eType.CONCEPT_SELECTED = 'concept_selected';
   eType.SHOW_CONCEPT = 'show_concept';
 

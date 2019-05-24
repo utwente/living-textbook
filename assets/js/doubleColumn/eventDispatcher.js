@@ -25,6 +25,7 @@ require('../event/eventTypes');
    * @param data
    */
   function dispatchIframe(type, data) {
+    data = data || {};
     console.info('Event dispatched from double column to iframe', type, data);
 
     document.getElementById("data-iframe").contentWindow.postMessage({
@@ -39,8 +40,26 @@ require('../event/eventTypes');
    */
   eDispatch.returnDoubleColumnChecksum = function (checksum) {
     dispatchIframe(types.CHECK_DOUBLE_COLUMN_RETURN, {
-      checksum: checksum
+      checksum: checksum,
+      browserStates: {
+        concept: window.dw.isOpened(),
+        learningPath: false,
+      }
     });
+  };
+
+  /**
+   * Send opened concept browser event
+   */
+  eDispatch.openedConceptBrowser = function () {
+    dispatchIframe(types.OPENED_CONCEPT_BROWSER);
+  };
+
+  /**
+   * Send closed concept browser event
+   */
+  eDispatch.closedConceptBrowser = function () {
+    dispatchIframe(types.CLOSED_CONCEPT_BROWSER);
   };
 
   /**
