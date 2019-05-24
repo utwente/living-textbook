@@ -21,7 +21,9 @@
 
   // Toggle learning path browser
   eType.OPEN_LEARNING_PATH_BROWSER = 'open_learning_path_browser';
+  eType.OPENED_LEARNING_PATH_BROWSER = 'opened_learning_path_browser';
   eType.CLOSE_LEARNING_PATH_BROWSER = 'close_learning_path_browser';
+  eType.CLOSED_LEARNING_PATH_BROWSER = 'closed_learning_path_browser';
   eType.NAVIGATE_LEARNING_PATH = 'navigate_learning_path';
   eType.OPEN_CONCEPT_FROM_LEARNING_PATH = 'open_concept_from_learning_path';
 

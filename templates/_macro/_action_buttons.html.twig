@@ -5,7 +5,7 @@
 
 {% macro learning_path_button(learningpath_id) %}
   {% from _self import _action_button %}
-  {{ _action_button('#', 'fa-map', 'learning-path.open', 'primary', false, 'eDispatch.openLearningPath(' ~ learningpath_id ~ ');') }}
+  {{ _action_button('#', 'fa-map', 'learning-path.open', 'primary', false, 'eDispatch.openLearningPathBrowser(' ~ learningpath_id ~ ');') }}
 {% endmacro %}
 
 {% macro progress_button() %}

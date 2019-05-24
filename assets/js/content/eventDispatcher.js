@@ -92,10 +92,14 @@ require('../event/eventTypes');
    * Open the given learning path
    * @param id
    */
-  eDispatch.openLearningPath = function (id) {
+  eDispatch.openLearningPathBrowser = function (id) {
     dispatchParent(types.OPEN_LEARNING_PATH_BROWSER, {
       id: id
     });
+  };
+
+  eDispatch.closeLearningPathBrowser = function () {
+    dispatchParent(types.CLOSE_LEARNING_PATH_BROWSER);
   };
 
   /**

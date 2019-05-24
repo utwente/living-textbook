@@ -29,8 +29,10 @@
         <tr>
           <td>{{ learningPath.name }}</td>
           <td>
-            <a href="#"
-               onclick="eDispatch.openLearningPath({{- learningPath.id -}})">{{ 'learning-path.open'|trans }}</a>
+            <a href="#" class="btn btn-outline-primary"
+               onclick="eDispatch.openLearningPathBrowser({{- learningPath.id -}})">
+              <i class="fa fa-fw fa-road"></i> {{ 'learning-path.open'|trans }}
+            </a>
           </td>
           <td class="actions">
             {{ buttons.print_button(path('app_print_printlearningpath', {'learningPath': learningPath.id})) }}

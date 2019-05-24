@@ -29,6 +29,12 @@ require('../event/eventTypes');
       case types.CLOSED_CONCEPT_BROWSER:
         onChangedConceptBrowser(false);
         break;
+      case types.OPENED_LEARNING_PATH_BROWSER:
+        onChangeLearningPathBrowser(true);
+        break;
+      case types.CLOSED_LEARNING_PATH_BROWSER:
+        onChangeLearningPathBrowser(false);
+        break;
       case types.CHECK_DOUBLE_COLUMN:
       case types.PAGE_LOADED:
       case types.PAGE_SUBMIT:
@@ -59,9 +65,18 @@ require('../event/eventTypes');
 
   /**
    * Handle concept browser change
+   * @param isOpened
    */
   function onChangedConceptBrowser(isOpened) {
     window.btoggles.loadConceptState(isOpened);
+  }
+
+  /**
+   * Handle learning path browser change
+   * @param isOpened
+   */
+  function onChangeLearningPathBrowser(isOpened) {
+    window.btoggles.loadLearningPathState(isOpened);
   }
 
   /**

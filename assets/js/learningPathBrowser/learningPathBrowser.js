@@ -23,8 +23,6 @@ import Routing from 'fos-routing';
    * Internal constants
    *****************************************************************************************************/
 
-  const openSize = '70%';
-  const closedSize = '100%';
   const $doubleColumn = $('#double-column-container');
   const $bottomRow = $('#bottom-row');
   const $loader = $('#bottom-container-loader');
@@ -76,17 +74,21 @@ import Routing from 'fos-routing';
    * Handler to open the learning path browser
    */
   lpb.openBrowser = function (id) {
-    // Clear content and show
-    doLoadData();
-    $loader.show();
+    if (id !== undefined) {
+      // Clear content and show
+      doLoadData();
+      $loader.show();
+
+      // Load the data
+      loadData(id);
+    }
 
     // CSS animations are used to make it fluent
     $doubleColumn.addClass('lpb-opened');
     $bottomRow.addClass('lpb-opened');
     triggerResize();
 
-    // Load the data
-    loadData(id);
+    eDispatch.openedLearningPathBrowser();
   };
 
   /**
@@ -97,6 +99,21 @@ import Routing from 'fos-routing';
     $doubleColumn.removeClass('lpb-opened');
     $bottomRow.removeClass('lpb-opened');
     triggerResize();
+    eDispatch.closedLearningPathBrowser();
+  };
+
+  /**
+   * Retrieve whether the instance has data
+   */
+  lpb.hasData = function () {
+    return pathId !== -1;
+  };
+
+  /**
+   * Retrieve whether the browser is opened
+   */
+  lpb.isOpened = function () {
+    return $bottomRow.hasClass('lpb-opened');
   };
 
   /******************************************************************************************************

@@ -25,7 +25,6 @@ require('../event/eventTypes');
    * @param data
    */
   function dispatchIframe(type, data) {
-    data = data || {};
     console.info('Event dispatched from double column to iframe', type, data);
 
     document.getElementById("data-iframe").contentWindow.postMessage({
@@ -43,7 +42,7 @@ require('../event/eventTypes');
       checksum: checksum,
       browserStates: {
         concept: window.dw.isOpened(),
-        learningPath: false,
+        learningPath: window.lpb.hasData() ? window.lpb.isOpened() : null,
       }
     });
   };
@@ -80,6 +79,20 @@ require('../event/eventTypes');
     dispatchParent(types.NAVIGATE_LEARNING_PATH, {
       id: id
     });
+  };
+
+  /**
+   * Send opened learning path browser event
+   */
+  eDispatch.openedLearningPathBrowser = function () {
+    dispatchIframe(types.OPENED_LEARNING_PATH_BROWSER);
+  };
+
+  /**
+   * Send closed learning path browser event
+   */
+  eDispatch.closedLearningPathBrowser = function () {
+    dispatchIframe(types.CLOSED_LEARNING_PATH_BROWSER);
   };
 
   /**
