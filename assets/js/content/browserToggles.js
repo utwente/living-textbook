@@ -8,6 +8,7 @@
   let $containers, $toggles;
   let $conceptToggleContainer, $conceptToggle, $learningPathToggleContainer, $learningPathToggle;
   let conceptState = false, learningPathState = null;
+  let initialized = false, replayCalls = [];
 
   /**
    * Initializer function
@@ -52,6 +53,12 @@
         eDispatch.closeLearningPathBrowser();
       }
     });
+
+    initialized = true;
+    for (let i = 0; i < replayCalls.length; i++) {
+      replayCalls[i]();
+    }
+    replayCalls = [];
   });
 
   /**
@@ -59,6 +66,13 @@
    * @param state
    */
   btoggles.loadState = function (state) {
+    if (!initialized) {
+      replayCalls.push(function () {
+        btoggles.loadState(state);
+      });
+      return;
+    }
+
     setDisabled($conceptToggleContainer, $conceptToggle, false);
     this.loadConceptState(state.concept);
 
@@ -72,6 +86,13 @@
    * @param isOpened
    */
   btoggles.loadConceptState = function (isOpened) {
+    if (!initialized) {
+      replayCalls.push(function () {
+        btoggles.loadConceptState(isOpened);
+      });
+      return;
+    }
+
     conceptState = isOpened;
     setToggleValue($conceptToggle, isOpened);
   };
@@ -81,6 +102,13 @@
    * @param isOpened
    */
   btoggles.loadLearningPathState = function (isOpened) {
+    if (!initialized) {
+      replayCalls.push(function () {
+        btoggles.loadLearningPathState(isOpened);
+      });
+      return;
+    }
+
     if (learningPathState === null) {
       $learningPathToggleContainer.removeClass('d-none');
       setDisabled($learningPathToggleContainer, $learningPathToggle, false);
