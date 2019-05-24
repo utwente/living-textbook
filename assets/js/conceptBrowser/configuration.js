@@ -5,7 +5,7 @@
 
   // Fixed node layout
   bConfig.baseNodeRadius = 8; // Node base radius
-  bConfig.extendNodeRatio = 3;
+  bConfig.extendNodeRatio = 2;
   bConfig.nodeLineWidth = 2;
 
   // Fixed node label layout

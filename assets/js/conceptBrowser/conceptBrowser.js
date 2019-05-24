@@ -1232,7 +1232,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
       // Update properties
       node.label = concept.name;
-      node.numberOfLinks = concept.relations.length;
+      node.numberOfLinks = concept.numberOfLinks;
       node.empty = concept.isEmpty;
       getNodeRadius(node);
       loadNodeColor(node);
@@ -1306,7 +1306,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         label: concept.name,
         empty: concept.isEmpty,
         link: '',
-        numberOfLinks: concept.relations.length
+        numberOfLinks: concept.numberOfLinks
       });
 
       // Relation mapping
