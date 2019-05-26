@@ -93,4 +93,21 @@ class LearningOutcomeRepository extends ServiceEntityRepository
 
     return $return;
   }
+
+  /**
+   * Find the next unused learning outcome number in a study area
+   *
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   * @throws NonUniqueResultException
+   */
+  public function findUnusedNumberInStudyArea(StudyArea $studyArea)
+  {
+    $highestNumber = $this->findForStudyAreaQb($studyArea)
+        ->select('MAX(lo.number)')
+        ->getQuery()->getSingleScalarResult();
+
+    return ++$highestNumber;
+  }
 }

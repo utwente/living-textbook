@@ -55,7 +55,7 @@ class LearningOutcome
    * @ORM\Column(name="number", type="integer", nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Range(max="1000")
+   * @Assert\Range(max="2000")
    */
   private $number;
 

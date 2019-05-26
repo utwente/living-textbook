@@ -6,6 +6,7 @@ use App\Annotation\DenyOnFrozenStudyArea;
 use App\DuplicationUtils\StudyAreaDuplicator;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Excel\StudyAreaStatusBuilder;
@@ -114,7 +115,8 @@ class DataController extends AbstractController
    * @return array
    */
   public function upload(Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
-                         EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator)
+                         EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
+                         LearningOutcomeRepository $learningOutcomeRepository)
   {
     $form = $this->createForm(JsonUploadType::class, ['studyArea' => $requestStudyArea->getStudyArea()]);
     $form->handleRequest($request);
@@ -146,6 +148,7 @@ class DataController extends AbstractController
 
           // Resolve the link types
           $linkTypes = array();
+          $studyArea = $data['studyArea'];
           foreach ($jsonData['links'] as $jsonLink) {
 
             if (!array_key_exists('relationName', $jsonLink)) {
@@ -157,12 +160,12 @@ class DataController extends AbstractController
             if (!array_key_exists($linkName, $linkTypes)) {
 
               // Retrieve from database
-              $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $data['studyArea']]);
+              $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $studyArea]);
               if ($linkType) {
                 $linkTypes[$linkName] = $linkType;
               } else {
                 // Create new link type
-                $linkTypes[$linkName] = (new RelationType())->setStudyArea($data['studyArea'])->setName($linkName);
+                $linkTypes[$linkName] = (new RelationType())->setStudyArea($studyArea)->setName($linkName);
                 if (count($validator->validate($linkTypes[$linkName])) > 0) {
                   throw new InvalidArgumentException();
                 };
@@ -184,7 +187,7 @@ class DataController extends AbstractController
             if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== NULL) {
               $concepts[$key]->setDefinition($jsonNode['definition']);
             }
-            $concepts[$key]->setStudyArea($data['studyArea']);
+            $concepts[$key]->setStudyArea($studyArea);
             if (count($validator->validate($concepts[$key])) > 0) {
               throw new InvalidArgumentException();
             };
@@ -206,6 +209,31 @@ class DataController extends AbstractController
             if (count($validator->validate($relation)) > 0) {
               throw new InvalidArgumentException();
             };
+          }
+
+          if (array_key_exists('learning_outcomes', $jsonData)) {
+            $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
+            foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
+              if (!array_key_exists('label', $jsonLearningOutcome) ||
+                  !array_key_exists('definition', $jsonLearningOutcome) ||
+                  !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome)) {
+                throw new InvalidArgumentException();
+              }
+
+              $learningOutcome = new LearningOutcome();
+              $learningOutcome->setName($jsonLearningOutcome['label']);
+              $learningOutcome->setText($jsonLearningOutcome['definition']);
+              $learningOutcome->setNumber($learningOutcomeNumber);
+              $learningOutcome->setStudyArea($studyArea);
+              foreach ($jsonLearningOutcome['isLearningOutcomeOf'] as $linkedConceptKey) {
+                $concepts[$linkedConceptKey]->addLearningOutcome($learningOutcome);
+              }
+              if (count($validator->validate($learningOutcome)) > 0) {
+                throw new InvalidArgumentException();
+              };
+              $em->persist($learningOutcome);
+              $learningOutcomeNumber++;
+            }
           }
 
           // Save the data
