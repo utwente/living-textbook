@@ -10,6 +10,10 @@ Encore
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
+    // Enable it for all builds with the
+    // default hash algorithm (sha384)
+    .enableIntegrityHashes(Encore.isProduction)
+
     // uncomment to define the assets of the project
     .addEntry('app', [
       './assets/js/app.js',
@@ -27,30 +31,11 @@ Encore
       './assets/css/ckeditor/ckeditor.scss'
     ])
 
-    .createSharedEntry('vendor', [
-      'jquery',
-      'jquery-ui',
-      'jquery-ui/ui/position.js',
-      'jquery-ui/ui/widgets/mouse.js',
-      'jquery-ui/ui/widgets/sortable.js',
-      'jquery-ui-touch-punch',
-      'jquery-contextmenu',
-      'jquery-contextmenu/dist/jquery.contextMenu.css',
-      'mark.js/dist/jquery.mark.js',
-      'popper.js',
-      'bootstrap',
-      'bootstrap-3-typeahead',
-      'bootstrap4-toggle',
-      'bootstrap4-toggle/css/bootstrap4-toggle.css',
-      'select2',
-      'select2/dist/css/select2.css',
-      'font-awesome/css/font-awesome.css',
-      'd3',
+    .addEntry('vendor', './assets/js/vendor.js')
 
-      // you can also extract CSS - this will create a 'vendor.css' file
-      // this CSS will *not* be included in page1.css or page2.css anymore
-      './assets/css/vendor.scss'
-    ])
+    // will require an extra script tag for runtime.js
+    // but, you probably want this, unless you're building a single-page app
+    .enableSingleRuntimeChunk()
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
@@ -62,6 +47,16 @@ Encore
     .autoProvideVariables({
       Popper: ['popper.js', 'default']
     })
+
+    .configureBabel(function () {
+    }, {
+      useBuiltIns: 'entry', // or try "usage"
+      corejs: 3
+    })
 ;
+
+if (!Encore.isProduction()) {
+  Encore.disableCssExtraction();
+}
 
 module.exports = Encore.getWebpackConfig();

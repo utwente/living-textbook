@@ -6,11 +6,11 @@
     var _studyArea = {{ studyArea.id }};
     var _trackUser = {{ studyArea.trackUsers ? "true" : "false" }};
   </script>
-  <script src="{{ asset('build/double-column.js') }}" type="text/javascript"></script>
+  {{ encore_entry_script_tags('double-column') }}
 {% endblock %}
 
 {% block stylesheets %}
-  <link rel="stylesheet" href="{{ asset('build/double-column.css') }}"/>
+  {{ encore_entry_link_tags('double-column') }}
 {% endblock %}
 
 {% block base_content %}

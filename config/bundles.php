@@ -18,4 +18,5 @@ return [
     FM\ElfinderBundle\FMElfinderBundle::class => ['all' => true],
     BobV\LatexBundle\BobVLatexBundle::class => ['all' => true],
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];
