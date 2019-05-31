@@ -38,19 +38,19 @@
 {% macro _visibilityButtons() %}
   <div class="overlay"></div>
   <div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <label class="btn btn-secondary active">
+    <label class="btn btn-outline-secondary active">
       <input type="radio" name="visibility" autocomplete="off" value="private" checked>
       <i class="fa fa-fw fa-user"></i>
       <i class="fa fa-fw fa-spinner fa-spin"></i>
       {{ 'annotations.visibility.private'|trans }}
     </label>
-    <label class="btn btn-secondary">
+    <label class="btn btn-outline-secondary">
       <input type="radio" name="visibility" autocomplete="off" value="teacher">
       <i class="fa fa-fw fa-graduation-cap"></i>
       <i class="fa fa-fw fa-spinner fa-spin"></i>
       {{ 'annotations.visibility.teacher'|trans }}
     </label>
-    <label class="btn btn-secondary">
+    <label class="btn btn-outline-secondary">
       <input type="radio" name="visibility" autocomplete="off" value="everybody">
       <i class="fa fa-fw fa-users"></i>
       <i class="fa fa-fw fa-spinner fa-spin"></i>
@@ -74,6 +74,23 @@
   </span>
 {% endmacro %}
 
+{% macro _commentRow() %}
+  <div class="row">
+    <div class="col-12 annotations-comment-container">
+      <div>
+        <textarea class="annotation-comment form-control"
+                  placeholder="{{ 'annotations.comment.create-placeholder'|trans }}"></textarea>
+        <button type="button" class="btn btn-outline-success annotations-comment-add">
+          <i class="fa fa-fw fa-spinner fa-spin"></i>
+          <i class="fa fa-fw fa-plus"></i>
+          {{ 'annotations.comment.create'|trans }}
+        </button>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
 {% macro _addModal() %}
   <div class="modal fade annotations-modal add" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -88,7 +105,10 @@
           <form id="annotations-add-form">
             <div class="row">
               <label class="col-form-label col-12" for="annotation">{{ 'annotations.annotation'|trans }}</label>
-              <div class="col-12"><textarea id="annotation" class="form-control"></textarea></div>
+              <div class="col-12">
+                <textarea id="annotation" class="form-control"
+                          placeholder="{{ 'annotations.add-placeholder'|trans }}"></textarea>
+              </div>
             </div>
             <div class="row">
               <label class="col-form-label col-12">{{ 'annotations.selected'|trans }}</label>
@@ -104,12 +124,12 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-outline-success annotations-save">
+          <button type="button" class="btn btn-outline-success annotations-save">
             <i class="fa fa-fw fa-plus"></i>
             <i class="fa fa-fw fa-spinner fa-spin"></i>
             {{ 'form.add'|trans }}
           </button>
-          <button class="btn btn-outline-danger annotations-cancel" data-dismiss="modal">
+          <button type="button" class="btn btn-outline-danger annotations-cancel" data-dismiss="modal">
             <i class="fa fa-fw fa-times"></i> {{ 'form.cancel'|trans }}
           </button>
         </div>
@@ -149,10 +169,12 @@
               <label class="col-form-label col-12">{{ 'annotations.discussion'|trans }}</label>
               <div class="col-12 annotations-note-container"></div>
             </div>
+            {% from _self import _commentRow %}
+            {{ _commentRow() }}
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-outline-danger annotations-close" data-dismiss="modal">
+          <button type="button" class="btn btn-outline-danger annotations-close" data-dismiss="modal">
             <i class="fa fa-fw fa-times"></i> {{ 'general.close'|trans }}
           </button>
         </div>
@@ -206,7 +228,7 @@
       <form> {# Keep form here for nice label formatting #}
         <div class="owner">
           <div class="float-right" role="group" aria-label="Action bar">
-            <button class="btn btn-outline-danger">
+            <button type="button" class="btn btn-outline-danger annotations-remove">
               <i class="fa fa-fw fa-spinner fa-spin"></i>
               <i class="fa fa-fw fa-trash"></i> Remove
             </button>
@@ -232,6 +254,8 @@
           <div class="col-12 annotations-note-container"></div>
         </div>
         <div class="clearfix"></div>
+        {% from _self import _commentRow %}
+        {{ _commentRow() }}
       </form>
     </div>
   </div>
@@ -239,7 +263,7 @@
 
 {% macro _outdatedButtonPrototype() %}
   <div class="annotations-outdated-button remove-on-empty">
-    <button class="btn btn-outline-secondary">
+    <button type="button" class="btn btn-outline-secondary">
       <i class="fa fa-fw fa-exclamation-triangle"></i> {{ 'annotations.outdated-button'|trans }}
     </button>
   </div>

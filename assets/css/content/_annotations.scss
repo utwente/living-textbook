@@ -6,6 +6,7 @@
 
 $mark-color: #fff256;
 $note-color: #91ff6d;
+$commentSpacer: $spacer;
 
 .annotations-container {
 
@@ -64,15 +65,28 @@ $note-color: #91ff6d;
   .annotations-note-container {
     .annotations-note, .annotations-note-collection {
       display: block;
+
+      &:not(:last-of-type) {
+        margin-bottom: $commentSpacer / 4;
+      }
     }
 
     .annotations-note {
-      &:not(:last-of-type) {
-        margin-bottom: $spacer / 4;
-      }
-
       &:not(:first-of-type) {
-        margin-left: $spacer;
+        margin-left: $commentSpacer;
+      }
+    }
+  }
+
+  .annotations-comment-container {
+    margin-top: $commentSpacer / 4;
+
+    div {
+      margin-left: $commentSpacer;
+
+      .btn {
+        margin-top: $commentSpacer / 4;
+        float: right;
       }
     }
   }

@@ -154,10 +154,10 @@ class AnnotationController extends AbstractController
     $comment = (new  AnnotationComment())
         ->setUser($this->getUser())
         ->setAnnotation($annotation)
-        ->setText($request->request->get('comment', NULL));
+        ->setText($request->request->get('text', NULL));
 
     // Validate data
-    if (NULL !== $result = $this->validate($annotation, $validator, $serializer)) {
+    if (NULL !== $result = $this->validate($comment, $validator, $serializer)) {
       return $result;
     }
 
@@ -165,7 +165,10 @@ class AnnotationController extends AbstractController
     $em->persist($comment);
     $em->flush();
 
-    return new JsonResponse($serializer->serialize($comment, 'json'), 200, [], true);
+    return new JsonResponse($serializer->serialize([
+        'annotation' => $annotation,
+        'comment'    => $comment,
+    ], 'json'), 200, [], true);
   }
 
   /**

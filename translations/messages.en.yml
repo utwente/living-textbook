@@ -14,8 +14,12 @@ abbreviation:
   updated: 'Abbreviation "%item%" has been successfully updated.'
 
 annotations:
+  add-placeholder: "Type your annotation..."
   annotation: "Annotation"
   annotations: "Annotations"
+  comment:
+    create: "Add comment"
+    create-placeholder: "Type your response..."
   count: "Count"
   create-mark: "Create mark"
   create-note: "Create note"

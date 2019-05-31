@@ -38,6 +38,18 @@
   };
   let showAnnotations = true;
 
+  /******************************************************************************************************
+   * Data types
+   * Required for JS-hinting
+   *****************************************************************************************************/
+  const Types = {};
+
+  Types.AnnotationType = {
+    userId: 0,
+    userName: '',
+    authoredTime: ''
+  };
+
   /** Annotations button */
   let $annotationsButtons = null, $annotationContextButtons = null, $annotationHeaderContextButton = null;
   const markerTextChar = "\ufeff";
@@ -272,7 +284,7 @@
       });
       $context.data('annotations', annotations);
     } else {
-      // Update both data object and attribute due to jQuery data caching
+      // Update both data objects and attribute due to jQuery data caching
       // Outdated annotations cannot be updated, so no need to look for those
       $('[data-annotation-id="' + annotation.id + '"]')
           .data('annotation', annotation)
@@ -927,6 +939,16 @@
       $container.append(createNote(comment));
     });
 
+    // Register comment handler
+    $notesModal.find('.annotation-comment').val('');
+    const $commentButton = $notesModal.find('button.annotations-comment-add');
+    $commentButton.off('click');
+    $commentButton.find('.fa').show();
+    $commentButton.find('.fa-spin').hide();
+    $commentButton.on('click', function () {
+      addAnnotationComment($notesModal, $(this), $container, context.id);
+    });
+
     // Show modal
     $notesModal.one('hide.bs.modal', function () {
       annotationContextData.working = false;
@@ -957,6 +979,7 @@
         $annotationElement.find('.note-header').remove();
         $annotationElement.find('.annotations-note-container').parent().remove();
         $annotationElement.find('.annotations-visibility').parent().remove();
+        $annotationElement.find('.annotations-comment-container').parent().remove();
       } else {
         $annotationElement.find('.mark-header').remove();
 
@@ -966,6 +989,40 @@
         annotation.comments.forEach(function (comment) {
           $container.append(createNote(comment));
         });
+
+        // Bind the comment button
+        const $commentButton = $annotationElement.find('button.annotations-comment-add');
+        $commentButton.find('.fa').show();
+        $commentButton.find('.fa-spin').hide();
+        $commentButton.on('click', function () {
+          addAnnotationComment($noteCollectionModal, $(this), $container, annotation.id);
+        });
+
+        // Set item visibility accordingly
+        let $ownerElements = $annotationElement.find('.owner');
+        let $nonOwnerElements = $annotationElement.find('.non-owner');
+        $ownerElements.hide();
+        $nonOwnerElements.hide();
+        if (annotation.userId === userId) {
+          $ownerElements.show();
+        } else {
+          $nonOwnerElements.show();
+        }
+
+        // Set visibility (use click to force buttons functionality)
+        const $visibilityInputs = $annotationElement.find('input[name="visibility"]');
+        if (annotation.userId === userId) {
+          $visibilityInputs.off('change');
+          setInputVisibility($visibilityInputs, annotation.visibility);
+          $visibilityInputs.on('change', function () {
+            updateTextAnnotationVisibility($visibilityInputs, $noteCollectionModal, annotation.id);
+          });
+        } else {
+          $annotationElement.find('.visibility-state').hide();
+          $annotationElement.find('.visibility-' + annotation.visibility).show();
+        }
+        $visibilityInputs.parent().find('.fa').show();
+        $visibilityInputs.parent().find('.fa-spin').hide();
       }
 
       // Set selected text
@@ -975,35 +1032,8 @@
         $annotationElement.find('.selected-text').closest('.row').remove();
       }
 
-      // Set item visibility accordingly
-      let $ownerElements = $annotationElement.find('.owner');
-      let $nonOwnerElements = $annotationElement.find('.non-owner');
-      $ownerElements.hide();
-      $nonOwnerElements.hide();
-      if (annotation.userId === userId) {
-        $ownerElements.show();
-      } else {
-        $nonOwnerElements.show();
-      }
-
-      // Set visibility (use click to force buttons functionality)
-      const $visibilityInputs = $annotationElement.find('input[name="visibility"]');
-      if (annotation.userId === userId) {
-        $visibilityInputs.off('change');
-        setInputVisibility($visibilityInputs, annotation.visibility);
-        $visibilityInputs.on('change', function () {
-          updateTextAnnotationVisibility($visibilityInputs, $noteCollectionModal, annotation.id);
-        });
-      } else {
-        $annotationElement.find('.visibility-state').hide();
-        $annotationElement.find('.visibility-' + annotation.visibility).show();
-      }
-      $visibilityInputs.parent().find('.fa').show();
-      $visibilityInputs.parent().find('.fa-spin').hide();
-
       // Bind remove button
-      $annotationElement.find('button').on('click', function (e) {
-        e.preventDefault();
+      $annotationElement.find('button.annotations-remove').on('click', function () {
         removeAnnotationFromCollection($button, $(this), annotation.id);
       });
 
@@ -1070,20 +1100,13 @@
   /**
    * Update the annotation visibility
    */
-  function updateTextAnnotationVisibility($visibilityInput, $modal, updateId) {
+  function updateTextAnnotationVisibility($visibilityInputs, $modal, updateId) {
     const $buttons = $modal.find('button');
-    const $visibilityInputContainer = $visibilityInput.first().closest('.annotations-visibility');
-    const $radioButtons = $visibilityInputContainer.find('.btn');
-    const $checkedInput = $visibilityInput.filter(':checked');
-    const $checkInputSpan = $checkedInput.parent();
-    const visibility = $checkedInput.val();
+    const visibility = $visibilityInputs.filter(':checked').val();
 
     // Show working spinners/disable buttons
     $buttons.prop('disabled', true);
-    $radioButtons.addClass('disabled');
-    $visibilityInputContainer.find('.overlay').show();
-    $checkInputSpan.find('.fa').hide();
-    $checkInputSpan.find('.fa-spin').show();
+    toggleInputVisibilities($modal, $visibilityInputs, false);
 
     // Update the data
     $.ajax(
@@ -1109,10 +1132,57 @@
         .always(function () {
           // Remove working spinners/enable buttons
           $buttons.prop('disabled', false);
-          $radioButtons.removeClass('disabled');
-          $visibilityInputContainer.find('.overlay').hide();
-          $visibilityInputContainer.find('.fa').show();
-          $visibilityInputContainer.find('.fa-spin').hide();
+          toggleInputVisibilities($modal, $visibilityInputs, true);
+        });
+  }
+
+  /**
+   * Add a new comment to an annotation
+   */
+  function addAnnotationComment($container, $button, $noteContainer, annotationId) {
+    const $commentContainer = $button.closest('.annotations-comment-container');
+    const $textArea = $commentContainer.find('textarea.annotation-comment');
+    const $buttons = $container.find('button');
+
+    // Show working spinners/disable buttons
+    $textArea.prop('disabled', true);
+    $buttons.prop('disabled', true);
+    toggleInputVisibilities($container, $(), false);
+    $button.find('.fa').hide();
+    $button.find('.fa-spin').show();
+
+    $.ajax(
+        {
+          type: "POST",
+          url: Routing.generate('app_annotation_addcomment', {
+            _studyArea: studyAreaId,
+            concept: conceptId,
+            annotation: annotationId
+          }),
+          data: {
+            'text': $textArea.val(),
+          }
+        })
+        .done(function (data) {
+          $textArea.val('');
+
+          // Add the comment to the context
+          $noteContainer.append(createNote(data.comment));
+
+          // Add the comment to the original data object
+          updateAnnotation(data.annotation);
+        })
+        .fail(function (err) {
+          console.error('Error saving annotation', err);
+          $failedModal.modal();
+        })
+        .always(function () {
+          // Remove working spinners/enable buttons
+          $textArea.prop('disabled', false);
+          $buttons.prop('disabled', false);
+          toggleInputVisibilities($container, $(), true);
+          $button.find('.fa').show();
+          $button.find('.fa-spin').hide();
         });
   }
 
@@ -1218,8 +1288,7 @@
 
     // Disable the buttons, and show the loader
     $noteCollectionModal.find('button').prop('disabled', true);
-    $noteCollectionModal.find('.btn').addClass('disabled');
-    $noteCollectionModal.find('.overlay').show();
+    toggleInputVisibilities($noteCollectionModal, $(), false);
     $button.find('.fa-spin').addClass('show');
     $button.find('.fa-trash').hide();
 
@@ -1264,8 +1333,7 @@
         .always(function () {
           // Restore the buttons
           $noteCollectionModal.find('button').prop('disabled', false);
-          $noteCollectionModal.find('.btn').removeClass('disabled');
-          $noteCollectionModal.find('.overlay').hide();
+          toggleInputVisibilities($noteCollectionModal, $(), true);
           $button.find('.fa-spin').removeClass('show');
           $button.find('.fa-trash').show();
         });
@@ -1281,4 +1349,29 @@
     $inputs.closest('label').removeClass('active');
     $inputs.filter(':checked').closest('label').addClass('active');
   }
+
+  /**
+   * Set input visibility status
+   * @param $container
+   * @param $currentInputs
+   * @param enabled
+   */
+  function toggleInputVisibilities($container, $currentInputs, enabled) {
+    const $inputVisibilities = $container.find('.annotations-visibility');
+    const $radioButtons = $inputVisibilities.find('.btn');
+    const $currentButton = $currentInputs.filter(':checked').closest('.btn');
+
+    if (enabled) {
+      $radioButtons.removeClass('disabled');
+      $inputVisibilities.find('.fa').show();
+      $inputVisibilities.find('.fa-spin').hide();
+      $inputVisibilities.find('.overlay').hide();
+    } else {
+      $radioButtons.addClass('disabled');
+      $currentButton.find('.fa').hide();
+      $currentButton.find('.fa-spin').show();
+      $inputVisibilities.find('.overlay').show();
+    }
+  }
+
 }(window.annotations = window.annotations || {}, $));
