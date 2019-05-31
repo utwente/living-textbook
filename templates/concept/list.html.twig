@@ -14,7 +14,7 @@
   {{ 'concept.list-title'|trans }}
 {% endblock %}
 
-{% macro list(concepts, studyArea) %}
+{% macro list(concepts, studyArea, annotationCounts) %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   <div class="table-responsive">
     <table class="table">
@@ -23,6 +23,7 @@
         <th scope="col">{{ 'concept.name'|trans }}</th>
         <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
         <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
+        <th scope="col">{{ 'annotations.list-count'|trans }}</th>
         <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
       </tr>
       </thead>
@@ -35,6 +36,7 @@
           </td>
           <td>{{ concept.outgoingRelations|length }}</td>
           <td>{{ concept.incomingRelations|length }}</td>
+          <td>{{ annotationCounts[concept.id]|default(0) }}</td>
           <td class="actions">
             {{ buttons.print_button(path('app_print_printsingleconcept', {'concept': concept.id})) }}
             {{ buttons.show_button(path('app_concept_show', {'concept': concept.id})) }}
@@ -52,5 +54,5 @@
 
 {% block content %}
   {% from _self import list %}
-  {{ list(concepts, studyArea) }}
+  {{ list(concepts, studyArea, annotationCounts) }}
 {% endblock %}

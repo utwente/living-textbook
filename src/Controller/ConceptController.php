@@ -7,6 +7,7 @@ use App\Entity\Concept;
 use App\Form\Concept\EditConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
+use App\Repository\AnnotationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -147,18 +148,23 @@ class ConceptController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param ConceptRepository $repo
-   * @param RequestStudyArea  $requestStudyArea
+   * @param ConceptRepository    $repo
+   * @param RequestStudyArea     $requestStudyArea
+   *
+   * @param AnnotationRepository $annotationRepository
    *
    * @return array
    */
-  public function list(ConceptRepository $repo, RequestStudyArea $requestStudyArea)
+  public function list(ConceptRepository $repo, RequestStudyArea $requestStudyArea, AnnotationRepository $annotationRepository)
   {
-    $concepts = $repo->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea());
+    $studyArea        = $requestStudyArea->getStudyArea();
+    $concepts         = $repo->findForStudyAreaOrderedByName($studyArea);
+    $annotationCounts = $annotationRepository->getCountsForUserInStudyArea($this->getUser(), $studyArea->isEditable($this->getUser()), $studyArea);
 
     return [
-        'studyArea' => $requestStudyArea->getStudyArea(),
-        'concepts'  => $concepts,
+        'annotationCounts' => $annotationCounts,
+        'studyArea'        => $studyArea,
+        'concepts'         => $concepts,
     ];
   }
 

@@ -26,6 +26,7 @@ annotations:
   disabled: "Annotations disabled"
   discussion: "Discussion"
   enabled: "Annotations enabled"
+  list-count: "Annotation count"
   note: "Note"
   mark: "Mark"
   outdated-annotations: "Outdated annotations"
