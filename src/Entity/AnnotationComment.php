@@ -1,0 +1,164 @@
+<?php
+
+namespace App\Entity;
+
+use App\Database\Traits\Blameable;
+use App\Database\Traits\IdTrait;
+use App\Database\Traits\SoftDeletable;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Class TextAnnotation
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="App\Repository\AnnotationCommentRepository")
+ * @ORM\HasLifecycleCallbacks()
+ *
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ * @JMSA\ExclusionPolicy("all")
+ */
+class AnnotationComment
+{
+  use IdTrait;
+  use Blameable;
+  use SoftDeletable;
+
+  /**
+   * The user
+   *
+   * @var User|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annotations")
+   * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  private $user;
+
+  /**
+   * @var Annotation|null
+   *
+   * @ORM\ManyToOne(targetEntity="Annotation", inversedBy="comments")
+   * @ORM\JoinColumn(name="annotation_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  private $annotation;
+
+  /**
+   * @var string|null
+   *
+   * @ORM\Column(name="text", type="text", nullable=false)
+   *
+   * @Assert\NotBlank()
+   *
+   * @JMSA\Expose()
+   */
+  private $text;
+
+  /**
+   * AnnotationComment constructor.
+   */
+  public function __construct()
+  {
+  }
+
+  /**
+   * @return DateTime
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\Expose()
+   */
+  public function getAuthoredTime(): DateTime
+  {
+    return $this->createdAt;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getUser(): ?User
+  {
+    return $this->user;
+  }
+
+  /**
+   * @return int
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\Expose()
+   */
+  public function getUserId(): int
+  {
+    return $this->user->getId();
+  }
+
+  /**
+   * @return string
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\Expose()
+   */
+  public function getUserName(): string
+  {
+    return $this->user->getDisplayName();
+  }
+
+  /**
+   * @param User|null $user
+   *
+   * @return AnnotationComment
+   */
+  public function setUser(?User $user): AnnotationComment
+  {
+    $this->user = $user;
+
+    return $this;
+  }
+
+  /**
+   * @return Annotation|null
+   */
+  public function getAnnotation(): ?Annotation
+  {
+    return $this->annotation;
+  }
+
+  /**
+   * @param Annotation|null $annotation
+   *
+   * @return AnnotationComment
+   */
+  public function setAnnotation(?Annotation $annotation): AnnotationComment
+  {
+    $this->annotation = $annotation;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getText(): ?string
+  {
+    return $this->text;
+  }
+
+  /**
+   * @param string|null $text
+   *
+   * @return AnnotationComment
+   */
+  public function setText(?string $text): AnnotationComment
+  {
+    $this->text = $text;
+
+    return $this;
+  }
+
+
+}

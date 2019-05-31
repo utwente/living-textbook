@@ -6,6 +6,8 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -154,6 +156,21 @@ class Annotation
   private $visibility;
 
   /**
+   * @var AnnotationComment[]|Collection
+   *
+   * @ORM\OneToMany(targetEntity="AnnotationComment", mappedBy="annotation")
+   *
+   * @Assert\Expression(
+   *   "(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)",
+   *   message="annotation.comments-incorrect"
+   * )
+   * @Assert\Valid()
+   *
+   * @JMSA\Expose
+   */
+  private $comments;
+
+  /**
    * Annotation constructor.
    *
    * @throws Exception
@@ -162,6 +179,7 @@ class Annotation
   {
     $this->version    = new DateTime();
     $this->visibility = self::privateVisibility();
+    $this->comments   = new ArrayCollection();
   }
 
   /**
@@ -433,6 +451,22 @@ class Annotation
     $this->visibility = $visibility;
 
     return $this;
+  }
+
+  /**
+   * @return AnnotationComment[]|Collection
+   */
+  public function getComments()
+  {
+    return $this->comments;
+  }
+
+  /**
+   * @return int
+   */
+  public function getCommentCount(): int
+  {
+    return count($this->comments);
   }
 
 }
