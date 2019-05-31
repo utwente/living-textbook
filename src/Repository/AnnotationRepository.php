@@ -19,19 +19,34 @@ class AnnotationRepository extends ServiceEntityRepository
    * Find by user and concept
    *
    * @param User    $user
+   * @param bool    $isTeacher
    * @param Concept $concept
    *
-   * @return array
+   * @return Annotation[]
    */
-  public function getForUserAndConcept(User $user, Concept $concept)
+  public function getForUserAndConcept(User $user, bool $isTeacher, Concept $concept)
   {
-    return $this->findBy([
-        'user'    => $user,
-        'concept' => $concept,
-    ], [
-        'context' => 'ASC',
-        'start'   => 'ASC',
-    ]);
+    // Default query part
+    $qb = $this->createQueryBuilder('a');
+
+    return $qb
+        ->where('a.concept = :concept')
+        ->andWhere($qb->expr()->orX(
+            $qb->expr()->eq('a.visibility', ':everybody'),
+            $qb->expr()->andX(
+                $qb->expr()->eq(true, ':isTeacher'),
+                $qb->expr()->eq('a.visibility', ':teacher')
+            ),
+            $qb->expr()->eq('a.user', ':user')
+        ))
+        ->setParameter('concept', $concept)
+        ->setParameter('everybody', Annotation::everybodyVisibility())
+        ->setParameter('isTeacher', $isTeacher)
+        ->setParameter('teacher', Annotation::teacherVisibility())
+        ->setParameter('user', $user)
+        ->orderBy('a.context')
+        ->addOrderBy('a.start')
+        ->getQuery()->getResult();
   }
 
 }

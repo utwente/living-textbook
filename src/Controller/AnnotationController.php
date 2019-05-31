@@ -42,11 +42,14 @@ class AnnotationController extends AbstractController
                       AnnotationRepository $annotationRepository, SerializerInterface $serializer)
   {
     // Check study area
-    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($concept->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
-    $annotations = $annotationRepository->getForUserAndConcept($this->getUser(), $concept);
+    // Determine whether the user has "teacher" role
+    $user        = $this->getUser();
+    $annotations = $annotationRepository->getForUserAndConcept($user, $studyArea->isEditable($user), $concept);
     $json        = $serializer->serialize($annotations, 'json');
 
     return new JsonResponse($json, 200, [], true);
