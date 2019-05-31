@@ -376,7 +376,12 @@
     let annotations = $mark.data('annotations');
     $noteButton.data('annotations', annotations);
     $noteButton.data('annotations-context', context);
-    $noteButton.find('.note-count').html(" " + annotations.length);
+    let count = 0;
+    annotations.forEach(function (annotation) {
+      count++;
+      count += annotation.comments.length;
+    });
+    $noteButton.find('.note-count').html(" " + count);
 
     let obj = $mark[0];
     let top = obj.offsetHeight;
@@ -479,16 +484,16 @@
     clearTimeout(hideAnnotationContextButtonsTimeout);
     const $mark = $('mark[data-annotation-id="' + annotationId + '"]').last();
     const $noteButton = $annotationContextButtons.find('.annotation-note-button');
+    const annotation = $mark.data('annotation');
 
-    annotationContextData.id = annotationId;
-
-    annotationContextData.context = $mark.data('annotation');
+    annotationContextData.id = annotation.id;
+    annotationContextData.context = annotation;
     if ($mark.hasClass('mark')) {
       annotationContextData.current = 'mark';
       $noteButton.hide();
     } else {
       annotationContextData.current = 'note';
-      $noteButton.find('.note-count').html(" 1"); // Todo: set actual value once we support discussions
+      $noteButton.find('.note-count').html(" " + (1 + annotation.comments.length));
       $noteButton.show();
     }
 
@@ -505,7 +510,7 @@
 
     // Remove remove button if not own annotation
     let $removeButton = $annotationContextButtons.find('.annotation-remove-button');
-    if (annotationContextData.context.userId !== userId) {
+    if (annotation.userId !== userId) {
       $removeButton.hide();
     } else {
       $removeButton.show();
@@ -918,6 +923,9 @@
 
     // Load annotation data in modal
     $container.append(createNote(context));
+    context.comments.forEach(function (comment) {
+      $container.append(createNote(comment));
+    });
 
     // Show modal
     $notesModal.one('hide.bs.modal', function () {
@@ -955,6 +963,9 @@
         // Add textual notes
         const $container = $annotationElement.find('.annotations-note-container');
         $container.append(createNote(annotation));
+        annotation.comments.forEach(function (comment) {
+          $container.append(createNote(comment));
+        });
       }
 
       // Set selected text
