@@ -28,6 +28,7 @@ annotations:
   outdated-button: "You have outdated annotations"
   remove: "Remove"
   selected: "Selected text"
+  toggle: "Toggle annotations"
 
 app:
   dashboard: 'Dashboard'

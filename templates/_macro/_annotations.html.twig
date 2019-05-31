@@ -213,9 +213,10 @@
 {% endmacro %}
 
 {% macro toggle() %}
-  <div class="annotations-toggle">
+  <div class="annotations-toggle" data-toggle="tooltip" title="{{ 'annotations.toggle'|trans }}">
     <input type="checkbox" data-toggle="toggle" data-size="sm"
-           data-on="{{ 'annotations.enabled'|trans }}" data-off="{{ 'annotations.disabled'|trans }}"
+           data-on="<span class='fa-stack'><i class='fa fa-comments fa-stack-1x'></i></span>"
+           data-off="<span class='fa-stack'><i class='fa fa-comments fa-stack-1x'></i><i class='fa fa-times fa-stack-1x text-danger'></i></span>"
            data-onstyle="primary" data-offstyle="secondary">
   </div>
 {% endmacro %}
