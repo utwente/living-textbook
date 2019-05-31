@@ -798,6 +798,8 @@
     } else {
       $selectedTextField.html('Complete "' + annotationsData.selectedText + '"');
     }
+    // Set default visibility. Use click, as other methods fail
+    $addModal.find('input[name="visibility"]').first().click();
 
     // Update state
     annotationsData.working = true;
@@ -937,7 +939,8 @@
             'start': annotationsData.start,
             'end': annotationsData.end,
             'selectedText': annotationsData.containsText ? annotationsData.selectedText : null,
-            'version': annotationsData.version
+            'version': annotationsData.version,
+            'visibility': $addModal.find('input[name="visibility"]:checked').val()
           }
         })
         .done(function (annotation) {

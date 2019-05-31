@@ -1,5 +1,7 @@
-@import '~bootstrap/scss/_functions.scss';
-@import '~bootstrap/scss/_variables.scss';
+@import '~bootstrap/scss/_mixins';
+@import '~bootstrap/scss/_functions';
+@import '~bootstrap/scss/_variables';
+@import '~bootstrap/scss/_buttons';
 @import '../vars/vars';
 
 $mark-color: #fff256;
@@ -111,6 +113,18 @@ $note-color: #91ff6d;
 
     .annotations-outdated-button {
       display: none !important;
+    }
+  }
+
+  .annotations-visibility {
+    .btn {
+      &.active {
+        @include button-variant(theme-color(), theme-color());
+      }
+
+      &:hover, &:focus, &:active, &.active {
+        box-shadow: none !important;
+      }
     }
   }
 }

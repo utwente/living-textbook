@@ -29,6 +29,11 @@ annotations:
   remove: "Remove"
   selected: "Selected text"
   toggle: "Toggle annotations"
+  visibility:
+    everybody: "Everybody"
+    private: "Private"
+    teacher: "Teachers"
+    title: "Visibility"
 
 app:
   dashboard: 'Dashboard'

@@ -89,7 +89,8 @@ class AnnotationController extends AbstractController
         ->setStart($request->request->getInt('start', 0))
         ->setEnd($request->request->getInt('end', 0))
         ->setSelectedText($request->request->get('selectedText', NULL))
-        ->setVersion($version);
+        ->setVersion($version)
+        ->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
 
     // Validate data
     $violations = $validator->validate($annotation);

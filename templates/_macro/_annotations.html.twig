@@ -55,6 +55,28 @@
               <label class="col-form-label col-12">{{ 'annotations.selected'|trans }}</label>
               <span class="annotations-selected-text col-12"></span>
             </div>
+            <div class="row">
+              <label class="col-form-label col-12">{{ 'annotations.visibility.title'|trans }}</label>
+              <div class="annotations-visibility col-12">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-secondary active">
+                    <input type="radio" name="visibility" autocomplete="off" value="private" checked>
+                    <i class="fa fa-fw fa-user"></i>
+                    {{ 'annotations.visibility.private'|trans }}
+                  </label>
+                  <label class="btn btn-secondary">
+                    <input type="radio" name="visibility" autocomplete="off" value="teacher">
+                    <i class="fa fa-fw fa-graduation-cap"></i>
+                    {{ 'annotations.visibility.teacher'|trans }}
+                  </label>
+                  <label class="btn btn-secondary">
+                    <input type="radio" name="visibility" autocomplete="off" value="everybody">
+                    <i class="fa fa-fw fa-users"></i>
+                    {{ 'annotations.visibility.everybody'|trans }}
+                  </label>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">

@@ -9,6 +9,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
+use InvalidArgumentException;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -140,13 +141,70 @@ class Annotation
   private $version;
 
   /**
+   * Visibility for the annotation
+   *
+   * @var string
+   *
+   * @ORM\Column(name="visibility", type="string", length=10)
+   *
+   * @JMSA\Expose()
+   *
+   * @Assert\Choice(callback="visibilityOptions")
+   */
+  private $visibility;
+
+  /**
    * Annotation constructor.
    *
    * @throws Exception
    */
   public function __construct()
   {
-    $this->version = new DateTime();
+    $this->version    = new DateTime();
+    $this->visibility = self::privateVisibility();
+  }
+
+  /**
+   * Public visibility level. Only the annotation owner will see the annotation.
+   *
+   * @return string
+   */
+  public static function privateVisibility(): string
+  {
+    return 'private';
+  }
+
+  /**
+   * Teacher visibility level. Teachers are allowed to see the annotation.
+   *
+   * @return string
+   */
+  public static function teacherVisibility(): string
+  {
+    return 'teacher';
+  }
+
+  /**
+   * Everybody visibility level. Everybody is not public, as
+   * it should only be visible for everybody with rights in the specific study area
+   *
+   * @return string
+   */
+  public static function everybodyVisibility(): string
+  {
+    return 'everybody';
+  }
+
+  /**
+   * Visibility levels for an annotation.
+   */
+  public static function visibilityOptions(): array
+  {
+    return [
+        self::privateVisibility(),
+        self::teacherVisibility(),
+        self::everybodyVisibility(),
+    ];
   }
 
   /**
@@ -349,6 +407,30 @@ class Annotation
   public function setVersion(?DateTime $version): Annotation
   {
     $this->version = $version;
+
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getVisibility(): string
+  {
+    return $this->visibility;
+  }
+
+  /**
+   * @param string $visibility
+   *
+   * @return Annotation
+   */
+  public function setVisibility(string $visibility): Annotation
+  {
+    if (!in_array($visibility, self::visibilityOptions())) {
+      throw new InvalidArgumentException(sprintf('"%s" is not a valid visibility value!', $visibility));
+    }
+
+    $this->visibility = $visibility;
 
     return $this;
   }
