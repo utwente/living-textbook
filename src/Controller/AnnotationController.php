@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annotation;
+use App\Entity\AnnotationComment;
 use App\Entity\Concept;
 use App\Repository\AnnotationRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -73,7 +74,8 @@ class AnnotationController extends AbstractController
                       ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area
-    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($concept->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -96,17 +98,8 @@ class AnnotationController extends AbstractController
         ->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
 
     // Validate data
-    $violations = $validator->validate($annotation);
-    if (count($violations) > 0) {
-      $errors = [];
-      foreach ($violations as $violation) {
-        $errors[] = [
-            'message' => $violation->getMessage(),
-            'path'    => $violation->getPropertyPath(),
-        ];
-      }
-
-      return new JsonResponse($serializer->serialize($errors, 'json'), 400, [], true);
+    if (NULL !== $result = $this->validate($annotation, $validator, $serializer)) {
+      return $result;
     }
 
     // Save the entity
@@ -114,6 +107,65 @@ class AnnotationController extends AbstractController
     $em->flush();
 
     return new JsonResponse($serializer->serialize($annotation, 'json'), 200, [], true);
+  }
+
+  /**
+   * @Route("/{concept}/annotation/{annotation}/comment", requirements={"concept"="\d+", "annotation"="\d+"},
+   *   methods={"POST"}, options={"expose"="true"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Concept                $concept
+   * @param Annotation             $annotation
+   * @param ValidatorInterface     $validator
+   * @param EntityManagerInterface $em
+   * @param SerializerInterface    $serializer
+   *
+   * @return JsonResponse
+   */
+  public function addComment(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
+                             ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+  {
+    // Check study area/concept
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($concept->getStudyArea()->getId() != $studyArea->getId() ||
+        $annotation->getConceptId() != $concept->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    // Validate whether this is a comment which is actually visible for the user
+    if ($annotation->getVisibility() == Annotation::privateVisibility() &&
+        $annotation->getUserId() != $this->getUser()->getId()) {
+      // Only owner can reply on private comments
+      throw $this->createAccessDeniedException();
+    }
+
+    if ($annotation->getUserId() != $this->getUser()->getId() &&
+        $annotation->getVisibility() == Annotation::teacherVisibility() &&
+        !$studyArea->isEditable($this->getUser())) {
+      // Only teachers can reply on teacher comments
+      throw $this->createAccessDeniedException();
+    }
+
+    // everybody visibility is implied by method security
+
+    // Create the comment
+    $comment = (new  AnnotationComment())
+        ->setUser($this->getUser())
+        ->setAnnotation($annotation)
+        ->setText($request->request->get('comment', NULL));
+
+    // Validate data
+    if (NULL !== $result = $this->validate($annotation, $validator, $serializer)) {
+      return $result;
+    }
+
+    // Save the entity
+    $em->persist($comment);
+    $em->flush();
+
+    return new JsonResponse($serializer->serialize($comment, 'json'), 200, [], true);
   }
 
   /**
@@ -135,8 +187,9 @@ class AnnotationController extends AbstractController
                                  ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area/concept
-    if ($annotation->getConceptId() != $concept->getId() ||
-        $concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($concept->getStudyArea()->getId() != $studyArea->getId() ||
+        $annotation->getConceptId() != $concept->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -149,17 +202,8 @@ class AnnotationController extends AbstractController
     $annotation->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
 
     // Validate data
-    $violations = $validator->validate($annotation);
-    if (count($violations) > 0) {
-      $errors = [];
-      foreach ($violations as $violation) {
-        $errors[] = [
-            'message' => $violation->getMessage(),
-            'path'    => $violation->getPropertyPath(),
-        ];
-      }
-
-      return new JsonResponse($serializer->serialize($errors, 'json'), 400, [], true);
+    if (NULL !== $result = $this->validate($annotation, $validator, $serializer)) {
+      return $result;
     }
 
     // Save the entity
@@ -185,7 +229,8 @@ class AnnotationController extends AbstractController
   public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em)
   {
     // Check study area
-    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId() ||
+        $annotation->getConceptId() != $concept->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -194,10 +239,73 @@ class AnnotationController extends AbstractController
       throw $this->createAccessDeniedException();
     }
 
-    // Save the entity
+    // Remove the annotation
     $em->remove($annotation);
     $em->flush();
 
     return new JsonResponse();
+  }
+
+  /**
+   * @Route("/{concept}/annotation/{annotation}/comment/{comment}/remove",
+   *   requirements={"concept"="\d+", "annotation"="\d+", "comment"="\d+"},
+   *   methods={"DELETE"}, options={"expose"="true"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Concept                $concept
+   * @param Annotation             $annotation
+   * @param AnnotationComment      $comment
+   * @param EntityManagerInterface $em
+   *
+   * @return JsonResponse
+   */
+  public function removeComment(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
+                                AnnotationComment $comment, EntityManagerInterface $em)
+  {
+    // Check study area/concept/annotation
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($concept->getStudyArea()->getId() != $studyArea->getId() ||
+        $annotation->getConceptId() != $concept->getId() ||
+        $comment->getAnnotation()->getId() != $annotation->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    // Validate credentials
+    if ($annotation->getUserId() != $this->getUser()->getId()) {
+      throw $this->createAccessDeniedException();
+    }
+
+    // Remove the comment
+    $em->remove($comment);
+    $em->flush();
+
+    return new JsonResponse();
+  }
+
+  /**
+   * @param                     $object
+   * @param ValidatorInterface  $validator
+   * @param SerializerInterface $serializer
+   *
+   * @return JsonResponse|null
+   */
+  private function validate($object, ValidatorInterface $validator, SerializerInterface $serializer)
+  {
+    // Validate data
+    $violations = $validator->validate($object);
+    if (count($violations) > 0) {
+      $errors = [];
+      foreach ($violations as $violation) {
+        $errors[] = [
+            'message' => $violation->getMessage(),
+            'path'    => $violation->getPropertyPath(),
+        ];
+      }
+
+      return new JsonResponse($serializer->serialize($errors, 'json'), 400, [], true);
+    }
+
+    return NULL;
   }
 }
