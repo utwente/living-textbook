@@ -502,6 +502,15 @@
     } while (obj = obj.offsetParent);
 
     $annotationContextButtons.find('.fa-spin').hide();
+
+    // Remove remove button if not own annotation
+    let $removeButton = $annotationContextButtons.find('.annotation-remove-button');
+    if (annotationContextData.context.userId !== userId) {
+      $removeButton.hide();
+    } else {
+      $removeButton.show();
+    }
+
     $annotationContextButtons.show();
     $annotationContextButtons.offset({
       left: Math.max($mark[0].getBoundingClientRect().left, left + $mark.innerWidth() - $annotationContextButtons.width()),
