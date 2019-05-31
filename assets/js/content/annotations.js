@@ -205,10 +205,11 @@
     const $toggleButton = $annotationsToggle.find('input[data-toggle]');
     if (typeof (Storage) !== 'undefined') {
       // Set state
-      showAnnotations = localStorage.getItem(showAnnotationsId + '.' + studyAreaId);
-      $toggleButton.bootstrapToggle(showAnnotations ? 'on' : 'off');
+      showAnnotations = JSON.parse(localStorage.getItem(showAnnotationsId + '.' + studyAreaId));
     }
+    $toggleButton.prop('checked', showAnnotations).change();
     $toggleButton.change(toggleAnnotationVisibility);
+    toggleAnnotationVisibility();
 
     // Load current annotations from server
     loadAnnotations();
@@ -224,7 +225,7 @@
 
     // Save state in local storage
     if (typeof (Storage) !== 'undefined') {
-      localStorage.setItem(showAnnotationsId + '.' + studyAreaId, showAnnotations);
+      localStorage.setItem(showAnnotationsId + '.' + studyAreaId, JSON.stringify(showAnnotations));
     }
 
     // Update disabled class on container
