@@ -204,6 +204,14 @@
     </div>
     <div class="card-body">
       <form> {# Keep form here for nice label formatting #}
+        <div class="owner">
+          <div class="float-right" role="group" aria-label="Action bar">
+            <button class="btn btn-outline-danger">
+              <i class="fa fa-fw fa-spinner fa-spin"></i>
+              <i class="fa fa-fw fa-trash"></i> Remove
+            </button>
+          </div>
+        </div>
         <div class="row">
           <label class="col-form-label col-12">{{ 'annotations.selected'|trans }}</label>
           <div class="col-12 selected-text"></div>
@@ -222,15 +230,6 @@
         <div class="row">
           <label class="col-form-label col-12">{{ 'annotations.discussion'|trans }}</label>
           <div class="col-12 annotations-note-container"></div>
-        </div>
-        <div class="owner">
-          <div class="mt-2"></div>
-          <div class="float-right" role="group" aria-label="Action bar">
-            <button class="btn btn-outline-danger">
-              <i class="fa fa-fw fa-spinner fa-spin"></i>
-              <i class="fa fa-fw fa-trash"></i> Remove
-            </button>
-          </div>
         </div>
         <div class="clearfix"></div>
       </form>
