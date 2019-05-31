@@ -117,6 +117,59 @@ class AnnotationController extends AbstractController
   }
 
   /**
+   * @Route("/{concept}/annotation/{annotation}/edit", requirements={"concept"="\d+", "annotation"="\d+"},
+   *   methods={"POST"}, options={"expose"="true"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Concept                $concept
+   * @param Annotation             $annotation
+   * @param ValidatorInterface     $validator
+   * @param EntityManagerInterface $em
+   * @param SerializerInterface    $serializer
+   *
+   * @return JsonResponse
+   */
+  public function editVisibility(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
+                                 ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+  {
+    // Check study area/concept
+    if ($annotation->getConceptId() != $concept->getId() ||
+        $concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    // Validate rights
+    if ($annotation->getUserId() != $this->getUser()->getId()) {
+      throw $this->createAccessDeniedException();
+    }
+
+    // Update annotation visibility
+    $annotation->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
+
+    // Validate data
+    $violations = $validator->validate($annotation);
+    if (count($violations) > 0) {
+      $errors = [];
+      foreach ($violations as $violation) {
+        $errors[] = [
+            'message' => $violation->getMessage(),
+            'path'    => $violation->getPropertyPath(),
+        ];
+      }
+
+      return new JsonResponse($serializer->serialize($errors, 'json'), 400, [], true);
+    }
+
+    // Save the entity
+    $em->persist($annotation);
+    $em->flush();
+
+    return new JsonResponse($serializer->serialize($annotation, 'json'), 200, [], true);
+  }
+
+  /**
    * @Route("/{concept}/annotation/{annotation}/remove", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"DELETE"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")

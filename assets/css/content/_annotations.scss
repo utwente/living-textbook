@@ -117,6 +117,19 @@ $note-color: #91ff6d;
   }
 
   .annotations-visibility {
+    position: relative;
+
+    .overlay {
+      z-index: 100;
+      position: absolute; /* Sit on top of the page content */
+      display: none; /* Hidden by default */
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: transparent;
+    }
+
     .btn {
       &.active {
         @include button-variant(theme-color(), theme-color());

@@ -26,7 +26,8 @@
 
   <div class="annotations-container"
        data-annotations-study-area-id="{{ concept.studyArea.id }}"
-       data-annotations-concept-id="{{ concept.id }}">
+       data-annotations-concept-id="{{ concept.id }}"
+       data-annotations-user-id="{{ app.user.id }}">
     {{ annotationsToggle() }}
 
     {{ macros.data_definition(concept) }}

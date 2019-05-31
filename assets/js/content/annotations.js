@@ -6,12 +6,14 @@
   /** Selection constants */
   const dataStudyAreaId = 'annotations-study-area-id';
   const dataConceptId = 'annotations-concept-id';
+  const dataUserId = 'annotations-user-id';
   const showAnnotationsId = 'show-annotations';
   let $annotationsContainer = null, $annotationsToggle = null;
 
   /** State parameters */
   let studyAreaId = 0;
   let conceptId = 0;
+  let userId = 0;
   let mouseDown = false;
   const annotationsData = {
     current: null,
@@ -127,6 +129,7 @@
     // Retrieve required concept id
     studyAreaId = parseInt($annotationsContainer.data(dataStudyAreaId));
     conceptId = parseInt($annotationsContainer.data(dataConceptId));
+    userId = parseInt($annotationsContainer.data(dataUserId));
 
     // Register events on the window object
     $(window)
@@ -249,6 +252,32 @@
           console.error("Error loading annotations");
           $failedModal.show();
         });
+  }
+
+  /**
+   * Update the annotation data
+   *
+   * @param annotation
+   */
+  function updateAnnotation(annotation) {
+    if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
+      const $context = $('[data-annotations-contains-text="false"][data-annotations-context="' + annotation.context + '"]');
+      const annotations = [];
+      ($context.data('annotations') || []).forEach(function (item) {
+        if (item.id === annotation.id) {
+          annotations.push(annotation);
+        } else {
+          annotations.push(item);
+        }
+      });
+      $context.data('annotations', annotations);
+    } else {
+      // Update both data object and attribute due to jQuery data caching
+      // Outdated annotations cannot be updated, so no need to look for those
+      $('[data-annotation-id="' + annotation.id + '"]')
+          .data('annotation', annotation)
+          .attr('data-annotation', JSON.stringify(annotation));
+    }
   }
 
   /**
@@ -799,8 +828,9 @@
     } else {
       $selectedTextField.html('Complete "' + annotationsData.selectedText + '"');
     }
-    // Set default visibility. Use click, as other methods fail
-    $addModal.find('input[name="visibility"]').first().click();
+
+    // Set default visibility
+    setInputVisibility($addModal.find('input[name="visibility"]'), 'private');
 
     // Update state
     annotationsData.working = true;
@@ -843,9 +873,35 @@
     annotationContextData.working = true;
     annotationContextData.onButton = false;
 
+    // Set item visibility accordingly
+    let $ownerElements = $notesModal.find('.owner');
+    let $nonOwnerElements = $notesModal.find('.non-owner');
+    $ownerElements.hide();
+    $nonOwnerElements.hide();
+    if (context.userId === userId) {
+      $ownerElements.show();
+    } else {
+      $nonOwnerElements.show();
+    }
+
     // Set selection in modal
     let $textContainer = $notesModal.find('#note-text');
     $textContainer.text(context.selectedText);
+
+    // Set visibility in modal (use click to force buttons functionality)
+    const $visibilityInputs = $notesModal.find('input[name="visibility"]');
+    if (context.userId === userId) {
+      $visibilityInputs.off('change');
+      setInputVisibility($visibilityInputs, context.visibility);
+      $visibilityInputs.on('change', function () {
+        updateTextAnnotationVisibility($visibilityInputs, $notesModal, context.id);
+      });
+    } else {
+      $notesModal.find('.visibility-state').hide();
+      $notesModal.find('.visibility-' + context.visibility).show();
+    }
+    $visibilityInputs.parent().find('.fa').show();
+    $visibilityInputs.parent().find('.fa-spin').hide();
 
     // Clear existing notes in the modal
     let $container = $notesModal.find('.annotations-note-container');
@@ -883,6 +939,7 @@
       if (typeof annotation.text == "undefined") {
         $annotationElement.find('.note-header').remove();
         $annotationElement.find('.annotations-note-container').parent().remove();
+        $annotationElement.find('.annotations-visibility').parent().remove();
       } else {
         $annotationElement.find('.mark-header').remove();
 
@@ -891,11 +948,40 @@
         $container.append(createNote(annotation));
       }
 
+      // Set selected text
       if (typeof annotation.selectedText !== 'undefined' && annotation.selectedText.length > 0) {
         $annotationElement.find('.selected-text').text(annotation.selectedText);
       } else {
         $annotationElement.find('.selected-text').closest('.row').remove();
       }
+
+      // Set item visibility accordingly
+      let $ownerElements = $annotationElement.find('.owner');
+      let $nonOwnerElements = $annotationElement.find('.non-owner');
+      $ownerElements.hide();
+      $nonOwnerElements.hide();
+      if (annotation.userId === userId) {
+        $ownerElements.show();
+      } else {
+        $nonOwnerElements.show();
+      }
+
+      // Set visibility (use click to force buttons functionality)
+      const $visibilityInputs = $annotationElement.find('input[name="visibility"]');
+      if (annotation.userId === userId) {
+        $visibilityInputs.off('change');
+        setInputVisibility($visibilityInputs, annotation.visibility);
+        $visibilityInputs.on('change', function () {
+          updateTextAnnotationVisibility($visibilityInputs, $noteCollectionModal, annotation.id);
+        });
+      } else {
+        $annotationElement.find('.visibility-state').hide();
+        $annotationElement.find('.visibility-' + annotation.visibility).show();
+      }
+      $visibilityInputs.parent().find('.fa').show();
+      $visibilityInputs.parent().find('.fa-spin').hide();
+
+      // Bind remove button
       $annotationElement.find('button').on('click', function (e) {
         e.preventDefault();
         removeAnnotationFromCollection($button, $(this), annotation.id);
@@ -958,6 +1044,55 @@
           $modalButtons.find('.fa-plus').show();
           $modalButtons.find('.fa-spin').hide();
           $modalButtons.prop('disabled', false);
+        });
+  }
+
+  /**
+   * Update the annotation visibility
+   */
+  function updateTextAnnotationVisibility($visibilityInput, $modal, updateId) {
+    const $buttons = $modal.find('button');
+    const $visibilityInputContainer = $visibilityInput.first().closest('.annotations-visibility');
+    const $radioButtons = $visibilityInputContainer.find('.btn');
+    const $checkedInput = $visibilityInput.filter(':checked');
+    const $checkInputSpan = $checkedInput.parent();
+    const visibility = $checkedInput.val();
+
+    // Show working spinners/disable buttons
+    $buttons.prop('disabled', true);
+    $radioButtons.addClass('disabled');
+    $visibilityInputContainer.find('.overlay').show();
+    $checkInputSpan.find('.fa').hide();
+    $checkInputSpan.find('.fa-spin').show();
+
+    // Update the data
+    $.ajax(
+        {
+          type: "POST",
+          url: Routing.generate('app_annotation_editvisibility', {
+            _studyArea: studyAreaId,
+            concept: conceptId,
+            annotation: updateId
+          }),
+          data: {
+            'visibility': visibility
+          }
+        })
+        .done(function (annotation) {
+          // Update the annotation data after the update
+          updateAnnotation(annotation);
+        })
+        .fail(function (err) {
+          console.error('Error updating annotation visibility', err);
+          $failedModal.modal();
+        })
+        .always(function () {
+          // Remove working spinners/enable buttons
+          $buttons.prop('disabled', false);
+          $radioButtons.removeClass('disabled');
+          $visibilityInputContainer.find('.overlay').hide();
+          $visibilityInputContainer.find('.fa').show();
+          $visibilityInputContainer.find('.fa-spin').hide();
         });
   }
 
@@ -1059,14 +1194,12 @@
    * @param removeId
    */
   function removeAnnotationFromCollection($collectionContainer, $button, removeId) {
-    const annotationsData = $collectionContainer.data('annotations');
-    const annotation = annotationsData.filter(function (annotation) {
-      return annotation.id === removeId;
-    })[0];
-    console.info("Removing annotation from collection", annotation);
+    console.info("Removing annotation from collection", removeId);
 
     // Disable the buttons, and show the loader
     $noteCollectionModal.find('button').prop('disabled', true);
+    $noteCollectionModal.find('.btn').addClass('disabled');
+    $noteCollectionModal.find('.overlay').show();
     $button.find('.fa-spin').addClass('show');
     $button.find('.fa-trash').hide();
 
@@ -1111,8 +1244,21 @@
         .always(function () {
           // Restore the buttons
           $noteCollectionModal.find('button').prop('disabled', false);
+          $noteCollectionModal.find('.btn').removeClass('disabled');
+          $noteCollectionModal.find('.overlay').hide();
           $button.find('.fa-spin').removeClass('show');
           $button.find('.fa-trash').show();
         });
+  }
+
+  /**
+   * Set the input visibility value
+   * @param $inputs
+   * @param value
+   */
+  function setInputVisibility($inputs, value) {
+    $inputs.filter('[value="' + value + '"]').prop('checked', true);
+    $inputs.closest('label').removeClass('active');
+    $inputs.filter(':checked').closest('label').addClass('active');
   }
 }(window.annotations = window.annotations || {}, $));
