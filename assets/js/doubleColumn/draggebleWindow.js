@@ -183,7 +183,7 @@
 
       // Prerender the canvas
       if (rightWidth > 0) {
-        cb.resizeCanvasWithSizes(rightWidth)
+        cb.resizeCanvasWithSizes(rightWidth);
       }
     } else {
       leftFrame.width(leftWidth);
@@ -203,7 +203,13 @@
   dragButton.doDrag = function (e) {
     if (animationCount > 0) return;
     if (fullScreen) return;
-    if (e.which !== 1) {
+
+
+    // For touch event, replace the jQuery event with the actual touch event
+    // Otherwise, e.pageX would be undefined
+    if (e.type === 'touchmove') {
+      e = e.originalEvent.touches[0];
+    } else if (e.which !== 1) {
       dragButton.stopDrag(e);
       return;
     }
@@ -219,18 +225,18 @@
     invisibleFrame.css('z-index', -1);
 
     // Remove event listeners
-    document.documentElement.removeEventListener('mousemove', dragButton.doDrag);
-    document.documentElement.removeEventListener('mouseup', dragButton.stopDrag);
+    $(document).off('mousemove touchmove', dragButton.doDrag);
+    $(document).off('mouseup touchend', dragButton.stopDrag);
   };
 
   /**
    * Handler that registers the drag and stop drag handles on mouse click
    */
-  dragButton.on('mousedown', function () {
+  dragButton.on('mousedown touchstart', function () {
     try {
       // Add event listener at document level, to register the drag correctly
-      document.documentElement.addEventListener('mousemove', dragButton.doDrag);
-      document.documentElement.addEventListener('mouseup', dragButton.stopDrag);
+      $(document).on('mousemove touchmove', dragButton.doDrag);
+      $(document).on('mouseup touchend', dragButton.stopDrag);
     } catch (e) {
       console.error('Column resize not available');
     }
