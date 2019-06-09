@@ -43,27 +43,29 @@
 {% block javascripts_bottom %}
   {{ parent() }}
   <script type="text/javascript">
-    // Focus form input
-    function focusForm() {
-      setTimeout(function () {
-        $('#login__username').focus();
-      }, 100);
-    }
+    $(function () {
+      // Focus form input
+      function focusForm() {
+        setTimeout(function () {
+          $('#login__username').focus();
+        }, 100);
+      }
 
-    // Fixate the tab height
-    var maxHeight = 0;
-    $(".tab-content .tab-pane").each(function () {
-      $(this).addClass("active");
-      var height = $(this).height();
-      maxHeight = height > maxHeight ? height : maxHeight;
-      $(this).removeClass("active");
-    });
-    {% if formActive %}
-      $('#tab-custom-account').addClass("active");
+      // Fixate the tab height
+      var maxHeight = 0;
+      $('.tab-content .tab-pane').each(function () {
+        $(this).addClass('active');
+        var height = $(this).height();
+        maxHeight = height > maxHeight ? height : maxHeight;
+        $(this).removeClass('active');
+      });
+      {% if formActive %}
+      $('#tab-custom-account').addClass('active');
       focusForm();
-    {% else %}
-      $(".tab-content .tab-pane:first").addClass("active");
-    {% endif %}
-    $(".tab-content").height(maxHeight);
+      {% else %}
+      $('.tab-content .tab-pane:first').addClass('active');
+      {% endif %}
+      $('.tab-content').height(maxHeight);
+    });
   </script>
 {% endblock %}
