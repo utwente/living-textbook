@@ -281,6 +281,7 @@ learning-path:
   saved: 'Learning path "%item%" has been saved successfully.'
   scroll-left: 'Previous'
   scroll-right: 'Next'
+  select: "Select..."
   updated: 'Learning path "%item%" has been successfully updated.'
 
 login:

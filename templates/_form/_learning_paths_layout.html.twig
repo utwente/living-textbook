@@ -53,6 +53,15 @@
         window.slp.addLearningPathConcepts('{{ sortable_id }}', '{{ form.concepts.vars.id }}', '{{ form.learningOutcomes.vars.id }}');
       }
     }
+
+    $(function () {
+      var $conceptField = $('#{{ form.concepts.vars.id }}');
+      var $learningOutcomesField = $('#{{ form.learningOutcomes.vars.id }}');
+      $conceptField.add($learningOutcomesField).on('change', function () {
+        var disabled = $conceptField.val().length === 0 && $learningOutcomesField.val().length === 0;
+        $('#{{ form.add.vars.id }}').prop('disabled', disabled);
+      });
+    });
   </script>
 {% endblock %}
 

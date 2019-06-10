@@ -36,26 +36,28 @@ class LearningPathElementSelectorType extends AbstractType
 
     $builder
         ->add('concepts', EntityType::class, [
-            'label'         => 'menu.concept',
-            'class'         => Concept::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
+            'label'               => 'menu.concept',
+            'class'               => Concept::class,
+            'choice_label'        => 'name',
+            'required'            => false,
+            'multiple'            => true,
+            'query_builder'       => function (ConceptRepository $conceptRepository) use ($studyArea) {
               return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea);
             },
-            'select2'       => true,
+            'select2'             => true,
+            'select2_placeholder' => 'learning-path.select',
         ])
         ->add('learningOutcomes', EntityType::class, [
-            'label'         => 'menu.learning-outcomes',
-            'class'         => LearningOutcome::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
+            'label'               => 'menu.learning-outcomes',
+            'class'               => LearningOutcome::class,
+            'choice_label'        => 'name',
+            'required'            => false,
+            'multiple'            => true,
+            'query_builder'       => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
               return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
             },
-            'select2'       => true,
+            'select2'             => true,
+            'select2_placeholder' => 'learning-path.select',
         ])
         ->add('learningOutcomesConcepts', HiddenType::class, [
             'data' => $this->serializer->serialize($this->learningOutcomeRepository->findUsedConceptIdsForStudyArea($studyArea), 'json'),
@@ -64,8 +66,9 @@ class LearningPathElementSelectorType extends AbstractType
             'label' => 'learning-path.add-element',
             'icon'  => 'fa-plus',
             'attr'  => [
-                'class'   => 'btn-outline-success float-right',
-                'onclick' => 'addLearningPathConcepts_' . $options['sortable_id'] . '();',
+                'class'    => 'btn-outline-success float-right',
+                'disabled' => 'disabled',
+                'onclick'  => 'addLearningPathConcepts_' . $options['sortable_id'] . '();',
             ],
         ]);
   }

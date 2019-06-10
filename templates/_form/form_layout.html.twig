@@ -104,7 +104,6 @@
 {%- endblock %}
 
 {%- block choice_widget_collapsed -%}
-  {% set select2_placeholder = placeholder %}
   {% set placeholder = placeholder is not none ? '' : placeholder %}
   {{- parent() -}}
   {%- spaceless -%}
@@ -112,7 +111,7 @@
       <script type="text/javascript">
         $('#{{ id }}').select2({
           width: '100%',
-          theme: "bootstrap",
+          theme: 'bootstrap',
           {% if select2_placeholder is not none %}placeholder: '{{ translation_domain is same as(false) ? select2_placeholder : select2_placeholder|trans({}, translation_domain) }}',{% endif %}
         });
       </script>
