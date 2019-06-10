@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -199,6 +200,11 @@ class AnnotationController extends AbstractController
     // Validate rights
     if ($annotation->getUserId() != $this->getUser()->getId()) {
       throw $this->createAccessDeniedException();
+    }
+
+    // Verify whether there already have been made comments
+    if ($annotation->getCommentCount() > 0) {
+      throw new BadRequestHttpException();
     }
 
     // Update annotation visibility

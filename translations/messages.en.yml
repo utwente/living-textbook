@@ -36,6 +36,7 @@ annotations:
   toggle: "Toggle annotations"
   visibility:
     everybody: "Everybody"
+    has-comments: "As this annotation already received comments, the visibility cannot be updated anymore."
     private: "Private"
     teacher: "Teachers"
     title: "Visibility"

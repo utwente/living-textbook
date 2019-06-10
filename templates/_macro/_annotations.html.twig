@@ -36,26 +36,31 @@
 {% endmacro %}
 
 {% macro _visibilityButtons() %}
-  <div class="overlay"></div>
-  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <label class="btn btn-outline-secondary active">
-      <input type="radio" name="visibility" autocomplete="off" value="private" checked>
-      <i class="fa fa-fw fa-user"></i>
-      <i class="fa fa-fw fa-spinner fa-spin"></i>
-      {{ 'annotations.visibility.private'|trans }}
-    </label>
-    <label class="btn btn-outline-secondary">
-      <input type="radio" name="visibility" autocomplete="off" value="teacher">
-      <i class="fa fa-fw fa-graduation-cap"></i>
-      <i class="fa fa-fw fa-spinner fa-spin"></i>
-      {{ 'annotations.visibility.teacher'|trans }}
-    </label>
-    <label class="btn btn-outline-secondary">
-      <input type="radio" name="visibility" autocomplete="off" value="everybody">
-      <i class="fa fa-fw fa-users"></i>
-      <i class="fa fa-fw fa-spinner fa-spin"></i>
-      {{ 'annotations.visibility.everybody'|trans }}
-    </label>
+  <div class="visibility-buttons">
+    <div class="overlay"></div>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-outline-secondary active">
+        <input type="radio" name="visibility" autocomplete="off" value="private" checked>
+        <i class="fa fa-fw fa-user"></i>
+        <i class="fa fa-fw fa-spinner fa-spin"></i>
+        {{ 'annotations.visibility.private'|trans }}
+      </label>
+      <label class="btn btn-outline-secondary">
+        <input type="radio" name="visibility" autocomplete="off" value="teacher">
+        <i class="fa fa-fw fa-graduation-cap"></i>
+        <i class="fa fa-fw fa-spinner fa-spin"></i>
+        {{ 'annotations.visibility.teacher'|trans }}
+      </label>
+      <label class="btn btn-outline-secondary">
+        <input type="radio" name="visibility" autocomplete="off" value="everybody">
+        <i class="fa fa-fw fa-users"></i>
+        <i class="fa fa-fw fa-spinner fa-spin"></i>
+        {{ 'annotations.visibility.everybody'|trans }}
+      </label>
+    </div>
+    <div class="small when-comments">
+      {{ 'annotations.visibility.has-comments'|trans }}
+    </div>
   </div>
 {% endmacro %}
 
