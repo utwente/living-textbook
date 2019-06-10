@@ -958,8 +958,14 @@
     });
 
     // Register comment handler
-    $notesModal.find('.annotation-comment').val('');
     const $commentButton = $notesModal.find('button.annotations-comment-add');
+    $notesModal.find('.annotation-comment')
+        .val('')
+        .off('input')
+        .on('input', function () {
+          $commentButton.prop('disabled', $(this).val() === '');
+        });
+    $commentButton.prop('disabled', true);
     $commentButton.off('click');
     $commentButton.find('.fa').show();
     $commentButton.find('.fa-spin').hide();
@@ -1041,6 +1047,13 @@
 
         // Bind the comment button
         const $commentButton = $annotationElement.find('button.annotations-comment-add');
+        $annotationElement.find('.annotation-comment')
+            .val('')
+            .off('input')
+            .on('input', function () {
+              $commentButton.prop('disabled', $(this).val() === '');
+            });
+        $commentButton.prop('disabled', true);
         $commentButton.find('.fa').show();
         $commentButton.find('.fa-spin').hide();
         $commentButton.on('click', function () {

@@ -18,8 +18,8 @@ annotations:
   annotation: "Annotation"
   annotations: "Annotations"
   comment:
-    create: "Add comment"
-    create-placeholder: "Type your response..."
+    create: "Place comment"
+    create-placeholder: "Type your comment..."
   count: "Count"
   create-mark: "Create mark"
   create-note: "Create note"
