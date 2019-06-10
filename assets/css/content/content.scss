@@ -62,4 +62,23 @@ div.spacer {
   }
 }
 
+// Overwrite toggle line heights as they are not calculated correctly by the plugin
+.toggle {
+  .toggle-group {
+    label {
+      &.toggle-on, &-toggle-off {
+        line-height: $btn-line-height !important;
+
+        &.btn-sm {
+          line-height: $btn-line-height-sm !important;
+        }
+
+        &.btn-lg {
+          line-height: $btn-line-height-lg !important;
+        }
+      }
+    }
+  }
+}
+
 @import '_footer';
