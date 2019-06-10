@@ -65,6 +65,7 @@
   let $collectionNoteProto = null;
   let $outdatedButtonProto = null;
   let $failedModal = null;
+  let modalCss = '';
 
   /**
    * Annotation plugin loader, executed on page load.
@@ -137,6 +138,18 @@
       console.error('Failed modal not found!');
       return;
     }
+
+    // Register close handler to restore 'modal-open' class if another modal is opened
+    $failedModal.on('hide.bs.modal', function () {
+      modalCss = $('body').css('padding-right');
+    });
+    $failedModal.on('hidden.bs.modal', function () {
+      if ($('.modal.show').length > 0) {
+        $('body')
+            .addClass('modal-open')
+            .css('padding-right', modalCss);
+      }
+    });
 
     // Retrieve required concept id
     studyAreaId = parseInt($annotationsContainer.data(dataStudyAreaId));
