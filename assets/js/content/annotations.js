@@ -52,8 +52,8 @@
 
   /** Annotations button */
   let $annotationsButtons = null, $annotationContextButtons = null, $annotationHeaderContextButton = null;
-  const markerTextChar = "\ufeff";
-  let hiddenMarkerElement, markerId = "sel_" + new Date().getTime() + "_" + Math.random().toString().substr(2);
+  const markerTextChar = '\ufeff';
+  let hiddenMarkerElement, markerId = 'sel_' + new Date().getTime() + '_' + Math.random().toString().substr(2);
   let hideAnnotationsButtonTimeout = null, hideAnnotationContextButtonsTimeout = null,
       hideAnnotationHeaderContextButtonsTimeout = null;
 
@@ -72,7 +72,7 @@
    */
   $(function () {
     if (!window.Selection) {
-      console.error("Selection not available, not loading annotations");
+      console.error('Selection not available, not loading annotations');
       return;
     }
 
@@ -261,7 +261,7 @@
         })
         .done(renderAnnotations)
         .fail(function () {
-          console.error("Error loading annotations");
+          console.error('Error loading annotations');
           $failedModal.show();
         });
   }
@@ -272,7 +272,7 @@
    * @param annotation
    */
   function updateAnnotation(annotation) {
-    if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
+    if (annotation.start === -1 || typeof annotation.selectedText == 'undefined') {
       const $context = $('[data-annotations-contains-text="false"][data-annotations-context="' + annotation.context + '"]');
       const annotations = [];
       ($context.data('annotations') || []).forEach(function (item) {
@@ -301,7 +301,7 @@
     // Loop the annotations
     for (let i = 0; i < annotations.length; i++) {
       const annotation = annotations[i];
-      if (annotation.start === -1 || typeof annotation.selectedText == "undefined") {
+      if (annotation.start === -1 || typeof annotation.selectedText == 'undefined') {
         renderHeaderAnnotation(annotation);
       } else {
         renderTextAnnotation(annotation);
@@ -346,7 +346,7 @@
       return;
     }
 
-    console.info("Rendering header annotation", annotation);
+    console.info('Rendering header annotation', annotation);
 
     // Update annotations data
     const annotations = $context.data('annotations') || [];
@@ -354,7 +354,7 @@
     $context.data('annotations', annotations);
 
     // Update styling, add hover
-    $context.addClass(typeof annotation.text == "undefined" ? "mark" : "note");
+    $context.addClass(typeof annotation.text == 'undefined' ? 'mark' : 'note');
     if (!$context.hasClass('annotated')) {
       $context.addClass('annotated');
       $context.hover(function () {
@@ -393,7 +393,7 @@
       count++;
       count += annotation.comments.length;
     });
-    $noteButton.find('.note-count').html(" " + count);
+    $noteButton.find('.note-count').html(' ' + count);
 
     let obj = $mark[0];
     let top = obj.offsetHeight;
@@ -424,7 +424,7 @@
 
     // Check annotation version
     if (Date.parse($context.data('annotations-version')) > Date.parse(annotation.version)) {
-      console.info("Rendering outdated annotation", annotation);
+      console.info('Rendering outdated annotation', annotation);
 
       // Find whether there already is a notification rendered
       const $container = $context.parent();
@@ -447,15 +447,15 @@
       $outdatedNotificationButton.data('annotations', annotationData);
 
     } else {
-      console.info("Rendering text annotation", annotation);
+      console.info('Rendering text annotation', annotation);
 
       $context.markRanges([{
         start: annotation.start,
         length: annotation.end - annotation.start
       }], {
-        className: 'ltb-annotation ' + (typeof annotation.text == "undefined" ? "mark" : "note"),
+        className: 'ltb-annotation ' + (typeof annotation.text == 'undefined' ? 'mark' : 'note'),
         acrossElements: true,
-        accuracy: "exactly",
+        accuracy: 'exactly',
         caseSensitive: true,
         separateWordSearch: false,
         ignoreJoiners: true,
@@ -469,7 +469,7 @@
         },
         done: function () {
           $context.find('mark').each(function () {
-            if (this.innerHTML.trim() === "") {
+            if (this.innerHTML.trim() === '') {
               $(this).remove();
             }
           });
@@ -505,7 +505,7 @@
       $noteButton.hide();
     } else {
       annotationContextData.current = 'note';
-      $noteButton.find('.note-count').html(" " + (1 + annotation.comments.length));
+      $noteButton.find('.note-count').html(' ' + (1 + annotation.comments.length));
       $noteButton.show();
     }
 
@@ -653,7 +653,7 @@
     clonedRange.collapse(false);
 
     // Create the marker element containing a single invisible character using DOM methods and insert it
-    hiddenMarkerElement = document.createElement("span");
+    hiddenMarkerElement = document.createElement('span');
     hiddenMarkerElement.id = markerId;
     hiddenMarkerElement.appendChild(document.createTextNode(markerTextChar));
     clonedRange.insertNode(hiddenMarkerElement);
@@ -740,7 +740,7 @@
       return {
         start: context.start,
         found: true
-      }
+      };
     }
 
     let nodes = container.childNodes;
@@ -964,7 +964,7 @@
    */
   function openCollectionAnnotationsModal($button, isOutdatedNotes) {
     const annotationsData = $button.data('annotations').sort(function (annotation) {
-      return typeof annotation.text != "undefined";
+      return typeof annotation.text != 'undefined';
     });
 
     // Clear current annotations from modal
@@ -975,7 +975,7 @@
     for (let i = 0; i < annotationsData.length; i++) {
       const annotation = annotationsData[i];
       const $annotationElement = $collectionNoteProto.clone();
-      if (typeof annotation.text == "undefined") {
+      if (typeof annotation.text == 'undefined') {
         $annotationElement.find('.note-header').remove();
         $annotationElement.find('.annotations-note-container').parent().remove();
         $annotationElement.find('.annotations-visibility').parent().remove();
@@ -1068,7 +1068,7 @@
     annotationsData.working = true;
     $.ajax(
         {
-          type: "POST",
+          type: 'POST',
           url: Routing.generate('app_annotation_add', {_studyArea: studyAreaId, concept: conceptId}),
           data: {
             'text': $addModal.find('textarea#annotation').val(),
@@ -1111,7 +1111,7 @@
     // Update the data
     $.ajax(
         {
-          type: "POST",
+          type: 'POST',
           url: Routing.generate('app_annotation_editvisibility', {
             _studyArea: studyAreaId,
             concept: conceptId,
@@ -1153,7 +1153,7 @@
 
     $.ajax(
         {
-          type: "POST",
+          type: 'POST',
           url: Routing.generate('app_annotation_addcomment', {
             _studyArea: studyAreaId,
             concept: conceptId,
@@ -1221,7 +1221,7 @@
           renderAnnotations([annotation]);
         })
         .fail(function (err) {
-          console.error("Error saving annotations", err);
+          console.error('Error saving annotations', err);
           $failedModal.modal();
         })
         .always(function () {
@@ -1230,14 +1230,14 @@
           $annotationsButtons.find('.fa-flag').show();
           $annotationsButtons.find('.fa-spin').hide();
           $annotationsButtons.find('button').prop('disabled', false);
-        })
+        });
   }
 
   /**
    * Remove the selected annotation
    */
   function removeAnnotation() {
-    console.info("Removing annotation", annotationContextData);
+    console.info('Removing annotation', annotationContextData);
 
     $annotationContextButtons.find('button').prop('disabled', true);
     $annotationContextButtons.find('.fa-times').hide();
@@ -1265,7 +1265,7 @@
           annotationContextData.current = null;
         })
         .fail(function (err) {
-          console.error("Error removing annotation", err);
+          console.error('Error removing annotation', err);
           $failedModal.modal();
         })
         .always(function () {
@@ -1284,7 +1284,7 @@
    * @param removeId
    */
   function removeAnnotationFromCollection($collectionContainer, $button, removeId) {
-    console.info("Removing annotation from collection", removeId);
+    console.info('Removing annotation from collection', removeId);
 
     // Disable the buttons, and show the loader
     $noteCollectionModal.find('button').prop('disabled', true);
@@ -1327,7 +1327,7 @@
           }
         })
         .fail(function (err) {
-          console.error("Error removing annotation", err);
+          console.error('Error removing annotation', err);
           $failedModal.modal();
         })
         .always(function () {
