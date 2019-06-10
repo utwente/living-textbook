@@ -202,8 +202,8 @@ class AnnotationController extends AbstractController
       throw $this->createAccessDeniedException();
     }
 
-    // Verify whether there already have been made comments
-    if ($annotation->getCommentCount() > 0) {
+    // Verify that there are no comments from other users yet
+    if ($annotation->getCommentsFromOthersCount() > 0) {
       throw new BadRequestHttpException();
     }
 

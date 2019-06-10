@@ -918,8 +918,11 @@
     const $visibilityInputs = $notesModal.find('input[name="visibility"]');
     $visibilityInputs.off('change');
     if (context.userId === userId) {
-      setInputVisibility($visibilityInputs, context.visibility, context.comments.length);
-      if (context.comments.length === 0) {
+      const otherComments = context.comments.filter(function (comment) {
+        return comment.userId !== userId;
+      });
+      setInputVisibility($visibilityInputs, context.visibility, otherComments.length);
+      if (otherComments.length === 0) {
         $visibilityInputs.on('change', function () {
           updateTextAnnotationVisibility($visibilityInputs, $notesModal, context.id);
         });
@@ -1007,8 +1010,11 @@
         const $visibilityInputs = $annotationElement.find('input[name="visibility"]');
         $visibilityInputs.off('change');
         if (annotation.userId === userId) {
-          setInputVisibility($visibilityInputs, annotation.visibility, annotation.comments.length);
-          if (annotation.comments.length === 0) {
+          const otherComments = annotation.comments.filter(function (comment) {
+            return comment.userId !== userId;
+          });
+          setInputVisibility($visibilityInputs, annotation.visibility, otherComments.length);
+          if (otherComments.length === 0) {
             $visibilityInputs.on('change', function () {
               updateTextAnnotationVisibility($visibilityInputs, $noteCollectionModal, annotation.id);
             });
@@ -1174,7 +1180,10 @@
           $noteContainer.append(createNote(data.comment));
 
           // Update the visibility buttons
-          setInputVisibility($visibilityInputs, data.annotation.visibility, data.annotation.comments.length === 0);
+          const otherComments = data.annotation.comments.filter(function (comment) {
+            return comment.userId !== userId;
+          });
+          setInputVisibility($visibilityInputs, data.annotation.visibility, otherComments.length);
 
           // Add the comment to the original data object
           updateAnnotation(data.annotation);
@@ -1351,17 +1360,17 @@
    * Set the input visibility value
    * @param $inputs
    * @param value
-   * @param commentCount
+   * @param otherCommentCount
    */
-  function setInputVisibility($inputs, value, commentCount) {
+  function setInputVisibility($inputs, value, otherCommentCount) {
     const $currentInputs = $inputs.filter('[value="' + value + '"]');
     $currentInputs.prop('checked', true);
     $inputs.closest('label').removeClass('active');
     $inputs.filter(':checked').closest('label').addClass('active');
 
     let $buttonsContainer = $inputs.closest('.visibility-buttons');
-    $buttonsContainer.data('comment-count', commentCount);
-    toggleInputVisibilities($buttonsContainer.parent(), $currentInputs, commentCount === 0);
+    $buttonsContainer.data('comment-count', otherCommentCount);
+    toggleInputVisibilities($buttonsContainer.parent(), $currentInputs, otherCommentCount === 0);
   }
 
   /**

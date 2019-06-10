@@ -466,7 +466,19 @@ class Annotation
    */
   public function getCommentCount(): int
   {
-    return count($this->comments);
+    return $this->comments->count();
+  }
+
+  /**
+   * @return int
+   */
+  public function getCommentsFromOthersCount(): int
+  {
+    $annotation = $this;
+
+    return $this->comments->filter(function (AnnotationComment $annotationComment) use ($annotation) {
+      return $annotationComment->getUser()->getId() !== $annotation->getUserId();
+    })->count();
   }
 
 }
