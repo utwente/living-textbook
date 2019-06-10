@@ -1263,6 +1263,7 @@
               .unwrap('mark[data-annotation-id="' + removeId + '"]');
           annotationContextData.id = 0;
           annotationContextData.current = null;
+          $annotationContextButtons.hide();
         })
         .fail(function (err) {
           console.error('Error removing annotation', err);
