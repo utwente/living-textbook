@@ -165,7 +165,7 @@ $commentSpacer: $spacer;
 }
 
 .modal-backdrop {
-  &:nth-of-type(odd) {
+  &.failed-modal {
     z-index: 1060;
   }
 }

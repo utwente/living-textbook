@@ -140,6 +140,12 @@
     }
 
     // Register close handler to restore 'modal-open' class if another modal is opened
+    $failedModal.on('show.bs.modal', function () {
+      setTimeout(function () {
+        $('body').find('.modal-backdrop').last().addClass('failed-modal');
+      }, 0); // Use 0 timeout to make sure the backdrop has been placed (which isn't the case during the event handling)
+      return true;
+    });
     $failedModal.on('hide.bs.modal', function () {
       modalCss = $('body').css('padding-right');
     });
@@ -147,7 +153,9 @@
       if ($('.modal.show').length > 0) {
         $('body')
             .addClass('modal-open')
-            .css('padding-right', modalCss);
+            .css('padding-right', modalCss)
+            .find('.modal-backdrop')
+            .removeClass('failed-modal');
       }
     });
 
