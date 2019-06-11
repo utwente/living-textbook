@@ -104,6 +104,7 @@
 {%- endblock %}
 
 {%- block choice_widget_collapsed -%}
+  {% set select2_placeholder = select2_placeholder is not none ? select2_placeholder : placeholder %}
   {% set placeholder = placeholder is not none ? '' : placeholder %}
   {{- parent() -}}
   {%- spaceless -%}
