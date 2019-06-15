@@ -902,9 +902,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Draw link labels
     if (isDragging || highlightedNode !== null) {
       context.fillStyle = bConfig.defaultNodeLabelColor;
-      context.font = bConfig.defaultNodeLabelFont;
       context.textBaseline = 'top';
-      context.lineWidth = bConfig.activeNodeLabelLineWidth;
       context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
       cbGraph.links.map(drawLinkText);
     }
@@ -964,8 +962,14 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         (!isDragging && (link.source.index === highlightedNode.index || link.target.index === highlightedNode.index)) ||
         (link.source.dragged || link.target.dragged)) {
 
+      // Calculate font(size)
+      let textScale = Math.min(link.source.fontScale, link.target.fontScale);
+      let scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * textScale);
+      context.font = scaledFontSize + 'px ' + bConfig.fontFamily;
+      context.lineWidth = bConfig.activeNodeLabelLineWidth * textScale;
+
       // Calculate angle of label
-      var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
+      let startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
       startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
 
       // Transform the context
