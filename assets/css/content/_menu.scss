@@ -13,19 +13,44 @@ $logo-size: 40px;
       background: url("../../img/icon/LTB_Logo_V4.svg") no-repeat center center;
       width: $logo-size;
       height: $logo-size;
-      margin: 0 ($spacer / 2) 0 (-($spacer / 2));
+      margin: 0 ($spacer / 2) 0 0;
+    }
+
+    .navbar-brand {
+      @include media-breakpoint-down(md) {
+        margin-right: 0;
+      }
     }
   }
 
-  .navbar-toggler.global-search-container {
-    padding: 0;
-    font-size: initial;
-    line-height: initial;
-    background-color: transparent;
-    border: none;
+  .navbar-toggler {
+    &.user {
+      > i.fa {
+        height: 30px;
+        line-height: 30px;
+      }
+    }
+
+    &.global-search-container {
+      padding: 0;
+      font-size: initial;
+      line-height: initial;
+      background-color: transparent;
+      border: none;
+    }
   }
 
   .menu-toggle {
     display: inline-block;
+  }
+
+  #collapseRight {
+    text-align: right;
+    @include media-breakpoint-up(lg) {
+      display: inline-block !important;
+    }
+    @include media-breakpoint-down(md) {
+      padding-top: $spacer / 2;
+    }
   }
 }

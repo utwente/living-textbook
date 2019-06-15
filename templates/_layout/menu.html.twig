@@ -3,8 +3,8 @@
 </div>
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapseLeft"
+          aria-controls="collapseLeft" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
@@ -17,13 +17,12 @@
     </div>
   </a>
 
-  <div class="navbar-toggler global-search-container">
-    <a class="btn btn-outline-primary global-search" href="#">
-      <i class="fa fa-fw fa-search"></i>
-    </a>
-  </div>
+  <button class="navbar-toggler user" type="button" data-toggle="collapse" data-target="#collapseRight"
+          aria-controls="collapseRight" aria-expanded="false" aria-label="Toggle user menu">
+    <i class="fa fa-fw fa-user"></i>
+  </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="collapseLeft">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" href="{{ path('app_default_dashboard') }}">{{ 'app.dashboard'|trans }}</a>
@@ -102,14 +101,14 @@
       {% endif %}
 
     </ul>
+  </div>
 
-    <div class="navbar-collapse collapse" style="flex-grow: unset">
-      <a class="btn btn-outline-primary ml-lg-2 global-search" href="#">
-        <i class="fa fa-fw fa-search"></i>
-      </a>
-    </div>
+  <div class="collapse navbar-collapse" id="collapseRight">
+    <a class="btn btn-outline-primary global-search" href="#">
+      <i class="fa fa-fw fa-search"></i>
+    </a>
 
-    <div id="learning-path-browser-toggle" class="menu-toggle ml-lg-2 d-none"
+    <div id="learning-path-browser-toggle" class="menu-toggle d-none"
          data-toggle="tooltip" title="{{ 'browser.toggle-learningpath'|trans }}">
       <input type="checkbox" data-toggle="toggle"
              data-size="sm" data-width="55px" data-height="38px" {# Are required for correct rendering #}
@@ -118,7 +117,7 @@
              data-onstyle="primary" data-offstyle="secondary">
     </div>
 
-    <div id="concept-browser-toggle" class="menu-toggle ml-lg-2"
+    <div id="concept-browser-toggle" class="menu-toggle"
          data-toggle="tooltip" title="{{ 'browser.toggle'|trans }}">
       <input type="checkbox" data-toggle="toggle"
              data-size="sm" data-width="55px" data-height="38px" {# Are required for correct rendering #}
@@ -127,6 +126,7 @@
              data-onstyle="primary" data-offstyle="secondary">
     </div>
 
-    <a class="btn btn-outline-dark ml-lg-2 top-level" href="{{ path('logout') }}">{{ 'login.logout'|trans }}</a>
+    <a class="btn btn-outline-dark top-level" href="{{ path('logout') }}">{{ 'login.logout'|trans }}</a>
   </div>
+
 </nav>

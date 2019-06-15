@@ -9,13 +9,29 @@ $(function () {
       e.preventDefault();
 
       const $formContainer = $('.global-search-form');
-      const position = this.getBoundingClientRect();
+      const buttonPosition = this.getBoundingClientRect();
+      const formContainerWidth = $formContainer.outerWidth();
+      const formContainerLeft = $(window).width() - formContainerWidth - 16;
+      const topPosition = buttonPosition.y + buttonPosition.height + 11 + 'px';
+      debugger;
+
+      if (buttonPosition.left > formContainerLeft) {
+        $formContainer.css({
+          top: topPosition,
+          right: '1rem',
+          left: 'unset'
+        });
+        document.styleSheets[document.styleSheets.length - 1].addRule('.global-search-form:before', 'left: ' + (buttonPosition.left - formContainerLeft + 13) + 'px;');
+      } else {
+        $formContainer.css({
+          top: topPosition,
+          left: buttonPosition.x,
+          right: 'unset'
+        });
+        document.styleSheets[document.styleSheets.length - 1].addRule('.global-search-form:before', 'left: 13px;');
+      }
 
       // Show popup
-      $formContainer.css({
-        top: position.y + position.height + 11 + 'px',
-        left: position.x + position.width / 2 - $formContainer.outerWidth() + 20 + 'px'
-      });
       $formContainer.fadeIn(200);
 
       // Focus form

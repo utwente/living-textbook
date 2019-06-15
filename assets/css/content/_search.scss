@@ -24,13 +24,12 @@
     opacity: 1;
   }
 
-  &::before {
+  &:before {
     content: "";
     position: absolute;
     border: 10px solid transparent;
     border-bottom-color: $background-color;
     top: -20px;
-    right: 10px;
   }
 
   .row {
