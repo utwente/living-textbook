@@ -8,7 +8,8 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev-server": "encore dev-server --host localhost.drenso.dev --port 8999 --hot --https --disableHostCheck=true --cert /etc/apache2/ssl/drenso.dev/fullchain.pem --key /etc/apache2/ssl/drenso.dev/privkey.pem",
+    "dev-server-bob": "encore dev-server --host localhost.drenso.dev --port 8999 --hot --https --disableHostCheck=true --cert /etc/apache2/ssl/drenso.dev/fullchain.pem --key /etc/apache2/ssl/drenso.dev/privkey.pem",
+    "dev-server-tobias": "encore dev-server --host localhost.drenso.dev --port 8998 --hot --https --disableHostCheck=true --cert /etc/apache2/ssl/drenso.dev/fullchain.pem --key /etc/apache2/ssl/drenso.dev/privkey.pem",
     "dev": "encore dev",
     "watch": "encore dev --watch",
     "build": "encore production"
