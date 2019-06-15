@@ -6,7 +6,7 @@
 (function (btoggles, eDispatch, $) {
 
   let $containers, $toggles;
-  let $conceptToggleContainer, $conceptToggle, $learningPathToggleContainer, $learningPathToggle;
+  let $conceptToggleContainers, $conceptToggles, $learningPathToggleContainers, $learningPathToggles;
   let conceptState = false, learningPathState = null;
   let initialized = false, replayCalls = [];
 
@@ -15,19 +15,19 @@
    */
   $(function () {
     // Find toggle buttons
-    $conceptToggleContainer = $('.concept-browser-toggle');
-    $conceptToggle = $conceptToggleContainer.find('input');
-    $learningPathToggleContainer = $('.learning-path-browser-toggle');
-    $learningPathToggle = $learningPathToggleContainer.find('input');
+    $conceptToggleContainers = $('.concept-browser-toggle');
+    $conceptToggles = $conceptToggleContainers.find('input');
+    $learningPathToggleContainers = $('.learning-path-browser-toggle');
+    $learningPathToggles = $learningPathToggleContainers.find('input');
 
-    $containers = $conceptToggleContainer.add($learningPathToggleContainer);
-    $toggles = $conceptToggle.add($learningPathToggle);
+    $containers = $conceptToggleContainers.add($learningPathToggleContainers);
+    $toggles = $conceptToggles.add($learningPathToggles);
 
     // Make them fully disabled
     setDisabled($containers, $toggles, true);
 
     // Load change handlers
-    $conceptToggle.change(function () {
+    $conceptToggles.change(function () {
       let newValue = $(this).prop('checked');
       if (newValue === conceptState) {
         return;
@@ -40,7 +40,7 @@
         eDispatch.closeConceptBrowser();
       }
     });
-    $learningPathToggle.change(function () {
+    $learningPathToggles.change(function () {
       let newValue = $(this).prop('checked');
       if (newValue === learningPathState) {
         return;
@@ -73,7 +73,7 @@
       return;
     }
 
-    setDisabled($conceptToggleContainer, $conceptToggle, false);
+    setDisabled($conceptToggleContainers, $conceptToggles, false);
     this.loadConceptState(state.concept);
 
     if (state.learningPath != null) {
@@ -94,7 +94,7 @@
     }
 
     conceptState = isOpened;
-    setToggleValue($conceptToggle, isOpened);
+    setToggleValue($conceptToggles, isOpened);
   };
 
   /**
@@ -110,11 +110,11 @@
     }
 
     if (learningPathState === null) {
-      $learningPathToggleContainer.removeClass('d-none');
-      setDisabled($learningPathToggleContainer, $learningPathToggle, false);
+      $learningPathToggleContainers.removeClass('d-none');
+      setDisabled($learningPathToggleContainers, $learningPathToggles, false);
     }
     learningPathState = isOpened;
-    setToggleValue($learningPathToggle, isOpened);
+    setToggleValue($learningPathToggles, isOpened);
   };
 
   /**
@@ -124,26 +124,35 @@
    * @param isDisabled
    */
   function setDisabled($containers, $toggles, isDisabled) {
-    $containers.tooltip(isDisabled ? 'disable' : 'enable');
-    if (isDisabled) {
-      $containers.addClass('disabled');
-      $containers.find('.btn').addClass('disabled');
-    } else {
-      $containers.removeClass('disabled');
-      $containers.find('.btn').removeClass('disabled');
-    }
-    $toggles.prop('disabled', isDisabled);
+    $containers.each(function () {
+      const $container = $(this);
+      $container.tooltip(isDisabled ? 'disable' : 'enable');
+      if (isDisabled) {
+        $container.addClass('disabled');
+        $container.find('.btn').addClass('disabled');
+      } else {
+        $container.removeClass('disabled');
+        $container.find('.btn').removeClass('disabled');
+      }
+    });
+
+    $toggles.each(function () {
+      $(this).prop('disabled', isDisabled);
+    });
   }
 
   /**
    * Set the toggle value
-   * @param $toggle
+   * @param $toggles
    * @param checked
    */
-  function setToggleValue($toggle, checked) {
-    if ($toggle.prop('checked') !== checked) {
-      $toggle.prop('checked', checked).change();
-    }
+  function setToggleValue($toggles, checked) {
+    $toggles.each(function () {
+      const $toggle = $(this);
+      if ($toggle.prop('checked') !== checked) {
+        $toggle.prop('checked', checked).change();
+      }
+    });
   }
 
 }(window.btoggles = window.btoggles || {}, window.eDispatch, $));
