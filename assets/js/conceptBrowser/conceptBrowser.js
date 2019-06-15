@@ -913,7 +913,6 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     context.fillStyle = bConfig.defaultNodeLabelColor;
     context.textBaseline = 'middle';
     context.textAlign = 'center';
-    context.lineWidth = bConfig.activeNodeLabelLineWidth;
     context.strokeStyle = bConfig.activeNodeLabelStrokeStyle;
     cbGraph.nodes.map(drawNodeText);
 
@@ -1080,6 +1079,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Calculate font(size)
     let scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * node.fontScale);
     context.font = scaledFontSize + 'px ' + bConfig.fontFamily;
+    context.lineWidth = bConfig.activeNodeLabelLineWidth * node.fontScale;
 
     // Set font if accordingly, or skip if not
     if (!((isDragging && node.dragged)
@@ -1143,7 +1143,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     if (typeof (Storage) !== 'undefined') {
       cbGraph.nodes.map(function (node) {
         localStorage.removeItem('nodeColor.' + node.id);
-      })
+      });
     }
   }
 
@@ -1227,7 +1227,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
           vx: 0,
           vy: 0
         };
-        cbGraph.nodes.push(node)
+        cbGraph.nodes.push(node);
       }
 
       // Update properties
@@ -1316,7 +1316,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
           source: concept.id,
           target: relation.target,
           relationName: relation.relationName
-        })
+        });
       });
     });
 
