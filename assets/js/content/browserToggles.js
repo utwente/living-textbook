@@ -15,9 +15,9 @@
    */
   $(function () {
     // Find toggle buttons
-    $conceptToggleContainer = $('#concept-browser-toggle');
+    $conceptToggleContainer = $('.concept-browser-toggle');
     $conceptToggle = $conceptToggleContainer.find('input');
-    $learningPathToggleContainer = $('#learning-path-browser-toggle');
+    $learningPathToggleContainer = $('.learning-path-browser-toggle');
     $learningPathToggle = $learningPathToggleContainer.find('input');
 
     $containers = $conceptToggleContainer.add($learningPathToggleContainer);

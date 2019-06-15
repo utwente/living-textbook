@@ -13,7 +13,6 @@ $(function () {
       const formContainerWidth = $formContainer.outerWidth();
       const formContainerLeft = $(window).width() - formContainerWidth - 16;
       const topPosition = buttonPosition.y + buttonPosition.height + 11 + 'px';
-      debugger;
 
       if (buttonPosition.left > formContainerLeft) {
         $formContainer.css({
