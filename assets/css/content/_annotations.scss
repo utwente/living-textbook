@@ -11,7 +11,13 @@ $commentSpacer: $spacer;
 .annotations-container {
 
   .annotations-toggle {
-    float: right;
+    > span {
+      display: none;
+
+      &.off {
+        display: inline;
+      }
+    }
   }
 
   .annotations-buttons, .annotation-context-buttons, .annotation-header-context-button {
@@ -134,6 +140,24 @@ $commentSpacer: $spacer;
     }
   }
 
+  &.annotations-show-own {
+    mark, h2.annotated {
+      &.mark, &.note {
+        &.other {
+          background-color: transparent !important;
+        }
+      }
+    }
+
+    .annotations-outdated-button {
+      display: none !important;
+
+      &.has-own {
+        display: block !important;
+      }
+    }
+  }
+
   .annotations-visibility {
     position: relative;
 
@@ -162,6 +186,7 @@ $commentSpacer: $spacer;
   .failed-modal {
     z-index: 1070;
   }
+
 }
 
 .modal-backdrop {

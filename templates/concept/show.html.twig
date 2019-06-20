@@ -2,7 +2,9 @@
 
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {% from '_macro/_annotations.html.twig' import toggle as annotationsToggle %}
   {{ buttons.header() }}
+  {{ annotationsToggle() }}
   {{ buttons.browser_button(concept.id) }}
   {{ buttons.print_button(path('app_print_printsingleconcept', {'concept': concept.id})) }}
   {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
@@ -22,13 +24,11 @@
 {% block content %}
   {% import '_data/_data_templates.html.twig' as macros %}
   {% from '_macro/_annotations.html.twig' import all as annotations %}
-  {% from '_macro/_annotations.html.twig' import toggle as annotationsToggle %}
 
   <div class="annotations-container"
        data-annotations-study-area-id="{{ concept.studyArea.id }}"
        data-annotations-concept-id="{{ concept.id }}"
        data-annotations-user-id="{{ app.user.id }}">
-    {{ annotationsToggle() }}
 
     {{ macros.data_definition(concept) }}
     {{ macros.data_introduction(concept.introduction) }}

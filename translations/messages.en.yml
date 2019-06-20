@@ -30,9 +30,14 @@ annotations:
   note: "Note"
   mark: "Mark"
   outdated-annotations: "Outdated annotations"
-  outdated-button: "You have outdated annotations"
+  outdated-button: "There are outdated annotations"
   remove: "Remove"
   selected: "Selected text"
+  show:
+    all: "All"
+    off: "Off"
+    own: "Own"
+    show: "Show annotations"
   toggle: "Toggle annotations"
   visibility:
     everybody: "Everybody"

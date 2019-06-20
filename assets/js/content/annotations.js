@@ -7,7 +7,7 @@
   const dataStudyAreaId = 'annotations-study-area-id';
   const dataConceptId = 'annotations-concept-id';
   const dataUserId = 'annotations-user-id';
-  const showAnnotationsId = 'show-annotations';
+  const showAnnotationsId = 'show-annotations-state';
   let $annotationsContainer = null, $annotationsToggle = null;
 
   /** State parameters */
@@ -36,7 +36,7 @@
   const annotationHeaderContextData = {
     onButton: false
   };
-  let showAnnotations = true;
+  let showAnnotations = 'all';
 
   /******************************************************************************************************
    * Data types
@@ -238,14 +238,14 @@
     document.addEventListener('selectionchange', renderAnnotationButtonForSelection);
 
     // Set annotations toggle button, based on local storage
-    const $toggleButton = $annotationsToggle.find('input[data-toggle]');
     if (typeof (Storage) !== 'undefined') {
       // Set state
-      showAnnotations = JSON.parse(localStorage.getItem(showAnnotationsId + '.' + studyAreaId));
+      const storageState = localStorage.getItem(showAnnotationsId + '.' + studyAreaId);
+      showAnnotations = storageState !== null ? storageState : showAnnotations;
     }
-    $toggleButton.prop('checked', showAnnotations).change();
-    $toggleButton.change(toggleAnnotationVisibility);
-    toggleAnnotationVisibility();
+    $annotationsToggle.click(toggleAnnotationVisibility);
+    $annotationsToggle.removeClass('disabled');
+    updateAnnotationVisibilityInDom();
 
     // Load current annotations from server
     loadAnnotations();
@@ -253,21 +253,53 @@
 
   /**
    * Toggle the annotation visibility. Disabling the visibility will also disable all interaction.
-   * @param newState
    */
-  function toggleAnnotationVisibility(newState) {
+  function toggleAnnotationVisibility() {
     // Determine new state
-    showAnnotations = $annotationsToggle.find('input[data-toggle]').is(':checked');
+    switch (showAnnotations) {
+      case 'own':
+        showAnnotations = 'all';
+        break;
+      case 'all':
+        showAnnotations = 'off';
+        break;
+      default:
+        showAnnotations = 'own';
+        break;
+    }
 
     // Save state in local storage
     if (typeof (Storage) !== 'undefined') {
-      localStorage.setItem(showAnnotationsId + '.' + studyAreaId, JSON.stringify(showAnnotations));
+      localStorage.setItem(showAnnotationsId + '.' + studyAreaId, showAnnotations);
     }
 
+    updateAnnotationVisibilityInDom();
+  }
+
+  function updateAnnotationVisibilityInDom() {
+    // Toggle spans
+    $annotationsToggle.find('span').hide();
+    $annotationsToggle.find('span.' + showAnnotations).show();
+
+    // Clear state classes
+    $annotationsContainer
+        .removeClass('annotations-disabled')
+        .removeClass('annotations-show-own');
+
     // Update disabled class on container
-    showAnnotations
-        ? $annotationsContainer.removeClass('annotations-disabled')
-        : $annotationsContainer.addClass('annotations-disabled');
+    switch (showAnnotations) {
+      case 'own':
+        $annotationsContainer.addClass('annotations-show-own');
+        break;
+      case 'all':
+        // no-op
+        break;
+      default:
+        $annotationsContainer.addClass('annotations-disabled');
+        break;
+    }
+
+    updateHeaderMarking();
   }
 
   /**
@@ -328,6 +360,8 @@
         renderTextAnnotation(annotation);
       }
     }
+
+    updateHeaderMarking();
   }
 
   /**
@@ -354,6 +388,23 @@
     for (let i = 0; i < annotations.length; i++) {
       renderHeaderAnnotation(annotations[i]);
     }
+
+    updateHeaderMarking();
+  }
+
+  function updateHeaderMarking() {
+    // Update header classes based on the annotations
+    const $headers = $('[data-annotations-contains-text="false"]');
+    $headers.each(function () {
+      const $context = $(this);
+      $context.removeClass('mark').removeClass('note');
+      ($context.data('annotations') || []).forEach(function (annotation) {
+        if (showAnnotations !== 'all' && annotation.userId !== userId) {
+          return;
+        }
+        $context.addClass(typeof annotation.text == 'undefined' ? 'mark' : 'note');
+      });
+    });
   }
 
   /**
@@ -375,7 +426,6 @@
     $context.data('annotations', annotations);
 
     // Update styling, add hover
-    $context.addClass(typeof annotation.text == 'undefined' ? 'mark' : 'note');
     if (!$context.hasClass('annotated')) {
       $context.addClass('annotated');
       $context.hover(function () {
@@ -392,7 +442,7 @@
    */
   function showAnnotationHeaderContextButton(context) {
     // Never open when disabled
-    if (!showAnnotations) {
+    if (showAnnotations === 'off') {
       return;
     }
 
@@ -400,8 +450,6 @@
     if (annotationsData.working || annotationContextData.working) {
       return;
     }
-
-    clearTimeout(hideAnnotationHeaderContextButtonsTimeout);
 
     // Set data on the right places
     const $mark = $('h2.annotated[data-annotations-context="' + context + '"]').first();
@@ -411,10 +459,20 @@
     $noteButton.data('annotations-context', context);
     let count = 0;
     annotations.forEach(function (annotation) {
+      if (showAnnotations !== 'all' && annotation.userId !== userId) {
+        return;
+      }
       count++;
       count += annotation.comments.length;
     });
     $noteButton.find('.note-count').html(' ' + count);
+
+    if (count === 0) {
+      // Annotations are hidden, don't show button
+      return;
+    }
+
+    clearTimeout(hideAnnotationHeaderContextButtonsTimeout);
 
     let obj = $mark[0];
     let top = obj.offsetHeight;
@@ -465,7 +523,24 @@
       // Update the annotation context
       let annotationData = $outdatedNotificationButton.data('annotations') || [];
       annotationData.push(annotation);
+      if (annotation.userId === userId) {
+        $outdatedNotification.addClass('has-own');
+      }
       $outdatedNotificationButton.data('annotations', annotationData);
+
+      $(window).on('hide.bs.modal', function () {
+        const annotationData = $outdatedNotificationButton.data('annotations') || [];
+        if (annotationData.length === 0) {
+          $outdatedNotification.remove();
+          return;
+        }
+        $outdatedNotification.removeClass('has-own');
+        annotationData.forEach(function (annotation) {
+          if (annotation.userId === userId) {
+            $outdatedNotification.addClass('has-own');
+          }
+        });
+      });
 
     } else {
       console.info('Rendering text annotation', annotation);
@@ -484,6 +559,9 @@
           node.setAttribute('data-annotation', JSON.stringify(annotation));
           node.setAttribute('data-annotation-id', annotation.id);
           node.setAttribute('data-annotation-text', annotation.text);
+          if (annotation.userId !== userId) {
+            node.setAttribute('class', node.getAttribute('class') + ' other');
+          }
           $(node).hover(function () {
             showAnnotationContextButtons(annotation.id);
           }, hideAnnotationContextButtons);
@@ -505,7 +583,7 @@
    */
   function showAnnotationContextButtons(annotationId) {
     // Never open when disabled
-    if (!showAnnotations) {
+    if (showAnnotations === 'off') {
       return;
     }
 
@@ -514,10 +592,16 @@
       return;
     }
 
-    clearTimeout(hideAnnotationContextButtonsTimeout);
     const $mark = $('mark[data-annotation-id="' + annotationId + '"]').last();
     const $noteButton = $annotationContextButtons.find('.annotation-note-button');
     const annotation = $mark.data('annotation');
+
+    // Do not show if only own should be shown
+    if (annotation.userId !== userId && showAnnotations !== 'all') {
+      return;
+    }
+
+    clearTimeout(hideAnnotationContextButtonsTimeout);
 
     annotationContextData.id = annotation.id;
     annotationContextData.context = annotation;
@@ -583,7 +667,7 @@
    */
   function renderAnnotationButtonForHeader() {
     // Never open when disabled
-    if (!showAnnotations) {
+    if (showAnnotations === 'off') {
       return;
     }
 
@@ -636,7 +720,7 @@
    */
   function renderAnnotationButtonForSelection() {
     // Never open when disabled
-    if (!showAnnotations) {
+    if (showAnnotations === 'off') {
       return;
     }
 
@@ -992,7 +1076,7 @@
   }
 
   /**
-   * Show the outdated annotations modal, which displays all outdated annotations
+   * Show the collection annotation modal
    */
   function openCollectionAnnotationsModal($button, isOutdatedNotes) {
     const annotationsData = $button.data('annotations').sort(function (annotation) {
@@ -1006,6 +1090,10 @@
     // Place the annotations in the modal
     for (let i = 0; i < annotationsData.length; i++) {
       const annotation = annotationsData[i];
+      if (annotation.userId !== userId && showAnnotations !== 'all') {
+        continue;
+      }
+
       const $annotationElement = $collectionNoteProto.clone();
       if (typeof annotation.text == 'undefined') {
         $annotationElement.find('.note-header').remove();
@@ -1363,16 +1451,13 @@
           // Rerender in case of header
           if ($collectionContainer.hasClass('annotation-header-note-button')) {
             rerenderHeaderAnnotations($collectionContainer.data('annotations-context'), newAnnotations);
-          } else {
-            $collectionContainer.data('annotations', newAnnotations);
           }
+          $collectionContainer.data('annotations', newAnnotations);
 
-          if (newAnnotations.length === 0) {
-            // Remove container when all annotations are removed
-            if (!$collectionContainer.hasClass('annotation-header-note-button')) {
-              $collectionContainer.closest('.remove-on-empty').remove();
-            }
-
+          const ownNewAnnotations = newAnnotations.filter(function (annotation) {
+            return annotation.userId === userId;
+          });
+          if (newAnnotations.length === 0 || (showAnnotations !== 'all' && ownNewAnnotations.length === 0)) {
             // Close modal
             $noteCollectionModal.modal('hide');
           }
