@@ -19,7 +19,7 @@
     </li>
     <li class="nav-item">
       <a class="nav-link{% if formActive %} active{% endif %}"
-         onclick="focusForm()"
+         onclick="focusLoginForm()"
          id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab">
         {{ 'login.custom-account'|trans }}
       </a>
@@ -43,29 +43,31 @@
 {% block javascripts_bottom %}
   {{ parent() }}
   <script type="text/javascript">
-    $(function () {
-      // Focus form input
-      function focusForm() {
-        setTimeout(function () {
-          $('#login__username').focus();
-        }, 100);
-      }
+    // Focus form input
+    function focusLoginForm() {
+      setTimeout(function () {
+        $('#login__username').focus();
+      }, 100);
+    }
 
-      // Fixate the tab height
-      var maxHeight = 0;
-      $('.tab-content .tab-pane').each(function () {
-        $(this).addClass('active');
-        var height = $(this).height();
-        maxHeight = height > maxHeight ? height : maxHeight;
-        $(this).removeClass('active');
-      });
-      {% if formActive %}
-      $('#tab-custom-account').addClass('active');
-      focusForm();
-      {% else %}
-      $('.tab-content .tab-pane:first').addClass('active');
-      {% endif %}
-      $('.tab-content').height(maxHeight);
+    $(function () {
+      setTimeout(function () {
+        // Fixate the tab height
+        var maxHeight = 0;
+        $('.tab-content .tab-pane').each(function () {
+          $(this).addClass('active');
+          var height = $(this).height();
+          maxHeight = height > maxHeight ? height : maxHeight;
+          $(this).removeClass('active');
+        });
+        {% if formActive %}
+        $('#tab-custom-account').addClass('active');
+        focusLoginForm();
+        {% else %}
+        $('.tab-content .tab-pane:first').addClass('active');
+        {% endif %}
+        $('.tab-content').height(maxHeight);
+      }, 100);
     });
   </script>
 {% endblock %}
