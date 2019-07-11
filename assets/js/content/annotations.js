@@ -983,13 +983,25 @@
   /**
    * Create a note element
    * @param context
+   * @param annotationId
+   * @param $visibilityInputs
    * @returns {*}
    */
-  function createNote(context) {
+  function createNote(context, annotationId, $visibilityInputs) {
     const $note = $noteProto.clone();
     $note.find('.author').text(context.userName);
     $note.find('.authored-time').text(new Date(context.authoredTime).toLocaleString());
     $note.find('.note').text(context.text);
+
+    // Do not show remove icon for non-comments
+    const $removeIcon = $note.find('.remove');
+    if (context.userId !== userId || context.hasOwnProperty('context')) {
+      $removeIcon.remove();
+    } else {
+      $removeIcon.on('click', function () {
+        removeAnnotationComment($visibilityInputs, $note, annotationId, context.id);
+      });
+    }
 
     return $note;
   }
@@ -1044,9 +1056,9 @@
     $container.empty();
 
     // Load annotation data in modal
-    $container.append(createNote(context));
+    $container.append(createNote(context, context.id, $visibilityInputs));
     context.comments.forEach(function (comment) {
-      $container.append(createNote(comment));
+      $container.append(createNote(comment, context.id, $visibilityInputs));
     });
 
     // Register comment handler
@@ -1103,11 +1115,13 @@
       } else {
         $annotationElement.find('.mark-header').remove();
 
+        const $visibilityInputs = $annotationElement.find('input[name="visibility"]');
+
         // Add textual notes
         const $container = $annotationElement.find('.annotations-note-container');
-        $container.append(createNote(annotation));
+        $container.append(createNote(annotation, annotation.id, $visibilityInputs));
         annotation.comments.forEach(function (comment) {
-          $container.append(createNote(comment));
+          $container.append(createNote(comment, annotation.id, $visibilityInputs));
         });
 
         // Set item visibility accordingly
@@ -1122,7 +1136,6 @@
         }
 
         // Set visibility (use click to force buttons functionality)
-        const $visibilityInputs = $annotationElement.find('input[name="visibility"]');
         $visibilityInputs.off('change');
         if (annotation.userId === userId) {
           const otherComments = annotation.comments.filter(function (comment) {
@@ -1299,7 +1312,7 @@
           $textArea.val('');
 
           // Add the comment to the context
-          $noteContainer.append(createNote(data.comment));
+          $noteContainer.append(createNote(data.comment, annotationId, $visibilityInputs));
 
           // Update the visibility buttons
           const otherComments = data.annotation.comments.filter(function (comment) {
@@ -1311,7 +1324,7 @@
           updateAnnotation(data.annotation);
         })
         .fail(function (err) {
-          console.error('Error saving annotation', err);
+          console.error('Error saving comment', err);
           $failedModal.modal();
         })
         .always(function () {
@@ -1321,6 +1334,58 @@
           toggleInputVisibilities($container, $(), true);
           $button.find('.fa').show();
           $button.find('.fa-spin').hide();
+        });
+  }
+
+  /**
+   * Remove a comment from an annotation
+   * Event driven
+   */
+  function removeAnnotationComment($visibilityInputs, $elem, annotationId, commentId) {
+    // Set delete pending
+    $elem.find('.remove .fa-trash')
+        .removeClass('fa-trash')
+        .addClass('fa-spin')
+        .addClass('fa-spinner');
+    $elem.css('opacity', 0.5);
+    $elem.off('click');
+
+    $.ajax(
+        {
+          type: 'DELETE',
+          url: Routing.generate('app_annotation_removecomment', {
+            _studyArea: studyAreaId,
+            concept: conceptId,
+            annotation: annotationId,
+            comment: commentId
+          })
+        })
+        .done(function (data) {
+          // Remove the comment from the DOM
+          $elem.remove();
+
+          // Update the visibility buttons
+          const otherComments = data.annotation.comments.filter(function (comment) {
+            return comment.userId !== userId;
+          });
+          setInputVisibility($visibilityInputs, data.annotation.visibility, otherComments.length);
+
+          // Update the original annotation
+          updateAnnotation(data.annotation);
+        })
+        .fail(function (err) {
+          console.error('Error removing comment', err);
+          $failedModal.modal();
+
+          // Rebind handlers/reshow icons
+          $elem.find('.remove .fa-spinner')
+              .addClass('fa-trash')
+              .removeClass('fa-spin')
+              .removeClass('fa-spinner');
+          $elem.css('opacity', 1);
+          $elem.on('click', function () {
+            removeAnnotationComment($visibilityInputs, $elem, annotationId, commentId);
+          });
         });
   }
 

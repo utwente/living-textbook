@@ -166,6 +166,9 @@ class AnnotationController extends AbstractController
     $em->persist($comment);
     $em->flush();
 
+    // Refresh the data
+    $em->refresh($annotation);
+
     return new JsonResponse($serializer->serialize([
         'annotation' => $annotation,
         'comment'    => $comment,
@@ -266,11 +269,12 @@ class AnnotationController extends AbstractController
    * @param Annotation             $annotation
    * @param AnnotationComment      $comment
    * @param EntityManagerInterface $em
+   * @param SerializerInterface    $serializer
    *
    * @return JsonResponse
    */
   public function removeComment(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-                                AnnotationComment $comment, EntityManagerInterface $em)
+                                AnnotationComment $comment, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area/concept/annotation
     $studyArea = $requestStudyArea->getStudyArea();
@@ -281,7 +285,7 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    if ($annotation->getUserId() != $this->getUser()->getId()) {
+    if ($comment->getUserId() != $this->getUser()->getId()) {
       throw $this->createAccessDeniedException();
     }
 
@@ -289,7 +293,13 @@ class AnnotationController extends AbstractController
     $em->remove($comment);
     $em->flush();
 
-    return new JsonResponse();
+    // Refresh data
+    $em->refresh($annotation);
+
+    // Return updated comment to update js state
+    return new JsonResponse($serializer->serialize([
+        'annotation' => $annotation,
+    ], 'json'), 200, [], true);
   }
 
   /**

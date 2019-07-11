@@ -49,12 +49,16 @@ $commentSpacer: $spacer;
   .annotations-note, .annotations-note-collection {
     display: none;
 
-    .author-information {
+    .note-header {
       font-size: 0.75rem;
     }
 
     .card-body, .card-header {
       padding: 0.25rem 0.5rem;
+
+      .remove {
+        float: right;
+      }
     }
 
     button {
