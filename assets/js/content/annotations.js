@@ -7,6 +7,7 @@
   const dataStudyAreaId = 'annotations-study-area-id';
   const dataConceptId = 'annotations-concept-id';
   const dataUserId = 'annotations-user-id';
+  const dataIsStudyAreaOwner = 'annotations-is-study-area-owner';
   const showAnnotationsId = 'show-annotations-state';
   let $annotationsContainer = null, $annotationsToggle = null;
 
@@ -14,6 +15,7 @@
   let studyAreaId = 0;
   let conceptId = 0;
   let userId = 0;
+  let isStudyAreaOwner = false;
   let mouseDown = false;
   const annotationsData = {
     current: null,
@@ -163,6 +165,8 @@
     studyAreaId = parseInt($annotationsContainer.data(dataStudyAreaId));
     conceptId = parseInt($annotationsContainer.data(dataConceptId));
     userId = parseInt($annotationsContainer.data(dataUserId));
+    const booleanValueIsStudyAreaOwner = $annotationsContainer.data(dataIsStudyAreaOwner);
+    isStudyAreaOwner = booleanValueIsStudyAreaOwner || booleanValueIsStudyAreaOwner === 'true';
 
     // Register events on the window object
     $(window)
@@ -627,7 +631,7 @@
 
     // Remove remove button if not own annotation
     let $removeButton = $annotationContextButtons.find('.annotation-remove-button');
-    if (annotation.userId !== userId) {
+    if (annotation.userId !== userId && !isStudyAreaOwner) {
       $removeButton.hide();
     } else {
       $removeButton.show();
@@ -995,7 +999,7 @@
 
     // Do not show remove icon for non-comments
     const $removeIcon = $note.find('.remove');
-    if (context.userId !== userId || context.hasOwnProperty('context')) {
+    if ((context.userId !== userId && !isStudyAreaOwner) || context.hasOwnProperty('context')) {
       $removeIcon.remove();
     } else {
       $removeIcon.on('click', function () {
@@ -1018,11 +1022,16 @@
 
     // Set item visibility accordingly
     let $ownerElements = $notesModal.find('.owner');
+    let $ownerRemoveElements = $notesModal.find('.owner-remove');
     let $nonOwnerElements = $notesModal.find('.non-owner');
     $ownerElements.hide();
+    $ownerRemoveElements.hide();
     $nonOwnerElements.hide();
     if (context.userId === userId) {
       $ownerElements.show();
+      $ownerRemoveElements.show();
+    } else if (isStudyAreaOwner) {
+      $ownerRemoveElements.show();
     } else {
       $nonOwnerElements.show();
     }
@@ -1126,11 +1135,16 @@
 
         // Set item visibility accordingly
         let $ownerElements = $annotationElement.find('.owner');
+        let $ownerRemoveElements = $annotationElement.find('.owner-remove');
         let $nonOwnerElements = $annotationElement.find('.non-owner');
         $ownerElements.hide();
+        $ownerRemoveElements.hide();
         $nonOwnerElements.hide();
         if (annotation.userId === userId) {
           $ownerElements.show();
+          $ownerRemoveElements.show();
+        } else if (isStudyAreaOwner) {
+          $ownerRemoveElements.show();
         } else {
           $nonOwnerElements.show();
         }

@@ -247,7 +247,7 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    if ($annotation->getUserId() != $this->getUser()->getId()) {
+    if ($annotation->getUserId() != $this->getUser()->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       throw $this->createAccessDeniedException();
     }
 
@@ -285,7 +285,7 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    if ($comment->getUserId() != $this->getUser()->getId()) {
+    if ($comment->getUserId() != $this->getUser()->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       throw $this->createAccessDeniedException();
     }
 

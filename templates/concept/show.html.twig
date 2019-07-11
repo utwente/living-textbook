@@ -28,7 +28,8 @@
   <div class="annotations-container"
        data-annotations-study-area-id="{{ concept.studyArea.id }}"
        data-annotations-concept-id="{{ concept.id }}"
-       data-annotations-user-id="{{ app.user.id }}">
+       data-annotations-user-id="{{ app.user.id }}"
+       data-annotations-is-study-area-owner="{{ is_granted("STUDYAREA_OWNER", concept.studyArea) ? 'true' : 'false' }}">
 
     {{ macros.data_definition(concept) }}
     {{ macros.data_introduction(concept.introduction) }}
