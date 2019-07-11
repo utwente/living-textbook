@@ -1510,18 +1510,18 @@
         $radioButtons.addClass('disabled');
         $currentButton.find('.fa').show();
         $currentButton.find('.fa-spin').hide();
-        $inputVisibility.find('.overlay').show();
+        $inputVisibility.find('.overlay').addClass('show');
         $inputVisibility.find('.when-comments').show();
       } else if (enabled) {
         $radioButtons.removeClass('disabled');
         $currentButton.find('.fa').show();
         $currentButton.find('.fa-spin').hide();
-        $inputVisibility.find('.overlay').hide();
+        $inputVisibility.find('.overlay').removeClass('show');
       } else {
         $radioButtons.addClass('disabled');
         $currentButton.find('.fa').hide();
         $currentButton.find('.fa-spin').show();
-        $inputVisibility.find('.overlay').show();
+        $inputVisibility.find('.overlay').addClass('show');
       }
     });
   }

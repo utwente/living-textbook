@@ -170,6 +170,10 @@ $commentSpacer: $spacer;
       right: 0;
       bottom: 0;
       background-color: transparent;
+
+      &.show {
+        display: block;
+      }
     }
 
     .btn {
