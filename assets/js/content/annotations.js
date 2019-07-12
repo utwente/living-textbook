@@ -1032,6 +1032,7 @@
       $ownerRemoveElements.show();
     } else if (isStudyAreaOwner) {
       $ownerRemoveElements.show();
+      $nonOwnerElements.show();
     } else {
       $nonOwnerElements.show();
     }
@@ -1145,6 +1146,7 @@
           $ownerRemoveElements.show();
         } else if (isStudyAreaOwner) {
           $ownerRemoveElements.show();
+          $nonOwnerElements.show();
         } else {
           $nonOwnerElements.show();
         }

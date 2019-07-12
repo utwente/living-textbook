@@ -15,11 +15,11 @@
 {% macro _contextButtons() %}
   <div class="annotation-context-buttons">
     <button class="btn btn-dark annotation-note-button"
-            data-toggle="tooltip" title="{{ 'annotations.count'|trans }}">
+            data-toggle="tooltip" data-placement="bottom" title="{{ 'annotations.count'|trans }}">
       <i class="fa fa-fw fa-comments"></i><span class="note-count"></span>
     </button>
     <button class="btn btn-dark annotation-remove-button"
-            data-toggle="tooltip" title="{{ 'annotations.remove'|trans }}">
+            data-toggle="tooltip" data-placement="bottom" title="{{ 'annotations.remove'|trans }}">
       <i class="fa fa-fw fa-times"></i>
       <i class="fa fa-fw fa-spinner fa-spin"></i>
     </button>
@@ -29,7 +29,7 @@
 {% macro _headerContextButton() %}
   <div class="annotation-header-context-button">
     <button class="btn btn-dark annotation-header-note-button"
-            data-toggle="tooltip" title="{{ 'annotations.count'|trans }}">
+            data-toggle="tooltip" data-placement="bottom" title="{{ 'annotations.count'|trans }}">
       <i class="fa fa-fw fa-comments"></i><span class="note-count"></span>
     </button>
   </div>
@@ -120,7 +120,7 @@
               <span class="annotations-selected-text col-12"></span>
             </div>
             <div class="row">
-              <label class="col-form-label col-12">{{ 'annotations.visibility.title'|trans }}</label>
+              <label class="col-form-label col-12">{{ 'annotations.visibility.create-title'|trans }}</label>
               <div class="annotations-visibility col-12">
                 {% from _self import _visibilityButtons %}
                 {{ _visibilityButtons() }}
@@ -313,7 +313,7 @@
 
 {% macro toggle() %}
   <button class="btn btn-outline-dark annotations-toggle disabled"
-          data-toggle="tooltip" title="{{ 'annotations.toggle'|trans }}">
+          data-toggle="tooltip" data-placement="bottom" title="{{ 'annotations.toggle'|trans }}">
     <i class="fa fa-comments"></i> {{ 'annotations.show.show'|trans }}:
     <span class="off">{{ 'annotations.show.off'|trans }}</span>
     <span class="own">{{ 'annotations.show.own'|trans }}</span>

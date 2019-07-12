@@ -37,14 +37,15 @@ annotations:
     all: "All"
     off: "Off"
     own: "Own"
-    show: "Show annotations"
+    show: "Show"
   toggle: "Toggle annotations"
   visibility:
+    create-title: "Share with"
     everybody: "Everybody"
     has-comments: "As this annotation already received comments by others, the visibility cannot be updated anymore."
     private: "Private"
     teacher: "Teachers"
-    title: "Visibility"
+    title: "Shared with"
 
 app:
   dashboard: 'Dashboard'
