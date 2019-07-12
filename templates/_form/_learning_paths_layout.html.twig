@@ -8,7 +8,7 @@
       {%- if errors|length > 0 -%}
         <div class="alert alert-danger">
           <ul class="list-unstyled mb-0">
-              <li><i class="fa fa-exclamation-circle"></i> {{ 'learning-path.element-errors'|trans }}</li>
+            <li><i class="fa fa-exclamation-circle"></i> {{ 'learning-path.element-errors'|trans }}</li>
           </ul>
         </div>
       {%- endif %}
@@ -57,10 +57,22 @@
     $(function () {
       var $conceptField = $('#{{ form.concepts.vars.id }}');
       var $learningOutcomesField = $('#{{ form.learningOutcomes.vars.id }}');
-      $conceptField.add($learningOutcomesField).on('change', function () {
+
+      function updateAddButton() {
         var disabled = $conceptField.val().length === 0 && $learningOutcomesField.val().length === 0;
-        $('#{{ form.add.vars.id }}').prop('disabled', disabled);
+        var $elem = $('#{{ form.add.vars.id }}');
+        $elem.prop('disabled', disabled);
+        if (disabled) {
+          $elem.removeClass('btn-outline-primary').addClass('btn-outline-dark');
+        } else {
+          $elem.addClass('btn-outline-primary').removeClass('btn-outline-dark');
+        }
+      }
+
+      $conceptField.add($learningOutcomesField).on('change', function () {
+        updateAddButton();
       });
+      updateAddButton();
     });
   </script>
 {% endblock %}
