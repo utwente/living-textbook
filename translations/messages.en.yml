@@ -408,7 +408,7 @@ search:
 
 study-area:
   access-type: 'Access type'
-  access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!'
+  access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset! Next to that, only system administrators can update a study area to be publicly available.'
   add-title: 'Add new study area'
   current: 'Current'
   current-area: 'Now browsing "%item%"'

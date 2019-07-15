@@ -5,6 +5,7 @@ namespace App\Form\StudyArea;
 use App\Entity\StudyArea;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,14 +13,28 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class EditStudyAreaType extends AbstractType
 {
 
+  /** @var AuthorizationCheckerInterface */
+  private $authorizationChecker;
+
+  /** @var EntityManagerInterface */
+  private $em;
+
+  public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em)
+  {
+    $this->authorizationChecker = $authorizationChecker;
+    $this->em                   = $em;
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $studyArea = $options['studyArea'];
-    $editing   = $studyArea->getId() !== NULL;
+    assert($studyArea instanceof StudyArea);
+    $editing = $studyArea->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
             'label'      => 'study-area.name',
@@ -28,7 +43,7 @@ class EditStudyAreaType extends AbstractType
         ->add('accessType', ChoiceType::class, [
             'label'        => 'study-area.access-type',
             'help'         => 'study-area.access-type-change-note',
-            'choices'      => StudyArea::getAccessTypes(),
+            'choices'      => $studyArea->getAvailableAccessTypes($this->authorizationChecker, $this->em),
             'choice_label' => function ($value, $key, $index) {
               return ucfirst($value);
             },

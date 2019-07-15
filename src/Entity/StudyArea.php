@@ -5,13 +5,16 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Validator\Constraint\StudyAreaAccessType;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -88,7 +91,8 @@ class StudyArea
    *
    * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
    *
-   * @Assert\Choice(callback="getAccessTypes")
+   * @Assert\NotNull()
+   * @StudyAreaAccessType()
    */
   private $accessType;
 
@@ -170,7 +174,7 @@ class StudyArea
     $this->name       = '';
     $this->concepts   = new ArrayCollection();
     $this->userGroups = new ArrayCollection();
-    $this->accessType = self::ACCESS_PUBLIC;
+    $this->accessType = self::ACCESS_PRIVATE;
     $this->trackUsers = false;
   }
 
@@ -182,6 +186,31 @@ class StudyArea
   public static function getAccessTypes()
   {
     return [self::ACCESS_PUBLIC, self::ACCESS_PRIVATE, self::ACCESS_GROUP];
+  }
+
+  /**
+   * Possible access types, depending on the access level
+   *
+   * @param AuthorizationCheckerInterface $authorizationChecker
+   * @param EntityManagerInterface        $em
+   *
+   * @return array
+   */
+  public function getAvailableAccessTypes(AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em)
+  {
+    // Get original field value
+    $origObj   = $em->getUnitOfWork()->getOriginalEntityData($this);
+    $prevValue = array_key_exists('accessType', $origObj) ? $origObj['accessType'] : NULL;
+
+    // Get choices, remove public type when not administrator, and field has changed
+    $choices = StudyArea::getAccessTypes();
+    if (!$authorizationChecker->isGranted("ROLE_SUPER_ADMIN") && $prevValue !== self::ACCESS_PUBLIC) {
+      $choices = array_filter($choices, function ($item) {
+        return $item !== StudyArea::ACCESS_PUBLIC;
+      });
+    }
+
+    return $choices;
   }
 
   /**
