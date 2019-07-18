@@ -445,10 +445,11 @@ study-area:
     When disabled, existing sessions will keep sending a tracking request until the complete browser is reloaded,
     but the request data will no longer be saved.
     Note that disabling this setting will remove all existing tracking data!
-  tracking-consent: |-
-    This study area would like to track your usage of its content in order to improve the provided material and system interaction.
-
-    I allow the owner of this study area (%studyArea%) to collect my personal usage of the system by tracking every opened page.
+  tracking-consent: >-
+    We want to ask you for your consent to track your actions in this study area for research purposes, which aims for
+    establishing a personalised learning environment in future. The analysed data are anonymous, and only a small group
+    of researchers have access to the original data. This data will not influence your assessment in any way. It would
+    be of great help if you would give your consent. It is possible to change your mind on this later.
   tracking-consent-agree: 'I agree'
   tracking-consent-dashboard: 'This study area is configured to track user interaction.'
   tracking-consent-dashboard-agreed: "Your interaction is currently <b>being</b> tracked as you've agreed with the conditions."
