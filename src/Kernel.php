@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Drenso\OidcBundle\Security\Factory\OidcFactory;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
@@ -15,6 +16,13 @@ class Kernel extends BaseKernel
   use MicroKernelTrait;
 
   const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+  public function __construct(string $environment, bool $debug)
+  {
+    parent::__construct($environment, $debug);
+
+    AnnotationReader::addGlobalIgnoredName('suppress');
+  }
 
   /**
    * @return string

@@ -9,6 +9,8 @@ use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
 use App\UrlUtils\Model\CacheableUrl;
 use App\UrlUtils\Model\Url;
+use DateTime;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -119,6 +121,9 @@ class UrlChecker
    *
    * @return array
    * Returns an array with structure [studyarea_id]['bad'|'unscanned'][url]
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function checkAllUrls(bool $force = false, bool $fromCache = true): array
   {
@@ -140,6 +145,9 @@ class UrlChecker
    * @param bool      $fromCache
    *
    * @return array|null
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function checkStudyArea(StudyArea $studyArea, bool $force = false, bool $fromCache = true): ?array
   {
@@ -159,6 +167,9 @@ class UrlChecker
    * @return array|null
    * Returns array with urls and last scanned time if it is cached or not retrieved from cache,
    * null if cache doesn't contain urls for this study area
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function getUrlsForStudyArea(StudyArea $studyArea, bool $fromCache = true): ?array
   {
@@ -171,7 +182,7 @@ class UrlChecker
         return NULL;
       }
     } else {
-      $cacheItem = ['urls' => NULL, 'lastScanned' => new \DateTime()];
+      $cacheItem = ['urls' => NULL, 'lastScanned' => new DateTime()];
       // Early commit to cache, so it is clear scanning has commenced
       $this->studyAreaCache->save($this->studyAreaCache->getItem($studyAreaId)->set($cacheItem));
       $urls              = $this->scanStudyArea($studyArea);
@@ -192,6 +203,9 @@ class UrlChecker
    *
    * @return array
    * Returns two arrays, one with unscanned urls and one with bad urls
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function findBadUrls(array $urls, StudyArea $studyArea, bool $force, bool $fromCache): array
   {
@@ -292,7 +306,9 @@ class UrlChecker
    * @param AdapterInterface $cache
    * @param                  $expiry
    *
-   * @throws \Psr\Cache\InvalidArgumentException
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
   {
@@ -313,6 +329,10 @@ class UrlChecker
    * @param AdapterInterface|null $oldCache
    *
    * @return bool
+   *
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, bool $fromCache = false, string $modifyTime = '', ?AdapterInterface $oldCache = NULL): bool
   {
@@ -324,7 +344,7 @@ class UrlChecker
       assert($cachedUrl instanceof CacheableUrl);
 
       // Test whether it is expired, always return false if forced from cache
-      if ($cachedUrl->getTimestamp() < (new \DateTime())->modify($modifyTime) && !$fromCache) {
+      if ($cachedUrl->getTimestamp() < (new DateTime())->modify($modifyTime) && !$fromCache) {
         $oldCache->deleteItem($cachekey);
       } else {
         return false;
@@ -357,7 +377,7 @@ class UrlChecker
     try {
       $urlInfo = $this->router->match($cleanPath);
       // If page is in the URL, it will always match to route _home. If that is the case, retry without page.
-      if($urlInfo['_route'] === '_home') {
+      if ($urlInfo['_route'] === '_home') {
         $urlInfo = $this->router->match(str_replace('/page', '', $cleanPath));
       }
 
@@ -377,6 +397,9 @@ class UrlChecker
    * @param bool $fromCache
    *
    * @return bool|null
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function checkUrl(Url $url, bool $force, bool $fromCache = true): ?bool
   {

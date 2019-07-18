@@ -2,20 +2,23 @@
 
 namespace App\Controller;
 
-use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Generator\LatexGeneratorInterface;
 use BobV\LatexBundle\Latex\Base\Standalone;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
+use DateTime;
+use Exception;
+use Psr\Cache\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Spatie\PdfToImage\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * Class LatexController
@@ -36,9 +39,9 @@ class LatexController extends AbstractController
    *
    * @return Response
    *
-   * @throws \Spatie\PdfToImage\Exceptions\InvalidFormat
-   * @throws \Spatie\PdfToImage\Exceptions\PdfDoesNotExist
-   * @throws \Psr\SimpleCache\InvalidArgumentException
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function renderLatex(Request $request, LatexGeneratorInterface $generator)
   {
@@ -51,11 +54,19 @@ class LatexController extends AbstractController
 
     // Check cache (and whether cached file exists)
     $imageLocation = NULL;
-    $cache         = new FilesystemCache('latex.equations', 86400);
+    $cache         = new FilesystemAdapter('latex.equations', 86400);
     $cached        = true;
-    if (NULL === ($imageLocation = $cache->get($cacheKey)) ||
-        !(new Filesystem())->exists($imageLocation)) {
 
+    // Verify image still exists in cache
+    if ($cache->hasItem($cacheKey)) {
+      $imageLocation = $cache->getItem($cacheKey)->get();
+      if (!(new Filesystem())->exists($imageLocation)) {
+        $cache->delete($cacheKey);
+        $imageLocation = NULL;
+      }
+    }
+
+    $imageLocation = $cache->get($cacheKey, function (ItemInterface $item) use ($content, $generator, &$cached) {
       try {
         // Create latex object
         $document = (new Standalone(md5($content)))
@@ -74,25 +85,29 @@ class LatexController extends AbstractController
         $pdf = new Pdf($pdfLocation);
         $pdf->setOutputFormat('jpg');
         $pdf->saveImage($imageLocation);
-
-        // Save location in the cache
-        $cache->set($cacheKey, $imageLocation);
-      } /** @noinspection PhpRedundantCatchClauseInspection */ catch (LatexException $e) {
+      } catch (Exception $e) {
         $imageLocation = sprintf('%s/%s',
             $this->getParameter('kernel.project_dir'),
             'public/img/latex/error.jpg');
-        $cached        = false;
+
+        // Do not really store it in the cache
+        $item->expiresAfter(0);
+        $cached = false;
       }
-    }
+
+      // Save location in the cache
+      return $imageLocation;
+    });
 
     // Return image
     $response = $this->file($imageLocation, NULL, ResponseHeaderBag::DISPOSITION_INLINE);
     if ($cached) {
       // Disable symfony's automatic cache control header
+      /* @phan-suppress-next-line PhanAccessClassConstantInternal */
       $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
       // Setup cache headers
-      $response->setLastModified(\DateTime::createFromFormat('U', (string)filemtime($imageLocation)));
+      $response->setLastModified(DateTime::createFromFormat('U', (string)filemtime($imageLocation)));
       $response->setAutoEtag();
       $response->setMaxAge(604800); // One week
       $response->setPrivate();

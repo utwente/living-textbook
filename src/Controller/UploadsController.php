@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Request\Wrapper\RequestStudyArea;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
@@ -54,10 +55,11 @@ class UploadsController extends AbstractController
     // Only cache when not downloading
     if (!$download) {
       // Disable symfony's automatic cache control header
+      /* @phan-suppress-next-line PhanAccessClassConstantInternal */
       $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
       // Setup cache headers
-      $response->setLastModified(\DateTime::createFromFormat('U', (string)filemtime($requestedFile)));
+      $response->setLastModified(DateTime::createFromFormat('U', (string)filemtime($requestedFile)));
       $response->setAutoEtag();
       $response->setMaxAge(604800); // One week
       $response->setPrivate();

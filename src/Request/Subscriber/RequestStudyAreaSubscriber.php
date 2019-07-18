@@ -6,6 +6,8 @@ use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use ReflectionException;
+use ReflectionMethod;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Environment;
 
 /**
  * Class RequestStudyAreaSubscriber
@@ -53,9 +56,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
    * @param RouterInterface       $router
    * @param StudyAreaRepository   $studyAreaRepository
    * @param TokenStorageInterface $tokenStorage
-   * @param \Twig_Environment     $twig
+   * @param Environment           $twig
    */
-  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage, \Twig_Environment $twig)
+  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage, Environment $twig)
   {
     $this->router              = $router;
     $this->studyAreaRepository = $studyAreaRepository;
@@ -165,11 +168,12 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
     try {
       if (!is_array($controller) || count($controller) != 2) return;
-      $reflFunction = new \ReflectionMethod($controller[0], $controller[1]);
+      $reflFunction = new ReflectionMethod($controller[0], $controller[1]);
       $reflParams   = $reflFunction->getParameters();
       foreach ($reflParams as $key => $reflParam) {
         // Check for correct method argument
         if (!$reflParam->hasType()) continue;
+        /* @phan-suppress-next-line PhanUndeclaredMethod */
         if ($reflParam->getType()->getName() != RequestStudyArea::class) continue;
 
         // Check whether it is already set
@@ -189,7 +193,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
       // Set the arguments
       $event->setArguments($arguments);
-    } catch (\ReflectionException $e) {
+    } catch (ReflectionException $e) {
       // Do nothing
     }
   }

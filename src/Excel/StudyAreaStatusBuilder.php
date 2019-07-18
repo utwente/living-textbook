@@ -8,11 +8,11 @@ use App\Entity\StudyArea;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Doctrine\Common\Collections\Collection;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
