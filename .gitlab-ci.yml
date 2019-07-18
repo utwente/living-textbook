@@ -7,7 +7,7 @@ stages:
 
 install-dependencies:
   stage: prepare
-  image: drenso/php:7.1-d4
+  image: drenso/php:7.3-d2
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_cache"
     expire_in: 1 hour
@@ -42,7 +42,7 @@ shellcheck:
 php-analysis:
   stage: lint
   image:
-    name: kickin/phan:0.12.2
+    name: kickin/phan:1.2.8
     entrypoint: [ "" ]
   dependencies:
     - install-dependencies
@@ -119,7 +119,7 @@ phpunit:
 
 action-security-check:
   stage: tests
-  image: drenso/php:7.1-d2
+  image: drenso/php:7.3-d2
   dependencies:
     - install-dependencies
   script:
