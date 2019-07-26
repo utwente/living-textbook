@@ -10,7 +10,7 @@ $logo-size: 40px;
     text-decoration: none;
 
     .navbar-logo {
-      background: url("../../img/icon/LTB_Logo_V4.svg") no-repeat center center;
+      background: url('../../img/icon/LTB_Logo_V4.svg') no-repeat center center;
       width: $logo-size;
       height: $logo-size;
       margin: 0 ($spacer / 2) 0 0;
@@ -36,7 +36,7 @@ $logo-size: 40px;
       font-size: initial;
       line-height: initial;
       background-color: transparent;
-      border: none;
+      border: 0;
     }
   }
 

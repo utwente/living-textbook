@@ -111,7 +111,7 @@ body, #double-column-container, #bottom-container {
         text-indent: -9999px;
         box-shadow: none;
         border-radius: 0;
-        border: none;
+        border: 0;
         transition: background 0.3s;
         cursor: ew-resize;
 
@@ -125,22 +125,22 @@ body, #double-column-container, #bottom-container {
           height: 100%;
           margin: 0 auto;
 
-          &:before {
+          &::before {
             left: 3px;
           }
 
-          &:after {
+          &::after {
             right: 3px;
           }
 
-          &:before, &:after {
+          &::before, &::after {
             position: absolute;
             display: block;
             top: 0;
             width: 4px;
             height: 100%;
             background-color: $drag-stripes-color;
-            content: "";
+            content: '';
           }
         }
       }

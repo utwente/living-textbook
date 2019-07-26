@@ -24,8 +24,8 @@
     opacity: 1;
   }
 
-  &:before {
-    content: "";
+  &::before {
+    content: '';
     position: absolute;
     border: 10px solid transparent;
     border-bottom-color: $background-color;

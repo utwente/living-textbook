@@ -3,16 +3,16 @@
 @import '~bootstrap/scss/mixins/_buttons.scss';
 @import '../vars/vars';
 
-$baseSize: 25px;
+$base-size: 25px;
 $spacer: 10px;
 
 // Display layout
 .ltb-learning-path-element {
   position: relative;
-  min-height: 3 * $baseSize;
+  min-height: 3 * $base-size;
 
   &.no-description {
-    min-height: 2 * $baseSize;
+    min-height: 2 * $base-size;
 
     .path-layout {
       background-image: url('../../img/content/learning-path-element-no-description.svg');
@@ -30,7 +30,7 @@ $spacer: 10px;
     top: 0;
     bottom: 0;
     left: $spacer;
-    width: $baseSize;
+    width: $base-size;
 
     background-image: url('../../img/content/learning-path-element.svg');
     background-repeat: no-repeat;
@@ -39,7 +39,7 @@ $spacer: 10px;
   }
 
   .item {
-    padding-left: $baseSize + 5 * $spacer
+    padding-left: $base-size + 5 * $spacer
   }
 }
 
@@ -63,13 +63,13 @@ $spacer: 10px;
       border-radius: 0.25em;
       background-color: $card-bg;
 
-      min-height: $baseSize;
+      min-height: $base-size;
       padding: $spacer;
       margin: $spacer 0;
 
       // Make placeholder have comfortable size
       &.ui-sortable-placeholder {
-        height: $baseSize * 2;
+        height: $base-size * 2;
       }
 
       // Hide description field when it is the last item, and update icon
@@ -93,9 +93,9 @@ $spacer: 10px;
         position: absolute;
         top: $spacer;
         left: $spacer;
-        width: $baseSize;
-        font-size: $baseSize;
-        line-height: $baseSize;
+        width: $base-size;
+        font-size: $base-size;
+        line-height: $base-size;
         cursor: move;
 
         .fa {
@@ -108,8 +108,8 @@ $spacer: 10px;
         position: absolute;
         top: $spacer;
         bottom: $spacer;
-        left: 2 * $baseSize;
-        width: $baseSize + 3 * $spacer;
+        left: 2 * $base-size;
+        width: $base-size + 3 * $spacer;
 
         background-image: url('../../img/content/learning-path-element.svg');
         background-repeat: no-repeat;
@@ -119,8 +119,8 @@ $spacer: 10px;
 
       .item {
         width: 100%;
-        padding-left: 4 * $baseSize + 2 * $spacer;
-        padding-right: 2 * $baseSize + $spacer;
+        padding-left: 4 * $base-size + 2 * $spacer;
+        padding-right: 2 * $base-size + $spacer;
 
         .form-group:last-of-type {
           margin-bottom: 0;

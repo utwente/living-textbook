@@ -6,7 +6,7 @@
 
 $mark-color: #fff256;
 $note-color: #91ff6d;
-$commentSpacer: $spacer;
+$comment-spacer: $spacer;
 
 .annotations-container {
 
@@ -77,25 +77,25 @@ $commentSpacer: $spacer;
       display: block;
 
       &:not(:last-of-type) {
-        margin-bottom: $commentSpacer / 4;
+        margin-bottom: $comment-spacer / 4;
       }
     }
 
     .annotations-note {
       &:not(:first-of-type) {
-        margin-left: $commentSpacer;
+        margin-left: $comment-spacer;
       }
     }
   }
 
   .annotations-comment-container {
-    margin-top: $commentSpacer / 4;
+    margin-top: $comment-spacer / 4;
 
     div {
-      margin-left: $commentSpacer;
+      margin-left: $comment-spacer;
 
       .btn {
-        margin-top: $commentSpacer / 4;
+        margin-top: $comment-spacer / 4;
         float: right;
       }
     }
@@ -114,7 +114,7 @@ $commentSpacer: $spacer;
       font-size: 0.875rem;
       line-height: 1.2;
       border-radius: 0.2rem;
-      border: none;
+      border: 0;
     }
   }
 

@@ -14,14 +14,14 @@ $footer-height: 60px;
 
     &.logo-itc {
       float: left;
-      background: url("../../img/footer/itc.png") no-repeat top left;
+      background: url('../../img/footer/itc.png') no-repeat top left;
       height: $footer-height;
       width: $footer-height;
     }
 
     &.logo-ut {
       float: right;
-      background: url("../../img/footer/ut.svg") no-repeat top right;
+      background: url('../../img/footer/ut.svg') no-repeat top right;
       height: $footer-height;
       width: 300px;
     }

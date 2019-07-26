@@ -25,7 +25,7 @@ table.table {
 
     .btn {
       @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, 1.2, $btn-border-radius-sm);
-      border: none;
+      border: 0;
     }
   }
 }
