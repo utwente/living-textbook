@@ -90,10 +90,8 @@ sass-analysis:
   stage: lint
   image: drenso/sasslint:1.12.1-d1
   dependencies: []
-  before_script:
-    - cp tests/sass-lint/.sass-lint.yml .
   script:
-    - sass-lint assets/css
+    - sass-lint -v -c tests/sass-lint/.sass-lint.yml
   tags:
     - docker
   except:

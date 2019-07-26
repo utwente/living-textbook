@@ -1,0 +1,12 @@
+files:
+  include:
+    - '**/*.s+(a|c)ss'
+  ignore:
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+
+rules:
+  variable-name-format: 2
+  border-zero: 2
+  quotes: 2
+  pseudo-element: 2
