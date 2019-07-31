@@ -198,14 +198,14 @@ class Annotation implements ISearchable
 
     // Search in different parts
     if (stripos($this->getText(), $search) !== false) {
-      $results[] = SearchController::createResult(255, 'text', $this->getText());
+      $results[] = SearchController::createResult(255, 'text', ['text' => $this->getText(), 'author' => $this->getUser()->getFullName()]);
     }
 
     // Search in the comments
     $prio = 200;
     foreach ($this->comments as $comment) {
       if (stripos($comment->getText(), $search) !== false) {
-        $results[] = SearchController::createResult($prio, 'comment', $comment->getText());
+        $results[] = SearchController::createResult($prio, 'comment', ['text' => $comment->getText(), 'author' => $comment->getUser()->getFullName()]);
       }
       $prio--;
     }

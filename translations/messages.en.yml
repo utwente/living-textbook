@@ -17,6 +17,7 @@ annotations:
   add-placeholder: "Type your annotation..."
   annotation: "Annotation"
   annotations: "Annotations"
+  author: "Author"
   comment:
     create: "Place comment"
     create-placeholder: "Type your comment..."
@@ -33,6 +34,7 @@ annotations:
   outdated-annotations: "Outdated annotations"
   outdated-button: "There are outdated annotations"
   remove: "Remove"
+  section-header: "Section header"
   selected: "Selected text"
   show:
     all: "All"

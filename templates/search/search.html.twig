@@ -248,6 +248,7 @@
         <th>{{ 'search.found-in'|trans }}</th>
         <th>{{ 'annotations.selected'|trans }}</th>
         <th>{{ 'annotations.type'|trans }}</th>
+        <th>{{ 'annotations.author'|trans }}</th>
         <th>{{ 'search.preview'|trans }}</th>
       </tr>
       </thead>
@@ -266,10 +267,17 @@
 
               {% if loop.first %}
                 <td rowspan="{{ annotation.results|length }}">{{ ('concept.' ~ annotation._data.context)|trans }}</td>
-                <td rowspan="{{ annotation.results|length }}">{{ annotation._data.selectedText ?? '-' }}</td>
+                <td rowspan="{{ annotation.results|length }}">
+                  {% if  annotation._data.selectedText %}
+                    {{ annotation._data.selectedText }}
+                  {% else %}
+                    <i>{{ 'annotations.section-header'|trans }}</i>
+                  {% endif %}
+                </td>
               {% endif %}
               <td>{{ result.property == 'text' ? 'annotations.annotation'|trans : 'annotations.comment.comment'|trans }}</td>
-              <td>{{ result.data|striptags|highlight(search) }}</td>
+              <td>{{ result.data.author }}</td>
+              <td>{{ result.data.text|striptags|highlight(search) }}</td>
             </tr>
           {% endfor %}
         {% endfor %}

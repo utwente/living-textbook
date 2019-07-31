@@ -166,7 +166,17 @@ class SearchController extends AbstractController
     return $bp - $ap;
   }
 
-  public static function createResult(int $prio, string $property, string $data): array
+  /**
+   * Create a search result
+   *
+   * @param int          $prio      Result priority
+   * @param string       $property  The result property
+   * @param string|array $data      Result data. Should be a string in the common cases, but can be a data array when
+   *                                more data is required
+   *
+   * @return array
+   */
+  public static function createResult(int $prio, string $property, $data): array
   {
     return [
         'prio'     => $prio,
