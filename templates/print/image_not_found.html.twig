@@ -1,0 +1,29 @@
+{% extends 'simple_card.html.twig' %}
+
+{% block title %}
+  {{ 'print.image-not-found.title'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% from '_layout/flashbags.html.twig' import flashbag_alert %}
+
+  {% if isUrl %}
+    {% set message ='print.image-not-found.external'|trans({'%image%': path}) %}
+  {% else %}
+    {% set message = 'print.image-not-found.internal'|trans({'%image%': basename}) %}
+  {% endif %}
+  {{ flashbag_alert('danger', message, 'fa-exclamation-triangle', false) }}
+
+  {% if isUrl %}
+    <b>{{ 'print.image-not-found.external-preview'|trans }}</b><br/>
+    <img src="{{ path }}">
+    <div class="clearfix mb-2"></div>
+  {% endif %}
+
+  {% if concept is not null %}
+    <a href="{{ path('_home_simple', {pageUrl: path('app_concept_show', {concept: concept.id})|trim('/', 'left') }) }}"
+       class="btn btn-outline-primary">
+      <i class="fa fa-fw fa-arrow-left"></i> {{ 'print.show.concept'|trans }}
+    </a>
+  {% endif %}
+{% endblock %}

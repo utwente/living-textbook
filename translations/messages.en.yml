@@ -386,6 +386,20 @@ print:
   copyright: "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
                   \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
   header: "%header% \\url{%url%}"
+  image-not-found:
+    external: |
+      You've referenced an externally hosted image (%image%), which cannot be used for printing.
+      If you want to print this image, make sure to upload it in this study area,
+      and update your references."
+    external-preview: "Image preview"
+    internal: |
+      We found an image reference (%image%) which does not exist in this study area.
+      This might be due to the fact that it has been renamed or removed earlier,
+      a mistake with the image reference in the concept, or a system error.
+      Please verify whether you have this image available.
+    title: "Image not found"
+  show:
+    concept: "Back to concept"
 
 relation:
   source: 'Source'
