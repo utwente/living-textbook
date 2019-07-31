@@ -1,5 +1,10 @@
 var Encore = require('@symfony/webpack-encore');
 
+// Let PHPStorm load the webpack configuration correctly
+if (!Encore.isRuntimeEnvironmentConfigured()) {
+  Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
+}
+
 Encore
 // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
