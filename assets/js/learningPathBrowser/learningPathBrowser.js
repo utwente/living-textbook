@@ -29,7 +29,9 @@ import Routing from 'fos-routing';
   const $closeButton = $('#learning-path-close-button');
   const $tooltipHandle = $('#learning-path-tooltip-handle');
 
-  let openWidth = 140;
+  let openHeight = 140;
+  let maximumView = 0.5; // Screen height factor
+  let minimumView = 100; // px
   let lastY = -1;
   let isOpened = false;
   let animationCount = 0;
@@ -93,7 +95,7 @@ import Routing from 'fos-routing';
 
     // The actual animation
     let windowHeight = $(window).innerHeight();
-    let height = lastY === -1 || lastY === windowHeight ? windowHeight - openWidth : lastY;
+    let height = lastY === -1 || lastY === windowHeight ? windowHeight - openHeight : lastY;
     dragButton.doResize(height, true, triggerResize, true, true);
 
     // Set state + send event
@@ -149,8 +151,9 @@ import Routing from 'fos-routing';
     let clientHeight = $(window).innerHeight();
 
     // Check input
-    let minHeight = 0.6 * clientHeight;
-    let maxHeight = clientHeight - openWidth;
+    let minHeight = maximumView * clientHeight;
+    let maxHeight = clientHeight - minimumView;
+    animate = typeof animate !== 'undefined' ? animate : false;
     limit = typeof limit !== 'undefined' ? limit : true;
     callback = typeof callback !== 'undefined' ? callback : function () {
     };
@@ -167,17 +170,20 @@ import Routing from 'fos-routing';
     }
 
     // Move the window (with or without animation)
+    const newY = y - (centerHeight / 2);
+    let bottomHeight = Math.max(minimumView, clientHeight - newY);
+    $bottomRow.height(bottomHeight);
+
     if (animate) {
       animationCount = 2;
       let completeFunction = function () {
         animationCount--;
         if (animationCount === 0) {
           callback();
-          $(window).trigger('resize');
+          onResize();
         }
       };
 
-      const newY = y - (centerHeight / 2);
       $doubleColumn.animate({
         height: y === clientHeight ? '100%' : newY
       }, {duration: animationDuration, complete: completeFunction});
@@ -186,9 +192,10 @@ import Routing from 'fos-routing';
       }, {duration: animationDuration, complete: completeFunction});
 
     } else {
-      $doubleColumn.css('height', y);
-      $bottomRow.css('top', y);
+      $doubleColumn.css('height', newY);
+      $bottomRow.css('top', newY);
       callback();
+      onResize();
     }
   };
 
