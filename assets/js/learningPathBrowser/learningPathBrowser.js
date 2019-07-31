@@ -29,6 +29,14 @@ import Routing from 'fos-routing';
   const $closeButton = $('#learning-path-close-button');
   const $tooltipHandle = $('#learning-path-tooltip-handle');
 
+  let openWidth = 140;
+  let lastY = -1;
+  let isOpened = false;
+  let animationCount = 0;
+  const animationDuration = 500;
+  const dragButton = $('#bottom-drag-button');
+  const invisibleFrame = $('#invisible-frame');
+
   const content = document.getElementById('bottom-container-content');
   const $titleLink = $('#learning-path-title-link');
   const canvas = document.getElementById('learning-path-canvas');
@@ -83,11 +91,13 @@ import Routing from 'fos-routing';
       loadData(id);
     }
 
-    // CSS animations are used to make it fluent
-    $doubleColumn.addClass('lpb-opened');
-    $bottomRow.addClass('lpb-opened');
-    triggerResize();
+    // The actual animation
+    let windowHeight = $(window).innerHeight();
+    let height = lastY === -1 || lastY === windowHeight ? windowHeight - openWidth : lastY;
+    dragButton.doResize(height, true, triggerResize, true, true);
 
+    // Set state + send event
+    isOpened = true;
     eDispatch.openedLearningPathBrowser();
   };
 
@@ -95,10 +105,12 @@ import Routing from 'fos-routing';
    * Handler to close the learning path browser
    */
   lpb.closeBrowser = function () {
-    // CSS animations are used to make it fluent
-    $doubleColumn.removeClass('lpb-opened');
-    $bottomRow.removeClass('lpb-opened');
-    triggerResize();
+    // The actual animation
+    let height = $(window).innerHeight();
+    dragButton.doResize(height, true, triggerResize, true, false);
+
+    // Set state + send event
+    isOpened = false;
     eDispatch.closedLearningPathBrowser();
   };
 
@@ -113,8 +125,116 @@ import Routing from 'fos-routing';
    * Retrieve whether the browser is opened
    */
   lpb.isOpened = function () {
-    return $bottomRow.hasClass('lpb-opened');
+    return isOpened;
   };
+
+  ////////////////////////////////
+  // Drag button handlers
+  ////////////////////////////////
+
+  /**
+   * Handler executed to resize the learning path browser
+   * @param y
+   * @param animate
+   * @param callback
+   * @param force
+   * @param limit
+   */
+  dragButton.doResize = function (y, animate, callback, force, limit) {
+    // Check for double call
+    if (force !== true && y === lastY) return;
+
+    // Get information
+    let centerHeight = $('#bottom-draggable-bar-inner').innerHeight();
+    let clientHeight = $(window).innerHeight();
+
+    // Check input
+    let minHeight = 0.6 * clientHeight;
+    let maxHeight = clientHeight - openWidth;
+    limit = typeof limit !== 'undefined' ? limit : true;
+    callback = typeof callback !== 'undefined' ? callback : function () {
+    };
+
+    // Set the last y value, but not when closing (recovery)
+    if (y !== clientHeight) {
+      lastY = y;
+    }
+
+    // Limit the values
+    if (limit) {
+      y = Math.min(y, maxHeight);
+      y = Math.max(y, minHeight);
+    }
+
+    // Move the window (with or without animation)
+    if (animate) {
+      animationCount = 2;
+      let completeFunction = function () {
+        animationCount--;
+        if (animationCount === 0) {
+          callback();
+          $(window).trigger('resize');
+        }
+      };
+
+      const newY = y - (centerHeight / 2);
+      $doubleColumn.animate({
+        height: y === clientHeight ? '100%' : newY
+      }, {duration: animationDuration, complete: completeFunction});
+      $bottomRow.animate({
+        top: y === clientHeight ? '100%' : newY
+      }, {duration: animationDuration, complete: completeFunction});
+
+    } else {
+      $doubleColumn.css('height', y);
+      $bottomRow.css('top', y);
+      callback();
+    }
+  };
+
+  /**
+   * Handler that registers the drag event.
+   * @param e
+   */
+  dragButton.doDrag = function (e) {
+    if (animationCount > 0) return;
+
+    // For touch event, replace the jQuery event with the actual touch event
+    // Otherwise, e.pageY would be undefined
+    if (e.type === 'touchmove') {
+      e = e.originalEvent.touches[0];
+    } else if (e.which !== 1) {
+      dragButton.stopDrag(e);
+      return;
+    }
+
+    invisibleFrame.css('z-index', 100);
+    dragButton.doResize(e.pageY);
+  };
+
+  /**
+   * Handler that registers the stop drag event
+   */
+  dragButton.stopDrag = function () {
+    invisibleFrame.css('z-index', -1);
+
+    // Remove event listeners
+    $(document).off('mousemove touchmove', dragButton.doDrag);
+    $(document).off('mouseup touchend', dragButton.stopDrag);
+  };
+
+  /**
+   * Handler that registers the drag and stop drag handles on mouse click / touch start
+   */
+  dragButton.on('mousedown touchstart', function () {
+    try {
+      // Add event listener at document level, to register the drag correctly
+      $(document).on('mousemove touchmove', dragButton.doDrag);
+      $(document).on('mouseup touchend', dragButton.stopDrag);
+    } catch (e) {
+      console.error('Column resize not available');
+    }
+  });
 
   /******************************************************************************************************
    * Internal helper function
@@ -174,7 +294,7 @@ import Routing from 'fos-routing';
    * Function to trigger the resize event after the animation has finished
    */
   function triggerResize() {
-    $doubleColumn.one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", function () {
+    $doubleColumn.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function () {
       setTimeout(function () {
         $(window).trigger('resize');
       }, 100);
@@ -297,7 +417,7 @@ import Routing from 'fos-routing';
     let numberSize = Math.ceil(elementRadius * 1.5);
     let numberPositionAdjust = (numberSize / 12);
     context.beginPath();
-    context.font = "bold " + numberSize + 'px ' + bConfig.fontFamily;
+    context.font = 'bold ' + numberSize + 'px ' + bConfig.fontFamily;
     elements.map(function (element) {
       context.fillStyle = bConfig.darkenedNodeColor(element.color);
       context.fillText(++elementCount, element.x, element.y + numberPositionAdjust);
@@ -314,9 +434,9 @@ import Routing from 'fos-routing';
     context.fillStyle = bConfig.whiteNodeLabelColor;
     context.font = questionFontSize + 'px ' + bConfig.fontFamily;
     elements.map(function (element) {
-      if (typeof element.description === "undefined") return;
+      if (typeof element.description === 'undefined') return;
 
-      context.fillText("?", pathDescriptionX(element), element.y + Math.floor(questionFontSize / 10));
+      context.fillText('?', pathDescriptionX(element), element.y + Math.floor(questionFontSize / 10));
     });
 
     // Restore state
@@ -359,7 +479,7 @@ import Routing from 'fos-routing';
    * @param element
    */
   function drawPathDescription(element) {
-    if (typeof element.description === "undefined") return;
+    if (typeof element.description === 'undefined') return;
 
     let x = pathDescriptionX(element);
     context.moveTo(x, element.y);
@@ -495,7 +615,7 @@ import Routing from 'fos-routing';
     return {
       ox: d3.event.pageX - rect.left - canvas.clientLeft - window.pageXOffset,
       oy: d3.event.pageY - rect.top - canvas.clientTop - window.pageYOffset
-    }
+    };
   }
 
   /**
@@ -548,7 +668,7 @@ import Routing from 'fos-routing';
 
     for (i = 0; i < elements.length; ++i) {
       element = elements[i];
-      if (typeof element.description === "undefined") continue;
+      if (typeof element.description === 'undefined') continue;
 
       dx = loc.ox - pathDescriptionX(element);
       dy = loc.oy - element.y;
@@ -650,7 +770,7 @@ import Routing from 'fos-routing';
     if (tooltipElement === null) {
       tooltipElement = description;
       $tooltipHandle.css({
-        top: (description.y - pathDescriptionRadius) + "px",
+        top: (description.y - pathDescriptionRadius) + 'px',
         left: pathDescriptionX(description)
       });
       $tooltipHandle.tooltip('show');
@@ -845,13 +965,16 @@ import Routing from 'fos-routing';
     title: function () {
       return tooltipElement.description;
     },
-    placement: "top",
-    trigger: "manual",
+    placement: 'top',
+    trigger: 'manual',
     template: '<div class="tooltip tooltip-wide" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
   });
 
   // Window handlers
   $(window).on('resize', function () {
+    if (isOpened) {
+      dragButton.doResize(lastY, false, undefined, true, true);
+    }
     onResize();
   });
 

@@ -1,7 +1,6 @@
 @import '../vars/vars';
 @import '../mixins/mixins';
 
-$bottom-transition: 0.4s ease-in-out;
 $bottom-row-size: 20%;
 $bottom-row-size-large-screen: 140px;
 $bottom-row-size-large-screen-breakpoint: 650px;
@@ -13,29 +12,20 @@ body, #double-column-container, #bottom-container {
   overflow: hidden;
 }
 
+#invisible-frame {
+  background-color: unset;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
 #double-column-container {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  transition: height $bottom-transition;
-
-  &.lpb-opened {
-    height: 100% - $bottom-row-size;
-
-    @media(min-height: $bottom-row-size-large-screen-breakpoint) {
-      height: calc(100% - #{$bottom-row-size-large-screen});
-    }
-  }
-
-  #invisible-frame {
-    background-color: unset;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-  }
 
   #left-container, #left-container-content, #right-container, #draggable-bar {
     background-color: $background-color;
@@ -85,74 +75,6 @@ body, #double-column-container, #bottom-container {
       opacity: 0;
     }
   }
-
-  #draggable-bar {
-    z-index: $bar-z-index;
-
-    > #draggable-bar-inner {
-      background-color: $drag-background-color;
-      display: table;
-      position: absolute;
-      width: $bar-width;
-      height: 100%;
-      z-index: $bar-z-index;
-
-      .drag-window {
-        z-index: $bar-z-index;
-        background-color: $drag-background-color;
-        display: block;
-        position: relative;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-        width: 18px;
-        height: 25%;
-        font-size: 0;
-        text-indent: -9999px;
-        box-shadow: none;
-        border-radius: 0;
-        border: 0;
-        transition: background 0.3s;
-        cursor: ew-resize;
-
-        &:focus {
-          outline: none;
-        }
-
-        span {
-          display: block;
-          width: 0;
-          height: 100%;
-          margin: 0 auto;
-
-          &::before {
-            left: 3px;
-          }
-
-          &::after {
-            right: 3px;
-          }
-
-          &::before, &::after {
-            position: absolute;
-            display: block;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background-color: $drag-stripes-color;
-            content: '';
-          }
-        }
-      }
-    }
-  }
-
-  #button-container {
-    display: table-cell;
-    vertical-align: middle;
-    z-index: $bar-z-index;
-    height: 100%;
-  }
 }
 
 #bottom-row {
@@ -161,18 +83,9 @@ body, #double-column-container, #bottom-container {
   left: 0;
   height: $bottom-row-size;
   width: 100%;
-  transition: top $bottom-transition;
 
   @media(min-height: $bottom-row-size-large-screen-breakpoint) {
     height: $bottom-row-size-large-screen;
-  }
-
-  &.lpb-opened {
-    top: 100% - $bottom-row-size;
-
-    @media (min-height: $bottom-row-size-large-screen-breakpoint) {
-      top: calc(100% - #{$bottom-row-size-large-screen});
-    }
   }
 
   > div#bottom-row-container {
@@ -190,6 +103,114 @@ body, #double-column-container, #bottom-container {
     #bottom-container-content {
       height: calc(100% - #{$bar-width});
       width: 100%;
+    }
+  }
+}
+
+#draggable-bar,
+#bottom-draggable-bar {
+  z-index: $bar-z-index;
+
+  > #draggable-bar-inner,
+  > #bottom-draggable-bar-inner {
+    background-color: $drag-background-color;
+    display: table;
+    position: absolute;
+    width: $bar-width;
+    height: 100%;
+    z-index: $bar-z-index;
+
+    .button-container {
+      display: table-cell;
+      vertical-align: middle;
+      z-index: $bar-z-index;
+      height: 100%;
+    }
+
+    .drag-window {
+      z-index: $bar-z-index;
+      background-color: $drag-background-color;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      margin: auto 0;
+      padding: 0;
+      width: 18px;
+      height: 25%;
+      font-size: 0;
+      text-indent: -9999px;
+      box-shadow: none;
+      border-radius: 0;
+      border: 0;
+      transition: background 0.3s;
+      cursor: ew-resize;
+
+      &:focus {
+        outline: none;
+      }
+
+      span {
+        display: block;
+        width: 0;
+        height: 100%;
+        margin: 0;
+
+        &::before {
+          left: 3px;
+        }
+
+        &::after {
+          right: 3px;
+        }
+
+        &::before, &::after {
+          position: absolute;
+          display: block;
+          top: 0;
+          width: 4px;
+          height: 100%;
+          background-color: $drag-stripes-color;
+          content: '';
+        }
+      }
+    }
+  }
+}
+
+#bottom-draggable-bar {
+  height: $bar-width;
+  width: 100%;
+
+  > #bottom-draggable-bar-inner {
+    height: $bar-width;
+    width: 100%;
+
+    .drag-window {
+      height: 18px;
+      width: 25%;
+      cursor: ns-resize;
+      margin: 0 auto;
+
+      span {
+        height: 0;
+        width: 100%;
+
+        &::before {
+          bottom: unset;
+          top: 3px;
+        }
+
+        &::after {
+          top: unset;
+          bottom: 3px;
+        }
+
+        &::before, &::after {
+          left: 0;
+          height: 4px;
+          width: 100%;
+        }
+      }
     }
   }
 }

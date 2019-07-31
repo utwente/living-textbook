@@ -14,8 +14,8 @@
 {% endblock %}
 
 {% block base_content %}
+  <div id="invisible-frame"></div>
   <div id="double-column-container">
-    <div id="invisible-frame"></div>
     <div id="left-container">
       <div id="left-container-content">
         <iframe id="data-iframe" src="{{ pageUrl }}" onload="dw.iframeLoader(false)"></iframe>
@@ -26,7 +26,7 @@
     </div>
     <div id="draggable-bar">
       <div id="draggable-bar-inner">
-        <div id="button-container">
+        <div class="button-container">
           <button id="drag-button" class="drag-window">
             <span>Drag button</span>
           </button>
@@ -89,7 +89,15 @@
   </div>
   <div id="bottom-row">
     <div id="bottom-row-container">
-      <div id="bottom-static-bar"></div>
+      <div id="bottom-draggable-bar">
+        <div id="bottom-draggable-bar-inner">
+          <div class="button-container">
+            <button id="bottom-drag-button" class="drag-window">
+              <span>Drag button</span>
+            </button>
+          </div>
+        </div>
+      </div>
       <div id="learning-path-browser-controls" class="container-fluid">
         <div class="row justify-content-between flex-row-reverse">
           <div class="action-container">

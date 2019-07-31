@@ -219,7 +219,7 @@
   };
 
   /**
-   * Handler that registers the stop drag event
+   * Handler that registers the stop drag event / touch start
    */
   dragButton.stopDrag = function () {
     invisibleFrame.css('z-index', -1);
