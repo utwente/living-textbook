@@ -20,6 +20,7 @@ annotations:
   comment:
     create: "Place comment"
     create-placeholder: "Type your comment..."
+    comment: "Comment"
   count: "Count"
   create-mark: "Create mark"
   create-note: "Create note"
@@ -39,6 +40,7 @@ annotations:
     own: "Own"
     show: "Show"
   toggle: "Toggle annotations"
+  type: "Type"
   visibility:
     create-title: "Share with"
     everybody: "Everybody"

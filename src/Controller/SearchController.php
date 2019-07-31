@@ -134,9 +134,10 @@ class SearchController extends AbstractController
       // Set concept key for sorting purposes
       $conceptKey = $concept->getName() . $concept->getId();
       if (!array_key_exists($conceptKey, $result)) {
-        $result[$conceptKey] = [];
+        $result[$conceptKey] = ['count' => 0, 'items' => []];
       }
-      $result[$conceptKey][] = $item;
+      $result[$conceptKey]['count']   += count($item['results']);
+      $result[$conceptKey]['items'][] = $item;
     }, $data);
 
     ksort($result);

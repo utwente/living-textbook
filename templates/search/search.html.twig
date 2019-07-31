@@ -247,23 +247,28 @@
         <th>{{ 'concept.concept'|trans }}</th>
         <th>{{ 'search.found-in'|trans }}</th>
         <th>{{ 'annotations.selected'|trans }}</th>
+        <th>{{ 'annotations.type'|trans }}</th>
         <th>{{ 'search.preview'|trans }}</th>
       </tr>
       </thead>
       <tbody>
       {% for annotationsDataPerConcept in annotationsData %}
         {% set renderConcept = true %}
-        {% for annotation in annotationsDataPerConcept %}
+        {% for annotation in annotationsDataPerConcept.items %}
           {% for result in annotation.results %}
             <tr>
               {% if renderConcept %}
                 {% set renderConcept = false %}
-                <td rowspan="{{ annotationsDataPerConcept|length }}">
+                <td rowspan="{{ annotationsDataPerConcept.count }}">
                   <a href="{{ path('app_concept_show', { 'concept': annotation._data.concept.id }) }}">{{ annotation._data.concept.name }}</a>
                 </td>
               {% endif %}
-              <td>{{ ('concept.' ~ annotation._data.context)|trans }}</td>
-              <td>{{ annotation._data.selectedText ?? '-' }}</td>
+
+              {% if loop.first %}
+                <td rowspan="{{ annotation.results|length }}">{{ ('concept.' ~ annotation._data.context)|trans }}</td>
+                <td rowspan="{{ annotation.results|length }}">{{ annotation._data.selectedText ?? '-' }}</td>
+              {% endif %}
+              <td>{{ result.property == 'text' ? 'annotations.annotation'|trans : 'annotations.comment.comment'|trans }}</td>
               <td>{{ result.data|striptags|highlight(search) }}</td>
             </tr>
           {% endfor %}
