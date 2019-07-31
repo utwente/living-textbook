@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Annotation;
+use App\Entity\Contracts\ISearchable;
 use App\Repository\AbbreviationRepository;
+use App\Repository\AnnotationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
@@ -38,13 +41,14 @@ class SearchController extends AbstractController
    * @param ConceptRepository          $conceptRepository
    * @param ExternalResourceRepository $externalResourceRepository
    * @param LearningOutcomeRepository  $learningOutcomeRepository
+   * @param AnnotationRepository       $annotationRepository
    *
    * @return array
    */
   public function search(Request $request, RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory,
                          TranslatorInterface $translator, AbbreviationRepository $abbreviationRepository,
                          ConceptRepository $conceptRepository, ExternalResourceRepository $externalResourceRepository,
-                         LearningOutcomeRepository $learningOutcomeRepository)
+                         LearningOutcomeRepository $learningOutcomeRepository, AnnotationRepository $annotationRepository)
   {
     // Create the search form
     $form = $this->createSearchForm($formFactory, $translator);
@@ -70,19 +74,35 @@ class SearchController extends AbstractController
     $search           = mb_strtolower($form->getData()['s']);
     $result['search'] = $search;
 
-    // We just retrieve all data, to filter them locally on the content. This is required to
+    // We just retrieve all data, to filter them locally on the content.
     $result['conceptData']          = $this->searchData($conceptRepository->findForStudyAreaOrderedByName($studyArea, true), $search);
     $result['abbreviationData']     = $this->searchData($abbreviationRepository->findForStudyArea($studyArea), $search);
     $result['externalResourceData'] = $this->searchData($externalResourceRepository->findForStudyArea($studyArea), $search);
     $result['learningOutcomeData']  = $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search);
 
+    // Retrieve annotation data, which is easier to do here
+    $user           = $this->getUser();
+    $userId         = $user->getId();
+    $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
+    $ownAnnotations = array_filter($allAnnotations, function (Annotation $annotation) use ($userId) {
+      return $annotation->getUserId() == $userId;
+    });
+
+    $result['ownAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($ownAnnotations, $search));
+    $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
+
     return $result;
   }
 
+  /**
+   * @param ISearchable[] $data
+   * @param string        $search
+   *
+   * @return array
+   */
   private function searchData(array $data, string $search): array
   {
-    $data = array_map(function ($element) use ($search) {
-      /** @noinspection PhpUndefinedMethodInspection */
+    $data = array_map(function (ISearchable $element) use ($search) {
       return $element->searchIn($search);
     }, $data);
 
@@ -90,9 +110,38 @@ class SearchController extends AbstractController
       return $this->filterSortData($element);
     });
 
-    usort($data, array(&$this, "sortSearchData"));
+    usort($data, array(SearchController::class, "sortSearchData"));
 
     return $data;
+  }
+
+  /**
+   * Group the result by the concept in the object
+   *
+   * @param array $data
+   *
+   * @return array
+   */
+  private function groupAnnotationsByConcept(array $data): array
+  {
+    $result = [];
+
+    array_map(function ($item) use (&$result) {
+      $annotation = $item['_data'];
+      assert($annotation instanceof Annotation);
+      $concept = $annotation->getConcept();
+
+      // Set concept key for sorting purposes
+      $conceptKey = $concept->getName() . $concept->getId();
+      if (!array_key_exists($conceptKey, $result)) {
+        $result[$conceptKey] = [];
+      }
+      $result[$conceptKey][] = $item;
+    }, $data);
+
+    ksort($result);
+
+    return $result;
   }
 
   private function filterSortData($element): bool

@@ -69,6 +69,7 @@ browser:
 
 concept:
   add-title: 'Add new concept'
+  concept: 'Concept'
   definition: 'Definition'
   edit-title: 'Edit concept "%item%"'
   examples: 'Examples'
@@ -399,10 +400,12 @@ search:
   placeholder: 'Search for...'
   preview: 'Preview'
   result:
-    concepts: "Concepts"
     abbreviations: "Abbreviations"
+    all-annotations: "Annotations"
+    concepts: "Concepts"
     external-resources: "External resources"
     learning-outcomes: "Learning outcomes"
+    own-annotations: "Own annotations"
   results: 'Search results'
   results-for: 'Search results for "%item%"'
   search: 'Search'

@@ -159,7 +159,7 @@ class ConceptController extends AbstractController
   {
     $studyArea        = $requestStudyArea->getStudyArea();
     $concepts         = $repo->findForStudyAreaOrderedByName($studyArea);
-    $annotationCounts = $annotationRepository->getCountsForUserInStudyArea($this->getUser(), $studyArea->isEditable($this->getUser()), $studyArea);
+    $annotationCounts = $annotationRepository->getCountsForUserInStudyArea($this->getUser(), $studyArea);
 
     return [
         'annotationCounts' => $annotationCounts,

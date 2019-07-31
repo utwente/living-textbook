@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ISearchable;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
-class Annotation
+class Annotation implements ISearchable
 {
 
   use IdTrait;
@@ -180,6 +182,30 @@ class Annotation
     $this->version    = new DateTime();
     $this->visibility = self::privateVisibility();
     $this->comments   = new ArrayCollection();
+  }
+
+  /**
+   * Searches in the annotation on the given search, returns an array with search result metadata
+   *
+   * @param string $search
+   *
+   * @return array
+   */
+  public function searchIn(string $search): array
+  {
+    // Create result array
+    $results = [];
+
+    // Search in different parts
+    if (stripos($this->getText(), $search) !== false) {
+      $results[] = SearchController::createResult(255, 'text', $this->getText());
+    }
+
+    return [
+        '_data'   => $this,
+        '_title'  => $this->getSelectedText(),
+        'results' => $results,
+    ];
   }
 
   /**

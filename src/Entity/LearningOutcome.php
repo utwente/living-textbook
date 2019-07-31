@@ -6,6 +6,7 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ISearchable;
 use App\Validator\Constraint\Data\WordCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @UniqueEntity(fields={"studyArea","number"},errorPath="number",message="learning-outcome.number-already-used")
  */
-class LearningOutcome
+class LearningOutcome implements ISearchable
 {
   use IdTrait;
   use Blameable;

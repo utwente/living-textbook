@@ -51,7 +51,7 @@ class AnnotationController extends AbstractController
 
     // Determine whether the user has "teacher" role
     $user        = $this->getUser();
-    $annotations = $annotationRepository->getForUserAndConcept($user, $studyArea->isEditable($user), $concept);
+    $annotations = $annotationRepository->getForUserAndConcept($user, $concept);
     $json        = $serializer->serialize($annotations, 'json');
 
     return new JsonResponse($json, 200, [], true);

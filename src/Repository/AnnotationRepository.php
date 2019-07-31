@@ -19,22 +19,43 @@ class AnnotationRepository extends ServiceEntityRepository
   }
 
   /**
+   * @param User      $user
+   * @param StudyArea $studyArea
+   *
+   * @return mixed
+   */
+  public function getForUserAndStudyArea(User $user, StudyArea $studyArea)
+  {
+    // Default query part
+    $qb = $this->createQueryBuilder('a');
+
+    return $qb
+        ->leftJoin('a.concept', 'c')
+        ->where('c.studyArea = :studyArea')
+        ->andWhere($this->getVisibilityWhere($qb, $user, $studyArea))
+        ->setParameter('studyArea', $studyArea)
+        ->orderBy('a.context')
+        ->addOrderBy('a.start')
+        ->select('a')
+        ->getQuery()->getResult();
+  }
+
+  /**
    * Find by user and concept
    *
    * @param User    $user
-   * @param bool    $isTeacher
    * @param Concept $concept
    *
    * @return Annotation[]
    */
-  public function getForUserAndConcept(User $user, bool $isTeacher, Concept $concept)
+  public function getForUserAndConcept(User $user, Concept $concept)
   {
     // Default query part
     $qb = $this->createQueryBuilder('a');
 
     return $qb
         ->where('a.concept = :concept')
-        ->andWhere($this->getVisibilityWhere($qb, $user, $isTeacher))
+        ->andWhere($this->getVisibilityWhere($qb, $user, $concept->getStudyArea()))
         ->setParameter('concept', $concept)
         ->orderBy('a.context')
         ->addOrderBy('a.start')
@@ -45,12 +66,11 @@ class AnnotationRepository extends ServiceEntityRepository
    * Get visibility annotation count for a user in a study area
    *
    * @param User      $user
-   * @param bool      $isTeacher
    * @param StudyArea $studyArea
    *
    * @return array
    */
-  public function getCountsForUserInStudyArea(User $user, bool $isTeacher, StudyArea $studyArea): array
+  public function getCountsForUserInStudyArea(User $user, StudyArea $studyArea): array
   {
     // Concepts query part
     $conceptsQuery = $this->getEntityManager()
@@ -65,7 +85,7 @@ class AnnotationRepository extends ServiceEntityRepository
     $counts = $qb
         ->select('IDENTITY(a.concept), count(a.id)')
         ->where($qb->expr()->in('a.concept', $conceptsQuery->getDQL()))
-        ->andWhere($this->getVisibilityWhere($qb, $user, $isTeacher))
+        ->andWhere($this->getVisibilityWhere($qb, $user, $studyArea))
         ->setParameter('studyArea', $studyArea)
         ->groupBy('a.concept')
         ->getQuery()->getResult();
@@ -82,14 +102,14 @@ class AnnotationRepository extends ServiceEntityRepository
   /**
    * @param QueryBuilder $qb
    * @param User         $user
-   * @param bool         $isTeacher
+   * @param StudyArea    $studyArea
    *
    * @return Orx
    */
-  private function getVisibilityWhere(QueryBuilder $qb, User $user, bool $isTeacher): Orx
+  private function getVisibilityWhere(QueryBuilder $qb, User $user, StudyArea $studyArea): Orx
   {
     $qb->setParameter('everybody', Annotation::everybodyVisibility())
-        ->setParameter('isTeacher', $isTeacher)
+        ->setParameter('isTeacher', $studyArea->isEditable($user))
         ->setParameter('teacher', Annotation::teacherVisibility())
         ->setParameter('user', $user);
 

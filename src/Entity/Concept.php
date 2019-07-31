@@ -6,6 +6,7 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ISearchable;
 use App\Entity\Data\BaseDataTextObject;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
@@ -35,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ConceptRelationValidator()
  */
-class Concept
+class Concept implements ISearchable
 {
 
   use IdTrait;
