@@ -1,0 +1,79 @@
+{% extends 'simple_card.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+
+  <style type="text/css">
+    .red {
+      color: red;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}
+  {{ 'print.error.title'|trans }}
+{% endblock %}
+
+{% block content %}
+
+  <p>
+    {{ 'print.error.message'|trans }}
+  </p>
+
+  {% if is_granted('ROLE_SUPER_ADMIN') %}
+    <p style="text-align: left">
+      {{ error.message|nl2br }}
+    </p>
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="log-tab" data-toggle="tab" href="#log">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="tex-tab" data-toggle="tab" href="#tex">Profile</a>
+      </li>
+    </ul>
+    <div class="tab-content pt-2">
+      <div class="tab-pane show active" id="log" role="tabpanel">
+        {% if attribute(error, 'filteredLogSource') is defined %}
+          {{ error.filteredLogSource|nl2br }}
+        {% else %}
+          {{ "print.error.log-not-found"|trans }}
+        {% endif %}
+      </div>
+      <div class="tab-pane" id="tex">
+        {% if attribute(error, 'filteredTexSource') is defined %}
+          {{ error.filteredTexSource|nl2br }}
+        {% else %}
+          {{ "print.error.tex-not-found"|trans }}
+        {% endif %}
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      $('document').ready(function () {
+        var replaceFunction = function (index, html, exclamation) {
+          html = html.replace(/---<br>/g, '<hr>');
+          html = html.replace(/---/g, '<hr>');
+          if (exclamation) {
+            html = html.replace(/!/g, '<b class="red">!</b>');
+          }
+          html = html.replace(/(l\.(\d+))/g, '<b class="red">$1</b>');
+
+          return html;
+        };
+
+        // Replace --- with horizontal line and highlight line numbers
+        $('#log').html(function (index, html) {
+          return replaceFunction(index, html, true);
+        });
+        $('#tex').html(function (index, html) {
+          return replaceFunction(index, html, false);
+        });
+
+        $('#log, #tex').find('hr:first-child, hr:last-child').remove();
+      });
+    </script>
+  {% endif %}
+
+{% endblock %}

@@ -10,6 +10,7 @@ use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Request\Wrapper\RequestStudyArea;
 use BobV\LatexBundle\Exception\ImageNotFoundException;
+use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Generator\LatexGeneratorInterface;
 use BobV\LatexBundle\Helper\Sanitize;
 use Exception;
@@ -146,6 +147,12 @@ class PrintController extends AbstractController
             'concept'      => $concept,
             'learningPath' => $learningPath,
             'studyArea'    => $studyArea,
+        ]);
+      case $e instanceof LatexException:
+        assert($e instanceof LatexException);
+
+        return $this->render('print/latex_error.html.twig', [
+            'error' => $e,
         ]);
       default:
         throw $e;
