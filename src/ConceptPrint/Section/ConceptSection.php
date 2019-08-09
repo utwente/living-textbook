@@ -16,7 +16,7 @@ class ConceptSection extends LtbSection
   /**
    * Concept constructor.
    *
-   * @param Concept             $learningPath
+   * @param Concept             $concept
    * @param RouterInterface     $router
    * @param TranslatorInterface $translator
    * @param string              $projectDir
@@ -24,33 +24,33 @@ class ConceptSection extends LtbSection
    * @throws LatexException
    * @throws PandocException
    */
-  public function __construct(Concept $learningPath, RouterInterface $router, TranslatorInterface $translator, string $projectDir)
+  public function __construct(Concept $concept, RouterInterface $router, TranslatorInterface $translator, string $projectDir)
   {
 
-    parent::__construct($learningPath->getName(), $router, $translator, $projectDir);
+    parent::__construct($concept->getName(), $router, $translator, $projectDir);
 
-    $pathWithoutMap = $this->router->generate('app_concept_show', ['concept' => $learningPath->getId()], RouterInterface::ABSOLUTE_PATH);
+    $pathWithoutMap = $this->router->generate('app_concept_show', ['concept' => $concept->getId()], RouterInterface::ABSOLUTE_PATH);
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
         $this->router->generate('_home_simple', ['pageUrl' => ltrim($pathWithoutMap, '/')], RouterInterface::ABSOLUTE_URL),
         $this->translator->trans('concept.online-source')
     )));
 
     // Add concept data
-    if ($learningPath->getDefinition() != '') {
+    if ($concept->getDefinition() != '') {
       $this->addElement(new CustomCommand('\\\\'));
-      $this->addElement(new Text($learningPath->getDefinition()));
+      $this->addElement(new Text($concept->getDefinition()));
     }
-    if ($learningPath->getIntroduction()->hasData()) {
-      $this->addSection('concept.introduction', $learningPath->getIntroduction()->getText());
+    if ($concept->getIntroduction()->hasData()) {
+      $this->addSection('concept.introduction', $concept->getIntroduction()->getText());
     }
-    if ($learningPath->getTheoryExplanation()->hasData()) {
-      $this->addSection('concept.theory-explanation', $learningPath->getTheoryExplanation()->getText());
+    if ($concept->getTheoryExplanation()->hasData()) {
+      $this->addSection('concept.theory-explanation', $concept->getTheoryExplanation()->getText());
     }
-    if ($learningPath->getHowTo()->hasData()) {
-      $this->addSection('concept.how-to', $learningPath->getHowTo()->getText());
+    if ($concept->getHowTo()->hasData()) {
+      $this->addSection('concept.how-to', $concept->getHowTo()->getText());
     }
-    if ($learningPath->getExamples()->hasData()) {
-      $this->addSection('concept.examples', $learningPath->getExamples()->getText());
+    if ($concept->getExamples()->hasData()) {
+      $this->addSection('concept.examples', $concept->getExamples()->getText());
     }
   }
 }
