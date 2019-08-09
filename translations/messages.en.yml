@@ -451,6 +451,7 @@ study-area:
   frozen: 'This study area has been frozen, editing is prohibited.'
   groups:
     add-title: "Add study area group"
+    areas: "Study areas"
     created: 'Study area group "%item%" has been successfully created.'
     edit-title: "Edit study area group \"%item%\""
     count: "Amount of area's"

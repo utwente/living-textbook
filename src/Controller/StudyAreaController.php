@@ -7,8 +7,8 @@ use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaGroup;
 use App\Form\StudyArea\EditStudyAreaType;
-use App\Form\StudyArea\StudyAreaGroupType;
 use App\Form\StudyArea\TransferOwnerType;
+use App\Form\StudyAreaGroup\StudyAreaGroupType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\PageLoadRepository;
@@ -123,7 +123,9 @@ class StudyAreaController extends AbstractController
   {
     // Create a new group
     $group = new StudyAreaGroup();
-    $form  = $this->createForm(StudyAreaGroupType::class, $group);
+    $form  = $this->createForm(StudyAreaGroupType::class, $group, [
+        'study_area_group' => $group,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -222,7 +224,9 @@ class StudyAreaController extends AbstractController
    */
   public function editGroup(Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator)
   {
-    $form = $this->createForm(StudyAreaGroupType::class, $group);
+    $form = $this->createForm(StudyAreaGroupType::class, $group, [
+        'study_area_group' => $group,
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {

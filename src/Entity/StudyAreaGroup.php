@@ -94,6 +94,7 @@ class StudyAreaGroup
   public function removeStudyArea(StudyArea $studyArea): self
   {
     $this->studyAreas->removeElement($studyArea);
+    $studyArea->setGroup(NULL);
 
     return $this;
   }
