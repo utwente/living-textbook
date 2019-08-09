@@ -729,7 +729,7 @@ import Routing from 'fos-routing';
    * @returns {*}
    */
   function pathDescriptionX(element) {
-    return element.x + (elementSpacing / 2);
+    return element.x + (elementSpacing / 2) - pathDescriptionRadius;
   }
 
   /******************************************************************************************************
@@ -938,7 +938,7 @@ import Routing from 'fos-routing';
     elementLine = Math.round(canvasHeight / 2);
     elementRadius = Math.round((canvasHeight / 2) - (elementPadding / 2));
     pathDescriptionRadius = Math.round(elementRadius / 5);
-    elementSpacing = elementRadius * 4;
+    elementSpacing = elementRadius * 3;
 
     // Determine font/line sizes
     lineScale = Math.round(elementRadius / 30 * 100) / 100; // Round on 2 decimals
