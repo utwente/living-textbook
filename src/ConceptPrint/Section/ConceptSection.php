@@ -29,6 +29,9 @@ class ConceptSection extends LtbSection
 
     parent::__construct($concept->getName(), $router, $translator, $projectDir);
 
+    // Use sloppy to improve text breaks
+    $this->addElement(new CustomCommand('\\sloppy'));
+
     $pathWithoutMap = $this->router->generate('app_concept_show', ['concept' => $concept->getId()], RouterInterface::ABSOLUTE_PATH);
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
         $this->router->generate('_home_simple', ['pageUrl' => ltrim($pathWithoutMap, '/')], RouterInterface::ABSOLUTE_URL),
@@ -52,5 +55,8 @@ class ConceptSection extends LtbSection
     if ($concept->getExamples()->hasData()) {
       $this->addSection('concept.examples', $concept->getExamples()->getText());
     }
+
+    // Undo sloppy
+    $this->addElement(new CustomCommand('\\fussy'));
   }
 }
