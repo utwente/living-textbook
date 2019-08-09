@@ -330,7 +330,6 @@ import Routing from 'fos-routing';
     // Clear canvas
     context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-
     // Draw grid lines
     if (lpb.drawGrid) {
       context.beginPath();
@@ -350,33 +349,32 @@ import Routing from 'fos-routing';
     // NORMAL           //
     //////////////////////
 
-    // Draw links
-    if (elements.length >= 2) {
-      let first = elements[0];
-      let last = elements[elements.length - 1];
-      context.beginPath();
-      context.lineWidth = bConfig.linkLineWidth * 3;
-      context.strokeStyle = lpb.arrowColor;
-      context.moveTo(first.x, first.y);
-      context.lineTo(last.x, last.y);
-      context.stroke();
+    // Draw gnome hats
+    for (let nn = -1; nn <= 4; nn++) {
+      bConfig.applyStyle(nn);
+      context.fillStyle = bConfig.darkenedNodeColor(nn);
+      drawGnomeHats(elements, nn, false);
     }
 
     // Draw normal elements
     for (let nn = -1; nn <= 4; nn++) {
       bConfig.applyStyle(nn);
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth * lineScale;
       context.fillStyle = bConfig.defaultNodeFillStyle;
-      context.strokeStyle = bConfig.defaultNodeStrokeStyle;
       elements.filter(filterElementOnColor(nn)).map(drawNormalElement);
       context.fill();
-      context.stroke();
     }
 
     //////////////////////
     // HIGHLIGHT        //
     //////////////////////
+
+    // Draw hilighted gnome hats
+    for (let nn = -1; nn <= 4; nn++) {
+      bConfig.applyStyle(nn);
+      context.fillStyle = bConfig.defaultNodeFillStyle;
+      drawGnomeHats(elements, nn, true);
+    }
 
     // Draw highlighted elements
     for (let hn = -1; hn <= 4; hn++) {
@@ -398,14 +396,6 @@ import Routing from 'fos-routing';
     context.fillStyle = bConfig.defaultLinkStrokeStyle;
     elements.map(drawPathDescription);
     context.fill();
-
-    //////////////////////
-    // ARROWS           //
-    //////////////////////
-
-    // Draw path arrows
-    context.fillStyle = lpb.arrowColor;
-    elements.slice(1).map(drawElementArrow);
 
     //////////////////////
     // LABELS           //
@@ -494,20 +484,33 @@ import Routing from 'fos-routing';
   }
 
   /**
-   * Draw the element arrow
-   * @param element
+   * Draws the gnome hats
+   *
+   * @param elements
+   * @param color
+   * @param higlightedOnly
    */
-  function drawElementArrow(element) {
-    // Draw the triangle
-    context.save();
-    context.beginPath();
-    context.translate(element.x, element.y);
-    context.moveTo(-elementRadius + 1, 0);
-    context.lineTo(-(elementRadius / 4) - elementRadius, (elementRadius / 8));
-    context.lineTo(-(elementRadius / 4) - elementRadius, -(elementRadius / 8));
-    context.closePath();
-    context.restore();
-    context.fill();
+  function drawGnomeHats(elements, color, higlightedOnly) {
+    for (let i = 0; i < elements.length - 1; i++) {
+      const element = elements[i];
+      if (element.color !== color) {
+        continue;
+      }
+      if (higlightedOnly && !element.highlighted) {
+        continue;
+      }
+
+      const from = element;
+      const to = elements[i + 1];
+
+      context.beginPath();
+      context.moveTo(from.x, from.y + elementRadius);
+      context.lineTo(from.x, from.y - elementRadius);
+      context.lineTo(to.x - elementRadius, to.y);
+      context.lineTo(from.x, from.y + elementRadius);
+      context.closePath();
+      context.fill();
+    }
   }
 
   /**
