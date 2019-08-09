@@ -931,16 +931,16 @@ import Routing from 'fos-routing';
     $scrollButtons.height(canvasHeight);
 
     // Determine element sizes
-    elementPadding = Math.ceil(canvasHeight / 10);
-    elementLine = Math.floor(canvasHeight / 2);
-    elementRadius = Math.floor((canvasHeight / 2) - (elementPadding / 2));
-    pathDescriptionRadius = Math.ceil(elementRadius / 5);
+    elementPadding = Math.round(canvasHeight / 10);
+    elementLine = Math.round(canvasHeight / 2);
+    elementRadius = Math.round((canvasHeight / 2) - (elementPadding / 2));
+    pathDescriptionRadius = Math.round(elementRadius / 5);
     elementSpacing = elementRadius * 4;
 
     // Determine font/line sizes
-    lineScale = Math.ceil(elementRadius / 30);
+    lineScale = Math.round(elementRadius / 30 * 100) / 100; // Round on 2 decimals
     textScale = lineScale;
-    fontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * textScale);
+    fontSize = Math.round(bConfig.defaultNodeLabelFontSize * textScale);
   }
 
   /******************************************************************************************************
