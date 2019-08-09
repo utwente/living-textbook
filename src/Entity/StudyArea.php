@@ -167,6 +167,16 @@ class StudyArea
   private $trackUsers;
 
   /**
+   * Group
+   *
+   * @var StudyAreaGroup|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
+   * @ORM\JoinColumn(nullable=true)
+   */
+  private $group;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -698,6 +708,26 @@ class StudyArea
   public function setTrackUsers(bool $trackUsers): StudyArea
   {
     $this->trackUsers = $trackUsers;
+
+    return $this;
+  }
+
+  /**
+   * @return StudyAreaGroup|null
+   */
+  public function getGroup(): ?StudyAreaGroup
+  {
+    return $this->group;
+  }
+
+  /**
+   * @param StudyAreaGroup|null $group
+   *
+   * @return StudyArea
+   */
+  public function setGroup(?StudyAreaGroup $group): self
+  {
+    $this->group = $group;
 
     return $this;
   }
