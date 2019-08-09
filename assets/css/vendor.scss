@@ -85,6 +85,10 @@ $dropdown-link-hover-bg: #d2d2d2;
   z-index: 10011; // Higher than 10010 in ckeditor
 }
 
+.tooltip .tooltip-inner {
+  max-width: 20vw;
+}
+
 .tooltip-wide .tooltip-inner {
   max-width: 60vw;
 }

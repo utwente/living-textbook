@@ -335,6 +335,7 @@ menu:
   relation-type: 'Relation types'
   show: 'Show'
   study-area: 'Study areas'
+  study-area-groups: "Study area groups"
   tracking-export: 'Tracking data'
   urls: 'URLs'
 
@@ -448,6 +449,18 @@ study-area:
   freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone without risking data loss.'
   freeze-succeeded: 'Study area "%item%" has been frozen successfully.'
   frozen: 'This study area has been frozen, editing is prohibited.'
+  groups:
+    add-title: "Add study area group"
+    created: 'Study area group "%item%" has been successfully created.'
+    edit-title: "Edit study area group \"%item%\""
+    count: "Amount of area's"
+    group: "Study area group"
+    name: "Name"
+    remove: 'Remove study area group "%item%"'
+    remove-text: 'Are you sure you want to remove the study area group "%item%"?'
+    remove-not-possible: 'Study area group "%item%" cannot be removed as it still contains study areas. Unlink/remove those first.'
+    removed: 'Study area group "%item%" has been successfully removed.'
+    updated: 'Study area group "%item%" has been successfully updated.'
   list-title: 'Study area list'
   name: 'Name'
   new: 'New study area'

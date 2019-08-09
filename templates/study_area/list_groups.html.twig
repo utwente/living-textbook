@@ -1,0 +1,41 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.header() }}
+  {{ buttons.add_button(path('app_studyarea_addgroup')) }}
+  {{ buttons.footer() }}
+{% endblock %}
+
+{% block title %}
+  {{ 'study-area.groups.group'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">{{ 'study-area.groups.name'|trans }}</th>
+        <th scope="col">{{ 'study-area.groups.count'|trans }}</th>
+        <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for group in groups %}
+        {% set areaCount = group.studyAreaCount %}
+        <tr>
+          <td>{{ group.name }}</td>
+          <td>{{ areaCount }}</td>
+          <td class="actions">
+            {{ buttons.edit_button(path('app_studyarea_editgroup', {'group': group.id})) }}
+            {{ buttons.remove_button(path('app_studyarea_removegroup', {'group': group.id}),
+              areaCount > 0 ? 'study-area.groups.remove-not-possible'|trans({'%item%': group.name}) : '') }}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

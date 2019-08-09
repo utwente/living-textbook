@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\StudyAreaGroup;
 use App\Form\StudyArea\EditStudyAreaType;
+use App\Form\StudyArea\StudyAreaGroupType;
 use App\Form\StudyArea\TransferOwnerType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\PageLoadRepository;
+use App\Repository\StudyAreaGroupRepository;
 use App\Repository\UserGroupRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
@@ -106,6 +109,41 @@ class StudyAreaController extends AbstractController
   }
 
   /**
+   * @Route("/group/add")
+   * @Template()
+   * @IsGranted("ROLE_SUPER_ADMIN")
+   *
+   * @param Request                $request
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   */
+  public function addGroup(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+  {
+    // Create a new group
+    $group = new StudyAreaGroup();
+    $form  = $this->createForm(StudyAreaGroupType::class, $group);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Save the entity
+      $em->persist($group);
+      $em->flush();
+
+      // Set message
+      $this->addFlash('success', $translator->trans('study-area.groups.created', ['%item%' => $group->getName()]));
+
+      // Forward to show
+      return $this->redirectToRoute('app_studyarea_editgroup', ['group' => $group->getId()]);
+    }
+
+    return [
+        'form' => $form->createView(),
+    ];
+  }
+
+  /**
    * @Route("/edit/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
@@ -171,6 +209,39 @@ class StudyAreaController extends AbstractController
   }
 
   /**
+   * @Route("/group/{group}/edit", requirements={"group": "\d+"})
+   * @Template
+   * @IsGranted("ROLE_SUPER_ADMIN")
+   *
+   * @param Request                $request
+   * @param StudyAreaGroup         $group
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   */
+  public function editGroup(Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator)
+  {
+    $form = $this->createForm(StudyAreaGroupType::class, $group);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $em->flush();
+
+      // Set message
+      $this->addFlash('success', $translator->trans('study-area.groups.updated', ['%item%' => $group->getName()]));
+
+      // Forward to show
+      return $this->redirectToRoute('app_studyarea_editgroup', ['group' => $group->getId()]);
+    }
+
+    return [
+        'group' => $group,
+        'form'  => $form->createView(),
+    ];
+  }
+
+  /**
    * @Route("/freeze/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
@@ -205,6 +276,24 @@ class StudyAreaController extends AbstractController
     return [
         'form'      => $form->createView(),
         'studyArea' => $studyArea,
+    ];
+  }
+
+  /**
+   * List the study area groups
+   *
+   * @Route("/group/list")
+   * @Template()
+   * @IsGranted("ROLE_SUPER_ADMIN")
+   *
+   * @param StudyAreaGroupRepository $repository
+   *
+   * @return array
+   */
+  public function listGroups(StudyAreaGroupRepository $repository)
+  {
+    return [
+        'groups' => $repository->findAll(),
     ];
   }
 
@@ -248,6 +337,50 @@ class StudyAreaController extends AbstractController
     return [
         'form'      => $form->createView(),
         'studyArea' => $studyArea,
+    ];
+  }
+
+  /**
+   * @Route("/group/{group}/remove", requirements={"group":"\d+"})
+   * @Template()
+   * @IsGranted("ROLE_SUPER_ADMIN")
+   *
+   * @param Request                $request
+   * @param StudyAreaGroup         $group
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   */
+  public function removeGroup(
+      Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator)
+  {
+    // Do not allow removal when it still contains study areas
+    if ($group->studyAreaCount() > 0) {
+      $this->addFlash('warning', $translator->trans('study-area.groups.remove-not-possible', [
+          '%item%' => $group->getName(),
+      ]));
+
+      return $this->redirectToRoute('app_studyarea_listgroups');
+    }
+
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route' => 'app_studyarea_listgroups',
+    ]);
+    $form->handleRequest($request);
+
+    if (RemoveType::isRemoveClicked($form)) {
+      $em->remove($group);
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('study-area.groups.removed', ['%item%' => $group->getName()]));
+
+      return $this->redirectToRoute('app_studyarea_listgroups');
+    }
+
+    return [
+        'group' => $group,
+        'form'  => $form->createView(),
     ];
   }
 
