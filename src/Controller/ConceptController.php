@@ -13,9 +13,11 @@ use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -181,8 +183,8 @@ class ConceptController extends AbstractController
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
-   * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
-   * @throws \Doctrine\ORM\ORMException
+   * @return array|RedirectResponse
+   * @throws ORMException
    */
   public function remove(Request $request, RequestStudyArea $requestStudyArea, Concept $concept,
                          LearningPathRepository $learningPathRepository, EntityManagerInterface $em, TranslatorInterface $trans)

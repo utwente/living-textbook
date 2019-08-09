@@ -3,9 +3,11 @@
 namespace App\Form\StudyArea;
 
 use App\Entity\StudyArea;
+use App\Entity\StudyAreaGroup;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -48,7 +50,19 @@ class EditStudyAreaType extends AbstractType
               return ucfirst($value);
             },
             'select2'      => true,
-        ])
+        ]);
+
+    if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
+      $builder->add('group', EntityType::class, [
+          'required'     => false,
+          'class'        => StudyAreaGroup::class,
+          'label'        => 'study-area.groups.group',
+          'choice_label' => 'name',
+          'select2'      => true,
+      ]);
+    }
+
+    $builder
         ->add('description', CkEditorType::class, [
             'label'     => 'study-area.description',
             'required'  => false,
