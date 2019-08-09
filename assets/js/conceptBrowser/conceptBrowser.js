@@ -804,23 +804,17 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     for (var nn = -1; nn <= 4; nn++) {
       cb.applyStyle(nn);
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth;
       context.fillStyle = isDragging || highlightedNode !== null ? bConfig.fadedNodeFillStyle : bConfig.defaultNodeFillStyle;
-      context.strokeStyle = isDragging || highlightedNode !== null ? bConfig.fadedNodeStrokeStyle : bConfig.defaultNodeStrokeStyle;
       cbGraph.nodes.filter(filterNodeOnColor(nn)).map(drawNormalNode);
       context.fill();
-      context.stroke();
     }
 
     // Draw link nodes
     if (cb.drawLinkNodes) {
       context.beginPath();
-      context.lineWidth = bConfig.nodeLineWidth;
       context.fillStyle = bConfig.fadedNodeFillStyle;
-      context.strokeStyle = bConfig.fadedNodeStrokeStyle;
       cbGraph.linkNodes.map(drawNormalNode);
       context.fill();
-      context.stroke();
     }
 
     // Draw normal link arrows
