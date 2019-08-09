@@ -160,7 +160,7 @@
             $unknown.show();
             $agreed.hide();
             $disagreed.hide();
-          } else if (agree === "true") {
+          } else if (agree === 'true') {
             $unknown.hide();
             $agreed.show();
             $disagreed.hide();
@@ -182,6 +182,20 @@
         // Register event handler for changes
         window.addEventListener('tracking_consent', function (evt) {
           loadTrackingConsent(evt.detail);
+        });
+      });
+
+      // Load toggle behavior
+      $(function () {
+        var $elems = $('.concept-group-toggle[data-toggle="collapse"]');
+        $elems.each(function () {
+          var target = $(this).data('target');
+          $(target).on('show.bs.collapse', function (e) {
+            $(this).addClass('collapse-opening');
+          });
+          $(target).on('shown.bs.collapse', function (e) {
+            $(this).removeClass('collapse-opening');
+          });
         });
       });
     </script>
@@ -271,29 +285,59 @@
             </tr>
             </thead>
             <tbody>
+            {% set group = null %}
             {% for studyArea in studyAreas %}
-              <tr>
-                <td>{{ studyArea.name }}</td>
-                <td>
-                  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-                    <a href="{{ path('app_studyarea_transferowner', {'studyArea': studyArea.id}) }}"
-                       data-toggle="tooltip" title="{{ 'study-area.transfer-ownership'|trans }}">
-                      {{ studyArea.owner.displayName }}</a>
-                  {% else %}
-                    {{ studyArea.owner.displayName }}
-                  {% endif %}
-                </td>
-                <td>{{ studyArea.accessType|capitalize }}</td>
-                <td class="actions">
-                  {{ buttons._action_button(
-                    path('_home', {'_studyArea': studyArea.id}), 'fa-exchange', 'study-area.switch-to'|trans,
-                    'primary top-level', false, false, studyArea.id == currentStudyArea.id ? 'study-area.current'|trans : false
-                  ) }}
+              {% if studyArea.group is not null and group != studyArea.group.id|default(null) %}
+                {% set group = studyArea.group.id %}
+                <tr>
+                  <th colspan="3">
+                    {{ studyArea.group.name }}
+                  </th>
+                  <td class="actions">
+                    <button class="btn btn-outline-primary concept-group-toggle collapsed collapsed-show"
+                            data-toggle="collapse" data-target=".collapse-group-{{ group }}">
+                      <i class="fa fa-fw fa-search-plus"></i> {{ 'study-area.groups.show-contents'|trans }}
+                    </button>
+                    <button class="btn btn-outline-primary d-none collapsed collapsed-hidden"
+                            data-toggle="collapse" data-target=".collapse-group-{{ group }}">
+                      <i class="fa fa-fw fa-search-minus"></i> {{ 'study-area.groups.hide-contents'|trans }}
+                    </button>
+                  </td>
+                </tr>
+              {% endif %}
 
-                  {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-                    {{ buttons.edit_button(path('app_studyarea_edit', {'studyArea': studyArea.id}), studyArea.isFrozen ? 'study-area.frozen'|trans : false) }}
-                    {{ buttons.remove_button(path('app_studyarea_remove', {'studyArea': studyArea.id})) }}
-                  {% endif %}
+              <tr {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>
+                <td>
+                  <div
+                      {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>{{ studyArea.name }}</div>
+                </td>
+                <td>
+                  <div {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>
+                    {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+                      <a href="{{ path('app_studyarea_transferowner', {'studyArea': studyArea.id}) }}"
+                         data-toggle="tooltip" title="{{ 'study-area.transfer-ownership'|trans }}">
+                        {{ studyArea.owner.displayName }}</a>
+                    {% else %}
+                      {{ studyArea.owner.displayName }}
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <div
+                      {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>{{ studyArea.accessType|capitalize }}</div>
+                </td>
+                <td class="actions">
+                  <div {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>
+                    {{ buttons._action_button(
+                      path('_home', {'_studyArea': studyArea.id}), 'fa-exchange', 'study-area.switch-to'|trans,
+                      'primary top-level', false, false, studyArea.id == currentStudyArea.id ? 'study-area.current'|trans : false
+                    ) }}
+
+                    {% if is_granted('STUDYAREA_OWNER', studyArea) %}
+                      {{ buttons.edit_button(path('app_studyarea_edit', {'studyArea': studyArea.id}), studyArea.isFrozen ? 'study-area.frozen'|trans : false) }}
+                      {{ buttons.remove_button(path('app_studyarea_remove', {'studyArea': studyArea.id})) }}
+                    {% endif %}
+                  </div>
                 </td>
               </tr>
             {% endfor %}

@@ -19,6 +19,8 @@ use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
 use App\UrlUtils\UrlScanner;
+use Doctrine\ORM\NonUniqueResultException;
+use Psr\Cache\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -129,7 +131,10 @@ class DefaultController extends AbstractController
    *
    * @return array
    *
-   * @throws \Doctrine\ORM\NonUniqueResultException
+   * @throws NonUniqueResultException
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function dashboard(
       RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
@@ -208,6 +213,9 @@ class DefaultController extends AbstractController
    * @param LearningPathRepository     $learningPathRepository
    *
    * @return array
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function urlOverview(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
                               LearningOutcomeRepository $learningOutcomeRepository, ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
@@ -260,6 +268,9 @@ class DefaultController extends AbstractController
    * @param                     $url
    *
    * @return RedirectResponse
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
   {
@@ -281,6 +292,9 @@ class DefaultController extends AbstractController
    * @param TranslatorInterface $translator
    *
    * @return RedirectResponse
+   * @throws InvalidArgumentException
+   *
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function urlRescanStudyArea(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, TranslatorInterface $translator)
   {
@@ -296,7 +310,7 @@ class DefaultController extends AbstractController
    * @param StudyArea|null       $studyArea
    * @param string               $buttonLabel
    *
-   * @return \Symfony\Component\Form\FormInterface
+   * @return FormInterface
    */
   private function createStudyAreaForm(FormFactoryInterface $formFactory, User $user, ?StudyArea $studyArea,
                                        string $buttonLabel = 'study-area.switch-to'): FormInterface
@@ -307,6 +321,13 @@ class DefaultController extends AbstractController
             'hide_label'    => true,
             'class'         => StudyArea::class,
             'select2'       => true,
+            'group_by'      => function (StudyArea $studyArea) {
+              if (!$studyArea->getGroup()) {
+                return NULL;
+              }
+
+              return $studyArea->getGroup()->getName();
+            },
             'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
               $qb = $studyAreaRepository->getVisibleQueryBuilder($user);
               if ($studyArea !== NULL) {
@@ -314,7 +335,7 @@ class DefaultController extends AbstractController
                     ->setParameter('current', $studyArea);
               }
 
-              return $qb->orderBy('sa.name');
+              return $qb;
             },
         ])
         ->add('submit', SubmitType::class, [

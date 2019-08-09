@@ -3,6 +3,30 @@
 @import '~bootstrap/scss/mixins/_buttons.scss';
 
 table.table {
+
+  button {
+    &.collapsed-hidden:not(.collapsed) {
+      display: inline-block !important;
+    }
+
+    &.collapsed-show:not(.collapsed) {
+      display: none;
+    }
+  }
+
+  tr.collapse, tr.collapsing {
+    td, th {
+      transition: padding 0.35s ease;
+    }
+  }
+
+  tr.collapsing:not(.collapse-opening) {
+    td, th {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
   th, td {
     &.fit, &.actions {
       white-space: nowrap;
@@ -28,4 +52,5 @@ table.table {
       border: 0;
     }
   }
+
 }

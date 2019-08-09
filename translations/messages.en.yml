@@ -456,11 +456,13 @@ study-area:
     edit-title: "Edit study area group \"%item%\""
     count: "Amount of area's"
     group: "Study area group"
+    hide-contents: "Hide group contents"
     name: "Name"
     remove: 'Remove study area group "%item%"'
     remove-text: 'Are you sure you want to remove the study area group "%item%"?'
     remove-not-possible: 'Study area group "%item%" cannot be removed as it still contains study areas. Unlink/remove those first.'
     removed: 'Study area group "%item%" has been successfully removed.'
+    show-contents: "Show group contents"
     updated: 'Study area group "%item%" has been successfully updated.'
   list-title: 'Study area list'
   name: 'Name'

@@ -7,6 +7,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -73,7 +74,7 @@ class StudyAreaRepository extends ServiceEntityRepository
    * @param User $user
    *
    * @return mixed
-   * @throws \Doctrine\ORM\NonUniqueResultException
+   * @throws NonUniqueResultException
    */
   public function getVisibleCount(User $user)
   {
@@ -85,15 +86,17 @@ class StudyAreaRepository extends ServiceEntityRepository
    *
    * @param User $user
    *
-   * @return \Doctrine\ORM\QueryBuilder
+   * @return QueryBuilder
    */
   public function getVisibleQueryBuilder(User $user)
   {
     $qb = $this->createQueryBuilder('sa')
-        ->orderBy('sa.name', 'ASC');
+        ->leftJoin('sa.group', 'g')
+        ->orderBy('g.name', 'ASC')
+        ->addOrderBy('sa.name', 'ASC');
 
     // Return everything for super admins
-    if ($this->auth->isGranted('ROLE_SUPER_ADMIN')){
+    if ($this->auth->isGranted('ROLE_SUPER_ADMIN')) {
       return $qb;
     }
 
