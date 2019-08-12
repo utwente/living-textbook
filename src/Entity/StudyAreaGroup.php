@@ -50,11 +50,19 @@ class StudyAreaGroup
     return $this->studyAreas->count();
   }
 
+  /**
+   * @return string|null
+   */
   public function getName(): ?string
   {
     return $this->name;
   }
 
+  /**
+   * @param string $name
+   *
+   * @return StudyAreaGroup
+   */
   public function setName(string $name): self
   {
     $this->name = $name;

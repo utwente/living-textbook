@@ -454,7 +454,7 @@ study-area:
     areas: "Study areas"
     created: 'Study area group "%item%" has been successfully created.'
     edit-title: "Edit study area group \"%item%\""
-    count: "Amount of area's"
+    count: "Amount of areas"
     group: "Study area group"
     hide-contents: "Hide group contents"
     name: "Name"
@@ -479,7 +479,7 @@ study-area:
   remove-impossible: 'It is impossible to remove this study area, because there are concepts which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
-  required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study area's for you."
+  required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study areas for you."
   saved: 'Study area "%item%" has been saved successfully.'
   search-concept: 'Search for concepts'
   show: 'This study area is owned by %owner%. It contains the following concepts:'
