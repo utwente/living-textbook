@@ -270,6 +270,7 @@
         {% import '_macro/_action_buttons.html.twig' as buttons %}
         {{ buttons.header() }}
         {{ buttons.add_button(path('app_studyarea_add')) }}
+        {{ buttons._action_button(path('app_studyarea_listgroups'), 'fa-folder', 'study-area.groups.groups-short', 'dark') }}
         {{ buttons.footer() }}
 
         <h1>{{ 'study-area.list-title'|trans }}</h1>

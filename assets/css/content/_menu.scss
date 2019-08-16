@@ -4,6 +4,11 @@
 $logo-size: 40px;
 
 .navbar {
+
+  .fa {
+    font-size: 1.25rem;
+  }
+
   .navbar-logo-brand {
     display: flex;
 
@@ -42,6 +47,10 @@ $logo-size: 40px;
 
   .menu-toggle {
     display: inline-block;
+
+    .fa-times {
+      font-size: inherit;
+    }
   }
 
   #collapseRight {

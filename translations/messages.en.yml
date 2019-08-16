@@ -428,7 +428,7 @@ search:
   preview: 'Preview'
   result:
     abbreviations: "Abbreviations"
-    all-annotations: "Annotations"
+    all-annotations: "All annotations"
     concepts: "Concepts"
     external-resources: "External resources"
     learning-outcomes: "Learning outcomes"
@@ -456,6 +456,8 @@ study-area:
     edit-title: "Edit study area group \"%item%\""
     count: "Amount of areas"
     group: "Study area group"
+    groups: "Study area groups"
+    groups-short: "Groups"
     hide-contents: "Hide group contents"
     name: "Name"
     remove: 'Remove study area group "%item%"'
