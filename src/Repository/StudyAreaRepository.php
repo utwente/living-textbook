@@ -92,6 +92,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   {
     $qb = $this->createQueryBuilder('sa')
         ->leftJoin('sa.group', 'g')
+        ->addSelect('g')
         ->orderBy('g.name', 'ASC')
         ->addOrderBy('sa.name', 'ASC');
 
