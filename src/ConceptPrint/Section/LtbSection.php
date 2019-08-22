@@ -93,21 +93,28 @@ abstract class LtbSection extends Section
   protected function convertHtmlToLatex(string $html)
   {
     // Try to replace latex equations
-    $latexImages  = [];
-    $normalImages = [];
+    $latexImages       = [];
+    $inlineLatexImages = [];
+    $normalImages      = [];
 
     // Load DOM, but ignore libxml errors triggered by HTML5
     $dom = new DOMDocument();
     libxml_clear_errors();
     libxml_use_internal_errors(true);
     if ($dom->loadHTML($html)) {
-      $figures = $dom->getElementsByTagName('figure');
-
       // We need to extract the figures here, as replacing them in the dom removes them from the
       // original node list, which in turns ensures the loop does not complete
       $extractedFigures = [];
-      foreach ($figures as $figure) {
+      foreach ($dom->getElementsByTagName('figure') as $figure) {
         $extractedFigures[] = $figure;
+      }
+      foreach ($dom->getElementsByTagName('span') as $inlineFigure) {
+        /** @var DOMElement $inlineFigure */
+        if (!$inlineFigure->hasAttribute('class')) continue;
+        $classes = explode(' ', $inlineFigure->getAttribute('class'));
+        if (in_array('latex-figure-inline', $classes)) {
+          $extractedFigures[] = $inlineFigure;
+        }
       }
 
       // Loop the extracted figures
@@ -116,29 +123,46 @@ abstract class LtbSection extends Section
         if (!$figure->hasAttribute('class')) continue;
 
         // Check for class
-        $classes = explode(' ', $figure->getAttribute('class'));
-        $isLatex = in_array('latex-figure', $classes);
-        $isImage = in_array('image', $classes);
-        if (!$isLatex && !$isImage) continue;
+        $classes       = explode(' ', $figure->getAttribute('class'));
+        $isInlineLatex = in_array('latex-figure-inline', $classes);
+        $isLatex       = in_array('latex-figure', $classes);
+        $isImage       = in_array('image', $classes);
+        if (!$isInlineLatex && !$isLatex && !$isImage) continue;
 
         // Retrieve inner tags
         $img     = $figure->getElementsByTagName('img');
         $caption = $figure->getElementsByTagName('figcaption');
 
         // Check tag attributes
-        if ($img->length < 1 || $caption->length < 1) continue;
-        if ($caption->item(0)->childNodes->length < 1) continue;
+        if ($img->length < 1) continue;
+        if (!$isInlineLatex) {
+          if ($caption->length < 1) continue;
+          if ($caption->item(0)->childNodes->length < 1) continue;
+        }
 
         // Retrieve nodes
         /** @var DOMElement $imgElement */
-        $imgElement     = $img->item(0);
-        $captionElement = $caption->item(0)->childNodes->item(0);
+        $imgElement = $img->item(0);
+        if (!$isInlineLatex) {
+          $captionElement = $caption->item(0)->childNodes->item(0);
+        }
 
         // Retrieve information
-        $id      = md5($dom->saveHTML($imgElement));
-        $caption = $dom->saveHTML($captionElement);
+        $id = md5($dom->saveHTML($imgElement));
+        if (!$isInlineLatex && isset($captionElement)) {
+          $caption = $dom->saveHTML($captionElement);
+        }
 
-        if ($isLatex) {
+        if ($isInlineLatex) {
+          if (!$imgElement->hasAttribute('alt')) continue;
+
+          // Retrieve relevant information
+          $latex                  = $imgElement->getAttribute('alt');
+          $inlineLatexImages[$id] = [
+              'replace' => urldecode($latex),
+              'caption' => '',
+          ];
+        } else if ($isLatex) {
           if (!$imgElement->hasAttribute('alt')) continue;
 
           // Retrieve relevant information
@@ -163,17 +187,16 @@ abstract class LtbSection extends Section
       }
 
       // Remove any remaining, unprocessed images tags to prevent errors
-      $remainingImages = $dom->getElementsByTagName('img');
-      $images          = [];
-      foreach ($remainingImages as $image) {
-        $images[] = $image;
+      $remainingImages = [];
+      foreach ($dom->getElementsByTagName('img') as $image) {
+        $remainingImages[] = $image;
       }
-      foreach ($images as $image) {
+      foreach ($remainingImages as $image) {
         /** @var DOMElement $image */
         $image->parentNode->removeChild($image);
       }
 
-      if (count($extractedFigures) > 0) {
+      if (count($extractedFigures) > 0 || count($remainingImages) > 0) {
         $html = $dom->saveHTML($dom);
       }
     }
@@ -185,6 +208,7 @@ abstract class LtbSection extends Section
     $latex = $this->pandoc->convert($html, 'html', 'latex');
 
     // Replace latex image placeholders with action LaTeX code
+    $latex = $this->replacePlaceholder($latex, $inlineLatexImages, '$%s%s$');
     $latex = $this->replacePlaceholder($latex, $latexImages, '\\begin{figure}[!htb]\\begin{displaymath}\boxed{%s}\\end{displaymath}\\caption*{%s}\\end{figure}');
     $latex = $this->replacePlaceholder($latex, $normalImages, '\\begin{figure}[!htb]\\includegraphics[frame]{%s}\\caption*{%s}\\end{figure}');
 
