@@ -24,7 +24,6 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
       return;
     }
 
-
     // Check if it is really an update
     if (previousVal === content || content === image.getAttribute('alt')) return;
     previousVal = content;
@@ -81,8 +80,38 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
                   updateImage();
                 }, 500);
               });
+            },
+            validate: function () {
+              if (this.getValue().length < 1) {
+                alert('You will need to enter a latex expression');
+                return false;
+              }
             }
-          }, {
+          },
+          {
+            id: 'inline',
+            type: 'checkbox',
+            label: editor.lang.latexeditor.inline,
+            default: false,
+            onClick: function () {
+              var checked = this.getValue();
+              var captionElement = this.getDialog().getContentElement('latexEditor', 'caption');
+              if (checked) {
+                captionElement.disable();
+              } else {
+                captionElement.enable();
+              }
+            },
+            setup: function (element) {
+              var inline = element.getAttribute('class').includes('latex-figure-inline');
+              this.setValue(inline);
+              if (inline) {
+                this.getDialog().getContentElement('latexEditor', 'caption').disable();
+                this.getDialog().getContentElement('latexEditor', 'inline').disable();
+              }
+            }
+          },
+          {
             type: 'html',
             html: '<label>' + editor.lang.latexeditor.preview + ':</label>'
           },
@@ -90,10 +119,10 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
             id: 'preview',
             type: 'html',
             html: '<div>' +
-            '<img class="latex-image" onload="$(this).parent().find(\'.initial,.loader\').hide(); $(this).show();"></img>' +
-            '<span class="initial">Enter a equation</span>' +
-            '<span class="loader">Loading...</span>' +
-            '</div>'
+                '<img class="latex-image" onload="$(this).parent().find(\'.initial,.loader\').hide(); $(this).show();"></img>' +
+                '<span class="initial">Enter a equation</span>' +
+                '<span class="loader">Loading...</span>' +
+                '</div>'
           }
         ]
       }
@@ -102,8 +131,12 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
     onShow: function () {
       var selection = editor.getSelection();
       var latexImage = selection.getStartElement().getAscendant('figure', true);
+      var inlineImage = selection.getStartElement().getAscendant('span', true);
+      if (inlineImage && (!inlineImage.getAttribute('class') || !inlineImage.getAttribute('class').includes('latex-figure'))) {
+        inlineImage = null;
+      }
 
-      if (!latexImage) {
+      if (!latexImage && !inlineImage) {
         latexImage = editor.document.createElement('figure');
         latexImage.append(editor.document.createElement('img'));
         latexImage.append(editor.document.createElement('caption'));
@@ -114,18 +147,21 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
 
       // set-up the field values based on selected or newly created latexImage
       if (!this.insertMode) {
-        this.setupContent(latexImage);
+        this.setupContent(inlineImage ? inlineImage : latexImage);
       }
     },
 
     onOk: function () {
+      editor.undoManager.lock();
+
       // Retrieve value
       var equation = this.getValueOf('latexEditor', 'equation');
       var captionText = this.getValueOf('latexEditor', 'caption');
+      var inline = this.getValueOf('latexEditor', 'inline');
 
       // Create container
       var latexFigure = editor.document.createElement('figure');
-      latexFigure.setAttribute('class', 'latex-figure');
+      latexFigure.setAttribute('class', inline ? 'latex-figure latex-figure-inline' : 'latex-figure');
 
       // Create image
       var img = editor.document.createElement('img');
@@ -133,26 +169,50 @@ CKEDITOR.dialog.add('latexeditorDialog', function (editor) {
       img.setAttribute('class', 'latex-image');
       img.setAttribute('src', Routing.generate('app_latex_renderlatex', {content: equation}));
       img.setAttribute('alt', encodeURIComponent(equation));
-
-      // Create caption
-      var caption = editor.document.createElement('figcaption');
-      caption.setAttribute('class', 'latex-caption');
-      caption.setHtml(captionText);
-
-      // Add parts to container and put it in the document
       latexFigure.append(img);
-      latexFigure.append(caption);
+
+      if (!inline) {
+        // Only set when not inline
+        var caption = editor.document.createElement('figcaption');
+        caption.setAttribute('class', 'latex-caption');
+        caption.setHtml(captionText);
+        latexFigure.append(caption);
+      }
 
       // Find the top level figure and select it
       var parent = editor.getSelection().getStartElement().getAscendant('figure', true);
       if (parent) {
         editor.getSelection().selectElement(parent);
+      } else {
+        // Find span with specific class in case of inline
+        var spanParent = editor.getSelection().getStartElement().getAscendant('span', true);
+        if (spanParent) {
+          var spanParentClasses = spanParent.getAttribute('class');
+          if (spanParentClasses && spanParentClasses.includes('latex-figure-inline')) {
+            // If found, remove it
+            editor.getSelection().selectElement(spanParent);
+          } else {
+            spanParent = null;
+          }
+        }
       }
 
-      // Insert the new element by replacing the selection
-      editor.insertElement(latexFigure);
+      // Insert the new element
+      if (inline) {
+        if (!spanParent) {
+          var span = editor.document.createElement('span');
+          span.setAttribute('class', 'latex-figure latex-figure-inline');
+          span.append(img);
+          editor.insertElement(span);
+        } else {
+          spanParent.setHtml(img.getOuterHtml());
+        }
+      } else {
+        editor.insertElement(latexFigure);
+      }
 
       clearInterval(timer);
+      editor.undoManager.unlock();
     },
 
     onCancel: function () {

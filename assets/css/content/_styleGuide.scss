@@ -136,7 +136,7 @@
     }
   }
 
-  figure {
+  figure, span {
     &.image,
     &.latex-figure {
       margin: 0 0 1rem;
@@ -161,6 +161,24 @@
         margin-top: 0.5rem;
         padding: 0;
         display: block;
+      }
+
+      &.latex-figure-inline {
+        display: inline-block;
+        vertical-align: text-bottom;
+        margin: 0;
+
+        img {
+          border-style: dotted;
+
+          &.latex-image {
+            padding: 0;
+          }
+        }
+
+        figcaption {
+          display: none;
+        }
       }
     }
   }

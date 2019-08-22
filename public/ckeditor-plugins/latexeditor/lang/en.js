@@ -4,6 +4,7 @@ CKEDITOR.plugins.setLang('latexeditor', 'en',
       menu: 'Maths',
       toolbar: 'Insert Equation',
       caption: 'Caption',
+      inline: 'Inline',
       edit: 'Edit Equation',
       equation: 'Equation (LaTeX)',
       preview: 'Preview'

@@ -2,9 +2,9 @@ CKEDITOR.plugins.add('latexeditor', {
   availableLangs: {
     en: 1
   },
-  lang: "en",
+  lang: 'en',
   requires: ['dialog'],
-  icons: "latex-editor",
+  icons: 'latex-editor',
 
   init: function (editor) {
     var pluginCmd = 'latexeditorDialog';
@@ -12,11 +12,12 @@ CKEDITOR.plugins.add('latexeditor', {
     // Register the dialog
     editor.addCommand(pluginCmd, new CKEDITOR.dialogCommand(pluginCmd,
         {
-          allowedContent: 'figure;img[src,alt];figcaption',
-          requiredContent: 'figure;img;figcaption'
+          allowedContent: 'span;figure;img[src,alt];figcaption',
+          requiredContent: 'figure;img;figcaption',
+          canUndo: false
         })
     );
-    CKEDITOR.dialog.add(pluginCmd, this.path + "dialogs/latex-editor.js");
+    CKEDITOR.dialog.add(pluginCmd, this.path + 'dialogs/latex-editor.js');
 
     // Add the menu button
     editor.ui.addButton('LatexEditor', {
@@ -30,10 +31,11 @@ CKEDITOR.plugins.add('latexeditor', {
     if (editor.widgets) {
       editor.widgets.addUpcastCallback(function (element) {
         if ((element.name === 'img' && element.hasClass('latex-image'))
-            || (element.name === 'figure' && element.hasClass('latex-figure'))) {
+            || (element.name === 'figure' && element.hasClass('latex-figure'))
+            || (element.name === 'span' && element.hasClass('latex-figure'))) {
           return false;
         }
-      })
+      });
     }
 
     // Add context-menu entry
@@ -50,15 +52,24 @@ CKEDITOR.plugins.add('latexeditor', {
       // we should be interested in it
       editor.contextMenu.addListener(function (element) {
 
-        // Check for cke span image wrapper
-        if (element.getAscendant('span', true)) {
+        var parentSpan = element.getAscendant('span', true);
+        if (parentSpan) {
+
+          // Check for cke span image wrapper
           if (element.$.classList.contains('cke_widget_image')) {
             element = element.getChild(0);
+          }
+
+          // Check for our own wrapper
+          if (parentSpan.$.classList.contains('latex-figure-inline')) {
+            return {
+              latexEditor: CKEDITOR.TRISTATE_OFF
+            };
           }
         }
 
         element = element.getAscendant('figure', true);
-        if (element) {
+        if (element && element.$.classList.contains('latex-figure')) {
           return {
             latexEditor: CKEDITOR.TRISTATE_OFF
           };
@@ -72,6 +83,7 @@ CKEDITOR.plugins.add('latexeditor', {
       if (!element) return;
 
       if ((element.is('figure') && element.hasClass('latex-figure'))
+          || (element.is('span') && element.hasClass('latex-figure'))
           || (element.is('img') && element.hasClass('latex-image'))
           || (element.is('caption') && element.hasClass('latex-caption'))) {
         editor.getSelection().selectElement(element);
