@@ -387,11 +387,13 @@ print:
   copyright: "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
                   \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
   error:
+    log: "Log"
     log-not-found: "LaTeX log file not found"
     message: |
       Something went wrong preparing your print request. Did you use certain special characters,
       or any other unsupported elements? This error is not automatically reported, so if the problem persist
       please contact us.
+    tex: "Tex"
     tex-not-found: "LaTeX tex file not found"
     title: "Print failed"
   header: "%header% \\url{%url%}"
