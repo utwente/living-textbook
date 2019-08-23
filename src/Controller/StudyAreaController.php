@@ -13,6 +13,7 @@ use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\PageLoadRepository;
 use App\Repository\StudyAreaGroupRepository;
+use App\Repository\TrackingEventRepository;
 use App\Repository\UserGroupRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
@@ -151,17 +152,19 @@ class StudyAreaController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
    *
-   * @param Request                $request
-   * @param StudyArea              $studyArea
-   * @param EntityManagerInterface $em
-   * @param UserGroupRepository    $userGroupRepo
-   * @param PageLoadRepository     $pageLoadRepository
-   * @param TranslatorInterface    $trans
+   * @param Request                 $request
+   * @param StudyArea               $studyArea
+   * @param EntityManagerInterface  $em
+   * @param UserGroupRepository     $userGroupRepo
+   * @param PageLoadRepository      $pageLoadRepository
+   * @param TrackingEventRepository $trackingEventRepository
+   * @param TranslatorInterface     $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, StudyArea $studyArea, EntityManagerInterface $em,
-                       UserGroupRepository $userGroupRepo, PageLoadRepository $pageLoadRepository, TranslatorInterface $trans)
+  public function edit(
+      Request $request, StudyArea $studyArea, EntityManagerInterface $em, UserGroupRepository $userGroupRepo,
+      PageLoadRepository $pageLoadRepository, TrackingEventRepository $trackingEventRepository, TranslatorInterface $trans)
   {
 
     // Check whether permissions flag is set
@@ -183,6 +186,7 @@ class StudyAreaController extends AbstractController
 
       // Remove tracking data if tracking is disabled
       if (!$studyArea->isTrackUsers()) {
+        $trackingEventRepository->purgeForStudyArea($studyArea);
         $pageLoadRepository->purgeForStudyArea($studyArea);
       }
 
