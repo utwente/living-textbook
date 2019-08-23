@@ -81,8 +81,8 @@ import Routing from 'fos-routing';
    * @param data
    */
   function onConceptSelected(data) {
-    // Forward to page load
-    onPageLoad({url: Routing.generate('app_concept_show', {_studyArea: _studyArea, concept: data.id})});
+    // Forward to page load, without tracking to prevent double events
+    onPageLoadInternal({url: Routing.generate('app_concept_show', {_studyArea: _studyArea, concept: data.id})});
   }
 
   function onBlankPageLoad(data) {
@@ -93,9 +93,7 @@ import Routing from 'fos-routing';
    * Update the iframe src url
    * @param data
    */
-  function onPageLoad(data) {
-    tracker.trackLinkClick(data.url);
-
+  function onPageLoadInternal(data) {
     // Check options
     data.options = data.options || {};
     if (data.options.topLevel) {
@@ -106,9 +104,16 @@ import Routing from 'fos-routing';
     dw.iframeLoad(data.url);
   }
 
-  eHandler.onPageLoad = function (data) {
-    onPageLoad(data);
-  };
+  /**
+   * Update the iframe src url, and track click
+   * @param data
+   */
+  function onPageLoad(data) {
+    tracker.trackLinkClick(data.url);
+    onPageLoadInternal(data);
+  }
+
+  eHandler.onPageLoad = onPageLoad;
 
   /**
    * Update the page url
@@ -200,7 +205,12 @@ import Routing from 'fos-routing';
    */
   function onNavigateLearningPath(data) {
     // Forward to page load
-    onPageLoad({url: Routing.generate('app_learningpath_show', {_studyArea: _studyArea, learningPath: data.id})});
+    onPageLoad({
+      url: Routing.generate('app_learningpath_show', {
+        _studyArea: _studyArea,
+        learningPath: data.id
+      })
+    });
   }
 
   /**
