@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\PageLoad;
+use App\Entity\StudyArea;
+use App\Entity\TrackingEvent;
 use App\Entity\User;
 use App\Excel\TrackingExportBuilder;
 use App\Request\Wrapper\RequestStudyArea;
+use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -60,8 +63,64 @@ class TrackingController extends AbstractController
    *
    * @return Response
    */
-  public function pageload(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
-                           SerializerInterface $serializer, ValidatorInterface $validator, RouterInterface $router)
+  public function pageload(
+      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
+      ValidatorInterface $validator, RouterInterface $router)
+  {
+    return $this->processTrackingItem(
+        Pageload::class,
+        function (PageLoad $pageLoad, StudyArea $studyArea, User $user) use ($router) {
+          $pageLoad
+              ->setStudyArea($studyArea)
+              ->setUserId($user->getUsername())
+              ->setPathContext($router->match($pageLoad->getPath()))
+              ->setOriginContext($pageLoad->getOrigin() ? $router->match($pageLoad->getOrigin()) : NULL);
+        },
+        $request, $requestStudyArea, $em, $serializer, $validator);
+  }
+
+  /**
+   * @Route("/event", methods={"POST"}, options={"expose"="true"})
+   * @IsGranted("ROLE_USER")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param EntityManagerInterface $em
+   * @param SerializerInterface    $serializer
+   * @param ValidatorInterface     $validator
+   *
+   * @return Response
+   */
+  public function event(
+      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
+      ValidatorInterface $validator)
+  {
+    return $this->processTrackingItem(
+        TrackingEvent::class,
+        function (TrackingEvent $pageLoad, StudyArea $studyArea, User $user) {
+          $pageLoad
+              ->setStudyArea($studyArea)
+              ->setUserId($user->getUsername());
+        },
+        $request, $requestStudyArea, $em, $serializer, $validator);
+  }
+
+  /**
+   * Process a tracking item request
+   *
+   * @param string                 $clazz
+   * @param Closure                $callback
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param EntityManagerInterface $em
+   * @param SerializerInterface    $serializer
+   * @param ValidatorInterface     $validator
+   *
+   * @return Response
+   */
+  private function processTrackingItem(
+      string $clazz, Closure $callback, Request $request, RequestStudyArea $requestStudyArea,
+      EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator)
   {
     // Verify whether tracking is actually enabled
     $studyArea = $requestStudyArea->getStudyArea();
@@ -69,26 +128,24 @@ class TrackingController extends AbstractController
       throw new BadRequestHttpException();
     }
 
-    $pageLoad = $serializer->deserialize($request->getContent(), PageLoad::class, 'json');
-    assert($pageLoad instanceof PageLoad);
-    /** @var User $user */
-    $user = $this->getUser();
+    $object = $serializer->deserialize($request->getContent(), $clazz, 'json');
 
     // Add more context to object
-    $pageLoad
-        ->setStudyArea($studyArea)
-        ->setUserId($user->getUsername())
-        ->setPathContext($router->match($pageLoad->getPath()))
-        ->setOriginContext($pageLoad->getOrigin() ? $router->match($pageLoad->getOrigin()) : NULL);
+    $callback($object, $studyArea, $this->getUser());
 
     // Validate object
-    $violations = $validator->validate($pageLoad);
+    $violations = $validator->validate($object);
     if (count($violations) != 0) {
-      throw new BadRequestHttpException();
+      $returnErrorString = '';
+      foreach ($violations as $error) {
+        $returnErrorString .= ' ' . (string)$error;
+      }
+
+      return new Response(trim($returnErrorString), 400);
     }
 
     // Save data
-    $em->persist($pageLoad);
+    $em->persist($object);
     $em->flush();
 
     // Return OK response

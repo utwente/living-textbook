@@ -15,6 +15,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TrackingEvent
 {
+
+  /**
+   * The supported events
+   */
+  public const SUPPORTED_EVENTS = [
+      'concept_browser_open',
+      'concept_browser_open_concept',
+      'concept_browser_close',
+      'learning_path_browser_open',
+      'learning_path_browser_open_concept',
+      'learning_path_browser_close',
+      'general_link_click',
+  ];
+
   use IdTrait;
 
   /**
@@ -62,7 +76,7 @@ class TrackingEvent
    * @ORM\Column(name="event", type="string", length=50)
    *
    * @Assert\NotNull()
-   * @Assert\NotBlank()
+   * @Assert\Choice(choices=TrackingEvent::SUPPORTED_EVENTS)
    * @Assert\Length(max=50)
    */
   private $event;
