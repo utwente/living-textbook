@@ -5,7 +5,12 @@ export default class Tracker {
     private readonly studyArea: number;
     private readonly trackUser: boolean;
 
+    private processQueueTimer: any;
+
     private trackingConsent: 'true' | 'false' | null = null;
+
+    private pageloadQueue: any[] = [];
+    private eventQueue: any[] = [];
 
     // Event types
     private static readonly concept_browser_open = 'concept_browser_open';
@@ -24,6 +29,11 @@ export default class Tracker {
     constructor(studyArea: number, trackUser: boolean) {
         this.studyArea = studyArea;
         this.trackUser = trackUser;
+
+        // Process the event queue every 30 seconds
+        this.processQueueTimer = setInterval(() => this.processQueues(), 30000);
+        // Make sure the clear the queues on page unload
+        window.onbeforeunload = () => this.processQueues();
     }
 
     /**
@@ -167,20 +177,13 @@ export default class Tracker {
             return;
         }
 
-        // Post page load back to server
-        // noinspection JSIgnoredPromiseFromCall We do need to wait for this to be completed
-        $.ajax({
-            type: 'POST',
-            url: this.routing.generate('app_tracking_pageload', {_studyArea: this.studyArea}),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({
-                sessionId: this.sessionId,
-                timestamp: this.timestamp,
-                path: this.eHandler.currentUrl,
-                origin: request ? null : this.eHandler.previousUrl
-            })
-        });
+        // Place data in the queue
+        this.pageloadQueue.push({
+            sessionId: this.sessionId,
+            timestamp: this.timestamp,
+            path: this.eHandler.currentUrl,
+            origin: request ? null : this.eHandler.previousUrl
+        })
     }
 
     /**
@@ -195,20 +198,60 @@ export default class Tracker {
             return;
         }
 
-        // Post tracking event back to server
-        // noinspection JSIgnoredPromiseFromCall We do need to wait for this to be completed
-        $.ajax({
-            type: 'POST',
-            url: this.routing.generate('app_tracking_event', {_studyArea: this.studyArea}),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({
-                sessionId: this.sessionId,
-                timestamp: this.timestamp,
-                event: event,
-                context: context || {}
-            })
-        })
+        // Place data in the queue
+        this.eventQueue.push({
+            sessionId: this.sessionId,
+            timestamp: this.timestamp,
+            event: event,
+            context: context || {}
+        });
+    }
+
+    /**
+     * Process the queues
+     */
+    private processQueues(): void {
+        console.info('Processing tracking queues');
+        this.processPageloadQueue();
+        this.processEventQueue();
+    }
+
+    /**
+     * Process the page load queue
+     */
+    private processPageloadQueue(): void {
+        let item;
+        let pageloadData = [];
+
+        // Shift from array to ensure exclusive access
+        while ((item = this.pageloadQueue.shift()) !== undefined) {
+            pageloadData.push(item);
+        }
+
+        // Send the data
+        window.navigator.sendBeacon(
+            this.routing.generate('app_tracking_pageload', {_studyArea: this.studyArea}),
+            JSON.stringify(pageloadData)
+        );
+    }
+
+    /**
+     * Process the event queue
+     */
+    private processEventQueue(): void {
+        let item;
+        let eventData = [];
+
+        // Shift from array to ensure exclusive access
+        while ((item = this.eventQueue.shift()) !== undefined) {
+            eventData.push(item);
+        }
+
+        // Send the data
+        window.navigator.sendBeacon(
+            this.routing.generate('app_tracking_event', {_studyArea: this.studyArea}),
+            JSON.stringify(eventData)
+        );
     }
 
     // noinspection JSMethodCanBeStatic

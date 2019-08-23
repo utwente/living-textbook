@@ -128,13 +128,15 @@ class TrackingController extends AbstractController
       throw new BadRequestHttpException();
     }
 
-    $object = $serializer->deserialize($request->getContent(), $clazz, 'json');
+    $objects = $serializer->deserialize($request->getContent(), "array<$clazz>", 'json');
 
     // Add more context to object
-    $callback($object, $studyArea, $this->getUser());
+    foreach ($objects as $object) {
+      $callback($object, $studyArea, $this->getUser());
+    }
 
     // Validate object
-    $violations = $validator->validate($object);
+    $violations = $validator->validate($objects);
     if (count($violations) != 0) {
       $returnErrorString = '';
       foreach ($violations as $error) {
@@ -145,7 +147,9 @@ class TrackingController extends AbstractController
     }
 
     // Save data
-    $em->persist($object);
+    foreach ($objects as $object) {
+      $em->persist($object);
+    }
     $em->flush();
 
     // Return OK response
