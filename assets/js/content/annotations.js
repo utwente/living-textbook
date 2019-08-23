@@ -470,6 +470,8 @@
       count += annotation.comments.length;
     });
     $noteButton.find('.note-count').html(' ' + count);
+    $noteButton.attr('data-original-title', annotations
+        .filter(a => a.text).map(a => a.text.trunc(50)).join(' --- ').trunc(512));
 
     if (count === 0) {
       // Annotations are hidden, don't show button
@@ -615,6 +617,7 @@
     } else {
       annotationContextData.current = 'note';
       $noteButton.find('.note-count').html(' ' + (1 + annotation.comments.length));
+      $noteButton.attr('data-original-title', annotation.text.trunc(512));
       $noteButton.show();
     }
 

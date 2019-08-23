@@ -5,7 +5,7 @@ export const inDoubleColumnChecksum = Math.random().toString(36);
 
 export function setDoubleColumnDetected(checksum) {
   if (checksum === inDoubleColumnChecksum) {
-    console.info("DoubleColumn context detected!");
+    console.info('DoubleColumn context detected!');
     $('#no-browser-warning').slideUp();
     global.inDoubleColumn = true;
     window.dispatchEvent(new Event('double_column_detected'));
@@ -22,6 +22,11 @@ function findParent(tag, el) {
   return null;
 }
 
+String.prototype.trunc = String.prototype.trunc ||
+    function (n) {
+      return (this.length > n) ? this.substr(0, n) + '...' : this;
+    };
+
 $(function () {
   require('./content/eventHandler');
   require('./content/eventDispatcher');
@@ -34,7 +39,7 @@ $(function () {
   eDispatch.checkForDoubleColumn(inDoubleColumnChecksum);
 
   // Load tooltips
-  $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
+  $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
 
   // Bind to all links
   $(document.body).on('click', function (e) {
@@ -144,7 +149,7 @@ $(function () {
 
         // Replace content
         document.open();
-        if (data.hasOwnProperty("responseText")) {
+        if (data.hasOwnProperty('responseText')) {
           document.write(data.responseText);
         } else {
           document.write(data);
@@ -180,9 +185,9 @@ $(function () {
     if (!inDoubleColumn) {
       $('#no-browser-warning').slideDown({
         done: function () {
-          $(window).trigger('resize')
+          $(window).trigger('resize');
         }
       });
     }
-  }, 5000)
+  }, 5000);
 });
