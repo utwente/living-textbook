@@ -24,6 +24,9 @@ import Routing from 'fos-routing';
       case types.CHECK_DOUBLE_COLUMN:
         onCheckDoubleColumn(data);
         break;
+      case types.BLANK_PAGE_LOAD:
+        onBlankPageLoad(data);
+        break;
       case types.PAGE_LOAD:
         onPageLoad(data);
         break;
@@ -82,11 +85,17 @@ import Routing from 'fos-routing';
     onPageLoad({url: Routing.generate('app_concept_show', {_studyArea: _studyArea, concept: data.id})});
   }
 
+  function onBlankPageLoad(data) {
+    tracker.trackLinkClick(data.url, true);
+  }
+
   /**
    * Update the iframe src url
    * @param data
    */
   function onPageLoad(data) {
+    tracker.trackLinkClick(data.url);
+
     // Check options
     data.options = data.options || {};
     if (data.options.topLevel) {

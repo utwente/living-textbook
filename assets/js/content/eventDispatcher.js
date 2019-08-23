@@ -20,6 +20,15 @@ require('../event/eventTypes');
   }
 
   /**
+   * Blank page opened event
+   */
+  eDispatch.blankPageLoad = function (url) {
+    dispatchParent(types.BLANK_PAGE_LOAD, {
+      url: url
+    });
+  };
+
+  /**
    * Send a message to determine if it is executed in a double column environment
    */
   eDispatch.checkForDoubleColumn = function (checksum) {
@@ -37,7 +46,7 @@ require('../event/eventTypes');
     dispatchParent(types.PAGE_LOAD, {
       url: url,
       options: options
-    })
+    });
   };
 
   /**

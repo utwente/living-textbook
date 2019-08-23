@@ -27,7 +27,7 @@ require('../event/eventTypes');
   function dispatchIframe(type, data) {
     console.info('Event dispatched from double column to iframe', type, data);
 
-    document.getElementById("data-iframe").contentWindow.postMessage({
+    document.getElementById('data-iframe').contentWindow.postMessage({
       type: type,
       payload: data
     }, '*');
@@ -52,6 +52,7 @@ require('../event/eventTypes');
    */
   eDispatch.openedConceptBrowser = function () {
     dispatchIframe(types.OPENED_CONCEPT_BROWSER);
+    tracker.trackConceptBrowser(true);
   };
 
   /**
@@ -59,6 +60,7 @@ require('../event/eventTypes');
    */
   eDispatch.closedConceptBrowser = function () {
     dispatchIframe(types.CLOSED_CONCEPT_BROWSER);
+    tracker.trackConceptBrowser(false);
   };
 
   /**
@@ -69,6 +71,7 @@ require('../event/eventTypes');
     dispatchParent(types.CONCEPT_SELECTED, {
       id: id
     });
+    tracker.trackConceptBrowserConceptOpened(id);
   };
 
   /**
@@ -84,8 +87,9 @@ require('../event/eventTypes');
   /**
    * Send opened learning path browser event
    */
-  eDispatch.openedLearningPathBrowser = function () {
+  eDispatch.openedLearningPathBrowser = function (id) {
     dispatchIframe(types.OPENED_LEARNING_PATH_BROWSER);
+    tracker.trackLearningPathBrowser(true, id);
   };
 
   /**
@@ -93,6 +97,7 @@ require('../event/eventTypes');
    */
   eDispatch.closedLearningPathBrowser = function () {
     dispatchIframe(types.CLOSED_LEARNING_PATH_BROWSER);
+    tracker.trackLearningPathBrowser(false);
   };
 
   /**
@@ -103,6 +108,7 @@ require('../event/eventTypes');
     dispatchParent(types.OPEN_CONCEPT_FROM_LEARNING_PATH, {
       id: id
     });
+    tracker.trackLearningPathConceptOpened(id);
   };
 
   /**
@@ -111,6 +117,6 @@ require('../event/eventTypes');
   eDispatch.trackingConsentUpdated = function (agree) {
     dispatchIframe(types.TRACKING_CONSENT_UPDATED, {agree: agree});
     window.dispatchEvent(new CustomEvent('tracking_consent', {detail: agree}));
-  }
+  };
 
 }(window.eDispatch = window.eDispatch || {}, window.eType));

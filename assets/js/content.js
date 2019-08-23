@@ -50,17 +50,19 @@ $(function () {
 
     let from = findParent('a', e.target || e.srcElement);
     if (from) {
+      // Retrieve url
       let $from = $(from);
+      let url = $from.attr('href');
+      if (typeof url === 'undefined') return;
 
       // Exclude _blank target links
-      if ($from.attr('target') === '_blank') return;
+      if ($from.attr('target') === '_blank') {
+        eDispatch.blankPageLoad(url);
+        return;
+      }
 
       // Exclude 'no-link' class from handler
       if ($from.hasClass('no-block')) return;
-
-      // Retrieve url
-      let url = $from.attr('href');
-      if (typeof url === 'undefined') return;
 
       // Exclude hash urls
       if (url.startsWith('#')) return;

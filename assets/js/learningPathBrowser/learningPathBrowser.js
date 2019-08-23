@@ -100,7 +100,7 @@ import Routing from 'fos-routing';
 
     // Set state + send event
     isOpened = true;
-    eDispatch.openedLearningPathBrowser();
+    eDispatch.openedLearningPathBrowser(id !== undefined ? id : pathId);
   };
 
   /**

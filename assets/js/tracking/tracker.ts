@@ -7,6 +7,15 @@ export default class Tracker {
 
     private trackingConsent: 'true' | 'false' | null = null;
 
+    // Event types
+    private static readonly concept_browser_open = 'concept_browser_open';
+    private static readonly concept_browser_open_concept = 'concept_browser_open_concept';
+    private static readonly concept_browser_close = 'concept_browser_close';
+    private static readonly learning_path_browser_open = 'learning_path_browser_open';
+    private static readonly learning_path_browser_open_concept = 'learning_path_browser_open_concept';
+    private static readonly learning_path_browser_close = 'learning_path_browser_close';
+    private static readonly general_link_click = 'general_link_click';
+
     /**
      * Constructor
      * @param studyArea
@@ -16,6 +25,31 @@ export default class Tracker {
         this.studyArea = studyArea;
         this.trackUser = trackUser;
     }
+
+    /**
+     * Save tracking consent
+     *
+     * @param agree
+     */
+    public saveTrackingConsent(agree: boolean) {
+        this.trackingConsent = agree ? 'true' : 'false';
+
+        // Store in browser if possible
+        if (typeof (Storage) !== 'undefined') {
+            localStorage.setItem('tracking-consent.' + this.studyArea, this.trackingConsent);
+        }
+
+        // Create event
+        this.eDispatch.trackingConsentUpdated(this.trackingConsent);
+    }
+
+    /**
+     * Get tracking consent state
+     */
+    public getTrackingConsent(): "true" | "false" | null {
+        return this.trackingConsent;
+    }
+
 
     /**
      * Track the user' page load
@@ -73,24 +107,53 @@ export default class Tracker {
     }
 
     /**
-     * Save tracking consent
-     *
-     * @param agree
+     * Track concept browser state
+     * @param opened
      */
-    public saveTrackingConsent(agree: boolean) {
-        this.trackingConsent = agree ? 'true' : 'false';
-
-        // Store in browser if possible
-        if (typeof (Storage) !== 'undefined') {
-            localStorage.setItem('tracking-consent.' + this.studyArea, this.trackingConsent);
-        }
-
-        // Create event
-        this.eDispatch.trackingConsentUpdated(this.trackingConsent);
+    public trackConceptBrowser(opened: boolean) {
+        this.sendTrackingEventData(
+            opened ? Tracker.concept_browser_open : Tracker.concept_browser_close
+        );
     }
 
-    public getTrackingConsent(): "true" | "false" | null {
-        return this.trackingConsent;
+    /**
+     * Track concept open from concept browser
+     * @param conceptId
+     */
+    public trackConceptBrowserConceptOpened(conceptId: number) {
+        this.sendTrackingEventData(Tracker.concept_browser_open_concept, {conceptId});
+    }
+
+    /**
+     * Track learning path browser state
+     * @param opened
+     * @param learningPathId
+     */
+    public trackLearningPathBrowser(opened: boolean, learningPathId?: number) {
+        this.sendTrackingEventData(
+            opened ? Tracker.learning_path_browser_open : Tracker.learning_path_browser_close,
+            learningPathId ? {learningPathId} : {}
+        );
+    }
+
+    /**
+     * Track concept open from learning patch browser
+     * @param conceptId
+     */
+    public trackLearningPathConceptOpened(conceptId: number) {
+        this.sendTrackingEventData(Tracker.learning_path_browser_open_concept, {conceptId});
+    }
+
+    /**
+     * Track general link clicks
+     * @param link
+     * @param blank
+     */
+    public trackLinkClick(link: string, blank?: boolean) {
+        this.sendTrackingEventData(Tracker.general_link_click, {
+            link: link,
+            blank: typeof blank !== 'undefined' ? blank : false,
+        });
     }
 
     /**
@@ -113,26 +176,71 @@ export default class Tracker {
             dataType: 'json',
             data: JSON.stringify({
                 sessionId: this.sessionId,
-                timestamp: new Date().toISOString().split('.')[0] + 'Z', // remove milliseconds
+                timestamp: this.timestamp,
                 path: this.eHandler.currentUrl,
                 origin: request ? null : this.eHandler.previousUrl
             })
         });
     }
 
+    /**
+     * Send a tracking event with context
+     *
+     * @param event
+     * @param context
+     */
+    private sendTrackingEventData(event: string, context?: object): void {
+        // Validate consent before sending
+        if (this.trackingConsent !== 'true') {
+            return;
+        }
+
+        // Post tracking event back to server
+        // noinspection JSIgnoredPromiseFromCall We do need to wait for this to be completed
+        $.ajax({
+            type: 'POST',
+            url: this.routing.generate('app_tracking_event', {_studyArea: this.studyArea}),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                sessionId: this.sessionId,
+                timestamp: this.timestamp,
+                event: event,
+                context: context || {}
+            })
+        })
+    }
+
     // noinspection JSMethodCanBeStatic
+    /**
+     * Retrieve the current timestamp, without milliseconds
+     */
+    private get timestamp(): string {
+        return new Date().toISOString().split('.')[0] + 'Z';
+    }
+
+    // noinspection JSMethodCanBeStatic
+    /**
+     * Retrieve the event handler from the window object
+     */
     private get eHandler(): any {
         // @ts-ignore
         return window.eHandler;
     }
 
     // noinspection JSMethodCanBeStatic
+    /**
+     * Retrieve the event dispatcher from the window object
+     */
     private get eDispatch(): any {
         // @ts-ignore
         return window.eDispatch;
     }
 
     // noinspection JSMethodCanBeStatic
+    /**
+     * Retrieve the routing from the window object
+     */
     private get routing(): any {
         // @ts-ignore
         return window.Routing;

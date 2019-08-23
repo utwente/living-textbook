@@ -10,6 +10,7 @@
   eType.PAGE_LOAD = 'page_load';
   eType.PAGE_LOADED = 'page_loaded';
   eType.PAGE_SUBMIT = 'page_submit';
+  eType.BLANK_PAGE_LOAD = 'blank_page_load';
 
   // Concept browser actions/states
   eType.OPEN_CONCEPT_BROWSER = 'open_concept_browser';
