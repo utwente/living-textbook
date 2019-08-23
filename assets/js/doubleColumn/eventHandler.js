@@ -6,12 +6,8 @@ import Routing from 'fos-routing';
 /**
  * This module handles events from the content of the application
  */
-(function (eHandler, types, $) {
-  const uuidV1 = require('uuid/v1');
-  let sessionConsent = null;
-
+(function (eHandler, types, tracker, $) {
   // Initialize current state
-  eHandler.sessionId = uuidV1();
   eHandler.previousUrl = null;
   eHandler.currentUrl = $('#data-iframe').attr('src');
 
@@ -83,7 +79,7 @@ import Routing from 'fos-routing';
    */
   function onConceptSelected(data) {
     // Forward to page load
-    onPageLoad({url: Routing.generate('app_concept_show', {_studyArea: _studyArea, concept: data.id})})
+    onPageLoad({url: Routing.generate('app_concept_show', {_studyArea: _studyArea, concept: data.id})});
   }
 
   /**
@@ -133,7 +129,7 @@ import Routing from 'fos-routing';
     document.title = data.title;
 
     // Trigger tracking
-    trackUser(firstRequest);
+    tracker.trackPageload(firstRequest);
   }
 
   /**
@@ -195,7 +191,7 @@ import Routing from 'fos-routing';
    */
   function onNavigateLearningPath(data) {
     // Forward to page load
-    onPageLoad({url: Routing.generate('app_learningpath_show', {_studyArea: _studyArea, learningPath: data.id})})
+    onPageLoad({url: Routing.generate('app_learningpath_show', {_studyArea: _studyArea, learningPath: data.id})});
   }
 
   /**
@@ -218,109 +214,11 @@ import Routing from 'fos-routing';
     // Check for special null event to only retrieve the status
     if (data.agree === null) {
       // Create event
-      eDispatch.trackingConsentUpdated(sessionConsent);
+      eDispatch.trackingConsentUpdated(tracker.getTrackingConsent());
       return;
     }
 
-    saveTrackingConsent(data.agree);
+    tracker.saveTrackingConsent(data.agree);
   }
 
-  /**
-   * Track the user' page load
-   * @param firstRequest
-   */
-  function trackUser(firstRequest) {
-    // Verify whether tracking is enabled
-    if (!_trackUser) {
-      return;
-    }
-
-    // Retrieve consent status, sessionConsent holds the session cached value
-    if (sessionConsent === null && typeof (Storage) !== 'undefined') {
-      // Retrieve from local storage for this study area
-      sessionConsent = localStorage.getItem('tracking-consent.' + _studyArea);
-    }
-
-    // Check whether consent is granted
-    if (sessionConsent === "false") {
-      // Denied, return;
-      return;
-    }
-
-    if (sessionConsent === null) {
-      // Opt-in question not yet asked, ask now. Disabled backdrop and keyboard modal exit.
-      let $trackingModal = $('#tracking-modal');
-      $trackingModal.modal({
-        backdrop: 'static',
-        keyboard: false,
-      });
-
-      // Register event handlers to modal buttons. Use off to ensure they are not bound multiple times
-      // when a previous consent is reset.
-      let $agreeButton = $('#tracking-modal-agree');
-      $agreeButton.off('click');
-      $agreeButton.on('click', function () {
-        // Save and send tracking data
-        saveTrackingConsent(true);
-        $trackingModal.modal('hide');
-        sendTrackingData(firstRequest);
-      });
-      let $disagreeButton = $('#tracking-modal-disagree');
-      $disagreeButton.off('click');
-      $disagreeButton.on('click', function () {
-        // Save only
-        saveTrackingConsent(false);
-        $trackingModal.modal('hide');
-      });
-
-      return;
-    }
-
-    // Try to send data
-    sendTrackingData(firstRequest);
-  }
-
-  /**
-   * Save tracking consent
-   *
-   * @param agree
-   */
-  function saveTrackingConsent(agree) {
-    sessionConsent = agree ? "true" : "false";
-
-    // Store in browser if possible
-    if (typeof (Storage) !== 'undefined') {
-      localStorage.setItem('tracking-consent.' + _studyArea, sessionConsent);
-    }
-
-    // Create event
-    eDispatch.trackingConsentUpdated(sessionConsent);
-  }
-
-  /**
-   * Sends the actual tracking data
-   *
-   * @param firstRequest
-   */
-  function sendTrackingData(firstRequest) {
-    // Validate consent before sending
-    if (sessionConsent !== "true") {
-      return;
-    }
-
-    // Post page load back to server
-    $.ajax({
-      type: "POST",
-      url: Routing.generate('app_tracking_pageload', {_studyArea: _studyArea}),
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      data: JSON.stringify({
-        sessionId: eHandler.sessionId,
-        timestamp: new Date().toISOString().split('.')[0] + 'Z', // remove milliseconds
-        path: eHandler.currentUrl,
-        origin: firstRequest ? null : eHandler.previousUrl
-      })
-    });
-  }
-
-}(window.eHandler = window.eHandler || {}, window.eType, $));
+}(window.eHandler = window.eHandler || {}, window.eType, window.tracker, $));

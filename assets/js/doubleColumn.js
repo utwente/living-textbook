@@ -6,6 +6,10 @@ global.d3 = d3;
 
 // Import routing
 import Routing from 'fos-routing';
+// Create global tracker
+import Tracker from './tracking/tracker';
+
+global.tracker = new Tracker(_studyArea, _trackUser);
 
 /**
  * Load the modules required for the double column page in order to function properly
@@ -31,7 +35,7 @@ $(function () {
   });
 
   // Load tooltips
-  $('[data-toggle="tooltip"]').tooltip({trigger: "hover"});
+  $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
 
   // Load pop state handler
   window.addEventListener('popstate', function (event) {
