@@ -536,8 +536,11 @@ tracking:
   export:
     concept: 'Concept'
     description: "Tracking detail export for the study area \"%item%\"."
+    event: "Event"
     learning-outcome: 'Learning outcome'
     learning-path: 'Learning path'
+    link: "Link"
+    link-blank: "Blank"
     origin: "Origin"
     path: "Path"
     route: "Internal route"
