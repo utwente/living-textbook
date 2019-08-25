@@ -229,6 +229,12 @@ export default class Tracker {
             pageloadData.push(item);
         }
 
+        // Do not send anything when there is no data
+        if (pageloadData.length === 0) {
+            return;
+        }
+        console.info(`Sending ${pageloadData.length} pageload events...`);
+
         // Send the data
         window.navigator.sendBeacon(
             this.routing.generate('app_tracking_pageload', {_studyArea: this.studyArea}),
@@ -248,6 +254,12 @@ export default class Tracker {
         while ((item = this.eventQueue.shift()) !== undefined) {
             eventData.push(item);
         }
+
+        // Do not send anything when there is no data
+        if (eventData.length === 0) {
+            return;
+        }
+        console.info(`Sending ${eventData.length} events...`);
 
         // Send the data
         window.navigator.sendBeacon(
