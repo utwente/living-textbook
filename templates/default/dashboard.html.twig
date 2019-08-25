@@ -189,11 +189,18 @@
       $(function () {
         var $elems = $('.concept-group-toggle[data-toggle="collapse"]');
         $elems.each(function () {
-          var target = $(this).data('target');
-          $(target).on('show.bs.collapse', function (e) {
+          var $button = $(this);
+          var $target = $($button.data('target'));
+          $target.on('show.bs.collapse', function () {
             $(this).addClass('collapse-opening');
+            $button.closest('tr').find('.fa-folder-open').removeClass('d-none').addClass('d-inline-block');
+            $button.closest('tr').find('.fa-folder').addClass('d-none').removeClass('d-inline-block');
           });
-          $(target).on('shown.bs.collapse', function (e) {
+          $target.on('hide.bs.collapse', function () {
+            $button.closest('tr').find('.fa-folder-open').addClass('d-none').removeClass('d-inline-block');
+            $button.closest('tr').find('.fa-folder').removeClass('d-none').addClass('d-inline-block');
+          });
+          $target.on('shown.bs.collapse', function () {
             $(this).removeClass('collapse-opening');
           });
         });
@@ -292,6 +299,8 @@
                 {% set group = studyArea.group.id %}
                 <tr>
                   <th colspan="3">
+                    <i class="fa fa-fw fa-folder-open d-none"></i>
+                    <i class="fa fa-fw fa-folder"></i>
                     {{ studyArea.group.name }}
                   </th>
                   <td class="actions">
@@ -309,8 +318,9 @@
 
               <tr {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>
                 <td>
-                  <div
-                      {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>{{ studyArea.name }}</div>
+                  <div {% if studyArea.group %}class="collapse collapse-group-{{ group }} pl-4"{% endif %}>
+                    {{ studyArea.name }}
+                  </div>
                 </td>
                 <td>
                   <div {% if studyArea.group %}class="collapse collapse-group-{{ group }}"{% endif %}>
