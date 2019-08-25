@@ -1,11 +1,11 @@
 {% macro browser_button(browser_id) %}
   {% from _self import _action_button %}
-  {{ _action_button('#', 'fa-map', 'browser.open', 'primary', false, 'eDispatch.showConcept(' ~ browser_id ~ ');') }}
+  {{ _action_button('#', 'fa-share-alt', 'browser.open', 'primary', false, 'eDispatch.showConcept(' ~ browser_id ~ ');') }}
 {% endmacro %}
 
 {% macro learning_path_button(learningpath_id) %}
   {% from _self import _action_button %}
-  {{ _action_button('#', 'fa-map', 'learning-path.open', 'primary', false, 'eDispatch.openLearningPathBrowser(' ~ learningpath_id ~ ');') }}
+  {{ _action_button('#', 'fa-share-alt', 'learning-path.open', 'primary', false, 'eDispatch.openLearningPathBrowser(' ~ learningpath_id ~ ');') }}
 {% endmacro %}
 
 {% macro progress_button() %}
