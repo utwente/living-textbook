@@ -92,3 +92,10 @@ $dropdown-link-hover-bg: #d2d2d2;
 .tooltip-wide .tooltip-inner {
   max-width: 60vw;
 }
+
+// Add min-width handler for certain sizes
+@include media-breakpoint-down(sm) {
+  .mw-md-100 {
+    min-width: 100%;
+  }
+}

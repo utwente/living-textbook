@@ -26,14 +26,12 @@
     {% if studyAreaForm is defined and studyAreaForm is not null %}
       <h4>{{ 'dashboard.study-area-landing'|trans }}</h4>
       {{ form_start(studyAreaForm) }}
-      <div class="row">
-        <div class="col-sm-12 col-md-5 col-xl-3 mt-1">
+      <div class="d-flex flex-row flex-wrap flex-md-no-wrap">
+        <div class="mt-1 mw-md-100 flex-grow-1">
           {{ form_widget(studyAreaForm.studyArea) }}
         </div>
-        <div class="col mt-1">
-          <div class="float-right float-md-left">
-            {{ form_widget(studyAreaForm.submit) }}
-          </div>
+        <div class="mt-1 ml-auto ml-md-1">
+          {{ form_widget(studyAreaForm.submit) }}
         </div>
       </div>
 
