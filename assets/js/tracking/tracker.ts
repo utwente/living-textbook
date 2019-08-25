@@ -1,6 +1,15 @@
 import uuid from 'uuid/v1';
 
 export default class Tracker {
+    // Event types
+    private static readonly CONCEPT_BROWSER_OPEN = 'concept_browser_open';
+    private static readonly CONCEPT_BROWSER_OPEN_CONCEPT = 'concept_browser_open_concept';
+    private static readonly CONCEPT_BROWSER_CLOSE = 'concept_browser_close';
+    private static readonly LEARNING_PATH_BROWSER_OPEN = 'learning_path_browser_open';
+    private static readonly LEARNING_PATH_BROWSER_OPEN_CONCEPT = 'learning_path_browser_open_concept';
+    private static readonly LEARNING_PATH_BROWSER_CLOSE = 'learning_path_browser_close';
+    private static readonly GENERAL_LINK_CLICK = 'general_link_click';
+
     private readonly sessionId = uuid();
     private readonly studyArea: number;
     private readonly trackUser: boolean;
@@ -11,15 +20,6 @@ export default class Tracker {
 
     private pageloadQueue: any[] = [];
     private eventQueue: any[] = [];
-
-    // Event types
-    private static readonly concept_browser_open = 'concept_browser_open';
-    private static readonly concept_browser_open_concept = 'concept_browser_open_concept';
-    private static readonly concept_browser_close = 'concept_browser_close';
-    private static readonly learning_path_browser_open = 'learning_path_browser_open';
-    private static readonly learning_path_browser_open_concept = 'learning_path_browser_open_concept';
-    private static readonly learning_path_browser_close = 'learning_path_browser_close';
-    private static readonly general_link_click = 'general_link_click';
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ export default class Tracker {
     /**
      * Get tracking consent state
      */
-    public getTrackingConsent(): "true" | "false" | null {
+    public getTrackingConsent(): 'true' | 'false' | null {
         return this.trackingConsent;
     }
 
@@ -85,7 +85,7 @@ export default class Tracker {
 
         if (this.trackingConsent === null) {
             // Opt-in question not yet asked, ask now. Disabled backdrop and keyboard modal exit.
-            let $trackingModal = $('#tracking-modal');
+            const $trackingModal = $('#tracking-modal');
             $trackingModal.modal({
                 backdrop: 'static',
                 keyboard: false,
@@ -93,7 +93,7 @@ export default class Tracker {
 
             // Register event handlers to modal buttons. Use off to ensure they are not bound multiple times
             // when a previous consent is reset.
-            let $agreeButton = $('#tracking-modal-agree');
+            const $agreeButton = $('#tracking-modal-agree');
             $agreeButton.off('click');
             $agreeButton.on('click', () => {
                 // Save and send tracking data
@@ -101,7 +101,7 @@ export default class Tracker {
                 $trackingModal.modal('hide');
                 this.sendPageLoadTrackingData(request);
             });
-            let $disagreeButton = $('#tracking-modal-disagree');
+            const $disagreeButton = $('#tracking-modal-disagree');
             $disagreeButton.off('click');
             $disagreeButton.on('click', () => {
                 // Save only
@@ -122,7 +122,7 @@ export default class Tracker {
      */
     public trackConceptBrowser(opened: boolean) {
         this.sendTrackingEventData(
-            opened ? Tracker.concept_browser_open : Tracker.concept_browser_close
+            opened ? Tracker.CONCEPT_BROWSER_OPEN : Tracker.CONCEPT_BROWSER_CLOSE,
         );
     }
 
@@ -131,7 +131,7 @@ export default class Tracker {
      * @param conceptId
      */
     public trackConceptBrowserConceptOpened(conceptId: number) {
-        this.sendTrackingEventData(Tracker.concept_browser_open_concept, {conceptId});
+        this.sendTrackingEventData(Tracker.CONCEPT_BROWSER_OPEN_CONCEPT, {conceptId});
     }
 
     /**
@@ -141,8 +141,8 @@ export default class Tracker {
      */
     public trackLearningPathBrowser(opened: boolean, learningPathId?: number) {
         this.sendTrackingEventData(
-            opened ? Tracker.learning_path_browser_open : Tracker.learning_path_browser_close,
-            learningPathId ? {learningPathId} : {}
+            opened ? Tracker.LEARNING_PATH_BROWSER_OPEN : Tracker.LEARNING_PATH_BROWSER_CLOSE,
+            learningPathId ? {learningPathId} : {},
         );
     }
 
@@ -151,7 +151,7 @@ export default class Tracker {
      * @param conceptId
      */
     public trackLearningPathConceptOpened(conceptId: number) {
-        this.sendTrackingEventData(Tracker.learning_path_browser_open_concept, {conceptId});
+        this.sendTrackingEventData(Tracker.LEARNING_PATH_BROWSER_OPEN_CONCEPT, {conceptId});
     }
 
     /**
@@ -160,8 +160,8 @@ export default class Tracker {
      * @param blank
      */
     public trackLinkClick(link: string, blank?: boolean) {
-        this.sendTrackingEventData(Tracker.general_link_click, {
-            link: link,
+        this.sendTrackingEventData(Tracker.GENERAL_LINK_CLICK, {
+            link,
             blank: typeof blank !== 'undefined' ? blank : false,
         });
     }
@@ -182,8 +182,8 @@ export default class Tracker {
             sessionId: this.sessionId,
             timestamp: this.timestamp,
             path: this.eHandler.currentUrl,
-            origin: request ? null : this.eHandler.previousUrl
-        })
+            origin: request ? null : this.eHandler.previousUrl,
+        });
     }
 
     /**
@@ -202,8 +202,8 @@ export default class Tracker {
         this.eventQueue.push({
             sessionId: this.sessionId,
             timestamp: this.timestamp,
-            event: event,
-            context: context || {}
+            event,
+            context: context || {},
         });
     }
 
@@ -221,9 +221,10 @@ export default class Tracker {
      */
     private processPageloadQueue(): void {
         let item;
-        let pageloadData = [];
+        const pageloadData = [];
 
         // Shift from array to ensure exclusive access
+        // tslint:disable-next-line:no-conditional-assignment
         while ((item = this.pageloadQueue.shift()) !== undefined) {
             pageloadData.push(item);
         }
@@ -231,7 +232,7 @@ export default class Tracker {
         // Send the data
         window.navigator.sendBeacon(
             this.routing.generate('app_tracking_pageload', {_studyArea: this.studyArea}),
-            JSON.stringify(pageloadData)
+            JSON.stringify(pageloadData),
         );
     }
 
@@ -240,9 +241,10 @@ export default class Tracker {
      */
     private processEventQueue(): void {
         let item;
-        let eventData = [];
+        const eventData = [];
 
         // Shift from array to ensure exclusive access
+        // tslint:disable-next-line:no-conditional-assignment
         while ((item = this.eventQueue.shift()) !== undefined) {
             eventData.push(item);
         }
@@ -250,7 +252,7 @@ export default class Tracker {
         // Send the data
         window.navigator.sendBeacon(
             this.routing.generate('app_tracking_event', {_studyArea: this.studyArea}),
-            JSON.stringify(eventData)
+            JSON.stringify(eventData),
         );
     }
 

@@ -70,6 +70,18 @@ js-analysis:
     - master
     - production
 
+ts-analysis:
+  stage: lint
+  image: drenso/tslint:5.18.0
+  dependencies: []
+  script:
+    - tslint --project .
+  tags:
+    - docker
+  except:
+    - master
+    - production
+
 yaml-analysis:
   stage: lint
   image: kickin/yamllint:1.0.0
