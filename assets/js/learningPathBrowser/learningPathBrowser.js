@@ -830,6 +830,9 @@ import Routing from 'fos-routing';
       bConfig.updateLabel(element, textScale);
     });
     drawGraph();
+
+    // Update the concept browser sizes
+    cb.resizeCanvas();
   }
 
   /**
