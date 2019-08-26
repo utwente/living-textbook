@@ -59,12 +59,9 @@
 
   <div class="spacer"></div>
 
-  <p class="card-text">
-    {{ 'app.user-tracking-notice'|trans }}
-    {{ 'login.privacy-policy-text'|trans }}<a href="https://www.utwente.nl/en/about-our-website/" target="_blank" class="no-block">{{ 'login.privacy-policy'|trans|lower }}</a>.
-  </p>
-
-  <p>{{ 'app.delete-notice'|trans }}</p>
+  {% block delete_notice %}
+    <p>{{ 'app.delete-notice'|trans }}</p>
+  {% endblock %}
 
   <div class="license-notice">
     <div class="license-image"></div>

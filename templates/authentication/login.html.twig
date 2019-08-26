@@ -1,7 +1,10 @@
 {% extends 'default/landing.html.twig' %}
 
 {% block enter %}
-  <p class="card-text">{{ 'login.login-text'|trans }}</p>
+  <p class="card-text">{{ 'login.login-text'|trans }} {{ 'login.privacy-policy-text'|trans }}
+    <a href="https://www.utwente.nl/en/about-our-website/" target="_blank" class="no-block">
+      {{ 'login.privacy-policy'|trans|lower }}</a>.
+  </p>
 
   {% from '_layout/flashbags.html.twig' import flashbag_alert %}
 
@@ -40,6 +43,9 @@
   </div>
 {% endblock %}
 
+{% block delete_notice %}
+{% endblock %}
+
 {% block javascripts_bottom %}
   {{ parent() }}
   <script type="text/javascript">
@@ -50,24 +56,27 @@
       }, 100);
     }
 
+    function updateTabHeight() {
+      // Fixate the tab height
+      var maxHeight = 0;
+      $('.tab-content .tab-pane').each(function () {
+        $(this).addClass('active');
+        var height = $(this).height();
+        maxHeight = height > maxHeight ? height : maxHeight;
+        $(this).removeClass('active');
+      });
+      {% if formActive %}
+      $('#tab-custom-account').addClass('active');
+      focusLoginForm();
+      {% else %}
+      $('.tab-content .tab-pane:first').addClass('active');
+      {% endif %}
+      $('.tab-content').height(maxHeight);
+    }
+
     $(function () {
-      setTimeout(function () {
-        // Fixate the tab height
-        var maxHeight = 0;
-        $('.tab-content .tab-pane').each(function () {
-          $(this).addClass('active');
-          var height = $(this).height();
-          maxHeight = height > maxHeight ? height : maxHeight;
-          $(this).removeClass('active');
-        });
-        {% if formActive %}
-        $('#tab-custom-account').addClass('active');
-        focusLoginForm();
-        {% else %}
-        $('.tab-content .tab-pane:first').addClass('active');
-        {% endif %}
-        $('.tab-content').height(maxHeight);
-      }, 100);
+      setTimeout(updateTabHeight, 100);
+      window.onresize = updateTabHeight;
     });
   </script>
 {% endblock %}

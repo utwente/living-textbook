@@ -2,11 +2,15 @@
 @import '~bootstrap/scss/_variables.scss';
 
 .license-notice {
-  margin-top: 3 * $spacer;
+  margin-top: $spacer;
+  display: flex;
 
   > .license-image {
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-top: $spacer / 2;
     height: 2rem;
-    max-width: 25%;
+    width: 6.5rem;
     background: url('../../img/footer/license.svg') no-repeat bottom left;
     background-size: contain;
   }

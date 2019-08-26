@@ -53,7 +53,7 @@ annotations:
 
 app:
   dashboard: 'Dashboard'
-  delete-notice: 'If you create your private study area in this application, please note that these might be deleted after 6 months of inactivity'
+  delete-notice: 'If you create your private study area in this application, please note that these might be deleted after 6 months of inactivity.'
   user-tracking-notice: 'By entering this website you agree that we use software to track user activity. This information is only available to the administrator and is only used to improve and develop the Living Textbook learning environment in general. Personal data will not be available for anyone to see or saved.'
   welcome: 'Welcome to the Living Textbook learning environment'
   welcome-text: 'In this environment you can browse "bodies of knowledge" composed by experts or start creating one of your own.'
@@ -307,7 +307,7 @@ login:
   logout: 'Logout'
   password: 'Password'
   privacy-policy: 'Privacy policy'
-  privacy-policy-text: 'By logging in, you also accept our general '
+  privacy-policy-text: 'By logging in, you accept our general '
   surfconext: 'University login'
   surfconext-login-text: 'Click on the image to login with your university credentials.'
   surfconext-login: 'SURFconext login'
