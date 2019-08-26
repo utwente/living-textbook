@@ -37,6 +37,31 @@
   {{ select2_optgroup_css() }}
 {% endblock %}
 
+{% block javascripts_bottom %}
+  <script type="text/javascript">
+    // Load toggle behavior
+    $(function () {
+      var $elems = $('.concept-group-toggle[data-toggle="collapse"]');
+      $elems.each(function () {
+        var $button = $(this);
+        var $target = $($button.data('target'));
+        $target.on('show.bs.collapse', function () {
+          $(this).addClass('collapse-opening');
+          $button.closest('tr').find('.fa-folder-open').removeClass('d-none').addClass('d-inline-block');
+          $button.closest('tr').find('.fa-folder').addClass('d-none').removeClass('d-inline-block');
+        });
+        $target.on('hide.bs.collapse', function () {
+          $button.closest('tr').find('.fa-folder-open').addClass('d-none').removeClass('d-inline-block');
+          $button.closest('tr').find('.fa-folder').removeClass('d-none').addClass('d-inline-block');
+        });
+        $target.on('shown.bs.collapse', function () {
+          $(this).removeClass('collapse-opening');
+        });
+      });
+    });
+  </script>
+{% endblock %}
+
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {{ buttons.header() }}
@@ -185,27 +210,6 @@
         // Register event handler for changes
         window.addEventListener('tracking_consent', function (evt) {
           loadTrackingConsent(evt.detail);
-        });
-      });
-
-      // Load toggle behavior
-      $(function () {
-        var $elems = $('.concept-group-toggle[data-toggle="collapse"]');
-        $elems.each(function () {
-          var $button = $(this);
-          var $target = $($button.data('target'));
-          $target.on('show.bs.collapse', function () {
-            $(this).addClass('collapse-opening');
-            $button.closest('tr').find('.fa-folder-open').removeClass('d-none').addClass('d-inline-block');
-            $button.closest('tr').find('.fa-folder').addClass('d-none').removeClass('d-inline-block');
-          });
-          $target.on('hide.bs.collapse', function () {
-            $button.closest('tr').find('.fa-folder-open').addClass('d-none').removeClass('d-inline-block');
-            $button.closest('tr').find('.fa-folder').removeClass('d-none').addClass('d-inline-block');
-          });
-          $target.on('shown.bs.collapse', function () {
-            $(this).removeClass('collapse-opening');
-          });
         });
       });
     </script>
