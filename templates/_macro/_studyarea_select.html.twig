@@ -1,0 +1,17 @@
+{% macro select2_optgroup_css() %}
+  <style type="text/css">
+    .select2-results .select2-results__group {
+      color: black;
+    }
+
+    .select2-results .select2-results__group::before {
+      content: "\f07c";
+      font-family: FontAwesome;
+      padding-right: 0.5rem;
+    }
+
+    .select2-results .select2-results__options--nested li {
+      padding-left: 2.125rem !important;
+    }
+  </style>
+{% endmacro %}

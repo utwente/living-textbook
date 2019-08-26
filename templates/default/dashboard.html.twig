@@ -32,6 +32,9 @@
       top: 40%
     }
   </style>
+
+  {% from '_macro/_studyarea_select.html.twig' import select2_optgroup_css as select2_optgroup_css %}
+  {{ select2_optgroup_css() }}
 {% endblock %}
 
 {% block before_title %}
