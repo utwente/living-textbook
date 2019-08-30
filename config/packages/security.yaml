@@ -30,7 +30,7 @@ security:
         password_parameter: "login[_password]"
       logout:
         path:   logout
-        target: _home
+        target: login
 
   access_control:
     - { path: ^/_wdt/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
