@@ -6,6 +6,7 @@ use App\Annotation\DenyOnFrozenStudyArea;
 use App\DuplicationUtils\StudyAreaDuplicator;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
@@ -24,6 +25,7 @@ use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use InvalidArgumentException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -104,19 +106,22 @@ class DataController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param SerializerInterface    $serializer
-   * @param TranslatorInterface    $translator
-   * @param EntityManagerInterface $em
-   * @param RelationTypeRepository $relationTypeRepo
-   * @param ValidatorInterface     $validator
+   * @param Request                   $request
+   * @param RequestStudyArea          $requestStudyArea
+   * @param SerializerInterface       $serializer
+   * @param TranslatorInterface       $translator
+   * @param EntityManagerInterface    $em
+   * @param RelationTypeRepository    $relationTypeRepo
+   * @param ValidatorInterface        $validator
+   * @param LearningOutcomeRepository $learningOutcomeRepository
    *
    * @return array
+   * @throws NonUniqueResultException
    */
-  public function upload(Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
-                         EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
-                         LearningOutcomeRepository $learningOutcomeRepository)
+  public function upload(
+      Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
+      EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
+      LearningOutcomeRepository $learningOutcomeRepository)
   {
     $form = $this->createForm(JsonUploadType::class, ['studyArea' => $requestStudyArea->getStudyArea()]);
     $form->handleRequest($request);
@@ -140,8 +145,8 @@ class DataController extends AbstractController
           }
 
           // Check fields
-          if (!array_key_exists('nodes', $jsonData) ||
-              !array_key_exists('links', $jsonData)
+          if (!array_key_exists('nodes', $jsonData) || !is_array($jsonData['nodes']) ||
+              !array_key_exists('links', $jsonData) || !is_array($jsonData['links'])
           ) {
             throw new InvalidArgumentException();
           }
@@ -212,11 +217,16 @@ class DataController extends AbstractController
           }
 
           if (array_key_exists('learning_outcomes', $jsonData)) {
+            if (!is_array($jsonData['learning_outcomes'])) {
+              throw new InvalidArgumentException();
+            }
+
             $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
             foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
               if (!array_key_exists('label', $jsonLearningOutcome) ||
                   !array_key_exists('definition', $jsonLearningOutcome) ||
-                  !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome)) {
+                  !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome) ||
+                  !is_array($jsonLearningOutcome['isLearningOutcomeOf'])) {
                 throw new InvalidArgumentException();
               }
 
@@ -233,6 +243,42 @@ class DataController extends AbstractController
               };
               $em->persist($learningOutcome);
               $learningOutcomeNumber++;
+            }
+          }
+
+          if (array_key_exists('external_resources', $jsonData)) {
+            if (!is_array($jsonData['external_resources'])) {
+              throw new InvalidArgumentException();
+            }
+
+            foreach ($jsonData['external_resources'] as $jsonExternalResource) {
+              if (!array_key_exists('name', $jsonExternalResource) ||
+                  !array_key_exists('isExternalResourceOf', $jsonExternalResource) ||
+                  !is_array($jsonExternalResource['isExternalResourceOf'])) {
+                throw new InvalidArgumentException();
+              }
+
+              // Create the external resource
+              $externalResource = (new ExternalResource())
+                  ->setTitle($jsonExternalResource['name'])
+                  ->setStudyArea($studyArea);
+              if (array_key_exists('description', $jsonExternalResource)) {
+                $externalResource->setDescription($jsonExternalResource['description']);
+              }
+              if (array_key_exists('url', $jsonExternalResource)) {
+                $externalResource->setUrl($jsonExternalResource['url']);
+              }
+
+              // Map to related concepts
+              foreach ($jsonExternalResource['isExternalResourceOf'] as $linkedConceptKey) {
+                $concepts[$linkedConceptKey]->addExternalResource($externalResource);
+              }
+
+              // Validate & persist
+              if (count($validator->validate($externalResource)) > 0) {
+                throw new InvalidArgumentException();
+              };
+              $em->persist($externalResource);
             }
           }
 
