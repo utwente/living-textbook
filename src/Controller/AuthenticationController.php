@@ -25,7 +25,7 @@ class AuthenticationController extends AbstractController
    *
    * This route is defined in the routes.yml in order to remove the _locale requirement
    *
-   * @Route("/login_check", name="login_check")
+   * @Route("/login_check", name="login_check", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @return Response
@@ -43,7 +43,7 @@ class AuthenticationController extends AbstractController
    * This controller render the default login page, which shows the option to login with SURFconext
    * or with an local account.
    *
-   * @Route("/login", name="login")
+   * @Route("/login", name="login", options={"no_login_wrap"=true})
    * @Template
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
@@ -89,7 +89,7 @@ class AuthenticationController extends AbstractController
   /**
    * This controller forward the user to the SURFconext login
    *
-   * @Route("/login_surf", name="login_surf")
+   * @Route("/login_surf", name="login_surf", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param SessionInterface $session

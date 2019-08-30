@@ -51,9 +51,9 @@ class DefaultController extends AbstractController
   /**
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},
    *                                        requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home",
-   *                                        options={"expose"=true})
+   *                                        options={"expose"=true, "no_login_wrap"=true})
    * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"},
-   *                           name="_home_simple")
+   *                           name="_home_simple", options={"no_login_wrap"=true})
    * @Template("double_column.html.twig")
    * @IsGranted("ROLE_USER")
    *
@@ -89,8 +89,8 @@ class DefaultController extends AbstractController
   }
 
   /**
-   * @Route("/")
-   * @Route("", name="base_url")
+   * @Route("/", options={"no_login_wrap"=true})
+   * @Route("", name="base_url", options={"no_login_wrap"=true})
    * @Template()
    * @IsGranted("ROLE_USER")
    *

@@ -23,7 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadsController extends AbstractController
 {
   /**
-   * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"})
+   * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"},
+   *                                          options={"no_login_wrap"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @param Request          $request

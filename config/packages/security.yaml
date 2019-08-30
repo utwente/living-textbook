@@ -21,9 +21,11 @@ security:
       oidc:
         check_path: login_check
         login_path: login
+        success_handler: App\Security\Http\Authentication\AuthenticationSuccessHandler
       form_login:
         check_path: login_check
         login_path: login
+        success_handler: App\Security\Http\Authentication\AuthenticationSuccessHandler
         username_parameter: "login[_username]"
         password_parameter: "login[_password]"
       logout:

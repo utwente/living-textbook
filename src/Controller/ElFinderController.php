@@ -22,7 +22,7 @@ class ElFinderController extends AbstractController
 {
 
   /**
-   * @Route("/load/{instance}", defaults={"instance"="default"}, name="ef_connect")
+   * @Route("/load/{instance}", defaults={"instance"="default"}, name="ef_connect", options={"no_login_wrap"=true})
    * @IsGranted("ROLE_USER")
    *
    * @param Request             $request
@@ -53,7 +53,8 @@ class ElFinderController extends AbstractController
   }
 
   /**
-   * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default"}, name="elfinder")
+   * @Route("/show/{instance}/{studyArea}", defaults={"instance"="default"}, name="elfinder",
+   *                                        options={"no_login_wrap"=true})
    * @IsGranted("ROLE_USER")
    *
    * @param Request   $request
