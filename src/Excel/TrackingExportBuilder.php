@@ -195,14 +195,14 @@ class TrackingExportBuilder
 
   /**
    * @param Worksheet            $sheet
-   * @param iterable             $context
+   * @param iterable|null        $context
    * @param array                $contextMap
    * @param int                  $row
    * @param                      $column
    */
-  private function mapContextElements(Worksheet &$sheet, int &$column, int $row, iterable $context, array $contextMap): void
+  private function mapContextElements(Worksheet &$sheet, int &$column, int $row, ?iterable $context, array $contextMap): void
   {
-    foreach ($context as $cKey => $cItem) {
+    foreach ($context ?? [] as $cKey => $cItem) {
       $cKey = strtolower($cKey);
 
       if (!array_key_exists($cKey, $contextMap)) {

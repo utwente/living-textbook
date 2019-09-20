@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -70,11 +71,28 @@ class TrackingController extends AbstractController
     return $this->processTrackingItem(
         Pageload::class,
         function (PageLoad $pageLoad, StudyArea $studyArea, User $user) use ($router) {
+          $pathContext = NULL;
+          try {
+            $pathContext = $router->match($pageLoad->getPath());
+          } catch (ResourceNotFoundException $e) {
+            // Try to resolve the path context, set empty context when route not found
+          }
+
+          $originContext = NULL;
+          if ($pageLoad->getOrigin()) {
+            try {
+              $originContext = $router->match($pageLoad->getOrigin());
+            } catch (ResourceNotFoundException $e) {
+              // Try to resolve the origin context, but ignore when not matched
+            }
+          }
+
+          // Set the updated data
           $pageLoad
               ->setStudyArea($studyArea)
               ->setUserId($user->getUsername())
-              ->setPathContext($router->match($pageLoad->getPath()))
-              ->setOriginContext($pageLoad->getOrigin() ? $router->match($pageLoad->getOrigin()) : NULL);
+              ->setPathContext($pathContext)
+              ->setOriginContext($originContext);
         },
         $request, $requestStudyArea, $em, $serializer, $validator);
   }
