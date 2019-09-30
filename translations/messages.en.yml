@@ -255,6 +255,9 @@ general:
   no-browser-warning: "You've loaded this page without map support, so map tools will not work. Open this page <a href=%url%>with map</a> instead."
   reloading: "Reloading"
 
+help:
+  title: "Help"
+
 learning-outcome:
   add-title: 'Add new learning outcome'
   edit-title: 'Edit learning outcome "%item%"'
