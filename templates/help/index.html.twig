@@ -5,5 +5,11 @@
 {% endblock %}
 
 {% block content %}
-  Help?
+  {% if help.content is empty %}
+    {{ 'help.no-content'|trans }}
+  {% else %}
+    <div class="ltb-text-container">
+      {{ help.content|striptags(allowed_ckeditor_tags)|raw }}
+    </div>
+  {% endif %}
 {% endblock %}

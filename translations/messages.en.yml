@@ -256,6 +256,7 @@ general:
   reloading: "Reloading"
 
 help:
+  no-content: "There is no help content available yet."
   title: "Help"
 
 learning-outcome:
