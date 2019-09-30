@@ -17,18 +17,23 @@ class CkEditorType extends AbstractType
 {
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setRequired('studyArea')
-        ->setAllowedTypes('studyArea', StudyArea::class)
+    $resolver
+        ->setDefault('studyArea', NULL)
+        ->setAllowedTypes('studyArea', ['null', StudyArea::class])
         ->setDefault('config', function (Options $options) {
+          if ($options['studyArea'] === NULL) {
+            return [];
+          }
+
           return [
               'filebrowserBrowseRouteParameters' => [
                 // If not given, route generation will fail. In case of 0, the button should be hidden anyways
-                  'studyArea' => $options['studyArea']->getId() ?? 0,
+                  'studyAreaId' => $options['studyArea']->getId() ?? 0,
               ],
           ];
         })
         ->setNormalizer('config_name', function (Options $options, $value) {
-          if ($value === 'ltb_config' && $options['studyArea']->getId() === NULL) {
+          if ($value === 'ltb_config' && ($options['studyArea'] !== NULL && $options['studyArea']->getId() === NULL)) {
             return 'ltb_no_image';
           }
 

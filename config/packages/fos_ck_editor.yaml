@@ -27,6 +27,11 @@ fos_ck_editor:
     ltb_concept_config:
       <<: *ckeditor_default
       extraPlugins: "image2,wordcount,latexeditor,abbreviationselector,conceptselector,ltbbuttons"
+    ltb_help:
+      <<: *ckeditor_default
+      extraPlugins: "image2,wordcount,ltbbuttons"
+      filebrowserBrowseRouteParameters:
+        studyAreaId: 0
   toolbars:
     configs:
       ltb_toolbar: [ "@text_tools", "@ltb_tools", "/", "@font_tools", "@edit_tools" ]

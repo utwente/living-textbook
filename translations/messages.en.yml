@@ -256,7 +256,10 @@ general:
   reloading: "Reloading"
 
 help:
+  content: "Content"
+  edit-title: "Edit help"
   no-content: "There is no help content available yet."
+  updated: "The help has been updated successfully!"
   title: "Help"
 
 learning-outcome:

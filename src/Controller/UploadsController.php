@@ -7,6 +7,7 @@ use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -36,13 +37,43 @@ class UploadsController extends AbstractController
   public function load(Request $request, RequestStudyArea $requestStudyArea, string $path)
   {
     // Create path from request
-    $fs            = new Filesystem();
     $requestedFile = sprintf('%s/public/uploads/studyarea/%s/%s',
         $this->getParameter("kernel.project_dir"),
         $requestStudyArea->getStudyArea()->getId(),
         $path);
 
+    return $this->getFile($request, $requestedFile);
+  }
+
+  /**
+   * @Route("/global/{path}", options={"no_login_wrap"=true})
+   * @IsGranted("ROLE_USER")
+   *
+   * @param Request $request
+   * @param string  $path
+   *
+   * @return Response
+   */
+  public function loadGlobal(Request $request, string $path)
+  {
+    // Create path from request
+    $requestedFile = sprintf('%s/public/uploads/global/%s',
+        $this->getParameter("kernel.project_dir"),
+        $path);
+
+    return $this->getFile($request, $requestedFile);
+  }
+
+  /**
+   * @param Request $request
+   * @param string  $requestedFile
+   *
+   * @return BinaryFileResponse
+   */
+  private function getFile(Request $request, string $requestedFile): BinaryFileResponse
+  {
     // Check if path exists
+    $fs = new Filesystem();
     if (!$fs->exists($requestedFile)) {
       throw $this->createNotFoundException();
     }
