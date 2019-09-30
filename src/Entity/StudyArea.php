@@ -721,6 +721,14 @@ class StudyArea
   }
 
   /**
+   * @return int|null
+   */
+  public function getGroupId(): ?int
+  {
+    return $this->group ? $this->group->getId() : NULL;
+  }
+
+  /**
    * @param StudyAreaGroup|null $group
    *
    * @return StudyArea

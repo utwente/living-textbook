@@ -95,17 +95,20 @@ class DefaultController extends AbstractController
    * @IsGranted("ROLE_USER")
    *
    * @param FormFactoryInterface $formFactory
+   * @param TranslatorInterface  $translator
    * @param StudyAreaRepository  $studyAreaRepository
    *
    * @return array
    */
-  public function landing(FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository)
+  public function landing(
+      FormFactoryInterface $formFactory, TranslatorInterface $translator, StudyAreaRepository $studyAreaRepository)
   {
     $user       = $this->getUser();
     $studyAreas = $studyAreaRepository->getVisible($this->getUser());
 
     // Only show select form when there is more than 1 visible study area
-    $studyAreaForm = count($studyAreas) > 1 ? $this->createStudyAreaForm($formFactory, $user, NULL, 'dashboard.open') : NULL;
+    $studyAreaForm = count($studyAreas) > 1
+        ? $this->createStudyAreaForm($formFactory, $translator, $user, NULL, 'dashboard.open') : NULL;
 
     return [
         'studyAreaForm' => $studyAreaForm ? $studyAreaForm->createView() : NULL,
@@ -128,26 +131,27 @@ class DefaultController extends AbstractController
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    * @param LearningPathRepository     $learningPathRepo
    * @param UrlChecker                 $urlChecker
+   * @param TranslatorInterface        $translator
    *
    * @return array
    *
-   * @throws NonUniqueResultException
    * @throws InvalidArgumentException
-   *
+   * @throws NonUniqueResultException
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function dashboard(
       RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
       ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo, AbbreviationRepository $abbreviationRepository,
       ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-      LearningPathRepository $learningPathRepo, UrlChecker $urlChecker)
+      LearningPathRepository $learningPathRepo, UrlChecker $urlChecker, TranslatorInterface $translator)
   {
     $user       = $this->getUser();
     $studyArea  = $requestStudyArea->getStudyArea();
     $studyAreas = $studyAreaRepository->getVisible($this->getUser());
 
     // Only show switch form when there is more than 1 visible study area
-    $studyAreaForm = count($studyAreas) > 1 ? $this->createStudyAreaForm($formFactory, $user, $studyArea) : NULL;
+    $studyAreaForm = count($studyAreas) > 1
+        ? $this->createStudyAreaForm($formFactory, $translator, $user, $studyArea) : NULL;
 
     $conceptForm = $formFactory->createNamedBuilder('concept_form')
         ->add('concept', EntityType::class, [
@@ -306,24 +310,28 @@ class DefaultController extends AbstractController
 
   /**
    * @param FormFactoryInterface $formFactory
+   * @param TranslatorInterface  $translator
    * @param User                 $user
    * @param StudyArea|null       $studyArea
    * @param string               $buttonLabel
    *
    * @return FormInterface
    */
-  private function createStudyAreaForm(FormFactoryInterface $formFactory, User $user, ?StudyArea $studyArea,
-                                       string $buttonLabel = 'study-area.switch-to'): FormInterface
+  private function createStudyAreaForm(
+      FormFactoryInterface $formFactory, TranslatorInterface $translator,
+      User $user, ?StudyArea $studyArea, string $buttonLabel = 'study-area.switch-to'): FormInterface
   {
+    $defaultGroupName = $translator->trans('study-area.groups.default-name');
+
     return $formFactory->createNamedBuilder('studyarea_form')
         ->add('studyArea', EntityType::class, [
             'placeholder'   => 'dashboard.select-one',
             'hide_label'    => true,
             'class'         => StudyArea::class,
             'select2'       => true,
-            'group_by'      => function (StudyArea $studyArea) {
+            'group_by'      => function (StudyArea $studyArea) use ($defaultGroupName) {
               if (!$studyArea->getGroup()) {
-                return NULL;
+                return $defaultGroupName;
               }
 
               return $studyArea->getGroup()->getName();

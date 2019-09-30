@@ -93,7 +93,11 @@ class StudyAreaRepository extends ServiceEntityRepository
     $qb = $this->createQueryBuilder('sa')
         ->leftJoin('sa.group', 'g')
         ->addSelect('g')
-        ->orderBy('g.name', 'ASC')
+        // Special hidden select to move null groups to the end of the query result
+        // https://stackoverflow.com/questions/12652034/how-can-i-order-by-null-in-dql
+        ->addSelect('CASE WHEN g.name IS NULL THEN 1 ELSE 0 END HIDDEN _isFieldNull')
+        ->orderBy('_isFieldNull', 'ASC')
+        ->addOrderBy('g.name', 'ASC')
         ->addOrderBy('sa.name', 'ASC');
 
     // Return everything for super admins
