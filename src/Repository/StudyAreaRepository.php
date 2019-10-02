@@ -42,11 +42,11 @@ class StudyAreaRepository extends ServiceEntityRepository
   /**
    * Retrieve the visible study area's
    *
-   * @param User $user
+   * @param User|null $user
    *
    * @return StudyArea[]|Collection
    */
-  public function getVisible(User $user)
+  public function getVisible(?User $user)
   {
     return $this->getVisibleQueryBuilder($user)->getQuery()->getResult();
   }
@@ -54,11 +54,11 @@ class StudyAreaRepository extends ServiceEntityRepository
   /**
    * Retrieve the first visible study area for the user
    *
-   * @param User $user
+   * @param User|null $user
    *
    * @return mixed|null
    */
-  public function getFirstVisible(User $user)
+  public function getFirstVisible(?User $user)
   {
     try {
       return $this->getVisibleQueryBuilder($user)->setMaxResults(1)->getQuery()->getOneOrNullResult();
@@ -84,11 +84,11 @@ class StudyAreaRepository extends ServiceEntityRepository
   /**
    * Retrieve QueryBuilder for the visible study area's
    *
-   * @param User $user
+   * @param User|null $user
    *
    * @return QueryBuilder
    */
-  public function getVisibleQueryBuilder(User $user)
+  public function getVisibleQueryBuilder(?User $user)
   {
     $qb = $this->createQueryBuilder('sa')
         ->leftJoin('sa.group', 'g')
@@ -103,6 +103,13 @@ class StudyAreaRepository extends ServiceEntityRepository
     // Return everything for super admins
     if ($this->auth->isGranted('ROLE_SUPER_ADMIN')) {
       return $qb;
+    }
+
+    // If user is not provided, only return open access study areas
+    if (!$user) {
+      return $qb
+          ->where('sa.openAccess = :openAccess')
+          ->setParameter('openAccess', true);
     }
 
     return $qb

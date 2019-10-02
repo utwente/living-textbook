@@ -128,6 +128,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         // Try to find a visible study area
         $token = $this->tokenStorage->getToken();
         if ($token !== NULL && ($user = $token->getUser()) instanceof User) {
+          /** @var User $user */
           if (NULL !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
             assert($studyArea instanceof StudyArea);
             $studyAreaId     = $studyArea->getId();

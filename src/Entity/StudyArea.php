@@ -177,6 +177,15 @@ class StudyArea
   private $group;
 
   /**
+   * Open access
+   *
+   * @var bool
+   *
+   * @ORM\Column(type="boolean", nullable=false)
+   */
+  private $openAccess;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -186,6 +195,7 @@ class StudyArea
     $this->userGroups = new ArrayCollection();
     $this->accessType = self::ACCESS_PRIVATE;
     $this->trackUsers = false;
+    $this->openAccess = false;
   }
 
   /**
@@ -736,6 +746,26 @@ class StudyArea
   public function setGroup(?StudyAreaGroup $group): self
   {
     $this->group = $group;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isOpenAccess(): bool
+  {
+    return $this->openAccess;
+  }
+
+  /**
+   * @param bool $openAccess
+   *
+   * @return StudyArea
+   */
+  public function setOpenAccess(bool $openAccess): self
+  {
+    $this->openAccess = $openAccess;
 
     return $this;
   }
