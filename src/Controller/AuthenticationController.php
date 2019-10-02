@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Form\Authentication\LoginType;
+use Drenso\OidcBundle\Exception\OidcConfigurationException;
+use Drenso\OidcBundle\Exception\OidcConfigurationResolveException;
 use Drenso\OidcBundle\OidcClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -54,36 +54,8 @@ class AuthenticationController extends AbstractController
    */
   public function login(Request $request, TranslatorInterface $trans)
   {
-    if ($this->isGranted('ROLE_USER')) {
-      return $this->redirectToRoute('_home');
-    }
-
-    $session = $request->getSession();
-    $form    = $this->createForm(LoginType::class, array(
-        '_username' => $session->get(Security::LAST_USERNAME, ''),
-    ), array(
-        'action' => $this->generateUrl('login_check'),
-    ));
-
-    if ($session->has(Security::AUTHENTICATION_ERROR)) {
-      // Retrieve the error and remove it from the session
-      $authError = $session->get(Security::AUTHENTICATION_ERROR);
-      $session->remove(Security::AUTHENTICATION_ERROR);
-
-      // Check the actual error
-      if ($authError instanceof BadCredentialsException) {
-        // Bad credentials given
-        $this->addFlash('authError', $trans->trans('login.bad-credentials'));
-      } else {
-        // General error occurred
-        $this->addFlash('authError', $trans->trans('login.general-error'));
-      }
-    }
-
-    return [
-        'form'       => $form->createView(),
-        'formActive' => $session->get(Security::LAST_USERNAME, '') !== '',
-    ];
+    // Forward to landing for urls backwards compatibility
+    return $this->redirectToRoute('app_default_landing');
   }
 
   /**
@@ -97,8 +69,8 @@ class AuthenticationController extends AbstractController
    *
    * @return RedirectResponse
    *
-   * @throws \Drenso\OidcBundle\Exception\OidcConfigurationException
-   * @throws \Drenso\OidcBundle\Exception\OidcConfigurationResolveException
+   * @throws OidcConfigurationException
+   * @throws OidcConfigurationResolveException
    */
   public function surfconext(SessionInterface $session, OidcClient $oidc)
   {

@@ -29,10 +29,23 @@
 
   <p>{{ 'app.welcome-text'|trans }}</p>
 
-  {% block enter %}
-    {% if studyAreaForm is defined and studyAreaForm is not null %}
-      <h4>{{ 'dashboard.study-area-landing'|trans }}</h4>
+  {% if studyAreaCount > 0 %}
+
+    <h4>
+      {% if app.user %}
+        {{ 'dashboard.study-area-landing'|trans }}
+      {% else %}
+        {{ 'dashboard.study-area-open-access'|trans }}
+      {% endif %}
+    </h4>
+
+    {% if studyAreaForm is not null %}
+      {% if not app.user %}
+        <span>{{ 'dashboard.study-area-open-access-multiple'|trans }}</span>
+      {% endif %}
+
       {{ form_start(studyAreaForm) }}
+
       <div class="d-flex flex-row flex-wrap flex-md-no-wrap">
         <div class="mt-1 mw-md-100 flex-grow-1">
           {{ form_widget(studyAreaForm.studyArea) }}
@@ -55,22 +68,72 @@
 
       {{ form_end(studyAreaForm) }}
     {% else %}
-      <div class="row">
-        <div class="col-sm-12 col-md-5 col-xl-3 mt-1">
-          <a href="{{ path('_home') }}" class="btn btn-outline-primary">{{ 'dashboard.open'|trans }}</a>
-        </div>
-      </div>
-    {% endif %}
+      <p>{{ 'dashboard.study-area-open-access-single'|trans({'%name%': singleStudyArea.name}) }}</p>
 
-  {% endblock %}
+      <a href="{{ path('_home') }}" class="btn btn-outline-primary">{{ 'dashboard.open'|trans }}</a>
+    {% endif %}
+  {% endif %}
+
+  {% if app.user %}
+    <div class="spacer"></div>
+    <p>{{ 'app.delete-notice'|trans }}</p>
+  {% endif %}
 
   <div class="spacer"></div>
 
-  {% block delete_notice %}
-    {% if app.user %}
-      <p>{{ 'app.delete-notice'|trans }}</p>
+  {% if not app.user %}
+    {% if studyAreaCount != 0 %}
+      <h4>{{ 'login.login'|trans }}</h4>
     {% endif %}
-  {% endblock %}
+
+    <p class="card-text">
+      {% if studyAreaCount == 0 %}
+        {{ 'login.login-text-no-open-access'|trans }}
+      {% else %}
+        {{ 'login.login-text'|trans }}
+      {% endif %}
+      {{ 'login.privacy-policy-text'|trans }}
+      <a href="https://www.utwente.nl/en/about-our-website/" target="_blank" class="no-block">
+        {{ 'login.privacy-policy'|trans|lower }}</a>.
+    </p>
+
+    {% from '_layout/flashbags.html.twig' import flashbag_alert %}
+
+    {# Authentication error messages #}
+    {% for flashMessage in app.session.flashbag.get('authError') %}
+      {{ flashbag_alert('danger', flashMessage, 'fa-exclamation-triangle', false) }}
+    {% endfor %}
+
+    <ul class="nav nav-tabs nav-fill">
+      <li class="nav-item">
+        <a class="nav-link{% if not loginFormActive %} active{% endif %}"
+           id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab">
+          {{ 'login.surfconext'|trans }}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link{% if loginFormActive %} active{% endif %}"
+           onclick="focusLoginForm()"
+           id="tab-custom-account-button" href="#tab-custom-account" role="tab" data-toggle="tab">
+          {{ 'login.custom-account'|trans }}
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="login-option">
+      <div class="tab-pane" id="tab-surfconext" role="tabpanel" aria-labelledby="tab-surfconext-button">
+        <a href="{{ path('login_surf') }}" class="top-level" data-toggle="tooltip" data-placement="bottom"
+           title="{{ 'login.surfconext-login'|trans }}">
+          <div class="login-surfconext"></div>
+        </a>
+        <p class="card-text text-center">{{ 'login.surfconext-login-text'|trans }}</p>
+      </div>
+
+      <div class="tab-pane" id="tab-custom-account" role="tabpanel" aria-labelledby="tab-custom-account-button">
+        {{ form(loginForm, {'attr': {'target': '_parent'}}) }}
+      </div>
+    </div>
+
+  {% endif %}
 
   <div class="license-notice">
     <div class="license-image"></div>
@@ -79,4 +142,39 @@
     </p>
   </div>
 
+{% endblock %}
+
+{% block javascripts_bottom %}
+  {{ parent() }}
+  <script type="text/javascript">
+    // Focus form input
+    function focusLoginForm() {
+      setTimeout(function () {
+        $('#login__username').focus();
+      }, 100);
+    }
+
+    function updateTabHeight() {
+      // Fixate the tab height
+      var maxHeight = 0;
+      $('.tab-content .tab-pane').each(function () {
+        $(this).addClass('active');
+        var height = $(this).height();
+        maxHeight = height > maxHeight ? height : maxHeight;
+        $(this).removeClass('active');
+      });
+      {% if loginFormActive %}
+      $('#tab-custom-account').addClass('active');
+      focusLoginForm();
+      {% else %}
+      $('.tab-content .tab-pane:first').addClass('active');
+      {% endif %}
+      $('.tab-content').height(maxHeight);
+    }
+
+    $(function () {
+      setTimeout(updateTabHeight, 100);
+      window.onresize = updateTabHeight;
+    });
+  </script>
 {% endblock %}

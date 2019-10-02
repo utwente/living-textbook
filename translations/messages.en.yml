@@ -140,6 +140,9 @@ dashboard:
   study-area-contains: 'This study area has:'
   study-area-frozen: 'The data in this study area has been locked since %since%.'
   study-area-landing: 'Select a study area to start with'
+  study-area-open-access: 'Open access content'
+  study-area-open-access-single: 'You can browse the open access "%name%" area.'
+  study-area-open-access-multiple: 'You can select an open access area to browse below.'
   study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
   url-count: '{0} No URLs|{1} One URL of which %brokenCount% broken|]1,Inf[ %count% URLs of which %brokenCount% broken'
@@ -309,7 +312,9 @@ login:
   custom-account: 'Local account'
   general-error: 'Login failed due to an unknown error.'
   login: 'Login'
-  login-text: 'Before you can continue and work with the living textbook, you will need to login.
+  login-text: 'In order to view more content (and create your own) in the living textbook, you will need to login.
+      You can either log in using your university credentials (SURFconext) or an account specifically created for you.'
+  login-text-no-open-access: 'Before you can continue and work with the living textbook, you will need to login.
     You can either log in using your university credentials (SURFconext) or an account specifically created for you.'
   logout: 'Logout'
   password: 'Password'

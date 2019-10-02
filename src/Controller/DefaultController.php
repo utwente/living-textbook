@@ -8,6 +8,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Form\Authentication\LoginType;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
@@ -29,10 +30,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefaultController extends AbstractController
@@ -95,6 +99,7 @@ class DefaultController extends AbstractController
    * @Template()
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
+   * @param Request              $request
    * @param FormFactoryInterface $formFactory
    * @param TranslatorInterface  $translator
    * @param StudyAreaRepository  $studyAreaRepository
@@ -102,22 +107,50 @@ class DefaultController extends AbstractController
    * @return array|Response
    */
   public function landing(
-      FormFactoryInterface $formFactory, TranslatorInterface $translator, StudyAreaRepository $studyAreaRepository)
+      Request $request, FormFactoryInterface $formFactory, TranslatorInterface $translator,
+      StudyAreaRepository $studyAreaRepository)
   {
-    $user       = $this->getUser();
-    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
+    $user    = $this->getUser();
+    $session = $request->getSession();
 
-    // Forward to login when there are no anonymous areas available
-    if (!$user && count($studyAreas) === 0) {
-      return $this->redirectToRoute('login');
+    // When there is no user, render the login form
+    if (!$user) {
+      $loginForm = $this->createForm(LoginType::class, array(
+          '_username' => $session->get(Security::LAST_USERNAME, ''),
+      ), array(
+          'action' => $this->generateUrl('login_check'),
+      ));
+
+      // Retrieve the error and remove it from the session
+      if ($session->has(Security::AUTHENTICATION_ERROR)) {
+        $authError = $session->get(Security::AUTHENTICATION_ERROR);
+        $session->remove(Security::AUTHENTICATION_ERROR);
+
+        // Check the actual error
+        if ($authError instanceof BadCredentialsException) {
+          // Bad credentials given
+          $this->addFlash('authError', $translator->trans('login.bad-credentials'));
+        } else {
+          // General error occurred
+          $this->addFlash('authError', $translator->trans('login.general-error'));
+        }
+      }
     }
 
+    // Retrieve available study areas (not authenticated users can have them as well!)
+    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
+
     // Only show select form when there is more than 1 visible study area
-    $studyAreaForm = count($studyAreas) > 1
+    $studyAreaCount = count($studyAreas);
+    $studyAreaForm  = $studyAreaCount > 1
         ? $this->createStudyAreaForm($formFactory, $translator, $user, NULL, 'dashboard.open') : NULL;
 
     return [
-        'studyAreaForm' => $studyAreaForm ? $studyAreaForm->createView() : NULL,
+        'loginForm'       => isset($loginForm) ? $loginForm->createView() : NULL,
+        'loginFormActive' => $session->get(Security::LAST_USERNAME, '') !== '',
+        'singleStudyArea' => count($studyAreas) === 1 ? reset($studyAreas) : NULL,
+        'studyAreaCount'  => $studyAreaCount,
+        'studyAreaForm'   => $studyAreaForm ? $studyAreaForm->createView() : NULL,
     ];
   }
 
