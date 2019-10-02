@@ -81,15 +81,17 @@ class SearchController extends AbstractController
     $result['learningOutcomeData']  = $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search);
 
     // Retrieve annotation data, which is easier to do here
-    $user           = $this->getUser();
-    $userId         = $user->getId();
-    $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
-    $ownAnnotations = array_filter($allAnnotations, function (Annotation $annotation) use ($userId) {
-      return $annotation->getUserId() == $userId;
-    });
+    $user = $this->getUser();
+    if ($user) {
+      $userId         = $user->getId();
+      $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
+      $ownAnnotations = array_filter($allAnnotations, function (Annotation $annotation) use ($userId) {
+        return $annotation->getUserId() == $userId;
+      });
 
-    $result['ownAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($ownAnnotations, $search));
-    $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
+      $result['ownAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($ownAnnotations, $search));
+      $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
+    }
 
     return $result;
   }

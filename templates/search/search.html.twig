@@ -54,22 +54,24 @@
         {{ 'search.result.learning-outcomes'|trans }}
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
-        and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
-         id="tab-own-annotations-button" href="#tab-own-annotations" role="tab"
-         data-toggle="tab">
-        {{ 'search.result.own-annotations'|trans }}
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
-        and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
-         id="tab-all-annotations-button" href="#tab-all-annotations" role="tab"
-         data-toggle="tab">
-        {{ 'search.result.all-annotations'|trans }}
-      </a>
-    </li>
+    {% if app.user %}
+      <li class="nav-item">
+        <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+          and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
+           id="tab-own-annotations-button" href="#tab-own-annotations" role="tab"
+           data-toggle="tab">
+          {{ 'search.result.own-annotations'|trans }}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+          and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
+           id="tab-all-annotations-button" href="#tab-all-annotations" role="tab"
+           data-toggle="tab">
+          {{ 'search.result.all-annotations'|trans }}
+        </a>
+      </li>
+    {% endif %}
   </ul>
 
   <div class="tab-content" id="search-options">
@@ -215,27 +217,29 @@
       {% endif %}
     </div>
 
-    <div
-        class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
-          and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
-        id="tab-own-annotations" role="tabpanel" aria-labelledby="tab-own-annotations-button">
-      {% if ownAnnotationsData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.own-annotations'|trans|lower }) }}</p>
-      {% else %}
-        {{ annotationResults(search, ownAnnotationsData) }}
-      {% endif %}
-    </div>
+    {% if app.user %}
+      <div
+          class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+            and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
+          id="tab-own-annotations" role="tabpanel" aria-labelledby="tab-own-annotations-button">
+        {% if ownAnnotationsData|length == 0 %}
+          <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.own-annotations'|trans|lower }) }}</p>
+        {% else %}
+          {{ annotationResults(search, ownAnnotationsData) }}
+        {% endif %}
+      </div>
 
-    <div
-        class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
-          and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
-        id="tab-all-annotations" role="tabpanel" aria-labelledby="tab-all-annotations-button">
-      {% if allAnnotationsData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.all-annotations'|trans|lower }) }}</p>
-      {% else %}
-        {{ annotationResults(search, allAnnotationsData) }}
-      {% endif %}
-    </div>
+      <div
+          class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+            and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
+          id="tab-all-annotations" role="tabpanel" aria-labelledby="tab-all-annotations-button">
+        {% if allAnnotationsData|length == 0 %}
+          <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.all-annotations'|trans|lower }) }}</p>
+        {% else %}
+          {{ annotationResults(search, allAnnotationsData) }}
+        {% endif %}
+      </div>
+    {% endif %}
   </div>
 {% endblock %}
 

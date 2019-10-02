@@ -16,6 +16,7 @@ class StudyAreaVoter extends Voter
   const OWNER = 'STUDYAREA_OWNER';
   const SHOW = 'STUDYAREA_SHOW';
   const EDIT = 'STUDYAREA_EDIT';
+  const ANNOTATE = 'STUDYAREA_ANNOTATE';
 
   /** @var AccessDecisionManagerInterface */
   private $decisionManager;
@@ -102,6 +103,12 @@ class StudyAreaVoter extends Voter
         return $subject->isVisible($user);
       case self::EDIT:
         return $subject->isEditable($user);
+      case self::ANNOTATE:
+        if (!$user) {
+          return false;
+        }
+
+        return $subject->isVisible($user);
     }
 
     throw new \LogicException('This code should not be reached!');
@@ -116,6 +123,7 @@ class StudyAreaVoter extends Voter
         self::OWNER,
         self::SHOW,
         self::EDIT,
+        self::ANNOTATE,
     ];
   }
 }

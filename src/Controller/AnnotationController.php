@@ -31,7 +31,7 @@ class AnnotationController extends AbstractController
 
   /**
    * @Route("/{concept}/all", requirements={"concept"="\d+"}, options={"expose"="true"})
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @param RequestStudyArea     $requestStudyArea
    * @param Concept              $concept
@@ -59,7 +59,7 @@ class AnnotationController extends AbstractController
 
   /**
    * @Route("/{concept}/add", requirements={"concept"="\d+"}, methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -113,7 +113,7 @@ class AnnotationController extends AbstractController
   /**
    * @Route("/{concept}/annotation/{annotation}/comment", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -178,7 +178,7 @@ class AnnotationController extends AbstractController
   /**
    * @Route("/{concept}/annotation/{annotation}/edit", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -228,7 +228,7 @@ class AnnotationController extends AbstractController
   /**
    * @Route("/{concept}/annotation/{annotation}/remove", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"DELETE"}, options={"expose"="true"})
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @param RequestStudyArea       $requestStudyArea
    * @param Concept                $concept
@@ -262,7 +262,7 @@ class AnnotationController extends AbstractController
    * @Route("/{concept}/annotation/{annotation}/comment/{comment}/remove",
    *   requirements={"concept"="\d+", "annotation"="\d+", "comment"="\d+"},
    *   methods={"DELETE"}, options={"expose"="true"})
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @param RequestStudyArea       $requestStudyArea
    * @param Concept                $concept

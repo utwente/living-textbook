@@ -4,7 +4,9 @@
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {% from '_macro/_annotations.html.twig' import toggle as annotationsToggle %}
   {{ buttons.header() }}
-  {{ annotationsToggle() }}
+  {% if app.user %}
+    {{ annotationsToggle() }}
+  {% endif %}
   {{ buttons.browser_button(concept.id) }}
   {{ buttons.print_button(path('app_print_printsingleconcept', {'concept': concept.id})) }}
   {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
@@ -25,11 +27,16 @@
   {% import '_data/_data_templates.html.twig' as macros %}
   {% from '_macro/_annotations.html.twig' import all as annotations %}
 
-  <div class="annotations-container"
-       data-annotations-study-area-id="{{ concept.studyArea.id }}"
-       data-annotations-concept-id="{{ concept.id }}"
-       data-annotations-user-id="{{ app.user.id }}"
-       data-annotations-is-study-area-owner="{{ is_granted("STUDYAREA_OWNER", concept.studyArea) ? 'true' : 'false' }}">
+  <div
+      {% if app.user %}
+        {# Only load annotations for registered users #}
+        class="annotations-container"
+        data-annotations-study-area-id="{{ concept.studyArea.id }}"
+        data-annotations-concept-id="{{ concept.id }}"
+        data-annotations-user-id="{{ app.user.id }}"
+        data-annotations-is-study-area-owner="{{ is_granted("STUDYAREA_OWNER", concept.studyArea) ? 'true' : 'false' }}"
+      {% endif %}
+  >
 
     {{ macros.data_definition(concept) }}
     {{ macros.data_introduction(concept.introduction) }}
@@ -45,6 +52,8 @@
     {{ macros.data_incoming_relations(concept.incomingRelations) }}
     {{ macros.data_learning_paths(learningPaths) }}
 
-    {{ annotations() }}
+    {% if app.user %}
+      {{ annotations() }}
+    {% endif %}
   </div>
 {% endblock %}
