@@ -53,13 +53,14 @@ class EditStudyAreaType extends AbstractType
         ]);
 
     if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
-      $builder->add('group', EntityType::class, [
-          'required'     => false,
-          'class'        => StudyAreaGroup::class,
-          'label'        => 'study-area.groups.group',
-          'choice_label' => 'name',
-          'select2'      => true,
-      ]);
+      $builder
+          ->add('group', EntityType::class, [
+              'required'     => false,
+              'class'        => StudyAreaGroup::class,
+              'label'        => 'study-area.groups.group',
+              'choice_label' => 'name',
+              'select2'      => true,
+          ]);
     }
 
     $builder
@@ -77,12 +78,24 @@ class EditStudyAreaType extends AbstractType
             'label'    => 'study-area.print-introduction',
             'help'     => 'study-area.print-introduction-help',
             'required' => false,
-        ])
+        ]);
+
+    if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
+      $builder
+          ->add('openAccess', CheckboxType::class, [
+              'required' => false,
+              'label'    => 'study-area.open-access',
+              'help'     => 'study-area.open-access-help',
+          ]);
+    }
+
+    $builder
         ->add('trackUsers', CheckboxType::class, [
             'label'    => 'study-area.track-users',
             'help'     => 'study-area.track-users-help',
             'required' => false,
         ]);
+
     if (!$options['hide_submit']) {
       $builder
           ->add('submit', SaveType::class, [

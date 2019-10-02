@@ -56,7 +56,7 @@ app:
   delete-notice: 'If you create your private study area in this application, please note that these might be deleted after 6 months of inactivity.'
   user-tracking-notice: 'By entering this website you agree that we use software to track user activity. This information is only available to the administrator and is only used to improve and develop the Living Textbook learning environment in general. Personal data will not be available for anyone to see or saved.'
   welcome: 'Welcome to the Living Textbook learning environment'
-  welcome-text: 'In this environment you can browse "bodies of knowledge" composed by experts or start creating one of your own.'
+  welcome-text: 'In this environment you can browse "bodies of knowledge" composed by experts or start creating one of your own (for registered users only).'
 
 browser:
   actions: 'Actions'
@@ -448,7 +448,8 @@ search:
 
 study-area:
   access-type: 'Access type'
-  access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset! Next to that, only system administrators can update a study area to be publicly available.'
+  access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!
+    Next to that, only system administrators can update a study area to be publicly available for all registered users.'
   add-title: 'Add new study area'
   current: 'Current'
   current-area: 'Now browsing "%item%"'
@@ -479,6 +480,9 @@ study-area:
   list-title: 'Study area list'
   name: 'Name'
   new: 'New study area'
+  open-access: "Open access"
+  open-access-help: "When open access is enabled, this study area will be available for unregistered users!
+    This overwrites the view permissions set in the Access Type above, which is still used when group edit permissions are required."
   owner: 'Owner'
   owner-transferred: 'The ownership for study area "%item%" has been transferred to "%owner%".'
   permissions-updated: 'The permissions for the study area "%item%" have been updated.'
