@@ -29,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -55,7 +56,7 @@ class DefaultController extends AbstractController
    * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"},
    *                           name="_home_simple", options={"no_login_wrap"=true})
    * @Template("double_column.html.twig")
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param RequestStudyArea $requestStudyArea
    * @param string           $pageUrl
@@ -92,19 +93,24 @@ class DefaultController extends AbstractController
    * @Route("/", options={"no_login_wrap"=true})
    * @Route("", name="base_url", options={"no_login_wrap"=true})
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param FormFactoryInterface $formFactory
    * @param TranslatorInterface  $translator
    * @param StudyAreaRepository  $studyAreaRepository
    *
-   * @return array
+   * @return array|Response
    */
   public function landing(
       FormFactoryInterface $formFactory, TranslatorInterface $translator, StudyAreaRepository $studyAreaRepository)
   {
     $user       = $this->getUser();
     $studyAreas = $studyAreaRepository->getVisible($this->getUser());
+
+    // Forward to login when there are no anonymous areas available
+    if (!$user && count($studyAreas) === 0) {
+      return $this->redirectToRoute('login');
+    }
 
     // Only show select form when there is more than 1 visible study area
     $studyAreaForm = count($studyAreas) > 1
@@ -311,7 +317,7 @@ class DefaultController extends AbstractController
   /**
    * @param FormFactoryInterface $formFactory
    * @param TranslatorInterface  $translator
-   * @param User                 $user
+   * @param User|null            $user
    * @param StudyArea|null       $studyArea
    * @param string               $buttonLabel
    *
@@ -319,7 +325,7 @@ class DefaultController extends AbstractController
    */
   private function createStudyAreaForm(
       FormFactoryInterface $formFactory, TranslatorInterface $translator,
-      User $user, ?StudyArea $studyArea, string $buttonLabel = 'study-area.switch-to'): FormInterface
+      ?User $user, ?StudyArea $studyArea, string $buttonLabel = 'study-area.switch-to'): FormInterface
   {
     $defaultGroupName = $translator->trans('study-area.groups.default-name');
 

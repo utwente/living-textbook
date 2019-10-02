@@ -31,7 +31,7 @@ class HelpController extends AbstractController
    *
    * @Route()
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param HelpRepository $helpRepository
    *

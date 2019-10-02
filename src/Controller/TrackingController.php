@@ -53,7 +53,7 @@ class TrackingController extends AbstractController
 
   /**
    * @Route("/pageload", methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -70,7 +70,7 @@ class TrackingController extends AbstractController
   {
     return $this->processTrackingItem(
         Pageload::class,
-        function (PageLoad $pageLoad, StudyArea $studyArea, User $user) use ($router) {
+        function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
           $pathContext = NULL;
           try {
             $pathContext = $router->match($pageLoad->getPath());
@@ -90,7 +90,7 @@ class TrackingController extends AbstractController
           // Set the updated data
           $pageLoad
               ->setStudyArea($studyArea)
-              ->setUserId($user->getUsername())
+              ->setUserId($user ? $user->getUsername() : 'anonymous')
               ->setPathContext($pathContext)
               ->setOriginContext($originContext);
         },
@@ -99,7 +99,7 @@ class TrackingController extends AbstractController
 
   /**
    * @Route("/event", methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
@@ -115,10 +115,10 @@ class TrackingController extends AbstractController
   {
     return $this->processTrackingItem(
         TrackingEvent::class,
-        function (TrackingEvent $pageLoad, StudyArea $studyArea, User $user) {
+        function (TrackingEvent $pageLoad, StudyArea $studyArea, ?User $user) {
           $pageLoad
               ->setStudyArea($studyArea)
-              ->setUserId($user->getUsername());
+              ->setUserId($user ? $user->getUsername() : 'anonymous');
         },
         $request, $requestStudyArea, $em, $serializer, $validator);
   }

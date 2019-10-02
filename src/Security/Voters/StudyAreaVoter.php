@@ -65,12 +65,17 @@ class StudyAreaVoter extends Voter
   {
     $user = $token->getUser();
 
-    if (!$user instanceof User) {
-      // Require authenticated user
+    // Convert anonymous token users
+    if (!is_object($user)) {
+      $user = NULL;
+    }
+
+    if ($user !== NULL && !$user instanceof User) {
+      // Require null or system user
       return false;
     }
 
-    if ($this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])){
+    if ($this->decisionManager->decide($token, ['ROLE_SUPER_ADMIN'])) {
       return true;
     }
 

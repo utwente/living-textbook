@@ -125,15 +125,17 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
       // Invalid or no result from session
       if ($studyAreaId === NULL) {
-        // Try to find a visible study area
+        // Resolve the user
         $token = $this->tokenStorage->getToken();
-        if ($token !== NULL && ($user = $token->getUser()) instanceof User) {
-          /** @var User $user */
-          if (NULL !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
-            assert($studyArea instanceof StudyArea);
-            $studyAreaId     = $studyArea->getId();
-            $this->studyArea = $studyArea;
-          }
+        $user  = $token !== NULL ? $token->getUser() : NULL;
+        $user  = is_object($user) ? $user : NULL;
+        assert($user === NULL || $user instanceof User);
+
+        // Try to find a visible study area
+        if (NULL !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
+          assert($studyArea instanceof StudyArea);
+          $studyAreaId     = $studyArea->getId();
+          $this->studyArea = $studyArea;
         }
       }
     }

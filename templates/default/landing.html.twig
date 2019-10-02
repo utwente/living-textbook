@@ -67,7 +67,9 @@
   <div class="spacer"></div>
 
   {% block delete_notice %}
-    <p>{{ 'app.delete-notice'|trans }}</p>
+    {% if app.user %}
+      <p>{{ 'app.delete-notice'|trans }}</p>
+    {% endif %}
   {% endblock %}
 
   <div class="license-notice">

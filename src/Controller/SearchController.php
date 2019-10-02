@@ -187,7 +187,7 @@ class SearchController extends AbstractController
 
   /**
    * @Template()
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param FormFactoryInterface $formFactory
    * @param TranslatorInterface  $translator

@@ -390,24 +390,36 @@ class StudyArea
   /**
    * Check whether the given user is the StudyArea owner
    *
-   * @param User $user
+   * @param User|null $user
    *
    * @return bool
    */
-  public function isOwner(User $user)
+  public function isOwner(?User $user)
   {
+    if (!$user) {
+      return false;
+    }
+
     return $user->getId() === $this->owner->getId();
   }
 
   /**
    * Check whether the StudyArea is visible for the user
    *
-   * @param User $user
+   * @param User|null $user
    *
    * @return bool
    */
-  public function isVisible(User $user)
+  public function isVisible(?User $user)
   {
+    if ($this->openAccess) {
+      return true;
+    }
+
+    if (!$user) {
+      return false;
+    }
+
     switch ($this->accessType) {
       case StudyArea::ACCESS_PUBLIC:
         return true;
@@ -420,8 +432,19 @@ class StudyArea
     return false;
   }
 
-  public function isEditable(User $user)
+  /**
+   * Check whether the StudyArea is editable for the user
+   *
+   * @param User|null $user
+   *
+   * @return bool
+   */
+  public function isEditable(?User $user)
   {
+    if (!$user) {
+      return false;
+    }
+
     return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_EDITOR);
   }
 

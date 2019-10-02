@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class UserListener
 {
   /**
-   * This handler ensures that any emailaddresses that have been granted, will receive the new and functional account
+   * This handler ensures that any e-mail addresses that have been granted, will receive the new and functional account
    * that can actually be used for rights
    *
    * @ORM\PostPersist()

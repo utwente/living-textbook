@@ -32,7 +32,7 @@ class LatexController extends AbstractController
 
   /**
    * @Route("/render", methods={"GET"}, options={"expose"=true,"no_login_wrap"=true})
-   * @IsGranted("ROLE_USER")
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
    * @param Request                 $request
    * @param LatexGeneratorInterface $generator

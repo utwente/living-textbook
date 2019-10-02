@@ -302,6 +302,11 @@ class PermissionsController extends AbstractController
    */
   public function removeSelf(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator, EntityManagerInterface $entityManager)
   {
+    if (!$this->getUser()) {
+      // This page does not exist for anonymous users
+      throw $this->createNotFoundException();
+    }
+
     // Not allowed for study area owners
     if ($this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       $this->addFlash('notice', $translator->trans('permissions.cannot-remove-self'));
