@@ -113,6 +113,7 @@ data:
     type: 'Export type'
     provider:
       concept-id-name: 'Concept (with id)'
+      learning-path: 'Learning path'
       linked-simple-node: 'Simple linked node'
       rdf: 'RDF (as JSON-LD)'
       relation: 'Concept relations'

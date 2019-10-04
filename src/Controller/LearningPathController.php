@@ -149,7 +149,7 @@ class LearningPathController extends AbstractController
       RequestStudyArea $requestStudyArea,
       LearningPath $learningPath, SerializerInterface $serializer)
   {
-    $json = $serializer->serialize($learningPath, 'json', SerializationContext::create()->setGroups(["Default"]));
+    $json = $serializer->serialize($learningPath, 'json', SerializationContext::create()->setGroups(['Default']));
 
     return new JsonResponse($json, Response::HTTP_OK, [], true);
   }

@@ -4,6 +4,7 @@ namespace App\Export;
 
 use App\Entity\StudyArea;
 use App\Export\Provider\ConceptIdNameProvider;
+use App\Export\Provider\LearningPathProvider;
 use App\Export\Provider\LinkedSimpleNodeProvider;
 use App\Export\Provider\RdfProvider;
 use App\Export\Provider\RelationProvider;
@@ -20,7 +21,8 @@ class ExportService
    */
   private $providers = [];
 
-  public function __construct(LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4)
+  public function __construct(
+      LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4, LearningPathProvider $p5)
   {
     $key = 0;
     foreach (func_get_args() as $provider) {
