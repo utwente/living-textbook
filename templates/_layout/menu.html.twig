@@ -110,7 +110,7 @@
         </li>
       {% endif %}
 
-      {% if not app.user.isOidc|default(false) or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+      {% if (app.user and not app.user.isOidc|default(false)) or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="config-dropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
@@ -132,7 +132,7 @@
               <a class="dropdown-item" href="{{ path('app_user_fallbacklist') }}">{{ 'menu.fallback-users'|trans }}</a>
             {% endif %}
 
-            {% if not app.user.isOidc|default(false) %}
+            {% if app.user and not app.user.isOidc|default(false) %}
               <a class="dropdown-item"
                  href="{{ path('app_user_fallbackchangeownpassword') }}">{{ 'menu.change-password'|trans }}</a>
             {% endif %}
