@@ -471,7 +471,7 @@ study-area:
     created: 'Study area group "%item%" has been successfully created.'
     default-name: "Unsorted"
     edit-title: "Edit study area group \"%item%\""
-    count: "Amount of areas"
+    count: "Number of areas"
     group: "Study area group"
     groups: "Study area groups"
     groups-short: "Groups"
