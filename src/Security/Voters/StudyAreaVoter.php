@@ -5,6 +5,7 @@ namespace App\Security\Voters;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Request\Wrapper\RequestStudyArea;
+use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -17,6 +18,7 @@ class StudyAreaVoter extends Voter
   const SHOW = 'STUDYAREA_SHOW';
   const EDIT = 'STUDYAREA_EDIT';
   const ANNOTATE = 'STUDYAREA_ANNOTATE';
+  const PRINTER = 'STUDYAREA_PRINT';
 
   /** @var AccessDecisionManagerInterface */
   private $decisionManager;
@@ -104,6 +106,7 @@ class StudyAreaVoter extends Voter
       case self::EDIT:
         return $subject->isEditable($user);
       case self::ANNOTATE:
+      case self::PRINTER:
         if (!$user) {
           return false;
         }
@@ -111,7 +114,7 @@ class StudyAreaVoter extends Voter
         return $subject->isVisible($user);
     }
 
-    throw new \LogicException('This code should not be reached!');
+    throw new LogicException('This code should not be reached!');
   }
 
   /**
@@ -124,6 +127,7 @@ class StudyAreaVoter extends Voter
         self::SHOW,
         self::EDIT,
         self::ANNOTATE,
+        self::PRINTER,
     ];
   }
 }

@@ -33,7 +33,7 @@ class PrintController extends AbstractController
   /**
    * @Route("/concept/{concept}", requirements={"concept"="\d+"})
    *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_PRINT", subject="requestStudyArea")
    *
    * @param RequestStudyArea        $requestStudyArea
    * @param Concept                 $concept
@@ -74,7 +74,7 @@ class PrintController extends AbstractController
   /**
    * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"})
    *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_PRINT", subject="requestStudyArea")
    *
    * @param RequestStudyArea        $requestStudyArea
    * @param LearningPath            $learningPath
