@@ -98,12 +98,9 @@
   {{ footer() }}
 {% endmacro %}
 
-{% macro edit_row(showUrl, removeUrl, listUrl) %}
+{% macro edit_row(removeUrl, listUrl) %}
   {% from _self import header, footer, show_button, remove_button, list_button %}
   {{ header() }}
-  {% if showUrl is not null %}
-    {{ show_button(showUrl) }}
-  {% endif %}
   {{ remove_button(removeUrl) }}
   {{ list_button(listUrl) }}
   {{ footer() }}

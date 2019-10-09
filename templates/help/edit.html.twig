@@ -1,12 +1,5 @@
 {% extends 'single_column.html.twig' %}
 
-{% block before_title %}
-  {% import '_macro/_action_buttons.html.twig' as buttons %}
-  {{ buttons.header() }}
-  {{ buttons.show_button(path('app_help_index')) }}
-  {{ buttons.footer() }}
-{% endblock %}
-
 {% block title %}
   {{ 'help.edit-title'|trans }}
 {% endblock %}
