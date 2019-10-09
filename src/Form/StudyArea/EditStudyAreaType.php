@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Entity\StudyAreaGroup;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
+use App\Repository\StudyAreaGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -55,11 +56,15 @@ class EditStudyAreaType extends AbstractType
     if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
       $builder
           ->add('group', EntityType::class, [
-              'required'     => false,
-              'class'        => StudyAreaGroup::class,
-              'label'        => 'study-area.groups.group',
-              'choice_label' => 'name',
-              'select2'      => true,
+              'required'      => false,
+              'class'         => StudyAreaGroup::class,
+              'label'         => 'study-area.groups.group',
+              'choice_label'  => 'name',
+              'select2'       => true,
+              'query_builder' => function (StudyAreaGroupRepository $repo) {
+                return $repo->createQueryBuilder('sag')
+                    ->orderBy('sag.name', 'ASC');
+              },
           ]);
     }
 
