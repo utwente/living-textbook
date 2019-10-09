@@ -2,8 +2,6 @@
 
 namespace App\Form\Data;
 
-use App\Entity\StudyArea;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,14 +21,6 @@ class JsonUploadType extends AbstractType
                 new File([
                     'mimeTypes' => ['application/json', 'text/plain'],
                 ])],
-        ])
-        ->add('studyArea', EntityType::class, [
-            'class'       => StudyArea::class,
-            'required'    => true,
-            'label'       => 'data.study-area',
-            'constraints' => [
-                new NotNull(),
-            ],
         ])
         ->add('submit', SubmitType::class);
   }

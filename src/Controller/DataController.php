@@ -123,12 +123,13 @@ class DataController extends AbstractController
       EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
       LearningOutcomeRepository $learningOutcomeRepository)
   {
-    $form = $this->createForm(JsonUploadType::class, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    $form = $this->createForm(JsonUploadType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Handle new upload
-      $data = $form->getData();
+      $data      = $form->getData();
+      $studyArea = $requestStudyArea->getStudyArea();
 
       // Check file format, then load json data
       if ($data['json'] instanceof UploadedFile) {
@@ -153,7 +154,6 @@ class DataController extends AbstractController
 
           // Resolve the link types
           $linkTypes = array();
-          $studyArea = $data['studyArea'];
           foreach ($jsonData['links'] as $jsonLink) {
 
             if (!array_key_exists('relationName', $jsonLink)) {
