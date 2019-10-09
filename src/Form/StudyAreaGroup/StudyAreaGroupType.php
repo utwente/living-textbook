@@ -37,6 +37,8 @@ class StudyAreaGroupType extends AbstractType
                     ->setParameter('group', $studyAreaGroup);
               }
 
+              $qb->orderBy('s.name', 'ASC');
+
               return $qb;
             },
             'select2'       => true,
