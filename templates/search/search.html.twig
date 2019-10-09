@@ -81,7 +81,7 @@
         <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.concepts'|trans|lower }) }}</p>
       {% else %}
         <div class="table-responsive">
-          <table class="table">
+          <table class="table table-hover">
             <thead>
             <tr>
               <th>{{ 'concept.name'|trans }}</th>
@@ -115,7 +115,7 @@
         <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.abbreviations'|trans|lower }) }}</p>
       {% else %}
         <div class="table-responsive">
-          <table class="table">
+          <table class="table table-hover">
             <thead>
             <tr>
               <th>{{ 'abbreviation.abbreviation'|trans }}</th>
@@ -148,7 +148,7 @@
         <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.external-resources'|trans|lower }) }}</p>
       {% else %}
         <div class="table-responsive">
-          <table class="table">
+          <table class="table table-hover">
             <thead>
             <tr>
               <th>{{ 'external-resource.title'|trans }}</th>
@@ -189,7 +189,7 @@
         <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.learning-outcomes'|trans|lower }) }}</p>
       {% else %}
         <div class="table-responsive">
-          <table class="table">
+          <table class="table table-hover">
             <thead>
             <tr>
               <th>{{ 'learning-outcome.name'|trans }}</th>
@@ -245,7 +245,7 @@
 
 {% macro annotationResults(search, annotationsData) %}
   <div class="table-responsive">
-    <table class="table">
+    <table class="table table-hover">
       <thead>
       <tr>
         <th>{{ 'concept.concept'|trans }}</th>
