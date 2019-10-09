@@ -13,31 +13,29 @@
 
 {% block content %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
-  <div>
-    <table id="fallback-table" class="table table-hover table-datatable">
-      <thead>
+  <table id="fallback-table" class="table table-hover table-datatable">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'user.display-name'|trans }}</th>
+      <th scope="col">{{ 'login.username'|trans }}</th>
+      <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
       <tr>
-        <th scope="col">{{ 'user.display-name'|trans }}</th>
-        <th scope="col">{{ 'login.username'|trans }}</th>
-        <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+        <td>{{ user.displayName }}</td>
+        <td><a href="mailto:{{ user.username }}">{{ user.username }}</a></td>
+        <td class="actions">
+          {{ buttons.edit_button(path('app_user_fallbackedit', {'user': user.id})) }}
+          {{ buttons._action_button(path('app_user_fallbackresetpassword', {'user': user.id}), 'fa-undo', 'user.fallback.reset-password-short'|trans, 'warning') }}
+          {% if user.id != app.user.id %}
+            {{ buttons.remove_button(path('app_user_fallbackremove', {'user': user.id})) }}
+          {% endif %}
       </tr>
-      </thead>
-      <tbody>
-      {% for user in users %}
-        <tr>
-          <td>{{ user.displayName }}</td>
-          <td><a href="mailto:{{ user.username }}">{{ user.username }}</a></td>
-          <td class="actions">
-            {{ buttons.edit_button(path('app_user_fallbackedit', {'user': user.id})) }}
-            {{ buttons._action_button(path('app_user_fallbackresetpassword', {'user': user.id}), 'fa-undo', 'user.fallback.reset-password-short'|trans, 'warning') }}
-            {% if user.id != app.user.id %}
-              {{ buttons.remove_button(path('app_user_fallbackremove', {'user': user.id})) }}
-            {% endif %}
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
 
 {% block javascripts_bottom %}

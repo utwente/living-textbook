@@ -16,33 +16,31 @@
 
 {% block content %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
-  <div>
-    <table id="abbreviation-table" class="table table-hover table-datatable">
-      <thead>
+  <table id="abbreviation-table" class="table table-hover table-datatable">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'abbreviation.abbreviation'|trans }}</th>
+      <th scope="col">{{ 'abbreviation.meaning'|trans }}</th>
+      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+        <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for abbreviation in abbreviations %}
       <tr>
-        <th scope="col">{{ 'abbreviation.abbreviation'|trans }}</th>
-        <th scope="col">{{ 'abbreviation.meaning'|trans }}</th>
+        <td>{{ abbreviation.abbreviation }}</td>
+        <td>{{ abbreviation.meaning }}</td>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-          <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+          <td class="actions">
+            {{ buttons.edit_button_disabled_when_frozen(path('app_abbreviation_edit', {'abbreviation': abbreviation.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_abbreviation_remove', {'abbreviation': abbreviation.id})) }}
+          </td>
         {% endif %}
       </tr>
-      </thead>
-      <tbody>
-      {% for abbreviation in abbreviations %}
-        <tr>
-          <td>{{ abbreviation.abbreviation }}</td>
-          <td>{{ abbreviation.meaning }}</td>
-          {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            <td class="actions">
-              {{ buttons.edit_button_disabled_when_frozen(path('app_abbreviation_edit', {'abbreviation': abbreviation.id})) }}
-              {{ buttons.remove_button_disabled_when_frozen(path('app_abbreviation_remove', {'abbreviation': abbreviation.id})) }}
-            </td>
-          {% endif %}
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
 
 {% block javascripts_bottom %}
