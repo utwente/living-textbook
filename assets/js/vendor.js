@@ -32,5 +32,14 @@ require('font-awesome/css/font-awesome.css');
 // D3
 require('d3');
 
+// DataTables JS
+require('datatables.net');
+require('datatables.net-bs4');
+require('datatables.net-responsive');
+
+// DataTables CSS
+require('datatables.net-bs4/css/dataTables.bootstrap4.css');
+require('datatables.net-responsive-bs4/css/responsive.bootstrap4.css');
+
 // Custom vendor CSS
 require('../css/vendor.scss');

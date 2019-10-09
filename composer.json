@@ -12,6 +12,7 @@
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "ext-libxml": "*",
         "bobv/latex-bundle": "^1.4.0",
         "components/elfinder": "^3.1.1",

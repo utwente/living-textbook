@@ -4,3 +4,16 @@
 body {
   background-color: $background-color;
 }
+
+// Hide the default dropdown caret icon
+select.form-control {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+select.form-control::-ms-expand {
+  display: none;
+}

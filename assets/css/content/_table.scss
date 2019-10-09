@@ -4,6 +4,19 @@
 
 table.table {
 
+  &.table-datatable {
+    width: 100% !important;
+    border-spacing: 0;
+
+    tbody {
+      tr:first-of-type {
+        td {
+          border-top: 0;
+        }
+      }
+    }
+  }
+
   button {
     &.collapsed-hidden:not(.collapsed) {
       display: inline-block !important;
