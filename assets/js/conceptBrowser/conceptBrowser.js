@@ -957,10 +957,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         (link.source.dragged || link.target.dragged)) {
 
       // Calculate font(size)
-      let textScale = Math.min(link.source.fontScale, link.target.fontScale);
-      let scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * textScale);
+      const fontScale = Math.min(link.source.fontScale, link.target.fontScale);
+      const scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * fontScale);
       context.font = scaledFontSize + 'px ' + bConfig.fontFamily;
-      context.lineWidth = bConfig.activeNodeLabelLineWidth * textScale;
+      context.lineWidth = bConfig.activeNodeLabelLineWidth * fontScale;
 
       // Calculate angle of label
       let startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
@@ -1076,17 +1076,16 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function drawNodeText(node) {
     // Calculate font(size)
     let scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * node.fontScale);
-    context.font = scaledFontSize + 'px ' + bConfig.fontFamily;
+    context.font = 'bold ' + scaledFontSize + 'px ' + bConfig.fontFamily;
     context.lineWidth = bConfig.activeNodeLabelLineWidth * node.fontScale;
 
     // Set font if accordingly, or skip if not
     if (!((isDragging && node.dragged)
         || ((highlightedNode !== null || isDragging) && node.highlighted)
         || (specialHighlightedNode !== null && node.specialHilight))) {
+
       // Skip this text if not required to render
       if (isDragging || highlightedNode !== null) return;
-
-      context.font = 'bold ' + context.font;
     }
 
     // Draw the actual text (which can be multiple lines)
