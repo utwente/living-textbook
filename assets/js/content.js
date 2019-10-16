@@ -61,6 +61,14 @@ $(function () {
         return;
       }
 
+      // Exclude links which are not within our domain, and open those in a new page
+      if (window.location.hostname !== from.hostname && from.hostname.length > 0) {
+        e.preventDefault();
+        window.open(url, '_blank');
+        eDispatch.blankPageLoad(url);
+        return;
+      }
+
       // Exclude 'no-link' class from handler
       if ($from.hasClass('no-block')) return;
 
