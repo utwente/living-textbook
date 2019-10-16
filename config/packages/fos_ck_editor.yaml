@@ -14,6 +14,8 @@ fos_ck_editor:
       language: "en"
       toolbar: "ltb_toolbar"
       filebrowserBrowseRoute: "elfinder"
+      filebrowserWindowWidth: "40%"
+      filebrowserWindowHeight: "40%"
       format_tags: "p;h1;h2;citation;reference"
       extraPlugins: "image2,wordcount,latexeditor"
       extraAllowedContent: "span(latex-figure,latex-figure-inline);figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id];symbol"
