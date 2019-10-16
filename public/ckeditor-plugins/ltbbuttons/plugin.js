@@ -49,7 +49,7 @@ CKEDITOR.plugins.add( 'ltbbuttons', {
           ]
         },
         config = editor.config,
-        lang = editor.lang.basicstyles;
+        lang = editor.lang.ltbbuttons;
 
     addButtonCommand( 'Highlight', lang.highlight, 'highlight', config.coreStyles_highlight );
     addButtonCommand( 'Symbol', lang.symbol, 'symbol', config.coreStyles_symbol );
