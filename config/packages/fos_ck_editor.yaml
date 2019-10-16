@@ -23,7 +23,7 @@ fos_ck_editor:
         showParagraphs: false
     ltb_no_image:
       <<: *ckeditor_default
-      removeButtons: "Image"
+      filebrowserBrowseRoute: null
     ltb_concept_config:
       <<: *ckeditor_default
       extraPlugins: "image2,wordcount,latexeditor,abbreviationselector,conceptselector,ltbbuttons"
