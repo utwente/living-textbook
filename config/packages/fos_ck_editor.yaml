@@ -38,7 +38,7 @@ fos_ck_editor:
     items:
       edit_tools: [ "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "-", "RemoveFormat" ]
       text_tools: [ "Highlight", "Symbol", "Subscript", "Superscript", "-", "NumberedList", "BulletedList", "-", "Table" ]
-      ltb_tools:  [ "Image", "LatexEditor", "ConceptSelector", "AbbreviationSelector" ]
+      ltb_tools:  [ "Link", "Image", "LatexEditor", "ConceptSelector", "AbbreviationSelector" ]
       font_tools: [ "Format", "TextColor" ]
   plugins:
     abbreviationselector:
