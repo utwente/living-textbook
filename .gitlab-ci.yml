@@ -175,7 +175,7 @@ deploy-staging:
     name: Staging
     url: https://${STAGING_HOST}
   tags:
-    - docker
+    - docker-deploy
   only:
     - master
 
@@ -197,7 +197,7 @@ deploy-prod:
     name: Production
     url: https://${PRODUCTION_HOST}
   tags:
-    - docker
+    - docker-deploy
   only:
     - production
   except:
