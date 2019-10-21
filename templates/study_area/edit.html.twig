@@ -13,4 +13,21 @@
 
 {% block content %}
   {{ form(form) }}
+
+  <script type="text/javascript">
+    $(function () {
+      $('#{{ form.openAccess.vars.id }}')
+          .on('change', function () {
+            var openAccess = $(this).is(':checked');
+            var $trackUsersForm = $('#{{ form.trackUsers.vars.id }}').closest('.form-group');
+
+            if (openAccess) {
+              $trackUsersForm.hide();
+            } else {
+              $trackUsersForm.show();
+            }
+          })
+          .change();
+    });
+  </script>
 {% endblock %}

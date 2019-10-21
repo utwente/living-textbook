@@ -730,7 +730,8 @@ class StudyArea
    */
   public function isTrackUsers(): bool
   {
-    return $this->trackUsers;
+    // Never enable tracking when open access is set
+    return !$this->openAccess && $this->trackUsers;
   }
 
   /**

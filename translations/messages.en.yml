@@ -382,8 +382,8 @@ permissions:
   admin: 'Administrator'
   add-admin-title: 'Add new administrator'
   add-permissions: 'Add "%type%" permissions'
-  add-permissions-text: "You can add permissions based on user accounts and/or based on e-mail addresses.\
-                          When an account is found or created for any supplied e-mail address, it will be automatically converted to a full user."
+  add-permissions-text: "You can add permissions based on user accounts and/or based on e-mail addresses.
+    When an account is found or created for any supplied e-mail address, it will be automatically converted to a full user."
   admin-added: '%user% has been promoted to administrator'
   admin-list-title: 'Administrators'
   admin-removed: '%user% is no longer an administrator'
@@ -509,7 +509,8 @@ study-area:
   new: 'New study area'
   open-access: "Open access"
   open-access-help: "When open access is enabled, this study area will be available for unregistered users!
-    This overwrites the view permissions set in the Access Type above, which is still used when group edit permissions are required."
+    This overwrites the view permissions set in the Access Type above, which is still used when group edit permissions are required.
+    Note that enabling open access will disable the possibility to track users."
   owner: 'Owner'
   owner-transferred: 'The ownership for study area "%item%" has been transferred to "%owner%".'
   permissions-updated: 'The permissions for the study area "%item%" have been updated.'
@@ -537,10 +538,10 @@ study-area:
   tracking-consent: >-
     We want to ask you for your consent to track your movements in this study area. We collect the data for research
     purposes to be able to create more personalized learning environments in the future. The collected data will be
-    treated confidentially and anonymized before analyzing. Only a small group of researchers have access to the
-    original data. The data will in no way be accessible to your teachers or influence your assessment. By ticking the
-    box you give consent. It would be of great help if you would give your consent. It is possible to change your mind
-    on this later and then your data will no longer be collected.
+    treated confidentially and will be anonymised before analysing. Only a small group of researchers have access to the
+    original data. The data will in no way be accessible to your teachers or influence your assessment. You give your
+    consent by clicking on agree. It is possible to change your mind on this later and then your data will no longer be
+    collected.
   tracking-consent-agree: 'I agree'
   tracking-consent-dashboard: 'This study area is configured to track user interaction.'
   tracking-consent-dashboard-agreed: "Your interaction is currently <b>being</b> tracked as you've agreed with the conditions."
