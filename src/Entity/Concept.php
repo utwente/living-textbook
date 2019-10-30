@@ -482,7 +482,7 @@ class Concept implements SearchableInterface, ReviewableInterface
     }
   }
 
-  public function getReviewFieldsNames(): array
+  public function getReviewFieldNames(): array
   {
     return [
         'name',
@@ -494,6 +494,11 @@ class Concept implements SearchableInterface, ReviewableInterface
         'examples',
         'selfAssessment',
     ];
+  }
+
+  public function getReviewIdFieldNames(): array
+  {
+    return [];
   }
 
   /**

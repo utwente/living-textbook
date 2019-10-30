@@ -75,8 +75,13 @@ trait BaseDataTextObject
   /**
    * @inheritDoc
    */
-  public function getReviewFieldsNames(): array
+  public function getReviewFieldNames(): array
   {
     return ['text'];
+  }
+
+  public function getReviewIdFieldNames(): array
+  {
+    return [];
   }
 }

@@ -134,13 +134,18 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     ];
   }
 
-  public function getReviewFieldsNames(): array
+  public function getReviewFieldNames(): array
   {
     return [
         'title',
         'description',
         'url',
     ];
+  }
+
+  public function getReviewIdFieldNames(): array
+  {
+    return [];
   }
 
   /**

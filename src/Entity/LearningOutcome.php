@@ -136,13 +136,18 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     ];
   }
 
-  public function getReviewFieldsNames(): array
+  public function getReviewFieldNames(): array
   {
     return [
         'name',
         'number',
         'text',
     ];
+  }
+
+  public function getReviewIdFieldNames(): array
+  {
+    return [];
   }
 
   /**

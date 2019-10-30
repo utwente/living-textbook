@@ -105,7 +105,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     $this->elements = new ArrayCollection();
   }
 
-  public function getReviewFieldsNames(): array
+  public function getReviewFieldNames(): array
   {
     return [
         'name',
@@ -114,6 +114,10 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     ];
   }
 
+  public function getReviewIdFieldNames(): array
+  {
+    return [];
+  }
 
   /**
    * @return StudyArea|null

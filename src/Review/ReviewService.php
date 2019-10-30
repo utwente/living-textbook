@@ -6,8 +6,11 @@ use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
 use App\Entity\StudyArea;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\UnitOfWork;
 use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,6 +24,10 @@ class ReviewService
    * @var EntityManagerInterface
    */
   private $entityManager;
+  /**
+   * @var UnitOfWork
+   */
+  private $unitOfWork;
   /**
    * @var Session
    */
@@ -39,6 +46,7 @@ class ReviewService
       TranslatorInterface $translator)
   {
     $this->entityManager = $entityManager;
+    $this->unitOfWork    = $entityManager->getUnitOfWork();
     $this->validator     = $validator;
     $this->session       = $session;
     $this->translator    = $translator;
@@ -71,7 +79,7 @@ class ReviewService
         ->setObjectId($object->getId())
         ->setObjectType($object->getReviewName())
         ->setChangedFields($changeType !== PendingChange::CHANGE_TYPE_REMOVE
-            ? $this->determineChanged($object) : []);
+            ? $this->determineChangedFields($object) : []);
 
     // If nothing has changed, we have nothing to do for review and we use the original behavior
     if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE && 0 === count($change->getChangedFields())) {
@@ -102,19 +110,18 @@ class ReviewService
    *
    * @return array
    */
-  private function determineChanged(ReviewableInterface $object): array
+  private function determineChangedFields(ReviewableInterface $object): array
   {
     $classMetadata    = $this->entityManager->getClassMetadata(get_class($object));
-    $unitOfWork       = $this->entityManager->getUnitOfWork();
-    $reviewFieldNames = $object->getReviewFieldsNames();
+    $reviewFieldNames = $object->getReviewFieldNames();
 
     // If new, return all fields
-    if ($unitOfWork->getEntityState($object) === UnitOfWork::STATE_NEW) {
+    if ($this->unitOfWork->getEntityState($object) === UnitOfWork::STATE_NEW) {
       return $reviewFieldNames;
     }
 
     $fieldNames     = array_intersect($classMetadata->getFieldNames(), $reviewFieldNames);
-    $originalValues = $unitOfWork->getOriginalEntityData($object);
+    $originalValues = $this->unitOfWork->getOriginalEntityData($object);
     $changedFields  = [];
 
     // Loop the fields to detect the changes
@@ -128,34 +135,95 @@ class ReviewService
       }
     }
 
-    // Loop the relations to detect changes
+    // Loop the one to one relations to detect changes in the related objects
+    // This only works for one-to-one relations, as we can retrieve the original data from it and restore it!
     $associationFieldNames = array_intersect($classMetadata->getAssociationNames(), $reviewFieldNames);
     foreach ($associationFieldNames as $associationFieldName) {
+      if (!$classMetadata->isSingleValuedAssociation($associationFieldName)) {
+        throw new RuntimeException('Collection associations are not supported by only specifying a field name!');
+      }
+
+      /** @noinspection PhpUnhandledExceptionInspection Cannot happen here */
+      $associationMapping = $classMetadata->getAssociationMapping($associationFieldName);
+      if ($associationMapping['type'] !== ClassMetadata::ONE_TO_ONE) {
+        throw new RuntimeException('This tool can one use OneToOne associations or simple fields names as review field name!');
+      }
+
       // Retrieve value and check whether it is reviewable
       $associationObject = $classMetadata->getFieldValue($object, $associationFieldName);
       if (!$associationObject instanceof ReviewableInterface) {
-        continue;
+        throw new RuntimeException(sprintf('The one-to-one relation must implement %s!', ReviewableInterface::class));
       }
 
-      // Validate original values
-      $associationClassMetadata    = $this->entityManager->getClassMetadata(get_class($associationObject));
-      $associationOriginalValue    = $unitOfWork->getOriginalEntityData($associationObject);
-      $associationObjectFieldNames = array_intersect($associationClassMetadata->getFieldNames(), $associationObject->getReviewFieldsNames());
+      // This is a single
+      if ($this->determineChangesInAssociation($associationObject)) {
+        $changedFields[] = $associationFieldName;
+      }
+    }
 
-      foreach ($associationObjectFieldNames as $associationObjectFieldName) {
-        // Validate value
-        if ($associationOriginalValue[$associationObjectFieldName] !== $associationClassMetadata->getFieldValue($associationObject, $associationObjectFieldName)) {
-          $changedFields[] = $associationFieldName;
+    // Review the id linked relations
+    // It is unknown if this works, as there is currently no entity using this
+    $associationFieldNames = array_intersect($classMetadata->getAssociationNames(), $object->getReviewIdFieldNames());
+    foreach ($associationFieldNames as $associationFieldName) {
+      if (!$classMetadata->isSingleValuedAssociation($associationFieldName)) {
+        throw new RuntimeException('Collection associations are not supported by only specifying a association field name!');
+      }
 
-          // Reset original value to prevent side effects
-          $associationClassMetadata->setFieldValue($associationObject, $associationObjectFieldName, $associationOriginalValue[$associationObjectFieldName]);
+      /** @noinspection PhpUnhandledExceptionInspection Cannot happen here */
+      $associationMapping = $classMetadata->getAssociationMapping($associationFieldName);
+      if ($associationMapping['type'] !== ClassMetadata::MANY_TO_ONE) {
+        throw new RuntimeException('This tool can one use ManyToOne associations as review id field name!');
+      }
+
+      // Retrieve value
+      $associationObject = $classMetadata->getFieldValue($object, $associationFieldName);
+      $originalValueKey  = $associationFieldName . '_id';
+      if (!array_key_exists($associationFieldName, $originalValues)) {
+        throw new RuntimeException('The id value cannot be determined from the original data!');
+      }
+
+      if ($originalValues[$originalValueKey] !== $associationObject->getId()) {
+        $changedFields[] = $associationFieldName;
+
+        try {
+          $classMetadata->setFieldValue($object, $associationFieldName,
+              $this->entityManager->getReference($associationMapping['targetEntity'], $originalValues[$originalValueKey]));
+        } catch (ORMException $e) {
+          throw new RuntimeException(sprintf('Could not restore the original ManyToOne value for field %s.', $associationFieldName), NULL, $e);
         }
       }
     }
 
-    return $changedFields;
+    return array_unique($changedFields);
   }
 
+  /**
+   * Determine whether the association is changed
+   *
+   * @param ReviewableInterface $associationObject
+   *
+   * @return bool
+   */
+  private function determineChangesInAssociation(ReviewableInterface $associationObject): bool
+  {
+    // Validate original values
+    $associationClassMetadata    = $this->entityManager->getClassMetadata(get_class($associationObject));
+    $associationOriginalValue    = $this->unitOfWork->getOriginalEntityData($associationObject);
+    $associationObjectFieldNames = array_intersect($associationClassMetadata->getFieldNames(), $associationObject->getReviewFieldNames());
+
+    $changed = false;
+    foreach ($associationObjectFieldNames as $associationObjectFieldName) {
+      // Validate value
+      if ($associationOriginalValue[$associationObjectFieldName] !== $associationClassMetadata->getFieldValue($associationObject, $associationObjectFieldName)) {
+        $changed = true;
+
+        // Reset original value to prevent side effects
+        $associationClassMetadata->setFieldValue($associationObject, $associationObjectFieldName, $associationOriginalValue[$associationObjectFieldName]);
+      }
+    }
+
+    return $changed;
+  }
 
   /**
    * Adds a flash message to the current session for type.

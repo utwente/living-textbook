@@ -105,12 +105,17 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     ];
   }
 
-  public function getReviewFieldsNames(): array
+  public function getReviewFieldNames(): array
   {
     return [
         'abbreviation',
         'meaning',
     ];
+  }
+
+  public function getReviewIdFieldNames(): array
+  {
+    return [];
   }
 
   /**
