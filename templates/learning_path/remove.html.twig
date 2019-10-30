@@ -7,5 +7,8 @@
 {% block content %}
   <p>{{ 'learning-path.remove-text'|trans({"%item%": learningPath.name}) }}</p>
 
+  {% from '_macro/_review.html.twig' import reviewNotice %}
+  {{ reviewNotice() }}
+
   {{ form(form) }}
 {% endblock %}

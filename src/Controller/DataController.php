@@ -117,7 +117,7 @@ class DataController extends AbstractController
    * @param ValidatorInterface        $validator
    * @param LearningOutcomeRepository $learningOutcomeRepository
    *
-   * @return array
+   * @return array|Response
    * @throws NonUniqueResultException
    */
   public function upload(
@@ -125,13 +125,21 @@ class DataController extends AbstractController
       EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
       LearningOutcomeRepository $learningOutcomeRepository)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    if ($studyArea->isReviewModeEnabled()) {
+      // We do not support upload in areas where the review mode is enabled
+      $this->addFlash('warning', $translator->trans('data.upload-json-disabled-review-mode'));
+
+      return $this->redirectToRoute('app_default_dashboard');
+    }
+
     $form = $this->createForm(JsonUploadType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Handle new upload
-      $data      = $form->getData();
-      $studyArea = $requestStudyArea->getStudyArea();
+      $data = $form->getData();
 
       // Check file format, then load json data
       if ($data['json'] instanceof UploadedFile) {
