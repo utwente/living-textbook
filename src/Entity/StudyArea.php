@@ -203,6 +203,15 @@ class StudyArea
   private $analyticsDashboardEnabled;
 
   /**
+   * Whether the review mode has been enabled for this study area
+   *
+   * @var bool
+   *
+   * @ORM\Column(type="boolean", nullable=false)
+   */
+  private $reviewModeEnabled;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -214,6 +223,7 @@ class StudyArea
     $this->trackUsers                = false;
     $this->openAccess                = false;
     $this->analyticsDashboardEnabled = false;
+    $this->reviewModeEnabled         = false;
   }
 
   /**
@@ -910,6 +920,26 @@ class StudyArea
   public function setAnalyticsDashboardEnabled(bool $analyticsDashboardEnabled): self
   {
     $this->analyticsDashboardEnabled = $analyticsDashboardEnabled;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isReviewModeEnabled(): bool
+  {
+    return $this->reviewModeEnabled;
+  }
+
+  /**
+   * @param bool $reviewModeEnabled
+   *
+   * @return StudyArea
+   */
+  public function setReviewModeEnabled(bool $reviewModeEnabled): self
+  {
+    $this->reviewModeEnabled = $reviewModeEnabled;
 
     return $this;
   }

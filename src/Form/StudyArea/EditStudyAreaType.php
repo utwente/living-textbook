@@ -104,6 +104,12 @@ class EditStudyAreaType extends AbstractType
           ]);
     }
 
+    $builder->add('reviewModeEnabled', CheckboxType::class, [
+        'label'    => 'study-area.review-mode',
+        'help'     => 'study-area.review-mode-help',
+        'required' => false,
+    ]);
+
     if (!$options['hide_submit']) {
       $builder
           ->add('submit', SaveType::class, [
