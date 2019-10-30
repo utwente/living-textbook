@@ -6,6 +6,7 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Data\BaseDataTextObject;
 use App\Entity\Data\DataExamples;
@@ -14,6 +15,7 @@ use App\Entity\Data\DataInterface;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
+use App\Entity\Traits\ReviewableTrait;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -37,12 +39,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ConceptRelationValidator()
  */
-class Concept implements SearchableInterface
+class Concept implements SearchableInterface, ReviewableInterface
 {
 
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var string
@@ -51,6 +54,8 @@ class Concept implements SearchableInterface
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $name;
 
@@ -61,8 +66,9 @@ class Concept implements SearchableInterface
    *
    * @Assert\NotNull()
    *
-   * @JMSA\Expose
-   * @JMSA\Groups({"download_json"})
+   * @JMSA\Expose()
+   * @JMSA\Groups({"download_json", "review_change"})
+   * @JMSA\Type("string")
    */
   private $definition;
 
@@ -74,6 +80,10 @@ class Concept implements SearchableInterface
    *
    * @Assert\NotNull()
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(DataIntroduction::class)
    */
   private $introduction;
 
@@ -84,6 +94,10 @@ class Concept implements SearchableInterface
    *
    * @Assert\NotNull()
    * @Assert\Length(max=512)
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("string")
    */
   private $synonyms;
 
@@ -130,6 +144,10 @@ class Concept implements SearchableInterface
    * @ORM\JoinColumn(name="theory_explanation_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(DataTheoryExplanation::class)
    */
   private $theoryExplanation;
 
@@ -140,6 +158,10 @@ class Concept implements SearchableInterface
    * @ORM\JoinColumn(name="how_to_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(DataHowTo::class)
    */
   private $howTo;
 
@@ -150,6 +172,10 @@ class Concept implements SearchableInterface
    * @ORM\JoinColumn(name="examples_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(DataExamples::class)
    */
   private $examples;
 
@@ -188,6 +214,10 @@ class Concept implements SearchableInterface
    * @ORM\JoinColumn(name="self_assessment_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(DataSelfAssessment::class)
    */
   private $selfAssessment;
 
@@ -450,6 +480,20 @@ class Concept implements SearchableInterface
     if ($data->hasData() && stripos($data->getText(), $search) !== false) {
       $results[] = SearchController::createResult($prio, $property, $data->getText());
     }
+  }
+
+  public function getReviewFieldsNames(): array
+  {
+    return [
+        'name',
+        'definition',
+        'introduction',
+        'synonyms',
+        'theoryExplanation',
+        'howTo',
+        'examples',
+        'selfAssessment',
+    ];
   }
 
   /**

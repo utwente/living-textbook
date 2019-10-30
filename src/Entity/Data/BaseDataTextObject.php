@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class BaseDataTextObject
@@ -27,6 +28,9 @@ trait BaseDataTextObject
    * @var string|null
    *
    * @ORM\Column(name="text", type="text", nullable=true)
+   *
+   * @Serializer\Groups({"review_change"})
+   * @Serializer\Type("string")
    */
   private $text;
 
@@ -58,5 +62,21 @@ trait BaseDataTextObject
     $this->text = $text;
 
     return $this;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getReviewName(): string
+  {
+    return self::class;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getReviewFieldsNames(): array
+  {
+    return ['text'];
   }
 }

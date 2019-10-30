@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\Traits\ReviewableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,12 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
-class LearningPath implements StudyAreaFilteredInterface
+class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var StudyArea|null
@@ -50,6 +52,8 @@ class LearningPath implements StudyAreaFilteredInterface
    * @Assert\Length(max=255)
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $name;
 
@@ -61,6 +65,10 @@ class LearningPath implements StudyAreaFilteredInterface
    * @ORM\Column(name="introduction", type="text", nullable=true)
    *
    * @Assert\NotBlank();
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("string")
    */
   private $introduction;
 
@@ -75,6 +83,8 @@ class LearningPath implements StudyAreaFilteredInterface
    * @Assert\Length(max=1024)
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $question;
 
@@ -94,6 +104,16 @@ class LearningPath implements StudyAreaFilteredInterface
     $this->question = '';
     $this->elements = new ArrayCollection();
   }
+
+  public function getReviewFieldsNames(): array
+  {
+    return [
+        'name',
+        'introduction',
+        'question',
+    ];
+  }
+
 
   /**
    * @return StudyArea|null

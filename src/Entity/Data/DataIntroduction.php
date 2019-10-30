@@ -16,7 +16,5 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class DataIntroduction implements DataInterface
 {
-
   use BaseDataTextObject;
-
 }

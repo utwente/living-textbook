@@ -646,6 +646,9 @@ relation-type:
   saved: 'Relation type "%item%" has been saved successfully.'
   updated: 'Relation type "%item%" has been successfully updated.'
 
+review:
+  saved-for-review: 'Your change has been saved for review!'
+
 tracking:
   export:
     concept: 'Concept'

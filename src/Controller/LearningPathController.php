@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\LearningPath;
+use App\Entity\PendingChange;
 use App\Form\LearningPath\EditLearningPathType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Review\ReviewService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
@@ -17,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,33 +39,35 @@ class LearningPathController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Create new object
-    $learningPath = (new LearningPath())->setStudyArea($requestStudyArea->getStudyArea());
+    $learningPath = (new LearningPath())->setStudyArea($studyArea);
 
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'    => $requestStudyArea->getStudyArea(),
+        'studyArea'    => $studyArea,
         'learningPath' => $learningPath,
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->persist($learningPath);
-      $em->flush();
+      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_ADD);;
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.saved', ['%item%' => $learningPath->getName()]));
 
-      if (SaveType::isListClicked($form)) {
+      if (!$learningPath->getId() || SaveType::isListClicked($form)) {
         return $this->redirectToRoute('app_learningpath_list');
       }
 
@@ -78,19 +83,21 @@ class LearningPathController extends AbstractController
    * @Route("/edit/{learningPath}", requirements={"learningPath"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
-   *                                                       subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea(route="app_learningpath_show",
+   *   routeParams={"learningPath"="{learningPath}"}, subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
    * @param LearningPath           $learningPath
+   * @param ReviewService          $reviewService
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
-  public function edit(Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath,
-                       EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(
+      Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
+      EntityManagerInterface $em, TranslatorInterface $trans)
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
@@ -107,15 +114,16 @@ class LearningPathController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Remove elements no longer used
-      foreach ($originalElements as $element) {
-        if (false === $learningPath->getElements()->contains($element)) {
-          $em->remove($element);
-        }
-      }
-
       // Save the data
-      $em->flush();
+      $reviewService->storeChange($requestStudyArea->getStudyArea(), $learningPath, PendingChange::CHANGE_TYPE_EDIT,
+          function (LearningPath $learningPath) use (&$originalElements, &$em) {
+            // Remove elements no longer used
+            foreach ($originalElements as $element) {
+              if (false === $learningPath->getElements()->contains($element)) {
+                $em->remove($element);
+              }
+            }
+          });
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.updated', ['%item%' => $learningPath->getName()]));
@@ -180,16 +188,17 @@ class LearningPathController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
    *                                                       subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param LearningPath           $learningPath
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param LearningPath        $learningPath
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
-   * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @return array|RedirectResponse
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath,
-                         EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(
+      Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
+      TranslatorInterface $trans)
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
@@ -200,8 +209,7 @@ class LearningPathController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid() && RemoveType::isRemoveClicked($form)) {
-      $em->remove($learningPath);
-      $em->flush();
+      $reviewService->storeChange($requestStudyArea->getStudyArea(), $learningPath, PendingChange::CHANGE_TYPE_REMOVE);
 
       $this->addFlash('success', $trans->trans('learning-path.removed', ['%item%' => $learningPath->getName()]));
 

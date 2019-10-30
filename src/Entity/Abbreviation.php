@@ -6,8 +6,10 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\Traits\ReviewableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -21,11 +23,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
-class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
+class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface
 {
+
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var StudyArea|null
@@ -46,6 +50,8 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
    * @Assert\Length(min=1, max=25)
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $abbreviation;
 
@@ -57,6 +63,8 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
    * @Assert\Length(min=1, max=255)
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $meaning;
 
@@ -97,6 +105,14 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
     ];
   }
 
+  public function getReviewFieldsNames(): array
+  {
+    return [
+        'abbreviation',
+        'meaning',
+    ];
+  }
+
   /**
    * @return StudyArea|null
    */
@@ -132,7 +148,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
    */
   public function setAbbreviation(string $abbreviation): Abbreviation
   {
-    $this->abbreviation = $abbreviation;
+    $this->abbreviation = trim($abbreviation);
 
     return $this;
   }
@@ -152,7 +168,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
    */
   public function setMeaning(string $meaning): Abbreviation
   {
-    $this->meaning = $meaning;
+    $this->meaning = trim($meaning);
 
     return $this;
   }

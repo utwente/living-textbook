@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Abbreviation;
+use App\Entity\PendingChange;
 use App\Form\Abbreviation\EditAbbreviationType;
 use App\Form\Type\RemoveType;
 use App\Repository\AbbreviationRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Review\ReviewService;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -35,25 +36,27 @@ class AbbreviationController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
   {
-    // Create new object
-    $abbreviation = (new Abbreviation())->setStudyArea($requestStudyArea->getStudyArea());
+    $studyArea = $requestStudyArea->getStudyArea();
 
-    $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    // Create new object
+    $abbreviation = (new Abbreviation())->setStudyArea($studyArea);
+
+    $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $studyArea]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->persist($abbreviation);
-      $em->flush();
+      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_ADD);
 
       // Return to list
       $this->addFlash('success', $trans->trans('abbreviation.saved', ['%item%' => $abbreviation->getAbbreviation()]));
@@ -98,28 +101,32 @@ class AbbreviationController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Abbreviation           $abbreviation
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param Abbreviation        $abbreviation
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function edit(Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(
+      Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
+      TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Check if correct study area
-    if ($abbreviation->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($abbreviation->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
     // Create form and handle request
-    $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $studyArea]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->flush();
+      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_EDIT);
 
       // Return to list
       $this->addFlash('success', $trans->trans('abbreviation.updated', ['%item%' => $abbreviation->getAbbreviation()]));
@@ -158,18 +165,22 @@ class AbbreviationController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Abbreviation           $abbreviation
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param Abbreviation        $abbreviation
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(
+      Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
+      TranslatorInterface $trans)
   {
+    $studyArea = $abbreviation->getStudyArea();
+
     // Check if correct study area
-    if ($abbreviation->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($studyArea->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -179,8 +190,7 @@ class AbbreviationController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $em->remove($abbreviation);
-      $em->flush();
+      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_REMOVE);
 
       $this->addFlash('success', $trans->trans('abbreviation.removed', ['%item%' => $abbreviation->getAbbreviation()]));
 

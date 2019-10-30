@@ -6,12 +6,15 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\Traits\ReviewableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,11 +26,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ExternalResourceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class ExternalResource implements SearchableInterface, StudyAreaFilteredInterface
+class ExternalResource implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var Concept[]|Collection
@@ -52,6 +56,8 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=1, max=512)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $title;
 
@@ -61,6 +67,8 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Assert\Length(max=1024)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $description;
 
@@ -71,6 +79,8 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    *
    * @Assert\Url()
    * @Assert\Length(max=512)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $url;
 
@@ -124,6 +134,15 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     ];
   }
 
+  public function getReviewFieldsNames(): array
+  {
+    return [
+        'title',
+        'description',
+        'url',
+    ];
+  }
+
   /**
    * @return Concept[]|Collection
    */
@@ -147,7 +166,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    */
   public function setTitle(string $title): ExternalResource
   {
-    $this->title = $title;
+    $this->title = trim($title);
 
     return $this;
   }
@@ -167,7 +186,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    */
   public function setDescription(?string $description): ExternalResource
   {
-    $this->description = $description;
+    $this->description = trim($description);
 
     return $this;
   }
@@ -187,7 +206,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    */
   public function setUrl(?string $url): ExternalResource
   {
-    $this->url = $url;
+    $this->url = trim($url);
 
     return $this;
   }

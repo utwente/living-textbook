@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
+use App\Entity\PendingChange;
 use App\Entity\RelationType;
 use App\Form\RelationType\EditRelationTypeType;
 use App\Form\Type\RemoveType;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Review\ReviewService;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,26 +35,27 @@ class RelationTypeController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Create new
-    $relationType = (new RelationType())->setStudyArea($requestStudyArea->getStudyArea());
+    $relationType = (new RelationType())->setStudyArea($studyArea);
 
     $form = $this->createForm(EditRelationTypeType::class, $relationType);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-
       // Save the data
-      $em->persist($relationType);
-      $em->flush();
+      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_ADD);
 
       $this->addFlash('success', $trans->trans('relation-type.saved', ['%item%' => $relationType->getName()]));
 
@@ -71,18 +74,22 @@ class RelationTypeController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param RelationType           $relationType
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param RelationType        $relationType
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return Response|array
    */
-  public function edit(Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(
+      Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType, ReviewService $reviewService,
+      TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Check if correct study area
-    if ($relationType->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($relationType->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -98,7 +105,7 @@ class RelationTypeController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
 
       // Save the data
-      $em->flush();
+      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_EDIT);
 
       $this->addFlash('success', $trans->trans('relation-type.updated', ['%item%' => $relationType->getName()]));
 
@@ -140,17 +147,20 @@ class RelationTypeController extends AbstractController
    * @param RequestStudyArea          $requestStudyArea
    * @param RelationType              $relationType
    * @param ConceptRelationRepository $conceptRelationRepository
-   * @param EntityManagerInterface    $em
+   * @param ReviewService             $reviewService
    * @param TranslatorInterface       $trans
    *
    * @return array|RedirectResponse
    * @throws \Exception
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType,
-                         ConceptRelationRepository $conceptRelationRepository, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(
+      Request $request, RequestStudyArea $requestStudyArea, RelationType $relationType,
+      ConceptRelationRepository $conceptRelationRepository, ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Check if correct study area
-    if ($relationType->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($relationType->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -167,11 +177,13 @@ class RelationTypeController extends AbstractController
     $form->handleRequest($request);
 
     if (RemoveType::isRemoveClicked($form)) {
-
-      // Remove the relation type by setting the deletedAt/By manually
-      $relationType->setDeletedAt(new \DateTime());
-      $relationType->setDeletedBy($this->getUser() instanceof UserInterface ? $this->getUser()->getUsername() : 'anon.');
-      $em->flush();
+      // This must be registered as remove change, but it must be handled differently when actually removed
+      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_REMOVE,
+          function () use (&$relationType) {
+            // Remove the relation type by setting the deletedAt/By manually
+            $relationType->setDeletedAt(new DateTime());
+            $relationType->setDeletedBy($this->getUser() instanceof UserInterface ? $this->getUser()->getUsername() : 'anon.');
+          });
 
       $this->addFlash('success', $trans->trans('relation-type.removed', ['%item%' => $relationType->getName()]));
 

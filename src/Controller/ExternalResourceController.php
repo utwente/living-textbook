@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\ExternalResource;
+use App\Entity\PendingChange;
 use App\Form\ExternalResource\EditExternalResourceType;
 use App\Form\Type\RemoveType;
 use App\Repository\ExternalResourceRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Review\ReviewService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,25 +34,27 @@ class ExternalResourceController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
   {
-    // Create new object
-    $externalResource = (new ExternalResource())->setStudyArea($requestStudyArea->getStudyArea());
+    $studyArea = $requestStudyArea->getStudyArea();
 
-    $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    // Create new object
+    $externalResource = (new ExternalResource())->setStudyArea($studyArea);
+
+    $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $studyArea]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->persist($externalResource);
-      $em->flush();
+      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_ADD);
 
       // Return to list
       $this->addFlash('success', $trans->trans('external-resource.saved', ['%item%' => $externalResource->getTitle()]));
@@ -71,28 +74,32 @@ class ExternalResourceController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param ExternalResource       $externalResource
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ExternalResource    $externalResource
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function edit(Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(
+      Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
+      ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Check if correct study area
-    if ($externalResource->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($externalResource->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
     // Create form and handle request
-    $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $requestStudyArea->getStudyArea()]);
+    $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $studyArea]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->flush();
+      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_EDIT);
 
       // Return to list
       $this->addFlash('success', $trans->trans('external-resource.updated', ['%item%' => $externalResource->getTitle()]));
@@ -131,18 +138,22 @@ class ExternalResourceController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param ExternalResource       $externalResource
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ExternalResource    $externalResource
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(
+      Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
+      ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Check if correct study area
-    if ($externalResource->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($externalResource->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -152,8 +163,8 @@ class ExternalResourceController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $em->remove($externalResource);
-      $em->flush();
+      // Save the data
+      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_REMOVE);
 
       $this->addFlash('success', $trans->trans('external-resource.removed', ['%item%' => $externalResource->getTitle()]));
 

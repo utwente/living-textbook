@@ -5,8 +5,11 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\Traits\ReviewableTrait;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,12 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * removed. The should however no longer be displayed in the list/edit possibilities.
  * //Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class RelationType implements StudyAreaFilteredInterface
+class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var StudyArea|null
@@ -45,6 +48,9 @@ class RelationType implements StudyAreaFilteredInterface
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=3, max=100)
+   *
+   * @Serializer\Groups({"Default", "review_change"})
+   * @Serializer\Type("string")
    */
   private $name;
 
@@ -52,6 +58,9 @@ class RelationType implements StudyAreaFilteredInterface
    * @var string|null
    *
    * @ORM\Column(name="description", type="text", nullable=true)
+   *
+   * @Serializer\Groups({"Default", "review_change"})
+   * @Serializer\Type("string")
    */
   private $description;
 
@@ -61,6 +70,14 @@ class RelationType implements StudyAreaFilteredInterface
   public function __construct()
   {
     $this->name = '';
+  }
+
+  public function getReviewFieldsNames(): array
+  {
+    return [
+        'name',
+        'description',
+    ];
   }
 
   /**
@@ -88,7 +105,7 @@ class RelationType implements StudyAreaFilteredInterface
    */
   public function setDescription(?string $description): RelationType
   {
-    $this->description = $description;
+    $this->description = trim($description);
 
     return $this;
   }
@@ -108,7 +125,7 @@ class RelationType implements StudyAreaFilteredInterface
    */
   public function setName(string $name): RelationType
   {
-    $this->name = $name;
+    $this->name = trim($name);
 
     return $this;
   }

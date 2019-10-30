@@ -17,7 +17,8 @@ class EditRelationTypeType extends AbstractType
             'label' => 'relation-type.name',
         ])
         ->add('description', TextareaType::class, [
-            'label' => 'relation-type.description',
+            'label'    => 'relation-type.description',
+            'required' => false,
         ])
         ->add('submit', SaveType::class, [
             'enable_save_and_list' => false,

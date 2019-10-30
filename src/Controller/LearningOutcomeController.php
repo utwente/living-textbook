@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\LearningOutcome;
+use App\Entity\PendingChange;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
 use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Review\ReviewService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,33 +35,35 @@ class LearningOutcomeController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function add(Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function add(
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Create new object
-    $learningOutcome = (new LearningOutcome())->setStudyArea($requestStudyArea->getStudyArea());
+    $learningOutcome = (new LearningOutcome())->setStudyArea($studyArea);
 
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
-        'studyArea'       => $requestStudyArea->getStudyArea(),
+        'studyArea'       => $studyArea,
         'learningOutcome' => $learningOutcome,
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->persist($learningOutcome);
-      $em->flush();
+      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_ADD);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.saved', ['%item%' => $learningOutcome->getShortName()]));
 
-      if (SaveType::isListClicked($form)) {
+      if (!$learningOutcome->getId() || SaveType::isListClicked($form)) {
         return $this->redirectToRoute('app_learningoutcome_list');
       }
 
@@ -79,31 +82,34 @@ class LearningOutcomeController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
    *                                                          subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param LearningOutcome        $learningOutcome
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param LearningOutcome     $learningOutcome
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function edit(Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function edit(
+      Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
+      ReviewService $reviewService, TranslatorInterface $trans)
   {
     // Check if correct study area
-    if ($learningOutcome->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
     // Create form and handle request
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
-        'studyArea'       => $requestStudyArea->getStudyArea(),
+        'studyArea'       => $studyArea,
         'learningOutcome' => $learningOutcome,
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->flush();
+      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_EDIT);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.updated', ['%item%' => $learningOutcome->getShortName()]));
@@ -146,18 +152,22 @@ class LearningOutcomeController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
    *                                                          subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param LearningOutcome        $learningOutcome
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param LearningOutcome     $learningOutcome
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
-  public function remove(Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function remove(
+      Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
+      ReviewService $reviewService, TranslatorInterface $trans)
   {
+    $studyArea = $requestStudyArea->getStudyArea();
+
     // Check if correct study area
-    if ($learningOutcome->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+    if ($learningOutcome->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -168,8 +178,8 @@ class LearningOutcomeController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $em->remove($learningOutcome);
-      $em->flush();
+      // Remove it
+      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_REMOVE);
 
       $this->addFlash('success', $trans->trans('learning-outcome.removed', ['%item%' => $learningOutcome->getShortName()]));
 

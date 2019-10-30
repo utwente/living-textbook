@@ -6,13 +6,16 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\Traits\ReviewableTrait;
 use App\Validator\Constraint\Data\WordCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,11 +29,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @UniqueEntity(fields={"studyArea","number"},errorPath="number",message="learning-outcome.number-already-used")
  */
-class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
+class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var Concept[]|Collection
@@ -58,6 +62,8 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @Assert\NotBlank()
    * @Assert\Range(min="1", max="2000")
+   * @Serializer\Groups({"Default", "review_change"})
+   * @Serializer\Type("int")
    */
   private $number;
 
@@ -70,6 +76,8 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @Assert\NotBlank()
    * @Assert\Length(max="255")
+   * @Serializer\Groups({"Default", "review_change"})
+   * @Serializer\Type("string")
    */
   private $name;
 
@@ -82,6 +90,8 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @Assert\NotBlank()
    * @WordCount(min=1, max=10000)
+   * @Serializer\Groups({"Default", "review_change"})
+   * @Serializer\Type("string")
    */
   private $text;
 
@@ -126,6 +136,15 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     ];
   }
 
+  public function getReviewFieldsNames(): array
+  {
+    return [
+        'name',
+        'number',
+        'text',
+    ];
+  }
+
   /**
    * @return int
    */
@@ -161,7 +180,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    */
   public function setName(string $name): LearningOutcome
   {
-    $this->name = $name;
+    $this->name = trim($name);
 
     return $this;
   }
@@ -181,7 +200,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    */
   public function setText(string $text): LearningOutcome
   {
-    $this->text = $text;
+    $this->text = trim($text);
 
     return $this;
   }
