@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annotation;
-use App\Entity\Contracts\ISearchable;
+use App\Entity\Contracts\SearchableInterface;
 use App\Entity\User;
 use App\Repository\AbbreviationRepository;
 use App\Repository\AnnotationRepository;
@@ -92,14 +92,14 @@ class SearchController extends AbstractController
   }
 
   /**
-   * @param ISearchable[] $data
-   * @param string        $search
+   * @param SearchableInterface[] $data
+   * @param string                $search
    *
    * @return array
    */
   private function searchData(array $data, string $search): array
   {
-    $data = array_map(function (ISearchable $element) use ($search) {
+    $data = array_map(function (SearchableInterface $element) use ($search) {
       return $element->searchIn($search);
     }, $data);
 

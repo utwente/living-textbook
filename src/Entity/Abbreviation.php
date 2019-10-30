@@ -6,7 +6,7 @@ use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
-use App\Entity\Contracts\ISearchable;
+use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
-class Abbreviation implements ISearchable, StudyAreaFilteredInterface
+class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface
 {
   use IdTrait;
   use Blameable;

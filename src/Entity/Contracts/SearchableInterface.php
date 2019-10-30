@@ -4,7 +4,7 @@
 namespace App\Entity\Contracts;
 
 
-interface ISearchable
+interface SearchableInterface
 {
   /**
    * Searches in the object on the given search, returns an array with search result metadata
