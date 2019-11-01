@@ -49,6 +49,9 @@ class LearningPathElement
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type(Concept::class)
+   * @JMSA\MaxDepth(2)
    */
   private $concept;
 
@@ -59,6 +62,11 @@ class LearningPathElement
    *
    * @ORM\ManyToOne(targetEntity="LearningPathElement")
    * @ORM\JoinColumn(name="next_id", referencedColumnName="id", nullable=true)
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(LearningPathElement::class)
+   * @JMSA\MaxDepth(2)
    */
   private $next;
 
@@ -71,6 +79,8 @@ class LearningPathElement
    * @Assert\Length(max=1024)
    *
    * @JMSA\Expose()
+   * @JMSA\Groups({"Default","review_change"})
+   * @JMSA\Type("string")
    */
   private $description;
 
@@ -128,6 +138,7 @@ class LearningPathElement
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
    * @JMSA\SerializedName("next")
+   * @JMSA\Groups({"Default"})
    */
   public function getNextId(): ?int
   {

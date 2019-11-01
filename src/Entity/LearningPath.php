@@ -95,6 +95,10 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
    *   cascade={"persist", "remove"})
    *
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("ArrayCollection<App\Entity\LearningPathElement>")
    */
   private $elements;
 

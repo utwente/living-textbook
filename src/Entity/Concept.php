@@ -113,6 +113,11 @@ class Concept implements SearchableInterface, ReviewableInterface
    *
    * @Assert\NotNull()
    * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("ArrayCollection<App\Entity\Concept>")
+   * @JMSA\MaxDepth(2)
    */
   private $priorKnowledge;
 
@@ -134,6 +139,11 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @ORM\OrderBy({"number" = "ASC"})
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("ArrayCollection<App\Entity\LearningOutcome>")
+   * @JMSA\MaxDepth(2)
    */
   private $learningOutcomes;
 
@@ -190,6 +200,11 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @ORM\OrderBy({"title" = "ASC"})
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("ArrayCollection<App\Entity\ExternalResource>")
+   * @JMSA\MaxDepth(2)
    */
   private $externalResources;
 
@@ -231,8 +246,10 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
-   * @JMSA\Groups({"relations"})
+   * @JMSA\Groups({"relations", "review_change"})
    * @JMSA\SerializedName("relations")
+   * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
+   * @JMSA\MaxDepth(2)
    */
   private $outgoingRelations;
 
@@ -244,6 +261,12 @@ class Concept implements SearchableInterface, ReviewableInterface
    *
    * @Assert\Valid()
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\SerializedName("relations")
+   * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
+   * @JMSA\MaxDepth(2)
    */
   private $incomingRelations;
 

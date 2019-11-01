@@ -14,6 +14,8 @@ trait IdTrait
    * @ORM\GeneratedValue(strategy="AUTO")
    *
    * @JMS\Serializer\Annotation\Expose()
+   * @JMS\Serializer\Annotation\Groups({"Default", "review_change", "id_only"})
+   * @JMS\Serializer\Annotation\Type("int")
    */
   private $id;
 

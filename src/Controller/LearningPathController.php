@@ -53,6 +53,7 @@ class LearningPathController extends AbstractController
 
     // Create new object
     $learningPath = (new LearningPath())->setStudyArea($studyArea);
+    $snapshot     = $reviewService->getSnapshot($learningPath);
 
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
         'studyArea'    => $studyArea,
@@ -62,7 +63,7 @@ class LearningPathController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_ADD);;
+      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_ADD, NULL, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.saved', ['%item%' => $learningPath->getName()]));
@@ -105,6 +106,7 @@ class LearningPathController extends AbstractController
     foreach ($learningPath->getElements() as $element) {
       $originalElements->add($element);
     }
+    $snapshot = $reviewService->getSnapshot($learningPath);
 
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
@@ -123,7 +125,7 @@ class LearningPathController extends AbstractController
                 $em->remove($element);
               }
             }
-          });
+          }, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.updated', ['%item%' => $learningPath->getName()]));

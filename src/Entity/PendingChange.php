@@ -5,10 +5,8 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\ReviewableInterface;
+use App\Review\ReviewService;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\SerializerInterface;
 use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -32,34 +30,6 @@ class PendingChange
       self::CHANGE_TYPE_EDIT,
       self::CHANGE_TYPE_REMOVE,
   ];
-
-  // Serializer details
-  /** @var SerializerInterface|null */
-  private static $serializer = NULL;
-  /** @var SerializationContext|null */
-  private static $serializationContext = NULL;
-  private const SERIALIZER_FORMAT = 'json';
-
-  private static function getSerializer(): SerializerInterface
-  {
-    if (!self::$serializer) {
-      $serializerBuilder = SerializerBuilder::create();
-      self::$serializer  = $serializerBuilder->build();
-    }
-
-    return self::$serializer;
-  }
-
-  private static function getSerializationContext(): SerializationContext
-  {
-    if (!self::$serializationContext) {
-      $context = SerializationContext::create();
-      $context->setGroups(['review_change']);
-      self::$serializationContext = $context;
-    }
-
-    return self::$serializationContext;
-  }
 
   use IdTrait;
   use Blameable;
@@ -235,14 +205,14 @@ class PendingChange
   /**
    * Set the object version that must be stored. Will be serialized
    *
-   * @param $object
+   * @param ReviewableInterface $object
    *
    * @return $this
    */
-  public function setObject($object): self
+  public function setObject(ReviewableInterface $object): self
   {
     $this->payload = $object
-        ? self::getSerializer()->serialize($object, self::SERIALIZER_FORMAT, self::getSerializationContext())
+        ? ReviewService::getDataSnapshot($object)
         : NULL;
 
     return $this;
@@ -253,7 +223,7 @@ class PendingChange
    *
    * @return ReviewableInterface|null
    */
-  public function getObject()
+  public function getObject(): ?ReviewableInterface
   {
     if (!$this->objectType) {
       throw new RuntimeException("Object type is not set, so data object cannot be retrieved!");
@@ -263,10 +233,7 @@ class PendingChange
       return NULL;
     }
 
-    $object = self::getSerializer()->deserialize($this->payload, $this->objectType, self::SERIALIZER_FORMAT);
-    assert($object instanceof ReviewableInterface);
-
-    return $object;
+    return ReviewService::getObjectFromSnapshot($this->payload, $this->objectType);
   }
 
   /**

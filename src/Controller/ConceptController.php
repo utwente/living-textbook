@@ -15,7 +15,6 @@ use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,7 +52,8 @@ class ConceptController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new concept
-    $concept = (new Concept())->setStudyArea($studyArea);
+    $concept  = (new Concept())->setStudyArea($studyArea);
+    $snapshot = $reviewService->getSnapshot($concept);
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
@@ -63,7 +63,7 @@ class ConceptController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_ADD);
+      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_ADD, NULL, $snapshot);
 
       $this->addFlash('success', $trans->trans('concept.saved', ['%item%' => $concept->getName()]));
 
@@ -117,6 +117,7 @@ class ConceptController extends AbstractController
     foreach ($concept->getIncomingRelations() as $incomingRelation) {
       $originalIncomingRelations->add($incomingRelation);
     }
+    $snapshot = $reviewService->getSnapshot($concept);
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
@@ -138,7 +139,7 @@ class ConceptController extends AbstractController
               // Remove all original relations, because we just make new ones
               $em->remove($originalIncomingRelation);
             }
-          });
+          }, $snapshot);
 
       $this->addFlash('success', $trans->trans('concept.updated', ['%item%' => $concept->getName()]));
 
@@ -198,7 +199,6 @@ class ConceptController extends AbstractController
    * @param TranslatorInterface    $trans
    *
    * @return array|RedirectResponse
-   * @throws ORMException
    */
   public function remove(
       Request $request, RequestStudyArea $requestStudyArea, Concept $concept,
