@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Review\ReviewService;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -94,6 +95,50 @@ class PendingChange
    * @Assert\NotNull()
    */
   private $changedFields;
+
+  /**
+   * The owner of the pending change (aka, the user who created it)
+   *
+   * @var User|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   * @ORM\JoinColumn(nullable=false)
+   *
+   * @Assert\NotNull()
+   */
+  private $owner;
+
+  /**
+   * When set, the review has been requested
+   *
+   * @var DateTime|null
+   *
+   * @ORM\Column(type="datetime", nullable=true)
+   *
+   * @Assert\Type("datetime")
+   */
+  private $requestedReviewAt;
+
+  /**
+   * The requested reviewer (if any)
+   *
+   * @var User|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   * @ORM\JoinColumn(nullable=true)
+   */
+  private $requestedReviewBy;
+
+  /**
+   * If any, review comments on particular changes (per field) are stores here
+   *
+   * @var array|null
+   *
+   * @ORM\Column(type="json", nullable=true)
+   *
+   * @Assert\Type("array")
+   */
+  private $reviewComments;
 
   /**
    * @return StudyArea
@@ -252,6 +297,86 @@ class PendingChange
   public function setChangedFields(?array $changedFields): self
   {
     $this->changedFields = $changedFields;
+
+    return $this;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getOwner(): ?User
+  {
+    return $this->owner;
+  }
+
+  /**
+   * @param User|null $owner
+   *
+   * @return PendingChange
+   */
+  public function setOwner(?User $owner): self
+  {
+    $this->owner = $owner;
+
+    return $this;
+  }
+
+  /**
+   * @return DateTime|null
+   */
+  public function getRequestedReviewAt(): ?DateTime
+  {
+    return $this->requestedReviewAt;
+  }
+
+  /**
+   * @param DateTime|null $requestedReviewAt
+   *
+   * @return PendingChange
+   */
+  public function setRequestedReviewAt(?DateTime $requestedReviewAt): self
+  {
+    $this->requestedReviewAt = $requestedReviewAt;
+
+    return $this;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getRequestedReviewBy(): ?User
+  {
+    return $this->requestedReviewBy;
+  }
+
+  /**
+   * @param User|null $requestedReviewBy
+   *
+   * @return PendingChange
+   */
+  public function setRequestedReviewBy(?User $requestedReviewBy): self
+  {
+    $this->requestedReviewBy = $requestedReviewBy;
+
+    return $this;
+  }
+
+  /**
+   * @return array|null
+   */
+  public function getReviewComments(): ?array
+  {
+    return $this->reviewComments;
+  }
+
+  /**
+   * @param array|null $reviewComments
+   *
+   * @return PendingChange
+   */
+  public function setReviewComments(?array $reviewComments): self
+  {
+    $this->reviewComments = $reviewComments;
 
     return $this;
   }

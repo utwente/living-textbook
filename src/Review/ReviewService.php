@@ -13,9 +13,11 @@ use App\Entity\LearningPathElement;
 use App\Entity\PendingChange;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\UnitOfWork;
 use InvalidArgumentException;
@@ -27,6 +29,7 @@ use JMS\Serializer\SerializerInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -38,6 +41,10 @@ class ReviewService
    * @var EntityManager
    */
   private $entityManager;
+  /**
+   * @var Security
+   */
+  private $security;
   /**
    * @var UnitOfWork
    */
@@ -73,13 +80,14 @@ class ReviewService
 
   public function __construct(
       EntityManagerInterface $entityManager, ValidatorInterface $validator, SessionInterface $session,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator, Security $security)
   {
     $this->entityManager = $entityManager;
     $this->unitOfWork    = $entityManager->getUnitOfWork();
     $this->validator     = $validator;
     $this->session       = $session;
     $this->translator    = $translator;
+    $this->security      = $security;
   }
 
   /**
@@ -117,9 +125,8 @@ class ReviewService
         ->setObject($object)
         ->setObjectId($object->getId())
         ->setObjectType($object->getReviewName())
-        ->setChangedFields([]);
-
-    $asdf = $change->getObject();
+        ->setChangedFields([])
+        ->setOwner($this->getUser());
 
     if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE) {
       $change->setChangedFields($originalDataSnapshot
@@ -423,6 +430,9 @@ class ReviewService
    * @param ReviewableInterface $object
    * @param string              $changeType
    * @param callable|NULL       $directCallback
+   *
+   * @throws ORMException
+   * @throws OptimisticLockException
    */
   private function directSave(ReviewableInterface $object, string $changeType, callable $directCallback = NULL)
   {
@@ -437,5 +447,18 @@ class ReviewService
     }
 
     $this->entityManager->flush();
+  }
+
+  /**
+   * Get the current user
+   *
+   * @return User
+   */
+  private function getUser(): User
+  {
+    $user = $this->security->getUser();
+    assert($user instanceof User);
+    
+    return $user;
   }
 }
