@@ -120,3 +120,23 @@
     {% endif %}
   {%- endspaceless -%}
 {%- endblock -%}
+
+{% block checkbox_widget %}
+  {%- set label_attr = label_attr|merge({class: label_attr.class|default('checkbox-custom')|trim}) -%}
+  {{ parent() }}
+{% endblock %}
+
+{% block checkbox_label %}
+  {%- set label_attr = label_attr|merge({class: label_attr.class|default('checkbox-custom')|trim}) -%}
+  {{ parent() }}
+{% endblock %}
+
+{% block radio_widget %}
+  {%- set label_attr = label_attr|merge({class: label_attr.class|default('radio-custom')|trim}) -%}
+  {{ parent() }}
+{% endblock %}
+
+{% block radio_label %}
+  {%- set label_attr = label_attr|merge({class: label_attr.class|default('radio-custom')|trim}) -%}
+  {{ parent() }}
+{% endblock %}
