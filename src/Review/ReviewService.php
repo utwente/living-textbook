@@ -4,8 +4,11 @@ namespace App\Review;
 
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
+use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Repository\PendingChangeRepository;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -31,6 +34,10 @@ class ReviewService
    */
   private $entityManager;
   /**
+   * @var PendingChangeRepository
+   */
+  private $pendingChangeRepository;
+  /**
    * @var Security
    */
   private $security;
@@ -53,17 +60,23 @@ class ReviewService
   private const SERIALIZER_FORMAT = 'json';
 
   public function __construct(
-      EntityManagerInterface $entityManager, ValidatorInterface $validator, SessionInterface $session,
-      TranslatorInterface $translator, Security $security)
+      EntityManagerInterface $entityManager, PendingChangeRepository $pendingChangeRepository,
+      ValidatorInterface $validator, SessionInterface $session, TranslatorInterface $translator, Security $security)
   {
-    $this->entityManager = $entityManager;
-    $this->validator     = $validator;
-    $this->session       = $session;
-    $this->translator    = $translator;
-    $this->security      = $security;
+    $this->entityManager           = $entityManager;
+    $this->pendingChangeRepository = $pendingChangeRepository;
+    $this->validator               = $validator;
+    $this->session                 = $session;
+    $this->translator              = $translator;
+    $this->security                = $security;
   }
 
   /**
+   * This method creates the pending change in the database, by detecting the changed fields in the given object,
+   * based on the snapshot that is supplied (which needs to be created by this service).
+   *
+   * Note that after calling this method, the entity manager will be cleared!
+   *
    * @param StudyArea           $studyArea
    * @param ReviewableInterface $object
    * @param string              $changeType
@@ -72,8 +85,6 @@ class ReviewService
    *
    * The exceptions can be thrown, but are unlikely. We do not want these
    * exceptions to propagate to every controller.
-   *
-   * Note that after calling this method, the entity manager will be cleared!
    *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
@@ -152,6 +163,68 @@ class ReviewService
   public function getSnapshot(ReviewableInterface $object): string
   {
     return self::getDataSnapshot($object);
+  }
+
+  /**
+   * Create a review from the supplied pending change context.
+   * If requested, it will split existing pending changes into multiple ones.
+   *
+   * @param StudyArea $studyArea
+   * @param array     $markedChanges
+   * @param User      $reviewer
+   *
+   * The exceptions can be thrown, but are unlikely. We do not want these
+   * exceptions to propagate to every controller.
+   *
+   * @noinspection PhpDocMissingThrowsInspection
+   * @noinspection PhpUnhandledExceptionInspection
+   */
+  public function createReview(StudyArea $studyArea, array $markedChanges, User $reviewer)
+  {
+    /** @var PendingChange[] $pendingChanges */
+    $pendingChanges = [];
+    foreach ($this->pendingChangeRepository->getMultiple(array_keys($markedChanges)) as $pendingChange) {
+      $pendingChanges[$pendingChange->getId()] = $pendingChange;
+    }
+
+    // Create the review
+    $review = (new Review())
+        ->setOwner($this->getUser())
+        ->setStudyArea($studyArea)
+        ->setRequestedReviewAt(new DateTime())
+        ->setRequestedReviewBy($reviewer);
+
+    // Determine whether we need to split the changes
+    foreach ($markedChanges as $pendingChangeId => $markedFields) {
+      if (!array_key_exists($pendingChangeId, $pendingChanges)) {
+        // Silently skip pending changes that no longer exist
+        continue;
+      }
+
+      $pendingChange = $pendingChanges[$pendingChangeId];
+      $fieldDiff     = array_diff($pendingChange->getChangedFields(), $markedFields);
+      if (0 !== count($fieldDiff)) {
+        // Create a new pending change, but with the fields that were not selected at this time
+        $newPendingChange = $pendingChange->duplicate(array_values($fieldDiff));
+        $this->entityManager->persist($newPendingChange);
+
+        // Update the existing pending change to only use the marked fields
+        $pendingChange->setChangedFields($markedFields);
+      }
+
+      // Add the pending change to the review
+      $review->addPendingChange($pendingChange);
+    }
+
+    // Validate the entity
+    if (count($violations = $this->validator->validate($review))) {
+      assert($violations instanceof ConstraintViolationList);
+      throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
+    }
+
+    // Save the review
+    $this->entityManager->persist($review);
+    $this->entityManager->flush();
   }
 
   /**

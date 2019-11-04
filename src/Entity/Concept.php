@@ -505,6 +505,11 @@ class Concept implements SearchableInterface, ReviewableInterface
     }
   }
 
+  public function getReviewTitle(): string
+  {
+    return $this->getName();
+  }
+
   public function getReviewFieldNames(): array
   {
     return [

@@ -63,25 +63,4 @@ trait BaseDataTextObject
 
     return $this;
   }
-
-  /**
-   * @inheritDoc
-   */
-  public function getReviewName(): string
-  {
-    return self::class;
-  }
-
-  /**
-   * @inheritDoc
-   */
-  public function getReviewFieldNames(): array
-  {
-    return ['text'];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
-  }
 }

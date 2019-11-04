@@ -1,0 +1,119 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'review.submit-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% if pendingChanges|length == 0 %}
+    <p>{{ 'review.nothing-to-submit'|trans }}</p>
+  {% else %}
+    <p>
+      {{ 'review.submit-text'|trans }}
+    </p>
+
+    {{ block('pending_changes') }}
+  {% endif %}
+{% endblock %}
+
+{% block pending_changes %}
+  {{ form_start(form) }}
+
+  <div class="table-responsive mb-3">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th class="fit">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="pc" class="custom-control-input">
+            <label class="checkbox-custom custom-control-label" for="pc"></label>
+          </div>
+        </th>
+        <th class="fit" title="{{ 'review.change-type'|trans }}" data-toggle="tooltip">
+          <i class="fa fa-fw fa-question"></i>
+        </th>
+        <th>
+          {{ 'review.object-type'|trans }}
+        </th>
+        <th>
+          {{ 'review.field'|trans }}
+        </th>
+      </tr>
+      </thead>
+
+      <tbody>
+      {% from _self import change_row %}
+      {% for pendingChange in pendingChanges %}
+        {% if pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_ADD') or
+          pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_REMOVE') %}
+          {{ change_row(form, pendingChange) }}
+        {% else %}
+          {% for field in pendingChange.changedFields %}
+            {{ change_row(form, pendingChange, field) }}
+          {% endfor %}
+        {% endif %}
+
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {# Render form manually, as we do not want the specified pending_changes to be rendered #}
+  {{ form_row(form.reviewer) }}
+  {{ form_row(form.submit) }}
+  {{ form_row(form._token) }}
+  {{ form_end(form, {'render_rest': false}) }}
+{% endblock %}
+
+{% macro change_row(form, pendingChange, field) %}
+  <tr>
+    <td>
+      <div class="custom-control custom-checkbox">
+        {% set formField = field|default(pendingChange.changeType) %}
+        <input type="checkbox" id="pc{{ pendingChange.id }}_{{ formField }}"
+               name="{{ form.vars.id }}[pending_changes][{{ pendingChange.id }}][{{ formField }}]"
+               class="custom-control-input change-input">
+        <label class="checkbox-custom custom-control-label"
+               for="pc{{ pendingChange.id }}_{{ formField }}">
+        </label>
+      </div>
+    </td>
+    <td>
+      {{ block('change_type') }}
+    </td>
+    <td>
+      {{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"
+    </td>
+    <td>
+      {% if field is not empty %}
+        {{ (pendingChange.shortObjectType|trString ~ '.' ~ field|trString)|trans }}
+      {% else %}
+        -
+      {% endif %}
+    </td>
+  </tr>
+{% endmacro %}
+
+{% block change_type %}
+  <i data-toggle="tooltip"
+      {% if pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_ADD') %}
+        class="fa fa-fw fa-plus text-success" title="{{ 'review.change-types.add'|trans }}"
+      {% elseif pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_EDIT') %}
+        class="fa fa-fw fa-edit text-primary" title="{{ 'review.change-types.edit'|trans }}"
+      {% elseif pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_REMOVE') %}
+        class="fa fa-fw fa-trash text-danger" title="{{ 'review.change-types.remove'|trans }}"
+      {% else %}
+        class="fa fa-fw fa-question"
+      {% endif %}
+  ></i>
+{% endblock %}
+
+{% block javascripts_bottom %}
+  <script type="text/javascript">
+    $(function () {
+      $('#pc').on('click', function () {
+        $('.change-input').prop('checked', $('#pc').is(':checked'));
+      });
+    });
+  </script>
+{% endblock %}

@@ -51,4 +51,19 @@ class PendingChangeRepository extends ServiceEntityRepository
         ->addOrderBy('pc.changeType')
         ->getQuery()->getResult();
   }
+
+  /**
+   * Retrieve multiple pending changes at once
+   *
+   * @param array $ids
+   *
+   * @return PendingChange[]
+   */
+  public function getMultiple(array $ids): array
+  {
+    return $this->createQueryBuilder('pc')
+        ->where('pc.id IN (:ids)')
+        ->setParameter('ids', $ids)
+        ->getQuery()->getResult();
+  }
 }

@@ -105,6 +105,11 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     ];
   }
 
+  public function getReviewTitle(): string
+  {
+    return $this->getAbbreviation();
+  }
+
   public function getReviewFieldNames(): array
   {
     return [

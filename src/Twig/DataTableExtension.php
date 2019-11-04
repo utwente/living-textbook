@@ -4,6 +4,7 @@ namespace App\Twig;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
@@ -32,7 +33,7 @@ class DataTableExtension extends AbstractExtension
   }
 
   /**
-   * @return array
+   * @return array|TwigFilter[]
    */
   public function getFunctions()
   {

@@ -109,6 +109,11 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     $this->elements = new ArrayCollection();
   }
 
+  public function getReviewTitle(): string
+  {
+    return $this->getName();
+  }
+
   public function getReviewFieldNames(): array
   {
     return [

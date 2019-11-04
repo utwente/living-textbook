@@ -112,6 +112,21 @@
         </script>
       {% endif %}
 
+      {% if _twigStudyArea.isReviewModeEnabled %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="review-dropdown" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            {{ 'menu.review'|trans }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="review-dropdown">
+            <a class="dropdown-item"
+               href="{{ path('app_review_submit') }}">{{ 'menu.review-submit'|trans }}</a>
+            <a class="dropdown-item"
+               href="{{ path('app_review_submissions') }}">{{ 'menu.review-submission'|trans }}</a>
+          </div>
+        </li>
+      {% endif %}
+
       {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="data-dropdown" role="button" data-toggle="dropdown"

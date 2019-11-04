@@ -26,6 +26,13 @@ interface ReviewableInterface
   public function getReviewName(): string;
 
   /**
+   * The title of the object, used to identify the object
+   *
+   * @return string
+   */
+  public function getReviewTitle(): string;
+
+  /**
    * Get the field names that must be considered for review.
    *
    * These can only be simple fields or ManyToOne associations with object that implement

@@ -16,7 +16,7 @@ class HighlightExtension extends AbstractExtension
   /**
    * Register filters
    *
-   * @return array|\Twig_Filter[]
+   * @return array|TwigFilter[]
    */
   public function getFilters()
   {

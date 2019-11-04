@@ -2,14 +2,12 @@
 
 namespace App\Entity\Data;
 
-use App\Entity\Contracts\ReviewableInterface;
-
 /**
  * Interface DataInterface
  *
  * @package App\Entity\Data
  */
-interface DataInterface extends ReviewableInterface
+interface DataInterface
 {
   /**
    * Determine whether this block has data

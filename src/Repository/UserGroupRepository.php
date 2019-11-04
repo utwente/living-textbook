@@ -24,6 +24,7 @@ class UserGroupRepository extends ServiceEntityRepository
    * @param string    $groupType
    *
    * @return UserGroup|null
+   *
    * @throws InvalidArgumentException
    * @throws NonUniqueResultException
    */

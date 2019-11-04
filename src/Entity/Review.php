@@ -65,12 +65,14 @@ class Review
   private $requestedReviewAt;
 
   /**
-   * The requested reviewer (if any)
+   * The requested reviewer
    *
    * @var User|null
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
-   * @ORM\JoinColumn(nullable=true)
+   * @ORM\JoinColumn(nullable=false)
+   *
+   * @Assert\NotNull()
    */
   private $requestedReviewBy;
 

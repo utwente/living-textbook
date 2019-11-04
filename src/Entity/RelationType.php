@@ -72,6 +72,11 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     $this->name = '';
   }
 
+  public function getReviewTitle(): string
+  {
+    return $this->getName();
+  }
+
   public function getReviewFieldNames(): array
   {
     return [

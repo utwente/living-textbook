@@ -86,6 +86,7 @@ browser:
   zoom-out: 'Zoom out'
 
 concept:
+  _name: 'Concept'
   add-title: 'Add new concept'
   concept: 'Concept'
   contributors: 'Contributors'
@@ -273,6 +274,7 @@ exception:
   error-title-404: 'Page not found!'
 
 external-resource:
+  _name: 'External resource'
   add-title: 'Add new external resource'
   description: 'Description'
   edit-title: 'Edit external resource "%item%"'
@@ -322,6 +324,7 @@ help:
   title: "Help"
 
 learning-outcome:
+  _name: 'Learning outcome'
   add-title: 'Add new learning outcome'
   edit-title: 'Edit learning outcome "%item%"'
   list-title: 'Learning outcome list'
@@ -404,6 +407,9 @@ menu:
   permissions: 'Permissions'
   print: 'Print'
   relation-type: 'Relation types'
+  review: 'Review'
+  review-submission: 'Submissions'
+  review-submit: 'Submit'
   show: 'Show'
   study-area: 'Study areas'
   study-area-groups: "Study area groups"
@@ -633,6 +639,7 @@ study-area:
   updated: 'Study area "%item%" has been successfully updated.'
 
 relation-type:
+  _name: 'Relation type'
   add-title: 'Add new relation type'
   description: 'Description'
   edit-title: 'Edit relation type "%item%"'
@@ -647,7 +654,24 @@ relation-type:
   updated: 'Relation type "%item%" has been successfully updated.'
 
 review:
-  saved-for-review: 'Your change has been saved for review!'
+  change-type: 'Change type'
+  change-types:
+    add: 'Object added'
+    edit: 'Object edited'
+    remove: 'Object removed'
+  field: 'Changed field'
+  no-pending-submissions: 'You have no pending reviews submissions at this point. Time to create some?'
+  nothing-selected-for-submit: 'You did not select any changes that can be submitted!'
+  nothing-to-submit: 'You have no changes to submit! Time to create some?'
+  object-type: 'Changed object'
+  reviewer: 'Reviewer'
+  reviewer-help: 'Select who should review these changes.'
+  submissions-title: 'Pending reviews'
+  submissions-text: 'The submissions below are currently pending review.'
+  saved-for-review: 'Your change has been saved! You will need to submit it for review.'
+  submit-title: 'Submit your changes for review'
+  submit-text: 'Select the changes you want to submit for review'
+  submitted: 'Your review has been submitted successfully!'
 
 tracking:
   export:

@@ -1,0 +1,13 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'review.submissions-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% if reviews|length == 0 %}
+    <p>{{ 'review.no-pending-submissions'|trans }}</p>
+  {% else %}
+    <p>{{ 'review.submissions-text'|trans }}</p>
+  {% endif %}
+{% endblock %}
