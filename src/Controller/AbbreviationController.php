@@ -50,13 +50,14 @@ class AbbreviationController extends AbstractController
 
     // Create new object
     $abbreviation = (new Abbreviation())->setStudyArea($studyArea);
+    $snapshot     = $reviewService->getSnapshot($abbreviation);
 
     $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $studyArea]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_ADD);
+      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('abbreviation.saved', ['%item%' => $abbreviation->getAbbreviation()]));
@@ -119,6 +120,7 @@ class AbbreviationController extends AbstractController
     if ($abbreviation->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+    $snapshot = $reviewService->getSnapshot($abbreviation);
 
     // Create form and handle request
     $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $studyArea]);
@@ -126,7 +128,7 @@ class AbbreviationController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_EDIT);
+      $reviewService->storeChange($studyArea, $abbreviation, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('abbreviation.updated', ['%item%' => $abbreviation->getAbbreviation()]));

@@ -48,13 +48,14 @@ class ExternalResourceController extends AbstractController
 
     // Create new object
     $externalResource = (new ExternalResource())->setStudyArea($studyArea);
+    $snapshot         = $reviewService->getSnapshot($externalResource);
 
     $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $studyArea]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_ADD);
+      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('external-resource.saved', ['%item%' => $externalResource->getTitle()]));
@@ -92,6 +93,7 @@ class ExternalResourceController extends AbstractController
     if ($externalResource->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+    $snapshot = $reviewService->getSnapshot($externalResource);
 
     // Create form and handle request
     $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $studyArea]);
@@ -99,7 +101,7 @@ class ExternalResourceController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_EDIT);
+      $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('external-resource.updated', ['%item%' => $externalResource->getTitle()]));

@@ -63,7 +63,7 @@ class ConceptController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_ADD, NULL, $snapshot);
+      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_ADD, $snapshot, NULL);
 
       $this->addFlash('success', $trans->trans('concept.saved', ['%item%' => $concept->getName()]));
 
@@ -127,7 +127,7 @@ class ConceptController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_EDIT,
+      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_EDIT, $snapshot,
           function () use (&$originalIncomingRelations, &$originalOutgoingRelations, &$em) {
 
             // Remove outdated relations
@@ -139,7 +139,7 @@ class ConceptController extends AbstractController
               // Remove all original relations, because we just make new ones
               $em->remove($originalIncomingRelation);
             }
-          }, $snapshot);
+          });
 
       $this->addFlash('success', $trans->trans('concept.updated', ['%item%' => $concept->getName()]));
 
@@ -217,7 +217,7 @@ class ConceptController extends AbstractController
     ]);
     $form->handleRequest($request);
     if (RemoveType::isRemoveClicked($form)) {
-      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_REMOVE,
+      $reviewService->storeChange($studyArea, $concept, PendingChange::CHANGE_TYPE_REMOVE, NULL,
           function (Concept $concept) use (&$learningPathRepository) {
             $learningPathRepository->removeElementBasedOnConcept($concept);
           });

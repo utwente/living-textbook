@@ -63,7 +63,7 @@ class LearningPathController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_ADD, NULL, $snapshot);
+      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.saved', ['%item%' => $learningPath->getName()]));
@@ -117,7 +117,7 @@ class LearningPathController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($requestStudyArea->getStudyArea(), $learningPath, PendingChange::CHANGE_TYPE_EDIT,
+      $reviewService->storeChange($requestStudyArea->getStudyArea(), $learningPath, PendingChange::CHANGE_TYPE_EDIT, $snapshot,
           function (LearningPath $learningPath) use (&$originalElements, &$em) {
             // Remove elements no longer used
             foreach ($originalElements as $element) {
@@ -125,7 +125,7 @@ class LearningPathController extends AbstractController
                 $em->remove($element);
               }
             }
-          }, $snapshot);
+          });
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.updated', ['%item%' => $learningPath->getName()]));

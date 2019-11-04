@@ -49,6 +49,7 @@ class LearningOutcomeController extends AbstractController
 
     // Create new object
     $learningOutcome = (new LearningOutcome())->setStudyArea($studyArea);
+    $snapshot        = $reviewService->getSnapshot($learningOutcome);
 
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
         'studyArea'       => $studyArea,
@@ -58,7 +59,7 @@ class LearningOutcomeController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_ADD);
+      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.saved', ['%item%' => $learningOutcome->getShortName()]));
@@ -99,6 +100,7 @@ class LearningOutcomeController extends AbstractController
     if ($learningOutcome->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+    $snapshot = $reviewService->getSnapshot($learningOutcome);
 
     // Create form and handle request
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
@@ -109,7 +111,7 @@ class LearningOutcomeController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_EDIT);
+      $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.updated', ['%item%' => $learningOutcome->getShortName()]));

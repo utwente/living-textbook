@@ -49,13 +49,14 @@ class RelationTypeController extends AbstractController
 
     // Create new
     $relationType = (new RelationType())->setStudyArea($studyArea);
+    $snapshot     = $reviewService->getSnapshot($relationType);
 
     $form = $this->createForm(EditRelationTypeType::class, $relationType);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_ADD);
+      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       $this->addFlash('success', $trans->trans('relation-type.saved', ['%item%' => $relationType->getName()]));
 
@@ -98,6 +99,8 @@ class RelationTypeController extends AbstractController
       throw $this->createNotFoundException();
     }
 
+    $snapshot = $reviewService->getSnapshot($relationType);
+
     // Create form and handle request
     $form = $this->createForm(EditRelationTypeType::class, $relationType);
     $form->handleRequest($request);
@@ -105,7 +108,7 @@ class RelationTypeController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
 
       // Save the data
-      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_EDIT);
+      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
 
       $this->addFlash('success', $trans->trans('relation-type.updated', ['%item%' => $relationType->getName()]));
 
@@ -178,7 +181,7 @@ class RelationTypeController extends AbstractController
 
     if (RemoveType::isRemoveClicked($form)) {
       // This must be registered as remove change, but it must be handled differently when actually removed
-      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_REMOVE,
+      $reviewService->storeChange($studyArea, $relationType, PendingChange::CHANGE_TYPE_REMOVE, NULL,
           function () use (&$relationType) {
             // Remove the relation type by setting the deletedAt/By manually
             $relationType->setDeletedAt(new DateTime());
