@@ -2,16 +2,8 @@
 
 namespace App\Review;
 
-use App\Entity\Abbreviation;
-use App\Entity\Concept;
-use App\Entity\ConceptRelation;
 use App\Entity\Contracts\ReviewableInterface;
-use App\Entity\ExternalResource;
-use App\Entity\LearningOutcome;
-use App\Entity\LearningPath;
-use App\Entity\LearningPathElement;
 use App\Entity\PendingChange;
-use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
@@ -67,17 +59,6 @@ class ReviewService
   private static $serializer = NULL;
   private const SERIALIZER_FORMAT = 'json';
 
-  private static $clearableClasses = [
-      Abbreviation::class,
-      Concept::class,
-      ConceptRelation::class,
-      ExternalResource::class,
-      LearningOutcome::class,
-      LearningPath::class,
-      LearningPathElement::class,
-      RelationType::class,
-  ];
-
   public function __construct(
       EntityManagerInterface $entityManager, ValidatorInterface $validator, SessionInterface $session,
       TranslatorInterface $translator, Security $security)
@@ -100,6 +81,8 @@ class ReviewService
    * The exceptions can be thrown, but are unlikely. We do not want these
    * exceptions to propagate to every controller.
    *
+   * Note that after calling this method, the entity manager will be cleared!
+   *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
@@ -119,7 +102,7 @@ class ReviewService
     }
 
     // Create the pending change entity
-    $change = (new PendingChange())
+    $pendingChange = (new PendingChange())
         ->setStudyArea($studyArea)
         ->setChangeType($changeType)
         ->setObject($object)
@@ -129,13 +112,13 @@ class ReviewService
         ->setOwner($this->getUser());
 
     if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE) {
-      $change->setChangedFields($originalDataSnapshot
+      $pendingChange->setChangedFields($originalDataSnapshot
           ? $this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot)
           : $this->determineChangedFields($object));
     }
 
     // If nothing has changed, we have nothing to do for review and we use the original behavior
-    if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE && 0 === count($change->getChangedFields())) {
+    if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE && 0 === count($pendingChange->getChangedFields())) {
       // Use the normal save behavior
       $this->directSave($object, $changeType, $directCallback);
 
@@ -143,19 +126,27 @@ class ReviewService
     }
 
     // Validate the entity
-    if (count($violations = $this->validator->validate($change))) {
+    if (count($violations = $this->validator->validate($pendingChange))) {
       assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
     // Clean object from doctrine state
-    foreach (self::$clearableClasses as $clearableClass) {
-      $this->entityManager->clear($clearableClass);
-    }
+    // This breaks the state of currently loaded object, which is why we replace the existing relations in the
+    // PendingChange with doctrine references
+    $this->entityManager->clear();
+
+    // Replace the relations after the manager has been cleared
+    $refOwner     = $this->entityManager->getReference(User::class, $pendingChange->getOwner()->getId());
+    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId());
+    assert($refOwner instanceof User);
+    assert($refStudyArea instanceof StudyArea);
+    $pendingChange->setOwner($refOwner);
+    $pendingChange->setStudyArea($refStudyArea);
 
     // Store the pending change
-    $this->entityManager->persist($change);
-    $this->entityManager->flush($change);
+    $this->entityManager->persist($pendingChange);
+    $this->entityManager->flush($pendingChange);
 
     // Add flash notification about the review change
     $this->addFlash('notice', $this->translator->trans('review.saved-for-review'));
@@ -458,7 +449,7 @@ class ReviewService
   {
     $user = $this->security->getUser();
     assert($user instanceof User);
-    
+
     return $user;
   }
 }
