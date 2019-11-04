@@ -6,7 +6,6 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Review\ReviewService;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,10 +21,11 @@ class PendingChange
 {
   /**
    * Change types
+   * Number are added to force time dependant ordering
    */
-  public const CHANGE_TYPE_ADD = 'add';
-  public const CHANGE_TYPE_EDIT = 'edit';
-  public const CHANGE_TYPE_REMOVE = 'remove';
+  public const CHANGE_TYPE_ADD = '10_add';
+  public const CHANGE_TYPE_EDIT = '20_edit';
+  public const CHANGE_TYPE_REMOVE = '30_remove';
   public const CHANGE_TYPES = [
       self::CHANGE_TYPE_ADD,
       self::CHANGE_TYPE_EDIT,
@@ -109,36 +109,14 @@ class PendingChange
   private $owner;
 
   /**
-   * When set, the review has been requested
+   * The review this pending change belongs to, if any
    *
-   * @var DateTime|null
+   * @var Review|null
    *
-   * @ORM\Column(type="datetime", nullable=true)
-   *
-   * @Assert\Type("datetime")
-   */
-  private $requestedReviewAt;
-
-  /**
-   * The requested reviewer (if any)
-   *
-   * @var User|null
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   * @ORM\ManyToOne(targetEntity="App\Entity\Review", inversedBy="pendingChanges")
    * @ORM\JoinColumn(nullable=true)
    */
-  private $requestedReviewBy;
-
-  /**
-   * If any, review comments on particular changes (per field) are stores here
-   *
-   * @var array|null
-   *
-   * @ORM\Column(type="json", nullable=true)
-   *
-   * @Assert\Type("array")
-   */
-  private $reviewComments;
+  private $review;
 
   /**
    * @return StudyArea
@@ -186,6 +164,16 @@ class PendingChange
   public function getObjectType(): ?string
   {
     return $this->objectType;
+  }
+
+  public function getShortObjectType(): ?string
+  {
+    $pos = strrpos($this->objectType, '\\');
+    if (!$pos || $pos >= strlen($this->objectType) - 1) {
+      return $this->objectType;
+    }
+
+    return substr($this->objectType, $pos + 1);
   }
 
   /**
@@ -322,61 +310,21 @@ class PendingChange
   }
 
   /**
-   * @return DateTime|null
+   * @return Review|null
    */
-  public function getRequestedReviewAt(): ?DateTime
+  public function getReview(): ?Review
   {
-    return $this->requestedReviewAt;
+    return $this->review;
   }
 
   /**
-   * @param DateTime|null $requestedReviewAt
+   * @param Review|null $review
    *
    * @return PendingChange
    */
-  public function setRequestedReviewAt(?DateTime $requestedReviewAt): self
+  public function setReview(?Review $review): self
   {
-    $this->requestedReviewAt = $requestedReviewAt;
-
-    return $this;
-  }
-
-  /**
-   * @return User|null
-   */
-  public function getRequestedReviewBy(): ?User
-  {
-    return $this->requestedReviewBy;
-  }
-
-  /**
-   * @param User|null $requestedReviewBy
-   *
-   * @return PendingChange
-   */
-  public function setRequestedReviewBy(?User $requestedReviewBy): self
-  {
-    $this->requestedReviewBy = $requestedReviewBy;
-
-    return $this;
-  }
-
-  /**
-   * @return array|null
-   */
-  public function getReviewComments(): ?array
-  {
-    return $this->reviewComments;
-  }
-
-  /**
-   * @param array|null $reviewComments
-   *
-   * @return PendingChange
-   */
-  public function setReviewComments(?array $reviewComments): self
-  {
-    $this->reviewComments = $reviewComments;
+    $this->review = $review;
 
     return $this;
   }
