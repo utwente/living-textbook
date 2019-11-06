@@ -60,7 +60,7 @@
 
   {# Render form manually, as we do not want the specified pending_changes to be rendered #}
   {{ form_row(form.notes) }}
-  {{ form_row(form.reviewer) }}
+  {{ form_row(form.requestedReviewBy) }}
   {{ form_row(form.submit) }}
   {{ form_row(form._token) }}
   {{ form_end(form, {'render_rest': false}) }}

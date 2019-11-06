@@ -66,8 +66,9 @@
 
     {% block review %}
       {% from '_macro/_action_buttons.html.twig' import _action_button, show_button, edit_button, remove_button %}
+      {% set own = review.owner.id == app.user.id %}
       <tr>
-        {% if notOwn is defined %}
+        {% if not own %}
           <td>{{ review.owner.displayName }}</td>
         {% endif %}
         <td class="fit">
@@ -82,12 +83,12 @@
         <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
         <td>{{ review.requestedReviewBy.displayName }}</td>
         <td class="actions">
-          {% if notOwn is not defined %}
-            {{ edit_button('#') }}
-            {{ remove_button('#') }}
+          {% if own or is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
+            {{ edit_button(path('app_review_editreview', {'review': review.id})) }}
+            {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
           {% endif %}
           {{ show_button('#') }}
-          {% if notOwn is defined %}
+          {% if not own %}
             {{ _action_button('#', 'fa-search', 'review.start-review'|trans, 'success', false, false, review.requestedReviewBy.id != app.user.id) }}
           {% endif %}
         </td>

@@ -1,0 +1,20 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.edit_row(
+    path('app_review_removereview', {'review': review.id}),
+    path('app_review_submissions')
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'review.edit-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% from '_layout/flashbags.html.twig' import flashbag_alert %}
+  {{ flashbag_alert('info', 'review.edit-notice'|trans, 'fa-info-circle', true) }}
+
+  {{ form(form) }}
+{% endblock %}

@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Form\Review\EditReviewType;
 use App\Form\Review\SubmitReviewType;
+use App\Form\Type\RemoveType;
 use App\Repository\PendingChangeRepository;
 use App\Repository\ReviewRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +29,91 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ReviewController extends AbstractController
 {
+
+  /**
+   * Edit the pending review. It is only possible to edit the notes and requested reviewer
+   *
+   * @Route("/{review}/edit", requirements={"review"="\d+"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @Template()
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Review                 $review
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   */
+  public function editReview(
+      Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
+      TranslatorInterface $translator)
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+    $this->checkAccess($studyArea, $review);
+
+    // Create the form
+    $form = $this->createForm(EditReviewType::class, $review, [
+        'study_area' => $studyArea,
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('review.edit-successful'));
+
+      return $this->redirectToRoute('app_review_submissions');
+    }
+
+    return [
+        'form'   => $form->createView(),
+        'review' => $review,
+    ];
+  }
+
+  /**
+   * Remove the pending review
+   *
+   * @Route("/{review}/remove", requirements={"review"="\d+"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @Template()
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Review                 $review
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   */
+  public function removeReview(
+      Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
+      TranslatorInterface $translator)
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+    $this->checkAccess($studyArea, $review);
+
+    // Create the form
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route' => 'app_review_submissions',
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && RemoveType::isRemoveClicked($form)) {
+      $em->remove($review);
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('review.remove-successful'));
+
+      return $this->redirectToRoute('app_review_submissions');
+    }
+
+    return [
+        'form'   => $form->createView(),
+        'review' => $review,
+    ];
+  }
 
   /**
    * Show the pending reviews for the current user
@@ -45,7 +134,7 @@ class ReviewController extends AbstractController
     return [
         'reviews' => $reviewRepository->findBy(
             ['studyArea' => $requestStudyArea->getStudyArea()],
-            ['requestedReviewAt' => 'DESC']),
+            ['requestedReviewAt' => 'ASC']),
     ];
   }
 
@@ -103,7 +192,7 @@ class ReviewController extends AbstractController
       }
 
       // Retrieve the form data
-      $reviewer = $formData['reviewer'];
+      $reviewer = $formData['requestedReviewBy'];
       $notes    = $formData['notes'];
 
       // Create the review
@@ -133,6 +222,26 @@ class ReviewController extends AbstractController
 
     if (!$studyArea->isReviewModeEnabled()) {
       throw new NotFoundHttpException();
+    }
+  }
+
+  /**
+   * Checks access for the supplied review
+   *
+   * @param StudyArea $studyArea
+   * @param Review    $review
+   */
+  private function checkAccess(StudyArea $studyArea, Review $review)
+  {
+    // Check study area
+    if ($studyArea->getId() !== $review->getStudyArea()->getId()) {
+      throw new NotFoundHttpException("Study area does not match");
+    }
+
+    // Check access
+    if ($review->getOwner()->getId() !== $this->getUser()->getId()
+        && !$this->isGranted('STUDYAREA_OWNER', $studyArea)) {
+      throw new NotFoundHttpException("Access denied");
     }
   }
 }
