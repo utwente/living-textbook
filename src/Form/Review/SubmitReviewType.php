@@ -3,6 +3,7 @@
 namespace App\Form\Review;
 
 use App\Entity\StudyArea;
+use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Form\Type\SaveType;
 use App\Repository\UserGroupRepository;
@@ -12,18 +13,24 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class SubmitReviewType extends AbstractType
 {
   /**
+   * @var Security
+   */
+  private $security;
+  /**
    * @var UserGroupRepository
    */
   private $userGroupRepository;
 
-  public function __construct(UserGroupRepository $userGroupRepository)
+  public function __construct(UserGroupRepository $userGroupRepository, Security $security)
   {
     $this->userGroupRepository = $userGroupRepository;
+    $this->security            = $security;
   }
 
   /**
@@ -34,13 +41,19 @@ class SubmitReviewType extends AbstractType
    */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    $self = $this->security->getUser();
+    assert($self instanceof User);
     $studyArea = $options['study_area'];
     assert($studyArea instanceof StudyArea);
-    $userGroup = $this->userGroupRepository->getForType($studyArea, UserGroup::GROUP_REVIEWER);
+    $userGroup      = $this->userGroupRepository->getForType($studyArea, UserGroup::GROUP_REVIEWER);
+    $groupReviewers = array_filter($userGroup ? $userGroup->getUsers()->toArray() : [],
+        function (User $user) use ($self) {
+          return $user->getId() != $self->getId();
+        });
 
     $possibleUsers = array_merge(
-        [$studyArea->getOwner()],
-        $userGroup ? $userGroup->getUsers()->toArray() : []
+        [$studyArea->getOwner()], // Owner is always available for review
+        $groupReviewers
     );
 
     $builder
