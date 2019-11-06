@@ -43,7 +43,9 @@ class ReviewController extends AbstractController
     $this->isReviewable($requestStudyArea);
 
     return [
-        'reviews' => $reviewRepository->findBy(['owner' => $this->getUser()]),
+        'reviews' => $reviewRepository->findBy(
+            ['studyArea' => $requestStudyArea->getStudyArea()],
+            ['requestedReviewAt' => 'DESC']),
     ];
   }
 
@@ -94,14 +96,18 @@ class ReviewController extends AbstractController
       if (0 === count($markedChanges)) {
         $this->addFlash('warning', $translator->trans('review.nothing-selected-for-submit'));
 
-        return $this->redirectToRoute('app_review_submit');
+        return [
+            'form'           => $form->createView(),
+            'pendingChanges' => $pendingChanges,
+        ];
       }
 
-      // Retrieve the reviewer from the form
+      // Retrieve the form data
       $reviewer = $formData['reviewer'];
+      $notes    = $formData['notes'];
 
       // Create the review
-      $reviewService->createReview($studyArea, $markedChanges, $reviewer);
+      $reviewService->createReview($studyArea, $markedChanges, $reviewer, $notes);
 
       $this->addFlash('success', $translator->trans('review.submitted'));
 

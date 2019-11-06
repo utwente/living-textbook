@@ -56,6 +56,15 @@ class Review
   private $owner;
 
   /**
+   * Notes left for the reviewer, if any
+   *
+   * @var string|null
+   *
+   * @ORM\Column(type="text", nullable=true)
+   */
+  private $notes;
+
+  /**
    * @var DateTime|null
    *
    * @ORM\Column(type="datetime")
@@ -131,6 +140,26 @@ class Review
   public function setOwner(?User $owner): self
   {
     $this->owner = $owner;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getNotes(): ?string
+  {
+    return $this->notes;
+  }
+
+  /**
+   * @param string|null $notes
+   *
+   * @return Review
+   */
+  public function setNotes(?string $notes): self
+  {
+    $this->notes = $notes;
 
     return $this;
   }

@@ -9,5 +9,87 @@
     <p>{{ 'review.no-pending-submissions'|trans }}</p>
   {% else %}
     <p>{{ 'review.submissions-text'|trans }}</p>
+
+    {{ block('reviews') }}
   {% endif %}
 {% endblock %}
+
+{% block reviews %}
+  {% set closeLoop = false %}
+  {% for review in reviews if review.owner.id == app.user.id %}
+    {% if loop.first %}
+      {% set closeLoop = true %}
+      <h2>{{ 'review.list-own'|trans }}</h2>
+      {{ block('review_table') }}
+    {% endif %}
+    {{ block('review') }}
+  {% endfor %}
+  {% if closeLoop %}
+    </tbody>
+    </table>
+    </div>
+  {% endif %}
+
+  {% set closeLoop = false %}
+  {% set notOwn = true %}
+  {% for review in reviews if review.owner.id != app.user.id %}
+    {% if loop.first %}
+      {% set closeLoop = true %}
+      <h2>{{ 'review.list-other'|trans }}</h2>
+      {{ block('review_table') }}
+    {% endif %}
+    {{ block('review') }}
+  {% endfor %}
+  {% if closeLoop %}
+    </tbody>
+    </table>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block review_table %}
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      {% if notOwn is defined %}
+        <th scope="col">{{ 'review.owner'|trans }}</th>
+      {% endif %}
+      <th scope="col">{{ 'review.notes'|trans }}</th>
+      <th scope="col">{{ 'review.submitted-at'|trans }}</th>
+      <th scope="col">{{ 'review.reviewer'|trans }}</th>
+      <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% endblock %}
+
+    {% block review %}
+      {% from '_macro/_action_buttons.html.twig' import _action_button, show_button, edit_button, remove_button %}
+      <tr>
+        {% if notOwn is defined %}
+          <td>{{ review.owner.displayName }}</td>
+        {% endif %}
+        <td class="fit">
+          {% if review.notes|length > 0 %}
+            <span {% if review.notes|length > 50 %}title="{{ review.notes }}" data-toggle="tooltip"{% endif %}>
+              {{ review.notes|length > 50 ? review.notes|slice(0, 50) ~ '...' : review.notes }}
+            </span>
+          {% else %}
+            -
+          {% endif %}
+        </td>
+        <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
+        <td>{{ review.requestedReviewBy.displayName }}</td>
+        <td class="actions">
+          {% if notOwn is not defined %}
+            {{ edit_button('#') }}
+            {{ remove_button('#') }}
+          {% endif %}
+          {{ show_button('#') }}
+          {% if notOwn is defined %}
+            {{ _action_button('#', 'fa-search', 'review.start-review'|trans, 'success', false, false, review.requestedReviewBy.id != app.user.id) }}
+          {% endif %}
+        </td>
+      </tr>
+    {% endblock %}

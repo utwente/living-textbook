@@ -11,6 +11,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
@@ -68,6 +69,11 @@ class SubmitReviewType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
             ],
+        ])
+        ->add('notes', TextareaType::class, [
+            'required' => false,
+            'label'    => 'review.notes',
+            'help'     => 'review.notes-help',
         ])
         ->add('reviewer', ChoiceType::class, [
             'required'     => true,

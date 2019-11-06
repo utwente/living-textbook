@@ -169,9 +169,10 @@ class ReviewService
    * Create a review from the supplied pending change context.
    * If requested, it will split existing pending changes into multiple ones.
    *
-   * @param StudyArea $studyArea
-   * @param array     $markedChanges
-   * @param User      $reviewer
+   * @param StudyArea   $studyArea
+   * @param array       $markedChanges
+   * @param User        $reviewer
+   * @param string|null $notes
    *
    * The exceptions can be thrown, but are unlikely. We do not want these
    * exceptions to propagate to every controller.
@@ -179,7 +180,7 @@ class ReviewService
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
-  public function createReview(StudyArea $studyArea, array $markedChanges, User $reviewer)
+  public function createReview(StudyArea $studyArea, array $markedChanges, User $reviewer, ?string $notes)
   {
     /** @var PendingChange[] $pendingChanges */
     $pendingChanges = [];
@@ -190,6 +191,7 @@ class ReviewService
     // Create the review
     $review = (new Review())
         ->setOwner($this->getUser())
+        ->setNotes($notes)
         ->setStudyArea($studyArea)
         ->setRequestedReviewAt(new DateTime())
         ->setRequestedReviewBy($reviewer);

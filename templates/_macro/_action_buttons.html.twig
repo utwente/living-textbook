@@ -70,7 +70,7 @@
 
 {% macro _action_button(url, icon, label, color, blank, onclick, disabled) %}
   {% set disabled = disabled|default('') %}
-  {% if disabled is not empty %}
+  {% if disabled is not empty and disabled is not same as(true) %}
     <div class="d-inline-block" data-toggle="tooltip" title="{{ disabled }}">
   {% endif %}
   <a href="{{ url }}"{% if onclick|default(false) %} onclick="{{ onclick }}" {% endif %}{% if blank|default(false) %} target="_blank" {% endif %}
