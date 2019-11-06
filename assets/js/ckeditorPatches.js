@@ -1,14 +1,18 @@
 /**
  * Run these patches when CKEDITOR is detected
  */
-if (window.CKEDITOR) {
+$(function () {
+  if (!window.CKEDITOR) {
+    return;
+  }
+
   // Update h1 & h2 styles to use h3 & h4 tags
   CKEDITOR.config.format_h1 = {element: 'h3'};
   CKEDITOR.config.format_h2 = {element: 'h4'};
 
   // // Add extra styles
-  CKEDITOR.config.format_citation = {name: "Citation", element: 'div', attributes: { 'class': 'citation'}};
-  CKEDITOR.config.format_reference = {name: "Reference", element: 'div', attributes: { 'class': 'reference'}};
+  CKEDITOR.config.format_citation = {name: 'Citation', element: 'div', attributes: {'class': 'citation'}};
+  CKEDITOR.config.format_reference = {name: 'Reference', element: 'div', attributes: {'class': 'reference'}};
 
   if (ckeditorCss) {
     CKEDITOR.config.contentsCss = ckeditorCss;
@@ -28,7 +32,7 @@ if (window.CKEDITOR) {
     // This needs to be a function in order to scope this correctly!
     captionBox['setup'] = function (widget) {
       // Set hasCaption to true if there is no src
-      if (widget.data.src === "") {
+      if (widget.data.src === '') {
         widget.data.hasCaption = true;
       }
       origSetup.bind(this)(widget);
@@ -60,4 +64,5 @@ if (window.CKEDITOR) {
     // Fix dialog size
     definition.minHeight = 185;
   });
-}
+
+});

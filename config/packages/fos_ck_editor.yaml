@@ -8,6 +8,7 @@ parameters:
 
 fos_ck_editor:
   autoload: false
+  jquery: true
   default_config: ltb_config
   configs:
     ltb_config: &ckeditor_default
