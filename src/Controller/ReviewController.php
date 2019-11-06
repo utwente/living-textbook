@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
@@ -73,6 +74,68 @@ class ReviewController extends AbstractController
   }
 
   /**
+   * Publish reviews after review approval
+   *
+   * @Route("/publish")
+   * @Template()
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea $requestStudyArea
+   * @param ReviewRepository $reviewRepository
+   *
+   * @return array
+   */
+  public function publish(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository)
+  {
+    return [
+        'reviews' => $reviewRepository->getApproved($requestStudyArea->getStudyArea()),
+    ];
+  }
+
+  /**
+   * Publish the clicked review
+   *
+   * @Route("/{review}/publish", requirements={"review"="\d+"})
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @Template()
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param Review              $review
+   * @param ReviewService       $reviewService
+   * @param TranslatorInterface $translator
+   *
+   * @return array|Response
+   */
+  public function publishReview(
+      Request $request, RequestStudyArea $requestStudyArea, Review $review, ReviewService $reviewService,
+      TranslatorInterface $translator)
+  {
+    $this->checkAccess($requestStudyArea->getStudyArea(), $review);
+
+    // Create the form
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route'       => 'app_review_publish',
+        'remove_label'       => 'review.publish',
+        'remove_btn_variant' => 'outline-success',
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $reviewService->publishReview($review);
+
+      $this->addFlash('success', $translator->trans('review.publish-successful'));
+
+      return $this->redirectToRoute('app_review_publish');
+    }
+
+    return [
+        'form'   => $form->createView(),
+        'review' => $review,
+    ];
+  }
+
+  /**
    * Remove the pending review
    *
    * @Route("/{review}/remove", requirements={"review"="\d+"})
@@ -132,9 +195,7 @@ class ReviewController extends AbstractController
     $this->isReviewable($requestStudyArea);
 
     return [
-        'reviews' => $reviewRepository->findBy(
-            ['studyArea' => $requestStudyArea->getStudyArea()],
-            ['requestedReviewAt' => 'ASC']),
+        'reviews' => $reviewRepository->getSubmissions($requestStudyArea->getStudyArea()),
     ];
   }
 

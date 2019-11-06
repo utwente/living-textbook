@@ -66,19 +66,14 @@
 
     {% block review %}
       {% from '_macro/_action_buttons.html.twig' import _action_button, show_button, edit_button, remove_button %}
+      {% from '_macro/_review.html.twig' import noteExcerpt %}
       {% set own = review.owner.id == app.user.id %}
       <tr>
         {% if not own %}
           <td>{{ review.owner.displayName }}</td>
         {% endif %}
         <td class="fit">
-          {% if review.notes|length > 0 %}
-            <span {% if review.notes|length > 50 %}title="{{ review.notes }}" data-toggle="tooltip"{% endif %}>
-              {{ review.notes|length > 50 ? review.notes|slice(0, 50) ~ '...' : review.notes }}
-            </span>
-          {% else %}
-            -
-          {% endif %}
+          {{ noteExcerpt(review.notes) }}
         </td>
         <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
         <td>{{ review.requestedReviewBy.displayName }}</td>

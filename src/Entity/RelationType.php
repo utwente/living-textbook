@@ -8,6 +8,9 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -72,22 +75,35 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     $this->name = '';
   }
 
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'name':
+          $this->setName($changeObj->getName());
+          break;
+        case 'description':
+          $this->setDescription($changeObj->getDescription());
+          break;
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
   public function getReviewTitle(): string
   {
     return $this->getName();
-  }
-
-  public function getReviewFieldNames(): array
-  {
-    return [
-        'name',
-        'description',
-    ];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
   }
 
   /**

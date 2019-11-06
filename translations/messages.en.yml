@@ -408,6 +408,7 @@ menu:
   print: 'Print'
   relation-type: 'Relation types'
   review: 'Review'
+  review-publish: 'Publish'
   review-submission: 'Submissions'
   review-submit: 'Submit'
   show: 'Show'
@@ -654,6 +655,8 @@ relation-type:
   updated: 'Relation type "%item%" has been successfully updated.'
 
 review:
+  approved-at: 'Approved at'
+  approved-by: 'Approved by'
   change-type: 'Change type'
   change-types:
     add: 'Object added'
@@ -669,9 +672,16 @@ review:
   notes: 'Notes'
   notes-help: 'You can leave a small description to help the reviewer if required.'
   nothing-selected-for-submit: 'You did not select any changes that can be submitted!'
+  nothing-to-publish: 'There are no approved reviews which can be published at this time.'
   nothing-to-submit: 'You have no changes to submit! Time to create some?'
   object-type: 'Changed object'
   owner: 'Owner'
+  publish: 'Publish'
+  publish-single-text: 'Are you sure you want to publish this approved submission?'
+  publish-single-title: 'Publish approved submission'
+  publish-successful: 'The changes from the approved submission have been applied successfully!'
+  publish-text: 'The submissions below can be published as they have been accepted by a reviewer.'
+  publish-title: 'Publish approved submissions'
   remove-successful: 'The review has been removed successfully!'
   remove-text: 'Are you sure you want to remove this review? If you remove the review, the associated changes will be lost!'
   remove-title: 'Remove review'

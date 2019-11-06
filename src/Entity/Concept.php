@@ -16,10 +16,15 @@ use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
+use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\ORMException;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -249,7 +254,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Groups({"relations", "review_change"})
    * @JMSA\SerializedName("relations")
    * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
-   * @JMSA\MaxDepth(2)
+   * @JMSA\MaxDepth(3)
    */
   private $outgoingRelations;
 
@@ -264,9 +269,8 @@ class Concept implements SearchableInterface, ReviewableInterface
    *
    * @JMSA\Expose()
    * @JMSA\Groups({"review_change"})
-   * @JMSA\SerializedName("relations")
    * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
-   * @JMSA\MaxDepth(2)
+   * @JMSA\MaxDepth(3)
    */
   private $incomingRelations;
 
@@ -344,6 +348,9 @@ class Concept implements SearchableInterface, ReviewableInterface
    * This method wil order the concept relations on flush
    *
    * @ORM\PreFlush()
+   * @noinspection PhpUnused
+   *
+   * @throws Exception
    */
   public function fixConceptRelationOrder()
   {
@@ -361,7 +368,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter)
   {
     $iterator = $values->getIterator();
-    assert($iterator instanceof \ArrayIterator);
+    assert($iterator instanceof ArrayIterator);
     $iterator->uasort(function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever) {
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
@@ -385,6 +392,8 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
    * @JMSA\Groups({"relations","download_json"})
+   *
+   * @noinspection PhpUnused
    */
   public function getNumberOfLinks(): int
   {
@@ -505,28 +514,156 @@ class Concept implements SearchableInterface, ReviewableInterface
     }
   }
 
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   * @throws ORMException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'name':
+          $this->setName($changeObj->getName());
+          break;
+        case 'definition':
+          $this->setDefinition($changeObj->getDefinition());
+          break;
+        case 'introduction':
+          $this->getIntroduction()->setText($changeObj->getIntroduction()->getText());
+          break;
+        case 'synonyms':
+          $this->setSynonyms($changeObj->getSynonyms());
+          break;
+        case 'priorKnowledge':
+        {
+          $this->getPriorKnowledge()->clear();
+
+          foreach ($changeObj->getPriorKnowledge() as $newPriorKnowledge) {
+            $newPriorKnowledgeRef = $em->getReference(self::class, $newPriorKnowledge->getId());
+            assert($newPriorKnowledgeRef instanceof self);
+            $this->addPriorKnowledge($newPriorKnowledgeRef);
+          }
+          break;
+        }
+        case 'learningOutcomes':
+        {
+          $this->getLearningOutcomes()->clear();
+
+          foreach ($changeObj->getLearningOutcomes() as $newLearningOutcome) {
+            $newLearningOutcomeRef = $em->getReference(LearningOutcome::class, $newLearningOutcome->getId());
+            assert($newLearningOutcomeRef instanceof LearningOutcome);
+            $this->addLearningOutcome($newLearningOutcomeRef);
+          }
+          break;
+        }
+        case 'theoryExplanation':
+          $this->getTheoryExplanation()->setText($changeObj->getTheoryExplanation()->getText());
+          break;
+        case 'howTo':
+          $this->getHowTo()->setText($changeObj->getHowTo()->getText());
+          break;
+        case 'examples':
+          $this->getExamples()->setText($changeObj->getExamples()->getText());
+          break;
+        case 'externalResources':
+        {
+          $this->getExternalResources()->clear();
+
+          foreach ($changeObj->getExternalResources() as $newExternalResource) {
+            $newExternalResourceRef = $em->getReference(ExternalResource::class, $newExternalResource->getId());
+            assert($newExternalResourceRef instanceof ExternalResource);
+            $this->addExternalResource($newExternalResourceRef);
+          }
+          break;
+        }
+        case 'selfAssessment':
+          $this->getSelfAssessment()->setText($changeObj->getSelfAssessment()->getText());
+          break;
+        case 'relations': // This would be outgoingRelations, but the serialized name is relations
+        {
+          // This construct is required for Doctrine to work correctly. Why? No clue.
+          $toRemove = [];
+          foreach ($this->getOutgoingRelations() as $incomingRelation) {
+            $toRemove[] = $incomingRelation;
+          }
+          foreach ($toRemove as $incomingRelation) {
+            $this->getOutgoingRelations()->removeElement($incomingRelation);
+            $em->remove($incomingRelation);
+          }
+
+          foreach ($changeObj->getOutgoingRelations() as $incomingRelation) {
+            $this->fixConceptRelationReferences($incomingRelation, $em);
+
+            $this->addOutgoingRelation($incomingRelation);
+            $em->persist($incomingRelation);
+          }
+
+          break;
+        }
+        case 'incomingRelations':
+        {
+          // This construct is required for Doctrine to work correctly. Why? No clue.
+          $toRemove = [];
+          foreach ($this->getIncomingRelations() as $incomingRelation) {
+            $toRemove[] = $incomingRelation;
+          }
+          foreach ($toRemove as $incomingRelation) {
+            $this->getIncomingRelations()->removeElement($incomingRelation);
+            $em->remove($incomingRelation);
+          }
+
+          foreach ($changeObj->getIncomingRelations() as $incomingRelation) {
+            $this->fixConceptRelationReferences($incomingRelation, $em);
+
+            $this->addIncomingRelation($incomingRelation);
+            $em->persist($incomingRelation);
+          }
+
+          break;
+        }
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
+  /**
+   * Fixes the relations for use
+   *
+   * @param ConceptRelation        $conceptRelation
+   * @param EntityManagerInterface $em
+   *
+   * @throws ORMException
+   */
+  private function fixConceptRelationReferences(ConceptRelation &$conceptRelation, EntityManagerInterface $em)
+  {
+    if ($conceptRelation->getSource()) {
+      $sourceRef = $em->getReference(Concept::class, $conceptRelation->getSourceId());
+      assert($sourceRef instanceof Concept);
+      $conceptRelation->setSource($sourceRef);
+    }
+
+    if ($conceptRelation->getTarget()) {
+      $targetRef = $em->getReference(Concept::class, $conceptRelation->getTargetId());
+      assert($targetRef instanceof Concept);
+      $conceptRelation->setTarget($targetRef);
+    }
+
+    $relationTypeRef = $em->getReference(RelationType::class, $conceptRelation->getRelationType()->getId());
+    assert($relationTypeRef instanceof RelationType);
+    $conceptRelation->setRelationType($relationTypeRef);
+  }
+
   public function getReviewTitle(): string
   {
     return $this->getName();
-  }
-
-  public function getReviewFieldNames(): array
-  {
-    return [
-        'name',
-        'definition',
-        'introduction',
-        'synonyms',
-        'theoryExplanation',
-        'howTo',
-        'examples',
-        'selfAssessment',
-    ];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
   }
 
   /**
@@ -535,6 +672,8 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
    * @JMSA\Groups({"download_json"})
+   *
+   * @noinspection PhpUnused
    */
   public function getLabel()
   {
@@ -644,6 +783,24 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function getIncomingRelations()
   {
     return $this->incomingRelations;
+  }
+
+
+  /**
+   * @param ConceptRelation $conceptRelation
+   *
+   * @return $this
+   */
+  public function addIncomingRelation(ConceptRelation $conceptRelation): Concept
+  {
+    // Check whether the source is set, otherwise set it as this
+    if (!$conceptRelation->getTarget()) {
+      $conceptRelation->setTarget($this);
+    }
+
+    $this->outgoingRelations->add($conceptRelation);
+
+    return $this;
   }
 
   /**

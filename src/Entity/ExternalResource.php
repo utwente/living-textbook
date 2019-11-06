@@ -10,8 +10,11 @@ use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -134,23 +137,38 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     ];
   }
 
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'title':
+          $this->setTitle($changeObj->getTitle());
+          break;
+        case 'description':
+          $this->setDescription($changeObj->getDescription());
+          break;
+        case 'url':
+          $this->setUrl($changeObj->getUrl());
+          break;
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
   public function getReviewTitle(): string
   {
     return $this->getTitle();
-  }
-
-  public function getReviewFieldNames(): array
-  {
-    return [
-        'title',
-        'description',
-        'url',
-    ];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
   }
 
   /**

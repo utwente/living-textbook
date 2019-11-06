@@ -61,14 +61,19 @@ class Review
    * @var string|null
    *
    * @ORM\Column(type="text", nullable=true)
+   *
+   * @Assert\Length(max=2000)
    */
   private $notes;
 
   /**
+   * Requested datetime
+   *
    * @var DateTime|null
    *
    * @ORM\Column(type="datetime")
    *
+   * @Assert\NotNull()
    * @Assert\Type("datetime")
    */
   private $requestedReviewAt;
@@ -95,6 +100,27 @@ class Review
    * @Assert\Type("array")
    */
   private $reviewComments;
+
+  /**
+   * Approval datetime
+   *
+   * @var DateTime|null
+   *
+   * @ORM\Column(type="datetime", nullable=true)
+   *
+   * @Assert\Type("datetime")
+   */
+  private $approvedAt;
+
+  /**
+   * Approved by, can be different than the requested reviewer (owner)
+   *
+   * @var User|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   * @ORM\JoinColumn(nullable=true)
+   */
+  private $approvedBy;
 
   /**
    * Review constructor.
@@ -259,4 +285,45 @@ class Review
 
     return $this;
   }
+
+  /**
+   * @return DateTime|null
+   */
+  public function getApprovedAt(): ?DateTime
+  {
+    return $this->approvedAt;
+  }
+
+  /**
+   * @param DateTime|null $approvedAt
+   *
+   * @return Review
+   */
+  public function setApprovedAt(?DateTime $approvedAt): self
+  {
+    $this->approvedAt = $approvedAt;
+
+    return $this;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getApprovedBy(): ?User
+  {
+    return $this->approvedBy;
+  }
+
+  /**
+   * @param User|null $approvedBy
+   *
+   * @return Review
+   */
+  public function setApprovedBy(?User $approvedBy): self
+  {
+    $this->approvedBy = $approvedBy;
+
+    return $this;
+  }
+
 }

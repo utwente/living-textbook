@@ -4,3 +4,13 @@
     {{ flashbag_alert('info', 'study-area.review-mode-notice'|trans, 'fa-info-circle', true) }}
   {% endif %}
 {% endmacro %}
+
+{% macro noteExcerpt(notes) %}
+  {% if notes|length > 0 %}
+    <span {% if notes|length > 50 %}title="{{ notes }}" data-toggle="tooltip"{% endif %}>
+              {{ notes|length > 50 ? notes|slice(0, 50) ~ '...' : notes }}
+            </span>
+  {% else %}
+    -
+  {% endif %}
+{% endmacro %}

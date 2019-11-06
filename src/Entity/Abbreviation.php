@@ -10,6 +10,9 @@ use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -105,22 +108,35 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     ];
   }
 
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'abbreviation';
+          $this->setAbbreviation($changeObj->getAbbreviation());
+          break;
+        case 'meaning':
+          $this->setMeaning($changeObj->getMeaning());
+          break;
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
   public function getReviewTitle(): string
   {
     return $this->getAbbreviation();
-  }
-
-  public function getReviewFieldNames(): array
-  {
-    return [
-        'abbreviation',
-        'meaning',
-    ];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
   }
 
   /**

@@ -35,6 +35,11 @@ class ConceptRelation
    * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(Concept::class)
+   * @JMSA\MaxDepth(2)
    */
   private $source;
 
@@ -45,6 +50,11 @@ class ConceptRelation
    * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(Concept::class)
+   * @JMSA\MaxDepth(2)
    */
   private $target;
 
@@ -55,6 +65,11 @@ class ConceptRelation
    * @ORM\JoinColumn(name="relation_type", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(RelationType::class)
+   * @JMSA\MaxDepth(2)
    */
   private $relationType;
 
@@ -68,6 +83,10 @@ class ConceptRelation
    *
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("int")
    */
   private $outgoingPosition;
 
@@ -81,6 +100,10 @@ class ConceptRelation
    *
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("int")
    */
   private $incomingPosition;
 

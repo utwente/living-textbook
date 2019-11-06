@@ -8,9 +8,13 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\ORMException;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -109,23 +113,62 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     $this->elements = new ArrayCollection();
   }
 
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   * @throws ORMException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'name':
+          $this->setName($changeObj->getName());
+          break;
+        case 'introduction':
+          $this->setIntroduction($changeObj->getIntroduction());
+          break;
+        case 'question':
+          $this->setQuestion($changeObj->getQuestion());
+          break;
+        case 'elements':
+        {
+          // This construct is required for Doctrine to work correctly. Why? No clue.
+          $toRemove = [];
+          foreach ($this->getElements() as $element) {
+            $toRemove[] = $element;
+          }
+          foreach ($toRemove as $element) {
+            $this->getElements()->removeElement($element);
+            $em->remove($element);
+          }
+
+          // Set the new elements
+          foreach ($changeObj->getElements() as $newElement) {
+            $conceptRef = $em->getReference(Concept::class, $newElement->getConcept()->getId());
+            assert($conceptRef instanceof Concept);
+            $newElement->setConcept($conceptRef);
+
+            $this->addElement($newElement);
+            $em->persist($newElement);
+          }
+          break;
+        }
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
   public function getReviewTitle(): string
   {
     return $this->getName();
-  }
-
-  public function getReviewFieldNames(): array
-  {
-    return [
-        'name',
-        'introduction',
-        'question',
-    ];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
   }
 
   /**
@@ -141,7 +184,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
    *
    * @return LearningPath
    */
-  public function setStudyArea(StudyArea $studyArea): LearningPath
+  public function setStudyArea(StudyArea $studyArea)
   {
     $this->studyArea = $studyArea;
 

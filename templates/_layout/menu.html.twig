@@ -123,6 +123,10 @@
                href="{{ path('app_review_submit') }}">{{ 'menu.review-submit'|trans }}</a>
             <a class="dropdown-item"
                href="{{ path('app_review_submissions') }}">{{ 'menu.review-submission'|trans }}</a>
+            {% if is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
+              <a class="dropdown-item"
+                 href="{{ path('app_review_publish') }}">{{ 'menu.review-publish'|trans }}</a>
+            {% endif %}
           </div>
         </li>
       {% endif %}

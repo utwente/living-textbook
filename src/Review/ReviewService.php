@@ -11,6 +11,7 @@ use App\Repository\PendingChangeRepository;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use InvalidArgumentException;
@@ -25,6 +26,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 class ReviewService
 {
@@ -196,7 +198,7 @@ class ReviewService
         ->setRequestedReviewAt(new DateTime())
         ->setRequestedReviewBy($reviewer);
 
-    // Determine whether we need to split the changes
+    // Add the changes to the review
     foreach ($markedChanges as $pendingChangeId => $markedFields) {
       if (!array_key_exists($pendingChangeId, $pendingChanges)) {
         // Silently skip pending changes that no longer exist
@@ -204,14 +206,18 @@ class ReviewService
       }
 
       $pendingChange = $pendingChanges[$pendingChangeId];
-      $fieldDiff     = array_diff($pendingChange->getChangedFields(), $markedFields);
-      if (0 !== count($fieldDiff)) {
-        // Create a new pending change, but with the fields that were not selected at this time
-        $newPendingChange = $pendingChange->duplicate(array_values($fieldDiff));
-        $this->entityManager->persist($newPendingChange);
 
-        // Update the existing pending change to only use the marked fields
-        $pendingChange->setChangedFields($markedFields);
+      // Only split changes in case of edit
+      if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_EDIT) {
+        $fieldDiff = array_diff($pendingChange->getChangedFields(), $markedFields);
+        if (0 !== count($fieldDiff)) {
+          // Create a new pending change, but with the fields that were not selected at this time
+          $newPendingChange = $pendingChange->duplicate(array_values($fieldDiff));
+          $this->entityManager->persist($newPendingChange);
+
+          // Update the existing pending change to only use the marked fields
+          $pendingChange->setChangedFields($markedFields);
+        }
       }
 
       // Add the pending change to the review
@@ -227,6 +233,30 @@ class ReviewService
     // Save the review
     $this->entityManager->persist($review);
     $this->entityManager->flush();
+  }
+
+  /**
+   * Publish the review
+   *
+   * @param Review $review
+   *
+   * @throws ORMException
+   * @throws Throwable
+   */
+  public function publishReview(Review $review)
+  {
+    // Loop the changes to apply them
+    foreach ($review->getPendingChanges() as $pendingChange) {
+      $this->applyChange($pendingChange);
+    }
+
+    // Remove the review now
+    $this->entityManager->remove($review);
+
+    // Flush the changes in a transaction
+    $this->entityManager->transactional(function (EntityManagerInterface $em) {
+      $em->flush();
+    });
   }
 
   /**
@@ -283,14 +313,81 @@ class ReviewService
     return SerializationContext::create()
         ->setGroups([
             'review_change',
-            'elements' => [
+            'elements'          => [
                 'review_change',
                 'concept' => ['id_only'],
                 'next'    => ['id_only'],
             ],
+            'relations'         => [
+                'review_change',
+                'source'       => ['id_only'],
+                'target'       => ['id_only'],
+                'relationType' => ['id_only'],
+            ],
+            'outgoingRelations' => [
+                'review_change',
+                'source'       => ['id_only'],
+                'target'       => ['id_only'],
+                'relationType' => ['id_only'],
+            ],
         ])
         ->setSerializeNull(true)
         ->enableMaxDepthChecks();
+  }
+
+  /**
+   * Applies the pending change
+   *
+   * @param PendingChange $pendingChange
+   *
+   * @throws EntityNotFoundException
+   * @throws ORMException
+   */
+  private function applyChange(PendingChange $pendingChange)
+  {
+    $changeType = $pendingChange->getChangeType();
+
+    $objectType = $pendingChange->getObjectType();
+    if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
+      // Create a new instance of the object
+      assert(is_string($objectType) && strlen($objectType) > 0);
+      $object = new $objectType;
+      assert($object instanceof ReviewableInterface);
+      $object->setStudyArea($pendingChange->getStudyArea());
+
+      // Set the updated fields in it
+      $object->applyChanges($pendingChange, $this->entityManager);
+
+      // Persist it
+      $this->entityManager->persist($object);
+    } else if ($changeType === PendingChange::CHANGE_TYPE_EDIT || $pendingChange === PendingChange::CHANGE_TYPE_REMOVE) {
+      // Retrieve the object as referenced by the change
+      $object = $this->entityManager->getRepository($objectType)->find($pendingChange->getObjectId());
+      if (!$object) {
+        // The object belonging with the review does not exist, this is an error
+        throw new EntityNotFoundException();
+      }
+      assert($object instanceof ReviewableInterface);
+
+      if ($changeType === PendingChange::CHANGE_TYPE_EDIT) {
+        // Apply the changes
+        $object->applyChanges($pendingChange, $this->entityManager);
+      } else if ($changeType === PendingChange::CHANGE_TYPE_REMOVE) {
+        // Remove the object
+        $this->entityManager->remove($object);
+
+        // Return directly, validation does not apply in this case
+        return;
+      }
+    } else {
+      throw new InvalidArgumentException(sprintf('Change type "%s" is not supported', $changeType));
+    }
+
+    // Validate the new/updated entity
+    if (0 !== count($violations = $this->validator->validate($object))) {
+      assert($violations instanceof ConstraintViolationList);
+      throw new InvalidArgumentException(sprintf('Validation not passed during publish! %s', $violations));
+    }
   }
 
   /**

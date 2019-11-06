@@ -25,7 +25,7 @@ class RemoveType extends AbstractType
             'label' => $options['remove_label'],
             'icon'  => 'fa-check',
             'attr'  => array(
-                'class' => 'btn btn-outline-danger',
+                'class' => 'btn btn-' . $options['remove_btn_variant'],
             ),
         ))
         ->add('_cancel', ButtonUrlType::class, array(
@@ -66,6 +66,7 @@ class RemoveType extends AbstractType
 
     $resolver->setDefaults(array(
         'mapped'              => false,
+        'remove_btn_variant'  => 'outline-danger',
         'remove_label'        => 'form.confirm-remove',
         'cancel_label'        => 'form.cancel',
         'cancel_route_params' => array(),
@@ -73,6 +74,7 @@ class RemoveType extends AbstractType
 
     $resolver->setRequired('cancel_route');
 
+    $resolver->setAllowedTypes('remove_btn_variant', 'string');
     $resolver->setAllowedTypes('remove_label', 'string');
     $resolver->setAllowedTypes('cancel_label', 'string');
     $resolver->setAllowedTypes('cancel_route', 'string');

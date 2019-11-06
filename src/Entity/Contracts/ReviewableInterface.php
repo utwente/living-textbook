@@ -3,12 +3,24 @@
 
 namespace App\Entity\Contracts;
 
+use App\Entity\PendingChange;
+use App\Entity\StudyArea;
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Interface IReviewable
  * Marks the entity as reviewable
  */
 interface ReviewableInterface
 {
+
+  /**
+   * Apply the changes as specified
+   *
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void;
 
   /**
    * Retrieves the object id
@@ -33,22 +45,11 @@ interface ReviewableInterface
   public function getReviewTitle(): string;
 
   /**
-   * Get the field names that must be considered for review.
+   * Set the study area
    *
-   * These can only be simple fields or ManyToOne associations with object that implement
-   * this interface as well.
+   * @param StudyArea $studyArea
    *
-   * @return string[]
+   * @return mixed
    */
-  public function getReviewFieldNames(): array;
-
-  /**
-   * Get the relation field names that must only be considered review. Only the id property is used for the check.
-   *
-   * Only a single id of the relation can/will be checked, which means only ManyToOne associations will work.
-   *
-   * @return array
-   */
-  public function getReviewIdFieldNames(): array;
-
+  public function setStudyArea(StudyArea $studyArea);
 }

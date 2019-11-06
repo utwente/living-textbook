@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'review.publish-single-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'review.publish-single-text'|trans }}</p>
+
+  {{ form(form) }}
+{% endblock %}

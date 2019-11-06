@@ -1,0 +1,54 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'review.publish-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% if reviews|length == 0 %}
+    <p>{{ 'review.nothing-to-publish'|trans }}</p>
+  {% else %}
+    <p>
+      {{ 'review.publish-text'|trans }}
+    </p>
+
+    {{ block('publish') }}
+  {% endif %}
+{% endblock %}
+
+{% block publish %}
+  {% from '_macro/_review.html.twig' import noteExcerpt %}
+  {% from '_macro/_action_buttons.html.twig' import _action_button, show_button, edit_button, remove_button %}
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">{{ 'review.owner'|trans }}</th>
+        <th scope="col">{{ 'review.notes'|trans }}</th>
+        <th scope="col">{{ 'review.submitted-at'|trans }}</th>
+        <th scope="col">{{ 'review.approved-at'|trans }}</th>
+        <th scope="col">{{ 'review.approved-by'|trans }}</th>
+        <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for review in reviews %}
+        <tr>
+          <td>{{ review.owner.displayName }}</td>
+          <td class="fit">
+            {{ noteExcerpt(review.notes) }}
+          </td>
+          <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
+          <td>{{ review.approvedAt|localizeddate('medium', 'short') }}</td>
+          <td>{{ review.approvedBy.displayName }}</td>
+          <td class="actions">
+            {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
+            {{ _action_button(path('app_review_publishreview', {'review': review.id}), 'fa-cloud-upload', 'review.publish'|trans, 'success') }}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

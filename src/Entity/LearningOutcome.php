@@ -10,9 +10,12 @@ use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\Data\WordCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -136,23 +139,38 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     ];
   }
 
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'number':
+          $this->setNumber($changeObj->getNumber());
+          break;
+        case 'name':
+          $this->setName($changeObj->getName());
+          break;
+        case 'text':
+          $this->setText($changeObj->getText());
+          break;
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
   public function getReviewTitle(): string
   {
     return $this->getName();
-  }
-
-  public function getReviewFieldNames(): array
-  {
-    return [
-        'name',
-        'number',
-        'text',
-    ];
-  }
-
-  public function getReviewIdFieldNames(): array
-  {
-    return [];
   }
 
   /**
