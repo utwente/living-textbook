@@ -5,7 +5,11 @@ namespace App\Form\Review;
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
+use App\Entity\PendingChange;
 use App\Entity\Review;
+use App\Form\Review\ReviewDiff\ReviewLearningPathElementsDiffType;
+use App\Form\Review\ReviewDiff\ReviewRelationDiffType;
+use App\Form\Review\ReviewDiff\ReviewSimpleListDiffType;
 use App\Form\Review\ReviewDiff\ReviewTextDiffType;
 use App\Form\Type\SaveType;
 use App\Review\ReviewService;
@@ -76,49 +80,55 @@ class ReviewSubmissionType extends AbstractType
 
       foreach ($pendingChange->getChangedFields() as $changedField) {
         $hasDataObject = $ckeditor = false;
+        $formType      = ReviewTextDiffType::class;
+        $formOptions   = [];
 
         // Handle different types
         if (Concept::class === $objectType) {
           if (in_array($changedField, ['relations', 'incomingRelations'])) {
-            // todo: relation field
-            continue;
+            $formType    = ReviewRelationDiffType::class;
+            $formOptions = [
+                'incoming' => $changedField !== 'relations',
+            ];
           }
 
           if (in_array($changedField, ['priorKnowledge', 'learningOutcomes', 'externalResources'])) {
-            // todo: collection field
-            continue;
+            $formType = ReviewSimpleListDiffType::class;
           }
 
           if (in_array($changedField, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
-            $hasDataObject = true;
-            $ckeditor      = true;
+            $formOptions = [
+                'has_data_object' => true,
+                'ckeditor'        => true,
+            ];
           }
         } else if (LearningOutcome::class === $objectType) {
           if ('text' === $changedField) {
-            $ckeditor = true;
+            $formOptions = [
+                'ckeditor' => true,
+            ];
           }
         } else if (LearningPath::class === $objectType) {
           if ('introduction' === $changedField) {
-            $ckeditor = true;
+            $formOptions = [
+                'ckeditor' => true,
+            ];
           }
 
           if ('elements' === $changedField) {
-            // todo: elements fields
-            continue;
+            $formType = ReviewLearningPathElementsDiffType::class;
           }
         }
 
-        $form->add(sprintf('%s__%d__%s', $pendingChange->getShortObjectType(), $pendingChange->getObjectId(), $changedField),
-            ReviewTextDiffType::class, [
+        $form->add($this->getFieldName($pendingChange, $changedField),
+            $formType, array_merge([
                 'hide_label'      => true,
                 'mapped'          => false,
                 'original_object' => $this->reviewService->getOriginalObject($pendingChange),
                 'pending_change'  => $pendingChange,
                 'field'           => $changedField,
                 'review'          => $options['review'],
-                'has_data_object' => $hasDataObject,
-                'ckeditor'        => $ckeditor,
-            ]);
+            ], $formOptions));
       }
     }
 
@@ -130,5 +140,10 @@ class ReviewSubmissionType extends AbstractType
               'enable_save_and_list' => false,
           ]);
     }
+  }
+
+  private function getFieldName(PendingChange $pendingChange, string $changedField): string
+  {
+    return sprintf('%s__%d__%s', $pendingChange->getShortObjectType(), $pendingChange->getObjectId(), $changedField);
   }
 }

@@ -336,20 +336,20 @@ class ReviewService
             'review_change',
             'elements'          => [
                 'review_change',
-                'concept' => ['id_only'],
+                'concept' => ['id_only', 'name_only'],
                 'next'    => ['id_only'],
             ],
             'relations'         => [
                 'review_change',
-                'source'       => ['id_only'],
-                'target'       => ['id_only'],
-                'relationType' => ['id_only'],
+                'source'       => ['id_only', 'name_only'],
+                'target'       => ['id_only', 'name_only'],
+                'relationType' => ['id_only', 'name_only'],
             ],
-            'outgoingRelations' => [
+            'incomingRelations' => [
                 'review_change',
-                'source'       => ['id_only'],
-                'target'       => ['id_only'],
-                'relationType' => ['id_only'],
+                'source'       => ['id_only', 'name_only'],
+                'target'       => ['id_only', 'name_only'],
+                'relationType' => ['id_only', 'name_only'],
             ],
         ])
         ->setSerializeNull(true)

@@ -59,7 +59,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
-   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Groups({"Default", "review_change", "name_only"})
    * @JMSA\Type("string")
    */
   private $name;
@@ -738,6 +738,11 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->synonyms = $synonyms;
 
     return $this;
+  }
+
+  public function getRelations()
+  {
+    return $this->getOutgoingRelations();
   }
 
   /**

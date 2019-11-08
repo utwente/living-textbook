@@ -1,30 +1,131 @@
 {% block review_submission_header_row %}
-  <h4>{{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"</h4>
+  <h4>
+    {{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"
+  </h4>
 {% endblock %}
+
+{% block review_learning_path_elements_diff_widget %}
+  {% from _self import build_element_diff %}
+  {{ block('review_diff_start') }}
+  {{ build_element_diff(orig_elements) }}
+  {{ block('review_diff_mid') }}
+  {{ build_element_diff(new_elements) }}
+  {{ block('review_diff_end') }}
+{% endblock %}
+
+{% macro build_element_diff(elements) %}
+  {% for element in elements %}
+    <div class="ltb-learning-path-element{% if element.description is null %} no-description{% endif %}">
+      <div class="path-layout"></div>
+      <div class="item">
+        <b>
+          {% if element.concept.id %}
+          <a href="{{ path('app_concept_show', {concept: element.concept.id}) }}">
+            {% endif %}
+            {{ loop.index }}. {{ element.concept.name }}
+            {% if element.concept.id %}
+          </a>
+          {% endif %}
+        </b>
+        <p>{{ element.description }}</p>
+      </div>
+    </div>
+  {% else %}
+    <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
+  {% endfor %}
+{% endmacro %}
+
+{% block review_relation_diff_widget %}
+  {% from '_data/_data_templates.html.twig' import link_to_relation %}
+  {{ block('review_diff_start') }}
+  <ul>
+    {% for relation in orig_relations %}
+      <li>
+        {{ link_to_relation(relation.source, incoming) }}
+        <i>{{ relation.relationType.name|lower }}</i>
+        {{ link_to_relation(relation.target, not incoming) }}
+      </li>
+    {% else %}
+      <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
+    {% endfor %}
+  </ul>
+  {{ block('review_diff_mid') }}
+  <ul>
+    {% for relation in new_relations %}
+      <li>
+        {{ link_to_relation(relation.source|default(concept), incoming) }}
+        <i>{{ relation.relationType.name|lower }}</i>
+        {{ link_to_relation(relation.target|default(concept), not incoming) }}
+      </li>
+    {% else %}
+      <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
+    {% endfor %}
+  </ul>
+  {{ block('review_diff_end') }}
+{% endblock %}
+
+{% block review_simple_list_diff_widget %}
+  {% from _self import build_simple_list_diff %}
+  {{ block('review_diff_start') }}
+  {{ build_simple_list_diff(field, orig_list) }}
+  {{ block('review_diff_mid') }}
+  {{ build_simple_list_diff(field, new_list) }}
+  {{ block('review_diff_end') }}
+{% endblock %}
+
+{% macro build_simple_list_diff(field, list) %}
+  <ul>
+    {% from '_data/_data_templates.html.twig' import render_external_resource, render_learning_outcome, render_prior_knowledge %}
+    {% for item in list %}
+      <li>
+        {% if field == 'externalResources' %}
+          {{ render_external_resource(item) }}
+        {% elseif field == 'learningOutcomes' %}
+          {{ render_learning_outcome(item) }}
+        {% elseif field == 'priorKnowledge' %}
+          {{ render_prior_knowledge(item) }}
+        {% endif %}
+      </li>
+    {% else %}
+      <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
+    {% endfor %}
+  </ul>
+{% endmacro %}
 
 {% block review_text_diff_widget %}
   {% from '_macro/_review.html.twig' import printText %}
-  <div class="card review-card">
-    <div class="card-header">
-      <h5 class="review-header">{{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}</h5>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
-          <label class="col-form-label">{{ 'review.original'|trans }}</label>
-          {{ printText(orig_text, ckeditor) }}
-        </div>
-        <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
-          <label class="col-form-label">{{ 'review.update'|trans }}</label>
-          {{ printText(new_text, ckeditor) }}
-        </div>
-        {% if form.comments is defined %}
-          <div class="col-12 col-xl-4">
-            <label class="col-form-label">{{ 'review.comments'|trans }}</label>
-            {{ form_widget(form.comments) }}
-          </div>
-        {% endif %}
+
+  {{ block('review_diff_start') }}
+  {{ printText(orig_text, ckeditor) }}
+  {{ block('review_diff_mid') }}
+  {{ printText(new_text, ckeditor) }}
+  {{ block('review_diff_end') }}
+{% endblock %}
+
+{% block review_diff_start %}
+<div class="card review-card">
+  <div class="card-header">
+    <h5 class="review-header">{{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}</h5>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+        <label class="col-form-label">{{ 'review.original'|trans }}</label>
+        {% endblock %}
+        {% block review_diff_mid %}
       </div>
+      <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+        <label class="col-form-label">{{ 'review.update'|trans }}</label>
+        {% endblock %}
+        {% block review_diff_end %}
+      </div>
+      {% if form.comments is defined %}
+        <div class="col-12 col-xl-4">
+          <label class="col-form-label">{{ 'review.comments'|trans }}</label>
+          {{ form_widget(form.comments) }}
+        </div>
+      {% endif %}
     </div>
   </div>
+</div>
 {% endblock %}

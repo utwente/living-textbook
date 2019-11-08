@@ -60,19 +60,24 @@
   {% if data|length > 0 %}
     <h2>{{ 'concept.external-resources'|trans }}</h2>
     <ul>
+      {% from _self import render_external_resource %}
       {% for resource in data %}
         <li>
-          {% if resource.url is not empty %}
-            <a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a>
-          {% else %}
-            {{ resource.title }}
-          {% endif %}
-          {% if resource.description is not null %}
-            <br/>{{ resource.description }}
-          {% endif %}
+          {{ render_external_resource(resource) }}
         </li>
       {% endfor %}
     </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_external_resource(resource) %}
+  {% if resource.url is not empty %}
+    <a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a>
+  {% else %}
+    {{ resource.title }}
+  {% endif %}
+  {% if resource.description is not null %}
+    <br/>{{ resource.description }}
   {% endif %}
 {% endmacro %}
 
@@ -144,29 +149,39 @@
   {% if data|length > 0 %}
     <h2>{{ 'concept.prior-knowledge'|trans }}</h2>
     <ul>
+      {% from _self import render_prior_knowledge %}
       {% for priorKnowledge in data %}
         <li>
-          <a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
+          {{ render_prior_knowledge(priorKnowledge) }}
         </li>
       {% endfor %}
     </ul>
   {% endif %}
 {% endmacro %}
 
+{% macro render_prior_knowledge(priorKnowledge) %}
+  <a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
+{% endmacro %}
+
 {% macro data_learning_outcomes(data) %}
   {% if data|length > 0 %}
     <h2>{{ 'concept.learning-outcomes'|trans }}</h2>
     <ul>
+      {% from _self import render_learning_outcome %}
       {% for learningOutcome in data %}
         <li>
-          <a href="{{ path('app_learningoutcome_show', { learningOutcome: learningOutcome.id }) }}"><b>{{ learningOutcome.shortName }}</b></a>
-          <div class="ltb-text-container">
-            {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
-          </div>
+          {{ render_learning_outcome(learningOutcome) }}
         </li>
       {% endfor %}
     </ul>
   {% endif %}
+{% endmacro %}
+
+{% macro render_learning_outcome(learningOutcome) %}
+  <a href="{{ path('app_learningoutcome_show', { learningOutcome: learningOutcome.id }) }}"><b>{{ learningOutcome.shortName }}</b></a>
+  <div class="ltb-text-container">
+    {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+  </div>
 {% endmacro %}
 
 {% macro data_concepts(data) %}

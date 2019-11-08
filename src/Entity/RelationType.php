@@ -52,7 +52,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
    * @Assert\NotBlank()
    * @Assert\Length(min=3, max=100)
    *
-   * @Serializer\Groups({"Default", "review_change"})
+   * @Serializer\Groups({"Default", "review_change", "name_only"})
    * @Serializer\Type("string")
    */
   private $name;
