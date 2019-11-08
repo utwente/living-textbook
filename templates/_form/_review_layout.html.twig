@@ -1,0 +1,30 @@
+{% block review_submission_header_row %}
+  <h4>{{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"</h4>
+{% endblock %}
+
+{% block review_text_diff_widget %}
+  {% from '_macro/_review.html.twig' import printText %}
+  <div class="card review-card">
+    <div class="card-header">
+      <h5 class="review-header">{{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+          <label class="col-form-label">{{ 'review.original'|trans }}</label>
+          {{ printText(orig_text, ckeditor) }}
+        </div>
+        <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+          <label class="col-form-label">{{ 'review.update'|trans }}</label>
+          {{ printText(new_text, ckeditor) }}
+        </div>
+        {% if form.comments is defined %}
+          <div class="col-12 col-xl-4">
+            <label class="col-form-label">{{ 'review.comments'|trans }}</label>
+            {{ form_widget(form.comments) }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

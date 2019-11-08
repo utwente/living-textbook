@@ -655,6 +655,7 @@ relation-type:
   updated: 'Relation type "%item%" has been successfully updated.'
 
 review:
+  approve: 'Approve'
   approved-at: 'Approved at'
   approved-by: 'Approved by'
   change-type: 'Change type'
@@ -662,9 +663,13 @@ review:
     add: 'Object added'
     edit: 'Object edited'
     remove: 'Object removed'
+  comments: 'Review comments'
+  comments-placeholder: 'Leave your comments here, if any'
   edit-notice: 'It is not possible to edit the submitted changes from here.'
   edit-successful: 'The review has been updated successfully!'
   edit-title: 'Edit review'
+  empty-content: 'No content'
+  empty-note: 'No note'
   field: 'Changed field'
   list-other: 'Submissions from other editors'
   list-own: 'Your submissions'
@@ -675,6 +680,7 @@ review:
   nothing-to-publish: 'There are no approved reviews which can be published at this time.'
   nothing-to-submit: 'You have no changes to submit! Time to create some?'
   object-type: 'Changed object'
+  original: 'Original content'
   owner: 'Owner'
   publish: 'Publish'
   publish-single-text: 'Are you sure you want to publish this approved submission?'
@@ -685,16 +691,25 @@ review:
   remove-successful: 'The review has been removed successfully!'
   remove-text: 'Are you sure you want to remove this review? If you remove the review, the associated changes will be lost!'
   remove-title: 'Remove review'
+  review-approved: 'The submission has been approved. It is now waiting for publishing, which can only be done by the study area owner.'
+  review-comments: 'The submission has been reviewed and your comments have been stored. The author will need to resubmit the changes for review.'
+  review-submission: 'Review submission'
+  review-submission-text: >-
+    Below you can review the changes, and comment on them if required. If you leave comments, the author must resubmit
+    the submission in order to resolve them. Note that it is currently not possible to review the changes in the concept
+    map or learning path browser, only this page has the changes available!
   reviewer: 'Reviewer'
   reviewer-help: 'Select who should review these changes.'
   submissions-title: 'Pending reviews'
   submissions-text: 'The submissions below are currently pending review.'
   saved-for-review: 'Your change has been saved! You will need to submit it for review.'
+  show-submission: 'Show submission'
   start-review: 'Start review'
   submit-title: 'Submit your changes for review'
   submit-text: 'Select the changes you want to submit for review'
   submitted: 'Your review has been submitted successfully!'
   submitted-at: 'Submitted at'
+  update: 'Updated content'
 
 tracking:
   export:

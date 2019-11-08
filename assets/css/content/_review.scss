@@ -1,0 +1,20 @@
+.review-card {
+  .review-header {
+    margin-bottom: 0;
+  }
+
+  .card-body, .card-header {
+    padding: 0.5rem;
+  }
+
+  .col-form-label {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.review-no-content {
+  font-size: smaller;
+  font-style: italic;
+}

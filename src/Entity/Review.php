@@ -91,17 +91,6 @@ class Review
   private $requestedReviewBy;
 
   /**
-   * If any, review comments on particular changes (per field) are stores here
-   *
-   * @var array|null
-   *
-   * @ORM\Column(type="json", nullable=true)
-   *
-   * @Assert\Type("array")
-   */
-  private $reviewComments;
-
-  /**
    * Approval datetime
    *
    * @var DateTime|null
@@ -128,6 +117,22 @@ class Review
   public function __construct()
   {
     $this->pendingChanges = new ArrayCollection();
+  }
+
+  /**
+   * Retrieve whether the review has comments set somewhere
+   *
+   * @return bool
+   */
+  public function hasComments(): bool
+  {
+    foreach ($this->getPendingChanges() as $pendingChange) {
+      if (0 !== count($pendingChange->getReviewComments() ?? [])) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -262,26 +267,6 @@ class Review
   public function setRequestedReviewBy(?User $requestedReviewBy): self
   {
     $this->requestedReviewBy = $requestedReviewBy;
-
-    return $this;
-  }
-
-  /**
-   * @return array|null
-   */
-  public function getReviewComments(): ?array
-  {
-    return $this->reviewComments;
-  }
-
-  /**
-   * @param array|null $reviewComments
-   *
-   * @return self
-   */
-  public function setReviewComments(?array $reviewComments): self
-  {
-    $this->reviewComments = $reviewComments;
 
     return $this;
   }

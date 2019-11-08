@@ -82,9 +82,10 @@
             {{ edit_button(path('app_review_editreview', {'review': review.id})) }}
             {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
           {% endif %}
-          {{ show_button('#') }}
-          {% if not own %}
-            {{ _action_button('#', 'fa-search', 'review.start-review'|trans, 'success', false, false, review.requestedReviewBy.id != app.user.id) }}
+          {{ show_button(path('app_review_showsubmission', {'review': review.id})) }}
+          {% if not own or is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
+            {{ _action_button(path('app_review_reviewsubmission', {'review': review.id}), 'fa-search',
+              'review.start-review'|trans, 'success', false, false, review.requestedReviewBy.id != app.user.id) }}
           {% endif %}
         </td>
       </tr>

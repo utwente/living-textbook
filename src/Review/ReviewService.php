@@ -74,6 +74,27 @@ class ReviewService
   }
 
   /**
+   * Retrieve the original object linked to the pending change
+   *
+   * @param PendingChange $pendingChange
+   *
+   * @return ReviewableInterface
+   * @throws EntityNotFoundException
+   */
+  public function getOriginalObject(PendingChange $pendingChange): ReviewableInterface
+  {
+    // Retrieve the object as referenced by the change
+    $object = $this->entityManager->getRepository($pendingChange->getObjectType())->find($pendingChange->getObjectId());
+    if (!$object) {
+      // The object belonging with the review does not exist, this is an error
+      throw new EntityNotFoundException();
+    }
+    assert($object instanceof ReviewableInterface);
+
+    return $object;
+  }
+
+  /**
    * This method creates the pending change in the database, by detecting the changed fields in the given object,
    * based on the snapshot that is supplied (which needs to be created by this service).
    *
@@ -346,8 +367,8 @@ class ReviewService
   private function applyChange(PendingChange $pendingChange)
   {
     $changeType = $pendingChange->getChangeType();
-
     $objectType = $pendingChange->getObjectType();
+
     if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       // Create a new instance of the object
       assert(is_string($objectType) && strlen($objectType) > 0);
@@ -361,13 +382,7 @@ class ReviewService
       // Persist it
       $this->entityManager->persist($object);
     } else if ($changeType === PendingChange::CHANGE_TYPE_EDIT || $pendingChange === PendingChange::CHANGE_TYPE_REMOVE) {
-      // Retrieve the object as referenced by the change
-      $object = $this->entityManager->getRepository($objectType)->find($pendingChange->getObjectId());
-      if (!$object) {
-        // The object belonging with the review does not exist, this is an error
-        throw new EntityNotFoundException();
-      }
-      assert($object instanceof ReviewableInterface);
+      $object = $this->getOriginalObject($pendingChange);
 
       if ($changeType === PendingChange::CHANGE_TYPE_EDIT) {
         // Apply the changes

@@ -119,6 +119,24 @@ class PendingChange
   private $review;
 
   /**
+   * If any, review comments on particular changes (per field) are stores here
+   *
+   * @var array|null
+   *
+   * @ORM\Column(type="json", nullable=true)
+   *
+   * @Assert\Type("array")
+   */
+  private $reviewComments;
+
+  /**
+   * Cached deserialized object
+   *
+   * @var ReviewableInterface|null
+   */
+  private $cachedObject = NULL;
+
+  /**
    * Duplicated the pending change, while setting the new marked fields as supplied
    *
    * @param array $changedFields
@@ -205,7 +223,8 @@ class PendingChange
    */
   public function setObjectType(?string $objectType): self
   {
-    $this->objectType = $objectType;
+    $this->cachedObject = NULL;
+    $this->objectType   = $objectType;
 
     return $this;
   }
@@ -266,7 +285,8 @@ class PendingChange
    */
   public function setObject(ReviewableInterface $object): self
   {
-    $this->payload = $object
+    $this->cachedObject = NULL;
+    $this->payload      = $object
         ? ReviewService::getDataSnapshot($object)
         : NULL;
 
@@ -288,7 +308,11 @@ class PendingChange
       return NULL;
     }
 
-    return ReviewService::getObjectFromSnapshot($this->payload, $this->objectType);
+    if ($this->cachedObject === NULL) {
+      $this->cachedObject = ReviewService::getObjectFromSnapshot($this->payload, $this->objectType);
+    }
+
+    return $this->cachedObject;
   }
 
   /**
@@ -347,6 +371,26 @@ class PendingChange
   public function setReview(?Review $review): self
   {
     $this->review = $review;
+
+    return $this;
+  }
+
+  /**
+   * @return array|null
+   */
+  public function getReviewComments(): ?array
+  {
+    return $this->reviewComments;
+  }
+
+  /**
+   * @param array|null $reviewComments
+   *
+   * @return self
+   */
+  public function setReviewComments(?array $reviewComments): self
+  {
+    $this->reviewComments = $reviewComments;
 
     return $this;
   }

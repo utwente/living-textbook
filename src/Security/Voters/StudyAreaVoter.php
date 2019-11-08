@@ -17,6 +17,7 @@ class StudyAreaVoter extends Voter
   const OWNER = 'STUDYAREA_OWNER';
   const SHOW = 'STUDYAREA_SHOW';
   const EDIT = 'STUDYAREA_EDIT';
+  const REVIEW = 'STUDYAREA_REVIEW';
   const ANNOTATE = 'STUDYAREA_ANNOTATE';
   const PRINTER = 'STUDYAREA_PRINT';
   const ANALYTICS = 'STUDYAREA_ANALYTICS';
@@ -25,6 +26,7 @@ class StudyAreaVoter extends Voter
       self::OWNER,
       self::SHOW,
       self::EDIT,
+      self::REVIEW,
       self::ANNOTATE,
       self::PRINTER,
       self::ANALYTICS,
@@ -117,6 +119,8 @@ class StudyAreaVoter extends Voter
         return $subject->isVisible($user);
       case self::EDIT:
         return $subject->isEditable($user);
+      case self::REVIEW:
+        return $subject->isReviewable($user);
       case self::ANNOTATE:
       case self::PRINTER:
         if (!$user) {
@@ -130,4 +134,5 @@ class StudyAreaVoter extends Voter
 
     throw new LogicException('This code should not be reached!');
   }
+
 }

@@ -26,15 +26,16 @@
   }
 }
 
-@import '_annotations';
-@import '_landing';
-@import '_menu';
-@import '_styleGuide';
-@import '_forms';
-@import '_table';
-@import '_search';
-@import '_sortable_learning_paths';
-@import '_download_preview';
+@import 'annotations';
+@import 'landing';
+@import 'menu';
+@import 'styleGuide';
+@import 'forms';
+@import 'table';
+@import 'review';
+@import 'search';
+@import 'sortable_learning_paths';
+@import 'download_preview';
 
 .ltb-text-container {
   @include styleGuide;
@@ -81,4 +82,4 @@ div.spacer {
   }
 }
 
-@import '_footer';
+@import 'footer';

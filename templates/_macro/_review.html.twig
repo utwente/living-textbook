@@ -11,6 +11,20 @@
               {{ notes|length > 50 ? notes|slice(0, 50) ~ '...' : notes }}
             </span>
   {% else %}
-    -
+    <div class="review-no-content">{{ 'review.empty-note'|trans }}</div>
+  {% endif %}
+{% endmacro %}
+
+{% macro printText(text, ckeditor) %}
+  {% if text is empty %}
+    <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
+  {% else %}
+    {% if ckeditor|default(false) %}
+      <div class="ltb-text-container">
+        {{ text|striptags(allowed_ckeditor_tags)|raw }}
+      </div>
+    {% else %}
+      {{ text }}
+    {% endif %}
   {% endif %}
 {% endmacro %}

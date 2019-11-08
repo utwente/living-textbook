@@ -7,13 +7,17 @@ use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Form\Review\EditReviewType;
+use App\Form\Review\ReviewSubmissionType;
 use App\Form\Review\SubmitReviewType;
 use App\Form\Type\RemoveType;
 use App\Repository\PendingChangeRepository;
 use App\Repository\ReviewRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Throwable;
 
 /**
  * Class ReviewController
@@ -106,12 +111,14 @@ class ReviewController extends AbstractController
    * @param TranslatorInterface $translator
    *
    * @return array|Response
+   * @throws ORMException
+   * @throws Throwable
    */
   public function publishReview(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, ReviewService $reviewService,
       TranslatorInterface $translator)
   {
-    $this->checkAccess($requestStudyArea->getStudyArea(), $review);
+    $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
     // Create the form
     $form = $this->createForm(RemoveType::class, NULL, [
@@ -171,6 +178,92 @@ class ReviewController extends AbstractController
 
       return $this->redirectToRoute('app_review_submissions');
     }
+
+    return [
+        'form'   => $form->createView(),
+        'review' => $review,
+    ];
+  }
+
+  /**
+   * Review a submission
+   *
+   * @Route("/{review}", requirements={"review"="\d+"})
+   * @Template()
+   * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Review                 $review
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   * @throws Exception
+   */
+  public function reviewSubmission(
+      Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
+      TranslatorInterface $translator)
+  {
+    $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
+
+    // Check if not yet approved
+    if ($review->getApprovedAt() !== NULL) {
+      throw new NotFoundHttpException("Requested review has already been approved");
+    }
+
+    // Create form
+    $form = $this->createForm(ReviewSubmissionType::class, $review);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+
+      $hasComments = $review->hasComments();
+      if (!$hasComments) {
+        // Set as approved
+        $user = $this->getUser();
+        assert($user instanceof User);
+        $review
+            ->setApprovedAt(new DateTime())
+            ->setApprovedBy($user);
+      }
+
+      $em->flush();
+
+      $this->addFlash('success', $hasComments
+          ? $translator->trans('review.review-comments')
+          : $translator->trans('review.review-approved'));
+
+      return $this->redirectToRoute('app_review_submissions');
+    }
+
+    return [
+        'form'   => $form->createView(),
+        'review' => $review,
+    ];
+  }
+
+  /**
+   * Show a submission
+   *
+   * @Route("/{review}/show", requirements={"review"="\d+"})
+   * @Template()
+   * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
+   *
+   * @param RequestStudyArea $requestStudyArea
+   * @param Review           $review
+   *
+   * @return array|Response
+   */
+  public function showSubmission(RequestStudyArea $requestStudyArea, Review $review)
+  {
+    // Check study area
+    $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
+
+    // Create form, although this is only show. This way, we can reuse the show logic from the review process
+    $form = $this->createForm(ReviewSubmissionType::class, $review, [
+        'review' => false,
+    ]);
 
     return [
         'form'   => $form->createView(),
@@ -291,12 +384,18 @@ class ReviewController extends AbstractController
    *
    * @param StudyArea $studyArea
    * @param Review    $review
+   * @param bool      $checkOwner
    */
-  private function checkAccess(StudyArea $studyArea, Review $review)
+  private function checkAccess(StudyArea $studyArea, Review $review, bool $checkOwner = true)
   {
     // Check study area
     if ($studyArea->getId() !== $review->getStudyArea()->getId()) {
       throw new NotFoundHttpException("Study area does not match");
+    }
+
+    // Check for owner enabled?
+    if (!$checkOwner) {
+      return;
     }
 
     // Check access

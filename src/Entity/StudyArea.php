@@ -307,10 +307,9 @@ class StudyArea
 
     $result[] = UserGroup::GROUP_EDITOR;
 
-    // @todo: Enable with #82
-//    if ($studyArea->isReviewEnabled()) {
-    $result[] = UserGroup::GROUP_REVIEWER;
-//    }
+    if ($this->isReviewModeEnabled()) {
+      $result[] = UserGroup::GROUP_REVIEWER;
+    }
 
     if ($this->isAnalyticsDashboardEnabled()) {
       $result[] = UserGroup::GROUP_ANALYSIS;
@@ -533,6 +532,22 @@ class StudyArea
     }
 
     return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_EDITOR);
+  }
+
+  /**
+   * Check whether the StudyArea changes can be reviewed by the user
+   *
+   * @param User|null $user
+   *
+   * @return bool
+   */
+  public function isReviewable(?User $user)
+  {
+    if (!$user || !$this->isReviewModeEnabled()) {
+      return false;
+    }
+
+    return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_REVIEWER);
   }
 
   /**

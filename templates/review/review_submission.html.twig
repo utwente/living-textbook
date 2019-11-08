@@ -1,0 +1,19 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.edit_row(
+    path('app_review_removereview', {'review': review.id}),
+    path('app_review_submissions')
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'review.review-submission'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'review.review-submission-text'|trans }}</p>
+
+  {{ form(form) }}
+{% endblock %}
