@@ -72,27 +72,20 @@ class ReviewSubmissionType extends AbstractType
 
     // Add a field per pending change, per changed field. The actual field added depends on the type of change
     foreach ($review->getPendingChanges() as $pendingChange) {
-
       $changeType = $pendingChange->getChangeType();
-      // Todo: implement rest
-      if ($changeType !== PendingChange::CHANGE_TYPE_EDIT) {
-        continue;
-      }
-
       $objectType = $pendingChange->getObjectType();
 
       $form->add(sprintf('%s__%d_h', $pendingChange->getShortObjectType(), $pendingChange->getObjectId()),
           ReviewSubmissionObjectHeaderType::class, [
-              'mapped'         => false,
-              'pending_change' => $pendingChange,
-              'checkbox'       => $options['checkboxes'],
+              'mapped'           => false,
+              'pending_change'   => $pendingChange,
+              'checkbox'         => $options['checkboxes'],
+              'full_change_only' => $changeType !== PendingChange::CHANGE_TYPE_EDIT,
           ]);
 
       foreach ($pendingChange->getChangedFields() as $changedField) {
         $formType    = ReviewTextDiffType::class;
-        $formOptions = [
-            'checkbox' => $options['checkboxes'],
-        ];
+        $formOptions = [];
 
         // Handle different types
         if (Concept::class === $objectType) {
@@ -127,15 +120,20 @@ class ReviewSubmissionType extends AbstractType
             $formType, array_merge([
                 'hide_label'      => true,
                 'mapped'          => false,
-                'original_object' => $this->reviewService->getOriginalObject($pendingChange),
+                'original_object' => $changeType !== PendingChange::CHANGE_TYPE_ADD
+                    ? $this->reviewService->getOriginalObject($pendingChange)
+                    : NULL,
                 'pending_change'  => $pendingChange,
                 'field'           => $changedField,
                 'review'          => $options['review'],
+                'show_original'   => $changeType !== PendingChange::CHANGE_TYPE_ADD,
+                'checkbox'        => $changeType === PendingChange::CHANGE_TYPE_EDIT && $options['checkboxes'],
             ], $formOptions));
       }
 
       $form->add(sprintf('%s__%d_f', $pendingChange->getShortObjectType(), $pendingChange->getObjectId()),
           ReviewSubmissionObjectFooterType::class, ['mapped' => false]);
+
     }
 
     if ($options['review']) {

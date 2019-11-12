@@ -334,6 +334,11 @@ class ReviewController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       $formData = $form->getData();
 
+      // Clear review object from the pending change
+      foreach ($pendingChanges as $pendingChange) {
+        $pendingChange->setReview(NULL);
+      }
+
       // Retrieve the marked changes, and parse the data so that it can be handled by the service
       $markedChanges = [];
       foreach ($formData['pending_changes'] as $key => $markedChangeFields) {

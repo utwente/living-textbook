@@ -37,6 +37,7 @@ class Review
    * @var PendingChange[]|Collection
    *
    * @ORM\OneToMany(targetEntity="App\Entity\PendingChange", mappedBy="review", cascade={"remove"})
+   * @ORM\OrderBy({"objectType" = "ASC", "changeType" = "ASC"})
    *
    * @Assert\NotNull()
    * @Assert\Count(min=1)

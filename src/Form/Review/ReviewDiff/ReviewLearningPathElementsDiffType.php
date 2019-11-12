@@ -13,8 +13,9 @@ class ReviewLearningPathElementsDiffType extends AbstractReviewDiffType
     parent::buildView($view, $form, $options);
 
     $originalObject = $options['original_object'];
-    assert($originalObject instanceof LearningPath);
-    $view->vars['orig_elements'] = $originalObject->getElementsOrdered();
+    if ($originalObject instanceof LearningPath) {
+      $view->vars['orig_elements'] = $originalObject->getElementsOrdered();
+    }
 
     $newObject = $this->getPendingChange($options)->getObject();
     assert($newObject instanceof LearningPath);

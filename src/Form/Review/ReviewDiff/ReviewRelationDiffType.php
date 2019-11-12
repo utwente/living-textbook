@@ -14,11 +14,14 @@ class ReviewRelationDiffType extends AbstractReviewDiffType
     parent::buildView($view, $form, $options);
     $view->vars['incoming'] = $options['incoming'];
 
-    $propertyAccessor             = PropertyAccess::createPropertyAccessor();
-    $pendingChange                = $this->getPendingChange($options);
-    $view->vars['concept']        = $pendingChange->getObject();
-    $view->vars['orig_relations'] = $propertyAccessor->getValue($options['original_object'], $options['field']);
-    $view->vars['new_relations']  = $propertyAccessor->getValue($this->getPendingChange($options)->getObject(), $options['field']);
+    $propertyAccessor            = PropertyAccess::createPropertyAccessor();
+    $pendingChange               = $this->getPendingChange($options);
+    $view->vars['concept']       = $pendingChange->getObject();
+    $view->vars['new_relations'] = $propertyAccessor->getValue($this->getPendingChange($options)->getObject(), $options['field']);
+
+    if (NULL !== $options['original_object']) {
+      $view->vars['orig_relations'] = $propertyAccessor->getValue($options['original_object'], $options['field']);
+    }
   }
 
   public function configureOptions(OptionsResolver $resolver)

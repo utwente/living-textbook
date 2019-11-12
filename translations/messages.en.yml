@@ -679,6 +679,7 @@ review:
   nothing-selected-for-submit: 'You did not select any changes that can be submitted!'
   nothing-to-publish: 'There are no approved reviews which can be published at this time.'
   nothing-to-submit: 'You have no changes to submit! Time to create some?'
+  object-removed: 'This object is marked for removal.'
   object-type: 'Changed object'
   original: 'Original content'
   owner: 'Owner'
