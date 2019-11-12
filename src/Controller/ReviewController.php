@@ -128,6 +128,11 @@ class ReviewController extends AbstractController
     ]);
     $form->handleRequest($request);
 
+    // Create an extra form. This way, we can reuse the show logic from the review process
+    $submissionForm = $this->createForm(ReviewSubmissionType::class, $review, [
+        'review' => false,
+    ]);
+
     if ($form->isSubmitted() && $form->isValid()) {
       $reviewService->publishReview($review);
 
@@ -137,8 +142,9 @@ class ReviewController extends AbstractController
     }
 
     return [
-        'form'   => $form->createView(),
-        'review' => $review,
+        'form'            => $form->createView(),
+        'submission_form' => $submissionForm->createView(),
+        'review'          => $review,
     ];
   }
 

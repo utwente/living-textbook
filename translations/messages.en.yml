@@ -704,7 +704,7 @@ review:
   reviewer-help: 'Select who should review these changes.'
   submissions-title: 'Pending reviews'
   submissions-text: 'The submissions below are currently pending review.'
-  saved-for-review: 'Your change has been saved! You will need to submit it for review.'
+  saved-for-review: 'Your change has been saved! You will need to submit it for review in order to get it published.'
   show-submission: 'Show submission'
   start-review: 'Start review'
   submit-title: 'Submit your changes for review'

@@ -17,7 +17,7 @@ class ReviewTextDiffType extends AbstractReviewDiffType
     $propertyAccessor       = PropertyAccess::createPropertyAccessor();
     $view->vars['new_text'] = $propertyAccessor->getValue($this->getPendingChange($options)->getObject(), $options['field']);
     if ($options['has_data_object']) {
-      $view->vars['orig_text'] = $propertyAccessor->getValue($view->vars['orig_text'], 'text');
+      $view->vars['new_text'] = $propertyAccessor->getValue($view->vars['new_text'], 'text');
     }
 
     if (NULL !== $options['original_object']) {
