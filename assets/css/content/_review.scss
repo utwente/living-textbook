@@ -1,9 +1,11 @@
 .review-card {
+  margin-bottom: $spacer;
+
   .review-header {
     margin-bottom: 0;
   }
 
-  .card-body, .card-header {
+  .card-body, .card-header, .list-group-item {
     padding: 0.5rem;
   }
 

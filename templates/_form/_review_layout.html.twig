@@ -1,10 +1,19 @@
-{% block review_submission_header_row %}
-  <h4>
-    {{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"
-  </h4>
+{% block review_submission_object_header_row %}
+<div class="card review-card">
+  <div class="card-header">
+    <h4 class="review-header">
+      {{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"
+    </h4>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% endblock %}
+
+    {% block review_submission_object_footer_row %}
+  </ul>
+</div>
 {% endblock %}
 
-{% block review_learning_path_elements_diff_widget %}
+{% block review_learning_path_elements_diff_row %}
   {% from _self import build_element_diff %}
   {{ block('review_diff_start') }}
   {{ build_element_diff(orig_elements) }}
@@ -35,7 +44,7 @@
   {% endfor %}
 {% endmacro %}
 
-{% block review_relation_diff_widget %}
+{% block review_relation_diff_row %}
   {% from '_data/_data_templates.html.twig' import link_to_relation %}
   {{ block('review_diff_start') }}
   <ul>
@@ -64,7 +73,7 @@
   {{ block('review_diff_end') }}
 {% endblock %}
 
-{% block review_simple_list_diff_widget %}
+{% block review_simple_list_diff_row %}
   {% from _self import build_simple_list_diff %}
   {{ block('review_diff_start') }}
   {{ build_simple_list_diff(field, orig_list) }}
@@ -92,7 +101,7 @@
   </ul>
 {% endmacro %}
 
-{% block review_text_diff_widget %}
+{% block review_text_diff_row %}
   {% from '_macro/_review.html.twig' import printText %}
 
   {{ block('review_diff_start') }}
@@ -103,29 +112,25 @@
 {% endblock %}
 
 {% block review_diff_start %}
-<div class="card review-card">
-  <div class="card-header">
-    <h5 class="review-header">{{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}</h5>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
-        <label class="col-form-label">{{ 'review.original'|trans }}</label>
-        {% endblock %}
-        {% block review_diff_mid %}
-      </div>
-      <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
-        <label class="col-form-label">{{ 'review.update'|trans }}</label>
-        {% endblock %}
-        {% block review_diff_end %}
-      </div>
-      {% if form.comments is defined %}
-        <div class="col-12 col-xl-4">
-          <label class="col-form-label">{{ 'review.comments'|trans }}</label>
-          {{ form_widget(form.comments) }}
-        </div>
-      {% endif %}
+<li class="list-group-item">
+  <h5 class="review-header">{{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}</h5>
+  <div class="row">
+    <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+      <label class="col-form-label">{{ 'review.original'|trans }}</label>
+      {% endblock %}
+      {% block review_diff_mid %}
     </div>
+    <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+      <label class="col-form-label">{{ 'review.update'|trans }}</label>
+      {% endblock %}
+      {% block review_diff_end %}
+    </div>
+    {% if form.comments is defined %}
+      <div class="col-12 col-xl-4">
+        <label class="col-form-label">{{ 'review.comments'|trans }}</label>
+        {{ form_widget(form.comments) }}
+      </div>
+    {% endif %}
   </div>
-</div>
+</li>
 {% endblock %}
