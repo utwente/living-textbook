@@ -675,6 +675,7 @@ review:
   list-own: 'Your submissions'
   no-pending-submissions: 'You have no pending reviews submissions at this point. Time to create some?'
   notes: 'Notes'
+  notes-from-author: 'Note from author'
   notes-help: 'You can leave a small description to help the reviewer if required.'
   nothing-selected-for-submit: 'You did not select any changes that can be submitted!'
   nothing-to-publish: 'There are no approved reviews which can be published at this time.'

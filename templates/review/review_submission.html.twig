@@ -15,5 +15,10 @@
 {% block content %}
   <p>{{ 'review.review-submission-text'|trans }}</p>
 
+  {% if review.notes is not empty %}
+    {% from '_layout/flashbags.html.twig' import flashbag_alert %}
+    {{ flashbag_alert('info', 'review.notes-from-author'|trans ~ ': ' ~ review.notes, 'fa-info') }}
+  {% endif %}
+
   {{ form(form) }}
 {% endblock %}
