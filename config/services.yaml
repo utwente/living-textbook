@@ -57,6 +57,11 @@ services:
   Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter:
     alias: framework_extra_bundle.argument_name_convertor
 
+  App\Analytics\AnalyticsService:
+    lazy: true
+    arguments:
+      $projectDir: '%kernel.project_dir%'
+
   App\Database\SoftDeletableSubscriber:
     tags:
       - { name: doctrine.event_subscriber, connection: default }

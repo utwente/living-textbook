@@ -62,6 +62,9 @@ composer install -o --apcu-autoloader --no-dev
 # Execute migrations
 sudo -u www-data php bin/console doctrine:migrations:migrate -n
 
+# Install python environment
+sudo -u www-data php bin/console ltb:python:build
+
 # Restore frontend controller
 cp update/controllers/index.php public/index.php
 

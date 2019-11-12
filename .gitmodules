@@ -1,0 +1,3 @@
+[submodule "python/data-visualisation"]
+	path = python/data-visualisation
+	url = git@gitlab.drenso.dev:extern/013-living-textbook-data-visualisation.git

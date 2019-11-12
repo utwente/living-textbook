@@ -2,7 +2,9 @@
 
 namespace App\Command;
 
+use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use ReflectionException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Console\Command\Command;
@@ -47,8 +49,8 @@ class CheckActionSecurityCommand extends Command
 
   /**
    * {@inheritdoc}
-   * @throws \ReflectionException
-   * @throws \Doctrine\Common\Annotations\AnnotationException
+   * @throws ReflectionException
+   * @throws AnnotationException
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
