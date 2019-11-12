@@ -52,8 +52,10 @@ class ReviewSubmissionType extends AbstractType
         ->setDefault('checkboxes', false)
         ->setDefault('data_class', Review::class)
         ->setDefault('review', true)
+        ->setDefault('show_comments', false)
         ->setAllowedTypes('checkboxes', 'bool')
-        ->setAllowedTypes('review', 'bool');
+        ->setAllowedTypes('review', 'bool')
+        ->setAllowedTypes('show_comments', 'bool');
   }
 
   /**
@@ -126,6 +128,7 @@ class ReviewSubmissionType extends AbstractType
                 'pending_change'  => $pendingChange,
                 'field'           => $changedField,
                 'review'          => $options['review'],
+                'show_comments'   => $options['show_comments'],
                 'show_original'   => $changeType !== PendingChange::CHANGE_TYPE_ADD,
                 'checkbox'        => $changeType === PendingChange::CHANGE_TYPE_EDIT && $options['checkboxes'],
             ], $formOptions));

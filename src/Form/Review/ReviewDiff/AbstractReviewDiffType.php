@@ -4,6 +4,7 @@ namespace App\Form\Review\ReviewDiff;
 
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
+use App\Form\Type\PrintedTextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -16,18 +17,25 @@ class AbstractReviewDiffType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    if (!$options['review']) {
+    if (!$options['review'] && !$options['show_comments']) {
       return;
     }
 
-    $builder
-        ->add('comments', TextareaType::class, [
-            'empty_data' => NULL,
-            'required'   => false,
-            'attr'       => [
-                'placeholder' => 'review.comments-placeholder',
-            ],
-        ]);
+    if ($options['review']) {
+      $builder
+          ->add('comments', TextareaType::class, [
+              'empty_data' => NULL,
+              'required'   => false,
+              'attr'       => [
+                  'placeholder' => 'review.comments-placeholder',
+              ],
+          ]);
+    } else if ($options['show_comments']) {
+      $builder
+          ->add('comments', PrintedTextType::class, [
+              'text_only' => true,
+          ]);
+    }
 
     $builder->addModelTransformer(new CallbackTransformer(
         function () use ($options) {
@@ -88,6 +96,7 @@ class AbstractReviewDiffType extends AbstractType
         ->setDefault('checkbox', false)
         ->setDefault('show_original', true)
         ->setDefault('show_updated', true)
+        ->setDefault('show_comments', false)
         ->setDefault('original_object', NULL)
         ->setRequired([
             'pending_change',
@@ -97,6 +106,7 @@ class AbstractReviewDiffType extends AbstractType
         ->setAllowedTypes('checkbox', 'bool')
         ->setAllowedTypes('show_original', 'bool')
         ->setAllowedTypes('show_updated', 'bool')
+        ->setAllowedTypes('show_comments', 'bool')
         ->setAllowedTypes('original_object', [ReviewableInterface::class, 'null'])
         ->setAllowedTypes('pending_change', PendingChange::class)
         ->setAllowedTypes('field', 'string')

@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PrintedTextType extends AbstractType
@@ -25,6 +27,11 @@ class PrintedTextType extends AbstractType
     }));
   }
 
+  public function buildView(FormView $view, FormInterface $form, array $options)
+  {
+    $view->vars['text_only'] = $options['text_only'];
+  }
+
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
@@ -32,7 +39,9 @@ class PrintedTextType extends AbstractType
             'access_method' => NULL,
             'disabled'      => true,
             'required'      => false,
-        ]);
+            'text_only'     => false,
+        ])
+        ->setAllowedTypes('text_only', 'bool');
   }
 
   public function getParent()

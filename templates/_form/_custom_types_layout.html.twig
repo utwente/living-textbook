@@ -47,7 +47,7 @@
       });
       if (window.CKEDITOR) {
         CKEDITOR.on('instanceReady', function () {
-          staticLocateUpdater_{{ id }}()
+          staticLocateUpdater_{{ id }}();
         });
       }
     });
@@ -78,4 +78,12 @@
 
 {% block base_data_text_row %}
   {{ form_widget(form) }}
+{% endblock %}
+
+{% block printed_text_widget %}
+  {% if text_only %}
+    <span>{{ form.vars.value }}</span>
+  {% else %}
+    {{ form_widget(form) }}
+  {% endif %}
 {% endblock %}
