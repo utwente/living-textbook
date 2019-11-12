@@ -2,6 +2,7 @@
 
 namespace App\Review;
 
+use App\Entity\Concept;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
 use App\Entity\Review;
@@ -339,7 +340,7 @@ class ReviewService
                 'concept' => ['id_only', 'name_only'],
                 'next'    => ['id_only'],
             ],
-            'relations'         => [
+            'outgoingRelations' => [
                 'review_change',
                 'source'       => ['id_only', 'name_only'],
                 'target'       => ['id_only', 'name_only'],
@@ -431,6 +432,16 @@ class ReviewService
     // Compare the data
     foreach ($newSnapshotArray as $key => $data) {
       $origData = array_key_exists($key, $originalSnapshotArray) ? $originalSnapshotArray[$key] : NULL;
+
+      // The relation field are rebuild every time, so we need to exclude the id property from this test
+      if ($object->getReviewName() === Concept::class && ($key === 'relations' || $key === 'incomingRelations')) {
+        foreach ($origData as &$relation) {
+          unset($relation['id']);
+        }
+        foreach ($data as &$relation) {
+          unset($relation['id']);
+        }
+      }
 
       if ($this->asSimpleType($data) !== $this->asSimpleType($origData)) {
         $changedFields[] = $key;

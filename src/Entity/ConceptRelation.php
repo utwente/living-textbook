@@ -83,10 +83,6 @@ class ConceptRelation
    *
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
-   *
-   * @JMSA\Expose()
-   * @JMSA\Groups({"review_change"})
-   * @JMSA\Type("int")
    */
   private $outgoingPosition;
 
@@ -100,10 +96,6 @@ class ConceptRelation
    *
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
-   *
-   * @JMSA\Expose()
-   * @JMSA\Groups({"review_change"})
-   * @JMSA\Type("int")
    */
   private $incomingPosition;
 
