@@ -58,6 +58,9 @@
       <th scope="col">{{ 'review.notes'|trans }}</th>
       <th scope="col">{{ 'review.submitted-at'|trans }}</th>
       <th scope="col">{{ 'review.reviewer'|trans }}</th>
+      <th scope="col" class="fit">
+        {{ 'review.comments'|trans }}?
+      </th>
       <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
     </tr>
     </thead>
@@ -77,6 +80,13 @@
         </td>
         <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
         <td>{{ review.requestedReviewBy.displayName }}</td>
+        <td class="py-0 align-middle fit text-center">
+          <span class="fa-stack">
+            {% if review.hasComments %}
+              <i class="fa fa-comments fa-stack-1x text-danger"></i>
+            {% endif %}
+          </span>
+        </td>
         <td class="actions">
           {% if own or is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
             {{ edit_button(path('app_review_editreview', {'review': review.id})) }}
