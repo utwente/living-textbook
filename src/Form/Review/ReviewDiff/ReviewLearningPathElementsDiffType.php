@@ -19,6 +19,6 @@ class ReviewLearningPathElementsDiffType extends AbstractReviewDiffType
 
     $newObject = $this->getPendingChange($options)->getObject();
     assert($newObject instanceof LearningPath);
-    $view->vars['new_elements'] = $newObject->getElements();
+    $view->vars['new_elements'] = $newObject->getElementsOrdered();
   }
 }
