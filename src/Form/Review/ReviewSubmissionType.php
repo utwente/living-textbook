@@ -49,8 +49,10 @@ class ReviewSubmissionType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
+        ->setDefault('checkboxes', false)
         ->setDefault('data_class', Review::class)
         ->setDefault('review', true)
+        ->setAllowedTypes('checkboxes', 'bool')
         ->setAllowedTypes('review', 'bool');
   }
 
@@ -70,26 +72,33 @@ class ReviewSubmissionType extends AbstractType
 
     // Add a field per pending change, per changed field. The actual field added depends on the type of change
     foreach ($review->getPendingChanges() as $pendingChange) {
+
+      $changeType = $pendingChange->getChangeType();
+      // Todo: implement rest
+      if ($changeType !== PendingChange::CHANGE_TYPE_EDIT) {
+        continue;
+      }
+
       $objectType = $pendingChange->getObjectType();
 
       $form->add(sprintf('%s__%d_h', $pendingChange->getShortObjectType(), $pendingChange->getObjectId()),
           ReviewSubmissionObjectHeaderType::class, [
               'mapped'         => false,
               'pending_change' => $pendingChange,
+              'checkbox'       => $options['checkboxes'],
           ]);
 
       foreach ($pendingChange->getChangedFields() as $changedField) {
-        $hasDataObject = $ckeditor = false;
-        $formType      = ReviewTextDiffType::class;
-        $formOptions   = [];
+        $formType    = ReviewTextDiffType::class;
+        $formOptions = [
+            'checkbox' => $options['checkboxes'],
+        ];
 
         // Handle different types
         if (Concept::class === $objectType) {
           if (in_array($changedField, ['relations', 'incomingRelations'])) {
-            $formType    = ReviewRelationDiffType::class;
-            $formOptions = [
-                'incoming' => $changedField !== 'relations',
-            ];
+            $formType                = ReviewRelationDiffType::class;
+            $formOptions['incoming'] = $changedField !== 'relations';
           }
 
           if (in_array($changedField, ['priorKnowledge', 'learningOutcomes', 'externalResources'])) {
@@ -97,22 +106,16 @@ class ReviewSubmissionType extends AbstractType
           }
 
           if (in_array($changedField, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
-            $formOptions = [
-                'has_data_object' => true,
-                'ckeditor'        => true,
-            ];
+            $formOptions['has_data_object'] = true;
+            $formOptions['ckeditor']        = true;
           }
         } else if (LearningOutcome::class === $objectType) {
           if ('text' === $changedField) {
-            $formOptions = [
-                'ckeditor' => true,
-            ];
+            $formOptions['ckeditor'] = true;
           }
         } else if (LearningPath::class === $objectType) {
           if ('introduction' === $changedField) {
-            $formOptions = [
-                'ckeditor' => true,
-            ];
+            $formOptions['ckeditor'] = true;
           }
 
           if ('elements' === $changedField) {

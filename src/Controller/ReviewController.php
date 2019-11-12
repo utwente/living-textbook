@@ -319,8 +319,15 @@ class ReviewController extends AbstractController
 
     $pendingChanges = $pendingChangeRepository->getSubmittableForUser($studyArea, $user);
 
+    // Create review object for display
+    $review = new Review();
+    foreach ($pendingChanges as $pendingChange) {
+      $review->addPendingChange($pendingChange);
+    }
+
     $form = $this->createForm(SubmitReviewType::class, NULL, [
         'study_area' => $studyArea,
+        'review'     => $review,
     ]);
     $form->handleRequest($request);
 

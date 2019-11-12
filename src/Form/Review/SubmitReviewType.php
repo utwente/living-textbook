@@ -2,10 +2,13 @@
 
 namespace App\Form\Review;
 
+use App\Entity\Review;
+use App\Entity\StudyArea;
 use App\Form\Type\SaveType;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SubmitReviewType extends AbstractReviewType
 {
@@ -29,6 +32,15 @@ class SubmitReviewType extends AbstractReviewType
                 'allow_add'    => true,
                 'allow_delete' => true,
             ],
+        ])
+
+        // Re-use review submission type to show changes
+        ->add('review', ReviewSubmissionType::class, [
+            'mapped'     => false,
+            'data'       => $options['review'],
+            'review'     => false,
+            'hide_label' => true,
+            'checkboxes' => true,
         ]);
 
     $this
@@ -41,4 +53,14 @@ class SubmitReviewType extends AbstractReviewType
             'enable_save_and_list' => false,
         ]);
   }
+
+  public function configureOptions(OptionsResolver $resolver)
+  {
+    $resolver
+        ->setRequired('review')
+        ->setRequired('study_area')
+        ->setAllowedTypes('review', Review::class)
+        ->setAllowedTypes('study_area', StudyArea::class);
+  }
+
 }

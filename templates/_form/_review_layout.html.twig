@@ -2,7 +2,23 @@
 <div class="card review-card">
   <div class="card-header">
     <h4 class="review-header">
+      {%- if checkbox -%}
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" id="pc_{{ pendingChange.id }}" class="custom-control-input change-input">
+          <label class="checkbox-custom custom-control-label" for="pc_{{ pendingChange.id }}"></label>
+        </div>
+      {%- endif -%}
       {{ (pendingChange.shortObjectType|trString ~ '._name')|trans }}: "{{ pendingChange.object.reviewTitle }}"
+      {{ block('change_type') }}
+      {% if checkbox %}
+        <script type="text/javascript">
+          $(function () {
+            $('#pc_{{ pendingChange.id }}').on('click', function () {
+              $('.change-input-{{ pendingChange.id }}').prop('checked', $('#pc_{{ pendingChange.id }}').is(':checked'));
+            });
+          });
+        </script>
+      {% endif %}
     </h4>
   </div>
   <ul class="list-group list-group-flush">
@@ -11,6 +27,9 @@
     {% block review_submission_object_footer_row %}
   </ul>
 </div>
+{% endblock %}
+
+{% block _submit_review_pending_changes_row %}
 {% endblock %}
 
 {% block review_learning_path_elements_diff_row %}
@@ -112,8 +131,23 @@
 {% endblock %}
 
 {% block review_diff_start %}
-<li class="list-group-item">
-  <h5 class="review-header">{{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}</h5>
+<li class="list-group-item review-item{% if checkbox %} with-checkbox{% endif %}">
+  {% if checkbox %}
+    <div class="custom-control custom-checkbox">
+      {% set formField = field|default(change_type) %}
+      <input type="checkbox" id="pc_{{ pending_change_id }}_{{ formField }}"
+             name="{{ form.parent.parent.vars.id }}[pending_changes][{{ pending_change_id }}][{{ formField }}]"
+             class="custom-control-input change-input change-input-{{ pending_change_id }}">
+      <label class="checkbox-custom custom-control-label"
+             for="pc_{{ pending_change_id }}_{{ formField }}">
+        {{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}
+      </label>
+    </div>
+  {% else %}
+    <h5 class="review-header">
+      {{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}
+    </h5>
+  {% endif %}
   <div class="row">
     <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
       <label class="col-form-label">{{ 'review.original'|trans }}</label>
@@ -133,4 +167,18 @@
     {% endif %}
   </div>
 </li>
+{% endblock %}
+
+{% block change_type %}
+  <i data-toggle="tooltip"
+      {% if pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_ADD') %}
+        class="fa fa-fw fa-plus text-success" title="{{ 'review.change-types.add'|trans }}"
+      {% elseif pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_EDIT') %}
+        class="fa fa-fw fa-edit text-primary" title="{{ 'review.change-types.edit'|trans }}"
+      {% elseif pendingChange.changeType == constant('App\\Entity\\PendingChange::CHANGE_TYPE_REMOVE') %}
+        class="fa fa-fw fa-trash text-danger" title="{{ 'review.change-types.remove'|trans }}"
+      {% else %}
+        class="fa fa-fw fa-question"
+      {% endif %}
+  ></i>
 {% endblock %}

@@ -73,6 +73,9 @@ class AbstractReviewDiffType extends AbstractType
     $pendingChange = $options['pending_change'];
     assert($pendingChange instanceof PendingChange);
 
+    $view->vars['checkbox']          = $options['checkbox'];
+    $view->vars['pending_change_id'] = $pendingChange->getId();
+    $view->vars['change_type']       = $pendingChange->getChangeType();
     $view->vars['short_object_type'] = $pendingChange->getShortObjectType();
     $view->vars['field']             = $options['field'];
   }
@@ -80,12 +83,14 @@ class AbstractReviewDiffType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
+        ->setDefault('checkbox', false)
         ->setRequired([
             'original_object',
             'pending_change',
             'field',
             'review',
         ])
+        ->setAllowedTypes('checkbox', 'bool')
         ->setAllowedTypes('original_object', ReviewableInterface::class)
         ->setAllowedTypes('pending_change', PendingChange::class)
         ->setAllowedTypes('field', 'string')

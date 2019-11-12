@@ -1,18 +1,46 @@
 .review-card {
   margin-bottom: $spacer;
 
-  .review-header {
-    margin-bottom: 0;
-  }
-
   .card-body, .card-header, .list-group-item {
     padding: 0.5rem;
   }
 
-  .col-form-label {
-    display: block;
-    margin: 0;
-    padding: 0;
+  .review-header {
+    margin-bottom: 0;
+
+    .custom-checkbox {
+      display: inline-block;
+      line-height: 1em;
+    }
+
+    .fa {
+      float: right;
+      margin-top: 4px;
+    }
+  }
+
+  .review-item {
+    .col-form-label {
+      display: block;
+      font-size: smaller;
+      margin: 0;
+      padding: 0;
+    }
+
+    &.with-checkbox {
+
+      > .row {
+        > div:first-child {
+          padding-left: calc(15px + 1.5em);
+        }
+
+        @include media-breakpoint-down(sm) {
+          > div {
+            padding-left: calc(15px + 1.5em);
+          }
+        }
+      }
+    }
   }
 }
 
