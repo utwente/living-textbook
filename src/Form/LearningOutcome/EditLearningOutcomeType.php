@@ -26,15 +26,18 @@ class EditLearningOutcomeType extends AbstractType
         ->add('number', NumberType::class, [
             'label'      => 'learning-outcome.number',
             'empty_data' => 0,
+            'disabled'   => in_array('number', $options['disabled_fields']),
         ])
         ->add('name', TextType::class, [
             'label'      => 'learning-outcome.name',
             'empty_data' => '',
+            'disabled'   => in_array('name', $options['disabled_fields']),
         ])
         ->add('text', CkEditorType::class, [
             'label'      => 'learning-outcome.text',
             'empty_data' => '',
             'studyArea'  => $options['studyArea'],
+            'disabled'   => in_array('text', $options['disabled_fields']),
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
@@ -55,6 +58,8 @@ class EditLearningOutcomeType extends AbstractType
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningOutcome')
         ->setAllowedTypes('learningOutcome', LearningOutcome::class)
-        ->setDefault('data_class', LearningOutcome::class);
+        ->setDefault('data_class', LearningOutcome::class)
+        ->setDefault('disabled_fields', [])
+        ->setAllowedTypes('disabled_fields', 'string[]');
   }
 }

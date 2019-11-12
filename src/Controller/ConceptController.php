@@ -121,7 +121,8 @@ class ConceptController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
-        'concept' => $concept,
+        'concept'         => $concept,
+        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $concept),
     ]);
     $form->handleRequest($request);
 
@@ -209,6 +210,15 @@ class ConceptController extends AbstractController
     // Check study area
     if ($concept->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
+    }
+
+    // Verify it can be deleted
+    if (!$reviewService->canObjectBeRemoved($studyArea, $concept)) {
+      $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+          '%item%' => $trans->trans('concept._name'),
+      ]));
+
+      return $this->redirectToRoute('app_concept_list');
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [

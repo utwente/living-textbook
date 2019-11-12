@@ -10,6 +10,10 @@ body.cke_editable {
   .cke_image_resizer_wrapper {
     line-height: unset;
   }
+
+  &[contenteditable='false'] {
+    background-color: #e9ecef;
+  }
 }
 
 @import '../content/_styleGuide';

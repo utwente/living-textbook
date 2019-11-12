@@ -1,6 +1,7 @@
 submit: Submit
 
 abbreviation:
+  _name: 'Abbreviation'
   abbreviation: 'Abbreviation'
   add-title: 'Add new abbreviation'
   edit-title: 'Edit abbreviation "%item%"'
@@ -603,7 +604,9 @@ study-area:
   removed: 'Study area "%item%" has been removed successfully'
   review-mode: 'Review mode'
   review-mode-help: 'When enabled, all content changes made to the content must be reviewed before it can be published.'
-  review-mode-notice: 'Review mode has been enabled on this study area, which means that all content changes need to be approved before they can be published!'
+  review-mode-notice: >-
+    Review mode has been enabled on this study area, which means that all content changes need to be approved before it
+    can be published! When fields are disabled, there is already a change pending.
   required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study areas for you."
   saved: 'Study area "%item%" has been saved successfully.'
   search-concept: 'Search for concepts'
@@ -690,6 +693,7 @@ review:
   publish-successful: 'The changes from the approved submission have been applied successfully!'
   publish-text: 'The submissions below can be published as they have been accepted by a reviewer.'
   publish-title: 'Publish approved submissions'
+  remove-not-possible: '%item% cannot be removed at this time as it has pending changes.'
   remove-successful: 'The review has been removed successfully!'
   remove-text: 'Are you sure you want to remove this review? If you remove the review, the associated changes will be lost!'
   remove-title: 'Remove review'

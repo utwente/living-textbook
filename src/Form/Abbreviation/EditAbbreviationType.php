@@ -20,10 +20,12 @@ class EditAbbreviationType extends AbstractType
   {
     $builder
         ->add('abbreviation', TextType::class, [
-            'label' => 'abbreviation.abbreviation',
+            'label'    => 'abbreviation.abbreviation',
+            'disabled' => in_array('abbreviation', $options['disabled_fields']),
         ])
         ->add('meaning', TextType::class, [
-            'label' => 'abbreviation.meaning',
+            'label'    => 'abbreviation.meaning',
+            'disabled' => in_array('meaning', $options['disabled_fields']),
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
@@ -40,7 +42,9 @@ class EditAbbreviationType extends AbstractType
   {
     $resolver
         ->setRequired('studyArea')
+        ->setDefault('disabled_fields', [])
         ->setAllowedTypes('studyArea', StudyArea::class)
+        ->setAllowedTypes('disabled_fields', 'string[]')
         ->setDefault('data_class', Abbreviation::class);
   }
 }

@@ -21,16 +21,19 @@ class EditExternalResourceType extends AbstractType
   {
     $builder
         ->add('title', TextType::class, [
-            'label' => 'external-resource.title',
+            'label'    => 'external-resource.title',
+            'disabled' => in_array('title', $options['disabled_fields']),
         ])
         ->add('description', TextType::class, [
             'empty_data' => '',
             'label'      => 'external-resource.description',
             'required'   => false,
+            'disabled'   => in_array('description', $options['disabled_fields']),
         ])
         ->add('url', UrlType::class, [
             'label'    => 'external-resource.url',
             'required' => false,
+            'disabled' => in_array('url', $options['disabled_fields']),
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
@@ -48,6 +51,8 @@ class EditExternalResourceType extends AbstractType
     $resolver
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
-        ->setDefault('data_class', ExternalResource::class);
+        ->setDefault('data_class', ExternalResource::class)
+        ->setDefault('disabled_fields', [])
+        ->setAllowedTypes('disabled_fields', 'string[]');
   }
 }

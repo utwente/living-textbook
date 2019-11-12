@@ -96,7 +96,10 @@ class ExternalResourceController extends AbstractController
     $snapshot = $reviewService->getSnapshot($externalResource);
 
     // Create form and handle request
-    $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $studyArea]);
+    $form = $this->createForm(EditExternalResourceType::class, $externalResource, [
+        'studyArea'       => $studyArea,
+        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $externalResource),
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -157,6 +160,15 @@ class ExternalResourceController extends AbstractController
     // Check if correct study area
     if ($externalResource->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
+    }
+
+    // Verify it can be deleted
+    if (!$reviewService->canObjectBeRemoved($studyArea, $externalResource)) {
+      $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+          '%item%' => $trans->trans('external-resource._name'),
+      ]));
+
+      return $this->redirectToRoute('app_externalresource_list');
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [

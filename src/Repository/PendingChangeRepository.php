@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
 use App\Entity\StudyArea;
 use App\Entity\User;
@@ -13,6 +14,21 @@ class PendingChangeRepository extends ServiceEntityRepository
   public function __construct(ManagerRegistry $registry)
   {
     parent::__construct($registry, PendingChange::class);
+  }
+
+  /**
+   * Get all pending changes for an object
+   *
+   * @param ReviewableInterface $object
+   *
+   * @return PendingChange[]
+   */
+  public function getForObject(ReviewableInterface $object): array
+  {
+    return $this->findBy([
+        'objectType' => $object->getReviewName(),
+        'objectId'   => $object->getId(),
+    ]);
   }
 
   /**

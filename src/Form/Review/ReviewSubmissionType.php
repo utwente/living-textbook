@@ -77,7 +77,7 @@ class ReviewSubmissionType extends AbstractType
       $changeType = $pendingChange->getChangeType();
       $objectType = $pendingChange->getObjectType();
 
-      $form->add(sprintf('%s__%d_h', $pendingChange->getShortObjectType(), $pendingChange->getObjectId()),
+      $form->add(sprintf('%s__%d_h', $pendingChange->getShortObjectType(), $pendingChange->getId()),
           ReviewSubmissionObjectHeaderType::class, [
               'mapped'           => false,
               'pending_change'   => $pendingChange,
@@ -134,7 +134,7 @@ class ReviewSubmissionType extends AbstractType
             ], $formOptions));
       }
 
-      $form->add(sprintf('%s__%d_f', $pendingChange->getShortObjectType(), $pendingChange->getObjectId()),
+      $form->add(sprintf('%s__%d_f', $pendingChange->getShortObjectType(), $pendingChange->getId()),
           ReviewSubmissionObjectFooterType::class, ['mapped' => false]);
 
     }

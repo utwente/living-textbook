@@ -123,7 +123,10 @@ class AbbreviationController extends AbstractController
     $snapshot = $reviewService->getSnapshot($abbreviation);
 
     // Create form and handle request
-    $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $studyArea]);
+    $form = $this->createForm(EditAbbreviationType::class, $abbreviation, [
+        'studyArea'       => $studyArea,
+        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $abbreviation),
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -184,6 +187,15 @@ class AbbreviationController extends AbstractController
     // Check if correct study area
     if ($studyArea->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
+    }
+
+    // Verify it can be deleted
+    if (!$reviewService->canObjectBeRemoved($studyArea, $abbreviation)) {
+      $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+          '%item%' => $trans->trans('abbreviation._name'),
+      ]));
+
+      return $this->redirectToRoute('app_abbreviation_list');
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [

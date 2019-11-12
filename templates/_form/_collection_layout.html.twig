@@ -41,9 +41,9 @@
   {% set allow_move_calc = allow_move is not defined or (allow_move is defined and allow_move) %}
   <script type="text/javascript">
     $('#{{ id }}').collection({
-      add: '<a href="#" class="collection-rescue-add btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i></a>',
-      allow_down: {{ allow_move_calc ? 'true' : 'false' }},
-      allow_up: {{ allow_move_calc ? 'true' : 'false' }}
+      add: '<a href="#" class="collection-rescue-add btn btn-outline-secondary{% if disabled %} disabled{% endif %}"><i class="fa fa-plus fa-fw"></i></a>',
+      allow_down: {{ allow_move_calc and not disabled ? 'true' : 'false' }},
+      allow_up: {{ allow_move_calc and not disabled ? 'true' : 'false' }}
       {% if position_selector is defined %}, position_field_selector: '.{{ position_selector }}'{% endif %}
     });
   </script>
@@ -57,10 +57,18 @@
 
 {% block collection_buttons %}
   <div class="text-right">
-    <a href="#" class="collection-up btn btn-outline-secondary"><i class="fa fa-step-backward fa-fw"></i></a>
-    <a href="#" class="collection-remove btn btn-outline-secondary"><i class="fa fa-minus fa-fw"></i></a>
-    <a href="#" class="collection-add btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i></a>
-    <a href="#" class="collection-down btn btn-outline-secondary"><i class="fa fa-step-forward fa-fw"></i></a>
+    <a href="#" class="collection-up btn btn-outline-secondary{% if disabled %} disabled{% endif %}">
+      <i class="fa fa-step-backward fa-fw"></i>
+    </a>
+    <a href="#" class="collection-remove btn btn-outline-secondary{% if disabled %} disabled{% endif %}">
+      <i class="fa fa-minus fa-fw"></i>
+    </a>
+    <a href="#" class="collection-add btn btn-outline-secondary{% if disabled %} disabled{% endif %}">
+      <i class="fa fa-plus fa-fw"></i>
+    </a>
+    <a href="#" class="collection-down btn btn-outline-secondary{% if disabled %} disabled{% endif %}">
+      <i class="fa fa-step-forward fa-fw"></i>
+    </a>
   </div>
 {% endblock %}
 

@@ -102,7 +102,9 @@ class RelationTypeController extends AbstractController
     $snapshot = $reviewService->getSnapshot($relationType);
 
     // Create form and handle request
-    $form = $this->createForm(EditRelationTypeType::class, $relationType);
+    $form = $this->createForm(EditRelationTypeType::class, $relationType, [
+        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $relationType),
+    ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
@@ -170,6 +172,15 @@ class RelationTypeController extends AbstractController
     // Check if not already deleted
     if ($relationType->getDeletedAt() !== NULL) {
       $this->addFlash('warning', $trans->trans('relation-type.removed-already', ['%item%' => $relationType->getName()]));
+
+      return $this->redirectToRoute('app_relationtype_list');
+    }
+
+    // Verify it can be deleted
+    if (!$reviewService->canObjectBeRemoved($studyArea, $relationType)) {
+      $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+          '%item%' => $trans->trans('relation-type._name'),
+      ]));
 
       return $this->redirectToRoute('app_relationtype_list');
     }

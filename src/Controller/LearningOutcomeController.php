@@ -106,6 +106,7 @@ class LearningOutcomeController extends AbstractController
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
         'studyArea'       => $studyArea,
         'learningOutcome' => $learningOutcome,
+        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $learningOutcome),
     ]);
     $form->handleRequest($request);
 
@@ -171,6 +172,15 @@ class LearningOutcomeController extends AbstractController
     // Check if correct study area
     if ($learningOutcome->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
+    }
+
+    // Verify it can be deleted
+    if (!$reviewService->canObjectBeRemoved($studyArea, $learningOutcome)) {
+      $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+          '%item%' => $trans->trans('learning-outcome._name'),
+      ]));
+
+      return $this->redirectToRoute('app_learningoutcome_list');
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [

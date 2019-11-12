@@ -190,6 +190,48 @@ class ReviewService
   }
 
   /**
+   * Retrieve the fields which can not be edited by this user
+   * Currently, we ignore the user
+   *
+   * @param StudyArea           $studyArea
+   * @param ReviewableInterface $object
+   *
+   * @return string[]
+   */
+  public function getDisabledFieldsForObject(StudyArea $studyArea, ReviewableInterface $object): array
+  {
+    if (!$studyArea->isReviewModeEnabled()) {
+      return [];
+    }
+
+    $pendingChanges = $this->pendingChangeRepository->getForObject($object);
+
+    $disabledFields = [];
+    foreach ($pendingChanges as $pendingChange) {
+      $disabledFields = array_merge($disabledFields, $pendingChange->getChangedFields());
+    }
+
+    return $disabledFields;
+  }
+
+  /**
+   * Retrieve whether the object can be removed
+   *
+   * @param StudyArea           $studyArea
+   * @param ReviewableInterface $object
+   *
+   * @return bool
+   */
+  public function canObjectBeRemoved(StudyArea $studyArea, ReviewableInterface $object): bool
+  {
+    if (!$studyArea->isReviewModeEnabled()) {
+      return true;
+    }
+
+    return 0 === count($this->pendingChangeRepository->getForObject($object));
+  }
+
+  /**
    * Create a review from the supplied pending change context.
    * If requested, it will split existing pending changes into multiple ones.
    *

@@ -101,6 +101,7 @@ class LearningPathController extends AbstractController
       EntityManagerInterface $em, TranslatorInterface $trans)
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
+    $studyArea = $requestStudyArea->getStudyArea();
 
     $originalElements = new ArrayCollection();
     foreach ($learningPath->getElements() as $element) {
@@ -110,14 +111,15 @@ class LearningPathController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'    => $requestStudyArea->getStudyArea(),
-        'learningPath' => $learningPath,
+        'studyArea'       => $studyArea,
+        'learningPath'    => $learningPath,
+        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $learningPath),
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $reviewService->storeChange($requestStudyArea->getStudyArea(), $learningPath, PendingChange::CHANGE_TYPE_EDIT, $snapshot,
+      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_EDIT, $snapshot,
           function (LearningPath $learningPath) use (&$originalElements, &$em) {
             // Remove elements no longer used
             foreach ($originalElements as $element) {
@@ -203,6 +205,16 @@ class LearningPathController extends AbstractController
       TranslatorInterface $trans)
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    // Verify it can be deleted
+    if (!$reviewService->canObjectBeRemoved($studyArea, $learningPath)) {
+      $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+          '%item%' => $trans->trans('learning-path._name'),
+      ]));
+
+      return $this->redirectToRoute('app_learningpath_list');
+    }
 
     $form = $this->createForm(RemoveType::class, NULL, [
         'cancel_route'        => 'app_learningpath_show',
@@ -211,7 +223,7 @@ class LearningPathController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid() && RemoveType::isRemoveClicked($form)) {
-      $reviewService->storeChange($requestStudyArea->getStudyArea(), $learningPath, PendingChange::CHANGE_TYPE_REMOVE);
+      $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_REMOVE);
 
       $this->addFlash('success', $trans->trans('learning-path.removed', ['%item%' => $learningPath->getName()]));
 

@@ -29,21 +29,25 @@ class EditLearningPathType extends AbstractType
     $editing      = $learningPath->getId() !== NULL;
     $builder
         ->add('name', TextType::class, [
-            'label' => 'learning-path.name',
+            'label'    => 'learning-path.name',
+            'disabled' => in_array('name', $options['disabled_fields']),
         ])
         ->add('introduction', CkEditorType::class, [
             'label'       => 'learning-path.introduction',
             'studyArea'   => $options['studyArea'],
             'config_name' => 'ltb_concept_config',
+            'disabled'    => in_array('introduction', $options['disabled_fields']),
         ])
         ->add('question', TextareaType::class, [
-            'label' => 'learning-path.question',
+            'label'    => 'learning-path.question',
+            'disabled' => in_array('question', $options['disabled_fields']),
         ])
         ->add('elements', LearningPathElementContainerType::class, [
             'label'          => 'learning-path.elements',
             'studyArea'      => $options['studyArea'],
             'learningPath'   => $learningPath,
             'error_bubbling' => false,
+            'disabled'       => in_array('elements', $options['disabled_fields']),
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
@@ -92,6 +96,8 @@ class EditLearningPathType extends AbstractType
         ->setAllowedTypes('studyArea', StudyArea::class)
         ->setRequired('learningPath')
         ->setAllowedTypes('learningPath', LearningPath::class)
-        ->setDefault('data_class', LearningPath::class);
+        ->setDefault('data_class', LearningPath::class)
+        ->setDefault('disabled_fields', [])
+        ->setAllowedTypes('disabled_fields', 'string[]');
   }
 }

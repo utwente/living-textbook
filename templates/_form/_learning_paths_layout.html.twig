@@ -96,14 +96,17 @@
 
 {% block learning_path_element_row %}
   <li class="ui-state-default">
-    <div class="handle" data-toggle="tooltip" title="{{ 'form.move'|trans }}"><i class="fa fa-fw fa-arrows"></i></div>
+    {% if not disabled %}
+      <div class="handle" data-toggle="tooltip" title="{{ 'form.move'|trans }}"><i class="fa fa-fw fa-arrows"></i></div>
+    {% endif %}
     <div class="path-layout"></div>
     <div class="item">
       {{ form_widget(form) }}
     </div>
     <div class="remove-handle">
-      <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" title="{{ 'form.remove'|trans }}"
-              onclick="if (window.slp) window.slp.removeConcept(this, '{{ sortable_id }}')">
+      <button type="button" class="btn btn-outline-danger{% if disabled %} disabled{% endif %}" data-toggle="tooltip"
+              title="{{ 'form.remove'|trans }}"
+          {% if not disabled %} onclick="if (window.slp) window.slp.removeConcept(this, '{{ sortable_id }}')"{% endif %}>
         <i class="fa fa-fw fa-remove"></i></button>
     </div>
   </li>
