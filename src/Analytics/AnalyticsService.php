@@ -168,8 +168,20 @@ class AnalyticsService
     // Clear the cache on every invocation
     $this->clearCache();
 
+    // Set some global settings
+    $settings['period']       = [
+        'usePeriod' => false,
+        'startDate' => $this->formatPythonDateTime($start, false),
+        'endDate'   => $this->formatPythonDateTime($end, false),
+    ];
+    $settings['debug']        = false;
+    $settings['heatMapColor'] = 'rainbow';
+
+    // Create settings hash for caching
+    $settingsHash = md5(serialize($settings));
+
     // Retrieve the output directory
-    $outputDir             = $this->outputDir($object);
+    $outputDir             = $this->outputDir($object, $settingsHash);
     $settings['outputDir'] = $outputDir;
 
     // Acquire a lock for the current output directory
@@ -202,15 +214,6 @@ class AnalyticsService
       } catch (Exception $e) {
         throw new VisualisationDependenciesFailed('conceptNames', $e);
       }
-
-      // Set some global settings
-      $settings['period']       = [
-          'usePeriod' => false,
-          'startDate' => $this->formatPythonDateTime($start, false),
-          'endDate'   => $this->formatPythonDateTime($end, false),
-      ];
-      $settings['debug']        = false;
-      $settings['heatMapColor'] = 'rainbow';
 
       // Write the settings file
       $settingsFile = $outputDir . '/input/settings.json';
@@ -286,10 +289,11 @@ class AnalyticsService
    * Retrieve the output directory
    *
    * @param StudyAreaFilteredInterface $object
+   * @param string                     $hash
    *
    * @return string
    */
-  private function outputDir(StudyAreaFilteredInterface $object): string
+  private function outputDir(StudyAreaFilteredInterface $object, string $hash): string
   {
     if ($object instanceof StudyArea) {
       $prefix = 'sa';
@@ -300,7 +304,7 @@ class AnalyticsService
           sprintf('Only %s and %s are supported for analytics', StudyArea::class, LearningPath::class));
     }
 
-    return $this->baseOutputDir . '/' . $prefix . '_' . $object->getId();
+    return $this->baseOutputDir . '/' . $prefix . '_' . $object->getId() . '_' . $hash;
   }
 
   /**
