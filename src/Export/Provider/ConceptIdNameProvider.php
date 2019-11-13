@@ -47,10 +47,14 @@ EOT;
   }
 
   /**
-   * @inheritdoc
+   * Get the export spreadsheet
+   *
+   * @param StudyArea $studyArea
+   *
+   * @return Spreadsheet
    * @throws Exception
    */
-  public function export(StudyArea $studyArea): Response
+  public function getSpreadSheet(StudyArea $studyArea): Spreadsheet
   {
     /** @var Concept[] $concepts */
     $concepts = $this->conceptRepository
@@ -67,7 +71,16 @@ EOT;
       $sheet->setCellValueByColumnAndRow($column, $row++, $concept->getName());
     }
 
-    return $this->spreadsheetHelper->createCsvResponse($spreadSheet,
+    return $spreadSheet;
+  }
+
+  /**
+   * @inheritdoc
+   * @throws Exception
+   */
+  public function export(StudyArea $studyArea): Response
+  {
+    return $this->spreadsheetHelper->createCsvResponse($this->getSpreadSheet($studyArea),
         sprintf('%s_concept_id_name_export.csv', $studyArea->getName()));
   }
 }

@@ -30,6 +30,6 @@ class BuildPythonEnvironmentCommand extends Command
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $style = new SymfonyStyle($input, $output);
-    $this->analyticsService->buildPythonEnvironment($style);
+    $this->analyticsService->ensurePythonEnvironment($style);
   }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Database\Traits\IdTrait;
+use App\Entity\Contracts\StudyAreaFilteredInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\TrackingEventRepository")
  */
-class TrackingEvent
+class TrackingEvent implements StudyAreaFilteredInterface
 {
 
   /**

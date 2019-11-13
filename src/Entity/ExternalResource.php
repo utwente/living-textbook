@@ -7,6 +7,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ISearchable;
+use App\Entity\Contracts\StudyAreaFilteredInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ExternalResourceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class ExternalResource implements ISearchable
+class ExternalResource implements ISearchable, StudyAreaFilteredInterface
 {
   use IdTrait;
   use Blameable;

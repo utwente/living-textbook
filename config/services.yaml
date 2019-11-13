@@ -61,6 +61,7 @@ services:
     lazy: true
     arguments:
       $projectDir: '%kernel.project_dir%'
+      $cacheDir: '%kernel.cache_dir%'
 
   App\Database\SoftDeletableSubscriber:
     tags:

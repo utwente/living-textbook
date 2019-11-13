@@ -32,6 +32,18 @@ class SpreadsheetHelper
   }
 
   /**
+   * Creates an Excel writer
+   *
+   * @param Spreadsheet $spreadsheet
+   *
+   * @return Xlsx
+   */
+  public function createExcelWriter(Spreadsheet $spreadsheet): Xlsx
+  {
+    return new Xlsx($spreadsheet);
+  }
+
+  /**
    * Create an Excel response from a spreadsheet
    *
    * @param Spreadsheet $spreadsheet
@@ -42,7 +54,7 @@ class SpreadsheetHelper
   public function createExcelResponse(Spreadsheet $spreadsheet, string $filename)
   {
     // Create writer
-    $writer   = new Xlsx($spreadsheet);
+    $writer   = $this->createExcelWriter($spreadsheet);
     $response = new StreamedResponse(
         function () use ($writer) {
           $writer->save('php://output');
@@ -55,6 +67,21 @@ class SpreadsheetHelper
   }
 
   /**
+   * Creates a CSV writer
+   *
+   * @param Spreadsheet $spreadsheet
+   *
+   * @return Csv
+   */
+  public function createCsvWriter(Spreadsheet $spreadsheet): Csv
+  {
+    return (new Csv($spreadsheet))
+        ->setDelimiter(';')
+        ->setUseBOM(true)
+        ->setSheetIndex(0);
+  }
+
+  /**
    * Create a CSV response from a spreadsheet
    *
    * @param Spreadsheet $spreadsheet
@@ -64,10 +91,7 @@ class SpreadsheetHelper
    */
   public function createCsvResponse(Spreadsheet $spreadsheet, string $filename)
   {
-    $writer = (new Csv($spreadsheet))
-        ->setDelimiter(';')
-        ->setUseBOM(true)
-        ->setSheetIndex(0);
+    $writer = $this->createCsvWriter($spreadsheet);
 
     $response = new StreamedResponse(function () use ($writer) {
       $writer->save('php://output');

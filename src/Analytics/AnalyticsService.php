@@ -2,9 +2,26 @@
 
 namespace App\Analytics;
 
+use App\Analytics\Exception\VisualisationBuildFailed;
+use App\Analytics\Exception\VisualisationDependenciesFailed;
+use App\Analytics\Exception\VisualisationException;
 use App\Console\NullStyle;
+use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\LearningPath;
+use App\Entity\LearningPathElement;
+use App\Entity\StudyArea;
+use App\Excel\SpreadsheetHelper;
+use App\Excel\TrackingExportBuilder;
+use App\Export\Provider\ConceptIdNameProvider;
+use DateTimeInterface;
+use Exception;
+use InvalidArgumentException;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\OutputStyle;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Process\Process;
 
 class AnalyticsService
@@ -17,10 +34,39 @@ class AnalyticsService
    * @var string
    */
   private $analyticsDir;
+  /**
+   * @var ConceptIdNameProvider
+   */
+  private $conceptIdNameProvider;
+  /**
+   * @var Filesystem
+   */
+  private $fileSystem;
+  /**
+   * The output directory, located in the application cache
+   *
+   * @var string
+   */
+  private $baseOutputDir;
+  /**
+   * @var SpreadsheetHelper
+   */
+  private $spreadsheetHelper;
+  /**
+   * @var TrackingExportBuilder
+   */
+  private $trackingExportBuilder;
 
-  public function __construct(string $projectDir)
+  public function __construct(
+      TrackingExportBuilder $trackingExportBuilder, ConceptIdNameProvider $conceptIdNameProvider,
+      SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir)
   {
-    $this->analyticsDir = $projectDir . '/python/data-visualisation';
+    $this->trackingExportBuilder = $trackingExportBuilder;
+    $this->conceptIdNameProvider = $conceptIdNameProvider;
+    $this->spreadsheetHelper     = $spreadsheetHelper;
+    $this->analyticsDir          = $projectDir . '/python/data-visualisation';
+    $this->baseOutputDir         = $cacheDir . '/data-visualisation';
+    $this->fileSystem            = new Filesystem();
   }
 
   /**
@@ -28,7 +74,7 @@ class AnalyticsService
    *
    * @param OutputStyle|null $output
    */
-  public function buildPythonEnvironment(?OutputStyle $output)
+  public function ensurePythonEnvironment(?OutputStyle $output)
   {
     $output = $output ?: new NullStyle(new NullOutput());
 
@@ -67,5 +113,231 @@ class AnalyticsService
 
     $progressBar->clear();
     $output->writeln('');
+  }
+
+  /**
+   * Builds the visualisation for the given learning path
+   *
+   * @param LearningPath      $learningPath
+   * @param DateTimeInterface $teachingMoment
+   * @param DateTimeInterface $periodStart
+   * @param DateTimeInterface $periodEnd
+   * @param bool              $forceBuild
+   *
+   * @throws VisualisationBuildFailed
+   * @throws VisualisationDependenciesFailed
+   */
+  public function buildForLearningPath(
+      LearningPath $learningPath, DateTimeInterface $teachingMoment, DateTimeInterface $periodStart,
+      DateTimeInterface $periodEnd, bool $forceBuild = false)
+  {
+    // Create the settings
+    $settings = [
+        'learningpaths' => [
+            $learningPath->getId() => [
+                'starting time' => $this->formatPythonDateTime($teachingMoment),
+                'list'          => $learningPath->getElementsOrdered()->map(function (LearningPathElement $element) {
+                  return $element->getConcept()->getId();
+                })->toArray(),
+                'id'            => $learningPath->getId(),
+            ],
+        ],
+        'functions'     => [], // Empty function delivers the required output here
+    ];
+
+    // Build the visualisation
+    $this->build($learningPath, $periodStart, $periodEnd, $settings, $forceBuild);
+  }
+
+  /**
+   * Builds the visualisation using the supplied parameter file
+   *
+   * @param StudyAreaFilteredInterface $object
+   * @param DateTimeInterface          $start
+   * @param DateTimeInterface          $end
+   * @param array                      $settings
+   * @param bool                       $forceBuild
+   *
+   * @throws VisualisationBuildFailed
+   * @throws VisualisationDependenciesFailed
+   */
+  private function build(
+      StudyAreaFilteredInterface $object, DateTimeInterface $start, DateTimeInterface $end,
+      array $settings = [], bool $forceBuild = false): void
+  {
+    // Clear the cache on every invocation
+    $this->clearCache();
+
+    // Retrieve the output directory
+    $outputDir             = $this->outputDir($object);
+    $settings['outputDir'] = $outputDir;
+
+    // Acquire a lock for the current output directory
+    $lockFactory = new Factory(new SemaphoreStore());
+    $lock        = $lockFactory->createLock('data-visualisation-' . basename($outputDir));
+    $lock->acquire(true);
+
+    try {
+      // If the output directory still exists, no need to rebuild if force is not set
+      if (!$forceBuild && $this->fileSystem->exists($outputDir)) {
+        return;
+      }
+
+      // Remove if the directory exists, which is only the case when forceBuild is set
+      if ($this->fileSystem->exists($outputDir)) {
+        $this->fileSystem->remove($outputDir);
+      }
+
+      // Create output directories
+      $this->fileSystem->mkdir($outputDir . '/input');
+
+      // Retrieve the required input files
+      try {
+        $settings['dataFilename'] = $this->retrieveTrackingDataExport($object->getStudyArea(), $outputDir);
+      } catch (Exception $e) {
+        throw new VisualisationDependenciesFailed('trackingData', $e);
+      }
+      try {
+        $settings['nameFilename'] = $this->retrieveConceptNamesExport($object->getStudyArea(), $outputDir);
+      } catch (Exception $e) {
+        throw new VisualisationDependenciesFailed('conceptNames', $e);
+      }
+
+      // Set some global settings
+      $settings['period']       = [
+          'usePeriod' => false,
+          'startDate' => $this->formatPythonDateTime($start, false),
+          'endDate'   => $this->formatPythonDateTime($end, false),
+      ];
+      $settings['debug']        = false;
+      $settings['heatMapColor'] = 'rainbow';
+
+      // Write the settings file
+      $settingsFile = $outputDir . '/input/settings.json';
+      $this->fileSystem->dumpFile($settingsFile, json_encode($settings));
+
+      // Run the actual build
+      $process = Process::fromShellCommandline(
+          sprintf('. %s/bin/activate; python Main.py "%s"', self::ENV_DIR, $settingsFile),
+          $this->analyticsDir, NULL, NULL, 120);
+      $process->run();
+
+      if (!$process->isSuccessful()) {
+        throw new VisualisationBuildFailed($process);
+      }
+    } catch (Exception $e) {
+      // Remove the output directory on errors
+      $this->fileSystem->remove($outputDir);
+
+      // Release the lock
+      $lock->release();
+
+      // Rethrow exception
+      if ($e instanceof VisualisationDependenciesFailed || $e instanceof VisualisationBuildFailed) {
+        throw $e;
+      }
+      throw new VisualisationException($e);
+    }
+  }
+
+  /**
+   * Retrieves the tracking data export, and writes it to disk
+   *
+   * @param StudyArea $studyArea
+   * @param string    $outputDir
+   *
+   * @return string
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+   */
+  private function retrieveTrackingDataExport(StudyArea $studyArea, string $outputDir): string
+  {
+    $fileName = $outputDir . '/input/tracking_data.xlsx';
+    $this->spreadsheetHelper
+        ->createExcelWriter($this->trackingExportBuilder->buildSpreadsheet($studyArea))
+        ->save($fileName);
+
+    return $fileName;
+  }
+
+  /**
+   * Retrieves the concept name export, and writes it to disk
+   *
+   * @param StudyArea $studyArea
+   * @param string    $outputDir
+   *
+   * @return string
+   *
+   * @throws \PhpOffice\PhpSpreadsheet\Exception
+   * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+   */
+  private function retrieveConceptNamesExport(StudyArea $studyArea, string $outputDir): string
+  {
+    $filename = $outputDir . '/input/concept_names.csv';
+    $this->spreadsheetHelper
+        ->createCsvWriter($this->conceptIdNameProvider->getSpreadSheet($studyArea))
+        ->save($filename);
+
+    return $filename;
+  }
+
+  /**
+   * Retrieve the output directory
+   *
+   * @param StudyAreaFilteredInterface $object
+   *
+   * @return string
+   */
+  private function outputDir(StudyAreaFilteredInterface $object): string
+  {
+    if ($object instanceof StudyArea) {
+      $prefix = 'sa';
+    } elseif ($object instanceof LearningPath) {
+      $prefix = 'lp';
+    } else {
+      throw new InvalidArgumentException(
+          sprintf('Only %s and %s are supported for analytics', StudyArea::class, LearningPath::class));
+    }
+
+    return $this->baseOutputDir . '/' . $prefix . '_' . $object->getId();
+  }
+
+  /**
+   * Cleans the existing cache. All directories older than 1 day are removed
+   */
+  private function clearCache(): void
+  {
+    if (!$this->fileSystem->exists($this->baseOutputDir)) {
+      $this->fileSystem->mkdir($this->baseOutputDir);
+
+      return;
+    }
+
+    // Find all directories older than one day
+    $finder = (new Finder())
+        ->directories()
+        ->in($this->baseOutputDir)
+        ->depth('== 0')
+        ->date('before today');
+
+    // Early exit when no directories match
+    if (!$finder->hasResults()) {
+      return;
+    }
+
+    // Remove the matched directories
+    foreach ($finder as $dir) {
+      if ($this->fileSystem->exists($dir)) {
+        $this->fileSystem->remove($dir);
+      }
+    }
+  }
+
+  private function formatPythonDateTime(DateTimeInterface $dateTime, bool $includeTime = true): string
+  {
+    return $includeTime
+        ? $dateTime->format('Y-m-d H:i:s')
+        : $dateTime->format('Y-m-d');
   }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\StudyAreaFilteredInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * removed. The should however no longer be displayed in the list/edit possibilities.
  * //Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class RelationType
+class RelationType implements StudyAreaFilteredInterface
 {
 
   use IdTrait;

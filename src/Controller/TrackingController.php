@@ -48,7 +48,7 @@ class TrackingController extends AbstractController
       return $this->render('tracking/not_enabled.html.twig', ['studyArea' => $studyArea]);
     }
 
-    return $builder->build($studyArea);
+    return $builder->buildResponse($studyArea);
   }
 
   /**

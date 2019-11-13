@@ -45,15 +45,16 @@ class TrackingExportBuilder
     $this->trackingEventRepository = $trackingEventRepository;
   }
 
+
   /**
-   * Create the excel response
+   * Create the excel object
    *
    * @param StudyArea $studyArea
    *
-   * @return Response
+   * @return Spreadsheet
    * @throws Exception
    */
-  public function build(StudyArea $studyArea): Response
+  public function buildSpreadsheet(StudyArea $studyArea): Spreadsheet
   {
     // Create spreadsheet
     $spreadsheet = new Spreadsheet();
@@ -63,14 +64,26 @@ class TrackingExportBuilder
         ->setDescription($this->translator->trans('tracking.export.description', ['%item%' => $studyArea->getName()]));
 
     // Add the exports
-
     $this->exportPageLoads($studyArea, $spreadsheet->setActiveSheetIndex(0));
     $spreadsheet->createSheet(1);
     $this->exportEvents($studyArea, $spreadsheet->setActiveSheetIndex(1));
     $spreadsheet->setActiveSheetIndex(0);
 
+    return $spreadsheet;
+  }
+
+  /**
+   * Create the excel response
+   *
+   * @param StudyArea $studyArea
+   *
+   * @return Response
+   * @throws Exception
+   */
+  public function buildResponse(StudyArea $studyArea): Response
+  {
     // Create response
-    return $this->spreadsheetHelper->createExcelResponse($spreadsheet,
+    return $this->spreadsheetHelper->createExcelResponse($this->buildSpreadsheet($studyArea),
         sprintf('%s_tracking_export.xlsx', $studyArea->getName()));
   }
 
