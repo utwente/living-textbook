@@ -746,7 +746,7 @@ import Routing from 'fos-routing';
       dx = 0;
     }
     updateElementLocations();
-    drawGraph();
+    window.requestAnimationFrame(drawGraph);
   }
 
   /**
@@ -765,7 +765,7 @@ import Routing from 'fos-routing';
         element.highlighted = false;
       });
       element.highlighted = true;
-      drawGraph();
+      window.requestAnimationFrame(drawGraph);
     }
 
     let description = findDescription();
@@ -829,7 +829,7 @@ import Routing from 'fos-routing';
     elements.map(function (element) {
       bConfig.updateLabel(element, textScale);
     });
-    drawGraph();
+    window.requestAnimationFrame(drawGraph);
 
     // Update the concept browser sizes
     cb.resizeCanvas();
@@ -847,7 +847,7 @@ import Routing from 'fos-routing';
     }
 
     updateElementLocations();
-    drawGraph();
+    window.requestAnimationFrame(drawGraph);
   }
 
   /******************************************************************************************************
@@ -867,7 +867,7 @@ import Routing from 'fos-routing';
           if (key.startsWith('style')) colorElement(contextMenuElement, parseInt(key.substr(6)));
           if (key === 'reset') resetElementColors();
           if (key === 'center') cb.centerView();
-          drawGraph();
+          window.requestAnimationFrame(drawGraph);
         },
         items: getContextMenuItems()
       };
@@ -959,10 +959,11 @@ import Routing from 'fos-routing';
     lpbCanvas = d3.select(canvas);
     lpbCanvas
         .call(d3.drag().on('drag', onDrag))
-        .call(drawGraph)
         .on('mousemove', onMouseMove)
         .on('click', onClick)
         .on('contextmenu', onRightClick);
+
+    window.requestAnimationFrame(drawGraph);
   }
 
   /******************************************************************************************************

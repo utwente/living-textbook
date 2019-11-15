@@ -718,7 +718,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function zoomGraph() {
     cbTransform = limitTransform(d3.event.transform);
-    drawGraph();
+    window.requestAnimationFrame(drawGraph);
   }
 
   /**
@@ -1360,7 +1360,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       updateLinkNodeLocations();
 
       // Draw the actual graph
-      drawGraph();
+      window.requestAnimationFrame(drawGraph);
     });
 
     // Create zoom handler
