@@ -149,6 +149,7 @@ class LearningPathController extends AbstractController
       RequestStudyArea $requestStudyArea,
       LearningPath $learningPath, SerializerInterface $serializer)
   {
+    /** @phan-suppress-next-line PhanTypeMismatchArgument */
     $json = $serializer->serialize($learningPath, 'json', SerializationContext::create()->setGroups(['Default']));
 
     return new JsonResponse($json, Response::HTTP_OK, [], true);

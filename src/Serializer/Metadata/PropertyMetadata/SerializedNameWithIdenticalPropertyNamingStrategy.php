@@ -3,12 +3,12 @@
 namespace App\Serializer\Metadata\PropertyMetadata;
 
 use JMS\Serializer\Metadata\PropertyMetadata;
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 
-class SerializedNameWithIdenticalPropertyNamingStrategy extends IdenticalPropertyNamingStrategy
+class SerializedNameWithIdenticalPropertyNamingStrategy implements PropertyNamingStrategyInterface
 {
-  public function translateName(PropertyMetadata $property)
+  public function translateName(PropertyMetadata $property): string
   {
-    return $property->serializedName ?? parent::translateName($property);
+    return $property->serializedName ?? $property->name;
   }
 }

@@ -46,7 +46,7 @@ class ConceptHandler implements EventSubscriberInterface
   public function serializeConceptToJson(PreSerializeEvent $event)
   {
     // Check for download_json group
-    $correctGroup = $event->getContext()->attributes->get('groups')->map(function ($value) {
+    $correctGroup = $event->getContext()->getAttribute('groups')->map(function ($value) {
       return is_array($value) && in_array('download_json', $value);
     })->orElse(Option::fromValue(false));
     if (!$correctGroup) {

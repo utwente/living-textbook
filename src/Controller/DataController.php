@@ -79,6 +79,7 @@ class DataController extends AbstractController
     // Return as JSON
     $groups = ["Default"];
     if ($export) $groups[] = "relations";
+    /** @phan-suppress-next-line PhanTypeMismatchArgument */
     $json = $serializer->serialize($concepts, 'json', SerializationContext::create()->setGroups($groups));
 
     return new JsonResponse($json, Response::HTTP_OK, [], true);

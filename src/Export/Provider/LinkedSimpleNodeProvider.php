@@ -99,10 +99,14 @@ EOT;
     // Create JSON data
     {
       // Return as JSON
-      $json = $this->serializer->serialize([
-          'nodes' => $concepts,
-          'links' => $mappedLinks,
-      ], 'json', SerializationContext::create()->setGroups(['download_json']));
+      $json = $this->serializer->serialize(
+          [
+              'nodes' => $concepts,
+              'links' => $mappedLinks,
+          ],
+          'json',
+          /** @phan-suppress-next-line PhanTypeMismatchArgument */
+          SerializationContext::create()->setGroups(['download_json']));
 
       $response = new JsonResponse($json, Response::HTTP_OK, [], true);
       ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));
