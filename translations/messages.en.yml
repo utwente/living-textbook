@@ -13,6 +13,16 @@ abbreviation:
   removed: 'Abbreviation "%item%" has been removed successfully.'
   updated: 'Abbreviation "%item%" has been successfully updated.'
 
+analytics:
+  date-end: 'End date'
+  date-start: 'Start date'
+  generate: 'Generate'
+  heatmap: 'Heat map'
+  input: 'Parameters'
+  path-visits: 'Visits'
+  teaching-moment: 'Teaching moment'
+  output: 'Results'
+
 annotations:
   add-placeholder: "Type your annotation..."
   annotation: "Annotation"
@@ -350,6 +360,7 @@ login:
 menu:
   abbreviations: 'Abbreviations'
   admin: 'Administrators'
+  analytics-dashboard: 'Analytics dashboard'
   change-password: 'Change password'
   config: 'Configuration'
   data: 'Data'

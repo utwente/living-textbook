@@ -5,6 +5,8 @@ namespace App\Analytics;
 use App\Analytics\Exception\VisualisationBuildFailed;
 use App\Analytics\Exception\VisualisationDependenciesFailed;
 use App\Analytics\Exception\VisualisationException;
+use App\Analytics\Model\LearningPathVisualisationRequest;
+use App\Analytics\Model\LearningPathVisualisationResult;
 use App\Console\NullStyle;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\LearningPath;
@@ -118,24 +120,21 @@ class AnalyticsService
   /**
    * Builds the visualisation for the given learning path
    *
-   * @param LearningPath      $learningPath
-   * @param DateTimeInterface $teachingMoment
-   * @param DateTimeInterface $periodStart
-   * @param DateTimeInterface $periodEnd
-   * @param bool              $forceBuild
+   * @param LearningPathVisualisationRequest $request
+   *
+   * @return LearningPathVisualisationResult
    *
    * @throws VisualisationBuildFailed
    * @throws VisualisationDependenciesFailed
    */
-  public function buildForLearningPath(
-      LearningPath $learningPath, DateTimeInterface $teachingMoment, DateTimeInterface $periodStart,
-      DateTimeInterface $periodEnd, bool $forceBuild = false)
+  public function buildForLearningPath(LearningPathVisualisationRequest $request): LearningPathVisualisationResult
   {
     // Create the settings
-    $settings = [
+    $learningPath = $request->learningPath;
+    $settings     = [
         'learningpaths' => [
             $learningPath->getId() => [
-                'starting time' => $this->formatPythonDateTime($teachingMoment),
+                'starting time' => $this->formatPythonDateTime($request->teachingMoment),
                 'list'          => $learningPath->getElementsOrdered()->map(function (LearningPathElement $element) {
                   return $element->getConcept()->getId();
                 })->toArray(),
@@ -146,7 +145,23 @@ class AnalyticsService
     ];
 
     // Build the visualisation
-    $this->build($learningPath, $periodStart, $periodEnd, $settings, $forceBuild);
+    $outputDirectory = $this
+        ->build($learningPath, $request->periodStart, $request->periodEnd, $settings, $request->forceRebuild);
+
+    // Return the data
+    $finder = function () use ($outputDirectory) {
+      return (new Finder())
+          ->files()
+          ->in($outputDirectory)
+          ->depth(0);
+    };
+
+    $result                  = new LearningPathVisualisationResult();
+    $result->heatMapImage    = $this->firstFromFinder($finder()->name('heatmap*'));
+    $result->pathVisitsImage = $this->firstFromFinder($finder()->name('pathVisits*'));
+    $result->flowThroughFile = $this->firstFromFinder($finder()->name('*Flowthrough*'));
+
+    return $result;
   }
 
   /**
@@ -158,12 +173,14 @@ class AnalyticsService
    * @param array                      $settings
    * @param bool                       $forceBuild
    *
+   * @return string The output directory, which can be used to load the files
+   *
    * @throws VisualisationBuildFailed
    * @throws VisualisationDependenciesFailed
    */
   private function build(
       StudyAreaFilteredInterface $object, DateTimeInterface $start, DateTimeInterface $end,
-      array $settings = [], bool $forceBuild = false): void
+      array $settings = [], bool $forceBuild = false): string
   {
     // Clear the cache on every invocation
     $this->clearCache();
@@ -192,7 +209,7 @@ class AnalyticsService
     try {
       // If the output directory still exists, no need to rebuild if force is not set
       if (!$forceBuild && $this->fileSystem->exists($outputDir)) {
-        return;
+        return $outputDir;
       }
 
       // Remove if the directory exists, which is only the case when forceBuild is set
@@ -241,6 +258,8 @@ class AnalyticsService
       }
       throw new VisualisationException($e);
     }
+
+    return $outputDir;
   }
 
   /**
@@ -343,5 +362,13 @@ class AnalyticsService
     return $includeTime
         ? $dateTime->format('Y-m-d H:i:s')
         : $dateTime->format('Y-m-d');
+  }
+
+  private function firstFromFinder(Finder $finder)
+  {
+    $iterator = $finder->getIterator();
+    $iterator->rewind();
+
+    return iterator_to_array($iterator, false)[0];
   }
 }

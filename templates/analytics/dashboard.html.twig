@@ -1,0 +1,53 @@
+{% extends 'single_column.html.twig' %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('analytics') }}
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('analytics') }}
+{% endblock %}
+
+{% block title %}
+  {{ 'study-area.analytics-dashboard'|trans }}
+{% endblock %}
+
+{% block content %}
+  <div class="analytics-dashboard">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-xl-4">
+        <h4>{{ 'analytics.input'|trans }}</h4>
+        {{ form(form) }}
+        <div class="clearfix"></div>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-8">
+        <h4>{{ 'analytics.output'|trans }}</h4>
+        <div class="row result" style="display: none">
+          <div class="col-12 col-xl-6 heatmap">
+            <h6>{{ 'analytics.heatmap'|trans }}</h6>
+          </div>
+          <div class="col-12 col-xl-6 path-visits">
+            <h6>{{ 'analytics.path-visits'|trans }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="analytics-modal" tabindex="-1" role="dialog" aria-labelledby="analytics-modal"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body custom"></div>
+          <div class="modal-body default">{{ 'exception.error-text'|trans }}</div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-outline-primary">
+              {{ 'general.close'|trans }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

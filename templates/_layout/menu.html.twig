@@ -93,6 +93,11 @@
           </a>
 
           <div class="dropdown-menu" aria-labelledby="data-dropdown">
+            {% if _twigStudyArea.analyticsDashboardEnabled %}
+              <a class="dropdown-item" href="{{ path('app_analytics_dashboard') }}">
+                {{ 'menu.analytics-dashboard'|trans }}
+              </a>
+            {% endif %}
             <a class="dropdown-item" href="{{ path('app_data_excelstatus') }}"
                target="_blank">{{ 'menu.excel-status'|trans }}</a>
             <a class="dropdown-item"

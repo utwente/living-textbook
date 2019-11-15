@@ -6,14 +6,18 @@
 {%- endblock %}
 
 {% block form_label_class -%}
-  {%- if hide_label is not defined or hide_label|default(false) == false -%}
-    col-md-3 col-lg-2
+  {%- if not hide_label|default(false) -%}
+    {% if full_width_label|default(false) %}
+      col-12
+    {% else %}
+      col-md-3 col-lg-2
+    {% endif %}
   {%- endif -%}
 {%- endblock %}
 
 {% block form_group_class -%}
-  {%- if hide_label is defined and hide_label == true -%}
-    col-sm-12
+  {%- if hide_label|default(false) or full_width_label|default(false) -%}
+    col-12
   {%- else -%}
     col-md-9 col-lg-10
   {%- endif -%}
@@ -30,7 +34,8 @@
   {%- if expanded is defined and expanded -%}
     {{ block('fieldset_form_row') }}
   {%- else -%}
-    <div class="form-group row{% if (not compound or force_error|default(false)) and not valid %} is-invalid{% endif %}">
+    <div
+        class="form-group row{% if (not compound or force_error|default(false)) and not valid %} is-invalid{% endif %}">
       {{- form_label(form) -}}
       <div class="{{ block('form_group_class') }}">
         {{- form_widget(form) -}}

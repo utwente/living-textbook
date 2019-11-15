@@ -6,7 +6,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-// the project directory where compiled assets will be stored
+    // the project directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
@@ -28,6 +28,9 @@ Encore
     .addEntry('content', [
       './assets/js/content.js',
       'symfony-collection/jquery.collection.js'
+    ])
+    .addEntry('analytics', [
+      './assets/js/analytics/main.js'
     ])
     .addEntry('ckeditorPatches', [
       './assets/js/ckeditorPatches.js'

@@ -28,6 +28,7 @@ class FormExtension extends AbstractTypeExtension
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->setAttribute('hide_label', $options['hide_label']);
+    $builder->setAttribute('full_width_label', $options['full_width_label']);
     $builder->setAttribute('form_header', $options['form_header']);
   }
 
@@ -38,8 +39,9 @@ class FormExtension extends AbstractTypeExtension
    */
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
-    $view->vars['hide_label']  = $options['hide_label'];
-    $view->vars['form_header'] = $options['form_header'];
+    $view->vars['hide_label']       = $options['hide_label'];
+    $view->vars['full_width_label'] = $options['full_width_label'];
+    $view->vars['form_header']      = $options['form_header'];
   }
 
   /**
@@ -47,11 +49,13 @@ class FormExtension extends AbstractTypeExtension
    */
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setDefaults(array(
-        'hide_label'  => false,
-        'form_header' => NULL,
-    ));
+    $resolver->setDefaults([
+        'hide_label'       => false,
+        'full_width_label' => false,
+        'form_header'      => NULL,
+    ]);
     $resolver->setAllowedTypes('hide_label', ['bool']);
+    $resolver->setAllowedTypes('full_width_label', ['bool']);
     $resolver->setAllowedTypes('form_header', ['null', 'string']);
   }
 
