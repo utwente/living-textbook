@@ -6,7 +6,6 @@ use App\Entity\Concept;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\PreSerializeEvent;
-use PhpOption\Option;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -46,9 +45,8 @@ class ConceptHandler implements EventSubscriberInterface
   public function serializeConceptToJson(PreSerializeEvent $event)
   {
     // Check for download_json group
-    $correctGroup = $event->getContext()->getAttribute('groups')->map(function ($value) {
-      return is_array($value) && in_array('download_json', $value);
-    })->orElse(Option::fromValue(false));
+    $groups       = $event->getContext()->getAttribute('groups');
+    $correctGroup = is_array($groups) && in_array('download_json', $groups);
     if (!$correctGroup) {
       return;
     }

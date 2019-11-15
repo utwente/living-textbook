@@ -1,26 +1,39 @@
 import 'regenerator-runtime/runtime';
 import Routing from 'fos-routing';
+import AnalyticsBrowser, {FlowThroughElement} from "./analyticsBrowser";
+
+interface AnalyticsData {
+    heatMap: string;
+    pathVisits: string;
+    flowThrough: FlowThroughElement[];
+}
 
 export default class Analytics {
+    public data?: AnalyticsData;
+
     private router: Routing;
+    private browser?: AnalyticsBrowser;
+
     private $container?: JQuery;
     private $form?: JQuery;
     private $formBtn?: JQuery;
     private $formInputs?: JQuery;
     private $errorModal?: JQuery;
+    private $imgResults?: JQuery;
+    private $browserResults?: JQuery;
 
-    constructor(router: Routing) {
+    constructor(router: Routing, data?: AnalyticsData) {
         this.router = router;
-        this.reload();
-    }
+        this.data = data;
 
-    private reload() {
         // Select used elements
         this.$container = $('.analytics-dashboard');
         this.$form = this.$container.find('form');
         this.$formBtn = this.$form.find('button');
         this.$formInputs = this.$form.find('select, input, button');
         this.$errorModal = this.$container.find('#analytics-modal');
+        this.$imgResults = this.$container.find('.img-results');
+        this.$browserResults = this.$container.find('.browser-results');
 
         // Bind event handler
         this.$formBtn.off();
@@ -32,6 +45,11 @@ export default class Analytics {
             this.loadData();
         });
 
+        // Show the results. Hide first to clear existing data.
+        this.hideResults();
+        this.showResults();
+
+        // Reset the form state
         this.setState(false);
     }
 
@@ -43,7 +61,7 @@ export default class Analytics {
 
         // Submit the data to the controller
         try {
-            const data = await $.post({
+            this.data = await $.post({
                 url: this.router.generate('app_analytics_generate', {
                     // @ts-ignore
                     _studyArea: currentStudyArea,
@@ -51,21 +69,19 @@ export default class Analytics {
                 data: formData,
             });
 
-            this.loadImage('.heatmap', data.heatmap);
-            this.loadImage('.path-visits', data.pathVisits);
             this.showResults();
         } catch (e) {
             if (400 === e.status && e.responseJSON) {
-                this.showError(JSON.stringify(e.responseJSON));
+                this.showError(e, JSON.stringify(e.responseJSON));
             } else {
-                this.showError();
+                this.showError(e);
             }
         }
 
         this.setState(false);
     }
 
-    private showError(message?: string) {
+    private showError(e: any, message?: string) {
         const $modalCustom = this.$errorModal!.find('.modal-body.custom');
         const $modalDefault = this.$errorModal!.find('.modal-body.default');
         if (message) {
@@ -75,6 +91,7 @@ export default class Analytics {
             $modalCustom.hide();
             $modalDefault.show();
         }
+        console.error(e);
         this.$errorModal!.modal();
     }
 
@@ -90,15 +107,30 @@ export default class Analytics {
 
     private loadImage(selector: string, image: string) {
         const $element = this.$container!.find(selector);
-        $element.find('img').remove();
         $element.append('<img src="' + image + '" alt="visualisation" />');
     }
 
     private showResults() {
-        this.$container!.find('.result').show();
+        if (!this.data) {
+            return;
+        }
+
+        // Browser
+        this.browser = new AnalyticsBrowser(this.data.flowThrough);
+        this.$browserResults!.show();
+
+        // Images
+        this.loadImage('.heatmap', this.data.heatMap);
+        this.loadImage('.path-visits', this.data.pathVisits);
+        this.$imgResults!.show();
     }
 
     private hideResults() {
-        this.$container!.find('.result').hide();
+        // Images
+        this.$imgResults!.hide();
+        this.$imgResults!.find('img').remove();
+
+        // Browser
+        this.$browserResults!.hide();
     }
 }

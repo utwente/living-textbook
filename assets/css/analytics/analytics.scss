@@ -1,3 +1,6 @@
+@import '../vars/vars';
+@import '../mixins/mixins';
+
 .analytics-dashboard {
   form {
     .form-group:last-of-type {
@@ -5,9 +8,18 @@
     }
   }
 
-  .result {
+  .img-results {
     img {
       max-width: 100%;
+    }
+  }
+
+  .analytics-canvas-div {
+    width: 100%;
+    overflow-x: hidden;
+
+    canvas {
+      background-color: $background-color;
     }
   }
 }
