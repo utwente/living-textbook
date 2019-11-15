@@ -91,15 +91,18 @@ class EditStudyAreaType extends AbstractType
               'required' => false,
               'label'    => 'study-area.open-access',
               'help'     => 'study-area.open-access-help',
+          ])
+          ->add('trackUsers', CheckboxType::class, [
+              'label'    => 'study-area.track-users',
+              'help'     => 'study-area.track-users-help',
+              'required' => false,
+          ])
+          ->add('analyticsDashboardEnabled', CheckboxType::class, [
+              'label'    => 'study-area.analytics-dashboard',
+              'help'     => 'study-area.analytics-dashboard-help',
+              'required' => false,
           ]);
     }
-
-    $builder
-        ->add('trackUsers', CheckboxType::class, [
-            'label'    => 'study-area.track-users',
-            'help'     => 'study-area.track-users-help',
-            'required' => false,
-        ]);
 
     if (!$options['hide_submit']) {
       $builder

@@ -188,6 +188,9 @@ class StudyAreaController extends AbstractController
       if (!$studyArea->isTrackUsers()) {
         $trackingEventRepository->purgeForStudyArea($studyArea);
         $pageLoadRepository->purgeForStudyArea($studyArea);
+
+        // Disable analytics dashboard if tracking is disabled
+        $studyArea->setAnalyticsDashboardEnabled(false);
       }
 
       // Save the data

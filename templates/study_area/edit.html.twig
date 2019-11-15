@@ -28,6 +28,19 @@
             }
           })
           .change();
+
+      $('#{{ form.trackUsers.vars.id }}')
+          .on('change', function () {
+            var trackUsers = $(this).is(':checked');
+            var $analyticsDashboardEnabledForm = $('#{{ form.analyticsDashboardEnabled.vars.id }}').closest('.form-group');
+
+            if (trackUsers) {
+              $analyticsDashboardEnabledForm.show();
+            } else {
+              $analyticsDashboardEnabledForm.hide();
+            }
+          })
+          .change();
     });
   </script>
 {% endblock %}

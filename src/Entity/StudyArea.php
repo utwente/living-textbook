@@ -186,6 +186,15 @@ class StudyArea
   private $openAccess;
 
   /**
+   * Analytics dashboard enabled
+   *
+   * @var bool
+   *
+   * @ORM\Column(type="boolean", nullable=false)
+   */
+  private $analyticsDashboardEnabled;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -790,6 +799,26 @@ class StudyArea
   public function setOpenAccess(bool $openAccess): self
   {
     $this->openAccess = $openAccess;
+
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isAnalyticsDashboardEnabled(): bool
+  {
+    return $this->analyticsDashboardEnabled;
+  }
+
+  /**
+   * @param bool $analyticsDashboardEnabled
+   *
+   * @return StudyArea
+   */
+  public function setAnalyticsDashboardEnabled(bool $analyticsDashboardEnabled): self
+  {
+    $this->analyticsDashboardEnabled = $analyticsDashboardEnabled;
 
     return $this;
   }

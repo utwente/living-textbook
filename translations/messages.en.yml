@@ -478,6 +478,10 @@ study-area:
   access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!
     Next to that, only system administrators can update a study area to be publicly available for all registered users.'
   add-title: 'Add new study area'
+  analytics-dashboard: 'Analytics dashboard'
+  analytics-dashboard-help: >-
+    When user tracking is enabled, it is possible to enable the analytics dashboard which allows the study area
+    owner to inspect the behavior of the users.
   current: 'Current'
   current-area: 'Now browsing "%item%"'
   description: 'Description'
