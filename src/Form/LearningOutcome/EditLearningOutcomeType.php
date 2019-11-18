@@ -24,14 +24,17 @@ class EditLearningOutcomeType extends AbstractType
     $editing         = $learningOutcome->getId() !== NULL;
     $builder
         ->add('number', NumberType::class, [
-            'label' => 'learning-outcome.number',
+            'label'      => 'learning-outcome.number',
+            'empty_data' => 0,
         ])
         ->add('name', TextType::class, [
-            'label' => 'learning-outcome.name',
+            'label'      => 'learning-outcome.name',
+            'empty_data' => '',
         ])
         ->add('text', CkEditorType::class, [
-            'label'     => 'learning-outcome.text',
-            'studyArea' => $options['studyArea'],
+            'label'      => 'learning-outcome.text',
+            'empty_data' => '',
+            'studyArea'  => $options['studyArea'],
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,

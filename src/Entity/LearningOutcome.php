@@ -56,7 +56,7 @@ class LearningOutcome implements ISearchable
    * @ORM\Column(name="number", type="integer", nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Range(max="2000")
+   * @Assert\Range(min="1", max="2000")
    */
   private $number;
 
