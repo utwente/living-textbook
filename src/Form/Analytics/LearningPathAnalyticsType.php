@@ -23,7 +23,7 @@ class LearningPathAnalyticsType extends AbstractType
 
     $builder
         ->add('learningPath', EntityType::class, [
-            'label'            => 'learning-path.name',
+            'label'            => 'learning-path._name',
             'class'            => LearningPath::class,
             'select2'          => true,
             'choice_label'     => 'name',
