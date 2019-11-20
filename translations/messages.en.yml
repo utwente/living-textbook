@@ -120,7 +120,7 @@ data:
   duplicate: 'Duplicate'
   duplicate-text: 'Here you can duplicate (parts of) the study area "%item%" into a new study area. You can either select a concept subset, or tick "Select all" to duplicate all concepts.'
   json-file: 'JSON data file'
-  json-incorrect: 'JSON data incorrect!'
+  json-incorrect: 'JSON data incorrect! %message%'
   json-uploaded: 'JSON data successfully imported!'
   select-all: 'Select all'
   select-all-info: 'Note that when you do not select all concepts to be copied, some data (such as learning paths) might be adjusted!'

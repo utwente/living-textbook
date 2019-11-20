@@ -11,6 +11,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Excel\StudyAreaStatusBuilder;
+use App\Exception\DataImportException;
 use App\Export\ExportService;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
@@ -26,7 +27,6 @@ use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use InvalidArgumentException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -142,14 +142,14 @@ class DataController extends AbstractController
             $contents = mb_convert_encoding(file_get_contents($data['json']->getPathname()), 'UTF-8', 'UTF-8');
             $jsonData = $serializer->deserialize($contents, 'array', 'json');
           } catch (\Exception $e) {
-            throw new InvalidArgumentException("", 0, $e);
+            throw new DataImportException('Deserialization error, did you upload a valid JSON file?', 0, $e);
           }
 
           // Check fields
           if (!array_key_exists('nodes', $jsonData) || !is_array($jsonData['nodes']) ||
               !array_key_exists('links', $jsonData) || !is_array($jsonData['links'])
           ) {
-            throw new InvalidArgumentException();
+            throw new DataImportException('Expected "nodes" and "links" properties to be an array!');
           }
 
           // Resolve the link types
@@ -157,7 +157,8 @@ class DataController extends AbstractController
           foreach ($jsonData['links'] as $jsonLink) {
 
             if (!array_key_exists('relationName', $jsonLink)) {
-              throw new InvalidArgumentException();
+              throw new DataImportException(
+                  sprintf('Missing required "relationName" property on link: %s', json_encode($jsonLink)));
             }
 
             // Check whether already cached
@@ -171,9 +172,10 @@ class DataController extends AbstractController
               } else {
                 // Create new link type
                 $linkTypes[$linkName] = (new RelationType())->setStudyArea($studyArea)->setName($linkName);
-                if (count($validator->validate($linkTypes[$linkName])) > 0) {
-                  throw new InvalidArgumentException();
-                };
+                if ($validator->validate($linkTypes[$linkName])->count() > 0) {
+                  throw new DataImportException(
+                      sprintf('Could not create the relation type: "%s"', json_encode($jsonLink)));
+                }
                 $em->persist($linkTypes[$linkName]);
               }
             }
@@ -185,7 +187,8 @@ class DataController extends AbstractController
           $concepts = array();
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
             if (!array_key_exists('label', $jsonNode) || $jsonNode['label'] === NULL) {
-              throw new InvalidArgumentException();
+              throw new DataImportException(
+                  sprintf('Missing required "label" property on node: %s', json_encode($jsonNode)));
             }
 
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
@@ -193,9 +196,10 @@ class DataController extends AbstractController
               $concepts[$key]->setDefinition($jsonNode['definition']);
             }
             $concepts[$key]->setStudyArea($studyArea);
-            if (count($validator->validate($concepts[$key])) > 0) {
-              throw new InvalidArgumentException();
-            };
+            if ($validator->validate($concepts[$key])->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept: "%s"', json_encode($jsonNode)));
+            }
             $em->persist($concepts[$key]);
           }
 
@@ -204,30 +208,46 @@ class DataController extends AbstractController
             if (!array_key_exists('target', $jsonLink) ||
                 !array_key_exists('relationName', $jsonLink) ||
                 !array_key_exists('source', $jsonLink)) {
-              throw new InvalidArgumentException();
+              throw new DataImportException(
+                  sprintf('Missing one ore more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
+            }
+
+            if (!array_key_exists($jsonLink['source'], $concepts)) {
+              throw new DataImportException(
+                  sprintf('Link references non-existing source node: %s', json_encode($jsonLink)));
+            }
+            if (!array_key_exists($jsonLink['target'], $concepts)) {
+              throw new DataImportException(
+                  sprintf('Link references non-existing target node: %s', json_encode($jsonLink)));
             }
 
             $relation = new ConceptRelation();
             $relation->setTarget($concepts[$jsonLink['target']]);
             $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
             $concepts[$jsonLink['source']]->addOutgoingRelation($relation);
-            if (count($validator->validate($relation)) > 0) {
-              throw new InvalidArgumentException();
-            };
+            if ($validator->validate($relation)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept relation: "%s"', json_encode($jsonLink)));
+            }
           }
 
           if (array_key_exists('learning_outcomes', $jsonData)) {
             if (!is_array($jsonData['learning_outcomes'])) {
-              throw new InvalidArgumentException();
+              throw new DataImportException(sprintf('When set, the "learning_outcomes" property must be an array!'));
             }
 
             $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
             foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
               if (!array_key_exists('label', $jsonLearningOutcome) ||
                   !array_key_exists('definition', $jsonLearningOutcome) ||
-                  !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome) ||
-                  !is_array($jsonLearningOutcome['isLearningOutcomeOf'])) {
-                throw new InvalidArgumentException();
+                  !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome)) {
+                throw new DataImportException(
+                    sprintf('Missing one ore more required properties "label", "definition" or "isLearningOutcomeOf" from learning outcome: %s', json_encode($jsonLearningOutcome)));
+              }
+
+              if (!is_array($jsonLearningOutcome['isLearningOutcomeOf'])) {
+                throw new DataImportException(
+                    sprintf('The "isLearningOutcomeOf" property must be an array in learning outcome: %s', json_encode($jsonLearningOutcome)));
               }
 
               $learningOutcome = new LearningOutcome();
@@ -236,10 +256,16 @@ class DataController extends AbstractController
               $learningOutcome->setNumber($learningOutcomeNumber);
               $learningOutcome->setStudyArea($studyArea);
               foreach ($jsonLearningOutcome['isLearningOutcomeOf'] as $linkedConceptKey) {
+                if (!array_key_exists($linkedConceptKey, $concepts)) {
+                  throw new DataImportException(
+                      sprintf('The referenced node %d does not exist in learning outcome: %s', $linkedConceptKey, json_encode($jsonLearningOutcome)));
+                }
+
                 $concepts[$linkedConceptKey]->addLearningOutcome($learningOutcome);
               }
-              if (count($validator->validate($learningOutcome)) > 0) {
-                throw new InvalidArgumentException();
+              if ($validator->validate($learningOutcome)->count() > 0) {
+                throw new DataImportException(
+                    sprintf('Could not create the concept learning outcome: "%s"', json_encode($jsonLearningOutcome)));
               };
               $em->persist($learningOutcome);
               $learningOutcomeNumber++;
@@ -248,14 +274,19 @@ class DataController extends AbstractController
 
           if (array_key_exists('external_resources', $jsonData)) {
             if (!is_array($jsonData['external_resources'])) {
-              throw new InvalidArgumentException();
+              throw new DataImportException(sprintf('When set, the "external_resources" property must be an array!'));
             }
 
             foreach ($jsonData['external_resources'] as $jsonExternalResource) {
               if (!array_key_exists('name', $jsonExternalResource) ||
-                  !array_key_exists('isExternalResourceOf', $jsonExternalResource) ||
-                  !is_array($jsonExternalResource['isExternalResourceOf'])) {
-                throw new InvalidArgumentException();
+                  !array_key_exists('isExternalResourceOf', $jsonExternalResource)) {
+                throw new DataImportException(
+                    sprintf('Missing one ore more required properties "name" or "isExternalResourceOf" from external resource: %s', json_encode($jsonExternalResource)));
+              }
+
+              if (!is_array($jsonExternalResource['isExternalResourceOf'])) {
+                throw new DataImportException(
+                    sprintf('The "isExternalResourceOf" property must be an array in external resource: %s', json_encode($jsonExternalResource)));
               }
 
               // Create the external resource
@@ -275,8 +306,9 @@ class DataController extends AbstractController
               }
 
               // Validate & persist
-              if (count($validator->validate($externalResource)) > 0) {
-                throw new InvalidArgumentException();
+              if ($validator->validate($externalResource)->count() > 0) {
+                throw new DataImportException(
+                    sprintf('Could not create the external resource: "%s"', json_encode($jsonExternalResource)));
               };
               $em->persist($externalResource);
             }
@@ -287,8 +319,8 @@ class DataController extends AbstractController
           $this->addFlash('success', $translator->trans('data.json-uploaded'));
           $this->redirectToRoute('app_data_upload');
 
-        } catch (InvalidArgumentException $e) {
-          $this->addFlash('error', $translator->trans('data.json-incorrect'));
+        } catch (DataImportException $e) {
+          $this->addFlash('error', $translator->trans('data.json-incorrect', ['%message%' => $e->getMessage()]));
         }
       }
     }
