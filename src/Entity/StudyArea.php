@@ -199,12 +199,13 @@ class StudyArea
    */
   public function __construct()
   {
-    $this->name       = '';
-    $this->concepts   = new ArrayCollection();
-    $this->userGroups = new ArrayCollection();
-    $this->accessType = self::ACCESS_PRIVATE;
-    $this->trackUsers = false;
-    $this->openAccess = false;
+    $this->name                      = '';
+    $this->concepts                  = new ArrayCollection();
+    $this->userGroups                = new ArrayCollection();
+    $this->accessType                = self::ACCESS_PRIVATE;
+    $this->trackUsers                = false;
+    $this->openAccess                = false;
+    $this->analyticsDashboardEnabled = false;
   }
 
   /**
