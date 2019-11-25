@@ -41,9 +41,8 @@ require('../conceptBrowser/configuration.js');
 export default class AnalyticsBrowser {
 
     private readonly data: FlowThroughElement[];
-    private readonly lpElements: BrowserElement[];
-    private readonly lpChildElements: { [lpElementId: number]: BrowserElement[] } = {};
-    private readonly lpChildSimulations: { [LpElementId: number]: d3.Simulation<any, any> } = {};
+    private readonly elements: BrowserElement[];
+    private readonly simulation: d3.Simulation<any, any> | null;
 
     private readonly canvas: HTMLCanvasElement;
     private readonly context: CanvasRenderingContext2D;
@@ -66,7 +65,7 @@ export default class AnalyticsBrowser {
 
     private readonly scaleExtent: [number, number] = [0.5, 4];
 
-    private hasHighlight: boolean = false;
+    private highlightedElement: BrowserElement | null = null;
     private draggingElement: BrowserElement | null = null;
 
     constructor(data: FlowThroughElement[]) {
@@ -97,11 +96,11 @@ export default class AnalyticsBrowser {
 
         // Store the given data
         this.data = data;
+        const lpData = data.filter((element) => typeof element.lpIndex !== 'undefined');
 
         // Find the learning path elements
         let interval = -this.halfY;
-        this.lpElements = data
-            .filter((element) => typeof element.lpIndex != 'undefined')
+        this.elements = lpData
             .sort((a, b) => a.lpIndex! - b.lpIndex!)
             .map(el => {
                 interval += 2 * this.halfY;
@@ -110,9 +109,9 @@ export default class AnalyticsBrowser {
                     isLp: true,
                     lpId: el.id,
                     x: interval,
-                    fx: null,
+                    fx: interval,
                     y: this.halfY,
-                    fy: null,
+                    fy: this.halfY,
                     expandedLabelStart: 0,
                     expandedLabel: [''],
                     highlighted: false,
@@ -121,8 +120,9 @@ export default class AnalyticsBrowser {
                 return elem;
             });
 
-        this.lpElements.forEach(lpElement => {
-            this.lpChildElements[lpElement.id] = [];
+        // Create the child elements. Use temporary storage to not mess up the foreach here
+        const childElements: BrowserElement[] = [];
+        this.elements.forEach((lpElement) => {
             lpElement.relations.forEach(relation => {
                 // Skip concept which are in the path
                 if (relation.conceptInPath) return;
@@ -140,24 +140,24 @@ export default class AnalyticsBrowser {
                 childElement.fy = null;
                 childElement.highlighted = false;
                 this.config.updateLabel(childElement, this.textScale);
-                this.lpChildElements[lpElement.id].push(childElement);
-            });
-
-            this.lpChildSimulations[lpElement.id] =
-                d3.forceSimulation(this.lpChildElements[lpElement.id])
-                    .force('radial', d3
-                        .forceRadial(this.halfY / 2 + this.elementRadius, lpElement.x, lpElement.y)
-                        .strength(0.2))
-                    .force('charge', d3
-                        .forceManyBody()
-                        .strength(0.3))
-                    .force('collide', d3
-                        .forceCollide()
-                        .radius(this.elementRadius))
-                    .on('tick', () => {
-                        window.requestAnimationFrame(() => this.drawGraph())
-                    });
+                childElements.push(childElement);
+            })
         });
+
+        this.elements.push(...childElements);
+
+        // Create the simulation
+        this.simulation =
+            d3.forceSimulation(this.elements)
+                .force('charge', d3
+                    .forceManyBody()
+                    .strength(0.3))
+                .force('collide', d3
+                    .forceCollide()
+                    .radius(this.elementRadius))
+                .on('tick', () => {
+                    window.requestAnimationFrame(() => this.drawGraph())
+                });
 
         // Draw the graph
         this.d3Canvas.call(this.zoomBehaviour.transform, d3.zoomIdentity);
@@ -201,24 +201,23 @@ export default class AnalyticsBrowser {
 
         this.context.beginPath();
         this.context.fillStyle = this.config.defaultNodeFillStyle;
-        this.lpElements.forEach(element => {
-            if (element.highlighted) return;
-            this.drawElement(element, this.elementRadius * 2)
+        this.lpElements.forEach(elem => {
+            if (elem.highlighted) return;
+            this.drawElement(elem, this.elementRadius * 2)
         });
         this.context.fill();
 
-        // Exit nodes
+        // Child nodes
         this.config.applyStyle(-1);
         this.context.beginPath();
         this.context.fillStyle = this.config.defaultNodeFillStyle;
-        this.lpElements.forEach(lpElement => {
-            this.lpChildElements[lpElement.id].forEach(childElement => {
-                if (childElement.highlighted) return;
-                this.drawElement(childElement, this.elementRadius)
-            });
+        this.childElements.forEach(elem => {
+            if (elem.highlighted) return;
+            this.drawElement(elem, this.elementRadius)
         });
         this.context.fill();
 
+        // Labels
         this.drawLabels(false);
 
         //////////////////////
@@ -230,30 +229,29 @@ export default class AnalyticsBrowser {
         this.context.lineWidth = this.config.nodeLineWidth * this.lineScale;
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
-        this.lpElements.forEach(element => {
-            if (!element.highlighted) return;
-            this.drawElement(element, this.elementRadius * 2);
+        this.lpElements.forEach(elem => {
+            if (!elem.highlighted) return;
+            this.drawElement(elem, this.elementRadius * 2);
         });
         this.context.fill();
         this.context.stroke();
 
         this.drawLabels(true, true, false);
 
-        // Exit nodes
+        // Child nodes
         this.config.applyStyle(-1);
         this.context.beginPath();
         this.context.lineWidth = this.config.nodeLineWidth * this.lineScale;
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
-        this.lpElements.forEach(lpElement => {
-            this.lpChildElements[lpElement.id].forEach(childElement => {
-                if (!childElement.highlighted) return;
-                this.drawElement(childElement, this.elementRadius)
-            });
+        this.childElements.forEach(elem => {
+            if (!elem.highlighted) return;
+            this.drawElement(elem, this.elementRadius)
         });
         this.context.fill();
         this.context.stroke();
 
+        // Labels
         this.drawLabels(true, false);
 
         // Restore state
@@ -297,20 +295,18 @@ export default class AnalyticsBrowser {
         // Draw element labels
         if (lpElements) {
             this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.lpTextScale;
-            this.lpElements.forEach(lpElement => {
-                if (lpElement.highlighted == highlighted) {
-                    this.drawElementText(lpElement, this.lpFontSize);
+            this.lpElements.forEach(elem => {
+                if (elem.highlighted == highlighted) {
+                    this.drawElementText(elem, this.lpFontSize);
                 }
             });
         }
 
         if (childElements) {
             this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.textScale;
-            this.lpElements.forEach(lpElement => {
-                this.lpChildElements[lpElement.id].forEach(childElement => {
-                    if (childElement.highlighted != highlighted) return;
-                    this.drawElementText(childElement, this.fontSize)
-                });
+            this.childElements.forEach(elem => {
+                if (elem.highlighted != highlighted) return;
+                this.drawElementText(elem, this.fontSize)
             });
         }
     }
@@ -330,7 +326,7 @@ export default class AnalyticsBrowser {
             closest = null,
             searchRadius = this.elementRadius * 2 * this.elementRadius * 2;
 
-        this.lpElements.forEach(element => {
+        const findFunction: (element: BrowserElement) => void = (element) => {
             dx = loc.ox - element.x;
             dy = loc.oy - element.y;
             d2 = dx * dx + dy * dy;
@@ -338,26 +334,15 @@ export default class AnalyticsBrowser {
                 closest = element;
                 searchRadius = d2;
             }
-        });
+        };
+
+        this.lpElements.forEach(findFunction);
 
         if (d2 > this.elementRadius * this.elementRadius) {
             searchRadius = this.elementRadius * this.elementRadius;
         }
 
-        let elements: BrowserElement[] = [];
-        this.lpElements.forEach(lpElement => {
-            elements.push(...this.lpChildElements[lpElement.id]);
-        });
-
-        elements.forEach(element => {
-            dx = loc.ox - element.x;
-            dy = loc.oy - element.y;
-            d2 = dx * dx + dy * dy;
-            if (d2 < searchRadius) {
-                closest = element;
-                searchRadius = d2;
-            }
-        });
+        this.childElements.forEach(findFunction);
 
         return closest;
     }
@@ -379,7 +364,7 @@ export default class AnalyticsBrowser {
             this.draggingElement = element;
             element.fx = element.x;
             element.fy = element.y;
-            this.lpChildSimulations[element.lpId].alphaTarget(0.3).restart();
+            this.simulation!.alphaTarget(0.3).restart();
         } else {
             this.draggingElement = null;
         }
@@ -403,7 +388,7 @@ export default class AnalyticsBrowser {
     private onDragEnd() {
         if (!this.draggingElement) return;
 
-        this.lpChildSimulations[this.draggingElement.lpId].alphaTarget(0);
+        this.simulation!.alphaTarget(0);
         this.draggingElement.fx = null;
         this.draggingElement.fy = null;
         this.draggingElement = null;
@@ -416,36 +401,36 @@ export default class AnalyticsBrowser {
         const element = this.findElement(d3.event);
 
         if (null === element && this.hasHighlight) {
-            this.hasHighlight = false;
+            this.highlightedElement = null;
 
             // Set element as highlighted
-            this.lpElements.forEach(lpElement => {
-                lpElement.highlighted = false;
-                this.lpChildElements[lpElement.id].forEach(childElement => childElement.highlighted = false);
+            this.elements.forEach(elem => {
+                elem.highlighted = false;
             });
         }
 
         if (null !== element) {
             // Do not set again
-            if (element.highlighted) {
+            if (this.hasHighlight && element.id == this.highlightedElement!.id) {
                 return;
             }
 
             // Set element as highlighted
-            this.lpElements.forEach(lpElement => {
-                lpElement.highlighted = false;
-                this.lpChildElements[lpElement.id].forEach(childElement => childElement.highlighted = false);
+            this.elements.forEach(elem => {
+                elem.highlighted = false;
             });
 
-            this.hasHighlight = true;
+            this.highlightedElement = element;
             element.highlighted = true;
             if (element.isLp) {
                 // Highlight al child element
-                this.lpChildElements[element.id].forEach(childElement => childElement.highlighted = true);
+                this.childElements
+                    .filter((el) => el.lpId == element.id)
+                    .forEach((elem) => elem.highlighted = true);
             } else {
                 // Only highlight the lp element
                 const lpId = element.lpId;
-                this.lpElements.find(lpElement => lpElement.id == lpId)!.highlighted = true;
+                this.elements.find(lpElement => lpElement.id == lpId)!.highlighted = true;
             }
         }
 
@@ -479,5 +464,17 @@ export default class AnalyticsBrowser {
             .on('mousemove', () => this.onMouseMove())
             .call(this.dragBehaviour)
             .call(this.zoomBehaviour);
+    }
+
+    private get lpElements(): BrowserElement[] {
+        return this.elements.filter((el) => el.isLp);
+    }
+
+    private get childElements(): BrowserElement[] {
+        return this.elements.filter((el) => !el.isLp);
+    }
+
+    private get hasHighlight(): boolean {
+        return this.highlightedElement !== null;
     }
 }
