@@ -122,7 +122,7 @@ export default class AnalyticsBrowser {
             .map(el => {
                 interval += 2 * this.halfY;
                 const elem = Object.assign(el, {
-                    label: el.name,
+                    label: `${el.name} (${el.visits})`,
                     isLp: true,
                     lpId: el.id,
                     x: interval,
