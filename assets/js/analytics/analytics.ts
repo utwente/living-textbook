@@ -1,6 +1,6 @@
 import 'regenerator-runtime/runtime';
 import Routing from 'fos-routing';
-import AnalyticsBrowser, {FlowThroughElement} from "./analyticsBrowser";
+import AnalyticsBrowser, {FlowThroughElement} from './analyticsBrowser';
 
 interface AnalyticsData {
     heatMap: string;

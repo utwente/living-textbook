@@ -1,6 +1,6 @@
-import {Configuration} from "@/analytics/configuration";
+import {Configuration} from '@/analytics/configuration';
 import * as d3 from 'd3';
-import {ZoomTransform} from "d3-zoom";
+import {ZoomTransform} from 'd3-zoom';
 
 export interface FlowThroughElement {
     id: number;
@@ -9,7 +9,7 @@ export interface FlowThroughElement {
     lpIndex?: number;
     name: string;
     numberOfLinks: number;
-    relations: FlowThroughRelation[],
+    relations: FlowThroughRelation[];
     sizeOfNode?: number;
     visits?: number;
 }
@@ -40,7 +40,7 @@ interface BrowserElement extends FlowThroughElement, SimpleBrowserElement {
 }
 
 interface BrowserRelation {
-    label: string,
+    label: string;
     target: BrowserElement;
     source: BrowserElement;
     lpRelation: boolean;
@@ -54,10 +54,8 @@ interface LpBrowserRelation extends BrowserRelation {
     cpx: number;
     cpy: number;
     labelRadians: number;
-    labelPosition: { x: number; y: number }
+    labelPosition: { x: number; y: number };
 }
-
-require('../conceptBrowser/configuration.js');
 
 /**
  * The analytics browser class handles all analytics rendering
@@ -66,6 +64,30 @@ require('../conceptBrowser/configuration.js');
  * http://www.independent-software.com/determining-coordinates-on-a-html-canvas-bezier-curve.html
  */
 export default class AnalyticsBrowser {
+
+    private static drawLinkIfHighLight(link: any, func: (link: any) => void) {
+        if (AnalyticsBrowser.linkIsHighlighted(link)) {
+            func(link);
+        }
+    }
+
+    private static linkIsHighlighted(link: BrowserRelation): boolean {
+        return link.source.highlighted && (link.target.highlighted || link.target.proxyHighlighted);
+    }
+
+    private static getQuadraticXY(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number)
+        : { x: number, y: number } {
+        return {
+            x: (1 - t) * (1 - t) * sx + 2 * (1 - t) * t * cpx + t * t * ex,
+            y: (1 - t) * (1 - t) * sy + 2 * (1 - t) * t * cpy + t * t * ey,
+        };
+    }
+
+    private static getQuadraticAngle(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number) {
+        const dx = 2 * (1 - t) * (cpx - sx) + 2 * t * (ex - cpx);
+        const dy = 2 * (1 - t) * (cpy - sy) + 2 * t * (ey - cpy);
+        return -Math.atan2(dx, dy) + 0.5 * Math.PI;
+    }
 
     private readonly data: FlowThroughElement[];
     private readonly elements: SimpleBrowserElement[];
@@ -109,10 +131,10 @@ export default class AnalyticsBrowser {
     constructor(data: FlowThroughElement[]) {
         this.canvas = document.getElementById('analytics-canvas')! as HTMLCanvasElement;
         if (!this.canvas) {
-            throw new Error("Error finding canvas element");
+            throw new Error('Error finding canvas element');
         }
 
-        this.context = this.canvas.getContext("2d")!;
+        this.context = this.canvas.getContext('2d')!;
 
         // Set this lower to prevent horns on M/W letters
         // https://github.com/CreateJS/EaselJS/issues/781
@@ -144,7 +166,7 @@ export default class AnalyticsBrowser {
         let interval = -this.halfY;
         this.elements = lpData
             .sort((a, b) => a.lpIndex! - b.lpIndex!)
-            .map(el => {
+            .map((el) => {
                 interval += 2 * this.halfY;
                 const elem = Object.assign(el, {
                     uniqId: this.uniqIdCounter++,
@@ -168,8 +190,8 @@ export default class AnalyticsBrowser {
         // Create the child elements
         this.lpElements.forEach((lpElem) => {
             lpElem.relations.forEach((r) => {
-                // Skip concept which are in the learning path
-                let source = lpElem;
+                const source = lpElem;
+
                 if (r.conceptInPath) {
                     const target = this.lpElements.find((el) => el.id === r.target)!;
 
@@ -187,17 +209,17 @@ export default class AnalyticsBrowser {
 
                     const relation: LpBrowserRelation = {
                         label: r.relationName,
-                        target: target,
-                        source: source,
+                        target,
+                        source,
                         lpRelation: true,
                         lpNext: target.lpIndex! - source.lpIndex! === 1,
                         lpCircular: target.id === source.id,
-                        lpForward: lpForward,
-                        lpDistance: lpDistance,
-                        cpx: cpx,
-                        cpy: cpy,
-                        labelRadians: labelRadians,
-                        labelPosition: labelPosition,
+                        lpForward,
+                        lpDistance,
+                        cpx,
+                        cpy,
+                        labelRadians,
+                        labelPosition,
                     };
                     this.relations.push(relation);
                 } else {
@@ -208,7 +230,7 @@ export default class AnalyticsBrowser {
                     }
 
                     // Create a real copy of the element
-                    let foundElem = this.data.find(el => el.id == r.target)!;
+                    const foundElem = this.data.find((el) => el.id === r.target)!;
                     const childElement: BrowserElement = Object.assign(
                         JSON.parse(JSON.stringify(foundElem)),
                         {
@@ -223,8 +245,7 @@ export default class AnalyticsBrowser {
                             highlighted: false,
                             proxyHighlighted: false,
                             visible: true,
-                        }
-                    );
+                        });
                     delete childElement.lpIndex;
 
                     this.config.updateLabel(childElement, this.textScale);
@@ -234,7 +255,7 @@ export default class AnalyticsBrowser {
                     this.relations.push({
                         label: r.relationName,
                         target: childElement,
-                        source: source,
+                        source,
                         lpRelation: false,
                     });
                 }
@@ -247,7 +268,7 @@ export default class AnalyticsBrowser {
         const last = lpElements[lpElements.length - 1];
         for (let x = first.x; x < last.x; x += this.elementRadius * 2) {
             this.elements.push({
-                x: x,
+                x,
                 fx: x,
                 y: first.y,
                 fy: first.y,
@@ -266,7 +287,7 @@ export default class AnalyticsBrowser {
                     .radius(this.elementRadius)
                     .strength(0.6))
                 .on('tick', () => {
-                    window.requestAnimationFrame(() => this.drawGraph())
+                    window.requestAnimationFrame(() => this.drawGraph());
                 });
 
         // Draw the graph
@@ -333,14 +354,14 @@ export default class AnalyticsBrowser {
             this.context.lineWidth = this.config.linkLineWidth * 2;
             this.context.strokeStyle = this.config.highlightedLinkStrokeStyle;
             this.lpRelations.forEach((r) =>
-                AnalyticsBrowser.drawLinkIfHighLight(r, (r) => this.drawLinkLp(r)));
+                AnalyticsBrowser.drawLinkIfHighLight(r, (link) => this.drawLinkLp(link)));
             this.context.stroke();
 
             this.context.beginPath();
             this.context.lineWidth = this.config.linkLineWidth;
             this.context.strokeStyle = this.config.draggedLinkStrokeStyle;
             this.childRelations.forEach((r) =>
-                AnalyticsBrowser.drawLinkIfHighLight(r, (r) => this.drawLink(r.source, r.target)));
+                AnalyticsBrowser.drawLinkIfHighLight(r, (link) => this.drawLink(link.source, link.target)));
             this.context.stroke();
         }
 
@@ -354,8 +375,10 @@ export default class AnalyticsBrowser {
             ? this.config.fadedNodeFillStyle
             : this.config.defaultNodeFillStyle;
         this.lpElements.forEach((elem) => {
-            if (elem.highlighted) return;
-            this.drawElement(elem, this.elementRadius * 2)
+            if (elem.highlighted) {
+                return;
+            }
+            this.drawElement(elem, this.elementRadius * 2);
         });
         this.context.fill();
 
@@ -366,8 +389,10 @@ export default class AnalyticsBrowser {
             ? this.config.fadedNodeFillStyle
             : this.config.defaultNodeFillStyle;
         this.childElements.forEach((elem) => {
-            if (elem.highlighted) return;
-            this.drawElement(elem, this.elementRadius)
+            if (elem.highlighted) {
+                return;
+            }
+            this.drawElement(elem, this.elementRadius);
         });
         this.context.fill();
 
@@ -387,7 +412,9 @@ export default class AnalyticsBrowser {
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
         this.lpElements.forEach((elem) => {
-            if (!elem.highlighted && !elem.proxyHighlighted) return;
+            if (!elem.highlighted && !elem.proxyHighlighted) {
+                return;
+            }
             this.drawElement(elem, this.elementRadius * 2);
         });
         this.context.fill();
@@ -402,8 +429,10 @@ export default class AnalyticsBrowser {
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
         this.childElements.forEach((elem) => {
-            if (!elem.highlighted && !elem.proxyHighlighted) return;
-            this.drawElement(elem, this.elementRadius)
+            if (!elem.highlighted && !elem.proxyHighlighted) {
+                return;
+            }
+            this.drawElement(elem, this.elementRadius);
         });
         this.context.fill();
         this.context.stroke();
@@ -448,17 +477,21 @@ export default class AnalyticsBrowser {
         // Draw element labels
         if (lpElements) {
             this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.lpTextScale;
-            this.lpElements.forEach(elem => {
-                if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) return;
+            this.lpElements.forEach((elem) => {
+                if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) {
+                    return;
+                }
                 this.drawElementText(elem, this.lpFontSize);
             });
         }
 
         if (childElements) {
             this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.textScale;
-            this.childElements.forEach(elem => {
-                if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) return;
-                this.drawElementText(elem, this.fontSize)
+            this.childElements.forEach((elem) => {
+                if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) {
+                    return;
+                }
+                this.drawElementText(elem, this.fontSize);
             });
         }
 
@@ -472,7 +505,9 @@ export default class AnalyticsBrowser {
 
         if (lpElements) {
             this.lpRelations.forEach((link) => {
-                if (highlighted && !AnalyticsBrowser.linkIsHighlighted(link)) return;
+                if (highlighted && !AnalyticsBrowser.linkIsHighlighted(link)) {
+                    return;
+                }
 
                 if (link.lpNext) {
                     this.drawLinkLabel(link);
@@ -491,7 +526,7 @@ export default class AnalyticsBrowser {
 
     private drawLinkLabelHighlighted(link: BrowserRelation, highlighted: boolean) {
         if (highlighted) {
-            AnalyticsBrowser.drawLinkIfHighLight(link, (link) => this.drawLinkLabel(link));
+            AnalyticsBrowser.drawLinkIfHighLight(link, (l) => this.drawLinkLabel(l));
         } else {
             this.drawLinkLabel(link);
         }
@@ -546,30 +581,19 @@ export default class AnalyticsBrowser {
         this.context.lineTo(target.x, target.y);
     }
 
-    private static drawLinkIfHighLight(link: any, func: (link: any) => void) {
-        if (AnalyticsBrowser.linkIsHighlighted(link)) {
-            func(link);
-        }
-    }
-
-    private static linkIsHighlighted(link: BrowserRelation): boolean {
-        return link.source.highlighted && (link.target.highlighted || link.target.proxyHighlighted);
-    }
-
     private drawLinkCircular(link: LpBrowserRelation) {
         this.context.moveTo(link.source.x, link.source.y);
         this.context.bezierCurveTo(
             link.source.x - this.circularControlOffsetX, link.source.y + this.circularControlOffsetY,
             link.target.x + this.circularControlOffsetX, link.target.y + this.circularControlOffsetY,
-            link.target.x, link.target.y
-        );
+            link.target.x, link.target.y);
     }
 
     private drawLinkLp(link: LpBrowserRelation) {
         if (link.lpNext) {
             this.drawLink(link.source, link.target);
         } else if (link.lpCircular) {
-            this.drawLinkCircular(link)
+            this.drawLinkCircular(link);
         } else {
             this.drawLinkQuadratic(link);
         }
@@ -582,20 +606,6 @@ export default class AnalyticsBrowser {
             link.target.x, link.target.y);
     }
 
-    private static getQuadraticXY(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number)
-        : { x: number, y: number } {
-        return {
-            x: (1 - t) * (1 - t) * sx + 2 * (1 - t) * t * cpx + t * t * ex,
-            y: (1 - t) * (1 - t) * sy + 2 * (1 - t) * t * cpy + t * t * ey
-        };
-    }
-
-    private static getQuadraticAngle(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number) {
-        const dx = 2 * (1 - t) * (cpx - sx) + 2 * t * (ex - cpx);
-        const dy = 2 * (1 - t) * (cpy - sy) + 2 * t * (ey - cpy);
-        return -Math.atan2(dx, dy) + 0.5 * Math.PI;
-    }
-
     /**
      * Find an element base on the event location
      * @returns {*}
@@ -605,11 +615,11 @@ export default class AnalyticsBrowser {
         const loc = this.getEventLocation(event);
 
         // Find the element
-        let dx,
-            dy,
-            d2 = Infinity,
-            closest = null,
-            searchRadius = this.elementRadius * 2 * this.elementRadius * 2;
+        let dx;
+        let dy;
+        let d2 = Infinity;
+        let closest = null;
+        let searchRadius = this.elementRadius * 2 * this.elementRadius * 2;
 
         const findFunction: (element: BrowserElement) => void = (element) => {
             dx = loc.ox - element.x;
@@ -665,13 +675,14 @@ export default class AnalyticsBrowser {
         } else {
             this.d3Canvas.call(this.zoomBehaviour.transform, this.zoomTransform.translate(
                 d3.event.dx / this.zoomTransform.k,
-                d3.event.dy / this.zoomTransform.k
-            ));
+                d3.event.dy / this.zoomTransform.k));
         }
     }
 
     private onDragEnd() {
-        if (!this.draggingElement) return;
+        if (!this.draggingElement) {
+            return;
+        }
 
         this.simulation!.alphaTarget(0);
         this.draggingElement.fx = null;
@@ -697,7 +708,7 @@ export default class AnalyticsBrowser {
 
         if (null !== element) {
             // Do not set again
-            if (this.hasHighlight && element.uniqId == this.highlightedElement!.uniqId) {
+            if (this.hasHighlight && element.uniqId === this.highlightedElement!.uniqId) {
                 return;
             }
 
@@ -712,16 +723,16 @@ export default class AnalyticsBrowser {
             if (element.isLp) {
                 // Highlight all child elements
                 this.childElements
-                    .filter((el) => el.lpId == element.id)
+                    .filter((el) => el.lpId === element.id)
                     .forEach((elem) => elem.highlighted = true);
                 // Highlight all lp elements with a direct relation
                 this.lpRelations
-                    .filter((r) => r.source.id == element.id)
+                    .filter((r) => r.source.id === element.id)
                     .forEach((r) => r.target.proxyHighlighted = true);
             } else {
                 // Only highlight the lp element
                 this.visibleElements
-                    .find((lpElem) => lpElem.id == element.lpId)!.highlighted = true;
+                    .find((lpElem) => lpElem.id === element.lpId)!.highlighted = true;
             }
         }
 
@@ -758,19 +769,19 @@ export default class AnalyticsBrowser {
     }
 
     private get lpElements(): BrowserElement[] {
-        return (<BrowserElement[]>this.elements).filter((el) => el.isLp && el.visible);
+        return (this.elements as BrowserElement[]).filter((el) => el.isLp && el.visible);
     }
 
     private get childElements(): BrowserElement[] {
-        return (<BrowserElement[]>this.elements).filter((el) => !el.isLp && el.visible);
+        return (this.elements as BrowserElement[]).filter((el) => !el.isLp && el.visible);
     }
 
     private get visibleElements(): BrowserElement[] {
-        return (<BrowserElement[]>this.elements).filter((el) => el.visible);
+        return this.elements.filter((el) => el.visible) as BrowserElement[];
     }
 
     private get lpRelations(): LpBrowserRelation[] {
-        return <LpBrowserRelation[]>this.relations.filter((r) => r.lpRelation);
+        return this.relations.filter((r) => r.lpRelation) as LpBrowserRelation[];
     }
 
     private get childRelations(): BrowserRelation[] {
