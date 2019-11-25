@@ -33,6 +33,18 @@ interface BrowserElement extends FlowThroughElement {
     highlighted: boolean;
 }
 
+interface BrowserRelation {
+    lpRelation: boolean;
+    target: BrowserElement;
+    source: BrowserElement;
+}
+
+interface LpBrowserRelation extends BrowserRelation {
+    lpNext: boolean;
+    lpCircular: boolean;
+    lpForward: boolean;
+}
+
 require('../conceptBrowser/configuration.js');
 
 /**
@@ -42,6 +54,7 @@ export default class AnalyticsBrowser {
 
     private readonly data: FlowThroughElement[];
     private readonly elements: BrowserElement[];
+    private readonly relations: BrowserRelation[] = [];
     private readonly simulation: d3.Simulation<any, any> | null;
 
     private readonly canvas: HTMLCanvasElement;
@@ -64,6 +77,10 @@ export default class AnalyticsBrowser {
     private readonly fontSize: number;
 
     private readonly scaleExtent: [number, number] = [0.5, 4];
+    private readonly circularControlOffsetX: number = 200;
+    private readonly circularControlOffsetY: number = 150;
+    private readonly quadraticControlOffsetX: number = 50;
+    private readonly quadraticControlOffsetY: number = 300;
 
     private highlightedElement: BrowserElement | null = null;
     private draggingElement: BrowserElement | null = null;
@@ -120,9 +137,8 @@ export default class AnalyticsBrowser {
                 return elem;
             });
 
-        // Create the child elements. Use temporary storage to not mess up the foreach here
-        const childElements: BrowserElement[] = [];
-        this.elements.forEach((lpElement) => {
+        // Create the child elements
+        this.lpElements.forEach((lpElement) => {
             lpElement.relations.forEach(relation => {
                 // Skip concept which are in the path
                 if (relation.conceptInPath) return;
@@ -140,11 +156,27 @@ export default class AnalyticsBrowser {
                 childElement.fy = null;
                 childElement.highlighted = false;
                 this.config.updateLabel(childElement, this.textScale);
-                childElements.push(childElement);
+                this.elements.push(childElement);
             })
         });
 
-        this.elements.push(...childElements);
+        // Create the static relations
+        this.lpElements.forEach((lpElem) => {
+            lpElem.relations.forEach((r) => {
+                if (!r.conceptInPath) return;
+
+                const target = this.lpElements.find((el) => el.id === r.target)!;
+                const relation: LpBrowserRelation = {
+                    lpRelation: true,
+                    lpNext: target.lpIndex! - lpElem.lpIndex! === 1,
+                    lpCircular: target.id === lpElem.id,
+                    lpForward: target.lpIndex! > lpElem.lpId!,
+                    target: target,
+                    source: lpElem,
+                };
+                this.relations.push(relation);
+            })
+        });
 
         // Create the simulation
         this.simulation =
@@ -199,9 +231,19 @@ export default class AnalyticsBrowser {
         // NORMAL           //
         //////////////////////
 
+        // LP links
+        this.context.beginPath();
+        this.context.lineWidth = this.config.linkLineWidth;
+        this.context.strokeStyle = this.isDragging || this.hasHighlight
+            ? this.config.fadedLinksStrokeStyle
+            : this.config.defaultLinkStrokeStyle;
+        this.lpRelations.forEach((link) => this.drawLinkLp(link));
+        this.context.stroke();
+
+        // LP nodes
         this.context.beginPath();
         this.context.fillStyle = this.config.defaultNodeFillStyle;
-        this.lpElements.forEach(elem => {
+        this.lpElements.forEach((elem) => {
             if (elem.highlighted) return;
             this.drawElement(elem, this.elementRadius * 2)
         });
@@ -211,7 +253,7 @@ export default class AnalyticsBrowser {
         this.config.applyStyle(-1);
         this.context.beginPath();
         this.context.fillStyle = this.config.defaultNodeFillStyle;
-        this.childElements.forEach(elem => {
+        this.childElements.forEach((elem) => {
             if (elem.highlighted) return;
             this.drawElement(elem, this.elementRadius)
         });
@@ -224,12 +266,13 @@ export default class AnalyticsBrowser {
         // HIGHLIGHT        //
         //////////////////////
 
+        // LP nodes
         this.config.applyStyle(0);
         this.context.beginPath();
         this.context.lineWidth = this.config.nodeLineWidth * this.lineScale;
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
-        this.lpElements.forEach(elem => {
+        this.lpElements.forEach((elem) => {
             if (!elem.highlighted) return;
             this.drawElement(elem, this.elementRadius * 2);
         });
@@ -244,7 +287,7 @@ export default class AnalyticsBrowser {
         this.context.lineWidth = this.config.nodeLineWidth * this.lineScale;
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
-        this.childElements.forEach(elem => {
+        this.childElements.forEach((elem) => {
             if (!elem.highlighted) return;
             this.drawElement(elem, this.elementRadius)
         });
@@ -309,6 +352,39 @@ export default class AnalyticsBrowser {
                 this.drawElementText(elem, this.fontSize)
             });
         }
+    }
+
+    private drawLink(source: BrowserElement, target: BrowserElement) {
+        this.context.moveTo(source.x, source.y);
+        this.context.lineTo(target.x, target.y);
+    }
+
+    private drawLinkCircular(link: LpBrowserRelation) {
+        this.context.moveTo(link.source.x, link.source.y);
+        this.context.bezierCurveTo(
+            link.source.x - this.circularControlOffsetX, link.source.y + this.circularControlOffsetY,
+            link.target.x + this.circularControlOffsetX, link.target.y + this.circularControlOffsetY,
+            link.target.x, link.target.y
+        );
+    }
+
+    private drawLinkLp(link: LpBrowserRelation) {
+        if (link.lpNext) {
+            this.drawLink(link.source, link.target);
+        } else if (link.lpCircular) {
+            this.drawLinkCircular(link)
+        } else {
+            this.drawLinkQuadratic(link);
+        }
+    }
+
+    private drawLinkQuadratic(link: LpBrowserRelation) {
+        this.context.moveTo(link.source.x, link.source.y);
+        const factor = link.lpForward ? 1 : -1;
+        this.context.quadraticCurveTo(
+            link.source.x + (factor * -1 * this.quadraticControlOffsetX),
+            link.source.y + (factor * this.quadraticControlOffsetY),
+            link.target.x, link.target.y);
     }
 
     /**
@@ -472,6 +548,18 @@ export default class AnalyticsBrowser {
 
     private get childElements(): BrowserElement[] {
         return this.elements.filter((el) => !el.isLp);
+    }
+
+    private get lpRelations(): LpBrowserRelation[] {
+        return <LpBrowserRelation[]>this.relations.filter((r) => r.lpRelation);
+    }
+
+    private get childRelations(): BrowserRelation[] {
+        return this.relations.filter((r) => !r.lpRelation);
+    }
+
+    private get isDragging(): boolean {
+        return this.draggingElement !== null;
     }
 
     private get hasHighlight(): boolean {
