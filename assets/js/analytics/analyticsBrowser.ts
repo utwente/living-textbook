@@ -4,6 +4,7 @@ import {ZoomTransform} from "d3-zoom";
 
 export interface FlowThroughElement {
     id: number;
+    uniqId: number;
     isEmpty: boolean;
     lpIndex?: number;
     name: string;
@@ -13,6 +14,14 @@ export interface FlowThroughElement {
     visits?: number;
 }
 
+interface SimpleBrowserElement {
+    x: number;
+    fx: number | null;
+    y: number;
+    fy: number | null;
+    visible: boolean;
+}
+
 interface FlowThroughRelation {
     id: number;
     conceptInPath?: boolean;
@@ -20,29 +29,28 @@ interface FlowThroughRelation {
     target: number;
 }
 
-interface BrowserElement extends FlowThroughElement {
+interface BrowserElement extends FlowThroughElement, SimpleBrowserElement {
     label: string;
     isLp: boolean;
     lpId: number;
-    x: number;
-    fx: number | null;
-    y: number;
-    fy: number | null;
     expandedLabelStart: number;
     expandedLabel: string[];
     highlighted: boolean;
+    proxyHighlighted: boolean;
 }
 
 interface BrowserRelation {
-    lpRelation: boolean;
+    label: string,
     target: BrowserElement;
     source: BrowserElement;
+    lpRelation: boolean;
 }
 
 interface LpBrowserRelation extends BrowserRelation {
     lpNext: boolean;
     lpCircular: boolean;
     lpForward: boolean;
+    lpDistance: number;
 }
 
 require('../conceptBrowser/configuration.js');
@@ -53,7 +61,7 @@ require('../conceptBrowser/configuration.js');
 export default class AnalyticsBrowser {
 
     private readonly data: FlowThroughElement[];
-    private readonly elements: BrowserElement[];
+    private readonly elements: SimpleBrowserElement[];
     private readonly relations: BrowserRelation[] = [];
     private readonly simulation: d3.Simulation<any, any> | null;
 
@@ -76,22 +84,28 @@ export default class AnalyticsBrowser {
     private readonly lpFontSize: number;
     private readonly fontSize: number;
 
+    private uniqIdCounter: number = 0;
+
     private readonly scaleExtent: [number, number] = [0.5, 4];
     private readonly circularControlOffsetX: number = 200;
     private readonly circularControlOffsetY: number = 150;
     private readonly quadraticControlOffsetX: number = 50;
-    private readonly quadraticControlOffsetY: number = 300;
+    private readonly quadraticControlOffsetY: number = 150;
 
     private highlightedElement: BrowserElement | null = null;
     private draggingElement: BrowserElement | null = null;
 
     constructor(data: FlowThroughElement[]) {
         this.canvas = document.getElementById('analytics-canvas')! as HTMLCanvasElement;
+        if (!this.canvas) {
+            throw new Error("Error finding canvas element");
+        }
+
         this.context = this.canvas.getContext("2d")!;
 
-        if (!this.canvas) {
-            throw new Error("Error finding required elements");
-        }
+        // Set this lower to prevent horns on M/W letters
+        // https://github.com/CreateJS/EaselJS/issues/781
+        this.context.miterLimit = 2.5;
 
         this.initD3();
         window.onresize = () => {
@@ -122,6 +136,7 @@ export default class AnalyticsBrowser {
             .map(el => {
                 interval += 2 * this.halfY;
                 const elem = Object.assign(el, {
+                    uniqId: this.uniqIdCounter++,
                     label: `${el.name} (${el.visits})`,
                     isLp: true,
                     lpId: el.id,
@@ -132,61 +147,95 @@ export default class AnalyticsBrowser {
                     expandedLabelStart: 0,
                     expandedLabel: [''],
                     highlighted: false,
+                    proxyHighlighted: false,
+                    visible: true,
                 });
                 this.config.updateLabel(elem, this.lpTextScale);
                 return elem;
             });
 
         // Create the child elements
-        this.lpElements.forEach((lpElement) => {
-            lpElement.relations.forEach(relation => {
-                // Skip concept which are in the path
-                if (relation.conceptInPath) return;
-                if (relation.target == lpElement.id) return;
-
-                // Create a real copy of the element
-                const childElement = JSON.parse(JSON.stringify(this.data.find(el => el.id == relation.target)));
-                delete childElement.lpIndex;
-                childElement.isLp = false;
-                childElement.lpId = lpElement.id;
-                childElement.label = childElement.name;
-                childElement.x = lpElement.x;
-                childElement.fx = null;
-                childElement.y = lpElement.y;
-                childElement.fy = null;
-                childElement.highlighted = false;
-                this.config.updateLabel(childElement, this.textScale);
-                this.elements.push(childElement);
-            })
-        });
-
-        // Create the static relations
         this.lpElements.forEach((lpElem) => {
             lpElem.relations.forEach((r) => {
-                if (!r.conceptInPath) return;
+                // Skip concept which are in the learning path
+                if (r.conceptInPath) {
+                    const target = this.lpElements.find((el) => el.id === r.target)!;
+                    const relation: LpBrowserRelation = {
+                        label: r.relationName,
+                        target: target,
+                        source: lpElem,
+                        lpRelation: true,
+                        lpNext: target.lpIndex! - lpElem.lpIndex! === 1,
+                        lpCircular: target.id === lpElem.id,
+                        lpForward: target.lpIndex! > lpElem.lpIndex!,
+                        lpDistance: Math.abs(target.lpIndex! - lpElem.lpIndex!),
+                    };
+                    this.relations.push(relation);
+                } else {
+                    // Force all elements to start on a specific side, iteration over the lpIndex
+                    let side = 1;
+                    if (lpElem.lpIndex! % 2 === 0) {
+                        side = -1;
+                    }
 
-                const target = this.lpElements.find((el) => el.id === r.target)!;
-                const relation: LpBrowserRelation = {
-                    lpRelation: true,
-                    lpNext: target.lpIndex! - lpElem.lpIndex! === 1,
-                    lpCircular: target.id === lpElem.id,
-                    lpForward: target.lpIndex! > lpElem.lpId!,
-                    target: target,
-                    source: lpElem,
-                };
-                this.relations.push(relation);
-            })
+                    // Create a real copy of the element
+                    let foundElem = this.data.find(el => el.id == r.target)!;
+                    const childElement: BrowserElement = Object.assign(
+                        JSON.parse(JSON.stringify(foundElem)),
+                        {
+                            uniqId: this.uniqIdCounter++,
+                            label: foundElem.name,
+                            isLp: false,
+                            lpId: lpElem.id,
+                            x: lpElem.x,
+                            fx: null,
+                            y: lpElem.y + (side * 100),
+                            fy: null,
+                            highlighted: false,
+                            proxyHighlighted: false,
+                            visible: true,
+                        }
+                    );
+                    delete childElement.lpIndex;
+
+                    this.config.updateLabel(childElement, this.textScale);
+                    this.elements.push(childElement);
+
+                    // Create the relation object for it
+                    this.relations.push({
+                        label: r.relationName,
+                        target: childElement,
+                        source: lpElem,
+                        lpRelation: false,
+                    });
+                }
+            });
         });
+
+        // Create dummy child elements over the center line to prevent the actual child elements hovering over them
+        const lpElements = this.lpElements;
+        const first = lpElements[0];
+        const last = lpElements[lpElements.length - 1];
+        for (let x = first.x; x < last.x; x += this.elementRadius * 2) {
+            this.elements.push({
+                x: x,
+                fx: x,
+                y: first.y,
+                fy: first.y,
+                visible: false,
+            });
+        }
 
         // Create the simulation
         this.simulation =
             d3.forceSimulation(this.elements)
-                .force('charge', d3
-                    .forceManyBody()
-                    .strength(0.3))
+                .force('link', d3.forceLink(this.relations)
+                    .distance(() => 200)
+                    .strength(0.4))
                 .force('collide', d3
                     .forceCollide()
-                    .radius(this.elementRadius))
+                    .radius(this.elementRadius)
+                    .strength(0.6))
                 .on('tick', () => {
                     window.requestAnimationFrame(() => this.drawGraph())
                 });
@@ -228,21 +277,53 @@ export default class AnalyticsBrowser {
         this.config.applyStyle(0);
 
         //////////////////////
-        // NORMAL           //
+        // LINKS            //
         //////////////////////
 
         // LP links
         this.context.beginPath();
+        this.context.lineWidth = this.config.linkLineWidth * 2;
+        this.context.strokeStyle = this.hasHighlight
+            ? this.config.fadedLinksStrokeStyle
+            : this.config.draggedLinkStrokeStyle;
+        this.lpRelations.forEach((r) => this.drawLinkLp(r));
+        this.context.stroke();
+
+        // Child links
+        this.context.beginPath();
         this.context.lineWidth = this.config.linkLineWidth;
-        this.context.strokeStyle = this.isDragging || this.hasHighlight
+        this.context.strokeStyle = this.hasHighlight
             ? this.config.fadedLinksStrokeStyle
             : this.config.defaultLinkStrokeStyle;
-        this.lpRelations.forEach((link) => this.drawLinkLp(link));
+        this.childRelations.forEach((r) => this.drawLink(r.source, r.target));
         this.context.stroke();
+
+        // Draw highlighted links
+        if (this.hasHighlight) {
+            this.context.beginPath();
+            this.context.lineWidth = this.config.linkLineWidth * 2;
+            this.context.strokeStyle = this.config.highlightedLinkStrokeStyle;
+            this.lpRelations.forEach((r) =>
+                this.drawLinkIfHighLight(r, (r) => this.drawLinkLp(r)));
+            this.context.stroke();
+
+            this.context.beginPath();
+            this.context.lineWidth = this.config.linkLineWidth;
+            this.context.strokeStyle = this.config.draggedLinkStrokeStyle;
+            this.childRelations.forEach((r) =>
+                this.drawLinkIfHighLight(r, (r) => this.drawLink(r.source, r.target)));
+            this.context.stroke();
+        }
+
+        //////////////////////
+        // NORMAL           //
+        //////////////////////
 
         // LP nodes
         this.context.beginPath();
-        this.context.fillStyle = this.config.defaultNodeFillStyle;
+        this.context.fillStyle = this.hasHighlight
+            ? this.config.fadedNodeFillStyle
+            : this.config.defaultNodeFillStyle;
         this.lpElements.forEach((elem) => {
             if (elem.highlighted) return;
             this.drawElement(elem, this.elementRadius * 2)
@@ -252,7 +333,9 @@ export default class AnalyticsBrowser {
         // Child nodes
         this.config.applyStyle(-1);
         this.context.beginPath();
-        this.context.fillStyle = this.config.defaultNodeFillStyle;
+        this.context.fillStyle = this.hasHighlight
+            ? this.config.fadedNodeFillStyle
+            : this.config.defaultNodeFillStyle;
         this.childElements.forEach((elem) => {
             if (elem.highlighted) return;
             this.drawElement(elem, this.elementRadius)
@@ -260,7 +343,9 @@ export default class AnalyticsBrowser {
         this.context.fill();
 
         // Labels
-        this.drawLabels(false);
+        if (!this.hasHighlight) {
+            this.drawLabels(false);
+        }
 
         //////////////////////
         // HIGHLIGHT        //
@@ -269,11 +354,11 @@ export default class AnalyticsBrowser {
         // LP nodes
         this.config.applyStyle(0);
         this.context.beginPath();
-        this.context.lineWidth = this.config.nodeLineWidth * this.lineScale;
+        this.context.lineWidth = this.config.nodeLineWidth * this.lpLineScale;
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
         this.lpElements.forEach((elem) => {
-            if (!elem.highlighted) return;
+            if (!elem.highlighted && !elem.proxyHighlighted) return;
             this.drawElement(elem, this.elementRadius * 2);
         });
         this.context.fill();
@@ -288,7 +373,7 @@ export default class AnalyticsBrowser {
         this.context.fillStyle = this.config.highlightedNodeFillStyle;
         this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
         this.childElements.forEach((elem) => {
-            if (!elem.highlighted) return;
+            if (!elem.highlighted && !elem.proxyHighlighted) return;
             this.drawElement(elem, this.elementRadius)
         });
         this.context.fill();
@@ -325,10 +410,6 @@ export default class AnalyticsBrowser {
     }
 
     private drawLabels(highlighted: boolean, lpElements: boolean = true, childElements: boolean = true) {
-        // Set this lower to prevent horns on M/W letters
-        // https://github.com/CreateJS/EaselJS/issues/781
-        this.context.miterLimit = 2.5;
-
         // Default text location
         this.context.textBaseline = 'middle';
         this.context.textAlign = 'center';
@@ -339,16 +420,15 @@ export default class AnalyticsBrowser {
         if (lpElements) {
             this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.lpTextScale;
             this.lpElements.forEach(elem => {
-                if (elem.highlighted == highlighted) {
-                    this.drawElementText(elem, this.lpFontSize);
-                }
+                if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) return;
+                this.drawElementText(elem, this.lpFontSize);
             });
         }
 
         if (childElements) {
             this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.textScale;
             this.childElements.forEach(elem => {
-                if (elem.highlighted != highlighted) return;
+                if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) return;
                 this.drawElementText(elem, this.fontSize)
             });
         }
@@ -357,6 +437,13 @@ export default class AnalyticsBrowser {
     private drawLink(source: BrowserElement, target: BrowserElement) {
         this.context.moveTo(source.x, source.y);
         this.context.lineTo(target.x, target.y);
+    }
+
+    // noinspection JSMethodCanBeStatic
+    private drawLinkIfHighLight(link: any, func: (link: any) => void) {
+        if (link.source.highlighted && (link.target.highlighted || link.target.proxyHighlighted)) {
+            func(link);
+        }
     }
 
     private drawLinkCircular(link: LpBrowserRelation) {
@@ -380,9 +467,9 @@ export default class AnalyticsBrowser {
 
     private drawLinkQuadratic(link: LpBrowserRelation) {
         this.context.moveTo(link.source.x, link.source.y);
-        const factor = link.lpForward ? 1 : -1;
+        const factor = (link.lpForward ? -1 : 1) * link.lpDistance;
         this.context.quadraticCurveTo(
-            link.source.x + (factor * -1 * this.quadraticControlOffsetX),
+            link.source.x + (factor * this.quadraticControlOffsetX),
             link.source.y + (factor * this.quadraticControlOffsetY),
             link.target.x, link.target.y);
     }
@@ -480,33 +567,39 @@ export default class AnalyticsBrowser {
             this.highlightedElement = null;
 
             // Set element as highlighted
-            this.elements.forEach(elem => {
+            this.visibleElements.forEach((elem) => {
                 elem.highlighted = false;
+                elem.proxyHighlighted = false;
             });
         }
 
         if (null !== element) {
             // Do not set again
-            if (this.hasHighlight && element.id == this.highlightedElement!.id) {
+            if (this.hasHighlight && element.uniqId == this.highlightedElement!.uniqId) {
                 return;
             }
 
             // Set element as highlighted
-            this.elements.forEach(elem => {
+            this.visibleElements.forEach((elem) => {
                 elem.highlighted = false;
+                elem.proxyHighlighted = false;
             });
 
             this.highlightedElement = element;
             element.highlighted = true;
             if (element.isLp) {
-                // Highlight al child element
+                // Highlight all child elements
                 this.childElements
                     .filter((el) => el.lpId == element.id)
                     .forEach((elem) => elem.highlighted = true);
+                // Highlight all lp elements with a direct relation
+                this.lpRelations
+                    .filter((r) => r.source.id == element.id)
+                    .forEach((r) => r.target.proxyHighlighted = true);
             } else {
                 // Only highlight the lp element
-                const lpId = element.lpId;
-                this.elements.find(lpElement => lpElement.id == lpId)!.highlighted = true;
+                this.visibleElements
+                    .find((lpElem) => lpElem.id == element.lpId)!.highlighted = true;
             }
         }
 
@@ -543,11 +636,15 @@ export default class AnalyticsBrowser {
     }
 
     private get lpElements(): BrowserElement[] {
-        return this.elements.filter((el) => el.isLp);
+        return (<BrowserElement[]>this.elements).filter((el) => el.isLp && el.visible);
     }
 
     private get childElements(): BrowserElement[] {
-        return this.elements.filter((el) => !el.isLp);
+        return (<BrowserElement[]>this.elements).filter((el) => !el.isLp && el.visible);
+    }
+
+    private get visibleElements(): BrowserElement[] {
+        return (<BrowserElement[]>this.elements).filter((el) => el.visible);
     }
 
     private get lpRelations(): LpBrowserRelation[] {
@@ -556,10 +653,6 @@ export default class AnalyticsBrowser {
 
     private get childRelations(): BrowserRelation[] {
         return this.relations.filter((r) => !r.lpRelation);
-    }
-
-    private get isDragging(): boolean {
-        return this.draggingElement !== null;
     }
 
     private get hasHighlight(): boolean {
