@@ -972,15 +972,17 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       context.rotate(startRadians);
 
       // Check rotation and add extra if required
+      let linkLabelLength = getLinkLabelLength(link);
+      let sourceRadius = getNodeRadius(link.source) + 5;
       if ((startRadians * 2) > Math.PI) {
         context.rotate(Math.PI);
         context.textAlign = 'right';
-        context.strokeText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
-        context.fillText(link.relationName, -(getNodeRadius(link.source) + 5), 0, getLinkLabelLength(link));
+        context.strokeText(link.relationName, -sourceRadius, 0, linkLabelLength);
+        context.fillText(link.relationName, -sourceRadius, 0, linkLabelLength);
       } else {
         context.textAlign = 'left';
-        context.strokeText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
-        context.fillText(link.relationName, getNodeRadius(link.source) + 5, 0, getLinkLabelLength(link));
+        context.strokeText(link.relationName, sourceRadius, 0, linkLabelLength);
+        context.fillText(link.relationName, sourceRadius, 0, linkLabelLength);
       }
 
       // Restore context

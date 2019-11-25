@@ -51,12 +51,19 @@ interface LpBrowserRelation extends BrowserRelation {
     lpCircular: boolean;
     lpForward: boolean;
     lpDistance: number;
+    cpx: number;
+    cpy: number;
+    labelRadians: number;
+    labelPosition: { x: number; y: number }
 }
 
 require('../conceptBrowser/configuration.js');
 
 /**
  * The analytics browser class handles all analytics rendering
+ *
+ * Curve calculation sourced from
+ * http://www.independent-software.com/determining-coordinates-on-a-html-canvas-bezier-curve.html
  */
 export default class AnalyticsBrowser {
 
@@ -89,8 +96,12 @@ export default class AnalyticsBrowser {
     private readonly scaleExtent: [number, number] = [0.5, 4];
     private readonly circularControlOffsetX: number = 200;
     private readonly circularControlOffsetY: number = 150;
-    private readonly quadraticControlOffsetX: number = 50;
-    private readonly quadraticControlOffsetY: number = 150;
+    private readonly quadraticControlOffsetX: number = 0;
+    private readonly quadraticControlOffsetY: number = 40;
+
+    // Approximation of angle for circular references
+    private readonly circularRadianApprox: number = 1.1;
+    private readonly circularOffsetY: number = -20;
 
     private highlightedElement: BrowserElement | null = null;
     private draggingElement: BrowserElement | null = null;
@@ -158,23 +169,41 @@ export default class AnalyticsBrowser {
         this.lpElements.forEach((lpElem) => {
             lpElem.relations.forEach((r) => {
                 // Skip concept which are in the learning path
+                let source = lpElem;
                 if (r.conceptInPath) {
                     const target = this.lpElements.find((el) => el.id === r.target)!;
+
+                    // Pre calculate parameters for static curves, so we won't need to do that in every frame
+                    const lpForward = target.lpIndex! > source.lpIndex!;
+                    const lpDistance = Math.abs(target.lpIndex! - source.lpIndex!);
+                    const factor = (lpForward ? -1 : 1) * Math.pow(2, lpDistance);
+                    const cpx = source.x + (factor * this.quadraticControlOffsetX);
+                    const cpy = source.y + (factor * this.quadraticControlOffsetY);
+                    const t = 0.3 / Math.log(lpDistance + 1);
+                    const labelRadians = AnalyticsBrowser.getQuadraticAngle(
+                        t, source.x, source.y, cpx, cpy, target.x, target.y);
+                    const labelPosition = AnalyticsBrowser.getQuadraticXY(
+                        t, source.x, source.y, cpx, cpy, target.x, target.y);
+
                     const relation: LpBrowserRelation = {
                         label: r.relationName,
                         target: target,
-                        source: lpElem,
+                        source: source,
                         lpRelation: true,
-                        lpNext: target.lpIndex! - lpElem.lpIndex! === 1,
-                        lpCircular: target.id === lpElem.id,
-                        lpForward: target.lpIndex! > lpElem.lpIndex!,
-                        lpDistance: Math.abs(target.lpIndex! - lpElem.lpIndex!),
+                        lpNext: target.lpIndex! - source.lpIndex! === 1,
+                        lpCircular: target.id === source.id,
+                        lpForward: lpForward,
+                        lpDistance: lpDistance,
+                        cpx: cpx,
+                        cpy: cpy,
+                        labelRadians: labelRadians,
+                        labelPosition: labelPosition,
                     };
                     this.relations.push(relation);
                 } else {
                     // Force all elements to start on a specific side, iteration over the lpIndex
                     let side = 1;
-                    if (lpElem.lpIndex! % 2 === 0) {
+                    if (source.lpIndex! % 2 === 0) {
                         side = -1;
                     }
 
@@ -186,10 +215,10 @@ export default class AnalyticsBrowser {
                             uniqId: this.uniqIdCounter++,
                             label: foundElem.name,
                             isLp: false,
-                            lpId: lpElem.id,
-                            x: lpElem.x,
+                            lpId: source.id,
+                            x: source.x,
                             fx: null,
-                            y: lpElem.y + (side * 100),
+                            y: source.y + (side * 100),
                             fy: null,
                             highlighted: false,
                             proxyHighlighted: false,
@@ -205,7 +234,7 @@ export default class AnalyticsBrowser {
                     this.relations.push({
                         label: r.relationName,
                         target: childElement,
-                        source: lpElem,
+                        source: source,
                         lpRelation: false,
                     });
                 }
@@ -304,14 +333,14 @@ export default class AnalyticsBrowser {
             this.context.lineWidth = this.config.linkLineWidth * 2;
             this.context.strokeStyle = this.config.highlightedLinkStrokeStyle;
             this.lpRelations.forEach((r) =>
-                this.drawLinkIfHighLight(r, (r) => this.drawLinkLp(r)));
+                AnalyticsBrowser.drawLinkIfHighLight(r, (r) => this.drawLinkLp(r)));
             this.context.stroke();
 
             this.context.beginPath();
             this.context.lineWidth = this.config.linkLineWidth;
             this.context.strokeStyle = this.config.draggedLinkStrokeStyle;
             this.childRelations.forEach((r) =>
-                this.drawLinkIfHighLight(r, (r) => this.drawLink(r.source, r.target)));
+                AnalyticsBrowser.drawLinkIfHighLight(r, (r) => this.drawLink(r.source, r.target)));
             this.context.stroke();
         }
 
@@ -432,6 +461,84 @@ export default class AnalyticsBrowser {
                 this.drawElementText(elem, this.fontSize)
             });
         }
+
+        // Draw the link labels
+        this.drawLinkLabels(highlighted, lpElements, childElements);
+    }
+
+    private drawLinkLabels(highlighted: boolean, lpElements: boolean = true, childElements: boolean = true) {
+        // this.context.textBaseline = 'bottom';
+        this.context.lineWidth = this.config.activeNodeLabelLineWidth * this.lpTextScale;
+
+        if (lpElements) {
+            this.lpRelations.forEach((link) => {
+                if (highlighted && !AnalyticsBrowser.linkIsHighlighted(link)) return;
+
+                if (link.lpNext) {
+                    this.drawLinkLabel(link);
+                } else if (link.lpCircular) {
+                    this.drawLinkLabel(link, this.circularRadianApprox, this.circularOffsetY);
+                } else {
+                    this.drawLinkLabel(link, link.labelRadians, 0, link.labelPosition.x, link.labelPosition.y, true);
+                }
+            });
+        }
+
+        if (childElements) {
+            this.childRelations.forEach((link) => this.drawLinkLabelHighlighted(link, highlighted));
+        }
+    }
+
+    private drawLinkLabelHighlighted(link: BrowserRelation, highlighted: boolean) {
+        if (highlighted) {
+            AnalyticsBrowser.drawLinkIfHighLight(link, (link) => this.drawLinkLabel(link));
+        } else {
+            this.drawLinkLabel(link);
+        }
+    }
+
+    private drawLinkLabel(link: BrowserRelation, startRadians?: number, offsetY?: number, x?: number, y?: number, ignoreRadius?: true) {
+        this.context.font = this.lpFontSize + 'px ' + this.config.fontFamily;
+        if (link.source.highlighted || link.target.proxyHighlighted) {
+            this.context.font = 'bold ' + this.context.font;
+        }
+
+        // Calculate the label angle
+        if (startRadians === undefined) {
+            startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
+            startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
+        }
+        if (offsetY === undefined) {
+            offsetY = 0;
+        }
+        if (x === undefined) {
+            x = link.source.x;
+        }
+        if (y === undefined) {
+            y = link.source.y;
+        }
+
+        // Transform the context
+        this.context.save();
+        this.context.translate(x, y);
+        this.context.rotate(startRadians);
+
+        // Check rotation and add extra if required
+        const sourceRadius = ignoreRadius === true ? 0 : (this.elementRadius * 2) + 20;
+        const labelLength = link.label.length * 5 + 10;
+        if ((startRadians * 2) > Math.PI) {
+            this.context.rotate(Math.PI);
+            this.context.textAlign = 'right';
+            this.context.strokeText(link.label, -sourceRadius, offsetY, labelLength);
+            this.context.fillText(link.label, -sourceRadius, offsetY, labelLength);
+        } else {
+            this.context.textAlign = 'left';
+            this.context.strokeText(link.label, sourceRadius, offsetY, labelLength);
+            this.context.fillText(link.label, sourceRadius, offsetY, labelLength);
+        }
+
+        // Restore context
+        this.context.restore();
     }
 
     private drawLink(source: BrowserElement, target: BrowserElement) {
@@ -439,11 +546,14 @@ export default class AnalyticsBrowser {
         this.context.lineTo(target.x, target.y);
     }
 
-    // noinspection JSMethodCanBeStatic
-    private drawLinkIfHighLight(link: any, func: (link: any) => void) {
-        if (link.source.highlighted && (link.target.highlighted || link.target.proxyHighlighted)) {
+    private static drawLinkIfHighLight(link: any, func: (link: any) => void) {
+        if (AnalyticsBrowser.linkIsHighlighted(link)) {
             func(link);
         }
+    }
+
+    private static linkIsHighlighted(link: BrowserRelation): boolean {
+        return link.source.highlighted && (link.target.highlighted || link.target.proxyHighlighted);
     }
 
     private drawLinkCircular(link: LpBrowserRelation) {
@@ -467,11 +577,23 @@ export default class AnalyticsBrowser {
 
     private drawLinkQuadratic(link: LpBrowserRelation) {
         this.context.moveTo(link.source.x, link.source.y);
-        const factor = (link.lpForward ? -1 : 1) * link.lpDistance;
         this.context.quadraticCurveTo(
-            link.source.x + (factor * this.quadraticControlOffsetX),
-            link.source.y + (factor * this.quadraticControlOffsetY),
+            link.cpx, link.cpy,
             link.target.x, link.target.y);
+    }
+
+    private static getQuadraticXY(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number)
+        : { x: number, y: number } {
+        return {
+            x: (1 - t) * (1 - t) * sx + 2 * (1 - t) * t * cpx + t * t * ex,
+            y: (1 - t) * (1 - t) * sy + 2 * (1 - t) * t * cpy + t * t * ey
+        };
+    }
+
+    private static getQuadraticAngle(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number) {
+        const dx = 2 * (1 - t) * (cpx - sx) + 2 * t * (ex - cpx);
+        const dy = 2 * (1 - t) * (cpy - sy) + 2 * t * (ey - cpy);
+        return -Math.atan2(dx, dy) + 0.5 * Math.PI;
     }
 
     /**
