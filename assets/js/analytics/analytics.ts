@@ -15,8 +15,8 @@ interface AnalyticsData {
                 general: number,
                 conceptBrowser: number,
                 learningPathBrowser: number,
-                external: number
-            }
+                external: number,
+            },
         },
         totalHitsPerPath: { [lpId: string]: number },
         totalUsersInPeriod: number,

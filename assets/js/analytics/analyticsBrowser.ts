@@ -17,8 +17,10 @@ export interface FlowThroughElement {
 interface SimpleBrowserElement {
     x: number;
     fx: number | null;
+    ux: number | null; // The not clipped value
     y: number;
     fy: number | null;
+    uy: number | null; // The not clipped value
     visible: boolean;
 }
 
@@ -37,6 +39,10 @@ interface BrowserElement extends FlowThroughElement, SimpleBrowserElement {
     expandedLabel: string[];
     highlighted: boolean;
     proxyHighlighted: boolean;
+}
+
+interface DraggedBrowserElement extends BrowserElement {
+    other: BrowserElement;
 }
 
 interface BrowserRelation {
@@ -82,7 +88,7 @@ export default class AnalyticsBrowser {
             x: Math.pow(1 - t, 3) * sx + 3 * t * Math.pow(1 - t, 2) * cp1x
                 + 3 * t * t * (1 - t) * cp2x + t * t * t * ex,
             y: Math.pow(1 - t, 3) * sy + 3 * t * Math.pow(1 - t, 2) * cp1y
-                + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
+                + 3 * t * t * (1 - t) * cp2y + t * t * t * ey,
         };
     }
 
@@ -143,7 +149,7 @@ export default class AnalyticsBrowser {
     private readonly quadraticControlOffsetY: number = 40;
 
     private highlightedElement: BrowserElement | null = null;
-    private draggingElement: BrowserElement | null = null;
+    private draggingElement: DraggedBrowserElement | null = null;
 
     constructor(data: FlowThroughElement[]) {
         this.canvas = document.getElementById('analytics-canvas')! as HTMLCanvasElement;
@@ -192,8 +198,10 @@ export default class AnalyticsBrowser {
                     lpId: el.id,
                     x: interval,
                     fx: interval,
+                    ux: interval,
                     y: this.halfY,
                     fy: this.halfY,
+                    uy: this.halfY,
                     expandedLabelStart: 0,
                     expandedLabel: [''],
                     highlighted: false,
@@ -240,7 +248,7 @@ export default class AnalyticsBrowser {
                         source,
                         lpRelation: true,
                         lpNext: target.lpIndex! - source.lpIndex! === 1,
-                        lpCircular: lpCircular,
+                        lpCircular,
                         lpForward,
                         lpDistance,
                         cpx,
@@ -267,8 +275,10 @@ export default class AnalyticsBrowser {
                             lpId: source.id,
                             x: source.x,
                             fx: null,
+                            ux: null,
                             y: source.y + (side * 100),
                             fy: null,
+                            uy: null,
                             highlighted: false,
                             proxyHighlighted: false,
                             visible: true,
@@ -297,8 +307,10 @@ export default class AnalyticsBrowser {
             this.elements.push({
                 x,
                 fx: x,
+                ux: x,
                 y: first.y,
                 fy: first.y,
+                uy: first.y,
                 visible: false,
             });
         }
@@ -308,7 +320,7 @@ export default class AnalyticsBrowser {
             d3.forceSimulation(this.elements)
                 .force('link', d3.forceLink(this.relations)
                     .distance(() => this.linkLength)
-                    .strength(0.4))
+                    .strength(0.1))
                 .force('collide', d3
                     .forceCollide()
                     .radius(this.elementRadius)
@@ -711,9 +723,12 @@ export default class AnalyticsBrowser {
     private onDragStart() {
         const element = this.findElement(d3.event.sourceEvent);
         if (element && !element.isLp) {
-            this.draggingElement = element;
+            this.draggingElement = element as DraggedBrowserElement;
+            this.draggingElement.other = this.lpElements.find((lpElem) => lpElem.id === element.lpId)!;
             element.fx = element.x;
+            element.ux = element.x;
             element.fy = element.y;
+            element.uy = element.y;
             this.simulation!.alphaTarget(0.3).restart();
         } else {
             this.draggingElement = null;
@@ -725,8 +740,25 @@ export default class AnalyticsBrowser {
      */
     private onDrag() {
         if (this.draggingElement) {
-            this.draggingElement.fx! += d3.event.dx / this.zoomTransform.k;
-            this.draggingElement.fy! += d3.event.dy / this.zoomTransform.k;
+            this.draggingElement.ux! += d3.event.dx / this.zoomTransform.k;
+            this.draggingElement.uy! += d3.event.dy / this.zoomTransform.k;
+
+            // Calculate distance to relation
+            const distance = Math.hypot(
+                this.draggingElement.ux! - this.draggingElement.other.x,
+                this.draggingElement.uy! - this.draggingElement.other.y);
+
+            const allowedDistance = this.linkLength - 50;
+            if (allowedDistance <= distance) {
+                this.draggingElement.fx = this.draggingElement.ux;
+                this.draggingElement.fy = this.draggingElement.uy;
+            } else {
+                const radians = Math.atan2(
+                    this.draggingElement.uy! - this.draggingElement.other.y,
+                    this.draggingElement.ux! - this.draggingElement.other.x);
+                this.draggingElement.fx = Math.cos(radians) * allowedDistance + this.draggingElement.other.x;
+                this.draggingElement.fy = Math.sin(radians) * allowedDistance + this.draggingElement.other.y;
+            }
         } else {
             this.d3Canvas.call(this.zoomBehaviour.transform, this.zoomTransform.translate(
                 d3.event.dx / this.zoomTransform.k,
@@ -741,7 +773,9 @@ export default class AnalyticsBrowser {
 
         this.simulation!.alphaTarget(0);
         this.draggingElement.fx = null;
+        this.draggingElement.ux = null;
         this.draggingElement.fy = null;
+        this.draggingElement.uy = null;
         this.draggingElement = null;
     }
 
