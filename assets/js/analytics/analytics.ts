@@ -5,6 +5,7 @@ import AnalyticsBrowser, {FlowThroughElement} from './analyticsBrowser';
 interface AnalyticsData {
     heatMap: string;
     pathVisits: string;
+    pathUsers: string;
     flowThrough: FlowThroughElement[];
 }
 
@@ -122,6 +123,7 @@ export default class Analytics {
         // Images
         this.loadImage('.heatmap', this.data.heatMap);
         this.loadImage('.path-visits', this.data.pathVisits);
+        this.loadImage('.path-users', this.data.pathUsers);
         this.$imgResults!.show();
     }
 

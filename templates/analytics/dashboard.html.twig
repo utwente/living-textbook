@@ -16,22 +16,42 @@
 
 {% block content %}
   <div class="analytics-dashboard">
+
+    <h4>{{ 'analytics.input'|trans }}</h4>
+
+    {{ form_start(form) }}
+
     <div class="row">
-      <div class="col-12 col-sm-6 col-xl-4">
-        <h4>{{ 'analytics.input'|trans }}</h4>
-        {{ form(form) }}
-        <div class="clearfix"></div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        {{ form_row(form.learningPath) }}
       </div>
-      <div class="col-12 col-sm-6 col-xl-8">
-        <h4>{{ 'analytics.output'|trans }}</h4>
-        <div class="row img-results" style="display: none">
-          <div class="col-12 col-xl-6 heatmap">
-          </div>
-          <div class="col-12 col-xl-6 path-visits">
-          </div>
-        </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        {{ form_row(form.teachingMoment) }}
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        {{ form_row(form.periodStart) }}
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        {{ form_row(form.periodEnd) }}
+      </div>
+      <div class="col-12 text-right">
+        {{ form_row(form.generate) }}
       </div>
     </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+    <h4>{{ 'analytics.output'|trans }}</h4>
+    <div class="row img-results" style="display: none">
+      <div class="col-12 col-md-6 col-xl-4 heatmap">
+      </div>
+      <div class="col-12 col-md-6 col-xl-4 path-visits">
+      </div>
+      <div class="col-12 col-md-6 col-xl-4 path-users">
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-12">
         <div class="analytics-canvas-div">

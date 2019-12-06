@@ -49,6 +49,9 @@ class LearningPathVisualisationResultHandler implements EventSubscriberInterface
         new StaticPropertyMetadata('', 'pathVisits', NULL),
         self::toBase64($object->pathVisitsImage));
     $visitor->visitProperty(
+        new StaticPropertyMetadata('', 'pathUsers', NULL),
+        self::toBase64($object->pathUsersImage));
+    $visitor->visitProperty(
         new StaticPropertyMetadata('', 'flowThrough', NULL),
         json_decode($object->flowThroughFile->getContents(), true));
   }

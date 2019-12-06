@@ -2,15 +2,13 @@
 @import '../mixins/mixins';
 
 .analytics-dashboard {
-  form {
-    .form-group:last-of-type {
-      text-align: right;
-    }
-  }
-
   .img-results {
-    img {
-      max-width: 100%;
+    > div {
+      text-align: center;
+
+      img {
+        max-width: 100%;
+      }
     }
   }
 

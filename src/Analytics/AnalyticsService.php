@@ -141,7 +141,7 @@ class AnalyticsService
                 'id'            => $learningPath->getId(),
             ],
         ],
-        'functions'     => [], // Empty function delivers the required output here
+        'functions'     => ['allUsersPerDayPerLearningPath'], // This single function delivers the required output here
     ];
 
     // Build the visualisation
@@ -159,6 +159,7 @@ class AnalyticsService
     $result                  = new LearningPathVisualisationResult();
     $result->heatMapImage    = $this->firstFromFinder($finder()->name('heatmap*'));
     $result->pathVisitsImage = $this->firstFromFinder($finder()->name('pathVisits*'));
+    $result->pathUsersImage  = $this->firstFromFinder($finder()->name('pathUsers*'));
     $result->flowThroughFile = $this->firstFromFinder($finder()->name('*Flowthrough*'));
 
     return $result;

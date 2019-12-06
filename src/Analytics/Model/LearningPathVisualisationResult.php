@@ -27,6 +27,11 @@ class LearningPathVisualisationResult
   /**
    * @var SplFileInfo
    */
+  public $pathUsersImage;
+
+  /**
+   * @var SplFileInfo
+   */
   public $flowThroughFile;
 
   /**
