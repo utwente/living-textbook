@@ -43,6 +43,25 @@
     {{ form_end(form) }}
 
     <h4>{{ 'analytics.output'|trans }}</h4>
+    <div class="row table-results" style="display: none">
+      <div class="col-12 metadata">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <tbody>
+            <tr>
+              <th>{{ 'analytics.users-in-period'|trans }}</th>
+              <td id="metadata-users-in-period" class="text-right"></td>
+            </tr>
+            <tr>
+              <th>{{ 'analytics.total-hits-on-path'|trans }}</th>
+              <td id="metadata-total-hits-on-path" class="text-right"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <div class="row img-results" style="display: none">
       <div class="col-12 col-md-6 col-xl-4 heatmap">
       </div>

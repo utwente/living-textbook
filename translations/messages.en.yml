@@ -22,6 +22,8 @@ analytics:
   path-visits: 'Visits'
   teaching-moment: 'Teaching moment'
   output: 'Results'
+  users-in-period: 'Total users in period'
+  total-hits-on-path: 'Total hits on learning path'
 
 annotations:
   add-placeholder: "Type your annotation..."

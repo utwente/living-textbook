@@ -35,6 +35,11 @@ class LearningPathVisualisationResult
   public $flowThroughFile;
 
   /**
+   * @var SplFileInfo
+   */
+  public $metaDataFile;
+
+  /**
    * @return string
    *
    */

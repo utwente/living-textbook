@@ -54,6 +54,9 @@ class LearningPathVisualisationResultHandler implements EventSubscriberInterface
     $visitor->visitProperty(
         new StaticPropertyMetadata('', 'flowThrough', NULL),
         json_decode($object->flowThroughFile->getContents(), true));
+    $visitor->visitProperty(
+        new StaticPropertyMetadata('', 'metadata', NULL),
+        json_decode($object->metaDataFile->getContents(), true));
   }
 
   private static function toBase64(?SplFileInfo $file)

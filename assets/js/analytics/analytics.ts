@@ -7,6 +7,20 @@ interface AnalyticsData {
     pathVisits: string;
     pathUsers: string;
     flowThrough: FlowThroughElement[];
+    metadata: {
+        hitsPerLearningPathPerDay: { [lpId: string]: { [date: string]: number } },
+        hitsPerDay: { [date: string]: number },
+        typeOfHitsPerDay: {
+            [date: string]: {
+                general: number,
+                conceptBrowser: number,
+                learningPathBrowser: number,
+                external: number
+            }
+        },
+        totalHitsPerPath: { [lpId: string]: number },
+        totalUsersInPeriod: number,
+    };
 }
 
 export default class Analytics {
@@ -20,6 +34,7 @@ export default class Analytics {
     private $formBtn?: JQuery;
     private $formInputs?: JQuery;
     private $errorModal?: JQuery;
+    private $tableResults?: JQuery;
     private $imgResults?: JQuery;
     private $browserResults?: JQuery;
 
@@ -33,6 +48,7 @@ export default class Analytics {
         this.$formBtn = this.$form.find('button');
         this.$formInputs = this.$form.find('select, input, button');
         this.$errorModal = this.$container.find('#analytics-modal');
+        this.$tableResults = this.$container.find('.table-results');
         this.$imgResults = this.$container.find('.img-results');
         this.$browserResults = this.$container.find('.browser-results');
 
@@ -106,9 +122,16 @@ export default class Analytics {
         }
     }
 
+    private loadText(selector: string, text: string) {
+        this.$container!
+            .find(selector)
+            .text(text);
+    }
+
     private loadImage(selector: string, image: string) {
-        const $element = this.$container!.find(selector);
-        $element.append('<img src="' + image + '" alt="visualisation" />');
+        this.$container!
+            .find(selector)
+            .append('<img src="' + image + '" alt="visualisation" />');
     }
 
     private showResults() {
@@ -125,9 +148,17 @@ export default class Analytics {
         this.loadImage('.path-visits', this.data.pathVisits);
         this.loadImage('.path-users', this.data.pathUsers);
         this.$imgResults!.show();
+
+        // Table
+        this.loadText('#metadata-users-in-period', this.data.metadata.totalUsersInPeriod.toString());
+        this.loadText('#metadata-total-hits-on-path', this.data.metadata.totalHitsPerPath[1].toString());
+        this.$tableResults!.show();
     }
 
     private hideResults() {
+        // Table
+        this.$tableResults!.hide();
+
         // Images
         this.$imgResults!.hide();
         this.$imgResults!.find('img').remove();

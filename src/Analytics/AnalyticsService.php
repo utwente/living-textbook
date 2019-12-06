@@ -161,6 +161,7 @@ class AnalyticsService
     $result->pathVisitsImage = $this->firstFromFinder($finder()->name('pathVisits*'));
     $result->pathUsersImage  = $this->firstFromFinder($finder()->name('pathUsers*'));
     $result->flowThroughFile = $this->firstFromFinder($finder()->name('*Flowthrough*'));
+    $result->metaDataFile    = $this->firstFromFinder($finder()->name('metaData.json'));
 
     return $result;
   }
