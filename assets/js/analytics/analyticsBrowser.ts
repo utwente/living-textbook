@@ -359,19 +359,15 @@ export default class AnalyticsBrowser {
 
         // LP links
         this.context.beginPath();
-        this.context.lineWidth = this.config.linkLineWidth * 2;
+        this.context.lineWidth = this.config.linkLineWidth;
         this.context.strokeStyle = this.hasHighlight
             ? this.config.fadedLinksStrokeStyle
-            : this.config.draggedLinkStrokeStyle;
+            : this.config.defaultLinkStrokeStyle;
         this.lpRelations.forEach((r) => this.drawLinkLp(r));
         this.context.stroke();
 
         // Child links
         this.context.beginPath();
-        this.context.lineWidth = this.config.linkLineWidth;
-        this.context.strokeStyle = this.hasHighlight
-            ? this.config.fadedLinksStrokeStyle
-            : this.config.defaultLinkStrokeStyle;
         this.childRelations.forEach((r) => this.drawLink(r.source, r.target));
         this.context.stroke();
 
@@ -590,8 +586,14 @@ export default class AnalyticsBrowser {
         const sourceRadius = ignoreRadius === true ? 0 : this.linkLength / 2 + 20;
         const labelLength = link.label.length * 5 + 10;
 
-        // Draw the arrow head
-        this.drawArrowHead(sourceRadius - 25, offsetY);
+        // Disable circular arrow heads
+        if (!(link as LpBrowserRelation).lpCircular) {
+            // Draw the arrow head
+            this.drawArrowHead(sourceRadius - 25, offsetY, false);
+        }
+
+        // Reset color for label
+        this.context.fillStyle = this.config.defaultNodeLabelColor;
 
         // Check rotation and add extra if required
         if ((startRadians * 2) > Math.PI) {
@@ -639,12 +641,23 @@ export default class AnalyticsBrowser {
             link.target.x, link.target.y);
     }
 
-    private drawArrowHead(x: number, y: number) {
+    private drawArrowHead(x: number, y: number, isCircular: boolean) {
         this.context.beginPath();
-        this.context.moveTo(x, y - 6);
-        this.context.lineTo(x + 20, y);
-        this.context.lineTo(x, y + 6);
-        this.context.lineTo(x, y - 6);
+        this.context.fillStyle = this.hasHighlight
+            ? this.config.highlightedLinkStrokeStyle
+            : this.config.defaultLinkStrokeStyle;
+        if (isCircular) {
+            // Manually rotate arrow a bit due to offset
+            this.context.moveTo(x, y - 9);
+            this.context.lineTo(x + 20, y);
+            this.context.lineTo(x - 2, y + 2);
+            this.context.lineTo(x, y - 9);
+        } else {
+            this.context.moveTo(x, y - 6);
+            this.context.lineTo(x + 20, y);
+            this.context.lineTo(x, y + 6);
+            this.context.lineTo(x, y - 6);
+        }
         this.context.fill();
     }
 
