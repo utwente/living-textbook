@@ -75,6 +75,25 @@ export default class AnalyticsBrowser {
         return link.source.highlighted && (link.target.highlighted || link.target.proxyHighlighted);
     }
 
+    private static getBezierXY(
+        t: number, sx: number, sy: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, ex: number, ey: number)
+        : { x: number, y: number } {
+        return {
+            x: Math.pow(1 - t, 3) * sx + 3 * t * Math.pow(1 - t, 2) * cp1x
+                + 3 * t * t * (1 - t) * cp2x + t * t * t * ex,
+            y: Math.pow(1 - t, 3) * sy + 3 * t * Math.pow(1 - t, 2) * cp1y
+                + 3 * t * t * (1 - t) * cp2y + t * t * t * ey
+        };
+    }
+
+    private static getBezierAngle(
+        t: number, sx: number, sy: number, cp1x: number, cp1y: number, cp2x: number, cp2y: number, ex: number, ey: number)
+        : number {
+        const dx = Math.pow(1 - t, 2) * (cp1x - sx) + 2 * t * (1 - t) * (cp2x - cp1x) + t * t * (ex - cp2x);
+        const dy = Math.pow(1 - t, 2) * (cp1y - sy) + 2 * t * (1 - t) * (cp2y - cp1y) + t * t * (ey - cp2y);
+        return -Math.atan2(dx, dy) + 0.5 * Math.PI;
+    }
+
     private static getQuadraticXY(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number)
         : { x: number, y: number } {
         return {
@@ -83,7 +102,8 @@ export default class AnalyticsBrowser {
         };
     }
 
-    private static getQuadraticAngle(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number) {
+    private static getQuadraticAngle(t: number, sx: number, sy: number, cpx: number, cpy: number, ex: number, ey: number)
+        : number {
         const dx = 2 * (1 - t) * (cpx - sx) + 2 * t * (ex - cpx);
         const dy = 2 * (1 - t) * (cpy - sy) + 2 * t * (ey - cpy);
         return -Math.atan2(dx, dy) + 0.5 * Math.PI;
@@ -115,15 +135,12 @@ export default class AnalyticsBrowser {
 
     private uniqIdCounter: number = 0;
 
+    private readonly linkLength: number = 200;
     private readonly scaleExtent: [number, number] = [0.5, 4];
     private readonly circularControlOffsetX: number = 200;
     private readonly circularControlOffsetY: number = 150;
     private readonly quadraticControlOffsetX: number = 0;
     private readonly quadraticControlOffsetY: number = 40;
-
-    // Approximation of angle for circular references
-    private readonly circularRadianApprox: number = 1.1;
-    private readonly circularOffsetY: number = -20;
 
     private highlightedElement: BrowserElement | null = null;
     private draggingElement: BrowserElement | null = null;
@@ -151,12 +168,12 @@ export default class AnalyticsBrowser {
         this.halfY = Math.round(this.canvas.height / 2);
 
         // Determine font/line sizes
-        this.lineScale = Math.round(this.elementRadius / 30 * 100) / 100; // Round on 2 decimals
-        this.lpLineScale = 2 * this.lineScale;
+        this.lineScale = Math.round(this.elementRadius / 25 * 100) / 100; // Round on 2 decimals
+        this.lpLineScale = Math.round(1.5 * this.lineScale);
         this.textScale = this.lineScale;
-        this.lpTextScale = 2 * this.textScale;
+        this.lpTextScale = Math.round(1.5 * this.textScale);
         this.fontSize = Math.round(this.config.defaultNodeLabelFontSize * this.textScale);
-        this.lpFontSize = Math.round(this.config.defaultNodeLabelFontSize * this.textScale * 2);
+        this.lpFontSize = Math.round(this.config.defaultNodeLabelFontSize * this.textScale * 1.5);
 
         // Store the given data
         this.data = data;
@@ -198,14 +215,24 @@ export default class AnalyticsBrowser {
                     // Pre calculate parameters for static curves, so we won't need to do that in every frame
                     const lpForward = target.lpIndex! > source.lpIndex!;
                     const lpDistance = Math.abs(target.lpIndex! - source.lpIndex!);
+                    const lpCircular = target.id === source.id;
                     const factor = (lpForward ? -1 : 1) * Math.pow(2, lpDistance);
                     const cpx = source.x + (factor * this.quadraticControlOffsetX);
                     const cpy = source.y + (factor * this.quadraticControlOffsetY);
-                    const t = 0.3 / Math.log(lpDistance + 1);
-                    const labelRadians = AnalyticsBrowser.getQuadraticAngle(
-                        t, source.x, source.y, cpx, cpy, target.x, target.y);
-                    const labelPosition = AnalyticsBrowser.getQuadraticXY(
-                        t, source.x, source.y, cpx, cpy, target.x, target.y);
+
+                    const cpx1 = source.x - this.circularControlOffsetX;
+                    const cpy1 = source.y + this.circularControlOffsetY;
+                    const cpx2 = target.x + this.circularControlOffsetX;
+                    const cpy2 = target.y + this.circularControlOffsetY;
+
+                    // const t = 0.3 / Math.log(lpDistance + 1);
+                    const t = 0.5; // Fixed times position for drawing
+                    const labelRadians = lpCircular
+                        ? AnalyticsBrowser.getBezierAngle(t, source.x, source.y, cpx1, cpy1, cpx2, cpy2, target.x, target.y)
+                        : AnalyticsBrowser.getQuadraticAngle(t, source.x, source.y, cpx, cpy, target.x, target.y);
+                    const labelPosition = lpCircular
+                        ? AnalyticsBrowser.getBezierXY(t, source.x, source.y, cpx1, cpy1, cpx2, cpy2, target.x, target.y)
+                        : AnalyticsBrowser.getQuadraticXY(t, source.x, source.y, cpx, cpy, target.x, target.y);
 
                     const relation: LpBrowserRelation = {
                         label: r.relationName,
@@ -213,7 +240,7 @@ export default class AnalyticsBrowser {
                         source,
                         lpRelation: true,
                         lpNext: target.lpIndex! - source.lpIndex! === 1,
-                        lpCircular: target.id === source.id,
+                        lpCircular: lpCircular,
                         lpForward,
                         lpDistance,
                         cpx,
@@ -280,7 +307,7 @@ export default class AnalyticsBrowser {
         this.simulation =
             d3.forceSimulation(this.elements)
                 .force('link', d3.forceLink(this.relations)
-                    .distance(() => 200)
+                    .distance(() => this.linkLength)
                     .strength(0.4))
                 .force('collide', d3
                     .forceCollide()
@@ -399,6 +426,7 @@ export default class AnalyticsBrowser {
         // Labels
         if (!this.hasHighlight) {
             this.drawLabels(false);
+            this.drawLinkLabels(false);
         }
 
         //////////////////////
@@ -421,6 +449,7 @@ export default class AnalyticsBrowser {
         this.context.stroke();
 
         this.drawLabels(true, true, false);
+        this.drawLinkLabels(true, true, true);
 
         // Child nodes
         this.config.applyStyle(-1);
@@ -481,6 +510,7 @@ export default class AnalyticsBrowser {
                 if (elem.highlighted !== highlighted && elem.proxyHighlighted !== highlighted) {
                     return;
                 }
+
                 this.drawElementText(elem, this.lpFontSize);
             });
         }
@@ -494,9 +524,6 @@ export default class AnalyticsBrowser {
                 this.drawElementText(elem, this.fontSize);
             });
         }
-
-        // Draw the link labels
-        this.drawLinkLabels(highlighted, lpElements, childElements);
     }
 
     private drawLinkLabels(highlighted: boolean, lpElements: boolean = true, childElements: boolean = true) {
@@ -512,7 +539,7 @@ export default class AnalyticsBrowser {
                 if (link.lpNext) {
                     this.drawLinkLabel(link);
                 } else if (link.lpCircular) {
-                    this.drawLinkLabel(link, this.circularRadianApprox, this.circularOffsetY);
+                    this.drawLinkLabel(link, link.labelRadians, 0, link.labelPosition.x, link.labelPosition.y, true);
                 } else {
                     this.drawLinkLabel(link, link.labelRadians, 0, link.labelPosition.x, link.labelPosition.y, true);
                 }
@@ -553,23 +580,29 @@ export default class AnalyticsBrowser {
             y = link.source.y;
         }
 
+
         // Transform the context
         this.context.save();
         this.context.translate(x, y);
         this.context.rotate(startRadians);
 
-        // Check rotation and add extra if required
-        const sourceRadius = ignoreRadius === true ? 0 : (this.elementRadius * 2) + 20;
+        // Calculate label positions
+        const sourceRadius = ignoreRadius === true ? 0 : this.linkLength / 2 + 20;
         const labelLength = link.label.length * 5 + 10;
+
+        // Draw the arrow head
+        this.drawArrowHead(sourceRadius - 25, offsetY);
+
+        // Check rotation and add extra if required
         if ((startRadians * 2) > Math.PI) {
             this.context.rotate(Math.PI);
             this.context.textAlign = 'right';
-            this.context.strokeText(link.label, -sourceRadius, offsetY, labelLength);
-            this.context.fillText(link.label, -sourceRadius, offsetY, labelLength);
+            this.context.strokeText(link.label, -sourceRadius, offsetY + 2, labelLength);
+            this.context.fillText(link.label, -sourceRadius, offsetY + 2, labelLength);
         } else {
             this.context.textAlign = 'left';
-            this.context.strokeText(link.label, sourceRadius, offsetY, labelLength);
-            this.context.fillText(link.label, sourceRadius, offsetY, labelLength);
+            this.context.strokeText(link.label, sourceRadius, offsetY + 2, labelLength);
+            this.context.fillText(link.label, sourceRadius, offsetY + 2, labelLength);
         }
 
         // Restore context
@@ -604,6 +637,15 @@ export default class AnalyticsBrowser {
         this.context.quadraticCurveTo(
             link.cpx, link.cpy,
             link.target.x, link.target.y);
+    }
+
+    private drawArrowHead(x: number, y: number) {
+        this.context.beginPath();
+        this.context.moveTo(x, y - 6);
+        this.context.lineTo(x + 20, y);
+        this.context.lineTo(x, y + 6);
+        this.context.lineTo(x, y - 6);
+        this.context.fill();
     }
 
     /**
