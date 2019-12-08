@@ -151,7 +151,10 @@ export default class Analytics {
 
         // Table
         this.loadText('#metadata-users-in-period', this.data.metadata.totalUsersInPeriod.toString());
-        this.loadText('#metadata-total-hits-on-path', this.data.metadata.totalHitsPerPath[1].toString());
+        const totalHitsPerPath = this.data.metadata.totalHitsPerPath;
+        const totalHitsPerPathItems = Object.keys(totalHitsPerPath);
+        this.loadText('#metadata-total-hits-on-path',
+            totalHitsPerPathItems.length !== 0 ? totalHitsPerPath[totalHitsPerPathItems[0]].toString() : '0');
         this.$tableResults!.show();
     }
 
