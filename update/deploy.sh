@@ -38,7 +38,8 @@ unzip -q "${DEPLOY_DIR}/assets.zip" -d "${DEPLOY_DIR}"
 # Put the website on updating
 cp update/controllers/update.php public/index.php
 
-# Pull the new data
+# Pull the new data, initialize submodules as well
+git submodule init
 git submodule sync
 ssh-agent bash -c 'ssh-add .ssh-token; git pull; git submodule update --recursive'
 
@@ -64,7 +65,7 @@ composer install -o --apcu-autoloader --no-dev
 sudo -u www-data php bin/console doctrine:migrations:migrate -n
 
 # Install python environment
-sudo -u www-data php bin/console ltb:python:build
+php bin/console ltb:python:build
 
 # Restore frontend controller
 cp update/controllers/index.php public/index.php

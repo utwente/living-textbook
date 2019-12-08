@@ -240,7 +240,7 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; python Main.py "%s"', self::ENV_DIR, $settingsFile),
+          sprintf('. %s/bin/activate; python3 Main.py "%s"', self::ENV_DIR, $settingsFile),
           $this->analyticsDir, NULL, NULL, 120);
       $process->run();
 
