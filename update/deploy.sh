@@ -39,7 +39,8 @@ unzip -q "${DEPLOY_DIR}/assets.zip" -d "${DEPLOY_DIR}"
 cp update/controllers/update.php public/index.php
 
 # Pull the new data
-ssh-agent bash -c 'ssh-add .ssh-token; git pull'
+git submodule sync
+ssh-agent bash -c 'ssh-add .ssh-token; git pull; git submodule update --recursive'
 
 # Replace vendors/assets with new files
 paths=(
