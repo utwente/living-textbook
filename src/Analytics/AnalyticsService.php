@@ -94,6 +94,17 @@ class AnalyticsService
         ->mustRun();
 
     $progressBar->clear();
+    $output->text('Upgrading pip...');
+    $progressBar->advance();
+    $progressBar->display();
+
+    // Upgrade the pip version in the venv
+    Process::fromShellCommandline(
+        sprintf('. %s/bin/activate; pip install --upgrade pip', self::ENV_DIR),
+        $this->analyticsDir, NULL, NULL, 600)
+        ->mustRun();
+
+    $progressBar->clear();
     $output->text('Installing python packages...');
     $progressBar->advance();
     $progressBar->display();
