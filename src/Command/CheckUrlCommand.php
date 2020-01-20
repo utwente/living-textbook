@@ -54,7 +54,8 @@ class CheckUrlCommand extends Command
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $urls = $this->urlChecker->checkAllUrls(false, false);
+    $this->urlChecker->checkAllUrls(false, false);
 
+    return 0;
   }
 }

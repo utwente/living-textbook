@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\OutputStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Process\Process;
 
@@ -215,7 +215,8 @@ class AnalyticsService
     $settings['outputDir'] = $outputDir;
 
     // Acquire a lock for the current output directory
-    $lockFactory = new Factory(new SemaphoreStore());
+    // Phan doesn't like the Symfony way of deprecating the StoreInterface @phan-suppress-next-line PhanDeprecatedInterface
+    $lockFactory = new LockFactory(new SemaphoreStore());
     $lock        = $lockFactory->createLock('data-visualisation-' . basename($outputDir));
     $lock->acquire(true);
 

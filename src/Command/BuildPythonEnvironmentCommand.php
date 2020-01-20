@@ -31,5 +31,7 @@ class BuildPythonEnvironmentCommand extends Command
   {
     $style = new SymfonyStyle($input, $output);
     $this->analyticsService->ensurePythonEnvironment($style);
+
+    return 0;
   }
 }

@@ -114,7 +114,7 @@ sass-analysis:
 phpunit:
   stage: tests
   image:
-    name: phpunit/phpunit
+    name: drenso/phpunit:8.4-d4
     entrypoint: [ "" ]
   dependencies:
     - install-dependencies
