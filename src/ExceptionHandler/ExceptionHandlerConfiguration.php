@@ -33,7 +33,8 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
     $this->cacheDir          = $parameterBag->get('kernel.cache_dir');
     $this->exceptionSender   = $parameterBag->get('exception_sender');
     $this->exceptionReceiver = $parameterBag->get('exception_receiver');
-    $this->appVersion        = $parameterBag->get('app_version');
+    $this->appVersion        = sprintf('%s+%s', $parameterBag->get('app_version'), $parameterBag->get('commit_hash'));
+
   }
 
   /**

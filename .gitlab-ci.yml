@@ -3,6 +3,7 @@ stages:
   - lint
   - build
   - tests
+  - sentry
   - deploy
 
 install-dependencies:
@@ -139,6 +140,32 @@ action-security-check:
   except:
     - master
     - production
+
+sentry-release-staging:
+  stage: sentry
+  image: getsentry/sentry-cli
+  script:
+    - sentry-cli releases new -p ${SENTRY_PROJECT} ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8}
+    - sentry-cli releases set-commits --commit "extern / ${SENTRY_PROJECT}@${CI_COMMIT_SHA}" ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8}
+  tags:
+    - docker
+  only:
+    - master
+  except:
+    - schedules
+
+sentry-release-production:
+  stage: sentry
+  image: getsentry/sentry-cli
+  script:
+    - sentry-cli releases finalize ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8}
+    - sentry-cli releases deploys ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8} new --env prod
+  tags:
+    - docker
+  only:
+    - production
+  except:
+    - schedules
 
 build-assets:
   stage: build

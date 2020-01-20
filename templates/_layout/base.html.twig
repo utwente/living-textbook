@@ -16,6 +16,13 @@
 
   {% block default_javascripts %}
     <!-- Default JS -->
+    {% if sentry_dsn is not null %}
+      <script type="text/javascript">
+        window.SENTRY_DSN = '{{ sentry_dsn }}';
+        window.SENTRY_RELEASE = '{{ sentry_release }}';
+      </script>
+    {% endif %}
+
     {{ encore_entry_script_tags('vendor') }}
     {{ encore_entry_script_tags('app') }}
   {% endblock %}

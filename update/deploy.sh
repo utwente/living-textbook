@@ -43,6 +43,15 @@ git submodule init
 git submodule sync
 ssh-agent bash -c 'ssh-add .ssh-token; git pull; git submodule update --recursive'
 
+# Set the current git hash in the local env
+COMMIT_HASH=$(git rev-parse --short=8 HEAD)
+touch -a .env.local # Make sure the file exists
+if grep -xqiE "^COMMIT_HASH=[0-9a-z]+$" .env.local; then
+    sed -i -E "s/^COMMIT_HASH=([0-9a-z]+)$/COMMIT_HASH=${COMMIT_HASH}/i" .env.local
+else
+    echo "COMMIT_HASH=${COMMIT_HASH}" >> .env.local
+fi
+
 # Replace vendors/assets with new files
 paths=(
   "public/build"

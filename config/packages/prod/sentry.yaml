@@ -1,0 +1,2 @@
+sentry:
+  dsn: '%env(SENTRY_DSN)%' # This explicitly enables Sentry for the production environment

@@ -5,10 +5,14 @@ parameters:
 
   database_password: '%env(string:key:database:json:file:resolve:SECRETS_FILE)%'
 
+  env(COMMIT_HASH): '0'
   app_version: '%env(APP_VERSION)%'
+  commit_hash: '%env(COMMIT_HASH)%'
   production_server: '%env(bool:PRODUCTION_SERVER)%'
   exception_receiver: '%env(EXCEPTION_RECEIVER)%'
   exception_sender: '%env(EXCEPTION_SENDER)%'
+
+  sentry_release: '013-living-textbook@%commit_hash%'
 
   env(HTTP_SCHEMA): 'https'
   router.request_context.host: '%env(HTTP_HOST)%'

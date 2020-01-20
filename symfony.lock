@@ -5,6 +5,9 @@
     "bobv/latex-bundle": {
         "version": "v1.3.1"
     },
+    "clue/stream-filter": {
+        "version": "v1.4.1"
+    },
     "components/elfinder": {
         "version": "2.2"
     },
@@ -110,6 +113,15 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.32"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.2"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "helios-ag/fm-elfinder-bundle": {
         "version": "7.0",
         "recipe": {
@@ -158,8 +170,14 @@
     "hoa/zformat": {
         "version": "1.17.01.10"
     },
+    "http-interop/http-factory-guzzle": {
+        "version": "1.0.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "jean85/pretty-package-versions": {
+        "version": "1.2"
     },
     "jms/metadata": {
         "version": "1.6.0"
@@ -203,8 +221,32 @@
     "ocramius/proxy-manager": {
         "version": "2.1.1"
     },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
+    },
     "php": {
         "version": "7.3"
+    },
+    "php-http/client-common": {
+        "version": "2.1.0"
+    },
+    "php-http/discovery": {
+        "version": "1.7.4"
+    },
+    "php-http/guzzle6-adapter": {
+        "version": "v2.0.1"
+    },
+    "php-http/httplug": {
+        "version": "2.1.0"
+    },
+    "php-http/message": {
+        "version": "1.8.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "v1.0.0"
     },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
@@ -224,11 +266,23 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-client": {
+        "version": "1.0.0"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.0.2"
     },
     "psr/simple-cache": {
         "version": "1.0.0"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "robloach/component-installer": {
         "version": "0.2.3"
@@ -253,6 +307,24 @@
             "version": "4.0",
             "ref": "576d653444dade07f272c889d52fe4594caa4fc3"
         }
+    },
+    "sentry/sdk": {
+        "version": "2.1.0"
+    },
+    "sentry/sentry": {
+        "version": "2.3.0"
+    },
+    "sentry/sentry-symfony": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "9746f0823302d7980e5273ef7a69ef3f5ac80914"
+        },
+        "files": [
+            "config/packages/sentry.yaml"
+        ]
     },
     "spatie/pdf-to-image": {
         "version": "1.6.0"
@@ -397,6 +469,9 @@
     },
     "symfony/polyfill-php72": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-uuid": {
+        "version": "v1.13.1"
     },
     "symfony/process": {
         "version": "v3.4.4"
