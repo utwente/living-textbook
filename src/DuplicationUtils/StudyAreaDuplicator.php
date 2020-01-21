@@ -22,6 +22,7 @@ use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -132,7 +133,7 @@ class StudyAreaDuplicator
   /**
    * Duplicates the given study area into the new study area
    *
-   * @throws \Exception
+   * @throws Exception
    */
   public function duplicate()
   {
@@ -176,7 +177,7 @@ class StudyAreaDuplicator
       $this->em->flush();
 
       $this->em->getConnection()->commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $this->removeUploads();
       $this->em->getConnection()->rollBack();
       throw $e;
@@ -461,6 +462,11 @@ class StudyAreaDuplicator
    */
   private function removeUploads(): void
   {
+    if (NULL == $this->newStudyArea->getId()) {
+      // Nothing to remove, as the study area id is not yet set
+      return;
+    }
+
     $fileSystem = new Filesystem();
     $directory  = $this->getStudyAreaDirectory($this->newStudyArea);
     if (!$fileSystem->exists($directory)) {
