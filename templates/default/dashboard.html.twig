@@ -112,6 +112,11 @@
         {% if abbreviationCount > 0 %}</a>{% endif %}
     </li>
     <li>
+      {% if contributorCount > 0 %}<a href="{{ path('app_contributor_list') }}">{% endif %}
+        {{ 'dashboard.contributor-count'|trans({'%count%': contributorCount}) }}
+        {% if contributorCount > 0 %}</a>{% endif %}
+    </li>
+    <li>
       {% if externalResourceCount > 0 %}<a href="{{ path('app_externalresource_list') }}">{% endif %}
         {{ 'dashboard.external-resource-count'|trans({'%count%': externalResourceCount}) }}
         {% if externalResourceCount > 0 %}</a>{% endif %}

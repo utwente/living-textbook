@@ -12,6 +12,7 @@ use App\Form\Authentication\LoginType;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
+use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
@@ -165,6 +166,7 @@ class DefaultController extends AbstractController
    * @param StudyAreaRepository        $studyAreaRepository
    * @param ConceptRepository          $conceptRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
+   * @param ContributorRepository      $contributorRepository
    * @param AbbreviationRepository     $abbreviationRepository
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
@@ -180,7 +182,8 @@ class DefaultController extends AbstractController
    */
   public function dashboard(
       RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
-      ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo, AbbreviationRepository $abbreviationRepository,
+      ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo,
+      ContributorRepository $contributorRepository, AbbreviationRepository $abbreviationRepository,
       ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
       LearningPathRepository $learningPathRepo, UrlChecker $urlChecker, TranslatorInterface $translator)
   {
@@ -237,6 +240,7 @@ class DefaultController extends AbstractController
         'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea),
         'relationCount'         => $conceptRelationRepo->getCountForStudyArea($studyArea),
         'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
+        'contributorCount'      => $contributorRepository->getCountForStudyArea($studyArea),
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
         'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
