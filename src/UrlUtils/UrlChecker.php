@@ -3,6 +3,7 @@
 namespace App\UrlUtils;
 
 use App\Entity\StudyArea;
+use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
@@ -55,6 +56,11 @@ class UrlChecker
   private $studyAreaCache;
 
   /**
+   * @var ContributorRepository
+   */
+  private $contributorRepository;
+
+  /**
    * @var ExternalResourceRepository
    */
   private $externalResourceRepository;
@@ -91,13 +97,16 @@ class UrlChecker
    * @param LearningOutcomeRepository  $learningOutcomeRepository
    * @param StudyAreaRepository        $studyAreaRepository
    * @param LearningPathRepository     $learningPathRepository
+   * @param ContributorRepository      $contributorRepository
    * @param UrlScanner                 $urlScanner
    * @param RouterInterface            $router
    */
-  public function __construct(ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-                              StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository, UrlScanner $urlScanner,
-                              RouterInterface $router)
+  public function __construct(
+      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
+      StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository,
+      ContributorRepository $contributorRepository, UrlScanner $urlScanner, RouterInterface $router)
   {
+    $this->contributorRepository      = $contributorRepository;
     $this->externalResourceRepository = $externalResourceRepository;
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
     $this->studyAreaRepository        = $studyAreaRepository;
@@ -247,6 +256,9 @@ class UrlChecker
     }
     foreach ($this->externalResourceRepository->findForStudyArea($studyArea) as $externalResource) {
       $urls = array_merge($urls, $this->urlScanner->scanExternalResource($externalResource));
+    }
+    foreach ($this->contributorRepository->findForStudyArea($studyArea) as $contributor) {
+      $urls = array_merge($urls, $this->urlScanner->scanContributors($contributor));
     }
     foreach ($this->learningPathRepository->findForStudyArea($studyArea) as $learningPath) {
       $urls = array_merge($urls, $this->urlScanner->scanLearningPath($learningPath));

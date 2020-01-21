@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
+use App\Entity\Contributor;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
@@ -44,6 +45,9 @@ class DefaultController extends AbstractController
 {
   /** @var Concept[] */
   private $concepts;
+
+  /** @var Contributor[] */
+  private $contributors;
 
   /** @var LearningOutcome[] */
   private $learningOutcomes;
@@ -255,17 +259,19 @@ class DefaultController extends AbstractController
    * @param RequestStudyArea           $requestStudyArea
    * @param UrlChecker                 $urlChecker
    * @param ConceptRepository          $conceptRepository
+   * @param ContributorRepository      $contributorRepository
    * @param LearningOutcomeRepository  $learningOutcomeRepository
    * @param ExternalResourceRepository $externalResourceRepository
    * @param LearningPathRepository     $learningPathRepository
    *
    * @return array
    * @throws InvalidArgumentException
-   *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
-  public function urlOverview(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
-                              LearningOutcomeRepository $learningOutcomeRepository, ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
+  public function urlOverview(
+      RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
+      ContributorRepository $contributorRepository, LearningOutcomeRepository $learningOutcomeRepository,
+      ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $urls      = $urlChecker->getUrlsForStudyArea($studyArea);
@@ -277,6 +283,7 @@ class DefaultController extends AbstractController
 
     // Get linked objects
     $this->concepts          = $this->mapArrayById($conceptRepository->findForStudyAreaOrderedByName($studyArea));
+    $this->contributors      = $this->mapArrayById($contributorRepository->findForStudyArea($studyArea));
     $this->learningOutcomes  = $this->mapArrayById($learningOutcomeRepository->findForStudyArea($studyArea));
     $this->externalResources = $this->mapArrayById($externalResourceRepository->findForStudyArea($studyArea));
     $this->learningPaths     = $this->mapArrayById($learningPathRepository->findForStudyArea($studyArea));
@@ -297,6 +304,7 @@ class DefaultController extends AbstractController
         'goodExternalUrls'      => $goodExternalUrls,
         'objects'               => [
             'concepts'          => $this->concepts,
+            'contributors'      => $this->contributors,
             'learningOutcomes'  => $this->learningOutcomes,
             'externalResources' => $this->externalResources,
             'learningPaths'     => $this->learningPaths,
@@ -523,6 +531,21 @@ class DefaultController extends AbstractController
             if ($aId === $bId) return strcasecmp($aPath, $bPath);
 
             return strcasecmp($this->externalResources[$aId]->getTitle(), $this->externalResources[$bId]->getTitle());
+          default:
+            return -1;
+        }
+      case Contributor::class:
+        switch ($bClass) {
+          case StudyArea::class:
+          case Concept::class:
+          case LearningOutcome::class:
+          case LearningPath::class:
+          case ExternalResource::class:
+            return 1;
+          case Contributor::class:
+            if ($aId === $bId) return strcasecmp($aPath, $bPath);
+
+            return strcasecmp($this->contributors[$aId]->getName(), $this->contributors[$bId]->getName());
           default:
             return -1;
         }

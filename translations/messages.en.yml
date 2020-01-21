@@ -634,6 +634,7 @@ url:
   bad-internal: 'Broken internal URLs'
   bad-internal-wrong: 'Internal URLs linking to the wrong study area'
   concept-path: 'Concept: %name% - %path%'
+  contributor-path: 'Contributor: %name% - %path%'
   external-resource-path: 'External resource: %title% - %path%'
   good: 'Healthy'
   good-external: 'Healthy external URLs'

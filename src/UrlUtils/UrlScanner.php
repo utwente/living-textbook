@@ -3,6 +3,7 @@
 namespace App\UrlUtils;
 
 use App\Entity\Concept;
+use App\Entity\Contributor;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
@@ -96,6 +97,24 @@ class UrlScanner
 
     if ($externalResource->getUrl()) {
       $urls[] = $this->createUrl($externalResource->getUrl(), new UrlContext(ExternalResource::class, $externalResource->getId(), 'url'));
+    }
+
+    return $urls;
+  }
+
+  /**
+   * Scan contributors for inline links, and add the contributor url if set
+   *
+   * @param Contributor $contributor
+   *
+   * @return Url[]
+   */
+  public function scanContributors(Contributor $contributor): array
+  {
+    $urls = $this->scanText($contributor->getDescription(), new UrlContext(Contributor::class, $contributor->getId(), 'description'));
+
+    if ($contributor->getUrl()) {
+      $urls[] = $this->createUrl($contributor->getUrl(), new UrlContext(Contributor::class, $contributor->getId(), 'url'));
     }
 
     return $urls;
