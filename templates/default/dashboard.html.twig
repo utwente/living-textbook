@@ -277,6 +277,11 @@
     </script>
 
     {{ form_end(studyAreaForm) }}
+  {% elseif app.user %}
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
+
+    <h4>{{ 'dashboard.study-area-create'|trans }}</h4>
+    {{ buttons.add_button(path('app_studyarea_add')) }}
   {% endif %}
 {% endblock %}
 
@@ -286,7 +291,6 @@
     <div class="card container-card">
       <div class="card-body">
         {% if app.user %}
-          {% import '_macro/_action_buttons.html.twig' as buttons %}
           {{ buttons.header() }}
           {{ buttons.add_button(path('app_studyarea_add')) }}
           {% if is_granted("ROLE_SUPER_ADMIN") %}

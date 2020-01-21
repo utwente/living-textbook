@@ -172,6 +172,7 @@ dashboard:
   search-concept: 'Search for concept'
   select-one: 'Select one...'
   study-area-contains: 'This study area has:'
+  study-area-create: 'Create new study area'
   study-area-frozen: 'The data in this study area has been locked since %since%.'
   study-area-landing: 'Select a study area to start with'
   study-area-open-access: 'Open access content'
