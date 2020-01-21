@@ -4,6 +4,7 @@ namespace App\Form\Concept;
 
 use App\Entity\Abbreviation;
 use App\Entity\Concept;
+use App\Entity\Contributor;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
@@ -16,6 +17,7 @@ use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
+use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -166,6 +168,17 @@ class EditConceptType extends AbstractType
     }
 
     $builder
+        ->add('contributors', EntityType::class, [
+            'label'         => 'concept.contributors',
+            'class'         => Contributor::class,
+            'choice_label'  => 'name',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (ContributorRepository $contributorRepository) use ($concept) {
+              return $contributorRepository->findForStudyAreaQb($concept->getStudyArea());
+            },
+            'select2'       => true,
+        ])
         ->add('submit', SaveType::class, [
             'locate_static'       => true,
             'enable_cancel'       => true,

@@ -118,6 +118,13 @@ class StudyArea
   private $externalResources;
 
   /**
+   * @var Collection|Contributor[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\Contributor", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private $contributors;
+
+  /**
    * @var Collection|LearningOutcome[]
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningOutcome", mappedBy="studyArea", fetch="EXTRA_LAZY")
@@ -495,6 +502,9 @@ class StudyArea
     }
     foreach ($this->externalResources as $externalResource) {
       $check($externalResource);
+    }
+    foreach ($this->contributors as $contributor) {
+      $check($contributor);
     }
     foreach ($this->learningOutcomes as $learningOutcome) {
       $check($learningOutcome);

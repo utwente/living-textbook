@@ -53,6 +53,7 @@
     {{ macros.data_outgoing_relations(concept.outgoingRelations) }}
     {{ macros.data_incoming_relations(concept.incomingRelations) }}
     {{ macros.data_learning_paths(learningPaths) }}
+    {{ macros.data_contributors(concept.contributors) }}
 
     {% if app.user %}
       {{ annotations() }}

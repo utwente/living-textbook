@@ -76,6 +76,26 @@
   {% endif %}
 {% endmacro %}
 
+{% macro data_contributors(data) %}
+  {% if data|length > 0 %}
+    <h2>{{ 'concept.contributors'|trans }}</h2>
+    <ul>
+      {% for contributor in data %}
+        <li>
+          {% if contributor.url is not empty %}
+            <a href="{{ contributor.url }}" target="_blank">{{ contributor.name }}</a>
+          {% else %}
+            {{ contributor.name }}
+          {% endif %}
+          {% if contributor.description is not null %}
+            <br/>{{ contributor.description }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
 {% macro data_self_assessment(data) %}
   {% set title = 'concept.self-assessment'|trans %}
   {% set annotationContext = 'self-assessment' %}

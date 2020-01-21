@@ -86,6 +86,7 @@ browser:
 concept:
   add-title: 'Add new concept'
   concept: 'Concept'
+  contributors: 'Contributors'
   definition: 'Definition'
   edit-title: 'Edit concept "%item%"'
   examples: 'Examples'
@@ -114,6 +115,21 @@ concept:
   synonyms: 'Synonyms'
   theory-explanation: 'Explanation'
   updated: 'Concept "%item%" has been successfully updated.'
+
+contributor:
+  add-title: 'Add new contributor'
+  description: 'Description'
+  edit-title: 'Edit contributor "%item%"'
+  list-title: 'Contributor list'
+  name: 'Name'
+  no-url: 'No url'
+  saved: 'Contributor "%item%" has been saved successfully.'
+  remove: 'Remove contributor "%item%"'
+  remove-concepts: 'Note that the contributor will also be removed from the following concepts:'
+  remove-text: 'Are you sure you want to remove the contributor "%item%"?'
+  removed: 'Contributor "%item%" has been removed successfully.'
+  updated: 'Contributor "%item%" has been successfully updated.'
+  url: 'Url'
 
 data:
   concepts: 'Concepts'
@@ -367,6 +383,7 @@ menu:
   analytics-dashboard: 'Analytics dashboard'
   change-password: 'Change password'
   config: 'Configuration'
+  contributors: 'Contributors'
   data: 'Data'
   download: 'Export'
   duplicate: 'Duplicate'

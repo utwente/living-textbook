@@ -1,0 +1,20 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'contributor.remove'|trans({"%item%": contributor.name}) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'contributor.remove-text'|trans({"%item%": contributor.name}) }}</p>
+
+  {% if contributor.concepts|length > 0 %}
+    <p>{{ 'contributor.remove-concepts'|trans }}</p>
+    <ul>
+      {% for concept in contributor.concepts %}
+        <li>{{ concept.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {{ form(form) }}
+{% endblock %}

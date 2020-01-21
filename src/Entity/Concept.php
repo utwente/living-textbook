@@ -18,6 +18,7 @@ use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -164,6 +165,20 @@ class Concept implements ISearchable
   private $externalResources;
 
   /**
+   * @var Contributor[]|Collection
+   *
+   * @ORM\ManyToMany(targetEntity="App\Entity\Contributor", inversedBy="concepts")
+   * @ORM\JoinTable(name="concepts_contributors",
+   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="contributor_id", referencedColumnName="id")}
+   *      )
+   * @ORM\OrderBy({"name" = "ASC"})
+   *
+   * @Assert\NotNull()
+   */
+  private $contributors;
+
+  /**
    * @var DataSelfAssessment
    *
    * @ORM\OneToOne(targetEntity="App\Entity\Data\DataSelfAssessment", cascade={"persist", "remove"})
@@ -238,6 +253,9 @@ class Concept implements ISearchable
     // External resources
     $this->externalResources = new ArrayCollection();
 
+    // Contributors
+    $this->contributors = new ArrayCollection();
+
     // Initialize data
     $this->introduction      = new DataIntroduction();
     $this->theoryExplanation = new DataTheoryExplanation();
@@ -281,6 +299,8 @@ class Concept implements ISearchable
    * @param Collection $values
    * @param string     $conceptRetriever
    * @param string     $positionSetter
+   *
+   * @throws Exception
    */
   private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter)
   {
@@ -365,6 +385,9 @@ class Concept implements ISearchable
     // Check other data
     foreach ($this->getExternalResources() as $externalResource) {
       $check($externalResource);
+    }
+    foreach ($this->getContributors() as $contributor) {
+      $check($contributor);
     }
     foreach ($this->getIncomingRelations() as $incomingRelation) {
       $check($incomingRelation);
@@ -671,7 +694,6 @@ class Concept implements ISearchable
     return $this->externalResources;
   }
 
-
   /**
    * @param ExternalResource $externalResource
    *
@@ -692,6 +714,38 @@ class Concept implements ISearchable
   public function removeExternalResource(ExternalResource $externalResource): Concept
   {
     $this->externalResources->removeElement($externalResource);
+
+    return $this;
+  }
+
+  /**
+   * @return Contributor[]|Collection
+   */
+  public function getContributors()
+  {
+    return $this->contributors;
+  }
+
+  /**
+   * @param Contributor $contributor
+   *
+   * @return Concept
+   */
+  public function addContributor(Contributor $contributor): Concept
+  {
+    $this->contributors->add($contributor);
+
+    return $this;
+  }
+
+  /**
+   * @param Contributor $contributor
+   *
+   * @return Concept
+   */
+  public function removeContributor(Contributor $contributor): Concept
+  {
+    $this->contributors->removeElement($contributor);
 
     return $this;
   }
