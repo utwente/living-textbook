@@ -121,6 +121,8 @@ class StudyAreaRepository extends ServiceEntityRepository
             $qb->expr()->eq('sa.accessType', ':public'),
             $qb->expr()->eq('u', ':user')
         ))
+        ->orWhere('sa.openAccess = :openAccess')
+        ->setParameter('openAccess', true)
         ->setParameter('user', $user)
         ->setParameter('public', StudyArea::ACCESS_PUBLIC);
   }
