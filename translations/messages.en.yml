@@ -472,7 +472,8 @@ relation:
 search:
   data: 'Data'
   found-in: 'Found in'
-  invalid-search: 'Invalid search term, try again'
+  invalid-short: 'Your search term is too short. It should have 3 characters or more.'
+  invalid-long: 'Your search term is too long. It should have 100 characters or less.'
   no-results: 'No results found in %item%.'
   no-results-anywhere: 'No results found.'
   placeholder: 'Search for...'

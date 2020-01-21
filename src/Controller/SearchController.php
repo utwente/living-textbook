@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Annotation;
 use App\Entity\Contracts\ISearchable;
+use App\Entity\User;
 use App\Repository\AbbreviationRepository;
 use App\Repository\AnnotationRepository;
 use App\Repository\ConceptRepository;
@@ -13,11 +14,7 @@ use App\Request\Wrapper\RequestStudyArea;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -29,13 +26,12 @@ class SearchController extends AbstractController
 {
 
   /**
-   * @Route("/", name="search")
+   * @Route("/{s}", name="search", requirements={"s"=".*"}, defaults={"s"=null})
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Request                    $request
+   * @param string|null                $s
    * @param RequestStudyArea           $requestStudyArea
-   * @param FormFactoryInterface       $formFactory
    * @param TranslatorInterface        $translator
    * @param AbbreviationRepository     $abbreviationRepository
    * @param ConceptRepository          $conceptRepository
@@ -45,33 +41,31 @@ class SearchController extends AbstractController
    *
    * @return array
    */
-  public function search(Request $request, RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory,
-                         TranslatorInterface $translator, AbbreviationRepository $abbreviationRepository,
-                         ConceptRepository $conceptRepository, ExternalResourceRepository $externalResourceRepository,
-                         LearningOutcomeRepository $learningOutcomeRepository, AnnotationRepository $annotationRepository)
+  public function search(
+      ?string $s, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
+      AbbreviationRepository $abbreviationRepository, ConceptRepository $conceptRepository,
+      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
+      AnnotationRepository $annotationRepository)
   {
-    // Create the search form
-    $form = $this->createSearchForm($formFactory, $translator);
-    $form->handleRequest($request);
+    $result = [];
 
-    $result = [
-        'form' => $form->createView(),
-    ];
-
-    // Check for submission
-    if (!$form->isSubmitted()) {
+    if (NULL === $s) {
       return $result;
     }
 
-    // Check for valid search term
-    if (!$form->isValid()) {
-      $this->addFlash('notice', $translator->trans('search.invalid-search'));
+    // Verify data
+    if (strlen($s) < 3) {
+      $result['error'] = $translator->trans('search.invalid-short');
+    } elseif (strlen($s) > 100) {
+      $result['error'] = $translator->trans('search.invalid-long');
+    }
 
+    if (array_key_exists('error', $result)) {
       return $result;
     }
 
     $studyArea        = $requestStudyArea->getStudyArea();
-    $search           = mb_strtolower($form->getData()['s']);
+    $search           = mb_strtolower($s);
     $result['search'] = $search;
 
     // We just retrieve all data, to filter them locally on the content.
@@ -82,6 +76,7 @@ class SearchController extends AbstractController
 
     // Retrieve annotation data, which is easier to do here
     $user = $this->getUser();
+    assert($user instanceof User);
     if ($user) {
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
@@ -185,49 +180,6 @@ class SearchController extends AbstractController
         'property' => $property,
         'data'     => $data,
     ];
-  }
-
-  /**
-   * @Template()
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
-   *
-   * @param FormFactoryInterface $formFactory
-   * @param TranslatorInterface  $translator
-   *
-   * @return array
-   */
-  public function searchForm(FormFactoryInterface $formFactory, TranslatorInterface $translator)
-  {
-    return [
-        'form' => $this->createSearchForm($formFactory, $translator, false)->createView(),
-    ];
-  }
-
-  /**
-   * @param FormFactoryInterface $formFactory
-   * @param TranslatorInterface  $translator
-   * @param mixed                $label
-   *
-   * @return \Symfony\Component\Form\FormInterface
-   */
-  private function createSearchForm(FormFactoryInterface $formFactory, TranslatorInterface $translator, $label = 'search.search'): \Symfony\Component\Form\FormInterface
-  {
-    return $formFactory->createNamedBuilder('search_form')
-        ->setAction($this->generateUrl('search'))
-        ->add('s', TextType::class, [
-            'label'       => $label,
-            'hide_label'  => $label === false,
-            'attr'        => [
-                'placeholder' => 'search.placeholder',
-            ],
-            'constraints' => [
-                new Length([
-                    'min' => 3,
-                    'max' => 100,
-                ]),
-            ],
-        ])
-        ->getForm();
   }
 
 }

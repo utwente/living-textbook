@@ -6,7 +6,7 @@
 
 {% block content %}
 
-  {{ form(form) }}
+  {{ include('search/search_form.html.twig', {showLabel: false}) }}
 
   {% if search is defined %}
 
