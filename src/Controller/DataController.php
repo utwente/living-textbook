@@ -19,6 +19,7 @@ use App\Form\Data\JsonUploadType;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
+use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
@@ -371,6 +372,7 @@ class DataController extends AbstractController
    * @param RouterInterface            $router
    * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
+   * @param ContributorRepository      $contributorRepository
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    * @param LearningPathRepository     $learningPathRepo
@@ -378,11 +380,12 @@ class DataController extends AbstractController
    * @return array|Response
    * @throws \Exception
    */
-  public function duplicate(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
-                            EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
-                            AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-                            ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                            LearningPathRepository $learningPathRepo)
+  public function duplicate(
+      Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
+      EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
+      AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
+      ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
+      LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo)
   {
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
@@ -414,7 +417,7 @@ class DataController extends AbstractController
       // Duplicate the data
       $duplicator = new StudyAreaDuplicator(
           $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router,
-          $abbreviationRepo, $conceptRelationRepo, $externalResourceRepo, $learningOutcomeRepo,
+          $abbreviationRepo, $conceptRelationRepo, $contributorRepository, $externalResourceRepo, $learningOutcomeRepo,
           $learningPathRepo, $studyAreaToDuplicate, $newStudyArea, $concepts->toArray());
       $duplicator->duplicate();
 

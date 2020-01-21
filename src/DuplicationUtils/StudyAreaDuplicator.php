@@ -5,6 +5,7 @@ namespace App\DuplicationUtils;
 use App\Entity\Abbreviation;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\Contributor;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
@@ -13,6 +14,7 @@ use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
+use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
@@ -47,6 +49,9 @@ class StudyAreaDuplicator
   /** @var ConceptRelationRepository */
   private $conceptRelationRepo;
 
+  /** @var ContributorRepository */
+  private $contributorRepo;
+
   /** @var ExternalResourceRepository */
   private $externalResourceRepo;
 
@@ -74,6 +79,9 @@ class StudyAreaDuplicator
   /** @var ExternalResource[] Array of duplicated external resources ([original id] = new external resource) */
   private $newExternalResources = [];
 
+  /** @var Contributor[] Array of duplicated contributors ([original id] = new external resource) */
+  private $newContributors = [];
+
   /** @var Abbreviation[] Array of duplicated abbreviations ([original id] = new abbreviation) */
   private $newAbbreviations = [];
 
@@ -89,6 +97,7 @@ class StudyAreaDuplicator
    * @param RouterInterface            $router
    * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
+   * @param ContributorRepository      $contributorRepository
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    *
@@ -97,11 +106,12 @@ class StudyAreaDuplicator
    * @param StudyArea                  $newStudyArea         New study area
    * @param Concept[]                  $concepts             Concepts to copy
    */
-  public function __construct(string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
-                              AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-                              ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-                              LearningPathRepository $learningPathRepository, StudyArea $studyAreaToDuplicate,
-                              StudyArea $newStudyArea, array $concepts)
+  public function __construct(
+      string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
+      AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
+      ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
+      LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepository,
+      StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
   {
     $this->urlContext           = new UrlContext(self::class);
     $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
@@ -110,6 +120,7 @@ class StudyAreaDuplicator
     $this->router               = $router;
     $this->abbreviationRepo     = $abbreviationRepo;
     $this->conceptRelationRepo  = $conceptRelationRepo;
+    $this->contributorRepo      = $contributorRepository;
     $this->externalResourceRepo = $externalResourceRepo;
     $this->learningOutcomeRepo  = $learningOutcomeRepo;
     $this->learningPathRepo     = $learningPathRepository;
@@ -136,6 +147,9 @@ class StudyAreaDuplicator
 
       // Duplicate the study area external resources
       $this->duplicateExternalResources();
+
+      // Duplicate the study area contributors
+      $this->duplicateContributors();
 
       // Duplicate the study area abbreviations
       $this->duplicateAbbreviations();
@@ -252,6 +266,25 @@ class StudyAreaDuplicator
   }
 
   /**
+   * Duplicate the contributors
+   */
+  private function duplicateContributors(): void
+  {
+    $contributors = $this->contributorRepo->findForStudyArea($this->studyAreaToDuplicate);
+    foreach ($contributors as $contributor) {
+      $newContributor = (new Contributor())
+          ->setStudyArea($this->newStudyArea)
+          ->setName($contributor->getName())
+          ->setDescription($contributor->getDescription())
+          ->setUrl($contributor->getUrl())
+          ->setBroken($contributor->isBroken());
+
+      $this->em->persist($newContributor);
+      $this->newContributors[$contributor->getId()] = $newContributor;
+    }
+  }
+
+  /**
    * Duplicate the abbreviations
    */
   private function duplicateAbbreviations(): void
@@ -295,6 +328,11 @@ class StudyAreaDuplicator
       // Set external resources
       foreach ($concept->getExternalResources() as $oldExternalResource) {
         $newConcept->addExternalResource($this->newExternalResources[$oldExternalResource->getId()]);
+      }
+
+      // Set contributors
+      foreach ($concept->getContributors() as $oldContributor) {
+        $newConcept->addContributor($this->newContributors[$oldContributor->getId()]);
       }
 
       // Save current prior knowledge to update them later when the concept map is complete
@@ -377,6 +415,13 @@ class StudyAreaDuplicator
       $newExternalResource
           ->setDescription($this->updateUrls($newExternalResource->getDescription()))
           ->setUrl($this->updateUrls($newExternalResource->getUrl()));
+    }
+
+    // Update contributors
+    foreach ($this->newContributors as $newContributor) {
+      $newContributor
+          ->setDescription($this->updateUrls($newContributor->getDescription()))
+          ->setUrl($this->updateUrls($newContributor->getUrl()));
     }
 
     // Update concepts
