@@ -434,9 +434,8 @@ class DefaultController extends AbstractController
   private function mapArrayById(array $objects): array
   {
     $objectIds = array_map([$this, 'findId'], $objects);
-    $mapped    = array_combine($objectIds, $objects);
 
-    return $mapped;
+    return array_combine($objectIds, $objects);
   }
 
   /**

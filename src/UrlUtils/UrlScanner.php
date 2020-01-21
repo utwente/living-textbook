@@ -60,7 +60,7 @@ class UrlScanner
    */
   public function scanStudyArea(StudyArea $studyArea): array
   {
-    return $this->scanText($studyArea->getDescription(), new UrlContext(StudyArea::class, $studyArea->getId(), "description"));
+    return $this->scanText($studyArea->getDescription(), new UrlContext(StudyArea::class, $studyArea->getId(), 'description'));
   }
 
   /**
@@ -75,16 +75,16 @@ class UrlScanner
     $id = $concept->getId();
 
     return array_values(array_unique(array_merge(
-        $this->scanText($concept->getIntroduction()->getText(), new UrlContext(Concept::class, $id, "introduction")),
-        $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, $id, "theoryExplanation")),
-        $this->scanText($concept->getHowTo()->getText(), new UrlContext(Concept::class, $id, "howTo")),
-        $this->scanText($concept->getExamples()->getText(), new UrlContext(Concept::class, $id, "examples")),
-        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, $id, "selfAssessment"))
+        $this->scanText($concept->getIntroduction()->getText(), new UrlContext(Concept::class, $id, 'introduction')),
+        $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, $id, 'theoryExplanation')),
+        $this->scanText($concept->getHowTo()->getText(), new UrlContext(Concept::class, $id, 'howTo')),
+        $this->scanText($concept->getExamples()->getText(), new UrlContext(Concept::class, $id, 'examples')),
+        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, $id, 'selfAssessment'))
     )));
   }
 
   /**
-   * Scan external resources for inline links
+   * Scan external resources for inline links, and add the resource url if set
    *
    * @param ExternalResource $externalResource
    *
@@ -92,7 +92,13 @@ class UrlScanner
    */
   public function scanExternalResource(ExternalResource $externalResource): array
   {
-    return $this->scanText($externalResource->getDescription(), new UrlContext(ExternalResource::class, $externalResource->getId(), "description"));
+    $urls = $this->scanText($externalResource->getDescription(), new UrlContext(ExternalResource::class, $externalResource->getId(), 'description'));
+
+    if ($externalResource->getUrl()) {
+      $urls[] = $this->createUrl($externalResource->getUrl(), new UrlContext(ExternalResource::class, $externalResource->getId(), 'url'));
+    }
+
+    return $urls;
   }
 
   /**
@@ -104,7 +110,7 @@ class UrlScanner
    */
   public function scanLearningOutcome(LearningOutcome $learningOutcome): array
   {
-    return $this->scanText($learningOutcome->getText(), new UrlContext(LearningOutcome::class, $learningOutcome->getId(), "text"));
+    return $this->scanText($learningOutcome->getText(), new UrlContext(LearningOutcome::class, $learningOutcome->getId(), 'text'));
   }
 
   /**
@@ -116,7 +122,7 @@ class UrlScanner
    */
   public function scanLearningPath(LearningPath $learningPath): array
   {
-    return $this->scanText($learningPath->getIntroduction(), new UrlContext(LearningPath::class, $learningPath->getId(), "introduction"));
+    return $this->scanText($learningPath->getIntroduction(), new UrlContext(LearningPath::class, $learningPath->getId(), 'introduction'));
   }
 
   /**
