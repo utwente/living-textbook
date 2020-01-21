@@ -113,7 +113,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
       $studyAreaId = NULL;
 
       // Try to retrieve it from the session
-      if ($session->has(self::STUDY_AREA_KEY)) {
+      if ($session && $session->has(self::STUDY_AREA_KEY)) {
         $studyAreaId = $session->get(self::STUDY_AREA_KEY);
 
         // Check whether it actually still exists, remove from session otherwise
@@ -144,7 +144,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     if ($this->studyAreaId !== $studyAreaId) {
       $this->studyArea   = NULL;
       $this->studyAreaId = $studyAreaId;
-      $session->set(self::STUDY_AREA_KEY, $studyAreaId);
+      if ($session) {
+        $session->set(self::STUDY_AREA_KEY, $studyAreaId);
+      }
     }
 
     // Inject this into the router context
