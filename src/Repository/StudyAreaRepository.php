@@ -6,9 +6,9 @@ use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class StudyAreaRepository extends ServiceEntityRepository
@@ -17,7 +17,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   /** @var AuthorizationCheckerInterface */
   private $auth;
 
-  public function __construct(RegistryInterface $registry, AuthorizationCheckerInterface $authorizationChecker)
+  public function __construct(ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker)
   {
     parent::__construct($registry, StudyArea::class);
 

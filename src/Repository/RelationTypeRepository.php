@@ -6,11 +6,11 @@ use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class RelationTypeRepository extends ServiceEntityRepository
 {
-  public function __construct(RegistryInterface $registry)
+  public function __construct(ManagerRegistry $registry)
   {
     parent::__construct($registry, RelationType::class);
   }

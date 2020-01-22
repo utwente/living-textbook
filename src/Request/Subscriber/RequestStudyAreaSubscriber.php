@@ -9,8 +9,8 @@ use App\Request\Wrapper\RequestStudyArea;
 use ReflectionException;
 use ReflectionMethod;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -91,9 +91,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   /**
    * Determine the study area for this request
    *
-   * @param FilterControllerEvent $event
+   * @param ControllerEvent $event
    */
-  public function determineStudyArea(FilterControllerEvent $event)
+  public function determineStudyArea(ControllerEvent $event)
   {
     $request = $event->getRequest();
     $session = $request->getSession();
@@ -156,9 +156,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   /**
    * Inject the StudyArea in the controller arguments when required
    *
-   * @param FilterControllerArgumentsEvent $event
+   * @param ControllerArgumentsEvent $event
    */
-  public function injectStudyAreaInControllerArguments(FilterControllerArgumentsEvent $event)
+  public function injectStudyAreaInControllerArguments(ControllerArgumentsEvent $event)
   {
     if ($this->studyAreaId === NULL) {
       // Check for session value
