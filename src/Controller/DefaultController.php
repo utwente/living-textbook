@@ -90,6 +90,12 @@ class DefaultController extends AbstractController
     // Retrieve actual study area from wrapper
     $studyArea = $requestStudyArea->getStudyArea();
 
+    // Validate authentication
+    if (!$this->isGranted('STUDYAREA_SHOW', $studyArea)) {
+      // Forward to dashboard
+      return $this->redirectToRoute('app_default_landing');
+    }
+
     return [
         'studyArea' => $studyArea,
         'pageUrl'   => $pageUrl != ''
