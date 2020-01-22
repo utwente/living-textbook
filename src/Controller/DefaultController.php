@@ -123,6 +123,7 @@ class DefaultController extends AbstractController
   {
     $user    = $this->getUser();
     $session = $request->getSession();
+    assert($user === NULL || $user instanceof User);
 
     // When there is no user, render the login form
     if (!$user) {
@@ -149,7 +150,7 @@ class DefaultController extends AbstractController
     }
 
     // Retrieve available study areas (not authenticated users can have them as well!)
-    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
+    $studyAreas = $studyAreaRepository->getVisible($user);
 
     // Only show select form when there is more than 1 visible study area
     $studyAreaCount = count($studyAreas);

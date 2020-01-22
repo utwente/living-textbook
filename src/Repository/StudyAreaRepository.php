@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class StudyAreaRepository extends ServiceEntityRepository
@@ -16,12 +17,19 @@ class StudyAreaRepository extends ServiceEntityRepository
 
   /** @var AuthorizationCheckerInterface */
   private $auth;
+  /**
+   * @var TokenStorageInterface
+   */
+  private $tokenStorage;
 
-  public function __construct(ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker)
+  public function __construct(
+      ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker,
+      TokenStorageInterface $tokenStorage)
   {
     parent::__construct($registry, StudyArea::class);
 
-    $this->auth = $authorizationChecker;
+    $this->auth         = $authorizationChecker;
+    $this->tokenStorage = $tokenStorage;
   }
 
   /**
@@ -101,7 +109,7 @@ class StudyAreaRepository extends ServiceEntityRepository
         ->addOrderBy('sa.name', 'ASC');
 
     // Return everything for super admins
-    if ($this->auth->isGranted('ROLE_SUPER_ADMIN')) {
+    if ($this->tokenStorage->getToken() && $this->auth->isGranted('ROLE_SUPER_ADMIN')) {
       return $qb;
     }
 
