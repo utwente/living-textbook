@@ -66,26 +66,51 @@
         <a class="nav-link" href="{{ path('app_default_dashboard') }}">{{ 'app.dashboard'|trans }}</a>
       </li>
 
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" id="show-content-menu">
         <a class="nav-link dropdown-toggle" href="#" id="edit-dropdown" role="button" data-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
           {{ 'menu.show'|trans }}
         </a>
         <div class="dropdown-menu" aria-labelledby="edit-dropdown">
-          <a class="dropdown-item"
-             href="{{ path('app_concept_list') }}">{{ 'menu.concept'|trans }}</a>
-          <a class="dropdown-item"
-             href="{{ path('app_learningpath_list') }}">{{ 'menu.learning-paths'|trans }}</a>
-          <a class="dropdown-item"
-             href="{{ path('app_abbreviation_list') }}">{{ 'menu.abbreviations'|trans }}</a>
-          <a class="dropdown-item"
-             href="{{ path('app_contributor_list') }}">{{ 'menu.contributors'|trans }}</a>
-          <a class="dropdown-item"
-             href="{{ path('app_externalresource_list') }}">{{ 'menu.external-resources'|trans }}</a>
-          <a class="dropdown-item"
-             href="{{ path('app_learningoutcome_list') }}">{{ 'menu.learning-outcomes'|trans }}</a>
+          {% set anyContent = false %}
+          {% if is_granted('MENU_CONCEPTS', _twigStudyArea) %}
+            {% set anyContent = true %}
+            <a class="dropdown-item"
+               href="{{ path('app_concept_list') }}">{{ 'menu.concept'|trans }}</a>
+          {% endif %}
+          {% if is_granted('MENU_LEARNING_PATHS', _twigStudyArea) %}
+            {% set anyContent = true %}
+            <a class="dropdown-item"
+               href="{{ path('app_learningpath_list') }}">{{ 'menu.learning-paths'|trans }}</a>
+          {% endif %}
+          {% if is_granted('MENU_ABBREVIATIONS', _twigStudyArea) %}
+            {% set anyContent = true %}
+            <a class="dropdown-item"
+               href="{{ path('app_abbreviation_list') }}">{{ 'menu.abbreviations'|trans }}</a>
+          {% endif %}
+          {% if is_granted('MENU_CONTRIBUTORS', _twigStudyArea) %}
+            {% set anyContent = true %}
+            <a class="dropdown-item"
+               href="{{ path('app_contributor_list') }}">{{ 'menu.contributors'|trans }}</a>
+          {% endif %}
+          {% if is_granted('MENU_EXTERNAL_RESOURCES', _twigStudyArea) %}
+            {% set anyContent = true %}
+            <a class="dropdown-item"
+               href="{{ path('app_externalresource_list') }}">{{ 'menu.external-resources'|trans }}</a>
+          {% endif %}
+          {% if is_granted('MENU_LEARNING_OUTCOMES', _twigStudyArea) %}
+            {% set anyContent = true %}
+            <a class="dropdown-item"
+               href="{{ path('app_learningoutcome_list') }}">{{ 'menu.learning-outcomes'|trans }}</a>
+          {% endif %}
         </div>
       </li>
+      {% if not anyContent %}
+        <script type="text/javascript">
+          {# Remove the menu if there is absolutely no content #}
+          $('#show-content-menu').remove();
+        </script>
+      {% endif %}
 
       {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">

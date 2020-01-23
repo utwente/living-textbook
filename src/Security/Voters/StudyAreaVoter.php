@@ -20,6 +20,14 @@ class StudyAreaVoter extends Voter
   const ANNOTATE = 'STUDYAREA_ANNOTATE';
   const PRINTER = 'STUDYAREA_PRINT';
 
+  const SUPPORTED_ATTRIBUTES = [
+      self::OWNER,
+      self::SHOW,
+      self::EDIT,
+      self::ANNOTATE,
+      self::PRINTER,
+  ];
+
   /** @var AccessDecisionManagerInterface */
   private $decisionManager;
 
@@ -43,7 +51,7 @@ class StudyAreaVoter extends Voter
    */
   protected function supports($attribute, $subject)
   {
-    if (!in_array($attribute, $this->supportedAttributes())) {
+    if (!in_array($attribute, self::SUPPORTED_ATTRIBUTES)) {
       return false;
     }
 
@@ -85,7 +93,9 @@ class StudyAreaVoter extends Voter
     // Convert study area if required
     if ($subject instanceof RequestStudyArea) {
       // Check for value, otherwise deny access
-      if (!$subject->hasValue()) return false;
+      if (!$subject->hasValue()) {
+        return false;
+      }
 
       $subject = $subject->getStudyArea();
     }
@@ -115,19 +125,5 @@ class StudyAreaVoter extends Voter
     }
 
     throw new LogicException('This code should not be reached!');
-  }
-
-  /**
-   * @return array
-   */
-  private function supportedAttributes()
-  {
-    return [
-        self::OWNER,
-        self::SHOW,
-        self::EDIT,
-        self::ANNOTATE,
-        self::PRINTER,
-    ];
   }
 }
