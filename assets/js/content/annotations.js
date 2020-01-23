@@ -170,7 +170,7 @@
 
     // Register events on the window object
     $(window)
-    // Hook into mouse events to show correct popup
+        // Hook into mouse events to show correct popup
         .on('mousedown', function () {
           mouseDown = true;
         })
@@ -1365,7 +1365,7 @@
     $elem.find('.remove .fa-trash')
         .removeClass('fa-trash')
         .addClass('fa-spin')
-        .addClass('fa-spinner');
+        .addClass('fa-circle-o-notch');
     $elem.css('opacity', 0.5);
     $elem.off('click');
 
@@ -1397,10 +1397,10 @@
           $failedModal.modal();
 
           // Rebind handlers/reshow icons
-          $elem.find('.remove .fa-spinner')
+          $elem.find('.remove .fa-circle-o-notch')
               .addClass('fa-trash')
               .removeClass('fa-spin')
-              .removeClass('fa-spinner');
+              .removeClass('fa-circle-o-notch');
           $elem.css('opacity', 1);
           $elem.on('click', function () {
             removeAnnotationComment($visibilityInputs, $elem, annotationId, commentId);

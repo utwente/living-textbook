@@ -7,7 +7,7 @@
     <button class="btn btn-dark annotations-button-mark" data-toggle="tooltip"
             title="{{ 'annotations.create-mark'|trans }}">
       <i class="fa fa-fw fa-flag"></i>
-      <i class="fa fa-fw fa-spinner fa-spin"></i>
+      <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
     </button>
   </div>
 {% endmacro %}
@@ -21,7 +21,7 @@
     <button class="btn btn-dark annotation-remove-button"
             data-toggle="tooltip" data-placement="bottom" title="{{ 'annotations.remove'|trans }}">
       <i class="fa fa-fw fa-times"></i>
-      <i class="fa fa-fw fa-spinner fa-spin"></i>
+      <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
     </button>
   </div>
 {% endmacro %}
@@ -42,19 +42,19 @@
       <label class="btn btn-outline-secondary active">
         <input type="radio" name="visibility" autocomplete="off" value="private" checked>
         <i class="fa fa-fw fa-user"></i>
-        <i class="fa fa-fw fa-spinner fa-spin"></i>
+        <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
         {{ 'annotations.visibility.private'|trans }}
       </label>
       <label class="btn btn-outline-secondary">
         <input type="radio" name="visibility" autocomplete="off" value="teacher">
         <i class="fa fa-fw fa-graduation-cap"></i>
-        <i class="fa fa-fw fa-spinner fa-spin"></i>
+        <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
         {{ 'annotations.visibility.teacher'|trans }}
       </label>
       <label class="btn btn-outline-secondary">
         <input type="radio" name="visibility" autocomplete="off" value="everybody">
         <i class="fa fa-fw fa-users"></i>
-        <i class="fa fa-fw fa-spinner fa-spin"></i>
+        <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
         {{ 'annotations.visibility.everybody'|trans }}
       </label>
     </div>
@@ -86,7 +86,7 @@
         <textarea class="annotation-comment form-control"
                   placeholder="{{ 'annotations.comment.create-placeholder'|trans }}"></textarea>
         <button type="button" class="btn btn-outline-success annotations-comment-add">
-          <i class="fa fa-fw fa-spinner fa-spin"></i>
+          <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
           <i class="fa fa-fw fa-plus"></i>
           {{ 'annotations.comment.create'|trans }}
         </button>
@@ -131,7 +131,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-success annotations-save">
             <i class="fa fa-fw fa-plus"></i>
-            <i class="fa fa-fw fa-spinner fa-spin"></i>
+            <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
             {{ 'form.add'|trans }}
           </button>
           <button type="button" class="btn btn-outline-danger annotations-cancel" data-dismiss="modal">
@@ -235,7 +235,7 @@
         <div class="owner-remove">
           <div class="float-right" role="group" aria-label="Action bar">
             <button type="button" class="btn btn-outline-danger annotations-remove">
-              <i class="fa fa-fw fa-spinner fa-spin"></i>
+              <i class="fa fa-fw fa-circle-o-notch fa-spin"></i>
               <i class="fa fa-fw fa-trash"></i> Remove
             </button>
           </div>

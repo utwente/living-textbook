@@ -53,7 +53,7 @@ $(function () {
   $('#refresh-button').on('click', function () {
     var $button = $(this);
     var $icon = $button.find('i');
-    $icon.addClass('fa-spin').addClass('fa-spinner').removeClass('fa-refresh');
+    $icon.addClass('fa-spin').addClass('fa-circle-o-notch').removeClass('fa-refresh');
     $button.attr('disabled', 'disabled');
     $button.tooltip('hide');
 
@@ -66,7 +66,7 @@ $(function () {
     }).fail(function (error) {
       throw error;
     }).always(function () {
-      $icon.removeClass('fa-spin').removeClass('fa-spinner').addClass('fa-refresh');
+      $icon.removeClass('fa-spin').removeClass('fa-circle-o-notch').addClass('fa-refresh');
       $button.removeAttr('disabled');
     });
   });
