@@ -98,39 +98,53 @@
 
   <p>{{ 'dashboard.study-area-contains'|trans() }}</p>
   <ul>
-    <li>
-      {% if conceptCount > 0 %}<a href="{{ path('app_concept_list') }}">{% endif %}
-        {{ 'dashboard.concept-count'|trans({'%count%': conceptCount}) }}
-        {% if conceptCount > 0 %}</a>{% endif %}
-    </li>
-    <li>
-      {{ 'dashboard.relation-count'|trans({'%count%': relationCount}) }}
-    </li>
-    <li>
-      {% if abbreviationCount > 0 %}<a href="{{ path('app_abbreviation_list') }}">{% endif %}
-        {{ 'dashboard.abbreviation-count'|trans({'%count%': abbreviationCount}) }}
-        {% if abbreviationCount > 0 %}</a>{% endif %}
-    </li>
-    <li>
-      {% if contributorCount > 0 %}<a href="{{ path('app_contributor_list') }}">{% endif %}
-        {{ 'dashboard.contributor-count'|trans({'%count%': contributorCount}) }}
-        {% if contributorCount > 0 %}</a>{% endif %}
-    </li>
-    <li>
-      {% if externalResourceCount > 0 %}<a href="{{ path('app_externalresource_list') }}">{% endif %}
-        {{ 'dashboard.external-resource-count'|trans({'%count%': externalResourceCount}) }}
-        {% if externalResourceCount > 0 %}</a>{% endif %}
-    </li>
-    <li>
-      {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
-        {{ 'dashboard.learning-outcome-count'|trans({'%count%': learningOutcomeCount}) }}
-        {% if learningOutcomeCount > 0 %}</a>{% endif %}
-    </li>
-    <li>
-      {% if learningPathCount > 0 %}<a href="{{ path('app_learningpath_list') }}">{% endif %}
-        {{ 'dashboard.learning-path-count'|trans({'%count%': learningPathCount}) }}
-        {% if learningPathCount > 0 %}</a>{% endif %}
-    </li>
+    {% if not studyArea.openAccess or conceptCount > 0 %}
+      <li>
+        {% if conceptCount > 0 %}<a href="{{ path('app_concept_list') }}">{% endif %}
+          {{ 'dashboard.concept-count'|trans({'%count%': conceptCount}) }}
+          {% if conceptCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or relationCount > 0 %}
+      <li>
+        {{ 'dashboard.relation-count'|trans({'%count%': relationCount}) }}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or abbreviationCount > 0 %}
+      <li>
+        {% if abbreviationCount > 0 %}<a href="{{ path('app_abbreviation_list') }}">{% endif %}
+          {{ 'dashboard.abbreviation-count'|trans({'%count%': abbreviationCount}) }}
+          {% if abbreviationCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or contributorCount > 0 %}
+      <li>
+        {% if contributorCount > 0 %}<a href="{{ path('app_contributor_list') }}">{% endif %}
+          {{ 'dashboard.contributor-count'|trans({'%count%': contributorCount}) }}
+          {% if contributorCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or externalResourceCount > 0 %}
+      <li>
+        {% if externalResourceCount > 0 %}<a href="{{ path('app_externalresource_list') }}">{% endif %}
+          {{ 'dashboard.external-resource-count'|trans({'%count%': externalResourceCount}) }}
+          {% if externalResourceCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or learningOutcomeCount > 0 %}
+      <li>
+        {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
+          {{ 'dashboard.learning-outcome-count'|trans({'%count%': learningOutcomeCount}) }}
+          {% if learningOutcomeCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or learningPathCount > 0 %}
+      <li>
+        {% if learningPathCount > 0 %}<a href="{{ path('app_learningpath_list') }}">{% endif %}
+          {{ 'dashboard.learning-path-count'|trans({'%count%': learningPathCount}) }}
+          {% if learningPathCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
     {% if is_granted('STUDYAREA_EDIT', studyArea) %}
       <li>
         {% if urlScanProgress %}
