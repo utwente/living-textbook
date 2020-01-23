@@ -41,6 +41,7 @@ body, #double-column-container, #bottom-container {
     height: 100%;
     width: 100%;
     background-color: $background-color;
+    overflow: hidden;
 
     & > div {
       @include div-center();
