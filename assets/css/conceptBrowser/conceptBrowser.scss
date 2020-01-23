@@ -1,3 +1,11 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/gradients';
+@import '~bootstrap/scss/mixins/hover';
+
+$search-width: 300px;
+$button-padding: 2px;
+
 #concept-browser-controls, #concept-browser-controls-bottom {
   z-index: 85;
   position: absolute;
@@ -12,9 +20,33 @@
   }
 
   .search-container, .action-container, .pause-container {
+    padding: $button-padding;
+  }
+
+  .search-container {
     width: 40%;
-    max-width: 300px;
-    padding: 2px;
+    max-width: $search-width;
+
+    .typeahead {
+      max-width: calc(100% - #{2 * $button-padding});
+
+      .dropdown-item {
+        @include hover {
+          color: $dropdown-link-color;
+          background-color: transparent;
+        }
+      }
+
+      .active .dropdown-item {
+        color: $dropdown-link-active-color;
+        text-decoration: none;
+        @include gradient-bg($dropdown-link-active-bg);
+      }
+
+      a {
+        white-space: pre-wrap;
+      }
+    }
   }
 
   .action-container {
