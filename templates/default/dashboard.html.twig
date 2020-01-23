@@ -96,7 +96,17 @@
     </div>
   {% endif %}
 
-  <p>{{ 'dashboard.study-area-contains'|trans() }}</p>
+  {% if conceptCount != 0
+    or relationCount != 0
+    or abbreviationCount != 0
+    or contributorCount != 0
+    or externalResourceCount != 0
+    or learningOutcomeCount != 0
+    or learningPathCount != 0 %}
+    <p>{{ 'dashboard.study-area-contains'|trans() }}</p>
+  {% else %}
+    <p>{{ 'dashboard.study-area-empty'|trans() }}</p>
+  {% endif %}
   <ul>
     {% if not studyArea.openAccess or conceptCount > 0 %}
       <li>
@@ -242,31 +252,33 @@
     </script>
   {% endif %}
 
-  <h4>{{ 'dashboard.search-concept'|trans }}</h4>
-  {{ form_start(conceptForm) }}
-  <div class="d-flex flex-row flex-wrap flex-md-no-wrap">
-    <div class="mt-1 mw-md-100 flex-grow-1">
-      {{ form_widget(conceptForm.concept) }}
+  {% if conceptCount > 0 %}
+    <h4>{{ 'dashboard.search-concept'|trans }}</h4>
+    {{ form_start(conceptForm) }}
+    <div class="d-flex flex-row flex-wrap flex-md-no-wrap">
+      <div class="mt-1 mw-md-100 flex-grow-1">
+        {{ form_widget(conceptForm.concept) }}
+      </div>
+      <div class="mt-1 ml-auto ml-md-1">
+        {{ form_widget(conceptForm.submit) }}
+      </div>
     </div>
-    <div class="mt-1 ml-auto ml-md-1">
-      {{ form_widget(conceptForm.submit) }}
-    </div>
-  </div>
 
-  <script type="text/javascript">
-    $('#concept_form_concept').on('change', function () {
-      $('#concept_form_submit').removeAttr('disabled');
-    });
+    <script type="text/javascript">
+      $('#concept_form_concept').on('change', function () {
+        $('#concept_form_submit').removeAttr('disabled');
+      });
 
-    $('#concept_form_submit').on('click', function () {
-      eDispatch.showConcept(parseInt($('#concept_form_concept').val()));
-      return false;
-    });
-  </script>
+      $('#concept_form_submit').on('click', function () {
+        eDispatch.showConcept(parseInt($('#concept_form_concept').val()));
+        return false;
+      });
+    </script>
 
-  {{ form_end(conceptForm) }}
+    {{ form_end(conceptForm) }}
 
-  <div class="spacer"></div>
+    <div class="spacer"></div>
+  {% endif %}
 
   {% if studyAreaForm is not null %}
     <h4>{{ 'dashboard.study-area-switch'|trans }}</h4>
