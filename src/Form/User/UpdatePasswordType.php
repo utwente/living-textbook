@@ -26,7 +26,6 @@ class UpdatePasswordType extends AbstractType
             'second_options'  => array('label' => 'user.repeat-password'),
         ])
         ->add('submit', SaveType::class, [
-            'locate_static'        => false,
             'enable_save_and_list' => false,
             'enable_cancel'        => true,
             'cancel_label'         => 'form.discard',

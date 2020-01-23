@@ -29,7 +29,6 @@ class EditFallbackUserType extends AbstractType
             'label' => 'user.full-name',
         ])
         ->add('submit', SaveType::class, [
-            'locate_static'       => false,
             'enable_cancel'       => true,
             'cancel_label'        => 'form.discard',
             'cancel_route'        => 'app_user_fallbacklist',
