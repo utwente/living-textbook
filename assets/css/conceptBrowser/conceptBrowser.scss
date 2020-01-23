@@ -11,7 +11,7 @@
     pointer-events: all;
   }
 
-  .search-container, .action-container {
+  .search-container, .action-container, .pause-container {
     width: 40%;
     max-width: 300px;
     padding: 2px;
@@ -19,6 +19,12 @@
 
   .action-container {
     text-align: right;
+  }
+
+  .pause-container {
+    #play-button {
+      display: none;
+    }
   }
 }
 

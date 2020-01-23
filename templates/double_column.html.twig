@@ -67,7 +67,17 @@
       </div>
       <div class="animation-opacity-container">
         <div id="concept-browser-controls-bottom" class="container-fluid">
-          <div class="row justify-content-end">
+          <div class="row justify-content-between">
+            <div class="pause-container">
+              <button id="pause-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.pause'|trans }}">
+                <i class="fa fa-pause"></i>
+              </button>
+              <button id="play-button" class="btn btn-success btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.play'|trans }}">
+                <i class="fa fa-play"></i>
+              </button>
+            </div>
             <div class="action-container">
               <button id="zoom-in-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
                       title="{{ 'browser.zoom-in'|trans }}">

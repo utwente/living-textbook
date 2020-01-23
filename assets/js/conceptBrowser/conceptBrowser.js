@@ -113,7 +113,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   var highlightedNode = null, specialHighlightedNode = null, mouseMoveDisabled = false;
   var clickSend = false;
   var contextMenuNode = null, lastTransformed;
-  var isLoaded = false;
+  var isLoaded = false, isPaused = false;
 
   // Initialize the graph object
   cbGraph = {nodes: [], links: [], linkNodes: []};
@@ -513,8 +513,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function onDragEnded() {
     if (!d3.event.active) cbSimulation.alphaTarget(0);
-    d3.event.subject.fx = null;
-    d3.event.subject.fy = null;
+    if (!isPaused) {
+      d3.event.subject.fx = null;
+      d3.event.subject.fy = null;
+    }
 
     clearNodeAsDragged(d3.event.subject);
   }
@@ -570,6 +572,42 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   }
 
   /**
+   * Pause/play the animation
+   */
+  function pausePlayAnimation() {
+    var $pauseButton = $('#pause-button');
+    var $playButton = $('#play-button');
+
+    if (isPaused) {
+      // Reset the fixed position for each node
+      cbGraph.nodes.forEach((node) => {
+        node.fx = null;
+        node.fy = null;
+      });
+      $playButton.hide();
+      $pauseButton.show();
+
+      cbSimulation.restart();
+    } else {
+      // Set the fixed position for each node, to ensure it keeps frozen
+      cbSimulation.stop();
+      cbGraph.nodes.forEach((node) => {
+        node.fx = node.x;
+        node.fy = node.y;
+      });
+      $pauseButton.hide();
+      $playButton.show();
+
+      cbSimulation.stop();
+    }
+
+    $pauseButton.blur();
+    $playButton.blur();
+
+    isPaused = !isPaused;
+  }
+
+  /**
    * Keyboard event handler
    * space -> Stop simulation
    */
@@ -578,8 +616,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     switch (d3.event.keyCode) {
       case 32: // Space
-        // Force movement stop with space bar
-        cbSimulation.stop();
+        pausePlayAnimation();
+
         return;
 
       case 73: // I
@@ -1369,6 +1407,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbZoom = d3.zoom()
         .scaleExtent(cb.zoomExtent)
         .on('zoom', zoomGraph);
+
+    // Create pause/play handler for button
+    $('#pause-button, #play-button').on('click', function () {
+      pausePlayAnimation();
+    });
 
     // Create zoom handlers for buttons
     $('#zoom-in-button').on('click', function () {

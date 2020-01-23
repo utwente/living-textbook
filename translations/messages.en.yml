@@ -75,6 +75,8 @@ browser:
   close: 'Close concept map'
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open map'
+  pause: 'Pause animation'
+  play: 'Start animation'
   toggle: 'Toggle map'
   toggle-learningpath: 'Toggle learning path'
   readme: 'Open readme'
