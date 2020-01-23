@@ -1,12 +1,48 @@
-@import '~bootstrap/scss/_functions.scss';
-@import '~bootstrap/scss/_variables.scss';
-@import '~bootstrap/scss/mixins/_buttons.scss';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/buttons';
+@import '~font-awesome/scss/variables';
+@import '~font-awesome/scss/mixins';
 
 table.table {
 
   &.table-datatable {
     width: 100% !important;
     border-spacing: 0;
+
+    thead {
+      .sorting, .sorting_desc, .sorting_asc {
+        padding-right: 0.75rem;
+
+        &::before, &::after {
+          display: none;
+        }
+
+        .sort {
+          padding-left: 0.5em;
+          @include fa-icon();
+          position: relative;
+
+          &::before {
+            content: $fa-var-sort;
+            opacity: 0.3;
+            position: absolute;
+          }
+        }
+      }
+
+      .sorting .sort::before {
+        position: relative;
+      }
+
+      .sorting_desc .sort::after {
+        content: $fa-var-sort-desc;
+      }
+
+      .sorting_asc .sort::after {
+        content: $fa-var-sort-asc;
+      }
+    }
 
     tbody {
       tr:first-of-type {

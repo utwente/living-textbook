@@ -19,13 +19,13 @@
   <table id="concept-table" class="table table-hover table-datatable table-bordered">
     <thead>
     <tr>
-      <th scope="col">{{ 'concept.name'|trans }}</th>
-      <th scope="col">{{ 'concept.outgoing-relations'|trans }}</th>
-      <th scope="col">{{ 'concept.incoming-relations'|trans }}</th>
+      <th scope="col">{{ 'concept.name'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'concept.outgoing-relations'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'concept.incoming-relations'|trans }}<i class="sort"></i></th>
       {% if app.user %}
-        <th scope="col">{{ 'annotations.list-count'|trans }}</th>
+        <th scope="col">{{ 'annotations.list-count'|trans }}<i class="sort"></i></th>
       {% endif %}
-      <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+      <th scope="col" class="actions">{{ 'form.actions'|trans }}<i class="sort"></i></th>
     </tr>
     </thead>
     <tbody>
