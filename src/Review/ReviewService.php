@@ -375,6 +375,8 @@ class ReviewService
   public static function getSerializationContext(): SerializationContext
   {
     return SerializationContext::create()
+        ->setSerializeNull(true)
+        ->enableMaxDepthChecks()
         ->setGroups([
             'review_change',
             'elements'          => [
@@ -394,9 +396,7 @@ class ReviewService
                 'target'       => ['id_only', 'name_only'],
                 'relationType' => ['id_only', 'name_only'],
             ],
-        ])
-        ->setSerializeNull(true)
-        ->enableMaxDepthChecks();
+        ]);
   }
 
   /**
