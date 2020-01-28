@@ -7,24 +7,16 @@
   }
 </script>
 <form name="search_form" onsubmit="return doSearch_{{ id }}(event)">
+  <div class="form-group">
+    <input type="text" id="search_{{ id }}" required="required" value="{{ search|default('') }}"
+           placeholder="{{ 'search.placeholder'|trans }}" class="form-control">
 
-  <div class="form-group row">
-    {% if showLabel|default(true) %}
-    <label class="col-form-label col-md-3 col-lg-2 required" for="search_{{ id }}">{{ 'search.search'|trans }}</label>
-    <div class="col-md-9 col-lg-10">
-      {% endif %}
-      <input type="text" id="search_{{ id }}" required="required" value="{{ search|default('') }}"
-             placeholder="{{ 'search.placeholder'|trans }}" class="form-control">
-
-      {% if error|default(false) %}
-        <div class="invalid-feedback">
-          <ul class="list-unstyled mb-0">
-            <li><i class="fa fa-exclamation-circle"></i> {{ error }}</li>
-          </ul>
-        </div>
-      {% endif %}
-      {% if showLabel|default(true) %}
-    </div>
+    {% if error|default(false) %}
+      <div class="invalid-feedback">
+        <ul class="list-unstyled mb-0">
+          <li><i class="fa fa-exclamation-circle"></i> {{ error }}</li>
+        </ul>
+      </div>
     {% endif %}
   </div>
 </form>
