@@ -48,3 +48,7 @@
   font-size: smaller;
   font-style: italic;
 }
+
+.diff-container {
+  @import '../../../vendor/caxy/php-htmldiff/demo/codes.css';
+}

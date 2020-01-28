@@ -15,16 +15,28 @@
   {% endif %}
 {% endmacro %}
 
-{% macro printText(text, ckeditor) %}
+{% macro printText(text, ckeditor, original) %}
   {% if text is empty %}
     <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
   {% else %}
     {% if ckeditor|default(false) %}
       <div class="ltb-text-container">
-        {{ text|striptags(allowed_ckeditor_tags)|raw }}
+        {% if original|default(false) %}
+          <div class="diff-container">
+            {{ htmldiff(original|striptags(allowed_ckeditor_tags), text|striptags(allowed_ckeditor_tags)) }}
+          </div>
+        {% else %}
+          {{ text|striptags(allowed_ckeditor_tags)|raw }}
+        {% endif %}
       </div>
     {% else %}
-      {{ text }}
+      {% if original|default(false) %}
+        <div class="diff-container">
+          {{ htmldiff(original, text) }}
+        </div>
+      {% else %}
+        {{ text }}
+      {% endif %}
     {% endif %}
   {% endif %}
 {% endmacro %}

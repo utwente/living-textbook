@@ -5,6 +5,10 @@
         {
             "type": "gitlab",
             "url":  "git@gitlab.drenso.dev:intern/symfony-oidc.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Drenso/php-htmldiff"
         }
     ],
     "require": {
@@ -15,6 +19,7 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "bobv/latex-bundle": "^1.4.0",
+        "caxy/php-htmldiff": "dev-purifier-disable",
         "components/elfinder": "^3.1.1",
         "drenso/symfony-oidc-bundle": "^v1.1",
         "easyrdf/easyrdf": "^0.9.1",

@@ -5,6 +5,9 @@
     "bobv/latex-bundle": {
         "version": "v1.3.1"
     },
+    "caxy/php-htmldiff": {
+        "version": "0.1.x-dev"
+    },
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
@@ -199,6 +202,9 @@
     },
     "kriswallsmith/assetic": {
         "version": "v1.4.0"
+    },
+    "kub-at/php-simple-html-dom-parser": {
+        "version": "1.9.1"
     },
     "markbaker/complex": {
         "version": "1.4.6"

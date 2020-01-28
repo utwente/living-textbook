@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39d71b2abb4a1b51bba6cf2c190215ee",
+    "content-hash": "2f6154e0fe8ddbe09d3f65a18e62ff78",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -107,6 +107,71 @@
                 "symfony"
             ],
             "time": "2019-08-09T14:26:22+00:00"
+        },
+        {
+            "name": "caxy/php-htmldiff",
+            "version": "dev-purifier-disable",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Drenso/php-htmldiff.git",
+                "reference": "e8b0e75c2775c796cb6b77db9f54e971533881b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Drenso/php-htmldiff/zipball/e8b0e75c2775c796cb6b77db9f54e971533881b3",
+                "reference": "e8b0e75c2775c796cb6b77db9f54e971533881b3",
+                "shasum": ""
+            },
+            "require": {
+                "kub-at/php-simple-html-dom-parser": "^1.7",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "doctrine/cache": "~1.0",
+                "ezyang/htmlpurifier": "^4.7",
+                "phpunit/phpunit": "~5.0"
+            },
+            "suggest": {
+                "doctrine/cache": "Used for caching the calculated diffs using a Doctrine Cache Provider",
+                "ezyang/htmlpurifier": "Used to purify inputted HTML, which is used by default. Either disable it, or install this bundle."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Caxy\\HtmlDiff": "lib/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Caxy\\Tests\\": "tests/Caxy/Tests"
+                }
+            },
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Schroeder",
+                    "email": "jschroeder@caxy.com",
+                    "homepage": "http://www.caxy.com"
+                }
+            ],
+            "description": "A library for comparing two HTML files/snippets and highlighting the differences using simple HTML.",
+            "homepage": "https://github.com/caxy/php-htmldiff",
+            "keywords": [
+                "diff",
+                "html"
+            ],
+            "support": {
+                "issues": "https://github.com/caxy/php-htmldiff/issues",
+                "source": "https://github.com/Drenso/php-htmldiff/tree/purifier-disable"
+            },
+            "time": "2020-01-28T15:29:20+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -3505,6 +3570,52 @@
                 "minification"
             ],
             "time": "2014-12-12T05:07:58+00:00"
+        },
+        {
+            "name": "kub-at/php-simple-html-dom-parser",
+            "version": "1.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kub-AT/php-simple-html-dom-parser.git",
+                "reference": "ff22f98bfd9235115c128059076f3eb740d66913"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kub-AT/php-simple-html-dom-parser/zipball/ff22f98bfd9235115c128059076f3eb740d66913",
+                "reference": "ff22f98bfd9235115c128059076f3eb740d66913",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "KubAT\\PhpSimple\\HtmlDomParser": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "S.C. Chen",
+                    "email": "me578022@gmail.com"
+                },
+                {
+                    "name": "Jakub Stawowy",
+                    "email": "Kub-AT@users.noreply.github.com"
+                }
+            ],
+            "description": "PHP Simple HTML DOM Parser with namespace and PHP 7.3 compatible",
+            "homepage": "http://simplehtmldom.sourceforge.net/",
+            "keywords": [
+                "Simple",
+                "dom",
+                "html"
+            ],
+            "time": "2019-10-25T12:34:43+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -9822,7 +9933,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "caxy/php-htmldiff": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
