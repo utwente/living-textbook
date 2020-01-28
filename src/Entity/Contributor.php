@@ -5,11 +5,17 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\Traits\ReviewableTrait;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -18,11 +24,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ContributorRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class Contributor implements StudyAreaFilteredInterface
+class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  use ReviewableTrait;
 
   /**
    * @var Concept[]|Collection
@@ -47,6 +54,8 @@ class Contributor implements StudyAreaFilteredInterface
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=1, max=512)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $name;
 
@@ -56,6 +65,8 @@ class Contributor implements StudyAreaFilteredInterface
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Assert\Length(max=1024)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $description;
 
@@ -66,6 +77,8 @@ class Contributor implements StudyAreaFilteredInterface
    *
    * @Assert\Url()
    * @Assert\Length(max=512)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
    */
   private $url;
 
@@ -87,6 +100,40 @@ class Contributor implements StudyAreaFilteredInterface
     $this->broken = false;
 
     $this->concepts = new ArrayCollection();
+  }
+
+  /**
+   * @param PendingChange          $change
+   * @param EntityManagerInterface $em
+   *
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   */
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  {
+    $changeObj = $this->testChange($change);
+    assert($changeObj instanceof self);
+
+    foreach ($change->getChangedFields() as $changedField) {
+      switch ($changedField) {
+        case 'name':
+          $this->setName($changeObj->getName());
+          break;
+        case 'description':
+          $this->setDescription($changeObj->getDescription());
+          break;
+        case 'url':
+          $this->setUrl($changeObj->getUrl());
+          break;
+        default:
+          throw new IncompatibleFieldChangedException($this, $changedField);
+      }
+    }
+  }
+
+  public function getReviewTitle(): string
+  {
+    return $this->getName();
   }
 
   /**
@@ -112,7 +159,7 @@ class Contributor implements StudyAreaFilteredInterface
    */
   public function setName(string $name): self
   {
-    $this->name = $name;
+    $this->name = trim($name);
 
     return $this;
   }
@@ -132,7 +179,7 @@ class Contributor implements StudyAreaFilteredInterface
    */
   public function setDescription(?string $description): Contributor
   {
-    $this->description = $description;
+    $this->description = trim($description);
 
     return $this;
   }
@@ -152,11 +199,10 @@ class Contributor implements StudyAreaFilteredInterface
    */
   public function setUrl(?string $url): Contributor
   {
-    $this->url = $url;
+    $this->url = trim($url);
 
     return $this;
   }
-
 
   /**
    * @return bool

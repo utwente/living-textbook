@@ -21,16 +21,19 @@ class EditContributorType extends AbstractType
   {
     $builder
         ->add('name', TextType::class, [
-            'label' => 'contributor.name',
+            'label'    => 'contributor.name',
+            'disabled' => in_array('name', $options['disabled_fields']),
         ])
         ->add('description', TextType::class, [
             'empty_data' => '',
             'label'      => 'contributor.description',
             'required'   => false,
+            'disabled'   => in_array('description', $options['disabled_fields']),
         ])
         ->add('url', UrlType::class, [
             'label'    => 'contributor.url',
             'required' => false,
+            'disabled' => in_array('url', $options['disabled_fields']),
         ])
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
@@ -48,6 +51,8 @@ class EditContributorType extends AbstractType
     $resolver
         ->setRequired('studyArea')
         ->setAllowedTypes('studyArea', StudyArea::class)
-        ->setDefault('data_class', Contributor::class);
+        ->setDefault('data_class', Contributor::class)
+        ->setDefault('disabled_fields', [])
+        ->setAllowedTypes('disabled_fields', 'string[]');
   }
 }

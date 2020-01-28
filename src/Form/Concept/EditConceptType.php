@@ -191,6 +191,7 @@ class EditConceptType extends AbstractType
               return $contributorRepository->findForStudyAreaQb($concept->getStudyArea());
             },
             'select2'       => true,
+            'disabled'      => in_array('contributors', $options['disabled_fields']),
         ])
         ->add('submit', SaveType::class, [
             'locate_static'       => true,

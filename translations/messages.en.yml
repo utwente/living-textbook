@@ -121,6 +121,7 @@ concept:
   updated: 'Concept "%item%" has been successfully updated.'
 
 contributor:
+  _name: 'Contributor'
   add-title: 'Add new contributor'
   description: 'Description'
   edit-title: 'Edit contributor "%item%"'

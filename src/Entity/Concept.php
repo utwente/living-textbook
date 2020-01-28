@@ -224,6 +224,11 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @ORM\OrderBy({"name" = "ASC"})
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("ArrayCollection<App\Entity\Contributor>")
+   * @JMSA\MaxDepth(2)
    */
   private $contributors;
 
@@ -580,6 +585,17 @@ class Concept implements SearchableInterface, ReviewableInterface
             $newExternalResourceRef = $em->getReference(ExternalResource::class, $newExternalResource->getId());
             assert($newExternalResourceRef instanceof ExternalResource);
             $this->addExternalResource($newExternalResourceRef);
+          }
+          break;
+        }
+        case 'contributors':
+        {
+          $this->getContributors()->clear();
+
+          foreach ($changeObj->getContributors() as $newContributor) {
+            $newContributorRef = $em->getReference(Contributor::class, $newContributor->getId());
+            assert($newContributorRef instanceof Contributor);
+            $this->addContributor($newContributorRef);
           }
           break;
         }

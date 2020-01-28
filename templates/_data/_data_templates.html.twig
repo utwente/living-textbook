@@ -85,19 +85,24 @@
   {% if data|length > 0 %}
     <h2>{{ 'concept.contributors'|trans }}</h2>
     <ul>
+      {% from _self import render_contributor %}
       {% for contributor in data %}
         <li>
-          {% if contributor.url is not empty %}
-            <a href="{{ contributor.url }}" target="_blank">{{ contributor.name }}</a>
-          {% else %}
-            {{ contributor.name }}
-          {% endif %}
-          {% if contributor.description is not null %}
-            <br/>{{ contributor.description }}
-          {% endif %}
+          {{ render_contributor(contributor) }}
         </li>
       {% endfor %}
     </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_contributor(contributor) %}
+  {% if contributor.url is not empty %}
+    <a href="{{ contributor.url }}" target="_blank">{{ contributor.name }}</a>
+  {% else %}
+    {{ contributor.name }}
+  {% endif %}
+  {% if contributor.description is not null %}
+    <br/>{{ contributor.description }}
   {% endif %}
 {% endmacro %}
 

@@ -96,7 +96,7 @@ class ReviewSubmissionType extends AbstractType
             $formOptions['incoming'] = $changedField !== 'relations';
           }
 
-          if (in_array($changedField, ['priorKnowledge', 'learningOutcomes', 'externalResources'])) {
+          if (in_array($changedField, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
             $formType = ReviewSimpleListDiffType::class;
           }
 
