@@ -21,7 +21,7 @@
   {% else %}
     {% if ckeditor|default(false) %}
       <div class="ltb-text-container">
-        {% if original|default(false) %}
+        {% if original is not same as(false) %}
           <div class="diff-container">
             {{ htmldiff(original|striptags(allowed_ckeditor_tags), text|striptags(allowed_ckeditor_tags)) }}
           </div>
@@ -30,7 +30,7 @@
         {% endif %}
       </div>
     {% else %}
-      {% if original|default(false) %}
+      {% if original is not same as(false) %}
         <div class="diff-container">
           {{ htmldiff(original, text) }}
         </div>

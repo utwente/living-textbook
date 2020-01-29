@@ -4,8 +4,8 @@
 @import '~bootstrap/scss/_buttons';
 @import '../vars/vars';
 
-$mark-color: #fff256;
-$note-color: #91ff6d;
+$mark-color: $soft-yellow;
+$note-color: $soft-green;
 $comment-spacer: $spacer;
 
 .annotations-container {

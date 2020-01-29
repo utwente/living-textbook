@@ -22,11 +22,11 @@ class HtmlDiffExtension extends AbstractExtension
     ];
   }
 
-  public function htmlDiff(string $a, string $b): string
+  public function htmlDiff(?string $a, ?string $b): string
   {
     $config = (new HtmlDiffConfig())
         ->setPurifierEnabled(false);
 
-    return (HtmlDiff::create($a, $b, $config))->build();
+    return (HtmlDiff::create($a ?? '', $b ?? '', $config))->build();
   }
 }

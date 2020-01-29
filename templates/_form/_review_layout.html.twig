@@ -50,11 +50,18 @@
   {% from _self import build_element_diff %}
   {{ block('review_diff_start') }}
   {% if show_original %}
-    {{ build_element_diff(orig_elements) }}
+    {% set original = build_element_diff(orig_elements) %}
+    {{ original }}
   {% endif %}
   {{ block('review_diff_mid') }}
   {% if show_updated %}
-    {{ build_element_diff(new_elements) }}
+    {% if original is defined %}
+      <div class="diff-container">
+        {{ htmldiff(original, build_element_diff(new_elements)) }}
+      </div>
+    {% else %}
+      {{ build_element_diff(new_elements) }}
+    {% endif %}
   {% endif %}
   {{ block('review_diff_end') }}
 {% endblock %}
@@ -82,47 +89,54 @@
 {% endmacro %}
 
 {% block review_relation_diff_row %}
-  {% from '_data/_data_templates.html.twig' import link_to_relation %}
+  {% from _self import build_relation_diff %}
   {{ block('review_diff_start') }}
   {% if show_original %}
-    <ul>
-      {% for relation in orig_relations %}
-        <li>
-          {{ link_to_relation(relation.source, incoming) }}
-          <i>{{ relation.relationType.name|lower }}</i>
-          {{ link_to_relation(relation.target, not incoming) }}
-        </li>
-      {% else %}
-        <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
-      {% endfor %}
-    </ul>
+    {% set original = build_relation_diff(orig_relations, incoming, concept) %}
+    {{ original }}
   {% endif %}
   {{ block('review_diff_mid') }}
   {% if show_updated %}
-    <ul>
-      {% for relation in new_relations %}
-        <li>
-          {{ link_to_relation(relation.source|default(concept), incoming) }}
-          <i>{{ relation.relationType.name|lower }}</i>
-          {{ link_to_relation(relation.target|default(concept), not incoming) }}
-        </li>
-      {% else %}
-        <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
-      {% endfor %}
-    </ul>
+    {% if original is defined %}
+      <div class="diff-container">
+        {{ htmldiff(original, build_relation_diff(new_relations, incoming, concept)) }}
+      </div>
+    {% else %}
+      {{ build_relation_diff(new_relations, incoming, concept) }}
+    {% endif %}
   {% endif %}
   {{ block('review_diff_end') }}
 {% endblock %}
+
+{% macro build_relation_diff(relations, incoming, concept) %}
+  {% from '_data/_data_templates.html.twig' import link_to_relation %}
+  <ul>
+    {% for relation in relations %}
+      <li>
+        {{ link_to_relation(relation.source|default(concept), incoming) }}
+        <i>{{ relation.relationType.name|lower }}</i>
+        {{ link_to_relation(relation.target|default(concept), not incoming) }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
 
 {% block review_simple_list_diff_row %}
   {% from _self import build_simple_list_diff %}
   {{ block('review_diff_start') }}
   {% if show_original %}
-    {{ build_simple_list_diff(field, orig_list) }}
+    {% set original = build_simple_list_diff(field, orig_list) %}
+    {{ original }}
   {% endif %}
   {{ block('review_diff_mid') }}
   {% if show_updated %}
-    {{ build_simple_list_diff(field, new_list) }}
+    {% if original is defined %}
+      <div class="diff-container">
+        {{ htmldiff(original, build_simple_list_diff(field, new_list)) }}
+      </div>
+    {% else %}
+      {{ build_simple_list_diff(field, new_list) }}
+    {% endif %}
   {% endif %}
   {{ block('review_diff_end') }}
 {% endblock %}
@@ -138,12 +152,10 @@
           {{ render_learning_outcome(item) }}
         {% elseif field == 'priorKnowledge' %}
           {{ render_prior_knowledge(item) }}
-        {% elseif field == 'contributor' %}
+        {% elseif field == 'contributors' %}
           {{ render_contributor(item) }}
         {% endif %}
       </li>
-    {% else %}
-      <div class="review-no-content">{{ 'review.empty-content'|trans }}</div>
     {% endfor %}
   </ul>
 {% endmacro %}
