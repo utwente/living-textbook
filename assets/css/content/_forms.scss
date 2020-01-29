@@ -39,7 +39,7 @@ form {
       width: 100%;
     }
 
-    .btn {
+    .btn:not(:hover) {
       background-color: white;
     }
   }
