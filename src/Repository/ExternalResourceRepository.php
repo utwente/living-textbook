@@ -29,6 +29,18 @@ class ExternalResourceRepository extends ServiceEntityRepository
   /**
    * @param StudyArea $studyArea
    *
+   * @return ExternalResource[]
+   */
+  public function findForStudyAreaOrderedByTitle(StudyArea $studyArea)
+  {
+    return $this->findForStudyAreaQb($studyArea)
+        ->orderBy('er.title', 'ASC')
+        ->getQuery()->getResult();
+  }
+
+  /**
+   * @param StudyArea $studyArea
+   *
    * @return \Doctrine\ORM\QueryBuilder
    */
   public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder

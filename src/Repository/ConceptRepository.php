@@ -33,7 +33,7 @@ class ConceptRepository extends ServiceEntityRepository
    * @param StudyArea $studyArea
    * @param bool      $preLoadData
    *
-   * @return array
+   * @return Concept[]
    */
   public function findForStudyAreaOrderedByName(StudyArea $studyArea, bool $preLoadData = false)
   {
