@@ -60,6 +60,9 @@ class Concept implements ISearchable
    * @ORM\Column(name="definition", type="text", nullable=false)
    *
    * @Assert\NotNull()
+   *
+   * @JMSA\Expose
+   * @JMSA\Groups({"download_json"})
    */
   private $definition;
 
