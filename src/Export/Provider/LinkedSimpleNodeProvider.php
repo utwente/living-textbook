@@ -9,6 +9,7 @@ use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
+use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -30,6 +31,10 @@ class LinkedSimpleNodeProvider implements ProviderInterface
    */
   private $externalResourceRepository;
   /**
+   * @var LearningOutcomeRepository
+   */
+  private $learningOutcomeRepository;
+  /**
    * @var RelationTypeRepository
    */
   private $relationTypeRepository;
@@ -40,12 +45,13 @@ class LinkedSimpleNodeProvider implements ProviderInterface
 
   public function __construct(
       ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-      ExternalResourceRepository $externalResourceRepository,
+      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
       RelationTypeRepository $relationTypeRepository, SerializerInterface $serializer)
   {
     $this->conceptRepository          = $conceptRepository;
     $this->conceptRelationRepository  = $conceptRelationRepository;
     $this->externalResourceRepository = $externalResourceRepository;
+    $this->learningOutcomeRepository  = $learningOutcomeRepository;
     $this->relationTypeRepository     = $relationTypeRepository;
     $this->serializer                 = $serializer;
   }
@@ -88,6 +94,14 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "url": "<external-resource-url>",
         }
     ]
+    "learning_outcomes": [
+        {
+            "nodes": [<node-ids>],
+            "number": "<learning-outcome-number>",
+            "name": "<learning-outcome-name>",
+            "content": "<learning-outcome-content>",
+        }
+    ]
 }
 EOT;
   }
@@ -104,6 +118,7 @@ EOT;
     $concepts          = $this->conceptRepository->findForStudyAreaOrderedByName($studyArea);
     $links             = $this->conceptRelationRepository->findByConcepts($concepts);
     $externalResources = $this->externalResourceRepository->findForStudyAreaOrderedByTitle($studyArea);
+    $learningOutcomes  = $this->learningOutcomeRepository->findForStudyAreaOrderedByName($studyArea);
 
     // Detach the data from the ORM
     $idMap = [];
@@ -134,6 +149,19 @@ EOT;
       ];
     }
 
+    // Create learning outcomes data
+    $mappedLearningOutcomes = [];
+    foreach ($learningOutcomes as $learningOutcome) {
+      $mappedLearningOutcomes[] = [
+          'nodes'   => $learningOutcome->getConcepts()->map(function (Concept $concept) use ($idMap) {
+            return $idMap[$concept->getId()];
+          }),
+          'number'  => $learningOutcome->getNumber(),
+          'name'    => $learningOutcome->getName(),
+          'content' => $learningOutcome->getText(),
+      ];
+    }
+
     // Create JSON data
     {
       // Return as JSON
@@ -142,6 +170,7 @@ EOT;
               'nodes'              => $concepts,
               'links'              => $mappedLinks,
               'external_resources' => $mappedExternalResources,
+              'learning_outcomes'  => $mappedLearningOutcomes,
           ],
           'json',
           /** @phan-suppress-next-line PhanTypeMismatchArgument */

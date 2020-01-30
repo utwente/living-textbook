@@ -29,6 +29,19 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   /**
    * @param StudyArea $studyArea
    *
+   * @return LearningOutcome[]
+   */
+  public function findForStudyAreaOrderedByName(StudyArea $studyArea)
+  {
+    return $this->findForStudyAreaQb($studyArea)
+        ->orderBy('lo.name', 'ASC')
+        ->getQuery()->getResult();
+  }
+
+
+  /**
+   * @param StudyArea $studyArea
+   *
    * @return \Doctrine\ORM\QueryBuilder
    */
   public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
