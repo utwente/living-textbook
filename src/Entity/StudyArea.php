@@ -280,6 +280,36 @@ class StudyArea
   }
 
   /**
+   * Retrieve the available user group types
+   *
+   * @return array
+   */
+  public function getAvailableUserGroupTypes()
+  {
+    if ($this->getAccessType() === StudyArea::ACCESS_PRIVATE) {
+      return [];
+    }
+
+    $result = [];
+    if ($this->getAccessType() !== StudyArea::ACCESS_PUBLIC) {
+      $result[] = UserGroup::GROUP_VIEWER;
+    }
+
+    $result[] = UserGroup::GROUP_EDITOR;
+
+    // @todo: Enable with #82
+//    if ($studyArea->isReviewEnabled()) {
+    $result[] = UserGroup::GROUP_REVIEWER;
+//    }
+
+    if ($this->isAnalyticsDashboardEnabled()) {
+      $result[] = UserGroup::GROUP_ANALYSIS;
+    }
+
+    return $result;
+  }
+
+  /**
    * Retrieve all users, including group information.
    *
    * This method is born to avoid rewriting the entity model for the user groups, as that would
@@ -504,6 +534,10 @@ class StudyArea
    */
   public function canViewAnalytics(?User $user)
   {
+    if (!$this->isAnalyticsDashboardEnabled()) {
+      return false;
+    }
+
     if (!$user) {
       return false;
     }

@@ -167,9 +167,10 @@ class PermissionsController extends AbstractController
       Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
       UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans)
   {
-    $studyArea = $requestStudyArea->getStudyArea();
-    $form      = $this->createForm(AddPermissionsType::class, NULL, [
-        'study_area' => $studyArea,
+    $studyArea  = $requestStudyArea->getStudyArea();
+    $groupTypes = $studyArea->getAvailableUserGroupTypes();
+    $form       = $this->createForm(AddPermissionsType::class, NULL, [
+        'group_types' => $groupTypes,
     ]);
     $form->handleRequest($request);
 
@@ -186,7 +187,7 @@ class PermissionsController extends AbstractController
       }, $foundUsers));
 
       // Add the users/emails to the requested groups
-      foreach (UserGroup::getGroupTypes() as $groupType) {
+      foreach ($groupTypes as $groupType) {
         // Skip if the group is not requested
         if (!$formData['permissions'][$groupType]) {
           continue;

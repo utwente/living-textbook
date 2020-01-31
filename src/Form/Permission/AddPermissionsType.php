@@ -2,7 +2,6 @@
 
 namespace App\Form\Permission;
 
-use App\Entity\StudyArea;
 use App\Form\Type\EmailListType;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
@@ -18,8 +17,8 @@ class AddPermissionsType extends AbstractType
   {
     $builder
         ->add('permissions', PermissionsTypes::class, [
-            'study_area' => $options['study_area'],
-            'label'      => 'permissions.permission',
+            'group_types' => $options['group_types'],
+            'label'       => 'permissions.permission',
         ])
         ->add('emails', EmailListType::class, [
             'required'    => false,
@@ -42,7 +41,7 @@ class AddPermissionsType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setRequired('study_area')
-        ->setAllowedTypes('study_area', StudyArea::class);
+        ->setRequired('group_types')
+        ->setAllowedTypes('group_types', 'array');
   }
 }

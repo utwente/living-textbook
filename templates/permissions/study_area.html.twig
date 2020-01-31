@@ -53,12 +53,9 @@
         <tr>
           <th scope="col">{{ 'user.display-name'|trans }}<i class="sort"></i></th>
           <th scope="col">{{ 'user.emailaddress'|trans }}<i class="sort"></i></th>
-          {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PUBLIC') %}
-            {{ type_header_cell('viewer') }}
-          {% endif %}
-          {{ type_header_cell('editor') }}
-          {{ type_header_cell('reviewer') }}
-          {{ type_header_cell('analysis') }}
+          {% for type in studyArea.availableUserGroupTypes %}
+            {{ type_header_cell(type) }}
+          {% endfor %}
           <th scope="col" class="actions">{{ 'form.revoke'|trans }}</th>
         </tr>
         </thead>
@@ -67,12 +64,9 @@
           <tr>
             <td>{{ userPermission.displayName }}</td>
             <td>{{ userPermission.username }}</td>
-            {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PUBLIC') %}
-              {{ has_permission(userPermission.viewer) }}
-            {% endif %}
-            {{ has_permission(userPermission.editor) }}
-            {{ has_permission(userPermission.reviewer) }}
-            {{ has_permission(userPermission.analyser) }}
+            {% for type in studyArea.availableUserGroupTypes %}
+              {{ has_permission(attribute(userPermission, type)) }}
+            {% endfor %}
             <td class="actions">
               {% if userPermission.user %}
                 {{ buttons.remove_button(path('app_permissions_removepermissions', {'user': userPermission.user.id}), false, 'permissions.revoke-user'|trans) }}
@@ -87,12 +81,9 @@
         <tr>
           <th></th>
           <th></th>
-          {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PUBLIC') %}
-            {{ type_footer_cell('viewer') }}
-          {% endif %}
-          {{ type_footer_cell('editor') }}
-          {{ type_footer_cell('reviewer') }}
-          {{ type_footer_cell('analysis') }}
+          {% for type in studyArea.availableUserGroupTypes %}
+            {{ type_footer_cell(type) }}
+          {% endfor %}
           <th></th>
         </tr>
         </tfoot>

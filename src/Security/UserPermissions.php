@@ -33,7 +33,7 @@ class UserPermissions
   /**
    * @var bool
    */
-  private $analyser = false;
+  private $analysis = false;
 
   /**
    * UserPermissions constructor.
@@ -75,7 +75,7 @@ class UserPermissions
 
         return;
       case UserGroup::GROUP_ANALYSIS:
-        $this->analyser = true;
+        $this->analysis = true;
 
         return;
     }
@@ -154,9 +154,9 @@ class UserPermissions
   /**
    * @return bool
    */
-  public function isAnalyser(): bool
+  public function isAnalysis(): bool
   {
-    return $this->analyser;
+    return $this->analysis;
   }
 
 

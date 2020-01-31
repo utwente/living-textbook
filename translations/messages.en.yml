@@ -431,7 +431,7 @@ permissions:
   editor-count: '{0} No editors|{1} One editor|]1,Inf[ %count% editors'
   emails: 'E-mail addresses'
   emails-help: 'Make sure to enter only e-mail addresses here. If an e-mail address is already known, it will be converted to a full user automatically.'
-  info-text: 'Here you can grant and remove permissions on a per user basis.'
+  info-text: 'Here you can grant and remove permissions on a per user basis. Note that the available roles depend on the study area capabilities.'
   no-admin: '%user% is no admin user'
   no-users-available: 'There are no users that can be granted the "%type%" permission'
   not-allowed-public-viewer: 'It is not possible to add viewer permissions to public study areas!'

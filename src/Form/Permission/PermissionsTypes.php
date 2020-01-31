@@ -2,8 +2,6 @@
 
 namespace App\Form\Permission;
 
-use App\Entity\StudyArea;
-use App\Entity\UserGroup;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,14 +11,7 @@ class PermissionsTypes extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    /** @var StudyArea $studyArea */
-    $studyArea = $options['study_area'];
-
-    foreach (UserGroup::getGroupTypes() as $groupType) {
-      if ($studyArea->getAccessType() === StudyArea::ACCESS_PUBLIC && $groupType === UserGroup::GROUP_VIEWER) {
-        continue;
-      }
-
+    foreach ($options['group_types'] as $groupType) {
       $builder->add($groupType, CheckboxType::class, [
           'label'      => 'permissions.type.' . $groupType,
           'help'       => 'permissions.type-help.' . $groupType,
@@ -33,7 +24,7 @@ class PermissionsTypes extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setRequired('study_area')
-        ->setAllowedTypes('study_area', StudyArea::class);
+        ->setRequired('group_types')
+        ->setAllowedTypes('group_types', 'array');
   }
 }
