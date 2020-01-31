@@ -17,9 +17,11 @@ use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -224,6 +226,105 @@ class PermissionsController extends AbstractController
         'studyArea' => $studyArea,
         'form'      => $form->createView(),
     ];
+  }
+
+  /**
+   * @Route("/studyarea/update/{user}/{groupType}", methods={"POST"},
+   *   requirements={"user"="\d+", "groupType"="viewer|editor|reviewer|analysis"}, options={"expose"=true})
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param User                   $user
+   * @param string                 $groupType
+   * @param EntityManagerInterface $em
+   * @param RequestStudyArea       $requestStudyArea
+   * @param UserGroupRepository    $userGroupRepository
+   *
+   * @return JsonResponse
+   *
+   * @throws NonUniqueResultException
+   */
+  public function updatePermission(
+      Request $request, User $user, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
+      UserGroupRepository $userGroupRepository): JsonResponse
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
+      throw new BadRequestHttpException('Cannot update private study area permissions');
+    }
+
+    $userGroup = $userGroupRepository->getForType($studyArea, $groupType)
+        ?? (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
+
+    $newPermission = NULL;
+    if ($userGroup->getUsers()->contains($user)) {
+      $userGroup->removeUser($user);
+      $newPermission = 0;
+    } else {
+      $userGroup->addUser($user);
+      $newPermission = 1;
+    }
+
+    $em->persist($userGroup);
+    $em->flush();
+
+    return new JsonResponse([
+        'value' => $newPermission,
+    ]);
+  }
+
+  /**
+   * @Route("/studyarea/update/{email}/{groupType}", methods={"POST"},
+   *   requirements={"groupType"="viewer|editor|reviewer|analysis"}, options={"expose"=true})
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param string                 $email
+   * @param string                 $groupType
+   * @param EntityManagerInterface $em
+   * @param RequestStudyArea       $requestStudyArea
+   * @param UserGroupRepository    $userGroupRepository
+   *
+   * @return JsonResponse
+   * @throws NonUniqueResultException
+   */
+  public function updateEmailPermission(
+      Request $request, string $email, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
+      UserGroupRepository $userGroupRepository): JsonResponse
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+    if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
+      throw new BadRequestHttpException('Cannot update private study area permissions');
+    }
+
+    $userGroup = $userGroupRepository->getForType($studyArea, $groupType)
+        ?? (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
+
+    $email = mb_strtolower(trim(urldecode($email)));
+
+    $newPermission   = NULL;
+    $userGroupEmails = $userGroup->getEmails()->filter(function (UserGroupEmail $userGroupEmail) use ($email) {
+      return $userGroupEmail->getEmail() === $email;
+    });
+
+    if (count($userGroupEmails) > 0) {
+      foreach ($userGroupEmails as $userGroupEmail) {
+        $em->remove($userGroupEmail);
+      }
+      $newPermission = 0;
+    } else {
+      $userGroup->addEmail($email);
+      $newPermission = 1;
+
+      // Only call persist when there is a new group
+      $em->persist($userGroup);
+    }
+
+    $em->flush();
+
+    return new JsonResponse([
+        'value' => $newPermission,
+    ]);
   }
 
   /**
@@ -466,13 +567,13 @@ class PermissionsController extends AbstractController
     }
 
     // Decode email
-    $email = urldecode($email);
+    $email = mb_strtolower(trim(urldecode($email)));
 
     // Retrieve the correct user group
     $userGroupEmails = [];
     foreach ($studyArea->getUserGroups() as $userGroup) {
       $userGroupEmails = array_merge($userGroupEmails, $userGroup->getEmails()->filter(function (UserGroupEmail $userGroup) use ($email) {
-        return $userGroup->getEmail() == mb_strtolower(trim($email));
+        return $userGroup->getEmail() == $email;
       })->toArray());
     }
 

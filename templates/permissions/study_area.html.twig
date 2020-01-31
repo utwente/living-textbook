@@ -1,5 +1,14 @@
 {% extends 'single_column.html.twig' %}
 
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    .toggle-permission {
+      cursor: pointer;
+    }
+  </style>
+{% endblock %}
+
 {% block title %}
   {{ 'permissions.study-area-title'|trans }}
 {% endblock %}
@@ -28,13 +37,17 @@
   </td>
 {% endmacro %}
 
-{% macro has_permission(value) %}
+{% macro has_permission(userPermission, type) %}
+  {% set value = attribute(userPermission, type) %}
   <td data-sort="{{ value ? 0 : 1 }}" class="text-center">
-    {% if value %}
-      <i class="fa fa-fw fa-check text-success"></i>
-    {% else %}
-      <i class="fa fa-fw fa-times text-danger"></i>
-    {% endif %}
+    <div class="toggle-permission"
+         data-group-type="{{ type }}"
+         data-user="{{ userPermission.user.id|default('') }}"
+         data-email="{{ userPermission.email.email|default('') }}">
+      <i class="fa fa-fw fa-check text-success" {% if not value %}style="display: none"{% endif %}></i>
+      <i class="fa fa-fw fa-times text-danger" {% if value %}style="display: none"{% endif %}></i>
+      <i class="fa fa-fw fa-circle-o-notch fa-spin" style="display: none"></i>
+    </div>
   </td>
 {% endmacro %}
 
@@ -68,7 +81,7 @@
             <td>{{ userPermission.displayName }}</td>
             <td>{{ userPermission.username }}</td>
             {% for type in studyArea.availableUserGroupTypes %}
-              {{ has_permission(attribute(userPermission, type)) }}
+              {{ has_permission(userPermission, type) }}
             {% endfor %}
             <td class="actions">
               {% if userPermission.user %}
@@ -93,6 +106,20 @@
       </table>
     </div>
   {% endif %}
+
+  <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">{{ 'exception.error-text'|trans }}</div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-outline-primary">
+            {{ 'general.close'|trans }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block javascripts_bottom %}
@@ -107,6 +134,80 @@
       } else {
         $($dataTable.table().footer()).hide();
       }
+    });
+
+    $('.toggle-permission').click(function () {
+      var $el = $(this);
+      var $td = $el.parent();
+
+      // Check for current loading
+      if ($el.data('busy')) {
+        return;
+      }
+      $el.data('busy', true);
+
+      $el.find('.fa').hide();
+      $el.find('.fa-spin').show();
+
+
+      var sortValue = $td.data('sort');
+      var actualValue = !sortValue;
+
+      var user = $el.data('user');
+      var email = $el.data('email');
+      var groupType = $el.data('group-type');
+
+      var path;
+      if (user !== '') {
+        path = Routing.generate('app_permissions_updatepermission', {
+          _studyArea: currentStudyArea,
+          groupType: groupType,
+          user: user
+        });
+      } else {
+        path = Routing.generate('app_permissions_updateemailpermission', {
+          _studyArea: currentStudyArea,
+          groupType: groupType,
+          email: email
+        });
+      }
+
+      var confirmedValue = actualValue;
+      $.post(path, {value: !actualValue})
+          .done(function (data) {
+            // Success, update value
+            confirmedValue = data.value;
+            // $td.data('sort', !confirmedValue);
+            $td.attr('data-sort', !confirmedValue ? 1 : 0);
+
+            // Invalidate row cache for sorting
+            $dataTable.cell($td).invalidate();
+
+            // Clear sorting arrows
+            $td.closest('table').find('th').each(function () {
+              var $el = $(this);
+              if ($el.hasClass('sorting_asc') || $el.hasClass('sorting_desc')) {
+                $el.removeClass('sorting_desc')
+                    .removeClass('sorting_asc')
+                    .addClass('sorting');
+              }
+            });
+
+          })
+          .fail(function (e) {
+            console.error(e);
+            $('#error-modal').modal();
+          })
+          .always(function () {
+            $el.find('.fa').hide();
+            if (confirmedValue) {
+              $el.find('.fa-check').show();
+            } else {
+              $el.find('.fa-times').show();
+            }
+
+            $el.data('busy', false);
+          });
     });
   </script>
 {% endblock %}
