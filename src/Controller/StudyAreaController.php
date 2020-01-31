@@ -15,6 +15,7 @@ use App\Repository\PageLoadRepository;
 use App\Repository\StudyAreaGroupRepository;
 use App\Repository\TrackingEventRepository;
 use App\Repository\UserGroupRepository;
+use App\Repository\UserRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -405,34 +406,42 @@ class StudyAreaController extends AbstractController
    * @param StudyArea              $studyArea
    * @param EntityManagerInterface $em
    * @param TranslatorInterface    $trans
+   * @param UserRepository         $userRepository
    *
    * @return array|Response
    */
-  public function transferOwner(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea,
-                                EntityManagerInterface $em, TranslatorInterface $trans)
+  public function transferOwner(
+      Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea, EntityManagerInterface $em,
+      TranslatorInterface $trans, UserRepository $userRepository)
   {
-    $form = $this->createForm(TransferOwnerType::class, $studyArea, [
-        'current_owner' => $studyArea->getOwner(),
-    ]);
+    $form = $this->createForm(TransferOwnerType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $em->flush();
+      // Find the user for the submitted email
+      $user = $userRepository->getUserForEmail($form->getData()['new_owner']);
+      if ($user) {
+        $studyArea->setOwner($user);
+        $em->flush();
 
-      $this->addFlash('success', $trans->trans('study-area.owner-transferred', [
-          '%item%'  => $studyArea->getName(),
-          '%owner%' => $studyArea->getOwner()->getFullName(),
-      ]));
+        $this->addFlash('success', $trans->trans('study-area.owner-transferred', [
+            '%item%'  => $studyArea->getName(),
+            '%owner%' => $studyArea->getOwner()->getFullName(),
+        ]));
 
-      // Check whether this area is still visible
-      if ($requestStudyArea->getStudyArea()->getId() == $studyArea->getId()
-          && !$this->isGranted('STUDYAREA_SHOW', $studyArea)) {
-        return $this->render('reloading_fullscreen.html.twig', [
-            'reloadUrl' => $this->generateUrl('app_default_landing'),
-        ]);
+        // Check whether this area is still visible
+        if ($requestStudyArea->getStudyArea()->getId() == $studyArea->getId()
+            && !$this->isGranted('STUDYAREA_SHOW', $studyArea)) {
+          return $this->render('reloading_fullscreen.html.twig', [
+              'reloadUrl' => $this->generateUrl('app_default_landing'),
+          ]);
+        }
+
+        return $this->redirectToRoute('app_studyarea_list');
       }
 
-      return $this->redirectToRoute('app_studyarea_list');
+      // New owner not found
+      $this->addFlash('error', $trans->trans('study-area.new-owner-not-found'));
     }
 
     return [

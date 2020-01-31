@@ -571,6 +571,9 @@ study-area:
   list-title: 'Study area list'
   name: 'Name'
   new: 'New study area'
+  new-owner: 'New owner e-mail address'
+  new-owner-help: 'Supply the e-mail address of the new owner, who is required to already have an account.'
+  new-owner-not-found: 'The supplied e-mail address is not of a known user.'
   open-access: "Open access"
   open-access-help: "When open access is enabled, this study area will be available for unregistered users!
     This overwrites the view permissions set in the Access Type above, which is still used when group edit permissions are required.

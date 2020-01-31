@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 class UserRepository extends ServiceEntityRepository
 {
@@ -43,12 +44,33 @@ class UserRepository extends ServiceEntityRepository
    *
    * @return User[]
    */
-  public function getUsersForEmails(array $emails)
+  public function getUsersForEmails(array $emails): array
   {
     $qb = $this->createQueryBuilder('u')
         ->where('u.username IN (:emails)')
         ->setParameter('emails', $emails);
 
     return $qb->getQuery()->getResult();
+  }
+
+  /**
+   * Find a user for the given email address
+   *
+   * @param $email
+   *
+   * @return User|null
+   */
+  public function getUserForEmail($email): ?User
+  {
+    try {
+      return $this->createQueryBuilder('u')
+          ->where('u.username  = :email')
+          ->setParameter('email', $email)
+          ->setMaxResults(1)
+          ->getQuery()->getOneOrNullResult();
+    } catch (NonUniqueResultException $e) {
+      // Cannot happen
+      return NULL;
+    }
   }
 }
