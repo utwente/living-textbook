@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Security\UserPermissions;
 use App\Validator\Constraint\StudyAreaAccessType;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -276,6 +277,56 @@ class StudyArea
   {
     return $groupType === NULL ? $this->userGroups : $this->userGroups->matching(
         Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
+  }
+
+  /**
+   * Retrieve all users, including group information.
+   *
+   * This method is born to avoid rewriting the entity model for the user groups, as that would
+   * require massive changes in multiple subsystems.
+   *
+   * @return UserPermissions[]
+   */
+  public function getUserPermissions(): array
+  {
+    $result = [];
+    foreach ($this->userGroups as $userGroup) {
+      foreach ($userGroup->getUsers() as $user) {
+        if (!array_key_exists($user->getId(), $result)) {
+          $result[$user->getId()] = new UserPermissions($user, NULL);
+        }
+        $result[$user->getId()]->addPermissionFromGroup($userGroup);
+      }
+      foreach ($userGroup->getEmails() as $email) {
+        if (!array_key_exists($email->getEmail(), $result)) {
+          $result[$email->getEmail()] = new UserPermissions(NULL, $email);
+        }
+        $result[$email->getEmail()]->addPermissionFromGroup($userGroup);
+      }
+    }
+
+    // Sort results
+    usort($result, function (UserPermissions $a, UserPermissions $b) {
+      if ($a->isUser()) {
+        if ($b->isUser()) {
+          // Same, compare on user
+          return User::sortOnDisplayName($a->getUser(), $b->getUser());
+        } else {
+          // Place first before second
+          return -1;
+        }
+      } else {
+        if ($b->isUser()) {
+          // Place first behind second
+          return 1;
+        } else {
+          // Same, compare on email
+          return UserGroupEmail::sortOnEmail($a->getEmail(), $b->getEmail());
+        }
+      }
+    });
+
+    return array_values($result);
   }
 
   /**

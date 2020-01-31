@@ -57,7 +57,7 @@ class DataTableExtension extends AbstractExtension
 
     // Generate JS with token
     $return = '<script type="text/javascript">';
-    $return .= '$(\'#' . $tableId . '\').DataTable(' . json_encode($options) . ');';
+    $return .= 'var $dataTable = $(\'#' . $tableId . '\').DataTable(' . json_encode($options) . ');';
     $return .= '</script>';
 
     // Return JS

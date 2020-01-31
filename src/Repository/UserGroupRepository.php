@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Entity\UserGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
 class UserGroupRepository extends ServiceEntityRepository
@@ -23,7 +24,7 @@ class UserGroupRepository extends ServiceEntityRepository
    *
    * @return UserGroup
    * @throws \InvalidArgumentException
-   * @throws \Doctrine\ORM\NonUniqueResultException
+   * @throws NonUniqueResultException
    */
   public function getForType(StudyArea $studyArea, string $groupType)
   {

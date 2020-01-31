@@ -4,53 +4,28 @@
   {{ 'permissions.study-area-title'|trans }}
 {% endblock %}
 
-{% macro print_users(users, emailUsers, type) %}
-  {% import '_macro/_action_buttons.html.twig' as buttons %}
-  {% if (users|length + emailUsers|length) > 0 %}
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th scope="col">{{ 'user.display-name'|trans }}</th>
-          <th scope="col">{{ 'user.emailaddress'|trans }}</th>
-          <th scope="col" class="actions">{{ 'form.revoke'|trans }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-          <tr>
-            <td>{{ user.displayName }}</td>
-            <td>{{ user.username }}</td>
-            <td class="actions">
-              {{ buttons.remove_button(path('app_permissions_removepermission', {'user': user.id, 'groupType': type}), false, 'form.revoke'|trans) }}
-            </td>
-          </tr>
-        {% endfor %}
-        {% for emailUser in emailUsers %}
-          <tr>
-            <td></td>
-            <td>{{ emailUser.email }}</td>
-            <td class="actions">
-              {{ buttons.remove_button(path('app_permissions_removeemailpermission', {'email': emailUser.email|url_encode, 'groupType': type}), false, 'form.revoke'|trans) }}
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  {% endif %}
+{% macro type_header_cell(type) %}
+  <th scope="col" class="text-center">
+    {{ ('permissions.type.' ~ type)|trans }} <i class="sort"></i>
+    <br/>
+  </th>
+{% endmacro %}
 
-  <div role="group" aria-label="{{ 'form.action-bar'|trans }}">
-    <a href="{{ path('app_permissions_addpermissions', {'groupType': type}) }}" class="btn btn-outline-success">
-      <i class="fa fa-fw fa-plus"></i> {{ 'form.add'|trans }}
-    </a>
-    {% if (users|length + emailUsers|length) > 0 %}
-      <a href="{{ path('app_permissions_removeallpermissions', {'groupType': type}) }}" class="btn btn-outline-danger">
-        <i class="fa fa-fw fa-times"></i> {{ 'form.revoke-all'|trans }}
-      </a>
+{% macro type_footer_cell(type) %}
+  <td scope="col" class="text-center">
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
+    {{ buttons.remove_button(path('app_permissions_removeallpermissions', {'groupType': type}), false, 'permissions.revoke-type'|trans) }}
+  </td>
+{% endmacro %}
+
+{% macro has_permission(value) %}
+  <td data-sort="{{ value ? 0 : 1 }}" class="text-center">
+    {% if value %}
+      <i class="fa fa-fw fa-check text-success"></i>
+    {% else %}
+      <i class="fa fa-fw fa-times text-danger"></i>
     {% endif %}
-  </div>
-  <div class="mt-4"></div>
+  </td>
 {% endmacro %}
 
 {% block content %}
@@ -62,25 +37,75 @@
   {% else %}
 
     <p>{{ 'permissions.info-text'|trans }}</p>
-    {% from _self import print_users %}
+    {% from _self import type_header_cell, type_footer_cell, has_permission %}
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
 
-    {% if studyArea.accessType != 'public' %}
-      {% set viewers = studyArea.viewers %}
-      {% set emailViewers = studyArea.emailViewers %}
-
-      <h4>{{ 'permissions.viewer-count'|trans({'%count%': viewers|length + emailViewers|length}) }}</h4>
-      {{ print_users(viewers, emailViewers, constant('App\\Entity\\UserGroup::GROUP_VIEWER')) }}
-    {% endif %}
-
-    {% set editors = studyArea.editors %}
-    {% set emailEditors = studyArea.emailEditors %}
-    <h4>{{ 'permissions.editor-count'|trans({'%count%': editors|length + emailEditors|length}) }}</h4>
-    {{ print_users(editors, emailEditors, constant('App\\Entity\\UserGroup::GROUP_EDITOR')) }}
-
-    {% set reviewers = studyArea.reviewers %}
-    {% set emailReviewers = studyArea.emailReviewers %}
-    <h4>{{ 'permissions.reviewer-count'|trans({'%count%': reviewers|length + emailReviewers|length}) }}</h4>
-    {{ print_users(reviewers, emailReviewers, constant('App\\Entity\\UserGroup::GROUP_REVIEWER')) }}
-
+    <div class="table-responsive">
+      <table id="permissions-table" class="table table-sm table-hover table-datatable table-bordered">
+        <thead>
+        <tr>
+          <th scope="col">{{ 'user.display-name'|trans }}<i class="sort"></i></th>
+          <th scope="col">{{ 'user.emailaddress'|trans }}<i class="sort"></i></th>
+          {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PUBLIC') %}
+            {{ type_header_cell('viewer') }}
+          {% endif %}
+          {{ type_header_cell('editor') }}
+          {{ type_header_cell('reviewer') }}
+          {{ type_header_cell('analysis') }}
+          <th scope="col" class="actions">{{ 'form.revoke'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for userPermission in studyArea.userPermissions %}
+          <tr>
+            <td>{{ userPermission.displayName }}</td>
+            <td>{{ userPermission.username }}</td>
+            {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PUBLIC') %}
+              {{ has_permission(userPermission.viewer) }}
+            {% endif %}
+            {{ has_permission(userPermission.editor) }}
+            {{ has_permission(userPermission.reviewer) }}
+            {{ has_permission(userPermission.analyser) }}
+            <td class="actions">
+              {% if userPermission.user %}
+                {{ buttons.remove_button(path('app_permissions_removepermissions', {'user': userPermission.user.id}), false, 'permissions.revoke-user'|trans) }}
+              {% else %}
+                {{ buttons.remove_button(path('app_permissions_removeemailpermissions', {'email': userPermission.email.email|url_encode}), false, 'permissions.revoke-user'|trans) }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+          <th></th>
+          <th></th>
+          {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PUBLIC') %}
+            {{ type_footer_cell('viewer') }}
+          {% endif %}
+          {{ type_footer_cell('editor') }}
+          {{ type_footer_cell('reviewer') }}
+          {{ type_footer_cell('analysis') }}
+          <th></th>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
   {% endif %}
+{% endblock %}
+
+{% block javascripts_bottom %}
+  {{ dataTable('permissions-table', {
+    columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+  }) }}
+  <script type="text/javascript">
+    $dataTable.on('search.dt', function () {
+      var term = $dataTable.search();
+      if (term === '') {
+        $($dataTable.table().footer()).show();
+      } else {
+        $($dataTable.table().footer()).hide();
+      }
+    });
+  </script>
 {% endblock %}
