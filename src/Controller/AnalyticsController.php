@@ -29,7 +29,7 @@ class AnalyticsController extends AbstractController
    * The analytics dashboard
    *
    * @Route("/")
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
    * @Template()
    *
    * @param RequestStudyArea $requestStudyArea
@@ -51,11 +51,12 @@ class AnalyticsController extends AbstractController
    * Generate the analytics
    *
    * @Route("/generate", methods={"POST"}, options={"expose"=true})
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
    *
-   * @param Request          $request
-   * @param RequestStudyArea $requestStudyArea
-   * @param AnalyticsService $analyticsService
+   * @param Request             $request
+   * @param RequestStudyArea    $requestStudyArea
+   * @param AnalyticsService    $analyticsService
+   * @param SerializerInterface $serializer
    *
    * @return JsonResponse
    *

@@ -120,7 +120,7 @@
           </a>
 
           <div class="dropdown-menu" aria-labelledby="data-dropdown">
-            {% if _twigStudyArea.analyticsDashboardEnabled %}
+            {% if _twigStudyArea.analyticsDashboardEnabled and is_granted('STUDYAREA_ANALYTICS', _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_analytics_dashboard') }}">
                 {{ 'menu.analytics-dashboard'|trans }}
               </a>

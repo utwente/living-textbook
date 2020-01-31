@@ -466,6 +466,22 @@ class StudyArea
   }
 
   /**
+   * Check whether the user can view the analytics of this study area
+   *
+   * @param User|null $user
+   *
+   * @return bool
+   */
+  public function canViewAnalytics(?User $user)
+  {
+    if (!$user) {
+      return false;
+    }
+
+    return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_ANALYTICS);
+  }
+
+  /**
    * @return array Array with DateTime and username
    */
   public function getLastEditInfo()

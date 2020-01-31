@@ -19,6 +19,7 @@ class StudyAreaVoter extends Voter
   const EDIT = 'STUDYAREA_EDIT';
   const ANNOTATE = 'STUDYAREA_ANNOTATE';
   const PRINTER = 'STUDYAREA_PRINT';
+  const ANALYTICS = 'STUDYAREA_ANALYTICS';
 
   const SUPPORTED_ATTRIBUTES = [
       self::OWNER,
@@ -26,6 +27,7 @@ class StudyAreaVoter extends Voter
       self::EDIT,
       self::ANNOTATE,
       self::PRINTER,
+      self::ANALYTICS,
   ];
 
   /** @var AccessDecisionManagerInterface */
@@ -122,6 +124,8 @@ class StudyAreaVoter extends Voter
         }
 
         return $subject->isVisible($user);
+      case self::ANALYTICS:
+        return $subject->canViewAnalytics($user);
     }
 
     throw new LogicException('This code should not be reached!');
