@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Entity\UserGroupEmail;
@@ -150,13 +149,12 @@ class PermissionsController extends AbstractController
   }
 
   /**
-   * @Route("/studyarea/add/{groupType}", requirements={"groupType"="viewer|editor|reviewer"})
+   * @Route("/studyarea/add")
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
    * @param RequestStudyArea       $requestStudyArea
-   * @param string                 $groupType
    * @param EntityManagerInterface $em
    * @param UserGroupRepository    $userGroupRepository
    * @param UserRepository         $userRepository
@@ -165,74 +163,59 @@ class PermissionsController extends AbstractController
    * @return array|Response
    * @throws NonUniqueResultException
    */
-  public function addPermissions(Request $request, RequestStudyArea $requestStudyArea, string $groupType,
-                                 EntityManagerInterface $em, UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans)
+  public function addPermissions(
+      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
+      UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans)
   {
-    // Check for un-allowed combinations
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($studyArea->getAccessType() == StudyArea::ACCESS_PUBLIC && $groupType == UserGroup::GROUP_VIEWER) {
-      $this->addFlash('notice', $trans->trans('permissions.not-allowed-public-viewer', ['%type%' => $groupType]));
-
-      return $this->redirectToRoute('app_permissions_studyarea');
-    }
-
-    $userGroup = $userGroupRepository->getForType($studyArea, $groupType);
-    if (!$userGroup) {
-      // Create a new group if not found
-      $userGroup = (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
-    }
-
-    // Check whether there are actually users available
-    $availableUserCount = $userRepository->getAvailableUsersForUserGroupQueryBuilder($userGroup)
-        ->select('COUNT(u.id)')->getQuery()->getSingleScalarResult();
-    if ($availableUserCount == 0) {
-      $this->addFlash('notice', $trans->trans('permissions.no-users-available', ['%type%' => $groupType]));
-
-      return $this->redirectToRoute('app_permissions_studyarea');
-    }
-
-    $form = $this->createForm(AddPermissionsType::class, NULL, [
-        'user_group' => $userGroup,
+    $form      = $this->createForm(AddPermissionsType::class, NULL, [
+        'study_area' => $studyArea,
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
 
-      // Persist the selected users
-      foreach ($form->getData()['users'] as $user) {
-        $userGroup->addUser($user);
-      }
-
       // Parse the email addresses, and convert them to users if applicable
-      $emails     = $form->getData()['emails'];
-      $foundUsers = $userRepository->getUsersForEmails($emails);
+      $formData = $form->getData();
+      $emails   = $formData['emails'];
 
-      // Add found users to the group, unset their username from the email list
-      foreach ($foundUsers as $foundUser) {
-        if (!$userGroup->getUsers()->contains($foundUser)) {
+      // Find users, and remove those from the email list
+      $foundUsers = $userRepository->getUsersForEmails($emails);
+      $emails     = array_diff($emails, array_map(function (User $foundUser) {
+        return $foundUser->getUsername();
+      }, $foundUsers));
+
+      // Add the users/emails to the requested groups
+      foreach (UserGroup::getGroupTypes() as $groupType) {
+        // Skip if the group is not requested
+        if (!$formData['permissions'][$groupType]) {
+          continue;
+        }
+
+        // Retrieve or create the user group
+        $userGroup = $userGroupRepository->getForType($studyArea, $groupType)
+            ?? (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
+
+        // Add the users
+        foreach ($foundUsers as $foundUser) {
           $userGroup->addUser($foundUser);
         }
-        $emails = array_diff($emails, [$foundUser->getUsername()]);
+        foreach ($emails as $email) {
+          $userGroup->addEmail($email);
+        }
+
+        $em->persist($userGroup);
       }
 
-      // Add remaining email addresses to the group
-      foreach ($emails as $email) {
-        $userGroup->addEmail($email);
-      }
-
-      $em->persist($userGroup);
       $em->flush();
 
-      $this->addFlash('success', $trans->trans('permissions.permissions-added', [
-          '%type%' => $groupType,
-      ]));
+      $this->addFlash('success', $trans->trans('permissions.permissions-added'));
 
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
     return [
         'studyArea' => $studyArea,
-        'type'      => $groupType,
         'form'      => $form->createView(),
     ];
   }

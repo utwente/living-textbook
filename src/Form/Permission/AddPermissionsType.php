@@ -2,12 +2,9 @@
 
 namespace App\Form\Permission;
 
-use App\Entity\User;
-use App\Entity\UserGroup;
+use App\Entity\StudyArea;
 use App\Form\Type\EmailListType;
 use App\Form\Type\SaveType;
-use App\Repository\UserRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,24 +16,15 @@ class AddPermissionsType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    /** @var UserGroup $userGroup */
-    $userGroup = $options['user_group'];
-
     $builder
-        ->add('users', EntityType::class, [
-            'required'      => false,
-            'label'         => 'permissions.users',
-            'class'         => User::class,
-            'choice_label'  => 'selectionName',
-            'query_builder' => function (UserRepository $userRepository) use ($userGroup) {
-              return $userRepository->getAvailableUsersForUserGroupQueryBuilder($userGroup);
-            },
-            'select2'       => true,
-            'multiple'      => true,
+        ->add('permissions', PermissionsTypes::class, [
+            'study_area' => $options['study_area'],
+            'label'      => 'permissions.permission',
         ])
         ->add('emails', EmailListType::class, [
             'required'    => false,
             'label'       => 'permissions.emails',
+            'help'        => 'permissions.emails-help',
             'constraints' => [
                 'constraints' => new All([
                     new NotBlank(),
@@ -54,7 +42,7 @@ class AddPermissionsType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setRequired('user_group')
-        ->setAllowedTypes('user_group', UserGroup::class);
+        ->setRequired('study_area')
+        ->setAllowedTypes('study_area', StudyArea::class);
   }
 }

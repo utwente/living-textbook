@@ -305,27 +305,6 @@ class StudyArea
       }
     }
 
-    // Sort results
-    usort($result, function (UserPermissions $a, UserPermissions $b) {
-      if ($a->isUser()) {
-        if ($b->isUser()) {
-          // Same, compare on user
-          return User::sortOnDisplayName($a->getUser(), $b->getUser());
-        } else {
-          // Place first before second
-          return -1;
-        }
-      } else {
-        if ($b->isUser()) {
-          // Place first behind second
-          return 1;
-        } else {
-          // Same, compare on email
-          return UserGroupEmail::sortOnEmail($a->getEmail(), $b->getEmail());
-        }
-      }
-    });
-
     return array_values($result);
   }
 
@@ -529,7 +508,7 @@ class StudyArea
       return false;
     }
 
-    return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_ANALYTICS);
+    return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_ANALYSIS);
   }
 
   /**

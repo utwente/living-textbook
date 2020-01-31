@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use InvalidArgumentException;
 
 class UserGroupRepository extends ServiceEntityRepository
 {
@@ -22,14 +23,14 @@ class UserGroupRepository extends ServiceEntityRepository
    * @param StudyArea $studyArea
    * @param string    $groupType
    *
-   * @return UserGroup
-   * @throws \InvalidArgumentException
+   * @return UserGroup|null
+   * @throws InvalidArgumentException
    * @throws NonUniqueResultException
    */
-  public function getForType(StudyArea $studyArea, string $groupType)
+  public function getForType(StudyArea $studyArea, string $groupType): ?UserGroup
   {
     if (!in_array($groupType, UserGroup::getGroupTypes())) {
-      throw new \InvalidArgumentException(sprintf('Access type "%s" does not exist!', $groupType));
+      throw new InvalidArgumentException(sprintf('Access type "%s" does not exist!', $groupType));
     }
 
     try {

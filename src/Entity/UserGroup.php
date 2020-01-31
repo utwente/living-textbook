@@ -28,7 +28,7 @@ class UserGroup
   const GROUP_REVIEWER = 'reviewer';
   const GROUP_EDITOR = 'editor';
   const GROUP_VIEWER = 'viewer';
-  const GROUP_ANALYTICS = 'analytics';
+  const GROUP_ANALYSIS = 'analysis';
 
   use IdTrait;
   use Blameable;
@@ -94,7 +94,7 @@ class UserGroup
    */
   public static function getGroupTypes()
   {
-    return [self::GROUP_REVIEWER, self::GROUP_EDITOR, self::GROUP_VIEWER, self::GROUP_ANALYTICS];
+    return [self::GROUP_VIEWER, self::GROUP_EDITOR, self::GROUP_REVIEWER, self::GROUP_ANALYSIS];
   }
 
   /**
@@ -152,6 +152,10 @@ class UserGroup
    */
   public function addUser(User $user): UserGroup
   {
+    if ($this->users->contains($user)) {
+      return $this;
+    }
+
     $this->users->add($user);
 
     return $this;

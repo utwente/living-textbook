@@ -417,9 +417,11 @@ modal:
 permissions:
   admin: 'Administrator'
   add-admin-title: 'Add new administrator'
-  add-permissions: 'Add "%type%" permissions'
-  add-permissions-text: "You can add permissions based on user accounts and/or based on e-mail addresses.
-    When an account is found or created for any supplied e-mail address, it will be automatically converted to a full user."
+  add-permissions: 'Add permissions'
+  add-permissions-text: >-
+    You can add permissions based on based on e-mail addresses.
+    When an account is found or created for any supplied e-mail address, it will be automatically converted to a full user.
+    If you supply an already existing account, the rights selected here will be added to the user.
   admin-added: '%user% has been promoted to administrator'
   admin-list-title: 'Administrators'
   admin-removed: '%user% is no longer an administrator'
@@ -428,11 +430,13 @@ permissions:
   change-now: 'Change now'
   editor-count: '{0} No editors|{1} One editor|]1,Inf[ %count% editors'
   emails: 'E-mail addresses'
+  emails-help: 'Make sure to enter only e-mail addresses here. If an e-mail address is already known, it will be converted to a full user automatically.'
   info-text: 'Here you can grant and remove permissions on a per user basis.'
   no-admin: '%user% is no admin user'
   no-users-available: 'There are no users that can be granted the "%type%" permission'
   not-allowed-public-viewer: 'It is not possible to add viewer permissions to public study areas!'
-  permissions-added: 'The "%type%" permissions have been added'
+  permission: 'Permission'
+  permissions-added: 'The permissions have been added'
   remove-admin: 'Remove %user% as administrator'
   remove-admin-text: 'Are you sure you want to remove %user% as administrator?'
   remove-all-not-necessary: 'The "%type%" permissions cannot be revoked, as they are not found'
@@ -460,6 +464,11 @@ permissions:
     editor: 'Editor'
     reviewer: 'Reviewer'
     analysis: 'Analysis'
+  type-help:
+    viewer: 'This role allows users to browse all map content'
+    editor: 'This role allows users to edit the map content'
+    reviewer: 'This role allows the user to review submissions'
+    analysis: 'This role allows the user to view the analytics dashboard'
   viewer-count: '{0} No viewers|{1} One viewer|]1,Inf[ %count% viewers'
   users: 'Users'
 

@@ -74,7 +74,7 @@ class UserPermissions
         $this->reviewer = true;
 
         return;
-      case UserGroup::GROUP_ANALYTICS:
+      case UserGroup::GROUP_ANALYSIS:
         $this->analyser = true;
 
         return;

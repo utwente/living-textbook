@@ -6,10 +6,11 @@
 {% endblock %}
 
 {% block title %}
-  {{ 'permissions.add-permissions'|trans({'%type%': type}) }}
+  {{ 'permissions.add-permissions'|trans }}
 {% endblock %}
 
 {% block content %}
   <p>{{ 'permissions.add-permissions-text'|trans }}</p>
+
   {{ form(form) }}
 {% endblock %}
