@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block before_title %}
-  {% import '_macro/_action_buttons.html.twig' as buttons %}
-  {{ buttons.header() }}
-  {{ buttons.add_button(path('app_permissions_addpermissions')) }}
-  {{ buttons.footer() }}
+  {% if studyArea.accessType != constant('App\\Entity\\StudyArea::ACCESS_PRIVATE') %}
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
+    {{ buttons.header() }}
+    {{ buttons.add_button(path('app_permissions_addpermissions')) }}
+    {{ buttons.remove_button(path('app_permissions_removeallpermissions'), false, 'permissions.remove-all-permissions') }}
+    {{ buttons.footer() }}
+  {% endif %}
 {% endblock %}
 
 {% macro type_header_cell(type) %}
@@ -21,7 +24,7 @@
 {% macro type_footer_cell(type) %}
   <td scope="col" class="text-center">
     {% import '_macro/_action_buttons.html.twig' as buttons %}
-    {{ buttons.remove_button(path('app_permissions_removeallpermissions', {'groupType': type}), false, 'permissions.revoke-type'|trans) }}
+    {{ buttons.remove_button(path('app_permissions_removeallpermissionsfortype', {'groupType': type}), false, 'permissions.revoke-type'|trans) }}
   </td>
 {% endmacro %}
 
@@ -36,7 +39,7 @@
 {% endmacro %}
 
 {% block content %}
-  {% if studyArea.accessType != 'group' and studyArea.accessType != 'public' %}
+  {% if studyArea.accessType == constant('App\\Entity\\StudyArea::ACCESS_PRIVATE') %}
     {{ 'permissions.study-area-not-group-or-public'|trans({'%item%': studyArea.name}) }}
     <a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id, 'permissions': true}) }}">
       {{ 'permissions.change-now'|trans }}.

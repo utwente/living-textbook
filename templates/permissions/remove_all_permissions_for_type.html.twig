@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'permissions.remove-all-permissions-for-type'|trans({'%type%': type }) }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'permissions.remove-all-permissions-text-for-type'|trans({'%type%': type, '%item%': studyArea.name }) }}</p>
+
+  {{ form(form) }}
+{% endblock %}
