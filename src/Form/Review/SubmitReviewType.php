@@ -3,7 +3,6 @@
 namespace App\Form\Review;
 
 use App\Entity\Review;
-use App\Entity\StudyArea;
 use App\Form\Type\SaveType;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -56,11 +55,11 @@ class SubmitReviewType extends AbstractReviewType
 
   public function configureOptions(OptionsResolver $resolver)
   {
+    parent::configureOptions($resolver);
+
     $resolver
         ->setRequired('review')
-        ->setRequired('study_area')
-        ->setAllowedTypes('review', Review::class)
-        ->setAllowedTypes('study_area', StudyArea::class);
+        ->setAllowedTypes('review', Review::class);
   }
 
 }

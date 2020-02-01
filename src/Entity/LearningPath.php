@@ -184,7 +184,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
    *
    * @return LearningPath
    */
-  public function setStudyArea(StudyArea $studyArea)
+  public function setStudyArea(StudyArea $studyArea): LearningPath
   {
     $this->studyArea = $studyArea;
 

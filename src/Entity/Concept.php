@@ -606,19 +606,19 @@ class Concept implements SearchableInterface, ReviewableInterface
         {
           // This construct is required for Doctrine to work correctly. Why? No clue.
           $toRemove = [];
-          foreach ($this->getOutgoingRelations() as $incomingRelation) {
-            $toRemove[] = $incomingRelation;
+          foreach ($this->getOutgoingRelations() as $outgoingRelation) {
+            $toRemove[] = $outgoingRelation;
           }
-          foreach ($toRemove as $incomingRelation) {
-            $this->getOutgoingRelations()->removeElement($incomingRelation);
-            $em->remove($incomingRelation);
+          foreach ($toRemove as $outgoingRelation) {
+            $this->getOutgoingRelations()->removeElement($outgoingRelation);
+            $em->remove($outgoingRelation);
           }
 
-          foreach ($changeObj->getOutgoingRelations() as $incomingRelation) {
-            $this->fixConceptRelationReferences($incomingRelation, $em);
+          foreach ($changeObj->getOutgoingRelations() as $outgoingRelation) {
+            $this->fixConceptRelationReferences($outgoingRelation, $em);
 
-            $this->addOutgoingRelation($incomingRelation);
-            $em->persist($incomingRelation);
+            $this->addOutgoingRelation($outgoingRelation);
+            $em->persist($outgoingRelation);
           }
 
           break;
@@ -819,7 +819,7 @@ class Concept implements SearchableInterface, ReviewableInterface
       $conceptRelation->setTarget($this);
     }
 
-    $this->outgoingRelations->add($conceptRelation);
+    $this->incomingRelations->add($conceptRelation);
 
     return $this;
   }
