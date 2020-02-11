@@ -184,7 +184,7 @@ class DataController extends AbstractController
                 $linkTypes[$linkName] = (new RelationType())->setStudyArea($studyArea)->setName($linkName);
                 if ($validator->validate($linkTypes[$linkName])->count() > 0) {
                   throw new DataImportException(
-                      sprintf('Could not create the relation type: "%s"', json_encode($jsonLink)));
+                      sprintf('Could not create the relation type: %s', json_encode($jsonLink)));
                 }
                 $em->persist($linkTypes[$linkName]);
               }
@@ -208,7 +208,7 @@ class DataController extends AbstractController
             $concepts[$key]->setStudyArea($studyArea);
             if ($validator->validate($concepts[$key])->count() > 0) {
               throw new DataImportException(
-                  sprintf('Could not create the concept: "%s"', json_encode($jsonNode)));
+                  sprintf('Could not create the concept: %s', json_encode($jsonNode)));
             }
             $em->persist($concepts[$key]);
           }
@@ -237,7 +237,7 @@ class DataController extends AbstractController
             $concepts[$jsonLink['source']]->addOutgoingRelation($relation);
             if ($validator->validate($relation)->count() > 0) {
               throw new DataImportException(
-                  sprintf('Could not create the concept relation: "%s"', json_encode($jsonLink)));
+                  sprintf('Could not create the concept relation: %s', json_encode($jsonLink)));
             }
           }
 
@@ -275,7 +275,7 @@ class DataController extends AbstractController
               }
               if ($validator->validate($learningOutcome)->count() > 0) {
                 throw new DataImportException(
-                    sprintf('Could not create the concept learning outcome: "%s"', json_encode($jsonLearningOutcome)));
+                    sprintf('Could not create the concept learning outcome: %s', json_encode($jsonLearningOutcome)));
               };
               $em->persist($learningOutcome);
               $learningOutcomeNumber++;
@@ -318,7 +318,7 @@ class DataController extends AbstractController
               // Validate & persist
               if ($validator->validate($externalResource)->count() > 0) {
                 throw new DataImportException(
-                    sprintf('Could not create the external resource: "%s"', json_encode($jsonExternalResource)));
+                    sprintf('Could not create the external resource: %s', json_encode($jsonExternalResource)));
               };
               $em->persist($externalResource);
             }
