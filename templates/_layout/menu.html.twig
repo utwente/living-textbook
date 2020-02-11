@@ -33,7 +33,7 @@
 {% from _self import buttons %}
 
 <div class="global-search-form">
-  {{ include('search/search_form.html.twig') }}
+  {% include('search/search_form.html.twig') only %}
 </div>
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
