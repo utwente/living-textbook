@@ -26,7 +26,12 @@
       source: data,
       minLength: 0,
       items: 10,
-      showHintOnFocus: "all"
+      showHintOnFocus: 'all',
+      displayText: function (item) {
+        // Fix js error when name is empty (013-LIVING-TEXTBOOK-K, #281)
+        // Use space character to render span height correctly
+        return item.name || ' ';
+      }
     });
   };
 }(window.conceptSearch = window.conceptSearch || {}));
