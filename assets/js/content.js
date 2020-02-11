@@ -117,21 +117,25 @@ $(function () {
           return false;
         });
 
-    let method = $form.attr('method').toUpperCase();
-    if (method === undefined) {
+    let method = $form.attr('method');
+    if (typeof method !== 'string') {
       method = 'POST';
+    } else {
+      method = method.toUpperCase();
     }
 
     if (inDoubleColumn && method === 'POST') {
       // Make sure we have the updated data from ckeditor
-      for (let instanceName in CKEDITOR.instances) {
-        if (!CKEDITOR.instances.hasOwnProperty(instanceName)) continue;
-        CKEDITOR.instances[instanceName].updateElement();
+      if (typeof CKEDITOR !== 'undefined') {
+        for (let instanceName in CKEDITOR.instances) {
+          if (!CKEDITOR.instances.hasOwnProperty(instanceName)) continue;
+          CKEDITOR.instances[instanceName].updateElement();
+        }
       }
 
       // Retrieve action
       let action = $form.attr('action');
-      if (action === undefined) {
+      if (typeof action !== 'string') {
         action = window.location.href;
       }
 
