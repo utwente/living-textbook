@@ -6,7 +6,7 @@
     return false;
   }
 </script>
-<form name="search_form" onsubmit="return doSearch_{{ id }}(event)">
+<form name="search_form" class="ignore-submit" onsubmit="return doSearch_{{ id }}(event)">
   <div class="form-group">
     <input type="text" id="search_{{ id }}" required="required" value="{{ search|default('') }}"
            placeholder="{{ 'search.placeholder'|trans }}" class="form-control">

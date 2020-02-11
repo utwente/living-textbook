@@ -93,7 +93,7 @@ $(function () {
   });
 
   // Forms on the page to parse
-  let $loadedForms = $('form');
+  let $loadedForms = $('form:not(".ignore-submit")');
 
   // Send handler to form buttons to determine clicked button
   let $submitButtons = $loadedForms.find(':input[type=submit]');
