@@ -8,6 +8,7 @@ use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 class PendingChangeRepository extends ServiceEntityRepository
 {
@@ -29,6 +30,42 @@ class PendingChangeRepository extends ServiceEntityRepository
         'objectType' => $object->getReviewName(),
         'objectId'   => $object->getId(),
     ]);
+  }
+
+  /**
+   * Retrieve a mergeable pending change for the given one
+   *
+   * @param PendingChange $pendingChange
+   *
+   * @return PendingChange|null
+   */
+  public function getMergeable(PendingChange $pendingChange): ?PendingChange
+  {
+    try {
+      $qb = $this->createQueryBuilder('pc')
+          ->where('pc.objectType = :objectType')
+          ->andWhere('pc.objectId = :objectId')
+          ->andWhere('pc.changeType = :changeType')
+          ->andWhere('pc.owner = :owner')
+          ->setParameter('objectType', $pendingChange->getObjectType())
+          ->setParameter('objectId', $pendingChange->getObjectId())
+          ->setParameter('changeType', $pendingChange->getChangeType())
+          ->setParameter('owner', $pendingChange->getOwner())
+          ->setMaxResults(1);
+
+      if ($pendingChange->getReview()) {
+        $qb
+            ->andWhere('pc.review = :review')
+            ->setParameter('review', $pendingChange->getReview());
+      } else {
+        $qb->andWhere('pc.review is null');
+      }
+
+      return $qb
+          ->getQuery()->getOneOrNullResult();
+    } catch (NonUniqueResultException $e) {
+      return NULL;
+    }
   }
 
   /**

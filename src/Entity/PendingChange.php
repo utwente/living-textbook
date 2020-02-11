@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\ReviewableInterface;
+use App\Review\Exception\IncompatibleChangeMergeException;
+use App\Review\Exception\OverlappingFieldsChangedException;
 use App\Review\ReviewService;
 use Doctrine\ORM\Mapping as ORM;
 use RuntimeException;
@@ -156,6 +158,44 @@ class PendingChange
     $new->payload = $this->payload;
 
     return $new;
+  }
+
+  /**
+   * Merge the supplied pending changes. The second will be merged into the first one.
+   * This action should on merge the difference when the properties do not overlap!
+   *
+   * @param PendingChange $merge
+   *
+   * @return PendingChange
+   *
+   * @throws IncompatibleChangeMergeException
+   * @throws OverlappingFieldsChangedException
+   */
+  public function merge(PendingChange $merge): self
+  {
+    // Validate whether the pending change to be merged is of the same type
+    if ($this->getObjectType() !== $merge->getObjectType()
+        || $this->getObjectId() !== $merge->getObjectId()) {
+      throw new IncompatibleChangeMergeException($this, $merge);
+    }
+
+    // Validate whether there are no overlapping fields
+    if (0 !== count(array_intersect($this->getChangedFields(), $merge->getChangedFields()))) {
+      throw new OverlappingFieldsChangedException($this, $merge);
+    }
+
+    // Merge the data, by updating the serialized content
+    $origData  = json_decode($this->payload, true);
+    $mergeData = json_decode($merge->payload, true);
+    foreach ($merge->getChangedFields() as $changedField) {
+      $origData[$changedField] = $mergeData[$changedField];
+      $this->changedFields[]   = $changedField;
+    }
+
+    // Set updated data
+    $this->payload = json_encode($origData);
+
+    return $this;
   }
 
   /**

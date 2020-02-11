@@ -169,6 +169,11 @@ class ReviewService
     $pendingChange->setOwner($refOwner);
     $pendingChange->setStudyArea($refStudyArea);
 
+    // Merge the new pending change with an existing one, if any
+    if ($mergeable = $this->pendingChangeRepository->getMergeable($pendingChange)) {
+      $pendingChange = $mergeable->merge($pendingChange);
+    }
+
     // Store the pending change
     $this->entityManager->persist($pendingChange);
     $this->entityManager->flush($pendingChange);
