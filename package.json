@@ -26,6 +26,7 @@
     "bootstrap": "^4.0.0",
     "bootstrap-3-typeahead": "^4.0.2",
     "bootstrap4-toggle": "^3.4.0",
+    "custom-event": "^1.0.1",
     "d3": "^4.12.2",
     "datatables.net": "^1.10.20",
     "datatables.net-bs4": "^1.10.20",

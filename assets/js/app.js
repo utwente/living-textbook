@@ -1,5 +1,7 @@
 require('../css/app.scss');
 
+// IE 11 polyfill
+import './ie11';
 // Sentry
 import * as Sentry from '@sentry/browser';
 // Import routing
