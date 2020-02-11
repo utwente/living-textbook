@@ -312,6 +312,11 @@ class DataController extends AbstractController
 
               // Map to related concepts
               foreach ($jsonExternalResource['isExternalResourceOf'] as $linkedConceptKey) {
+                if (!array_key_exists($linkedConceptKey, $concepts)) {
+                  throw new DataImportException(
+                      sprintf('The referenced node %d does not exist in external resource: %s', $linkedConceptKey, json_encode($jsonExternalResource)));
+                }
+
                 $concepts[$linkedConceptKey]->addExternalResource($externalResource);
               }
 
