@@ -165,7 +165,7 @@
 
   {{ block('review_diff_start') }}
   {% if show_original %}
-    {{ printText(orig_text, ckeditor) }}
+    {{ printText(orig_text, ckeditor, false) }}
   {% endif %}
   {{ block('review_diff_mid') }}
   {% if show_updated %}
