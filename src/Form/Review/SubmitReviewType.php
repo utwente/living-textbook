@@ -20,7 +20,8 @@ class SubmitReviewType extends AbstractReviewType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        // This field will no be rendered by the SF form component!
+        // This field will not be rendered by the SF form component in this field,
+        // but by the ReviewSubmissionType field by setting the checkboxes to true
         ->add('pending_changes', CollectionType::class, [
             'required'      => false,
             'allow_add'     => true,

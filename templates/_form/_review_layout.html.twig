@@ -169,7 +169,7 @@
   {% endif %}
   {{ block('review_diff_mid') }}
   {% if show_updated %}
-    {{ printText(new_text, ckeditor, orig_text is defined ? orig_text : false) }}
+    {{ printText(new_text, ckeditor, orig_text is defined ? orig_text : '') }}
   {% endif %}
   {{ block('review_diff_end') }}
 {% endblock %}
@@ -188,9 +188,9 @@
       </label>
     </div>
   {% else %}
-    <h5 class="review-header">
+    <label>
       {{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}
-    </h5>
+    </label>
   {% endif %}
   <div class="row">
     <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
@@ -204,7 +204,13 @@
 
     <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
       {% if show_updated %}
-        <label class="col-form-label">{{ 'review.update'|trans }}</label>
+        <label class="col-form-label">
+          {% if show_original %}
+            {{ 'review.update'|trans }}
+          {% else %}
+            {{ 'review.new'|trans }}
+          {% endif %}
+        </label>
       {% endif %}
 
       {% endblock %}
