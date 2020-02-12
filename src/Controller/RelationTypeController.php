@@ -99,6 +99,16 @@ class RelationTypeController extends AbstractController
       throw $this->createNotFoundException();
     }
 
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $relationType)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('relation-type._name'),
+      ]));
+
+      return $this->redirectToRoute('app_relationtype_list');
+    }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($relationType);
 
     // Create form and handle request

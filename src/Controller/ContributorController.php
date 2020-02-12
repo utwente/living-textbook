@@ -93,6 +93,17 @@ class ContributorController extends AbstractController
     if ($contributor->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $contributor)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('contributor._name'),
+      ]));
+
+      return $this->redirectToRoute('app_contributor_list');
+    }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($contributor);
 
     // Create form and handle request

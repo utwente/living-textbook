@@ -120,6 +120,17 @@ class AbbreviationController extends AbstractController
     if ($abbreviation->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $abbreviation)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('abbreviation._name'),
+      ]));
+
+      return $this->redirectToRoute('app_abbreviation_list');
+    }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($abbreviation);
 
     // Create form and handle request

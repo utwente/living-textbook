@@ -100,6 +100,17 @@ class LearningOutcomeController extends AbstractController
     if ($learningOutcome->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $learningOutcome)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('learning-outcome._name'),
+      ]));
+
+      return $this->redirectToRoute('app_learningoutcome_list');
+    }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($learningOutcome);
 
     // Create form and handle request

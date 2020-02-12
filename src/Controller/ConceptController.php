@@ -108,6 +108,15 @@ class ConceptController extends AbstractController
       throw $this->createNotFoundException();
     }
 
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $concept)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('concept._name'),
+      ]));
+
+      return $this->redirectToRoute('app_concept_list');
+    }
+
     // Map original relations
     $originalOutgoingRelations = new ArrayCollection();
     foreach ($concept->getOutgoingRelations() as $outgoingRelation) {
@@ -117,6 +126,8 @@ class ConceptController extends AbstractController
     foreach ($concept->getIncomingRelations() as $incomingRelation) {
       $originalIncomingRelations->add($incomingRelation);
     }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($concept);
 
     // Create form and handle request

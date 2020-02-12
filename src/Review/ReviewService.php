@@ -220,6 +220,26 @@ class ReviewService
   }
 
   /**
+   * Retrieve whether the object can be edited
+   *
+   * @param StudyArea           $studyArea
+   * @param ReviewableInterface $object
+   *
+   * @return bool
+   */
+  public function canObjectBeEdited(StudyArea $studyArea, ReviewableInterface $object): bool
+  {
+    if (!$studyArea->isReviewModeEnabled()) {
+      return true;
+    }
+
+    return 0 === count(array_filter($this->pendingChangeRepository->getForObject($object),
+            function (PendingChange $pendingChange) {
+              return $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT;
+            }));
+  }
+
+  /**
    * Retrieve whether the object can be removed
    *
    * @param StudyArea           $studyArea

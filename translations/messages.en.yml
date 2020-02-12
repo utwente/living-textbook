@@ -670,6 +670,7 @@ review:
   clear-comments: 'Clear'
   comments: 'Review comments'
   comments-placeholder: 'Leave your comments here, if any'
+  edit-not-possible: '%item% cannot be edited at this time, as it is pending for removal.'
   edit-notice: 'It is not possible to edit the submitted changes from here.'
   edit-successful: 'The review has been updated successfully!'
   edit-title: 'Edit review'

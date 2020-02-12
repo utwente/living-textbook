@@ -107,6 +107,17 @@ class LearningPathController extends AbstractController
     foreach ($learningPath->getElements() as $element) {
       $originalElements->add($element);
     }
+
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $learningPath)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('learning-path._name'),
+      ]));
+
+      return $this->redirectToRoute('app_learningpath_list');
+    }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($learningPath);
 
     // Create form and handle request

@@ -93,6 +93,17 @@ class ExternalResourceController extends AbstractController
     if ($externalResource->getStudyArea()->getId() != $studyArea->getId()) {
       throw $this->createNotFoundException();
     }
+
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $externalResource)) {
+      $this->addFlash('error', $trans->trans('review.edit-not-possible', [
+          '%item%' => $trans->trans('external-resource._name'),
+      ]));
+
+      return $this->redirectToRoute('app_externalresource_list');
+    }
+
+    // Create snapshot
     $snapshot = $reviewService->getSnapshot($externalResource);
 
     // Create form and handle request
