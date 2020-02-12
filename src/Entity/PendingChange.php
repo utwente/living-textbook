@@ -192,6 +192,79 @@ class PendingChange
       $this->changedFields[]   = $changedField;
     }
 
+    // Order the changed fields
+    switch ($this->objectType) {
+      case Abbreviation::class:
+        $sortOrder = [
+            'abbreviation' => 200,
+            'meaning'      => 150,
+        ];
+        break;
+      case Concept::class:
+        $sortOrder = [
+            'name'              => 200,
+            'definition'        => 190,
+            'synonyms'          => 180,
+            'introduction'      => 170,
+            'priorKnowledge'    => 160,
+            'learningOutcomes'  => 150,
+            'theoryExplanation' => 140,
+            'howTo'             => 130,
+            'examples'          => 120,
+            'externalResources' => 110,
+            'selfAssessment'    => 100,
+            'relations'         => 90,
+            'incomingRelations' => 80,
+            'contributors'      => 70,
+        ];
+        break;
+      case Contributor::class:
+        $sortOrder = [
+            'name'        => 200,
+            'description' => 150,
+            'url'         => 100,
+        ];
+        break;
+      case ExternalResource::class:
+        $sortOrder = [
+            'title'       => 200,
+            'description' => 150,
+            'url'         => 100,
+        ];
+        break;
+      case LearningOutcome::class:
+        $sortOrder = [
+            'number' => 200,
+            'name'   => 150,
+            'text'   => 100,
+        ];
+        break;
+      case LearningPath::class:
+        $sortOrder = [
+            'name'         => 200,
+            'introduction' => 150,
+            'question'     => 100,
+            'elements'     => 50,
+        ];
+        break;
+      case RelationType::class:
+        $sortOrder = [
+            'name'        => 200,
+            'description' => 150,
+        ];
+        break;
+      default:
+        $sortOrder = [];
+    }
+
+    usort($this->changedFields, function (string $a, string $b) use ($sortOrder) {
+      if (!array_key_exists($a, $sortOrder) || !array_key_exists($b, $sortOrder)) {
+        return 0;
+      }
+
+      return $sortOrder[$b] <=> $sortOrder[$a];
+    });
+
     // Set updated data
     $this->payload = json_encode($origData);
 
