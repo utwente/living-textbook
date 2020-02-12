@@ -27,6 +27,7 @@ class EditReviewType extends AbstractReviewType
             'enable_cancel'        => true,
             'cancel_route'         => 'app_review_submissions',
             'enable_save_and_list' => false,
+            'save_label'           => $options['save_label'],
         ]);
   }
 
@@ -38,6 +39,8 @@ class EditReviewType extends AbstractReviewType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setDefault('data_class', Review::class);
+        ->setDefault('save_label', 'form.save')
+        ->setDefault('data_class', Review::class)
+        ->setAllowedTypes('save_label', 'string');
   }
 }

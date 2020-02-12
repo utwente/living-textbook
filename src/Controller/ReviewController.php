@@ -192,6 +192,59 @@ class ReviewController extends AbstractController
   }
 
   /**
+   * Resubmits the review
+   *
+   * @Route("/{review}/resubmit", requirements={"review"="\d+"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @Template()
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Review                 $review
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|Response
+   */
+  public function resubmitSubmission(
+      Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
+      TranslatorInterface $translator)
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    $this->isReviewable($studyArea);
+    $this->checkAccess($studyArea, $review);
+
+    $user = $this->getUser();
+    assert($user instanceof User);
+
+    $form = $this->createForm(EditReviewType::class, $review, [
+        'save_label' => 'review.resubmit-review',
+        'study_area' => $studyArea,
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Reset review state
+      $review
+          ->setRequestedReviewAt(new DateTime())
+          ->setReviewedAt(NULL)
+          ->setReviewedBy(NULL);
+
+      // Store the data
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('review.resubmitted'));
+
+      return $this->redirectToRoute('app_review_submissions');
+    }
+
+    return [
+        'form' => $form->createView(),
+    ];
+  }
+
+  /**
    * Review a submission
    *
    * @Route("/{review}", requirements={"review"="\d+"})
@@ -213,6 +266,11 @@ class ReviewController extends AbstractController
   {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
+    // Check if not yet reviewed
+    if ($review->getReviewedAt() !== NULL) {
+      throw new NotFoundHttpException("Requested review has already been reviewed");
+    }
+
     // Check if not yet approved
     if ($review->getApprovedAt() !== NULL) {
       throw new NotFoundHttpException("Requested review has already been approved");
@@ -223,14 +281,19 @@ class ReviewController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      $now  = new DateTime();
+      $user = $this->getUser();
+      assert($user instanceof User);
+
+      $review
+          ->setReviewedBy($user)
+          ->setReviewedAt($now);
 
       $hasComments = $review->hasComments();
       if (!$hasComments) {
         // Set as approved
-        $user = $this->getUser();
-        assert($user instanceof User);
         $review
-            ->setApprovedAt(new DateTime())
+            ->setApprovedAt($now)
             ->setApprovedBy($user);
       }
 

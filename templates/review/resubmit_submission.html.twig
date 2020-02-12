@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'review.resubmit-review-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'review.resubmit-review-text'|trans }}</p>
+
+  {{ form(form) }}
+{% endblock %}

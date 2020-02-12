@@ -14,10 +14,14 @@
 
 {% block content %}
   <p>{{ 'review.review-submission-text'|trans }}</p>
+  {% from '_layout/flashbags.html.twig' import flashbag_alert %}
 
   {% if review.notes is not empty %}
-    {% from '_layout/flashbags.html.twig' import flashbag_alert %}
     {{ flashbag_alert('info', 'review.notes-from-author'|trans ~ ': ' ~ review.notes, 'fa-info') }}
+  {% endif %}
+
+  {% if review.hasComments %}
+    {{ flashbag_alert('warning', 'review.resubmitted-note'|trans, 'fa-exclamation') }}
   {% endif %}
 
   {{ form(form) }}

@@ -703,6 +703,11 @@ review:
   remove-successful: 'The review has been removed successfully!'
   remove-text: 'Are you sure you want to remove this review? If you remove the review, the associated changes will be lost!'
   remove-title: 'Remove review'
+  resubmit-review: 'Resubmit'
+  resubmit-review-title: 'Resubmit review'
+  resubmit-review-text: 'Are you sure you want to resubmit the review?'
+  resubmitted: 'Your review has been resubmitted successfully!'
+  resubmitted-note: 'This review has been resubmitted! Check whether the previous notes have been resolved and remove them if that is the case.'
   review-approved: 'The submission has been approved. It is now waiting for publishing, which can only be done by the study area owner.'
   review-comments: 'The submission has been reviewed and your comments have been stored. The author will need to resubmit the changes for review.'
   review-submission: 'Review submission'
@@ -710,8 +715,11 @@ review:
     Below you can review the changes, and comment on them if required. If you leave comments, the author must resubmit
     the submission in order to resolve them. Note that it is currently not possible to review the changes in the concept
     map or learning path browser, only this page has the changes available!
+  reviewed-at: 'Reviewed at'
+  reviewed-by: 'Reviewed by'
   reviewer: 'Reviewer'
   reviewer-help: 'Select who should review these changes.'
+  requested-reviewer: 'Requested reviewer'
   submissions-title: 'Pending reviews'
   submissions-text: 'The submissions below are currently pending review.'
   saved-for-review: 'Your change has been saved! You will need to submit it for review in order to get it published.'

@@ -92,6 +92,27 @@ class Review
   private $requestedReviewBy;
 
   /**
+   * Reviewed at datetime
+   *
+   * @var DateTime|null
+   *
+   * @ORM\Column(type="datetime", nullable=true)
+   *
+   * @Assert\Type("datetime")
+   */
+  private $reviewedAt;
+
+  /**
+   * Approved by, can be different than the requested reviewer
+   *
+   * @var User|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   * @ORM\JoinColumn(nullable=true)
+   */
+  private $reviewedBy;
+
+  /**
    * Approval datetime
    *
    * @var DateTime|null
@@ -103,7 +124,7 @@ class Review
   private $approvedAt;
 
   /**
-   * Approved by, can be different than the requested reviewer (owner)
+   * Approved by, can be different than the requested reviewer
    *
    * @var User|null
    *
@@ -268,6 +289,46 @@ class Review
   public function setRequestedReviewBy(?User $requestedReviewBy): self
   {
     $this->requestedReviewBy = $requestedReviewBy;
+
+    return $this;
+  }
+
+  /**
+   * @return DateTime|null
+   */
+  public function getReviewedAt(): ?DateTime
+  {
+    return $this->reviewedAt;
+  }
+
+  /**
+   * @param DateTime|null $reviewedAt
+   *
+   * @return Review
+   */
+  public function setReviewedAt(?DateTime $reviewedAt): Review
+  {
+    $this->reviewedAt = $reviewedAt;
+
+    return $this;
+  }
+
+  /**
+   * @return User|null
+   */
+  public function getReviewedBy(): ?User
+  {
+    return $this->reviewedBy;
+  }
+
+  /**
+   * @param User|null $reviewedBy
+   *
+   * @return Review
+   */
+  public function setReviewedBy(?User $reviewedBy): Review
+  {
+    $this->reviewedBy = $reviewedBy;
 
     return $this;
   }

@@ -24,14 +24,14 @@
 
   {# Own submissions, with review comments #}
   {{ reviews_page_part(
-    reviews|filter((review) => review.owner.id == app.user.id and review.hasComments),
-  'review.list-own-rework-flash'|trans, 'warning', 'fa-exclamation', false
+    reviews|filter((review) => review.owner.id == app.user.id and review.reviewedAt is not null),
+  'review.list-own-rework-flash'|trans, 'warning', 'fa-exclamation', false, true
   ) }}
 
   {# Own submissions, pending for review #}
   {{ reviews_page_part(
-    reviews|filter((review) => review.owner.id == app.user.id and not review.hasComments),
-  'review.list-own-flash'|trans, 'info', 'fa-info', false
+    reviews|filter((review) => review.owner.id == app.user.id and review.reviewedAt is null),
+  'review.list-own-flash'|trans, 'info', 'fa-info', false, false
   ) }}
 
   {# Other submissions, header #}
@@ -41,18 +41,18 @@
 
   {# Other submissions, pending for review #}
   {{ reviews_page_part(
-    reviews|filter((review) => review.owner.id != app.user.id and not review.hasComments),
-  'review.list-other-flash'|trans, 'warning', 'fa-exclamation', true
+    reviews|filter((review) => review.owner.id != app.user.id and review.reviewedAt is null),
+  'review.list-other-flash'|trans, 'warning', 'fa-exclamation', true, false
   ) }}
 
   {# Other submissions, with review comments #}
   {{ reviews_page_part(
-    reviews|filter((review) => review.owner.id != app.user.id and review.hasComments),
-  'review.list-other-pending-flash'|trans, 'info', 'fa-info', true
+    reviews|filter((review) => review.owner.id != app.user.id and review.reviewedAt is not null),
+  'review.list-other-pending-flash'|trans, 'info', 'fa-info', true, true
   ) }}
 {% endblock %}
 
-{% macro reviews_page_part(reviews, title, alertType, icon, notOwn) %}
+{% macro reviews_page_part(reviews, title, alertType, icon, notOwn, reviewed) %}
   {% set closeLoop = false %}
   {% for review in reviews %}
     {% if loop.first %}
@@ -81,8 +81,13 @@
             <th scope="col" style="width: 20%">{{ 'review.owner'|trans }}</th>
           {% endif %}
           <th scope="col" style="width: 20%">{{ 'review.notes'|trans }}</th>
-          <th scope="col" style="width: 20%">{{ 'review.submitted-at'|trans }}</th>
-          <th scope="col" style="width: 20%">{{ 'review.reviewer'|trans }}</th>
+          {% if reviewed %}
+            <th scope="col" style="width: 20%">{{ 'review.reviewed-at'|trans }}</th>
+            <th scope="col" style="width: 20%">{{ 'review.reviewed-by'|trans }}</th>
+          {% else %}
+            <th scope="col" style="width: 20%">{{ 'review.submitted-at'|trans }}</th>
+            <th scope="col" style="width: 20%">{{ 'review.requested-reviewer'|trans }}</th>
+          {% endif %}
           <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
         </tr>
         </thead>
@@ -100,17 +105,28 @@
             <td class="fit">
               {{ noteExcerpt(review.notes) }}
             </td>
-            <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
-            <td>{{ review.requestedReviewBy.displayName }}</td>
-            <td class="actions">
+            {% if reviewed %}
+              <td>{{ review.reviewedAt|localizeddate('medium', 'short') }}</td>
+              <td>{{ review.reviewedBy.displayName }}</td>
+            {% else %}
+              <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
+              <td>{{ review.requestedReviewBy.displayName }}</td>
+            {% endif %}
+            <td class="actions text-right">
+              {% if review.reviewedAt is null and (not own or is_granted('STUDYAREA_OWNER', _twigStudyArea)) %}
+                {{ _action_button(path('app_review_reviewsubmission', {'review': review.id}), 'fa-search',
+                  'review.start-review'|trans, 'success', false, false) }}
+              {% endif %}
+              {% if review.reviewedAt is not null and (own or is_granted('STUDYAREA_OWNER', _twigStudyArea)) %}
+                {{ _action_button(path('app_review_resubmitsubmission', {'review': review.id}), 'fa-repeat',
+                  'review.resubmit-review'|trans, 'success', false, false) }}
+              {% endif %}
+
+              {{ show_button(path('app_review_showsubmission', {'review': review.id})) }}
+
               {% if own or is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
                 {{ edit_button(path('app_review_editreview', {'review': review.id})) }}
                 {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
-              {% endif %}
-              {{ show_button(path('app_review_showsubmission', {'review': review.id})) }}
-              {% if not own or is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
-                {{ _action_button(path('app_review_reviewsubmission', {'review': review.id}), 'fa-search',
-                  'review.start-review'|trans, 'success', false, false, review.requestedReviewBy.id != app.user.id) }}
               {% endif %}
             </td>
           </tr>
