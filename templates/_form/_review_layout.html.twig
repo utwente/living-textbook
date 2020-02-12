@@ -202,7 +202,7 @@
       {% block review_diff_mid %}
     </div>
 
-    <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
+    <div class="col-12 mt-2 col-md-6 mt-md-0{% if form.comments is defined %} col-xl-4{% endif %}">
       {% if show_updated %}
         <label class="col-form-label">
           {% if show_original %}
@@ -218,7 +218,7 @@
     </div>
 
     {% if form.comments is defined %}
-      <div class="col-12 col-xl-4">
+      <div class="col-12 mt-2 col-xl-4 mt-xl-0">
         <label class="col-form-label">
           {{ 'review.comments'|trans }}
           <a href="#" onclick="$('#{{ form.comments.vars.id }}').val('')">
