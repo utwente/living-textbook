@@ -667,6 +667,7 @@ review:
     add: 'Object added'
     edit: 'Object edited'
     remove: 'Object removed'
+  clear-comments: 'Clear'
   comments: 'Review comments'
   comments-placeholder: 'Leave your comments here, if any'
   edit-notice: 'It is not possible to edit the submitted changes from here.'
@@ -707,7 +708,10 @@ review:
   resubmit-review-title: 'Resubmit review'
   resubmit-review-text: 'Are you sure you want to resubmit the review?'
   resubmitted: 'Your review has been resubmitted successfully!'
-  resubmitted-note: 'This review has been resubmitted! Check whether the previous notes have been resolved and remove them if that is the case.'
+  resubmitted-note: >-
+    This review has been resubmitted!
+    Check whether the previous notes have been resolved and remove them if that is the case.
+    You can remove all comments by clicking %a_start%here%a_end%.
   review-approved: 'The submission has been approved. It is now waiting for publishing, which can only be done by the study area owner.'
   review-comments: 'The submission has been reviewed and your comments have been stored. The author will need to resubmit the changes for review.'
   review-submission: 'Review submission'

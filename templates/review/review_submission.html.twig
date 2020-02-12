@@ -21,7 +21,10 @@
   {% endif %}
 
   {% if review.hasComments %}
-    {{ flashbag_alert('warning', 'review.resubmitted-note'|trans, 'fa-exclamation') }}
+    {{ flashbag_alert('warning', 'review.resubmitted-note'|trans({
+      '%a_start%': '<a href="#" onclick="$(\'.review-comments textarea\').val(\'\')">',
+      '%a_end%': '</a>'
+    }), 'fa-exclamation', false, true) }}
   {% endif %}
 
   {{ form(form) }}
