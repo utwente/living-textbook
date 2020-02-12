@@ -1,21 +1,31 @@
-{% macro flashbag_alert(type, message, icon, close) %}
+{% macro flashbag_alert(type, message, icon, close, raw) %}
   <div class="alert alert-{{ type }}{% if close %} alert-dismissible{% endif %} fade-in" role="alert">
-    {% if icon is not null %}
-      <span class="fa fa-fw {{ icon }}" aria-hidden="true"></span>
-    {% endif %}
     {% if close %}
       <button type="button" class="close" data-dismiss="alert" aria-label="{{ "general.close"|trans }}">
         <span aria-hidden="true">&times;</span>
       </button>
     {% endif %}
-    {{ message }}
+    <div class="d-flex">
+      {% if icon is not null %}
+        <div class="mr-3">
+          <span class="fa fa-fw {{ icon }}" aria-hidden="true"></span>
+        </div>
+      {% endif %}
+      <div class="flex-fill">
+        {% if raw|default(false) %}
+          {{ message|raw }}
+        {% else %}
+          {{ message }}
+        {% endif %}
+      </div>
+    </div>
   </div>
 {% endmacro %}
 
-{% spaceless %}
+{% apply spaceless %}
   <div id="flashbag-container">
     {% block flashbags %}
-      {% from '_layout/flashbags.html.twig' import flashbag_alert %}
+      {% from _self import flashbag_alert %}
 
       {# General error messages #}
       {% for flashMessage in app.session.flashbag.get('error') %}
@@ -42,4 +52,4 @@
 
     {% endblock %}
   </div>
-{% endspaceless %}
+{% endapply %}

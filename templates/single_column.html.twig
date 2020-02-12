@@ -39,14 +39,10 @@
     <div class="card container-card">
       <div class="card-body">
         <div id="no-browser-warning" style="display: none">
-          <div class="alert alert-warning alert-dismissible fade-in" role="alert">
-            <span class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="{{ "general.close"|trans }}">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            {{ 'general.no-browser-warning'|trans({'%url%': '/page' ~ app.request.pathinfo})|striptags('<a>')|raw }}
-          </div>
+          {% from '_layout/flashbags.html.twig' import flashbag_alert %}
+          {{ flashbag_alert('warning', 'general.no-browser-warning'|trans({'%url%': '/page' ~ app.request.pathinfo})|striptags('<a>'), 'fa-exclamation-triangle', true, true) }}
         </div>
+
         {% block _flashbags %}{% include '_layout/flashbags.html.twig' %}{% endblock %}
         {% block before_title %}{% endblock %}
         {% block content_title %}<h1>{{ block('title') }}</h1>{% endblock %}
