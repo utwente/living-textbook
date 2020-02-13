@@ -76,7 +76,7 @@
   {% else %}
     {{ resource.title }}
   {% endif %}
-  {% if resource.description is not null %}
+  {% if resource.description is not empty %}
     <br/>{{ resource.description }}
   {% endif %}
 {% endmacro %}
