@@ -20,6 +20,7 @@
     <tr>
       <th scope="col">{{ 'contributor.name'|trans }}<i class="sort"></i></th>
       <th scope="col">{{ 'contributor.url'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'contributor.email'|trans }}<i class="sort"></i></th>
       {% if is_granted('STUDYAREA_EDIT', studyArea) %}
         <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
       {% endif %}
@@ -34,6 +35,13 @@
             <a href="{{ contributor.url }}" target="_blank">{{ contributor.url }}</a>
           {% else %}
             {{ 'contributor.no-url'|trans }}
+          {% endif %}
+        </td>
+        <td>
+          {% if contributor.email is not empty %}
+            <a href="mailto:{{ contributor.url }}">{{ contributor.email }}</a>
+          {% else %}
+            {{ 'contributor.no-email'|trans }}
           {% endif %}
         </td>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}

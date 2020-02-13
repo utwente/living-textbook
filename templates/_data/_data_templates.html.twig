@@ -96,13 +96,16 @@
 {% endmacro %}
 
 {% macro render_contributor(contributor) %}
-  {% if contributor.url is not empty %}
-    <a href="{{ contributor.url }}" target="_blank">{{ contributor.name }}</a>
+  {% if contributor.email is not empty %}
+    <a href="mailto:{{ contributor.email }}">{{ contributor.name }}</a>
   {% else %}
     {{ contributor.name }}
   {% endif %}
-  {% if contributor.description is not null %}
+  {% if contributor.description is not empty %}
     <br/>{{ contributor.description }}
+  {% endif %}
+  {% if contributor.url is not empty %}
+    <br/><a href="{{ contributor.url }}" target="_blank">{{ contributor.url }}</a>
   {% endif %}
 {% endmacro %}
 

@@ -83,6 +83,18 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
   private $url;
 
   /**
+   * @var string|null
+   *
+   * @ORM\Column(name="email", type="string", length=255, nullable=true)
+   *
+   * @Assert\Email()
+   * @Assert\Length(max=255)
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("string")
+   */
+  private $email;
+
+  /**
    * @var bool
    *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
@@ -220,6 +232,26 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
   public function setBroken(bool $broken): Contributor
   {
     $this->broken = $broken;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getEmail(): ?string
+  {
+    return $this->email;
+  }
+
+  /**
+   * @param string|null $email
+   *
+   * @return Contributor
+   */
+  public function setEmail(?string $email): Contributor
+  {
+    $this->email = $email;
 
     return $this;
   }

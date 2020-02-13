@@ -8,6 +8,7 @@ use App\Form\Review\DisplayPendingChangeType;
 use App\Form\Type\SaveType;
 use App\Review\Model\PendingChangeObjectInfo;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -51,6 +52,15 @@ class EditContributorType extends AbstractType
         ])
         ->add('url_review', DisplayPendingChangeType::class, [
             'field'               => 'url',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('email', EmailType::class, [
+            'label'    => 'contributor.email',
+            'required' => false,
+            'disabled' => in_array('email', $options['disabled_fields']),
+        ])
+        ->add('email_review', DisplayPendingChangeType::class, [
+            'field'               => 'email',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('submit', SaveType::class, [
