@@ -48,9 +48,10 @@
 
 {% block review_learning_path_elements_diff_row %}
   {% from _self import build_element_diff %}
+  {% set original = build_element_diff(orig_elements) %}
+
   {{ block('review_diff_start') }}
   {% if show_original %}
-    {% set original = build_element_diff(orig_elements) %}
     {{ original }}
   {% endif %}
   {{ block('review_diff_mid') }}
@@ -90,9 +91,10 @@
 
 {% block review_relation_diff_row %}
   {% from _self import build_relation_diff %}
+  {% set original = build_relation_diff(orig_relations, incoming, concept) %}
+
   {{ block('review_diff_start') }}
   {% if show_original %}
-    {% set original = build_relation_diff(orig_relations, incoming, concept) %}
     {{ original }}
   {% endif %}
   {{ block('review_diff_mid') }}
@@ -123,9 +125,10 @@
 
 {% block review_simple_list_diff_row %}
   {% from _self import build_simple_list_diff %}
+  {% set original = build_simple_list_diff(field, orig_list) %}
+
   {{ block('review_diff_start') }}
   {% if show_original %}
-    {% set original = build_simple_list_diff(field, orig_list) %}
     {{ original }}
   {% endif %}
   {{ block('review_diff_mid') }}
