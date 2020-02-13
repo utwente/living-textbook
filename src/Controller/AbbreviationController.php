@@ -135,8 +135,8 @@ class AbbreviationController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditAbbreviationType::class, $abbreviation, [
-        'studyArea'       => $studyArea,
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $abbreviation),
+        'studyArea'           => $studyArea,
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $abbreviation),
     ]);
     $form->handleRequest($request);
 

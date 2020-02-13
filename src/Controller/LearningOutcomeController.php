@@ -115,9 +115,9 @@ class LearningOutcomeController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [
-        'studyArea'       => $studyArea,
-        'learningOutcome' => $learningOutcome,
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $learningOutcome),
+        'studyArea'           => $studyArea,
+        'learningOutcome'     => $learningOutcome,
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $learningOutcome),
     ]);
     $form->handleRequest($request);
 

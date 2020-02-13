@@ -108,8 +108,8 @@ class ExternalResourceController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditExternalResourceType::class, $externalResource, [
-        'studyArea'       => $studyArea,
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $externalResource),
+        'studyArea'           => $studyArea,
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $externalResource),
     ]);
     $form->handleRequest($request);
 

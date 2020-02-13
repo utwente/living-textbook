@@ -113,7 +113,7 @@ class RelationTypeController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditRelationTypeType::class, $relationType, [
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $relationType),
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $relationType),
     ]);
     $form->handleRequest($request);
 

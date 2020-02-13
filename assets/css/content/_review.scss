@@ -20,29 +20,32 @@
       margin-top: 4px;
     }
   }
+}
 
-  .review-item {
-    .col-form-label {
-      display: block;
-      font-size: smaller;
-      margin: 0;
-      padding: 0;
-    }
+.review-item {
+  .col-form-label {
+    display: block;
+    font-size: smaller;
+    margin: 0;
+    padding: 0;
+  }
 
-    &.with-checkbox {
+  &.with-checkbox {
+    > .row {
+      > div:first-child {
+        padding-left: calc(15px + 1.5em);
+      }
 
-      > .row {
-        > div:first-child {
+      @include media-breakpoint-down(sm) {
+        > div {
           padding-left: calc(15px + 1.5em);
-        }
-
-        @include media-breakpoint-down(sm) {
-          > div {
-            padding-left: calc(15px + 1.5em);
-          }
         }
       }
     }
+  }
+
+  &.below-input {
+    margin-top: -0.5 * $spacer;
   }
 }
 

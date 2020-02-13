@@ -132,8 +132,8 @@ class ConceptController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
-        'concept'         => $concept,
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $concept),
+        'concept'             => $concept,
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $concept),
     ]);
     $form->handleRequest($request);
 

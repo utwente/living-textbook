@@ -81,6 +81,7 @@ class AbstractReviewDiffType extends AbstractType
     $pendingChange = $options['pending_change'];
     assert($pendingChange instanceof PendingChange);
 
+    $view->vars['diff_only']         = $options['diff_only'];
     $view->vars['checkbox']          = $options['checkbox'];
     $view->vars['show_original']     = $options['show_original'];
     $view->vars['show_updated']      = $options['show_updated'];
@@ -98,6 +99,7 @@ class AbstractReviewDiffType extends AbstractType
         ->setDefault('show_updated', true)
         ->setDefault('show_comments', false)
         ->setDefault('original_object', NULL)
+        ->setDefault('diff_only', false)
         ->setRequired([
             'pending_change',
             'field',
@@ -108,6 +110,7 @@ class AbstractReviewDiffType extends AbstractType
         ->setAllowedTypes('show_updated', 'bool')
         ->setAllowedTypes('show_comments', 'bool')
         ->setAllowedTypes('original_object', [ReviewableInterface::class, 'null'])
+        ->setAllowedTypes('diff_only', 'bool')
         ->setAllowedTypes('pending_change', PendingChange::class)
         ->setAllowedTypes('field', 'string')
         ->setAllowedTypes('review', 'bool');

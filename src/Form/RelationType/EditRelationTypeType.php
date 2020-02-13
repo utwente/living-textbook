@@ -2,7 +2,9 @@
 
 namespace App\Form\RelationType;
 
+use App\Form\Review\DisplayPendingChangeType;
 use App\Form\Type\SaveType;
+use App\Review\Model\PendingChangeObjectInfo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,15 +15,27 @@ class EditRelationTypeType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
+    $pendingChangeObjectInfo = $options['pending_change_info'];
+    $disabledFields          = $pendingChangeObjectInfo->getDisabledFields();
+
     $builder
         ->add('name', TextType::class, [
             'label'    => 'relation-type.name',
-            'disabled' => in_array('name', $options['disabled_fields']),
+            'disabled' => in_array('name', $disabledFields),
+        ])
+        ->add('name_review', DisplayPendingChangeType::class, [
+            'field'               => 'name',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('description', TextareaType::class, [
             'label'    => 'relation-type.description',
             'required' => false,
-            'disabled' => in_array('description', $options['disabled_fields']),
+            'disabled' => in_array('description', $disabledFields),
+        ])
+        ->add('description_review', DisplayPendingChangeType::class, [
+            'field'               => 'description',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('submit', SaveType::class, [
             'enable_save_and_list' => false,
@@ -37,7 +51,7 @@ class EditRelationTypeType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefault('disabled_fields', [])
-        ->setAllowedTypes('disabled_fields', 'string[]');
+        ->setDefault('pending_change_info', new PendingChangeObjectInfo())
+        ->setAllowedTypes('pending_change_info', PendingChangeObjectInfo::class);
   }
 }

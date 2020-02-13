@@ -122,9 +122,9 @@ class LearningPathController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'       => $studyArea,
-        'learningPath'    => $learningPath,
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $learningPath),
+        'studyArea'           => $studyArea,
+        'learningPath'        => $learningPath,
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $learningPath),
     ]);
     $form->handleRequest($request);
 

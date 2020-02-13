@@ -175,6 +175,7 @@
 {% endblock %}
 
 {% block review_diff_start %}
+{% if not diff_only %}
 <li class="list-group-item review-item{% if checkbox %} with-checkbox{% endif %}">
   {% if checkbox %}
     <div class="custom-control custom-checkbox">
@@ -192,18 +193,27 @@
       {{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}
     </label>
   {% endif %}
+  {% endif %}
   <div class="row">
+    {% if not diff_only %}
     <div class="col-12 col-md-6{% if form.comments is defined %} col-xl-4{% endif %}">
       {% if show_original %}
         <label class="col-form-label">{{ 'review.original'|trans }}</label>
       {% endif %}
+      {% endif %}
 
       {% endblock %}
       {% block review_diff_mid %}
+      {% if not diff_only %}
     </div>
+    {% endif %}
 
+    {% if diff_only %}
+    <div class="col-12">
+    {% else %}
     <div class="col-12 mt-2 col-md-6 mt-md-0{% if form.comments is defined %} col-xl-4{% endif %}">
-      {% if show_updated %}
+    {% endif %}
+      {% if show_updated and not diff_only %}
         <label class="col-form-label">
           {% if show_original %}
             {{ 'review.update'|trans }}
@@ -231,7 +241,9 @@
       </div>
     {% endif %}
   </div>
+  {% if not diff_only %}
 </li>
+  {% endif %}
 {% endblock %}
 
 {% block change_type %}
@@ -246,4 +258,23 @@
         class="fa fa-fw fa-question"
       {% endif %}
   ></i>
+{% endblock %}
+
+{% block display_pending_change_row %}
+  {% if pending_change is defined %}
+    {{ block('form_row') }}
+  {% endif %}
+{% endblock %}
+
+{% block display_pending_change_widget %}
+  <div class="review-item below-input">
+    <label class="col-form-label font-italic">{{ 'review.current-change'|trans({
+        '%owner%': owner
+      }) }}
+      <a href="#collapse-{{ form.vars.id }}" data-toggle="collapse">({{ 'review.toggle-preview'|trans|lower }})</a>
+    </label>
+    <div class="collapse" id="collapse-{{ form.vars.id }}">
+      {{ form_row(form.preview) }}
+    </div>
+  </div>
 {% endblock %}

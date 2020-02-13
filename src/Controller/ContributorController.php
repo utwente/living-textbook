@@ -108,8 +108,8 @@ class ContributorController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditContributorType::class, $contributor, [
-        'studyArea'       => $studyArea,
-        'disabled_fields' => $reviewService->getDisabledFieldsForObject($studyArea, $contributor),
+        'studyArea'           => $studyArea,
+        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $contributor),
     ]);
     $form->handleRequest($request);
 

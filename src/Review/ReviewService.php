@@ -9,6 +9,7 @@ use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Repository\PendingChangeRepository;
+use App\Review\Model\PendingChangeObjectInfo;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -201,22 +202,16 @@ class ReviewService
    * @param StudyArea           $studyArea
    * @param ReviewableInterface $object
    *
-   * @return string[]
+   * @return PendingChangeObjectInfo
    */
-  public function getDisabledFieldsForObject(StudyArea $studyArea, ReviewableInterface $object): array
+  public function getPendingChangeObjectInformation(
+      StudyArea $studyArea, ReviewableInterface $object): PendingChangeObjectInfo
   {
     if (!$studyArea->isReviewModeEnabled()) {
-      return [];
+      return new PendingChangeObjectInfo();
     }
 
-    $pendingChanges = $this->pendingChangeRepository->getForObject($object);
-
-    $disabledFields = [];
-    foreach ($pendingChanges as $pendingChange) {
-      $disabledFields = array_merge($disabledFields, $pendingChange->getChangedFields());
-    }
-
-    return $disabledFields;
+    return new PendingChangeObjectInfo($this->pendingChangeRepository->getForObject($object));
   }
 
   /**

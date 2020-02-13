@@ -13,6 +13,7 @@ use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Form\Data\BaseDataTextType;
+use App\Form\Review\DisplayPendingChangeType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
 use App\Repository\AbbreviationRepository;
@@ -20,6 +21,7 @@ use App\Repository\ConceptRepository;
 use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\Review\Model\PendingChangeObjectInfo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -46,6 +48,11 @@ class EditConceptType extends AbstractType
 
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+
+    /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
+    $pendingChangeObjectInfo = $options['pending_change_info'];
+    $disabledFields          = $pendingChangeObjectInfo->getDisabledFields();
+
     /** @var Concept $concept */
     $concept   = $options['concept'];
     $studyArea = $concept->getStudyArea();
@@ -54,26 +61,42 @@ class EditConceptType extends AbstractType
         ->add('name', TextType::class, [
             'label'      => 'concept.name',
             'empty_data' => '',
-            'disabled'   => in_array('name', $options['disabled_fields']),
+            'disabled'   => in_array('name', $disabledFields),
+        ])
+        ->add('name_review', DisplayPendingChangeType::class, [
+            'field'               => 'name',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('definition', TextareaType::class, [
             'label'      => 'concept.definition',
             'empty_data' => '',
             'required'   => false,
-            'disabled'   => in_array('definition', $options['disabled_fields']),
+            'disabled'   => in_array('definition', $disabledFields),
+        ])
+        ->add('definition_review', DisplayPendingChangeType::class, [
+            'field'               => 'definition',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('synonyms', TextType::class, [
             'label'      => 'concept.synonyms',
             'empty_data' => '',
             'required'   => false,
-            'disabled'   => in_array('synonyms', $options['disabled_fields']),
+            'disabled'   => in_array('synonyms', $disabledFields),
+        ])
+        ->add('synonyms_review', DisplayPendingChangeType::class, [
+            'field'               => 'synonyms',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('introduction', BaseDataTextType::class, [
             'label'      => 'concept.introduction',
             'data_class' => DataIntroduction::class,
             'studyArea'  => $studyArea,
             'required'   => false,
-            'disabled'   => in_array('introduction', $options['disabled_fields']),
+            'disabled'   => in_array('introduction', $disabledFields),
+        ])
+        ->add('introduction_review', DisplayPendingChangeType::class, [
+            'field'               => 'introduction',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         // This field is also used by the ckeditor plugin for concept selection
         ->add('priorKnowledge', EntityType::class, [
@@ -100,7 +123,11 @@ class EditConceptType extends AbstractType
             'attr'          => [
                 'data-ckeditor-selector' => 'concepts', // Register for ckeditor
             ],
-            'disabled'      => in_array('priorKnowledge', $options['disabled_fields']),
+            'disabled'      => in_array('priorKnowledge', $disabledFields),
+        ])
+        ->add('priorKnowledge_review', DisplayPendingChangeType::class, [
+            'field'               => 'priorKnowledge',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('learningOutcomes', EntityType::class, [
             'label'         => 'concept.learning-outcomes',
@@ -112,28 +139,44 @@ class EditConceptType extends AbstractType
               return $learningOutcomeRepository->findForStudyAreaQb($concept->getStudyArea());
             },
             'select2'       => true,
-            'disabled'      => in_array('learningOutcomes', $options['disabled_fields']),
+            'disabled'      => in_array('learningOutcomes', $disabledFields),
+        ])
+        ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
+            'field'               => 'learningOutcomes',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('theoryExplanation', BaseDataTextType::class, [
             'label'      => 'concept.theory-explanation',
             'required'   => false,
             'data_class' => DataTheoryExplanation::class,
             'studyArea'  => $studyArea,
-            'disabled'   => in_array('theoryExplanation', $options['disabled_fields']),
+            'disabled'   => in_array('theoryExplanation', $disabledFields),
+        ])
+        ->add('theoryExplanation_review', DisplayPendingChangeType::class, [
+            'field'               => 'theoryExplanation',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('howTo', BaseDataTextType::class, [
             'label'      => 'concept.how-to',
             'required'   => false,
             'data_class' => DataHowTo::class,
             'studyArea'  => $studyArea,
-            'disabled'   => in_array('howTo', $options['disabled_fields']),
+            'disabled'   => in_array('howTo', $disabledFields),
+        ])
+        ->add('howTo_review', DisplayPendingChangeType::class, [
+            'field'               => 'howTo',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('examples', BaseDataTextType::class, [
             'label'      => 'concept.examples',
             'required'   => false,
             'data_class' => DataExamples::class,
             'studyArea'  => $studyArea,
-            'disabled'   => in_array('examples', $options['disabled_fields']),
+            'disabled'   => in_array('examples', $disabledFields),
+        ])
+        ->add('examples_review', DisplayPendingChangeType::class, [
+            'field'               => 'examples',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('externalResources', EntityType::class, [
             'label'         => 'concept.external-resources',
@@ -145,14 +188,22 @@ class EditConceptType extends AbstractType
               return $externalResourceRepository->findForStudyAreaQb($concept->getStudyArea());
             },
             'select2'       => true,
-            'disabled'      => in_array('externalResources', $options['disabled_fields']),
+            'disabled'      => in_array('externalResources', $disabledFields),
+        ])
+        ->add('externalResources_review', DisplayPendingChangeType::class, [
+            'field'               => 'externalResources',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('selfAssessment', BaseDataTextType::class, [
             'label'      => 'concept.self-assessment',
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
             'studyArea'  => $studyArea,
-            'disabled'   => in_array('selfAssessment', $options['disabled_fields']),
+            'disabled'   => in_array('selfAssessment', $disabledFields),
+        ])
+        ->add('selfAssessment_review', DisplayPendingChangeType::class, [
+            'field'               => 'selfAssessment',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ]);
 
     $otherConceptsAvailable = ($editing && $studyArea->getConcepts()->count() > 1) || (!$editing && !$studyArea->getConcepts()->isEmpty());
@@ -162,13 +213,21 @@ class EditConceptType extends AbstractType
           ->add('outgoingRelations', ConceptRelationsType::class, [
               'label'    => 'concept.outgoing-relations',
               'concept'  => $concept,
-              'disabled' => in_array('relations', $options['disabled_fields']),
+              'disabled' => in_array('relations', $disabledFields),
+          ])
+          ->add('outgoingRelations_review', DisplayPendingChangeType::class, [
+              'field'               => 'relations',
+              'pending_change_info' => $pendingChangeObjectInfo,
           ])
           ->add('incomingRelations', ConceptRelationsType::class, [
               'label'    => 'concept.incoming-relations',
               'concept'  => $concept,
               'incoming' => true,
-              'disabled' => in_array('incomingRelations', $options['disabled_fields']),
+              'disabled' => in_array('incomingRelations', $disabledFields),
+          ])
+          ->add('incomingRelations_review', DisplayPendingChangeType::class, [
+              'field'               => 'incomingRelations',
+              'pending_change_info' => $pendingChangeObjectInfo,
           ]);
     } else {
       $builder->add('relations', TextType::class, [
@@ -191,7 +250,11 @@ class EditConceptType extends AbstractType
               return $contributorRepository->findForStudyAreaQb($concept->getStudyArea());
             },
             'select2'       => true,
-            'disabled'      => in_array('contributors', $options['disabled_fields']),
+            'disabled'      => in_array('contributors', $disabledFields),
+        ])
+        ->add('contributors_review', DisplayPendingChangeType::class, [
+            'field'               => 'contributors',
+            'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('submit', SaveType::class, [
             'locate_static'       => true,
@@ -225,11 +288,11 @@ class EditConceptType extends AbstractType
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
-        'data_class'      => Concept::class,
-        'disabled_fields' => [],
+        'data_class'          => Concept::class,
+        'pending_change_info' => new PendingChangeObjectInfo(),
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);
-    $resolver->setAllowedTypes('disabled_fields', 'string[]');
+    $resolver->setAllowedTypes('pending_change_info', PendingChangeObjectInfo::class);
   }
 }

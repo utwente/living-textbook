@@ -39,6 +39,48 @@ class ReviewSubmissionType extends AbstractType
     $this->reviewService = $reviewService;
   }
 
+  public static function getFormTypeForField(PendingChange $pendingChange, string $field)
+  {
+    $formType    = ReviewTextDiffType::class;
+    $formOptions = [];
+
+    // Handle different types
+    switch ($pendingChange->getObjectType()) {
+      case Concept::class:
+        if (in_array($field, ['relations', 'incomingRelations'])) {
+          $formType                = ReviewRelationDiffType::class;
+          $formOptions['incoming'] = $field !== 'relations';
+        }
+
+        if (in_array($field, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
+          $formType = ReviewSimpleListDiffType::class;
+        }
+
+        if (in_array($field, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
+          $formOptions['has_data_object'] = true;
+          $formOptions['ckeditor']        = true;
+        }
+
+        break;
+      case LearningOutcome::class:
+        if ('text' === $field) {
+          $formOptions['ckeditor'] = true;
+        }
+        break;
+      case LearningPath::class:
+        if ('introduction' === $field) {
+          $formOptions['ckeditor'] = true;
+        }
+
+        if ('elements' === $field) {
+          $formType = ReviewLearningPathElementsDiffType::class;
+        }
+        break;
+    }
+
+    return [$formType, $formOptions];
+  }
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
@@ -75,7 +117,6 @@ class ReviewSubmissionType extends AbstractType
     // Add a field per pending change, per changed field. The actual field added depends on the type of change
     foreach ($review->getPendingChanges() as $pendingChange) {
       $changeType = $pendingChange->getChangeType();
-      $objectType = $pendingChange->getObjectType();
 
       $form->add(sprintf('%s__%d_h', $pendingChange->getShortObjectType(), $pendingChange->getId()),
           ReviewSubmissionObjectHeaderType::class, [
@@ -86,37 +127,7 @@ class ReviewSubmissionType extends AbstractType
           ]);
 
       foreach ($pendingChange->getChangedFields() as $changedField) {
-        $formType    = ReviewTextDiffType::class;
-        $formOptions = [];
-
-        // Handle different types
-        if (Concept::class === $objectType) {
-          if (in_array($changedField, ['relations', 'incomingRelations'])) {
-            $formType                = ReviewRelationDiffType::class;
-            $formOptions['incoming'] = $changedField !== 'relations';
-          }
-
-          if (in_array($changedField, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
-            $formType = ReviewSimpleListDiffType::class;
-          }
-
-          if (in_array($changedField, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
-            $formOptions['has_data_object'] = true;
-            $formOptions['ckeditor']        = true;
-          }
-        } else if (LearningOutcome::class === $objectType) {
-          if ('text' === $changedField) {
-            $formOptions['ckeditor'] = true;
-          }
-        } else if (LearningPath::class === $objectType) {
-          if ('introduction' === $changedField) {
-            $formOptions['ckeditor'] = true;
-          }
-
-          if ('elements' === $changedField) {
-            $formType = ReviewLearningPathElementsDiffType::class;
-          }
-        }
+        list($formType, $formOptions) = self::getFormTypeForField($pendingChange, $changedField);
 
         $form->add($this->getFieldName($pendingChange, $changedField),
             $formType, array_merge([
@@ -136,7 +147,6 @@ class ReviewSubmissionType extends AbstractType
 
       $form->add(sprintf('%s__%d_f', $pendingChange->getShortObjectType(), $pendingChange->getId()),
           ReviewSubmissionObjectFooterType::class, ['mapped' => false]);
-
     }
 
     if ($options['review']) {

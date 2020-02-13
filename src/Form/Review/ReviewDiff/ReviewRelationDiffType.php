@@ -32,6 +32,4 @@ class ReviewRelationDiffType extends AbstractReviewDiffType
         ->setRequired('incoming')
         ->setAllowedTypes('incoming', 'bool');
   }
-
-
 }
