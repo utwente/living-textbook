@@ -99,3 +99,38 @@ $dropdown-link-hover-bg: #d2d2d2;
     min-width: 100%;
   }
 }
+
+// Custom font awesome icons
+@mixin custom-fa-icon {
+  transition: background-color .15s ease-in-out, background-color .15s ease-in-out;
+
+  // Non-breaking unicode space to force icon rendering
+  &::before {
+    content: '\00a0';
+  }
+
+  // Generate correct background colors for each style
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} & {
+      background-color: color-yiq($value);
+    }
+    .btn-#{$color}:hover & {
+      background-color: color-yiq(darken($value, 7.5%));
+    }
+
+    .btn-outline-#{$color} & {
+      background-color: $value;
+    }
+    .btn-outline-#{$color}:hover & {
+      background-color: color-yiq($value)
+    }
+  }
+}
+
+.fa {
+  &.fa-ltb-map {
+    @include custom-fa-icon;
+    -webkit-mask: url('../img/icon/map.svg') no-repeat 50% 50%;
+    mask: url('../img/icon/map.svg') no-repeat 50% 50%;
+  }
+}
