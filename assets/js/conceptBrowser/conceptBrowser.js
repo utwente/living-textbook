@@ -1080,8 +1080,13 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawNode(node) {
-    context.moveTo(node.x + node.radius, node.y);
-    context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
+    if (node.instance) {
+      context.moveTo(node.x - node.radius, node.y - node.radius);
+      context.rect(node.x - node.radius, node.y - node.radius, node.radius * 2, node.radius * 2);
+    } else {
+      context.moveTo(node.x + node.radius, node.y);
+      context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
+    }
   }
 
   /**
@@ -1269,6 +1274,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
       // Update properties
       node.label = concept.name;
+      node.instance = concept.instance;
       node.numberOfLinks = concept.numberOfLinks;
       node.empty = concept.isEmpty;
       getNodeRadius(node);
@@ -1341,6 +1347,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       cbGraph.nodes.push({
         id: concept.id,
         label: concept.name,
+        instance: concept.instance,
         empty: concept.isEmpty,
         link: '',
         numberOfLinks: concept.numberOfLinks
