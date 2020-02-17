@@ -1033,18 +1033,36 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param link
    */
   function drawLinkArrow(link) {
+    const xDistance = link.source.x - link.target.x;
+    const yDistance = link.source.y - link.target.y;
+
     // Calculate head rotation
-    var startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
-    startRadians += ((link.source.x >= link.target.x) ? -1 : 1) * Math.PI / 2;
+    const radians = Math.atan(yDistance / xDistance);
+    const startRadians = radians + ((link.source.x >= link.target.x) ? -1 : 1) * Math.PI / 2;
+
+    // Calculate the arrow head starting point
+    let arrowHeadStart;
+    if (link.target.instance) {
+      // Calculate arrow head start for instance, as they are not circles
+      if (radians > Math.PI / 4) {
+        arrowHeadStart = link.target.radius / Math.sin(radians);
+      } else if (radians < -Math.PI / 4) {
+        arrowHeadStart = -link.target.radius / Math.sin(radians);
+      } else {
+        arrowHeadStart = link.target.radius / Math.cos(radians);
+      }
+    } else {
+      arrowHeadStart = link.target.radius;
+    }
 
     // Draw the triangle
     context.save();
     context.beginPath();
     context.translate(link.target.x, link.target.y);
     context.rotate(startRadians);
-    context.moveTo(0, link.target.radius - 1);
-    context.lineTo(3, 9 + link.target.radius);
-    context.lineTo(-3, 9 + link.target.radius);
+    context.moveTo(0, arrowHeadStart - 1);
+    context.lineTo(3, 9 + arrowHeadStart);
+    context.lineTo(-3, 9 + arrowHeadStart);
     context.closePath();
     context.restore();
     context.fill();
