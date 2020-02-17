@@ -230,7 +230,7 @@ class PermissionsController extends AbstractController
 
   /**
    * @Route("/studyarea/update/{user}/{groupType}", methods={"POST"},
-   *   requirements={"user"="\d+", "groupType"="viewer|editor|reviewer|analysis"}, options={"expose"=true})
+   *   requirements={"user"="\d+", "groupType"="editor|reviewer|analysis"}, options={"expose"=true})
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request
@@ -275,7 +275,7 @@ class PermissionsController extends AbstractController
 
   /**
    * @Route("/studyarea/update/{email}/{groupType}", methods={"POST"},
-   *   requirements={"groupType"="viewer|editor|reviewer|analysis"}, options={"expose"=true})
+   *   requirements={"groupType"="editor|reviewer|analysis"}, options={"expose"=true})
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @param Request                $request

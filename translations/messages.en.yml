@@ -446,7 +446,8 @@ permissions:
   info-text: >-
     Here you can grant and remove permissions on a per user basis.
     Note that the available roles depend on the study area capabilities.
-    You can toggle the permissions by clicking on it.
+    You can toggle the permissions by clicking on it, except for the viewer permission,
+    as all added users automatically inherit the viewer permission.
   no-admin: '%user% is no admin user'
   no-users-available: 'There are no users that can be granted the "%type%" permission'
   not-allowed-public-viewer: 'It is not possible to add viewer permissions to public study areas!'
@@ -484,10 +485,10 @@ permissions:
     reviewer: 'Reviewer'
     analysis: 'Analysis'
   type-help:
-    viewer: 'This role allows users to browse all map content'
-    editor: 'This role allows users to edit the map content'
-    reviewer: 'This role allows the user to review submissions'
-    analysis: 'This role allows the user to view the analytics dashboard'
+    viewer: 'This role allows users to browse all map content. This role is enabled by default, and cannot be disabled.'
+    editor: 'This role allows users to edit the map content.'
+    reviewer: 'This role allows the user to review submissions.'
+    analysis: 'This role allows the user to view the analytics dashboard.'
   viewer-count: '{0} No viewers|{1} One viewer|]1,Inf[ %count% viewers'
   users: 'Users'
 

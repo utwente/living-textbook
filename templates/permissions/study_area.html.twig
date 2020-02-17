@@ -3,7 +3,7 @@
 {% block stylesheets %}
   {{ parent() }}
   <style type="text/css">
-    .toggle-permission {
+    .toggle-permission:not(.viewer) {
       cursor: pointer;
     }
   </style>
@@ -40,7 +40,7 @@
 {% macro has_permission(userPermission, type) %}
   {% set value = attribute(userPermission, type) %}
   <td data-sort="{{ value ? 0 : 1 }}" class="text-center">
-    <div class="toggle-permission"
+    <div class="toggle-permission {{ type }}"
          data-group-type="{{ type }}"
          data-user="{{ userPermission.user.id|default('') }}"
          data-email="{{ userPermission.email.email|default('') }}">
@@ -136,7 +136,7 @@
       }
     });
 
-    $('.toggle-permission').click(function () {
+    $('.toggle-permission:not(.viewer)').click(function () {
       var $el = $(this);
       var $td = $el.parent();
 
