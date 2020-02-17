@@ -57,7 +57,7 @@ class EditContributorType extends AbstractType
         ->add('email', EmailType::class, [
             'label'    => 'contributor.email',
             'required' => false,
-            'disabled' => in_array('email', $options['disabled_fields']),
+            'disabled' => in_array('email', $disabled_fields),
         ])
         ->add('email_review', DisplayPendingChangeType::class, [
             'field'               => 'email',
