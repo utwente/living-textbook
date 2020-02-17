@@ -29,6 +29,10 @@
   {% import '_data/_data_templates.html.twig' as macros %}
   {% from '_macro/_annotations.html.twig' import all as annotations %}
 
+  {% if concept.instance %}
+    <p class="font-weight-bold font-italic">{{ 'concept.instance-text'|trans }}</p>
+  {% endif %}
+
   <div
       {% if app.user %}
         {# Only load annotations for registered users #}

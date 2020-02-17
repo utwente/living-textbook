@@ -24,6 +24,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Review\Model\PendingChangeObjectInfo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -65,6 +66,15 @@ class EditConceptType extends AbstractType
         ])
         ->add('name_review', DisplayPendingChangeType::class, [
             'field'               => 'name',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('instance', CheckboxType::class, [
+            'label'    => 'concept.instance',
+            'required' => false,
+            'disabled' => in_array('instance', $disabledFields),
+        ])
+        ->add('instance_review', DisplayPendingChangeType::class, [
+            'field'               => 'instance',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('definition', TextareaType::class, [

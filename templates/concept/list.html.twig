@@ -20,6 +20,7 @@
     <thead>
     <tr>
       <th scope="col">{{ 'concept.name'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'concept.instance'|trans }}<i class="sort"></i></th>
       <th scope="col">{{ 'concept.outgoing-relations'|trans }}<i class="sort"></i></th>
       <th scope="col">{{ 'concept.incoming-relations'|trans }}<i class="sort"></i></th>
       {% if app.user %}
@@ -34,6 +35,9 @@
         <td>
           <a href="#" onclick="eDispatch.showConcept({{- concept.id -}});" data-toggle="tooltip"
              title="{{ 'browser.open'|trans }}">{{ concept.name }}</a>
+        </td>
+        <td data-sort="{{ concept.instance ? 0 : 1 }}">
+          <i class="fa fa-fw {% if concept.instance %}fa-check{% else %}fa-times{% endif %}"></i>
         </td>
         <td>{{ concept.outgoingRelations|length }}</td>
         <td>{{ concept.incomingRelations|length }}</td>

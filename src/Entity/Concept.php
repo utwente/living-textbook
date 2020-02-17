@@ -67,6 +67,18 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $name;
 
   /**
+   * Whether this concept should be seen as an instance
+   *
+   * @var bool
+   *
+   * @ORM\Column(name="instance", type="boolean")
+   * @JMSA\Expose()
+   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Type("boolean")
+   */
+  private $instance;
+
+  /**
    * @var string
    *
    * @ORM\Column(name="definition", type="text", nullable=false)
@@ -305,6 +317,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function __construct()
   {
     $this->name              = '';
+    $this->instance          = false;
     $this->definition        = '';
     $this->synonyms          = '';
     $this->outgoingRelations = new ArrayCollection();
@@ -704,6 +717,26 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function getName(): string
   {
     return $this->name;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isInstance(): bool
+  {
+    return $this->instance;
+  }
+
+  /**
+   * @param bool $instance
+   *
+   * @return Concept
+   */
+  public function setInstance(bool $instance): self
+  {
+    $this->instance = $instance;
+
+    return $this;
   }
 
   /**
