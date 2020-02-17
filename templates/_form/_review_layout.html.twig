@@ -163,6 +163,18 @@
   </ul>
 {% endmacro %}
 
+{% block review_checkbox_diff_row %}
+  {{ block('review_diff_start') }}
+  {% if show_original %}
+    <i class="fa fa-fw {% if orig_value %}fa-check{% else %}fa-times{% endif %}"></i>
+  {% endif %}
+  {{ block('review_diff_mid') }}
+  {% if show_updated %}
+    <i class="fa fa-fw {% if new_value %}fa-check{% else %}fa-times{% endif %}"></i>
+  {% endif %}
+  {{ block('review_diff_end') }}
+{% endblock %}
+
 {% block review_text_diff_row %}
   {% from '_macro/_review.html.twig' import printText %}
 

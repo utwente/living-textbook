@@ -7,6 +7,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
 use App\Entity\PendingChange;
 use App\Entity\Review;
+use App\Form\Review\ReviewDiff\ReviewCheckboxDiffType;
 use App\Form\Review\ReviewDiff\ReviewLearningPathElementsDiffType;
 use App\Form\Review\ReviewDiff\ReviewRelationDiffType;
 use App\Form\Review\ReviewDiff\ReviewSimpleListDiffType;
@@ -47,16 +48,14 @@ class ReviewSubmissionType extends AbstractType
     // Handle different types
     switch ($pendingChange->getObjectType()) {
       case Concept::class:
-        if (in_array($field, ['relations', 'incomingRelations'])) {
+        if (in_array($field, ['instance'])) {
+          $formType = ReviewCheckboxDiffType::class;
+        } else if (in_array($field, ['relations', 'incomingRelations'])) {
           $formType                = ReviewRelationDiffType::class;
           $formOptions['incoming'] = $field !== 'relations';
-        }
-
-        if (in_array($field, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
+        } else if (in_array($field, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
           $formType = ReviewSimpleListDiffType::class;
-        }
-
-        if (in_array($field, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
+        } else if (in_array($field, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
           $formOptions['has_data_object'] = true;
           $formOptions['ckeditor']        = true;
         }
@@ -70,9 +69,7 @@ class ReviewSubmissionType extends AbstractType
       case LearningPath::class:
         if ('introduction' === $field) {
           $formOptions['ckeditor'] = true;
-        }
-
-        if ('elements' === $field) {
+        } else if ('elements' === $field) {
           $formType = ReviewLearningPathElementsDiffType::class;
         }
         break;

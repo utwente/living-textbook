@@ -552,6 +552,9 @@ class Concept implements SearchableInterface, ReviewableInterface
         case 'name':
           $this->setName($changeObj->getName());
           break;
+        case 'instance':
+          $this->setInstance($changeObj->isInstance());
+          break;
         case 'definition':
           $this->setDefinition($changeObj->getDefinition());
           break;

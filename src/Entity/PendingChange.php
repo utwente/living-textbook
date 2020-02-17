@@ -203,6 +203,7 @@ class PendingChange
       case Concept::class:
         $sortOrder = [
             'name'              => 200,
+            'instance'          => 195,
             'definition'        => 190,
             'synonyms'          => 180,
             'introduction'      => 170,
