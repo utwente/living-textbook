@@ -8,7 +8,7 @@
   <p>{{ 'abbreviation.remove-text'|trans({"%item%": abbreviation.abbreviation}) }}</p>
 
   {% from '_macro/_review.html.twig' import reviewNotice %}
-  {{ reviewNotice() }}
+  {{ reviewNotice(abbreviation) }}
 
   {{ form(form) }}
 {% endblock %}

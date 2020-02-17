@@ -65,7 +65,8 @@ class RelationTypeController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+        'relationType' => $relationType,
+        'form'         => $form->createView(),
     ];
   }
 

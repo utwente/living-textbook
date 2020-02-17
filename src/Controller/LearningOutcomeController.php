@@ -72,7 +72,8 @@ class LearningOutcomeController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+        'learningOutcome' => $learningOutcome,
+        'form'            => $form->createView(),
     ];
   }
 

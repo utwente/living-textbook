@@ -76,7 +76,8 @@ class LearningPathController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+        'learningPath' => $learningPath,
+        'form'         => $form->createView(),
     ];
   }
 

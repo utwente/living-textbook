@@ -1,5 +1,5 @@
-{% macro reviewNotice(studyArea) %}
-  {% if studyArea|default(_twigStudyArea).reviewModeEnabled %}
+{% macro reviewNotice(object) %}
+  {% if reviewEnabled(object.studyArea|default(_twigStudyArea), object) %}
     {% from '_layout/flashbags.html.twig' import flashbag_alert %}
     {{ flashbag_alert('info', 'study-area.review-mode-notice'|trans, 'fa-info-circle', true) }}
   {% endif %}

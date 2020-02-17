@@ -11,7 +11,17 @@ use App\Entity\StudyArea;
  */
 interface StudyAreaFilteredInterface
 {
+  /**
+   * Retrieves the object id
+   *
+   * @return int|null
+   */
   function getId(): ?int;
 
+  /**
+   * Retrieves the study area
+   *
+   * @return StudyArea|null
+   */
   function getStudyArea(): ?StudyArea;
 }

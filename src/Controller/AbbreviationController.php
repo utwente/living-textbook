@@ -67,7 +67,8 @@ class AbbreviationController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+        'abbreviation' => $abbreviation,
+        'form'         => $form->createView(),
     ];
   }
 

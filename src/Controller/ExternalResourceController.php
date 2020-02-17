@@ -65,7 +65,8 @@ class ExternalResourceController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+        'externalResource' => $externalResource,
+        'form'             => $form->createView(),
     ];
   }
 

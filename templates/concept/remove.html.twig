@@ -23,7 +23,7 @@
   {% endif %}
 
   {% from '_macro/_review.html.twig' import reviewNotice %}
-  {{ reviewNotice() }}
+  {{ reviewNotice(concept) }}
 
   {{ form(form) }}
 {% endblock %}

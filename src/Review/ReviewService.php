@@ -76,6 +76,24 @@ class ReviewService
   }
 
   /**
+   * Return whether review mode is enable for this object type
+   *
+   * @param StudyArea           $studyArea
+   * @param ReviewableInterface $object
+   *
+   * @return bool
+   */
+  public function isReviewModeEnabledForObject(StudyArea $studyArea, ReviewableInterface $object)
+  {
+    if (!$studyArea->isReviewModeEnabled()) {
+      return false;
+    }
+
+    // Currently, review mode is only enabled for concept
+    return $object instanceof Concept;
+  }
+
+  /**
    * Retrieve the original object linked to the pending change
    *
    * @param PendingChange $pendingChange
@@ -123,7 +141,7 @@ class ReviewService
     }
 
     // Check for review mode: when not enabled, do the direct save
-    if (!$studyArea->isReviewModeEnabled()) {
+    if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       $this->directSave($object, $changeType, $directCallback);
 
       return;
@@ -207,7 +225,7 @@ class ReviewService
   public function getPendingChangeObjectInformation(
       StudyArea $studyArea, ReviewableInterface $object): PendingChangeObjectInfo
   {
-    if (!$studyArea->isReviewModeEnabled()) {
+    if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return new PendingChangeObjectInfo();
     }
 
@@ -224,7 +242,7 @@ class ReviewService
    */
   public function canObjectBeEdited(StudyArea $studyArea, ReviewableInterface $object): bool
   {
-    if (!$studyArea->isReviewModeEnabled()) {
+    if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return true;
     }
 
@@ -244,7 +262,7 @@ class ReviewService
    */
   public function canObjectBeRemoved(StudyArea $studyArea, ReviewableInterface $object): bool
   {
-    if (!$studyArea->isReviewModeEnabled()) {
+    if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return true;
     }
 

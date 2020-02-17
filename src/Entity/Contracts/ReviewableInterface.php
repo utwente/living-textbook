@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * Interface IReviewable
  * Marks the entity as reviewable
  */
-interface ReviewableInterface
+interface ReviewableInterface extends StudyAreaFilteredInterface
 {
 
   /**
@@ -21,13 +21,6 @@ interface ReviewableInterface
    * @param EntityManagerInterface $em
    */
   public function applyChanges(PendingChange $change, EntityManagerInterface $em): void;
-
-  /**
-   * Retrieves the object id
-   *
-   * @return int|null
-   */
-  public function getId(): ?int;
 
   /**
    * The name used in the pending change table to store the change

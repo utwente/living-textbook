@@ -65,7 +65,8 @@ class ContributorController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+        'contributor' => $contributor,
+        'form'        => $form->createView(),
     ];
   }
 

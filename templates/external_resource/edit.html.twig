@@ -14,7 +14,7 @@
 
 {% block content %}
   {% from '_macro/_review.html.twig' import reviewNotice %}
-  {{ reviewNotice() }}
+  {{ reviewNotice(externalResource) }}
 
   {{ form(form) }}
 {% endblock %}

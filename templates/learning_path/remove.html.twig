@@ -8,7 +8,7 @@
   <p>{{ 'learning-path.remove-text'|trans({"%item%": learningPath.name}) }}</p>
 
   {% from '_macro/_review.html.twig' import reviewNotice %}
-  {{ reviewNotice() }}
+  {{ reviewNotice(learningPath) }}
 
   {{ form(form) }}
 {% endblock %}
