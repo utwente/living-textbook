@@ -455,7 +455,7 @@ permissions:
   permissions-added: 'The permissions have been added'
   remove-admin: 'Remove %user% as administrator'
   remove-admin-text: 'Are you sure you want to remove %user% as administrator?'
-  remove-all-not-necessary: 'The "%type%" permissions cannot be revoked, as they are not found'
+  remove-all-not-necessary: 'The "%type%" permissions cannot be revoked, as they are not found.'
   remove-all-permissions: 'Revoke all permissions'
   remove-all-permissions-text: 'Are you sure you want to revoke all permissions on the study area "%item%"?'
   remove-all-permissions-for-type: 'Revoke all "%type%" permissions'
@@ -469,6 +469,7 @@ permissions:
   remove-self: 'Remove yourself'
   remove-self-confirm: 'Yes, I want to remove myself'
   remove-self-text: 'Are you sure you want to remove yourself from the study area %studyArea%?'
+  remove-viewer-warning-text: 'You will only be removing the users which only have the "%type%" role assigned! Users which have other roles assigned, will keep the %type% role!'
   removed-self: "You're now removed from the study area %studyArea%"
   removed-permissions: 'Revoked permissions from %user%'
   removed-permissions-all: 'Revoked all permissions'

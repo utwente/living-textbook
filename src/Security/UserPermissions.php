@@ -138,6 +138,14 @@ class UserPermissions
   /**
    * @return bool
    */
+  public function isViewerOnly(): bool
+  {
+    return $this->isViewer() && !$this->isEditor() && !$this->isReviewer() && !$this->isAnalysis();
+  }
+
+  /**
+   * @return bool
+   */
   public function isEditor(): bool
   {
     return $this->editor;

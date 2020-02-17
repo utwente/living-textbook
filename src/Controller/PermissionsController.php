@@ -12,6 +12,7 @@ use App\Form\Type\RemoveType;
 use App\Repository\UserGroupRepository;
 use App\Repository\UserRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\UserPermissions;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -394,8 +395,18 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    $userGroup = $userGroupRepository->getForType($studyArea, $groupType);
-    if (!$userGroup || ($userGroup->getUsers()->isEmpty() && $userGroup->getEmails()->isEmpty())) {
+    $userGroup       = $userGroupRepository->getForType($studyArea, $groupType);
+    $userPermissions = $studyArea->getUserPermissions();
+
+    if ($groupType === UserGroup::GROUP_VIEWER) {
+      $notNecessary = 0 === count(array_filter($userPermissions, function (UserPermissions $userPermission) {
+            return $userPermission->isViewerOnly();
+          }));
+    } else {
+      $notNecessary = !$userGroup || ($userGroup->getUsers()->isEmpty() && $userGroup->getEmails()->isEmpty());
+    }
+
+    if ($notNecessary) {
       $this->addFlash('notice', $trans->trans('permissions.remove-all-not-necessary', [
           '%type%' => $groupType,
       ]));
@@ -409,11 +420,31 @@ class PermissionsController extends AbstractController
     $form->handleRequest($request);
 
     if (RemoveType::isRemoveClicked($form)) {
-      $userGroup->getUsers()->clear();
-      foreach ($userGroup->getEmails() as $userGroupEmail) {
-        $em->remove($userGroupEmail);
+
+      if ($groupType === UserGroup::GROUP_VIEWER) {
+        // Only remove users which do not have other roles assigned in the same area
+        foreach ($userPermissions as $userPermission) {
+          if (!$userPermission->isViewerOnly()) {
+            continue;
+          }
+
+          // Remove this user from the group
+          if ($userPermission->isUser()) {
+            $userGroup->removeUser($userPermission->getUser());
+          } else {
+            $em->remove($userPermission->getEmail());
+            $userGroup->removeEmail($userPermission->getEmail());
+          }
+        }
+      } else {
+        // Remove all users when it is not the viewer role
+        $userGroup->getUsers()->clear();
+        foreach ($userGroup->getEmails() as $userGroupEmail) {
+          $em->remove($userGroupEmail);
+        }
+        $userGroup->getEmails()->clear();
       }
-      $userGroup->getEmails()->clear();
+
       $em->flush();
 
       $this->addFlash('success', $trans->trans('permissions.removed-permissions-type', [

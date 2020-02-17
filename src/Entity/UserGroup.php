@@ -199,4 +199,16 @@ class UserGroup
 
     return $this;
   }
+
+  /**
+   * @param UserGroupEmail $email
+   *
+   * @return UserGroup
+   */
+  public function removeEmail(UserGroupEmail $email): UserGroup
+  {
+    $this->emails->removeElement($email);
+
+    return $this;
+  }
 }

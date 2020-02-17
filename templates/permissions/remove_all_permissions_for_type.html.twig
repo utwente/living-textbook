@@ -7,5 +7,10 @@
 {% block content %}
   <p>{{ 'permissions.remove-all-permissions-text-for-type'|trans({'%type%': type, '%item%': studyArea.name }) }}</p>
 
+  {% if type == constant('App\\Entity\\UserGroup::GROUP_VIEWER') %}
+    {% from "_layout/flashbags.html.twig" import flashbag_alert %}
+    {{ flashbag_alert('warning', 'permissions.remove-viewer-warning-text'|trans({'%type%': type})) }}
+  {% endif %}
+
   {{ form(form) }}
 {% endblock %}
