@@ -193,11 +193,12 @@ deploy-staging:
     - build-assets
   before_script:
     - mkdir -p ~/.ssh
-    - echo "[${STAGING_HOST}]:${STAGING_HOST_SSH_PORT} ${STAGING_HOST_SSH_FINGERPRINT}" > ~/.ssh/known_hosts
+    - echo "${STAGING_HOST_SSH} ${STAGING_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - echo "[${STAGING_HOST_SSH}]:${STAGING_HOST_SSH_PORT} ${STAGING_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
     - eval $(ssh-agent -s)
     - ssh-add <(echo "${STAGING_HOST_SSH_PRIVATE_KEY}")
   script:
-    - ssh -tt ${STAGING_USER}@${STAGING_HOST} -p ${STAGING_HOST_SSH_PORT} ${CI_PIPELINE_ID}
+    - ssh -tt ${STAGING_USER}@${STAGING_HOST_SSH} -p ${STAGING_HOST_SSH_PORT} ${CI_PIPELINE_ID}
   environment:
     name: Staging
     url: https://${STAGING_HOST}
@@ -215,11 +216,12 @@ deploy-prod:
     - mkdir -p ~/.ssh
     - echo "${JUMP_HOST} ${JUMP_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
     - echo "${PRODUCTION_HOST_SSH} ${PRODUCTION_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - echo "[${PRODUCTION_HOST_SSH}]:${PRODUCTION_HOST_SSH_PORT} ${PRODUCTION_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
     - eval $(ssh-agent -s)
     - ssh-add <(echo "${PRODUCTION_HOST_SSH_PRIVATE_KEY}")
     - ssh-add <(echo "${JUMP_HOST_SSH_PRIVATE_KEY}")
   script:
-    - ssh -tt -J ${JUMP_USER}@${JUMP_HOST} ${PRODUCTION_USER}@${PRODUCTION_HOST_SSH} ${CI_PIPELINE_ID}
+    - ssh -tt -J ${JUMP_USER}@${JUMP_HOST} ${PRODUCTION_USER}@${PRODUCTION_HOST_SSH} -p ${PRODUCTION_HOST_SSH_PORT} ${CI_PIPELINE_ID}
   environment:
     name: Production
     url: https://${PRODUCTION_HOST}
