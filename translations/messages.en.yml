@@ -99,7 +99,7 @@ concept:
   incoming-relations: 'Incoming relations'
   indirect-relations: 'Indirect relations'
   instance: 'Instance'
-  instance-text: 'This concept is an instance.'
+  instance-text: 'This is an instance of a concept.'
   introduction: 'Introduction'
   learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
