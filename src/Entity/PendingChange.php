@@ -203,20 +203,20 @@ class PendingChange
       case Concept::class:
         $sortOrder = [
             'name'              => 200,
-            'instance'          => 195,
-            'definition'        => 190,
-            'synonyms'          => 180,
+            'instance'          => 190,
+            'definition'        => 180,
             'introduction'      => 170,
-            'priorKnowledge'    => 160,
-            'learningOutcomes'  => 150,
-            'theoryExplanation' => 140,
-            'howTo'             => 130,
-            'examples'          => 120,
-            'externalResources' => 110,
-            'selfAssessment'    => 100,
-            'relations'         => 90,
-            'incomingRelations' => 80,
-            'contributors'      => 70,
+            'theoryExplanation' => 160,
+            'examples'          => 150,
+            'synonyms'          => 140,
+            'externalResources' => 130,
+            'learningOutcomes'  => 120,
+            'priorKnowledge'    => 110,
+            'howTo'             => 100,
+            'selfAssessment'    => 90,
+            'relations'         => 80,
+            'incomingRelations' => 70,
+            'contributors'      => 60,
         ];
         break;
       case Contributor::class:

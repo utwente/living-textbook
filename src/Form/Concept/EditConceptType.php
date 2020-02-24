@@ -87,16 +87,6 @@ class EditConceptType extends AbstractType
             'field'               => 'definition',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
-        ->add('synonyms', TextType::class, [
-            'label'      => 'concept.synonyms',
-            'empty_data' => '',
-            'required'   => false,
-            'disabled'   => in_array('synonyms', $disabledFields),
-        ])
-        ->add('synonyms_review', DisplayPendingChangeType::class, [
-            'field'               => 'synonyms',
-            'pending_change_info' => $pendingChangeObjectInfo,
-        ])
         ->add('introduction', BaseDataTextType::class, [
             'label'      => 'concept.introduction',
             'data_class' => DataIntroduction::class,
@@ -108,6 +98,71 @@ class EditConceptType extends AbstractType
             'field'               => 'introduction',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
+        ->add('theoryExplanation', BaseDataTextType::class, [
+            'label'      => 'concept.theory-explanation',
+            'required'   => false,
+            'data_class' => DataTheoryExplanation::class,
+            'studyArea'  => $studyArea,
+            'disabled'   => in_array('theoryExplanation', $disabledFields),
+        ])
+        ->add('theoryExplanation_review', DisplayPendingChangeType::class, [
+            'field'               => 'theoryExplanation',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('examples', BaseDataTextType::class, [
+            'label'      => 'concept.examples',
+            'required'   => false,
+            'data_class' => DataExamples::class,
+            'studyArea'  => $studyArea,
+            'disabled'   => in_array('examples', $disabledFields),
+        ])
+        ->add('examples_review', DisplayPendingChangeType::class, [
+            'field'               => 'examples',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('synonyms', TextType::class, [
+            'label'      => 'concept.synonyms',
+            'empty_data' => '',
+            'required'   => false,
+            'disabled'   => in_array('synonyms', $disabledFields),
+        ])
+        ->add('synonyms_review', DisplayPendingChangeType::class, [
+            'field'               => 'synonyms',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('externalResources', EntityType::class, [
+            'label'         => 'concept.external-resources',
+            'class'         => ExternalResource::class,
+            'choice_label'  => 'title',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($concept) {
+              return $externalResourceRepository->findForStudyAreaQb($concept->getStudyArea());
+            },
+            'select2'       => true,
+            'disabled'      => in_array('externalResources', $disabledFields),
+        ])
+        ->add('externalResources_review', DisplayPendingChangeType::class, [
+            'field'               => 'externalResources',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('learningOutcomes', EntityType::class, [
+            'label'         => 'concept.learning-outcomes',
+            'class'         => LearningOutcome::class,
+            'choice_label'  => 'shortName',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($concept) {
+              return $learningOutcomeRepository->findForStudyAreaQb($concept->getStudyArea());
+            },
+            'select2'       => true,
+            'disabled'      => in_array('learningOutcomes', $disabledFields),
+        ])
+        ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
+            'field'               => 'learningOutcomes',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+
         // This field is also used by the ckeditor plugin for concept selection
         ->add('priorKnowledge', EntityType::class, [
             'label'         => 'concept.prior-knowledge',
@@ -139,33 +194,6 @@ class EditConceptType extends AbstractType
             'field'               => 'priorKnowledge',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
-        ->add('learningOutcomes', EntityType::class, [
-            'label'         => 'concept.learning-outcomes',
-            'class'         => LearningOutcome::class,
-            'choice_label'  => 'shortName',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($concept) {
-              return $learningOutcomeRepository->findForStudyAreaQb($concept->getStudyArea());
-            },
-            'select2'       => true,
-            'disabled'      => in_array('learningOutcomes', $disabledFields),
-        ])
-        ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
-            'field'               => 'learningOutcomes',
-            'pending_change_info' => $pendingChangeObjectInfo,
-        ])
-        ->add('theoryExplanation', BaseDataTextType::class, [
-            'label'      => 'concept.theory-explanation',
-            'required'   => false,
-            'data_class' => DataTheoryExplanation::class,
-            'studyArea'  => $studyArea,
-            'disabled'   => in_array('theoryExplanation', $disabledFields),
-        ])
-        ->add('theoryExplanation_review', DisplayPendingChangeType::class, [
-            'field'               => 'theoryExplanation',
-            'pending_change_info' => $pendingChangeObjectInfo,
-        ])
         ->add('howTo', BaseDataTextType::class, [
             'label'      => 'concept.how-to',
             'required'   => false,
@@ -175,33 +203,6 @@ class EditConceptType extends AbstractType
         ])
         ->add('howTo_review', DisplayPendingChangeType::class, [
             'field'               => 'howTo',
-            'pending_change_info' => $pendingChangeObjectInfo,
-        ])
-        ->add('examples', BaseDataTextType::class, [
-            'label'      => 'concept.examples',
-            'required'   => false,
-            'data_class' => DataExamples::class,
-            'studyArea'  => $studyArea,
-            'disabled'   => in_array('examples', $disabledFields),
-        ])
-        ->add('examples_review', DisplayPendingChangeType::class, [
-            'field'               => 'examples',
-            'pending_change_info' => $pendingChangeObjectInfo,
-        ])
-        ->add('externalResources', EntityType::class, [
-            'label'         => 'concept.external-resources',
-            'class'         => ExternalResource::class,
-            'choice_label'  => 'title',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($concept) {
-              return $externalResourceRepository->findForStudyAreaQb($concept->getStudyArea());
-            },
-            'select2'       => true,
-            'disabled'      => in_array('externalResources', $disabledFields),
-        ])
-        ->add('externalResources_review', DisplayPendingChangeType::class, [
-            'field'               => 'externalResources',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('selfAssessment', BaseDataTextType::class, [
