@@ -246,7 +246,8 @@ class ConceptController extends AbstractController
         'concept'              => $concept,
         'pending_change_info'  => $pendingChangeObjectInfo,
         'enable_save_and_list' => false,
-        'cancel_route'         => 'app_review_submit',
+        'cancel_route'         => $review ? 'app_review_showsubmission' : 'app_review_submit',
+        'cancel_route_params'  => $review ? ['review' => $review->getId()] : [],
     ]);
     $form->handleRequest($request);
 

@@ -40,6 +40,16 @@
 
     {% block review_submission_object_footer_row %}
   </ul>
+  {% if showEdit|default(false) %}
+    <div class="card-footer">
+      <div class="review-footer">
+        <a href="{{ editPath }}" class="btn btn-sm btn-outline-primary">
+          <i class="fa fa-fw fa-edit"></i>
+          {{ 'form.edit'|trans }}
+        </a>
+      </div>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
 

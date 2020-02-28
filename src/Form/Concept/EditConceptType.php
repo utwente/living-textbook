@@ -273,7 +273,9 @@ class EditConceptType extends AbstractType
             'enable_save_and_list' => $options['enable_save_and_list'],
             'cancel_label'         => 'form.discard',
             'cancel_route'         => $options['cancel_route'] ?? ($editing ? 'app_concept_show' : 'app_concept_list'),
-            'cancel_route_params'  => $options['cancel_route'] ? [] : ($editing ? ['concept' => $concept->getId()] : []),
+            'cancel_route_params'  => $options['cancel_route']
+                ? ($options['cancel_route_params'] ?? [])
+                : ($editing ? ['concept' => $concept->getId()] : []),
         ]);
 
     // Fields below are hidden fields, which are used for ckeditor plugins to have the data available on the page
@@ -304,11 +306,13 @@ class EditConceptType extends AbstractType
         'pending_change_info'  => new PendingChangeObjectInfo(),
         'enable_save_and_list' => true,
         'cancel_route'         => NULL,
+        'cancel_route_params'  => NULL,
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);
     $resolver->setAllowedTypes('pending_change_info', PendingChangeObjectInfo::class);
     $resolver->setAllowedTypes('enable_save_and_list', 'bool');
     $resolver->setAllowedTypes('cancel_route', ['null', 'string']);
+    $resolver->setAllowedTypes('cancel_route_params', ['null', 'array']);
   }
 }

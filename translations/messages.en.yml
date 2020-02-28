@@ -682,7 +682,7 @@ review:
   edit-pending: 'You''re editing your pending changes, which are applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point.'
   edit-pending-review: 'You''re editing your submitted review, which are applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point.'
   edit-successful: 'The review has been updated successfully!'
-  edit-title: 'Edit review'
+  edit-title: 'Edit submission'
   empty-content: 'No content'
   empty-note: 'No note'
   field: 'Changed field'

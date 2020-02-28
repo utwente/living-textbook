@@ -72,9 +72,16 @@ class ReviewController extends AbstractController
       return $this->redirectToRoute('app_review_submissions');
     }
 
+    // Create form, although this is only show. This way, we can reuse the show logic from the review process
+    $changesForm = $this->createForm(ReviewSubmissionType::class, $review, [
+        'review'        => false,
+        'show_comments' => true,
+    ]);
+
     return [
-        'form'   => $form->createView(),
-        'review' => $review,
+        'form'        => $form->createView(),
+        'changesForm' => $changesForm->createView(),
+        'review'      => $review,
     ];
   }
 

@@ -143,7 +143,10 @@ class ReviewSubmissionType extends AbstractType
       }
 
       $form->add(sprintf('%s__%d_f', $pendingChange->getShortObjectType(), $pendingChange->getId()),
-          ReviewSubmissionObjectFooterType::class, ['mapped' => false]);
+          ReviewSubmissionObjectFooterType::class, [
+              'mapped'         => false,
+              'pending_change' => $pendingChange,
+          ]);
     }
 
     if ($options['review']) {

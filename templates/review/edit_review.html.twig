@@ -13,8 +13,9 @@
 {% endblock %}
 
 {% block content %}
-  {% from '_layout/flashbags.html.twig' import flashbag_alert %}
-  {{ flashbag_alert('info', 'review.edit-notice'|trans, 'fa-info-circle', true) }}
-
   {{ form(form) }}
+
+  <div class="spacer"></div>
+
+  {{ form(changesForm) }}
 {% endblock %}
