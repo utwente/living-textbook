@@ -256,9 +256,11 @@
       <div class="col-12 mt-2 col-xl-4 mt-xl-0">
         <label class="col-form-label">
           {{ 'review.comments'|trans }}
-          <a href="#" onclick="$('#{{ form.comments.vars.id }}').val('')">
-            ({{ 'review.clear-comments'|trans }})
-          </a>
+          {% if not form.comments.vars.disabled %}
+            <a href="#" onclick="$('#{{ form.comments.vars.id }}').val('')">
+              ({{ 'review.clear-comments'|trans }})
+            </a>
+          {% endif %}
         </label>
         <div class="review-comments">
           {{ form_widget(form.comments) }}

@@ -75,7 +75,7 @@ class ReviewController extends AbstractController
     // Create form, although this is only show. This way, we can reuse the show logic from the review process
     $changesForm = $this->createForm(ReviewSubmissionType::class, $review, [
         'review'        => false,
-        'show_comments' => true,
+        'show_comments' => $review->getReviewedAt() !== NULL,
     ]);
 
     return [
@@ -339,7 +339,7 @@ class ReviewController extends AbstractController
     // Create form, although this is only show. This way, we can reuse the show logic from the review process
     $form = $this->createForm(ReviewSubmissionType::class, $review, [
         'review'        => false,
-        'show_comments' => true,
+        'show_comments' => $review->getReviewedAt() !== NULL,
     ]);
 
     return [
