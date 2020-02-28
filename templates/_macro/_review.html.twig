@@ -3,6 +3,11 @@
     {% from '_layout/flashbags.html.twig' import flashbag_alert %}
     {{ flashbag_alert('info', 'study-area.review-mode-notice'|trans, 'fa-info-circle', true) }}
   {% endif %}
+
+  {# specific review messages #}
+  {% for flashMessage in app.session.flashbag.get('review') %}
+    {{ flashbag_alert('info', flashMessage, 'fa-info-circle', true) }}
+  {% endfor %}
 {% endmacro %}
 
 {% macro noteExcerpt(notes) %}

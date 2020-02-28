@@ -136,8 +136,8 @@ class EditConceptType extends AbstractType
             'choice_label'  => 'title',
             'required'      => false,
             'multiple'      => true,
-            'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($concept) {
-              return $externalResourceRepository->findForStudyAreaQb($concept->getStudyArea());
+            'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($studyArea) {
+              return $externalResourceRepository->findForStudyAreaQb($studyArea);
             },
             'select2'       => true,
             'disabled'      => in_array('externalResources', $disabledFields),
@@ -152,8 +152,8 @@ class EditConceptType extends AbstractType
             'choice_label'  => 'shortName',
             'required'      => false,
             'multiple'      => true,
-            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($concept) {
-              return $learningOutcomeRepository->findForStudyAreaQb($concept->getStudyArea());
+            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
+              return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
             },
             'select2'       => true,
             'disabled'      => in_array('learningOutcomes', $disabledFields),
@@ -268,11 +268,12 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('submit', SaveType::class, [
-            'locate_static'       => true,
-            'enable_cancel'       => true,
-            'cancel_label'        => 'form.discard',
-            'cancel_route'        => $editing ? 'app_concept_show' : 'app_concept_list',
-            'cancel_route_params' => $editing ? ['concept' => $concept->getId()] : [],
+            'locate_static'        => true,
+            'enable_cancel'        => true,
+            'enable_save_and_list' => $options['enable_save_and_list'],
+            'cancel_label'         => 'form.discard',
+            'cancel_route'         => $options['cancel_route'] ?? ($editing ? 'app_concept_show' : 'app_concept_list'),
+            'cancel_route_params'  => $options['cancel_route'] ? [] : ($editing ? ['concept' => $concept->getId()] : []),
         ]);
 
     // Fields below are hidden fields, which are used for ckeditor plugins to have the data available on the page
@@ -299,11 +300,15 @@ class EditConceptType extends AbstractType
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
-        'data_class'          => Concept::class,
-        'pending_change_info' => new PendingChangeObjectInfo(),
+        'data_class'           => Concept::class,
+        'pending_change_info'  => new PendingChangeObjectInfo(),
+        'enable_save_and_list' => true,
+        'cancel_route'         => NULL,
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);
     $resolver->setAllowedTypes('pending_change_info', PendingChangeObjectInfo::class);
+    $resolver->setAllowedTypes('enable_save_and_list', 'bool');
+    $resolver->setAllowedTypes('cancel_route', ['null', 'string']);
   }
 }

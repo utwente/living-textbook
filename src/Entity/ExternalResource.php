@@ -140,11 +140,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   /**
    * @param PendingChange          $change
    * @param EntityManagerInterface $em
+   * @param bool                   $ignoreEm
    *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
-  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
     assert($changeObj instanceof self);

@@ -9,8 +9,10 @@ use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Repository\PendingChangeRepository;
+use App\Review\Exception\InvalidChangeException;
 use App\Review\Model\PendingChangeObjectInfo;
 use DateTime;
+use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
@@ -99,10 +101,14 @@ class ReviewService
    * @param PendingChange $pendingChange
    *
    * @return ReviewableInterface
-   * @throws EntityNotFoundException
+   * @throws EntityNotFoundException|InvalidChangeException
    */
   public function getOriginalObject(PendingChange $pendingChange): ReviewableInterface
   {
+    if (NULL === $pendingChange->getObjectId()) {
+      throw new InvalidChangeException($pendingChange);
+    }
+
     // Retrieve the object as referenced by the change
     $object = $this->entityManager->getRepository($pendingChange->getObjectType())->find($pendingChange->getObjectId());
     if (!$object) {
@@ -175,23 +181,61 @@ class ReviewService
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
-    // Clean object from doctrine state
-    // This breaks the state of currently loaded object, which is why we replace the existing relations in the
-    // PendingChange with doctrine references
-    $this->entityManager->clear();
-
-    // Replace the relations after the manager has been cleared
-    $refOwner     = $this->entityManager->getReference(User::class, $pendingChange->getOwner()->getId());
-    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId());
-    assert($refOwner instanceof User);
-    assert($refStudyArea instanceof StudyArea);
-    $pendingChange->setOwner($refOwner);
-    $pendingChange->setStudyArea($refStudyArea);
+    $this->clearEmState($pendingChange);
 
     // Merge the new pending change with an existing one, if any
     if ($mergeable = $this->pendingChangeRepository->getMergeable($pendingChange)) {
       $pendingChange = $mergeable->merge($pendingChange);
     }
+
+    // Store the pending change
+    $this->entityManager->persist($pendingChange);
+    $this->entityManager->flush($pendingChange);
+
+    // Add flash notification about the review change
+    $this->addFlash('notice', $this->translator->trans('review.saved-for-review'));
+  }
+
+  /**
+   * @param StudyArea           $studyArea
+   * @param ReviewableInterface $object
+   * @param PendingChange       $pendingChange
+   * @param string|null         $originalDataSnapshot
+   *
+   * @throws ORMException
+   * @throws OptimisticLockException
+   * @throws MappingException
+   */
+  public function updateChange(
+      StudyArea $studyArea, ReviewableInterface $object, PendingChange $pendingChange, ?string $originalDataSnapshot = NULL)
+  {
+    if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_REMOVE) {
+      throw new InvalidArgumentException('Remove changes cannot be updated!');
+    }
+
+    // Check for review mode: when not enabled, do the direct save
+    if (!$this->isReviewModeEnabledForObject($studyArea, $pendingChange->getObject())) {
+      throw new InvalidArgumentException('Changes cannot be updated for types that are not enabled');
+    }
+
+    // Determine the new change fields
+    $changedFields = array_unique(array_merge(
+        $pendingChange->getChangedFields(),
+        $this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot)
+    ));
+
+    // Update the pending change
+    $pendingChange
+        ->setObject($object)
+        ->setChangedFields($changedFields);
+
+    // Validate the entity
+    if (count($violations = $this->validator->validate($pendingChange))) {
+      assert($violations instanceof ConstraintViolationList);
+      throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
+    }
+
+    $this->clearEmState($pendingChange);
 
     // Store the pending change
     $this->entityManager->persist($pendingChange);
@@ -219,17 +263,18 @@ class ReviewService
    *
    * @param StudyArea           $studyArea
    * @param ReviewableInterface $object
+   * @param PendingChange|null  $exclude Exclude this pending change from the object information
    *
    * @return PendingChangeObjectInfo
    */
   public function getPendingChangeObjectInformation(
-      StudyArea $studyArea, ReviewableInterface $object): PendingChangeObjectInfo
+      StudyArea $studyArea, ReviewableInterface $object, ?PendingChange $exclude = NULL): PendingChangeObjectInfo
   {
     if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return new PendingChangeObjectInfo();
     }
 
-    return new PendingChangeObjectInfo($this->pendingChangeRepository->getForObject($object));
+    return new PendingChangeObjectInfo($this->pendingChangeRepository->getForObject($object, $exclude));
   }
 
   /**
@@ -444,6 +489,7 @@ class ReviewService
    *
    * @throws EntityNotFoundException
    * @throws ORMException
+   * @throws InvalidChangeException
    */
   private function applyChange(PendingChange $pendingChange)
   {
@@ -483,6 +529,35 @@ class ReviewService
     if (0 !== count($violations = $this->validator->validate($object))) {
       assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Validation not passed during publish! %s', $violations));
+    }
+  }
+
+  /**
+   * Clean object from doctrine state
+   * This breaks the state of currently loaded object, which is why we replace the existing relations in the
+   * PendingChange with doctrine references
+   *
+   * @param PendingChange $pendingChange
+   *
+   * @throws ORMException
+   * @throws MappingException
+   */
+  private function clearEmState(PendingChange &$pendingChange): void
+  {
+    // Clear manager
+    $this->entityManager->clear();
+
+    // Replace the relations after the manager has been cleared
+    $refOwner     = $this->entityManager->getReference(User::class, $pendingChange->getOwner()->getId());
+    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId());
+    assert($refOwner instanceof User);
+    assert($refStudyArea instanceof StudyArea);
+    $pendingChange->setOwner($refOwner);
+    $pendingChange->setStudyArea($refStudyArea);
+
+    // If the id was already set, this object was already known in the EM, so make sure it still is
+    if (NULL !== $pendingChange->getId()) {
+      $pendingChange = $this->entityManager->merge($pendingChange);
     }
   }
 

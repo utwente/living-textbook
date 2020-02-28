@@ -537,12 +537,13 @@ class Concept implements SearchableInterface, ReviewableInterface
   /**
    * @param PendingChange          $change
    * @param EntityManagerInterface $em
+   * @param bool                   $ignoreEm
    *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    * @throws ORMException
    */
-  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
     assert($changeObj instanceof self);
@@ -629,14 +630,18 @@ class Concept implements SearchableInterface, ReviewableInterface
           }
           foreach ($toRemove as $outgoingRelation) {
             $this->getOutgoingRelations()->removeElement($outgoingRelation);
-            $em->remove($outgoingRelation);
+            if (!$ignoreEm) {
+              $em->remove($outgoingRelation);
+            }
           }
 
           foreach ($changeObj->getOutgoingRelations() as $outgoingRelation) {
             $this->fixConceptRelationReferences($outgoingRelation, $em);
 
             $this->addOutgoingRelation($outgoingRelation);
-            $em->persist($outgoingRelation);
+            if (!$ignoreEm) {
+              $em->persist($outgoingRelation);
+            }
           }
 
           break;
@@ -650,14 +655,18 @@ class Concept implements SearchableInterface, ReviewableInterface
           }
           foreach ($toRemove as $incomingRelation) {
             $this->getIncomingRelations()->removeElement($incomingRelation);
-            $em->remove($incomingRelation);
+            if (!$ignoreEm) {
+              $em->remove($incomingRelation);
+            }
           }
 
           foreach ($changeObj->getIncomingRelations() as $incomingRelation) {
             $this->fixConceptRelationReferences($incomingRelation, $em);
 
             $this->addIncomingRelation($incomingRelation);
-            $em->persist($incomingRelation);
+            if (!$ignoreEm) {
+              $em->persist($incomingRelation);
+            }
           }
 
           break;

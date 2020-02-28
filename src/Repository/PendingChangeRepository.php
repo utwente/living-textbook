@@ -21,15 +21,26 @@ class PendingChangeRepository extends ServiceEntityRepository
    * Get all pending changes for an object
    *
    * @param ReviewableInterface $object
+   * @param PendingChange|null  $exclude
    *
    * @return PendingChange[]
    */
-  public function getForObject(ReviewableInterface $object): array
+  public function getForObject(ReviewableInterface $object, ?PendingChange $exclude = NULL): array
   {
-    return $this->findBy([
-        'objectType' => $object->getReviewName(),
-        'objectId'   => $object->getId(),
-    ]);
+    $qb = $this->createQueryBuilder('pc')
+        ->where('pc.objectType = :objectType')
+        ->andWhere('pc.objectId = :objectId')
+        ->setParameter('objectType', $object->getReviewName())
+        ->setParameter('objectId', $object->getId());
+
+    if (NULL !== $exclude) {
+      $qb
+          ->andWhere('pc.id != :exclude')
+          ->setParameter('exclude', $exclude->getId());
+    }
+
+    return $qb
+        ->getQuery()->getResult();
   }
 
   /**

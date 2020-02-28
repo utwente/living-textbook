@@ -3,6 +3,7 @@
 namespace App\Form\Review;
 
 use App\Entity\PendingChange;
+use App\Review\Exception\InvalidChangeException;
 use App\Review\Model\PendingChangeObjectInfo;
 use App\Review\ReviewService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,6 +37,7 @@ class DisplayPendingChangeType extends AbstractType
    * @param array                $options
    *
    * @throws EntityNotFoundException
+   * @throws InvalidChangeException
    */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {

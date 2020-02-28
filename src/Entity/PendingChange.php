@@ -193,6 +193,19 @@ class PendingChange
     }
 
     // Order the changed fields
+    $this->orderChangedFields();
+
+    // Set updated data
+    $this->payload = json_encode($origData);
+
+    return $this;
+  }
+
+  /**
+   * Order the changes fields
+   */
+  public function orderChangedFields()
+  {
     switch ($this->objectType) {
       case Abbreviation::class:
         $sortOrder = [
@@ -265,11 +278,6 @@ class PendingChange
 
       return $sortOrder[$b] <=> $sortOrder[$a];
     });
-
-    // Set updated data
-    $this->payload = json_encode($origData);
-
-    return $this;
   }
 
   /**
@@ -445,6 +453,7 @@ class PendingChange
   public function setChangedFields(?array $changedFields): self
   {
     $this->changedFields = $changedFields;
+    $this->orderChangedFields();
 
     return $this;
   }

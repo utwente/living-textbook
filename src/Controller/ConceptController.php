@@ -12,15 +12,23 @@ use App\Repository\AnnotationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Review\Exception\IncompatibleChangeException;
+use App\Review\Exception\IncompatibleFieldChangedException;
+use App\Review\Exception\InvalidChangeException;
 use App\Review\ReviewService;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -162,6 +170,103 @@ class ConceptController extends AbstractController
 
       // Forward to show
       return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
+    }
+
+    return [
+        'concept' => $concept,
+        'form'    => $form->createView(),
+    ];
+  }
+
+  /**
+   * Endpoint to re-edit the changes that are pending for submission. Fields that have already been submitted
+   * in another pending change cannot be edited from here.
+   *
+   * @Route("/edit/pending/{pendingChange}", requirements={"pendingChange"="\d+"})
+   * @Template("concept/edit.html.twig")
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea(route="app_review_submit", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param PendingChange          $pendingChange
+   * @param ReviewService          $reviewService
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
+   *
+   * @return array|RedirectResponse
+   *
+   * @throws EntityNotFoundException
+   * @throws IncompatibleChangeException
+   * @throws IncompatibleFieldChangedException
+   * @throws InvalidChangeException
+   * @throws ORMException
+   * @throws MappingException
+   * @throws OptimisticLockException
+   */
+  public function editPending(
+      Request $request, RequestStudyArea $requestStudyArea, PendingChange $pendingChange, ReviewService $reviewService,
+      EntityManagerInterface $em, TranslatorInterface $trans)
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    // Check study area
+    if ($pendingChange->getStudyArea()->getId() != $studyArea->getId()
+        || $pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_REMOVE) {
+      throw $this->createNotFoundException();
+    };
+
+    // We can either edit new concepts, or re-edit an existing concept
+    if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_ADD) {
+      $concept = (new Concept())
+          ->setStudyArea($studyArea);
+    } else {
+      $concept = $reviewService->getOriginalObject($pendingChange);
+    }
+
+    // Verify it can be edited
+    if (!$reviewService->canObjectBeEdited($studyArea, $concept)) {
+      throw new NotFoundHttpException('When review has been disabled, pending edits can no longer be edited');
+    }
+
+    // Create snapshot. Do this of the current version, to ensure all changes are detected correctly
+    $snapshot = $reviewService->getSnapshot($concept);
+
+    // Retrieve matching review before em is cleared by the review service
+    $review = $pendingChange->getReview();
+
+    // Apply the pending change to the concept, take care to ignore the em changes
+    $concept->applyChanges($pendingChange, $em, true);
+
+    // Retrieve change information, take care to exclude the current pending changes
+    $pendingChangeObjectInfo = $reviewService->getPendingChangeObjectInformation($studyArea, $concept, $pendingChange);
+
+    // Create form and handle request
+    $form = $this->createForm(EditConceptType::class, $concept, [
+        'concept'              => $concept,
+        'pending_change_info'  => $pendingChangeObjectInfo,
+        'enable_save_and_list' => false,
+        'cancel_route'         => 'app_review_submit',
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Save the data
+      $reviewService->updateChange($studyArea, $concept, $pendingChange, $snapshot);
+
+      $this->addFlash('success', $trans->trans('concept.updated', ['%item%' => $concept->getName()]));
+
+      if ($review) {
+        return $this->redirectToRoute('app_review_showsubmission', ['review' => $review->getId()]);
+      }
+
+      return $this->redirectToRoute('app_review_submit');
+    }
+
+    if ($review) {
+      $this->addFlash('review', $trans->trans('review.edit-pending-review'));
+    } else {
+      $this->addFlash('review', $trans->trans('review.edit-pending'));
     }
 
     return [

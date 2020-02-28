@@ -679,6 +679,8 @@ review:
   current-change: 'Currently pending change (by %owner%)'
   edit-not-possible: '%item% cannot be edited at this time, as it is pending for removal.'
   edit-notice: 'It is not possible to edit the submitted changes from here.'
+  edit-pending: 'You''re editing your pending changes, which are applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point.'
+  edit-pending-review: 'You''re editing your submitted review, which are applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point.'
   edit-successful: 'The review has been updated successfully!'
   edit-title: 'Edit review'
   empty-content: 'No content'

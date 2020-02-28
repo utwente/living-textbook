@@ -19,8 +19,9 @@ interface ReviewableInterface extends StudyAreaFilteredInterface
    *
    * @param PendingChange          $change
    * @param EntityManagerInterface $em
+   * @param bool                   $ignoreEm
    */
-  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void;
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void;
 
   /**
    * The name used in the pending change table to store the change

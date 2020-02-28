@@ -116,12 +116,13 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   /**
    * @param PendingChange          $change
    * @param EntityManagerInterface $em
+   * @param bool                   $ignoreEm
    *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    * @throws ORMException
    */
-  public function applyChanges(PendingChange $change, EntityManagerInterface $em): void
+  public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
     assert($changeObj instanceof self);
@@ -146,7 +147,9 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
           }
           foreach ($toRemove as $element) {
             $this->getElements()->removeElement($element);
-            $em->remove($element);
+            if (!$ignoreEm) {
+              $em->remove($element);
+            }
           }
 
           // Set the new elements
@@ -156,7 +159,9 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
             $newElement->setConcept($conceptRef);
 
             $this->addElement($newElement);
-            $em->persist($newElement);
+            if (!$ignoreEm) {
+              $em->persist($newElement);
+            }
           }
           break;
         }
