@@ -181,7 +181,18 @@ class ReviewService
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
-    $this->clearEmState($pendingChange);
+    // Clean object from doctrine state
+    // This breaks the state of currently loaded object, which is why we replace the existing relations in the
+    // PendingChange with doctrine references
+    $this->entityManager->clear();
+
+    // Replace the relations after the manager has been cleared
+    $refOwner     = $this->entityManager->getReference(User::class, $pendingChange->getOwner()->getId());
+    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId());
+    assert($refOwner instanceof User);
+    assert($refStudyArea instanceof StudyArea);
+    $pendingChange->setOwner($refOwner);
+    $pendingChange->setStudyArea($refStudyArea);
 
     // Merge the new pending change with an existing one, if any
     if ($mergeable = $this->pendingChangeRepository->getMergeable($pendingChange)) {
@@ -235,10 +246,15 @@ class ReviewService
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
-    $this->clearEmState($pendingChange);
+    // Clear the entity manager
+    $this->entityManager->clear();
 
-    // Store the pending change
-    $this->entityManager->persist($pendingChange);
+    // Reapply the changes in a fresh pending change object, as we just cleared the EM
+    $pendingChange = ($this->pendingChangeRepository->find($pendingChange->getId()))
+        ->setObject($object)
+        ->setChangedFields($changedFields);
+
+    // Store the updated pending change
     $this->entityManager->flush($pendingChange);
 
     // Add flash notification about the review change
@@ -529,35 +545,6 @@ class ReviewService
     if (0 !== count($violations = $this->validator->validate($object))) {
       assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Validation not passed during publish! %s', $violations));
-    }
-  }
-
-  /**
-   * Clean object from doctrine state
-   * This breaks the state of currently loaded object, which is why we replace the existing relations in the
-   * PendingChange with doctrine references
-   *
-   * @param PendingChange $pendingChange
-   *
-   * @throws ORMException
-   * @throws MappingException
-   */
-  private function clearEmState(PendingChange &$pendingChange): void
-  {
-    // Clear manager
-    $this->entityManager->clear();
-
-    // Replace the relations after the manager has been cleared
-    $refOwner     = $this->entityManager->getReference(User::class, $pendingChange->getOwner()->getId());
-    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId());
-    assert($refOwner instanceof User);
-    assert($refStudyArea instanceof StudyArea);
-    $pendingChange->setOwner($refOwner);
-    $pendingChange->setStudyArea($refStudyArea);
-
-    // If the id was already set, this object was already known in the EM, so make sure it still is
-    if (NULL !== $pendingChange->getId()) {
-      $pendingChange = $this->entityManager->merge($pendingChange);
     }
   }
 
