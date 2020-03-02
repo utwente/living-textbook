@@ -10,11 +10,13 @@ use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -30,15 +32,26 @@ class DuplicateType extends AbstractType
   const NEW_STUDY_AREA = 'new_study_area';
   const CONCEPTS = 'concepts';
   const SELECT_ALL = 'select_all';
+  /**
+   * @var Security
+   */
+  private $security;
+  /**
+   * @var StudyAreaRepository
+   */
+  private $studyAreaRepository;
 
   /**
    * @var TranslatorInterface
    */
   private $translator;
 
-  public function __construct(TranslatorInterface $translator)
+  public function __construct(
+      TranslatorInterface $translator, StudyAreaRepository $studyAreaRepository, Security $security)
   {
-    $this->translator = $translator;
+    $this->translator          = $translator;
+    $this->studyAreaRepository = $studyAreaRepository;
+    $this->security            = $security;
   }
 
   public function buildForm(FormBuilderInterface $builder, array $options)
@@ -57,11 +70,10 @@ class DuplicateType extends AbstractType
             'data'     => self::CHOICE_NEW,
             'expanded' => true,
         ])
-        ->add(self::EXISTING_STUDY_AREA, EntityType::class, [
+        ->add(self::EXISTING_STUDY_AREA, ChoiceType::class, [
             'required'      => true,
             'form_header'   => 'study-area.existing',
             'placeholder'   => 'dashboard.select-one',
-            'class'         => StudyArea::class,
             'select2'       => true,
             'group_by'      => function (StudyArea $studyArea) use ($defaultGroupName) {
               if (!$studyArea->getGroup()) {
@@ -70,12 +82,14 @@ class DuplicateType extends AbstractType
 
               return $studyArea->getGroup()->getName();
             },
-            'query_builder' => function (StudyAreaRepository $repo) {
-              return $repo->createQueryBuilder('sa')
-                  ->where('sa.reviewModeEnabled = :reviewMode')
-                  ->andWhere('sa.frozenOn IS NULL')
-                  ->setParameter('reviewMode', false);
-            },
+            'choice_loader' => new CallbackChoiceLoader(function () use ($currentStudyArea) {
+              $studyAreas = $this->studyAreaRepository->findBy(['reviewModeEnabled' => false, 'frozenOn' => NULL]);
+
+              return array_filter($studyAreas, function (StudyArea $studyArea) use ($currentStudyArea) {
+                return $studyArea->getId() !== $currentStudyArea->getId() && $this->security->isGranted('STUDYAREA_EDIT', $studyArea);
+              });
+            }),
+            'choice_label'  => 'name',
             'constraints'   => [
                 new NotNull(['groups' => [self::CHOICE_EXISTING]]),
             ],
