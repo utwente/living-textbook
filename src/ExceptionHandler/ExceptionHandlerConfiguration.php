@@ -4,6 +4,7 @@ namespace App\ExceptionHandler;
 
 use Kickin\ExceptionHandlerBundle\Configuration\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ExceptionHandlerConfiguration implements ConfigurationInterface
@@ -58,23 +59,23 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
   }
 
   /**
-   * SwiftMailer representation of the error sender
+   * Address representation of the error sender
    *
-   * @return string|array
+   * @return Address|string
    */
   public function getSender()
   {
-    return array($this->exceptionSender => 'Living Textbook');
+    return new Address($this->exceptionSender, 'Living Textbook');
   }
 
   /**
-   * SwiftMailer representation of the error receiver
+   * Address representation of the error receiver
    *
    * @return mixed
    */
   public function getReceiver()
   {
-    return array($this->exceptionReceiver => 'Living Textbook');
+    return new Address($this->exceptionReceiver, 'Living Textbook');
   }
 
   /**

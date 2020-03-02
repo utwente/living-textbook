@@ -14,6 +14,7 @@ use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -261,13 +262,13 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Get the formatted to array for swift mailer
+   * Get the mailer Address for this User
    *
-   * @return array
+   * @return Address
    */
-  public function getSwiftMailerTo()
+  public function getAddress()
   {
-    return array($this->username => $this->getFullName());
+    return new Address($this->username, $this->getFullName());
   }
 
   /**

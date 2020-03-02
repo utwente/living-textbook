@@ -38,6 +38,15 @@ unzip -q "${DEPLOY_DIR}/assets.zip" -d "${DEPLOY_DIR}"
 # Put the website on updating
 cp update/controllers/update.php public/index.php
 
+# Stop the messenger services
+messenger_services=(
+  "email"
+)
+for service in "${messenger_services[@]}"; do
+  echo "Stopping ltb-messenger@${service}"
+  sudo systemctl stop "ltb-messenger@${service}"
+done
+
 # Pull the new data, initialize submodules as well
 git submodule init
 git submodule sync
@@ -78,6 +87,12 @@ php bin/console ltb:python:build
 
 # Restore frontend controller
 cp update/controllers/index.php public/index.php
+
+# Start the messenger component
+for service in "${messenger_services[@]}"; do
+  echo "Starting ltb-messenger@${service}"
+  sudo systemctl start "ltb-messenger@${service}"
+done
 
 # Remove deployment artifacts
 rm -rf ${DEPLOY_DIR}

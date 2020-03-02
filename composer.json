@@ -3,12 +3,12 @@
     "license": "proprietary",
     "repositories": [
         {
-            "type": "gitlab",
-            "url":  "git@gitlab.drenso.dev:intern/symfony-oidc.git"
+            "type": "vcs",
+            "url": "https://github.com/Drenso/php-htmldiff"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/Drenso/php-htmldiff"
+            "url": "https://github.com/Kick-In/exception-handler-bundle"
         }
     ],
     "require": {
@@ -27,7 +27,7 @@
         "friendsofsymfony/jsrouting-bundle": "^2.1",
         "helios-ag/fm-elfinder-bundle": "^9.1.1",
         "jms/serializer-bundle": "^3.3",
-        "kick-in/exception-handler-bundle": "^2.0.1",
+        "kick-in/exception-handler-bundle": "dev-symfony-mailer",
         "ml/json-ld": "^1.1",
         "phpoffice/phpspreadsheet": "^1.5.1",
         "phpseclib/phpseclib": "^2.0",
@@ -41,19 +41,20 @@
         "symfony/console": "^4.2.1",
         "symfony/dotenv": "^4.2.1",
         "symfony/expression-language": "^4.2.1",
-        "symfony/filesystem": "^4.2.1",
+        "symfony/filesystem": "4.4.*",
         "symfony/finder": "^4.2.1",
         "symfony/flex": "^1.0",
         "symfony/form": "^4.2.1",
         "symfony/framework-bundle": "^4.2.1",
         "symfony/lock": "^4.2.1",
+        "symfony/mailer": "4.4.*",
+        "symfony/messenger": "4.4.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",
         "symfony/process": "^4.2.1",
         "symfony/property-access": "4.4.*",
         "symfony/proxy-manager-bridge": "^4.2.1",
         "symfony/security-bundle": "^4.2.1",
-        "symfony/swiftmailer-bundle": "^3.1",
         "symfony/translation": "^4.2.1",
         "symfony/twig-bundle": "^4.2.1",
         "symfony/validator": "^4.2.1",

@@ -2,3 +2,11 @@ services:
 
   # Profiler alias in order to be able to disable it on certain pages
   Symfony\Component\HttpKernel\Profiler\Profiler: '@profiler'
+
+  # Let mailer only send mails to us in development mode
+  mailer.dev.set_recipients:
+    class: Symfony\Component\Mailer\EventListener\EnvelopeListener
+    tags: [ 'kernel.event_subscriber' ]
+    arguments:
+      $sender: null
+      $recipients: [ 'webmaster@drenso.nl' ]

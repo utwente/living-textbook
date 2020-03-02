@@ -1,0 +1,14 @@
+[Unit]
+Description=SAP3 Messenge Consumer (queue %I)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/php bin/console messenger:consume %i --time-limit=3600 -vv
+Restart=always
+RestartSec=1
+WorkingDirectory=/var/www/sap3
+User=www-data
+
+[Install]
+WantedBy=multi-user.target
