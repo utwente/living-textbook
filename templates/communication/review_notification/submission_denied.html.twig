@@ -1,0 +1,32 @@
+{% extends 'communication/_base.html.twig' %}
+
+{% block content %}
+  <p>
+    {{ '_general.heading'|trans({'%person%': editor}, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <p>
+    {{ 'review.submission.denied.body'|trans({
+      '%studyarea%': study_area_name,
+      '%reviewer%': reviewer,
+    }, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <center>
+    <button href="{{ browserPath('app_review_editreview', {'_studyArea': study_area_id, 'review': review_id}) }}"
+            class="primary">
+      {{ 'review.submission.denied.show-review-comments'|trans({}, 'communication') }}
+    </button>
+  </center>
+
+  <spacer></spacer>
+
+  <p>
+    {{ '_general.footer'|trans({}, 'communication') }}<br/>
+    {{ '_brand.ltb'|trans({}, 'communication') }}
+  </p>
+{% endblock %}

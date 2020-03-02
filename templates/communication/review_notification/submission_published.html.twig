@@ -1,0 +1,31 @@
+{% extends 'communication/_base.html.twig' %}
+
+{% block content %}
+  <p>
+    {{ '_general.heading'|trans({'%person%': editor}, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <p>
+    {{ 'review.submission.published.body'|trans({
+      '%studyarea%': study_area_name,
+    }, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <center>
+    <button href="{{ browserPath('app_default_dashboard', {'_studyArea': study_area_id}) }}"
+            class="primary">
+      {{ 'review.submission.published.browse-area'|trans({}, 'communication') }}
+    </button>
+  </center>
+
+  <spacer></spacer>
+
+  <p>
+    {{ '_general.footer'|trans({}, 'communication') }}<br/>
+    {{ '_brand.ltb'|trans({}, 'communication') }}
+  </p>
+{% endblock %}

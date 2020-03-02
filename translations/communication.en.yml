@@ -12,3 +12,19 @@ review:
     open-review: 'Start review'
     review-notes: 'The editor has left you the following note'
     subject: 'New review requested'
+  submission:
+    approved:
+      body: 'Your submission has been approved by %reviewer% in the study area "%studyarea%"! It is now pending for publication by %publisher%.'
+      subject: 'Your submission has been approved'
+    approved-owner:
+      body: 'A submission by %editor% (reviewed and approved by %reviewer%) is pending publication in the study area "%studyarea%".'
+      open-publish-page: 'Show and publish submission'
+      subject: 'A new submission is pending publication'
+    denied:
+      body: 'Unfortunately, your submission has been denied by %reviewer% in the study area "%studyarea%".'
+      show-review-comments: 'Show review comments'
+      subject: 'Your submission has been denied'
+    published:
+      body: 'Your submission has been published in the study area "%studyarea%"!'
+      browse-area: 'Open study area'
+      subject: 'Your submission has been published'

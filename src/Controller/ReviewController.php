@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
+use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
@@ -17,13 +18,13 @@ use App\Review\ReviewService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
-use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
@@ -205,17 +206,20 @@ class ReviewController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Review                 $review
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
+   * @param Request                   $request
+   * @param RequestStudyArea          $requestStudyArea
+   * @param Review                    $review
+   * @param EntityManagerInterface    $em
+   * @param ReviewNotificationService $reviewNotificationService
+   * @param TranslatorInterface       $translator
    *
    * @return array|Response
+   * @throws TransportExceptionInterface
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function resubmitSubmission(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-      TranslatorInterface $translator)
+      ReviewNotificationService $reviewNotificationService, TranslatorInterface $translator)
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -241,6 +245,8 @@ class ReviewController extends AbstractController
       // Store the data
       $em->flush();
 
+      $reviewNotificationService->reviewRequested($review);
+
       $this->addFlash('success', $translator->trans('review.resubmitted'));
 
       return $this->redirectToRoute('app_review_submissions');
@@ -258,18 +264,20 @@ class ReviewController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Review                 $review
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
+   * @param Request                   $request
+   * @param RequestStudyArea          $requestStudyArea
+   * @param Review                    $review
+   * @param EntityManagerInterface    $em
+   * @param TranslatorInterface       $translator
+   * @param ReviewNotificationService $reviewNotificationService
    *
    * @return array|Response
-   * @throws Exception
+   * @throws TransportExceptionInterface
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function reviewSubmission(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator, ReviewNotificationService $reviewNotificationService)
   {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
@@ -305,6 +313,14 @@ class ReviewController extends AbstractController
       }
 
       $em->flush();
+
+      if ($hasComments) {
+        $reviewNotificationService
+            ->submissionDenied($review);
+      } else {
+        $reviewNotificationService
+            ->submissionApproved($review);
+      }
 
       $this->addFlash('success', $hasComments
           ? $translator->trans('review.review-comments')

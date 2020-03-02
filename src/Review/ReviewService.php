@@ -438,6 +438,8 @@ class ReviewService
     $this->entityManager->transactional(function (EntityManagerInterface $em) {
       $em->flush();
     });
+
+    $this->reviewNotificationService->submissionPublished($review);
   }
 
   /**

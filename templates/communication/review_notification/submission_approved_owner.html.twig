@@ -1,0 +1,34 @@
+{% extends 'communication/_base.html.twig' %}
+
+{% block content %}
+  <p>
+    {{ '_general.heading'|trans({'%person%': publisher}, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <p>
+    {{ 'review.submission.approved-owner.body'|trans({
+      '%studyarea%': study_area_name,
+      '%editor%': editor,
+      '%reviewer%': reviewer,
+      '%publisher%': publisher
+    }, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <center>
+    <button href="{{ browserPath('app_review_publish', {'_studyArea': study_area_id}) }}"
+            class="primary">
+      {{ 'review.submission.approved-owner.open-publish-page'|trans({}, 'communication') }}
+    </button>
+  </center>
+
+  <spacer></spacer>
+
+  <p>
+    {{ '_general.footer'|trans({}, 'communication') }}<br/>
+    {{ '_brand.ltb'|trans({}, 'communication') }}
+  </p>
+{% endblock %}
