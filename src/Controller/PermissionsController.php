@@ -101,7 +101,9 @@ class PermissionsController extends AbstractController
   public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans)
   {
     // Check if not self
-    if ($user->getId() === $this->getUser()->getId()) {
+    $secUser = $this->getUser();
+    assert($secUser instanceof User);
+    if ($user->getId() === $secUser->getId()) {
       $this->addFlash('warning', $trans->trans('permissions.cannot-edit-self', ['%user%' => $user->getDisplayName()]));
 
       return $this->redirectToRoute('app_permissions_admins');

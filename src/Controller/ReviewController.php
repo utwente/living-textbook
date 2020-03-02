@@ -488,7 +488,9 @@ class ReviewController extends AbstractController
     }
 
     // Check access
-    if ($review->getOwner()->getId() !== $this->getUser()->getId()
+    $user = $this->getUser();
+    assert($user instanceof User);
+    if ($review->getOwner()->getId() !== $user->getId()
         && !$this->isGranted('STUDYAREA_OWNER', $studyArea)) {
       throw new NotFoundHttpException("Access denied");
     }

@@ -81,6 +81,7 @@ class UserController extends AbstractController
                                             UserPasswordEncoderInterface $encoder, TranslatorInterface $trans)
   {
     $user = $this->getUser();
+    assert($user instanceof User);
 
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -219,7 +220,9 @@ class UserController extends AbstractController
     }
 
     // Check if self
-    if ($user->getId() == $this->getUser()->getId()) {
+    $secUser = $this->getUser();
+    assert($secUser instanceof User);
+    if ($user->getId() == $secUser->getId()) {
       $this->addFlash('notice', $trans->trans('user.fallback.self-remove'));
 
       return $this->redirectToRoute('app_user_fallbacklist');

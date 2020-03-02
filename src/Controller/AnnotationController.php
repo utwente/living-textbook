@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annotation;
 use App\Entity\AnnotationComment;
 use App\Entity\Concept;
+use App\Entity\User;
 use App\Repository\AnnotationRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use DateTime;
@@ -50,7 +51,8 @@ class AnnotationController extends AbstractController
     }
 
     // Determine whether the user has "teacher" role
-    $user        = $this->getUser();
+    $user = $this->getUser();
+    assert($user instanceof User);
     $annotations = $annotationRepository->getForUserAndConcept($user, $concept);
     $json        = $serializer->serialize($annotations, 'json');
 
@@ -135,16 +137,19 @@ class AnnotationController extends AbstractController
       throw $this->createNotFoundException();
     }
 
+    $user = $this->getUser();
+    assert($user instanceof User);
+
     // Validate whether this is a comment which is actually visible for the user
     if ($annotation->getVisibility() == Annotation::privateVisibility() &&
-        $annotation->getUserId() != $this->getUser()->getId()) {
+        $annotation->getUserId() != $user->getId()) {
       // Only owner can reply on private comments
       throw $this->createAccessDeniedException();
     }
 
-    if ($annotation->getUserId() != $this->getUser()->getId() &&
+    if ($annotation->getUserId() != $user->getId() &&
         $annotation->getVisibility() == Annotation::teacherVisibility() &&
-        !$studyArea->isEditable($this->getUser())) {
+        !$studyArea->isEditable($user)) {
       // Only teachers can reply on teacher comments
       throw $this->createAccessDeniedException();
     }
@@ -153,7 +158,7 @@ class AnnotationController extends AbstractController
 
     // Create the comment
     $comment = (new  AnnotationComment())
-        ->setUser($this->getUser())
+        ->setUser($user)
         ->setAnnotation($annotation)
         ->setText($request->request->get('text', NULL));
 
@@ -201,7 +206,9 @@ class AnnotationController extends AbstractController
     }
 
     // Validate rights
-    if ($annotation->getUserId() != $this->getUser()->getId()) {
+    $user = $this->getUser();
+    assert($user instanceof User);
+    if ($annotation->getUserId() != $user->getId()) {
       throw $this->createAccessDeniedException();
     }
 
@@ -247,7 +254,9 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    if ($annotation->getUserId() != $this->getUser()->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
+    $user = $this->getUser();
+    assert($user instanceof User);
+    if ($annotation->getUserId() != $user->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       throw $this->createAccessDeniedException();
     }
 
@@ -285,7 +294,9 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    if ($comment->getUserId() != $this->getUser()->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
+    $user = $this->getUser();
+    assert($user instanceof User);
+    if ($comment->getUserId() != $user->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       throw $this->createAccessDeniedException();
     }
 

@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -57,9 +57,9 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
   /**
    * Check if a study area is frozen, and if so, prevent editing
    *
-   * @param FilterControllerArgumentsEvent $event
+   * @param ControllerArgumentsEvent $event
    */
-  public function checkFrozenStudyArea(FilterControllerArgumentsEvent $event)
+  public function checkFrozenStudyArea(ControllerArgumentsEvent $event)
   {
     $request = $event->getRequest();
 

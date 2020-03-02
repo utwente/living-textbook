@@ -198,9 +198,11 @@ class DefaultController extends AbstractController
       ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
       LearningPathRepository $learningPathRepo, UrlChecker $urlChecker, TranslatorInterface $translator)
   {
-    $user       = $this->getUser();
+    $user = $this->getUser();
+    assert($user instanceof User);
+
     $studyArea  = $requestStudyArea->getStudyArea();
-    $studyAreas = $studyAreaRepository->getVisible($this->getUser());
+    $studyAreas = $studyAreaRepository->getVisible($user);
 
     // Only show switch form when there is more than 1 visible study area
     $studyAreaForm = count($studyAreas) > 1
