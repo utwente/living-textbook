@@ -155,7 +155,11 @@ data:
       rdf: 'RDF (as JSON-LD)'
       relation: 'Concept relations'
   duplicate: 'Duplicate'
-  duplicate-text: 'Here you can duplicate (parts of) the study area "%item%" into a new study area. You can either select a concept subset, or tick "Select all" to duplicate all concepts.'
+  duplicate-text: >-
+    Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
+    In order to select an existing area, you need to have write right, and review mode must be disabled.
+    You can either select a concept subset, or tick "Select all" to duplicate all concepts.
+    Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
   json-file: 'JSON data file'
   json-incorrect: 'JSON data incorrect! %message%'
   json-uploaded: 'JSON data successfully imported!'
@@ -565,6 +569,7 @@ study-area:
   current-area: 'Now browsing "%item%"'
   description: 'Description'
   edit-title: 'Edit study area "%item%"'
+  existing: 'Existing study area'
   freeze: 'Freeze study area "%item%"'
   freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone without risking data loss.'
   freeze-succeeded: 'Study area "%item%" has been frozen successfully.'

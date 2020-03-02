@@ -10,12 +10,53 @@
   {{ form(form) }}
 
   <script type="text/javascript">
-    $('#duplicate_select_all').on('change', function(){
-      if ($(this).is(':checked')){
+    $('#{{ form.select_all.vars.id }}').on('change', function () {
+      if ($(this).is(':checked')) {
         $('#duplicate_concepts').attr('disabled', 'disabled');
       } else {
         $('#duplicate_concepts').removeAttr('disabled');
       }
     });
+
+    function _hideForm($form) {
+      $form.find('input[required],select[required]')
+          .removeAttr('required')
+          .data('was-required', true);
+      $form.hide();
+    }
+
+    function _showForm($form) {
+      $form.find('input,select').each(function () {
+        $(this).data('was-required');
+        if ($(this).data('was-required') === true) {
+          $(this).attr('required', 'required');
+        }
+      });
+      $form.show();
+    }
+
+    $('input[type=radio][name="{{ form.type.vars.full_name }}"]').on('change', function () {
+      if (!$(this).is(':checked')) {
+        return;
+      }
+
+      var val = $(this).val();
+
+      var existingForm = $('#{{ form.existing_study_area.vars.id }}').closest('.form-group');
+      existingForm = $.merge(existingForm, existingForm.prev());
+      var newForm = $('#{{ form.new_study_area.vars.id }}').closest('.form-group');
+      newForm = $.merge(newForm, newForm.prev());
+
+      if (val === 'existing') {
+        _showForm(existingForm);
+        _hideForm(newForm);
+      } else {
+        _hideForm(existingForm);
+        _showForm(newForm);
+      }
+    }).trigger('change');
   </script>
+
+  {% from '_macro/_studyarea_select.html.twig' import select2_optgroup_css as select2_optgroup_css %}
+  {{ select2_optgroup_css() }}
 {% endblock %}

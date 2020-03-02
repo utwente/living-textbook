@@ -10,6 +10,7 @@ use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\User;
 use App\Excel\StudyAreaStatusBuilder;
 use App\Exception\DataImportException;
 use App\Export\ExportService;
@@ -400,17 +401,20 @@ class DataController extends AbstractController
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
       LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo)
   {
+    $user = $this->getUser();
+    assert($user instanceof User);
+
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
     $newStudyArea         = (new StudyArea())
-        ->setOwner($this->getUser())
+        ->setOwner($user)
         ->setAccessType(StudyArea::ACCESS_PRIVATE)
         ->setDescription($studyAreaToDuplicate->getDescription())
         ->setPrintHeader($studyAreaToDuplicate->getPrintHeader())
         ->setPrintIntroduction($studyAreaToDuplicate->getPrintIntroduction());
 
     $form = $this->createForm(DuplicateType::class, [
-        'studyArea' => $newStudyArea,
+        DuplicateType::NEW_STUDY_AREA => $newStudyArea,
     ], [
         'current_study_area' => $studyAreaToDuplicate,
         'new_study_area'     => $newStudyArea,
@@ -420,25 +424,31 @@ class DataController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
 
       $data      = $form->getData();
-      $selectAll = $data['select_all'];
+      $selectAll = $data[DuplicateType::SELECT_ALL];
       if ($selectAll) {
         $concepts = $studyAreaToDuplicate->getConcepts();
       } else {
-        $concepts = $data['concepts'];
+        $concepts = $data[DuplicateType::CONCEPTS];
+      }
+
+      if ($data[DuplicateType::CHOICE] === DuplicateType::CHOICE_EXISTING) {
+        $targetStudyArea = $data[DuplicateType::EXISTING_STUDY_AREA];
+      } else {
+        $targetStudyArea = $newStudyArea;
       }
 
       // Duplicate the data
       $duplicator = new StudyAreaDuplicator(
           $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router,
           $abbreviationRepo, $conceptRelationRepo, $contributorRepository, $externalResourceRepo, $learningOutcomeRepo,
-          $learningPathRepo, $studyAreaToDuplicate, $newStudyArea, $concepts->toArray());
+          $learningPathRepo, $studyAreaToDuplicate, $targetStudyArea, $concepts->toArray());
       $duplicator->duplicate();
 
       $this->addFlash('success', $trans->trans('data.concepts-duplicated'));
 
       // Load reloading page in order to switch to the duplicated study area
       return $this->render('reloading_fullscreen.html.twig', [
-          'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $newStudyArea->getId()]),
+          'reloadUrl' => $this->generateUrl('_home', ['_studyArea' => $targetStudyArea->getId()]),
       ]);
     }
 

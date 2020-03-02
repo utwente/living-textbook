@@ -12,6 +12,16 @@ form {
     }
   }
 
+  div.custom-radio {
+    label {
+      &.required {
+        &::after {
+          content: '';
+        }
+      }
+    }
+  }
+
   textarea {
     min-height: 3rem;
   }
