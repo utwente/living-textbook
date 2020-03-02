@@ -257,12 +257,20 @@ class ReviewService
     $this->entityManager->clear();
 
     // Reapply the changes in a fresh pending change object, as we just cleared the EM
+    /** @var PendingChange $pendingChange */
     $pendingChange = ($this->pendingChangeRepository->find($pendingChange->getId()))
         ->setObject($object)
         ->setChangedFields($changedFields);
 
+    // If the review was already reviewed, clear its approval status
+    $review = $pendingChange
+        ->getReview()
+        ->setApprovedAt(NULL)
+        ->setApprovedBy(NULL);
+
     // Store the updated pending change
     $this->entityManager->flush($pendingChange);
+    $this->entityManager->flush($review);
 
     // Add flash notification about the review change
     $this->addFlash('notice', $this->translator->trans('review.saved-for-review'));
