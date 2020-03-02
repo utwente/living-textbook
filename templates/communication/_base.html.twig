@@ -1,0 +1,43 @@
+{% apply inky_to_html|inline_css(source('@email_assets/email.css')) %}
+  <wrapper bgcolor="#e1e1e1">
+
+    <spacer size="16"></spacer>
+
+    <container class="header">
+      <row class="collapse">
+        <columns small="2" large="2" class="text-left">
+          <h3 class="header">{{ '_brand.ltb'|trans({}, 'communication') }}</h3>
+        </columns>
+        <columns small="2" large="2" class="text-right">
+          <a href="{{ url('base_url') }}" title="{{ '_brand.ltb'|trans({}, 'communication') }}">
+            <img src="{{ email.image('@email_img/logo.png') }}" alt="{{ '_brand.ltb'|trans({}, 'communication') }}"
+                 height="40" align="right">
+          </a>
+        </columns>
+      </row>
+    </container>
+
+    <container class="body-drip">
+
+      {# This spacer is the only one allowed in a container, due to the body-drip class on it #}
+      <spacer size="16"></spacer>
+
+      <row>
+        <columns>
+          {% block content %}{% endblock %}
+        </columns>
+      </row>
+    </container>
+
+    <spacer size="4"></spacer>
+
+    <container class="email-send">
+      <center>
+        <small>{{ '_general.sent-to'|trans({'%to%': email.to|map(a => a.address)|join(', ')}, 'communication') }}</small>
+      </center>
+    </container>
+
+    <spacer size="8"></spacer>
+
+  </wrapper>
+{% endapply %}

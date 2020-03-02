@@ -1,5 +1,5 @@
 twig:
-  paths: [ '%kernel.project_dir%/templates' ]
+  default_path: '%kernel.project_dir%/templates'
   debug: '%kernel.debug%'
   strict_variables: '%kernel.debug%'
   form_themes:
@@ -11,6 +11,9 @@ twig:
     - "_form/_custom_types_layout.html.twig"
     - "_form/_review_layout.html.twig"
     - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+  paths:
+    '%kernel.project_dir%/assets/email/img': email_img
+    '%kernel.project_dir%/public/email': email_assets
   globals:
     allowed_ckeditor_tags: '%ckeditor_tags%'
     sentry_dsn: ~ # This disables sentry by default, we enable it explicitly in the prod environment

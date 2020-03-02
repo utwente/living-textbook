@@ -1,0 +1,69 @@
+@import '~bootstrap/scss/_mixins';
+@import '~bootstrap/scss/_functions';
+@import '~bootstrap/scss/_variables';
+@import '../css/vars/colors';
+
+$primary-color: map-get($theme-colors, primary);
+$secondary-color: map-get($theme-colors, secondary);
+$success-color: map-get($theme-colors, success);
+$warning-color: map-get($theme-colors, warning);
+$alert-color: map-get($theme-colors, danger);
+$light-gray: $background-color;
+$medium-gray: darken($background-color, 20%);
+$dark-gray: darken($background-color, 40%);
+$image-margin: 16px;
+
+@import '~foundation-emails/scss/foundation-emails';
+
+@mixin background() {
+  background: $light-gray;
+}
+
+body,
+html,
+.body {
+  background: $light-gray !important; // Must be important to not let it be ignored by renderers
+}
+
+.wrapper {
+  @include background();
+}
+
+.container {
+  &.header, &.footer {
+    @include background();
+
+    h1, img {
+      margin-bottom: 0;
+      margin-left: $image-margin;
+      margin-right: $image-margin;
+    }
+
+    .full-name {
+      color: $global-font-color;
+      margin-top: -($image-margin / 2);
+      font-weight: bold;
+    }
+  }
+
+  &.email-send {
+    @include background();
+
+    small {
+      color: $dark-gray;
+    }
+  }
+}
+
+.body-drip {
+  border-top: 8px solid map-get($theme-colors, primary);
+}
+
+p {
+  margin-bottom: 0;
+}
+
+h3.header {
+  line-height: 40px;
+  margin-bottom: 0;
+}

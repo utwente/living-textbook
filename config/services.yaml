@@ -67,6 +67,10 @@ services:
       $projectDir: '%kernel.project_dir%'
       $cacheDir: '%kernel.cache_dir%'
 
+  App\Communication\SetFromSubscriber:
+    arguments:
+      $from: '%env(MAIL_FROM)%'
+
   App\Database\SoftDeletableSubscriber:
     tags:
       - { name: doctrine.event_subscriber, connection: default }

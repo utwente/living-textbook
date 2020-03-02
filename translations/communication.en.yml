@@ -1,0 +1,14 @@
+_brand:
+  ltb: 'Living Textbook by ITC'
+
+_general:
+  heading: 'Dear %person%,'
+  footer: 'Best regards,'
+  sent-to: 'This e-mail has been sent to %to%.'
+
+review:
+  requested:
+    body: '%editor% has requested a review from you in the study area "%studyarea%". It has %count% change(s).'
+    open-review: 'Start review'
+    review-notes: 'The editor has left you the following note'
+    subject: 'New review requested'

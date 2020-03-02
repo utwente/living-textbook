@@ -1,0 +1,42 @@
+{% extends 'communication/_base.html.twig' %}
+
+{% block content %}
+  <p>
+    {{ '_general.heading'|trans({'%person%': reviewer}, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <p>
+    {{ 'review.requested.body'|trans({
+      '%editor%': editor,
+      '%studyarea%': study_area_name,
+      '%count%': change_count
+    }, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  {% if review_notes is not empty %}
+    <p>
+      {{ 'review.requested.review-notes'|trans({}, 'communication') }}:<br>
+      {{ review_notes }}
+    </p>
+
+    <spacer></spacer>
+  {% endif %}
+
+  <center>
+    <button href="{{ browserPath('app_review_reviewsubmission', {'_studyArea': study_area_id, 'review': review_id}) }}"
+            class="primary">
+      {{ 'review.requested.open-review'|trans({}, 'communication') }}
+    </button>
+  </center>
+
+  <spacer></spacer>
+
+  <p>
+    {{ '_general.footer'|trans({}, 'communication') }}<br/>
+    {{ '_brand.ltb'|trans({}, 'communication') }}
+  </p>
+{% endblock %}

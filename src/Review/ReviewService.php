@@ -2,6 +2,7 @@
 
 namespace App\Review;
 
+use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Concept;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
@@ -44,6 +45,10 @@ class ReviewService
    */
   private $pendingChangeRepository;
   /**
+   * @var ReviewNotificationService
+   */
+  private $reviewNotificationService;
+  /**
    * @var Security
    */
   private $security;
@@ -67,14 +72,16 @@ class ReviewService
 
   public function __construct(
       EntityManagerInterface $entityManager, PendingChangeRepository $pendingChangeRepository,
+      ReviewNotificationService $reviewNotificationService,
       ValidatorInterface $validator, SessionInterface $session, TranslatorInterface $translator, Security $security)
   {
-    $this->entityManager           = $entityManager;
-    $this->pendingChangeRepository = $pendingChangeRepository;
-    $this->validator               = $validator;
-    $this->session                 = $session;
-    $this->translator              = $translator;
-    $this->security                = $security;
+    $this->entityManager             = $entityManager;
+    $this->pendingChangeRepository   = $pendingChangeRepository;
+    $this->validator                 = $validator;
+    $this->session                   = $session;
+    $this->translator                = $translator;
+    $this->security                  = $security;
+    $this->reviewNotificationService = $reviewNotificationService;
   }
 
   /**
@@ -396,6 +403,9 @@ class ReviewService
     // Save the review
     $this->entityManager->persist($review);
     $this->entityManager->flush();
+
+    // Send notification
+    $this->reviewNotificationService->reviewRequested($review);
   }
 
   /**

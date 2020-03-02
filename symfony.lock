@@ -203,6 +203,9 @@
     "kub-at/php-simple-html-dom-parser": {
         "version": "1.9.1"
     },
+    "lorenzo/pinky": {
+        "version": "1.0.5"
+    },
     "markbaker/complex": {
         "version": "1.4.6"
     },
@@ -355,6 +358,9 @@
             "version": "3.3",
             "ref": "9f94d3ea453cd8a3b95db7f82592d7344fe3a76a"
         }
+    },
+    "symfony/css-selector": {
+        "version": "v4.4.5"
     },
     "symfony/debug": {
         "version": "v4.0.2"
@@ -587,6 +593,12 @@
     "symfony/yaml": {
         "version": "v4.0.2"
     },
+    "tijsverkoyen/css-to-inline-styles": {
+        "version": "2.2.2"
+    },
+    "twig/cssinliner-extra": {
+        "version": "v3.0.3"
+    },
     "twig/extensions": {
         "version": "1.0",
         "recipe": {
@@ -595,6 +607,12 @@
             "version": "1.0",
             "ref": "ddb2e0a77773b7fd75d8d649545f174e664500ab"
         }
+    },
+    "twig/extra-bundle": {
+        "version": "v3.0.3"
+    },
+    "twig/inky-extra": {
+        "version": "v3.0.3"
     },
     "twig/twig": {
         "version": "v2.4.4"

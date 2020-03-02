@@ -3404,6 +3404,11 @@ find-cache-dir@^2.0.0:
     make-dir "^2.0.0"
     pkg-dir "^3.0.0"
 
+find-parent-dir@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/find-parent-dir/-/find-parent-dir-0.3.0.tgz#33c44b429ab2b2f0646299c5f9f718f376ff8d54"
+  integrity sha1-M8RLQpqysvBkYpnF+fcY83b/jVQ=
+
 find-up@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-1.1.2.tgz#6b2e9822b1a2ce0a60ab64d610eccad53cb24d0f"
@@ -3489,6 +3494,11 @@ fos-routing@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/fos-routing/-/fos-routing-0.0.4.tgz#8cdc9f1086c00f4bdb343dfe6016ebd585f0927a"
   integrity sha512-kZhjNY9UUQdfHAnJmdFW7MEswiRgPmG3vY5p/dlHKncXZSRgREFffwxMTUakkn9l49e8bJvwOj8myheApJR9Gw==
+
+foundation-emails@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/foundation-emails/-/foundation-emails-2.2.1.tgz#1f3442762395d063d5a62d790740b2433aab1747"
+  integrity sha1-HzRCdiOV0GPVpi15B0CyQzqrF0c=
 
 fragment-cache@^0.2.1:
   version "0.2.1"
@@ -5013,6 +5023,13 @@ node-releases@^1.1.21:
   integrity sha512-O6XpteBuntW1j86mw6LlovBIwTe+sO2+7vi9avQffNeIW4upgnaCVm6xrBWH+KATz7mNNRNNeEpuWB7dT6Cr3w==
   dependencies:
     semver "^5.3.0"
+
+node-sass-tilde-importer@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/node-sass-tilde-importer/-/node-sass-tilde-importer-1.0.2.tgz#1a15105c153f648323b4347693fdb0f331bad1ce"
+  integrity sha512-Swcmr38Y7uB78itQeBm3mThjxBy9/Ah/ykPIaURY/L6Nec9AyRoL/jJ7ECfMR+oZeCTVQNxVMu/aHU+TLRVbdg==
+  dependencies:
+    find-parent-dir "^0.3.0"
 
 node-sass@^4.11.0:
   version "4.12.0"
