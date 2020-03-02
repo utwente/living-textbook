@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
 use Drenso\OidcBundle\Security\UserProvider\OidcUserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -30,7 +31,7 @@ class UserProvider implements OidcUserProviderInterface
    * @param OidcToken $token
    *
    * @return User
-   * @throws \Drenso\OidcBundle\Exception\OidcException
+   * @throws OidcException
    */
   public function loadUserByToken(OidcToken $token)
   {
@@ -107,6 +108,6 @@ class UserProvider implements OidcUserProviderInterface
    */
   public function supportsClass($class)
   {
-    return $class instanceof User;
+    return $class == User::class;
   }
 }
