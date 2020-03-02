@@ -18,11 +18,14 @@ use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
+use App\Router\LtbRouter;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -41,7 +44,7 @@ class StudyAreaDuplicator
   /** @var UrlScanner */
   private $urlScanner;
 
-  /** @var RouterInterface */
+  /** @var LtbRouter */
   private $router;
 
   /** @var AbbreviationRepository */
@@ -95,7 +98,7 @@ class StudyAreaDuplicator
    * @param string                     $projectDir
    * @param EntityManagerInterface     $em
    * @param UrlScanner                 $urlScanner
-   * @param RouterInterface            $router
+   * @param LtbRouter                  $router
    * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
    * @param ContributorRepository      $contributorRepository
@@ -108,7 +111,7 @@ class StudyAreaDuplicator
    * @param Concept[]                  $concepts             Concepts to copy
    */
   public function __construct(
-      string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
+      string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
       AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
       LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepository,
@@ -344,7 +347,7 @@ class StudyAreaDuplicator
     }
 
     // Loop the concepts again to add the prior knowledge
-    foreach ($this->newConcepts as $oldId => &$newConcept) {
+    foreach ($this->newConcepts as $oldId => $newConcept) {
       foreach ($priorKnowledges[$oldId] as $priorKnowledge) {
         /** @var Concept $priorKnowledge */
         if (array_key_exists($priorKnowledge->getId(), $this->newConcepts)) {
@@ -398,7 +401,7 @@ class StudyAreaDuplicator
   {
     // Check for null
     if ($this->newStudyArea->getId() === NULL) {
-      throw new \InvalidArgumentException('New study area id is NULL!');
+      throw new InvalidArgumentException('New study area id is NULL!');
     }
 
     // Update learning paths
@@ -488,7 +491,7 @@ class StudyAreaDuplicator
   {
     // Check for null
     if ($studyArea->getId() === NULL) {
-      throw new \InvalidArgumentException('Study area id is NULL!');
+      throw new InvalidArgumentException('Study area id is NULL!');
     }
 
     return sprintf('%s/%d', $this->uploadsPath, $studyArea->getId());
@@ -591,8 +594,7 @@ class StudyAreaDuplicator
       // Regenerate route again if _home route was detected
       if ($homePath) {
         $newUrl = new Url(
-            $this->router->generate('_home_simple', ['pageUrl' => ltrim($newUrl->getPath(), '/')],
-                $url->isPath() ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL),
+            $this->router->generateBrowserUrlForPath($newUrl->getPath()),
             true, $this->urlContext);
       }
 
@@ -616,7 +618,7 @@ class StudyAreaDuplicator
    *
    * @return string
    */
-  private function updateDataAttributes(string $text, string $attribute, array &$source): string
+  private function updateDataAttributes(string $text, string $attribute, array $source): string
   {
     $pattern = '/(?i)data-' . preg_quote($attribute) . '-id\s*=\s*["\']\s*(\d+)\s*["\']/';
     $matches = [];
@@ -647,7 +649,7 @@ class StudyAreaDuplicator
     // Test if url actually matches an internal route
     try {
       $matchedRoute = $this->router->match($path);
-    } catch (\RuntimeException $e) {
+    } catch (RuntimeException $e) {
       if ($e instanceof ExceptionInterface) {
         // Route couldn't be matched internally
         return false;

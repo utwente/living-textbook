@@ -2,6 +2,7 @@
 
 namespace App\ConceptPrint\Section;
 
+use App\Router\LtbRouter;
 use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Helper\Parser;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
@@ -13,7 +14,6 @@ use Pandoc\Pandoc;
 use Pandoc\PandocException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class LtbSection extends Section
@@ -28,7 +28,7 @@ abstract class LtbSection extends Section
   /** @var Parser */
   protected $parser;
 
-  /** @var RouterInterface */
+  /** @var LtbRouter */
   protected $router;
 
   /** @var TranslatorInterface */
@@ -44,14 +44,13 @@ abstract class LtbSection extends Section
    * LtbSection constructor.
    *
    * @param string              $name
-   * @param RouterInterface     $router
+   * @param LtbRouter           $router
    * @param TranslatorInterface $translator
    * @param string              $projectDir
    *
    * @throws LatexException
-   * @throws PandocException
    */
-  public function __construct(string $name, RouterInterface $router, TranslatorInterface $translator, string $projectDir)
+  public function __construct(string $name, LtbRouter $router, TranslatorInterface $translator, string $projectDir)
   {
     $this->pandoc     = new Pandoc();
     $this->fileSystem = new Filesystem();

@@ -9,6 +9,7 @@ use App\Entity\Concept;
 use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Router\LtbRouter;
 use BobV\LatexBundle\Exception\ImageNotFoundException;
 use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Generator\LatexGeneratorInterface;
@@ -19,7 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -39,14 +39,14 @@ class PrintController extends AbstractController
    * @param Concept                 $concept
    * @param LatexGeneratorInterface $generator
    * @param TranslatorInterface     $translator
-   * @param RouterInterface         $router
+   * @param LtbRouter               $router
    *
    * @return Response
    * @throws Exception
    */
   public function printSingleConcept(
       RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
-      TranslatorInterface $translator, RouterInterface $router)
+      TranslatorInterface $translator, LtbRouter $router)
   {
     // Check if correct study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -80,13 +80,14 @@ class PrintController extends AbstractController
    * @param LearningPath            $learningPath
    * @param LatexGeneratorInterface $generator
    * @param TranslatorInterface     $translator
-   * @param RouterInterface         $router
+   * @param LtbRouter               $router
    *
    * @return Response
    * @throws Exception
    */
-  public function printLearningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
-                                    TranslatorInterface $translator, RouterInterface $router)
+  public function printLearningPath(
+      RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
+      TranslatorInterface $translator, LtbRouter $router)
   {
     // Check if correct study area
     if ($learningPath->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {

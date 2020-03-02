@@ -3,11 +3,10 @@
 namespace App\Serializer\Handler;
 
 use App\Entity\Concept;
+use App\Router\LtbRouter;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\PreSerializeEvent;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 class ConceptHandler implements EventSubscriberInterface
 {
@@ -17,9 +16,9 @@ class ConceptHandler implements EventSubscriberInterface
   /**
    * ImageHandler constructor.
    *
-   * @param RouterInterface $router
+   * @param LtbRouter $router
    */
-  public function __construct(RouterInterface $router)
+  public function __construct(LtbRouter $router)
   {
     $this->router = $router;
   }
@@ -54,7 +53,7 @@ class ConceptHandler implements EventSubscriberInterface
     $concept = $event->getObject();
     assert($concept instanceof Concept);
 
-    $basePath = $this->router->generate('app_concept_show', ['concept' => $concept->getId()]);
-    $concept->setLink($this->router->generate('_home_simple', ['pageUrl' => substr($basePath, 1)], UrlGeneratorInterface::ABSOLUTE_URL));
+    $concept->setLink(
+        $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]));
   }
 } 

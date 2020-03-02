@@ -2,10 +2,9 @@
 
 namespace App\Security\Http\Authentication;
 
+use App\Router\LtbRouter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler;
 use Symfony\Component\Security\Http\HttpUtils;
@@ -17,11 +16,12 @@ use Symfony\Component\Security\Http\HttpUtils;
  */
 class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
-
-  /** @var RouterInterface */
+  /**
+   * @var LtbRouter
+   */
   private $router;
 
-  public function __construct(RouterInterface $router, HttpUtils $httpUtils, array $options = [])
+  public function __construct(LtbRouter $router, HttpUtils $httpUtils, array $options = [])
   {
     parent::__construct($httpUtils, $options);
 
@@ -61,7 +61,6 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     }
 
     // Wrap path
-    return $this->httpUtils->createRedirectResponse($request,
-        $this->router->generate('_home_simple', ['pageUrl' => ltrim($targetPath, '/')], UrlGeneratorInterface::ABSOLUTE_URL));
+    return $this->httpUtils->createRedirectResponse($request, $this->router->generateBrowserUrlForPath($targetPath));
   }
 }

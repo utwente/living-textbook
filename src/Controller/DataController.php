@@ -25,6 +25,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Router\LtbRouter;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -39,7 +40,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -382,7 +382,7 @@ class DataController extends AbstractController
    * @param TranslatorInterface        $trans
    * @param EntityManagerInterface     $em
    * @param UrlScanner                 $urlScanner
-   * @param RouterInterface            $router
+   * @param LtbRouter                  $router
    * @param AbbreviationRepository     $abbreviationRepo
    * @param ConceptRelationRepository  $conceptRelationRepo
    * @param ContributorRepository      $contributorRepository
@@ -395,7 +395,7 @@ class DataController extends AbstractController
    */
   public function duplicate(
       Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
-      EntityManagerInterface $em, UrlScanner $urlScanner, RouterInterface $router,
+      EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
       AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
       LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo)

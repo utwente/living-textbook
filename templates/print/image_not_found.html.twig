@@ -21,7 +21,7 @@
   {% endif %}
 
   {% if concept is not null %}
-    <a href="{{ path('_home_simple', {pageUrl: path('app_concept_show', {concept: concept.id})|trim('/', 'left') }) }}"
+    <a href="{{ browserPath('app_concept_show', {concept: concept.id})) }}"
        class="btn btn-outline-primary">
       <i class="fa fa-fw fa-arrow-left"></i> {{ 'print.show.concept'|trans }}
     </a>

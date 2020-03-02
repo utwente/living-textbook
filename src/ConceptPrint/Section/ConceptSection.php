@@ -3,11 +3,11 @@
 namespace App\ConceptPrint\Section;
 
 use App\Entity\Concept;
+use App\Router\LtbRouter;
 use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
 use BobV\LatexBundle\Latex\Element\Text;
 use Pandoc\PandocException;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptSection extends LtbSection
@@ -17,14 +17,14 @@ class ConceptSection extends LtbSection
    * Concept constructor.
    *
    * @param Concept             $concept
-   * @param RouterInterface     $router
+   * @param LtbRouter           $router
    * @param TranslatorInterface $translator
    * @param string              $projectDir
    *
    * @throws LatexException
    * @throws PandocException
    */
-  public function __construct(Concept $concept, RouterInterface $router, TranslatorInterface $translator, string $projectDir)
+  public function __construct(Concept $concept, LtbRouter $router, TranslatorInterface $translator, string $projectDir)
   {
 
     parent::__construct($concept->getName(), $router, $translator, $projectDir);
@@ -32,9 +32,8 @@ class ConceptSection extends LtbSection
     // Use sloppy to improve text breaks
     $this->addElement(new CustomCommand('\\sloppy'));
 
-    $pathWithoutMap = $this->router->generate('app_concept_show', ['concept' => $concept->getId()], RouterInterface::ABSOLUTE_PATH);
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
-        $this->router->generate('_home_simple', ['pageUrl' => ltrim($pathWithoutMap, '/')], RouterInterface::ABSOLUTE_URL),
+        $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
         $this->translator->trans('concept.online-source')
     )));
 
