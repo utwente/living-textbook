@@ -2,9 +2,9 @@
 
 namespace App\Form\Authentication;
 
+use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -20,15 +20,18 @@ class LoginType extends AbstractType
         ))
         ->add('_password', PasswordType::class, array(
             'label' => 'login.password',
-            'attr' => [
+            'attr'  => [
                 'autocomplete' => false,
-            ]
-        ))
-        ->add('submit', SubmitType::class, array(
-            'label' => 'login.login',
-            'attr' => [
-                'class' => 'btn-outline-primary',
             ],
+        ))
+        ->add('submit', SaveType::class, array(
+            'save_label'           => 'login.login',
+            'cancel_label'         => 'auth.forgot-password',
+            'enable_save_and_list' => false,
+            'enable_cancel'        => true,
+            'cancel_route'         => 'app_authentication_resetpassword',
+            'cancel_icon'          => 'fa-question',
+            'cancel_btn_class'     => 'btn btn-outline-secondary',
         ));
   }
 }

@@ -7,6 +7,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 
+/**
+ * Class UserRepository
+ *
+ * @method User|null find($id, $lockMode = NULL, $lockVersion = NULL)
+ * @method User|null findOneBy(array $criteria, array $orderBy = NULL)
+ */
 class UserRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

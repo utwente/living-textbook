@@ -71,6 +71,22 @@ app:
   welcome: 'Welcome to the Living Textbook learning environment'
   welcome-text: 'In this environment you can browse "bodies of knowledge" composed by experts or start creating one of your own (for registered users only).'
 
+auth:
+  forgot-password: 'Forget password?'
+  password-changed: 'Your password has been changed successfully. You can now login using it.'
+  password-reset: >-
+    In order to reset your password, please fill in your e-mail address.
+    When matched, we'll sent you an e-mail with further instructions.
+  password-reset-title: 'Request password reset'
+  password-reset-sent: >-
+    If the supplied e-mail address is known in our system, we've sent you an e-mail with further instructions.
+    The information in the e-mail is valid for the coming 10 minutes. Make sure to check your spam folder!
+  password-reset-sent-title: 'Password reset'
+  request-reset: 'Request reset'
+  reset-expired: 'Your password reset request has expired.'
+  reset-password-text: 'Please enter a new, valid password.'
+  reset-password-title: 'Reset password'
+
 browser:
   actions: 'Actions'
   close: 'Close concept map'

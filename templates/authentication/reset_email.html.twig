@@ -1,0 +1,13 @@
+{% extends 'simple_card.html.twig' %}
+
+{% block title %}
+  {{ 'auth.password-reset-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{ 'auth.password-reset'|trans }}
+  </p>
+
+  {{ form(form) }}
+{% endblock %}

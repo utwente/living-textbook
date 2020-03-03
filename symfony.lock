@@ -287,6 +287,9 @@
     "robloach/component-installer": {
         "version": "0.2.3"
     },
+    "rollerworks/password-strength-validator": {
+        "version": "v1.3.0"
+    },
     "ryakad/pandoc-php": {
         "version": "v1.0.0"
     },

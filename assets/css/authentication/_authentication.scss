@@ -8,5 +8,14 @@ div.login-surfconext {
 }
 
 div#login-option {
-  padding: 15px 20px 0;
+  padding: 15px 0;
+
+  .form-group-save-button div {
+    display: flex;
+    flex-direction: row-reverse;
+
+    .btn {
+      margin-left: 0.25rem;
+    }
+  }
 }

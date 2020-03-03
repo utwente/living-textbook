@@ -165,6 +165,24 @@ class User implements UserInterface, Serializable
   private $isAdmin;
 
   /**
+   * Hashed reset code, used for resetting the password
+   *
+   * @var string|null
+   *
+   * @ORM\Column(type="string", length=255, nullable=true)
+   */
+  private $resetCode;
+
+  /**
+   * Datetime till when the reset code is still valid
+   *
+   * @var DateTime|null
+   *
+   * @ORM\Column(type="datetime", nullable=true)
+   */
+  private $resetCodeValid;
+
+  /**
    * @var UserGroup[]|Collection
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\UserGroup", mappedBy="users")
@@ -571,6 +589,46 @@ class User implements UserInterface, Serializable
   public function setIsAdmin(bool $isAdmin): User
   {
     $this->isAdmin = $isAdmin;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getResetCode(): ?string
+  {
+    return $this->resetCode;
+  }
+
+  /**
+   * @param string|null $resetCode
+   *
+   * @return User
+   */
+  public function setResetCode(?string $resetCode): self
+  {
+    $this->resetCode = $resetCode;
+
+    return $this;
+  }
+
+  /**
+   * @return DateTime|null
+   */
+  public function getResetCodeValid(): ?DateTime
+  {
+    return $this->resetCodeValid;
+  }
+
+  /**
+   * @param DateTime|null $resetCodeValid
+   *
+   * @return User
+   */
+  public function setResetCodeValid(?DateTime $resetCodeValid): self
+  {
+    $this->resetCodeValid = $resetCodeValid;
 
     return $this;
   }

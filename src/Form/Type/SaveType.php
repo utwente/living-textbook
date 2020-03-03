@@ -56,7 +56,7 @@ class SaveType extends AbstractType
           'route_params' => $options['cancel_route_params'],
           'icon'         => $options['cancel_icon'],
           'attr'         => array(
-              'class' => 'btn btn-outline-danger',
+              'class' => $options['cancel_btn_class'],
           ),
       ));
     }
@@ -111,6 +111,7 @@ class SaveType extends AbstractType
         'list_icon'            => 'fa-list',
         'cancel_label'         => 'form.cancel',
         'cancel_icon'          => 'fa-times',
+        'cancel_btn_class'     => 'btn btn-outline-danger',
         'enable_save'          => true,
         'enable_save_and_list' => true,
         'enable_cancel'        => false,

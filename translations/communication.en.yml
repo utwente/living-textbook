@@ -6,6 +6,21 @@ _general:
   footer: 'Best regards,'
   sent-to: 'This e-mail has been sent to %to%.'
 
+auth:
+  password-reset:
+    body: >-
+      You've requested a password reset for this e-mail account. Click the button below to continue with the process.
+      Note that this link will only work one time!
+    reset-note: >-
+      If you did not request a password reset, you can delete this e-mail. Your password has not been changed yet.
+    reset: 'Reset password'
+    subject: 'Password reset requested'
+  password-reset-success:
+    body: >-
+      Your password has just been reset. If you did not do this, your account might be compromised.
+      Make sure to reset your password, and if that fails, make sure to contact us.
+    subject: 'Password reset successfully'
+
 review:
   requested:
     body: '%editor% has requested a review from you in the study area "%studyarea%". It has %count% change(s).'
