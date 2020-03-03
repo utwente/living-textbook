@@ -340,6 +340,8 @@ class AuthenticationController extends AbstractController
 
     // Retrieve user proto
     if (!$userProto = $userProtoRepository->getForEmail($email)) {
+      $this->addFlash('error', $translator->trans('user.invite.not-found'));
+
       return $this->redirectToRoute('login');
     }
 

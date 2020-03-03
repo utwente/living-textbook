@@ -303,4 +303,41 @@ class UserController extends AbstractController
     ];
   }
 
+  /**
+   * @Route("/invite/remove/{user}", requirements={"user"="\d+"})
+   * @Template()
+   * @IsGranted("ROLE_SUPER_ADMIN")
+   *
+   * @param Request                $request
+   * @param UserProto              $user
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $trans
+   *
+   * @return array|Response
+   */
+  public function fallbackInviteRemove(
+      Request $request, UserProto $user, EntityManagerInterface $em, TranslatorInterface $trans)
+  {
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route' => 'app_user_fallbacklist',
+    ]);
+    $form->handleRequest($request);
+
+    if (RemoveType::isRemoveClicked($form)) {
+      $em->remove($user);
+      $em->flush();
+
+      $this->addFlash('success', $trans->trans('user.invite.removed', [
+          '%email%' => $user->getEmail(),
+      ]));
+
+      return $this->redirectToRoute('app_user_fallbacklist');
+    }
+
+    return [
+        'userProto' => $user,
+        'form'      => $form->createView(),
+    ];
+  }
+
 }

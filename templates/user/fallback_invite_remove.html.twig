@@ -1,0 +1,13 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'user.invite.remove'|trans({"%user%": userProto.email}) }}
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{ 'user.invite.remove-text'|trans({"%user%": userProto.email}) }}
+  </p>
+
+  {{ form(form) }}
+{% endblock %}
