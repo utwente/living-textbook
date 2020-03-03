@@ -106,6 +106,10 @@ class AuthenticationController extends AbstractController
       Request $request, EntityManagerInterface $em, EncoderFactoryInterface $passwordEncoderFactory,
       UserRepository $userRepository, MailerInterface $mailer, TranslatorInterface $translator)
   {
+    if ($this->isGranted('ROLE_USER')) {
+      return $this->redirectToRoute('app_default_landing');
+    }
+
     // Check whether the reset code is available in the request
     if (!$request->query->has('u') || !$request->query->has('e') || !$request->query->has('r')) {
 
@@ -233,6 +237,10 @@ class AuthenticationController extends AbstractController
       Request $request, EntityManagerInterface $em, UserRepository $userRepository, MailerInterface $mailer,
       UserPasswordEncoderInterface $userPasswordEncoder, TranslatorInterface $translator)
   {
+    if ($this->isGranted('ROLE_USER')) {
+      return $this->redirectToRoute('app_default_landing');
+    }
+
     $session = $request->getSession();
 
     // Verify a valid user is set
@@ -318,6 +326,10 @@ class AuthenticationController extends AbstractController
       Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
       UserPasswordEncoderInterface $userPasswordEncoder, TranslatorInterface $translator)
   {
+    if ($this->isGranted('ROLE_USER')) {
+      return $this->redirectToRoute('app_default_landing');
+    }
+
     if (!$request->query->has('e') || !$request->query->has('p')) {
       return $this->redirectToRoute('login');
     }
