@@ -832,6 +832,8 @@ user:
     removed: 'The local account for %user% has been removed.'
     reset-password: 'Reset password for %user%'
     reset-password-short: 'Reset password'
+    reset-password-text:  'Here you can reset the password of a user directly.'
+    reset-password-warning: 'Users can also reset their password themselves by using the "Forgot password" option at the login page.'
     self-remove: 'You cannot remove your own account'
     updated: 'Local account for %user% updated.'
     user-list: 'Local account list'

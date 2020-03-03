@@ -193,6 +193,8 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
+    $this->addFlash('warning', $trans->trans('user.fallback.reset-password-warning'));
+
     return [
         'user' => $user,
         'form' => $form->createView(),
