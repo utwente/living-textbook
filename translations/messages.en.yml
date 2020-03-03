@@ -847,10 +847,14 @@ user:
   full-name: 'Full name'
   given-name: 'Given name'
   invite:
+    invited-at: 'Invited at'
     not-found: 'Your invite was not found. Did you already create an account with this invite?'
     remove: 'Remove local account invite'
     remove-text: 'Are you sure you want to remove the invite for "%user%"?'
     removed: 'The invite for "%email%" has been removed.'
+  local:
+    active: 'Active accounts'
+    invite: 'Open invites'
   password: 'Password'
   remove-studyareas: 'Note that any owned study areas will also be removed automatically!'
   remove-studyareas-list: 'Study areas to be removed:'

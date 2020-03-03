@@ -11,7 +11,7 @@
   {{ 'user.fallback.user-list'|trans }}
 {% endblock %}
 
-{% block content %}
+{% block active_accounts %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   <table id="fallback-table" class="table table-hover table-datatable table-bordered">
     <thead>
@@ -32,14 +32,66 @@
           {% if user.id != app.user.id %}
             {{ buttons.remove_button(path('app_user_fallbackremove', {'user': user.id})) }}
           {% endif %}
+        </td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
 {% endblock %}
 
+{% block invites %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  <table id="fallback-invite-table" class="table table-hover table-datatable table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'login.username'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'user.invite.invited-at'|trans }}<i class="sort"></i></th>
+      <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in open_invites %}
+      <tr>
+        <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+        <td data-order="{{ user.invitedAt|date('U') }}">{{ user.invitedAt|localizeddate }}</td>
+        <td class="actions">
+          {{ buttons.remove_button(path('app_user_fallbackinviteremove', {'user': user.id})) }}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block content %}
+  <ul class="nav nav-tabs nav-fill">
+    <li class="nav-item">
+      <a class="nav-link active" id="tab-local-button" href="#tab-active" role="tab" data-toggle="tab">
+        {{ 'user.local.active'|trans }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-invite-button" href="#tab-invite" role="tab" data-toggle="tab">
+        {{ 'user.local.invite'|trans }}
+      </a>
+    </li>
+  </ul>
+  <div class="tab-content pt-3">
+    <div class="tab-pane active" id="tab-active" role="tabpanel" aria-labelledby="tab-active-button">
+      {{ block('active_accounts') }}
+    </div>
+
+    <div class="tab-pane" id="tab-invite" role="tabpanel" aria-labelledby="tab-invite-button">
+      {{ block('invites') }}
+    </div>
+  </div>
+{% endblock %}
+
 {% block javascripts_bottom %}
   {{ dataTable('fallback-table', {
+    columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+  }) }}
+  {{ dataTable('fallback-invite-table', {
     columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
   }) }}
 {% endblock %}

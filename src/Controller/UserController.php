@@ -190,15 +190,17 @@ class UserController extends AbstractController
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
-   * @param UserRepository $userRepository
+   * @param UserRepository      $userRepository
+   * @param UserProtoRepository $userProtoRepository
    *
    * @return array
    */
-  public function fallbackList(UserRepository $userRepository)
+  public function fallbackList(UserRepository $userRepository, UserProtoRepository $userProtoRepository)
   {
     // Retrieve users
     return [
-        'users' => $userRepository->getFallbackUsers(),
+        'users'        => $userRepository->getFallbackUsers(),
+        'open_invites' => $userProtoRepository->findAll(),
     ];
   }
 
