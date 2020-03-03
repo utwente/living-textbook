@@ -72,6 +72,10 @@ app:
   welcome-text: 'In this environment you can browse "bodies of knowledge" composed by experts or start creating one of your own (for registered users only).'
 
 auth:
+  create-account: 'Create account'
+  create-account-success: 'Your account has been created. You can now use it to login!'
+  create-account-text: 'Fill in the required information to create an account.'
+  create-account-title: 'Create account'
   forgot-password: 'Forget password?'
   password-changed: 'Your password has been changed successfully. You can now login using it.'
   password-reset: >-
@@ -465,6 +469,7 @@ permissions:
   editor-count: '{0} No editors|{1} One editor|]1,Inf[ %count% editors'
   emails: 'E-mail addresses'
   emails-help: 'Make sure to enter only e-mail addresses here. If an e-mail address is already known, it will be converted to a full user automatically.'
+  emails-help-local: 'Make sure to enter only e-mail addresses here. If an e-mail address is already known in the system, it will be excluded automatically.'
   info-text: >-
     Here you can grant and remove permissions on a per user basis.
     Note that the available roles depend on the study area capabilities.
@@ -820,8 +825,9 @@ user:
   display-name: 'Name'
   emailaddress: 'E-mail address'
   fallback:
-    added: 'Local account for %user% added.'
-    add-title: 'Add local user'
+    added: 'The new users have been invited.'
+    add-title: 'Add local users'
+    add-text: 'You can invite new local users here. Just supply their e-mail addresses and they will receive an e-mail to create an account.'
     change-password: 'Change password'
     current-password: 'Current password'
     edit-title: 'Edit user "%user%"'

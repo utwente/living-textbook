@@ -7,9 +7,6 @@ use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\All;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddPermissionsType extends AbstractType
 {
@@ -20,17 +17,7 @@ class AddPermissionsType extends AbstractType
             'group_types' => $options['group_types'],
             'label'       => 'permissions.permission',
         ])
-        ->add('emails', EmailListType::class, [
-            'required'    => false,
-            'label'       => 'permissions.emails',
-            'help'        => 'permissions.emails-help',
-            'constraints' => [
-                'constraints' => new All([
-                    new NotBlank(),
-                    new Email(),
-                ]),
-            ],
-        ])
+        ->add('emails', EmailListType::class)
         ->add('submit', SaveType::class, [
             'enable_cancel'        => true,
             'cancel_route'         => 'app_permissions_studyarea',

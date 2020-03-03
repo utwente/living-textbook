@@ -3,10 +3,17 @@ _brand:
 
 _general:
   heading: 'Dear %person%,'
+  heading-no-person: 'Dear sir/madam,'
   footer: 'Best regards,'
   sent-to: 'This e-mail has been sent to %to%.'
 
 auth:
+  new-local-account:
+    body: >-
+      You've been invited to participate in the Living Textbook!
+      Create your account by clicking the button below and start browsing!
+    button: 'Create account'
+    subject: 'You''ve been invited for the Living Textbook'
   password-reset:
     body: >-
       You've requested a password reset for this e-mail account. Click the button below to continue with the process.

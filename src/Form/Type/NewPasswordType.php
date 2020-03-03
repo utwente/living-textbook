@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use Rollerworks\Component\PasswordStrength\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -13,7 +14,7 @@ class NewPasswordType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'type'            => \Symfony\Component\Form\Extension\Core\Type\PasswordType::class,
+        'type'            => PasswordType::class,
         'constraints'     => [
           // Max length due to BCrypt, @see BCryptPasswordEncoder
             new Length(['max' => 72]),

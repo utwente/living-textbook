@@ -7,6 +7,9 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EmailListType extends AbstractType
 {
@@ -40,7 +43,20 @@ class EmailListType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setDefault('attr', ['rows' => 10]);
+    $resolver->setDefaults([
+        'required'    => true,
+        'label'       => 'permissions.emails',
+        'help'        => 'permissions.emails-help',
+        'constraints' => [
+            'constraints' => new All([
+                new NotBlank(),
+                new Email(['message' => 'emails.invalid-email']),
+            ]),
+        ],
+        'attr'        => [
+            'rows' => 10,
+        ],
+    ]);
   }
 
 

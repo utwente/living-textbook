@@ -9,7 +9,9 @@ security:
 
   encoders:
     App\Entity\User:
-      algorithm: bcrypt
+      algorithm: auto
+    App\Entity\UserProto:
+      algorithm: auto
 
   firewalls:
     dev:

@@ -3,19 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\UserProto;
 use App\Form\Type\RemoveType;
-use App\Form\User\AddFallbackUserType;
+use App\Form\User\AddFallbackUsersType;
 use App\Form\User\ChangePasswordType;
 use App\Form\User\EditFallbackUserType;
 use App\Form\User\UpdatePasswordType;
 use App\Repository\StudyAreaRepository;
+use App\Repository\UserProtoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -35,27 +40,66 @@ class UserController extends AbstractController
    *
    * @param Request                      $request
    * @param EntityManagerInterface       $em
-   * @param UserPasswordEncoderInterface $encoder
    * @param TranslatorInterface          $trans
+   * @param MailerInterface              $mailer
+   * @param UserRepository               $userRepository
+   * @param UserProtoRepository          $userProtoRepository
+   * @param UserPasswordEncoderInterface $userPasswordEncoder
    *
    * @return array|Response
+   * @throws TransportExceptionInterface
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
-  public function fallbackAdd(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, TranslatorInterface $trans)
+  public function fallbackAdd(
+      Request $request, EntityManagerInterface $em, TranslatorInterface $trans, MailerInterface $mailer,
+      UserRepository $userRepository, UserProtoRepository $userProtoRepository,
+      UserPasswordEncoderInterface $userPasswordEncoder)
   {
-
-    $user = new User();
-    $form = $this->createForm(AddFallbackUserType::class, $user);
+    $form = $this->createForm(AddFallbackUsersType::class);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Encode the password
-      $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
+      $notificationContexts = [];
+
+      // Create the user proto object, and send mails
+      foreach ($form->getData()['emails'] as $email) {
+        // Verify whether we already know this email address
+        if ($userProtoRepository->getForEmail($email)
+            || $userRepository->getUserForEmail($email)) {
+          continue;
+        }
+
+        // Create the proto user
+        $userProto = (new UserProto())
+            ->setEmail($email);
+
+        // Generate a password
+        $password = bin2hex(random_bytes(20));
+        $userProto->setPassword($userPasswordEncoder->encodePassword($userProto, $password));
+
+        // Persist the new user
+        $em->persist($userProto);
+        $notificationContexts[] = [
+            'user_email' => $email,
+            'password'   => $password,
+        ];
+      }
 
       // Save the new user
-      $em->persist($user);
       $em->flush();
 
-      $this->addFlash('success', $trans->trans('user.fallback.added', ['%user%' => $user->getDisplayName()]));
+      // Schedule emails
+      foreach ($notificationContexts as $notificationContext) {
+        $mailer->send(
+            (new TemplatedEmail())
+                ->to($notificationContext['user_email'])
+                ->subject($trans->trans('auth.new-local-account.subject', [], 'communication'))
+                ->htmlTemplate('communication/auth/new_local_account.html.twig')
+                ->context($notificationContext)
+        );
+      }
+
+      $this->addFlash('success', $trans->trans('user.fallback.added'));
 
       return $this->redirectToRoute('app_user_fallbacklist');
     }

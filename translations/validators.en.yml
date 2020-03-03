@@ -13,6 +13,9 @@ data:
   word-count-min: 'At least %min% words are required for this field. You currently have %count% word(s).'
   word-count-max: 'A maximum of %max% words are allowed. You currently have %count% words.'
 
+emails:
+  invalid-email: 'The email address {{ value }} is invalid.'
+
 learning-outcome:
   number-already-used: 'This number is already used in this study area.'
 

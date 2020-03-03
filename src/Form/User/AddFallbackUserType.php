@@ -37,11 +37,9 @@ class AddFallbackUserType extends AbstractType
             'second_options'  => array('label' => 'user.repeat-password'),
         ])
         ->add('submit', SaveType::class, [
+            'save_label'           => 'auth.create-account',
             'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_user_fallbacklist',
-            'cancel_route_params'  => [],
+            'enable_cancel'        => false,
         ]);
 
     // Transformer to set displayname same as fullname

@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\Type\NewPasswordType;
 use App\Form\Type\SaveType;
+use App\Form\User\AddFallbackUserType;
+use App\Repository\UserProtoRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +14,7 @@ use Drenso\OidcBundle\Exception\OidcConfigurationException;
 use Drenso\OidcBundle\Exception\OidcConfigurationResolveException;
 use Drenso\OidcBundle\OidcClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -169,9 +173,9 @@ class AuthenticationController extends AbstractController
     }
 
     // Retrieve data from request
-    $userId    = $request->query->getInt('u');
-    $emailHash = $request->query->get('e');
-    $resetCode = $request->query->get('r');
+    $userId    = $request->query->getInt('u', 0);
+    $emailHash = $request->query->get('e', '');
+    $resetCode = $request->query->get('r', '');
 
     // Retrieve user, and validate email
     if (!$user = $userRepository->find($userId)) {
@@ -223,6 +227,7 @@ class AuthenticationController extends AbstractController
    *
    * @return Response
    * @throws TransportExceptionInterface
+   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function createPassword(
       Request $request, EntityManagerInterface $em, UserRepository $userRepository, MailerInterface $mailer,
@@ -292,6 +297,70 @@ class AuthenticationController extends AbstractController
         'form' => $form->createView(),
     ]);
 
+  }
+
+  /**
+   * Create a new local account. This can only be done based on invite, and the supplied password must match
+   *
+   * @Route("/account/create", options={"no_login_wrap"=true})
+   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @Template()
+   *
+   * @param Request                      $request
+   * @param EntityManagerInterface       $em
+   * @param UserProtoRepository          $userProtoRepository
+   * @param UserPasswordEncoderInterface $userPasswordEncoder
+   * @param TranslatorInterface          $translator
+   *
+   * @return array|RedirectResponse
+   */
+  public function createAccount(
+      Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
+      UserPasswordEncoderInterface $userPasswordEncoder, TranslatorInterface $translator)
+  {
+    if (!$request->query->has('e') || !$request->query->has('p')) {
+      return $this->redirectToRoute('login');
+    }
+
+    // Retrieve query information
+    $email    = $request->query->get('e', '');
+    $password = $request->query->get('p', '');
+
+    // Retrieve user proto
+    if (!$userProto = $userProtoRepository->getForEmail($email)) {
+      return $this->redirectToRoute('login');
+    }
+
+    // Validate password
+    if (!$userPasswordEncoder->isPasswordValid($userProto, $password)) {
+      return $this->redirectToRoute('login');
+    }
+
+    // Create new User object
+    $user = (new User())
+        ->setUsername($email);
+
+    // Create the form
+    $form = $this->createForm(AddFallbackUserType::class, $user);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Encode the password
+      $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
+
+      // Remove proto user and save the new user
+      $em->remove($userProto);
+      $em->persist($user);
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('auth.create-account-success'));
+
+      return $this->redirectToRoute('login');
+    }
+
+    return [
+        'form' => $form->createView(),
+    ];
   }
 
   /**

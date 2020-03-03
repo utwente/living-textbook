@@ -1,0 +1,31 @@
+{% extends 'communication/_base.html.twig' %}
+
+{% block content %}
+  <p>
+    {{ '_general.heading-no-person'|trans({}, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <p>
+    {{ 'auth.new-local-account.body'|trans({}, 'communication') }}
+  </p>
+
+  <spacer></spacer>
+
+  <center>
+    <button href="{{ url('app_authentication_createaccount', {
+      'e': user_email,
+      'p': password,
+    }) }}" class="primary">
+      {{ 'auth.new-local-account.button'|trans({}, 'communication') }}
+    </button>
+  </center>
+
+  <spacer></spacer>
+
+  <p>
+    {{ '_general.footer'|trans({}, 'communication') }}<br/>
+    {{ '_brand.ltb'|trans({}, 'communication') }}
+  </p>
+{% endblock %}
