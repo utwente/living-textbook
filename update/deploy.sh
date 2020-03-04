@@ -64,6 +64,7 @@ fi
 # Replace vendors/assets with new files
 paths=(
   "public/build"
+  "public/email"
 )
 for i in "${paths[@]}"; do
     mv "${i}" "${DEPLOY_DIR}/${i}.old"
