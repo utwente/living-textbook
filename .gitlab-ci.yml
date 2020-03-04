@@ -179,6 +179,7 @@ build-assets:
     expire_in: 1 hour
     paths:
       - public/build
+      - public/email
   before_script:
     - yarn install
   script:
