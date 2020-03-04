@@ -183,7 +183,7 @@ build-assets:
   before_script:
     - yarn install
   script:
-    - yarn run encore production
+    - yarn build
   tags:
     - docker
 
