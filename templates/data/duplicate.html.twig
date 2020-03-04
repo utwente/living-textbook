@@ -27,7 +27,6 @@
 
     function _showForm($form) {
       $form.find('input,select').each(function () {
-        $(this).data('was-required');
         if ($(this).data('was-required') === true) {
           $(this).attr('required', 'required');
         }
