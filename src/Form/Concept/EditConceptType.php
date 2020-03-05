@@ -120,6 +120,17 @@ class EditConceptType extends AbstractType
             'field'               => 'examples',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
+        ->add('howTo', BaseDataTextType::class, [
+            'label'      => 'concept.how-to',
+            'required'   => false,
+            'data_class' => DataHowTo::class,
+            'studyArea'  => $studyArea,
+            'disabled'   => in_array('howTo', $disabledFields),
+        ])
+        ->add('howTo_review', DisplayPendingChangeType::class, [
+            'field'               => 'howTo',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
         ->add('synonyms', TextType::class, [
             'label'      => 'concept.synonyms',
             'empty_data' => '',
@@ -192,17 +203,6 @@ class EditConceptType extends AbstractType
         ])
         ->add('priorKnowledge_review', DisplayPendingChangeType::class, [
             'field'               => 'priorKnowledge',
-            'pending_change_info' => $pendingChangeObjectInfo,
-        ])
-        ->add('howTo', BaseDataTextType::class, [
-            'label'      => 'concept.how-to',
-            'required'   => false,
-            'data_class' => DataHowTo::class,
-            'studyArea'  => $studyArea,
-            'disabled'   => in_array('howTo', $disabledFields),
-        ])
-        ->add('howTo_review', DisplayPendingChangeType::class, [
-            'field'               => 'howTo',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('selfAssessment', BaseDataTextType::class, [
