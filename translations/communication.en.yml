@@ -17,7 +17,7 @@ auth:
   password-reset:
     body: >-
       You've requested a password reset for this e-mail account. Click the button below to continue with the process.
-      Note that this link will only work one time!
+      Note that this link will only work one time, and is only valid for 10 minutes after the request has been made!
     reset-note: >-
       If you did not request a password reset, you can delete this e-mail. Your password has not been changed yet.
     reset: 'Reset password'
