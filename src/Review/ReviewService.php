@@ -263,10 +263,12 @@ class ReviewService
         ->setChangedFields($changedFields);
 
     // If the review was already reviewed, clear its approval status
-    $review = $pendingChange
-        ->getReview()
-        ->setApprovedAt(NULL)
-        ->setApprovedBy(NULL);
+    $review = $pendingChange->getReview();
+    if ($review) {
+      $review
+          ->setApprovedAt(NULL)
+          ->setApprovedBy(NULL);
+    }
 
     // Store the updated pending change
     $this->entityManager->flush($pendingChange);
