@@ -7,7 +7,7 @@ Type=simple
 ExecStart=/usr/bin/php bin/console messenger:consume %i --time-limit=3600 -vv
 Restart=always
 RestartSec=1
-WorkingDirectory=/var/www/sap3
+WorkingDirectory=/opt/application/013-living-textbook
 User=www-data
 
 [Install]
