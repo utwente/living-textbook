@@ -8,6 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 
 class ConceptRepository extends ServiceEntityRepository
 {
@@ -32,12 +33,26 @@ class ConceptRepository extends ServiceEntityRepository
   /**
    * @param StudyArea $studyArea
    * @param bool      $preLoadData
+   * @param bool      $conceptsOnly
+   * @param bool      $instancesOnly
    *
    * @return Concept[]
    */
-  public function findForStudyAreaOrderedByName(StudyArea $studyArea, bool $preLoadData = false)
+  public function findForStudyAreaOrderedByName(
+      StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false)
   {
+    if ($conceptsOnly && $instancesOnly) {
+      throw new InvalidArgumentException('You cannot select both only options at the same time!');
+    }
+
     $qb = $this->findForStudyAreaOrderByNameQb($studyArea);
+
+    if ($conceptsOnly) {
+      $qb->andWhere('c.instance = false');
+    }
+    if ($instancesOnly) {
+      $qb->andWhere('c.instance = true');
+    }
 
     $this->loadRelations($qb, 'c');
 

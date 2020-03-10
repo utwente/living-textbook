@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Concept;
 use App\Entity\PendingChange;
+use App\Entity\User;
 use App\Form\Concept\EditConceptType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
@@ -288,15 +289,51 @@ class ConceptController extends AbstractController
    *
    * @return array
    */
-  public function list(ConceptRepository $repo, RequestStudyArea $requestStudyArea, AnnotationRepository $annotationRepository)
+  public function list(
+      ConceptRepository $repo, RequestStudyArea $requestStudyArea, AnnotationRepository $annotationRepository)
   {
-    $studyArea        = $requestStudyArea->getStudyArea();
-    $concepts         = $repo->findForStudyAreaOrderedByName($studyArea);
-    $annotationCounts = $this->getUser()
-        ? $annotationRepository->getCountsForUserInStudyArea($this->getUser(), $studyArea)
+    /** @var User $user */
+    $user      = $this->getUser();
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    $concepts         = $repo->findForStudyAreaOrderedByName($studyArea, false, true);
+    $annotationCounts = $user
+        ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
         : NULL;
 
     return [
+        'annotationCounts' => $annotationCounts,
+        'studyArea'        => $studyArea,
+        'concepts'         => $concepts,
+    ];
+  }
+
+  /**
+   * @Route("/list/instances")
+   * @Template("concept/list.html.twig")
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   *
+   * @param ConceptRepository    $repo
+   * @param RequestStudyArea     $requestStudyArea
+   *
+   * @param AnnotationRepository $annotationRepository
+   *
+   * @return array
+   */
+  public function listInstances(
+      ConceptRepository $repo, RequestStudyArea $requestStudyArea, AnnotationRepository $annotationRepository)
+  {
+    /** @var User $user */
+    $user      = $this->getUser();
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    $concepts         = $repo->findForStudyAreaOrderedByName($studyArea, false, false, true);
+    $annotationCounts = $user
+        ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
+        : NULL;
+
+    return [
+        'instances'        => true,
         'annotationCounts' => $annotationCounts,
         'studyArea'        => $studyArea,
         'concepts'         => $concepts,

@@ -11,7 +11,11 @@
 {% endblock %}
 
 {% block title %}
-  {{ 'concept.list-title'|trans }}
+  {% if instances|default(false) %}
+    {{ 'concept.instance-list-title'|trans }}
+  {% else %}
+    {{ 'concept.list-title'|trans }}
+  {% endif %}
 {% endblock %}
 
 {% macro list(concepts, studyArea, annotationCounts) %}

@@ -77,6 +77,8 @@
             {% set anyContent = true %}
             <a class="dropdown-item"
                href="{{ path('app_concept_list') }}">{{ 'menu.concept'|trans }}</a>
+            <a class="dropdown-item"
+               href="{{ path('app_concept_listinstances') }}">{{ 'menu.instances'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_LEARNING_PATHS', _twigStudyArea) %}
             {% set anyContent = true %}
