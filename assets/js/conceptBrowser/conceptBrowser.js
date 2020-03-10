@@ -1184,10 +1184,14 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param color
    */
   function colorNode(node, color) {
-    node.color = color;
+    node.color = color === 0 && node.instance ? 2 : color; // Green default for instance nodes
 
     if (typeof (Storage) !== 'undefined') {
-      localStorage.setItem('nodeColor.' + node.id, color);
+      if (color === 0) {
+        localStorage.removeItem('nodeColor.' + node.id);
+      } else {
+        localStorage.setItem('nodeColor.' + node.id, color);
+      }
     }
   }
 
@@ -1196,7 +1200,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function resetNodeColors() {
     cbGraph.nodes.map(function (node) {
-      node.color = 0;
+      node.color = node.instance ? 2 : 0; // Green default for instance nodes
     });
 
     // Clear local storage for loaded nodes only
@@ -1216,6 +1220,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       var color = localStorage.getItem('nodeColor.' + node.id);
       if (color !== null) {
         node.color = parseInt(color);
+      } else if (node.instance) {
+        node.color = 2; // Green default for instances
       }
     }
   }
@@ -1538,19 +1544,26 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       // Color data
       if (!contextMenuNode.empty) {
         var colorData = {
-          'styles': {
+          styles: {
             name: 'Change color',
             icon: 'fa-paint-brush',
             items: {
               'style-1': {name: 'Red', icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
-              'style-2': {name: 'Green', icon: contextMenuNode.color === 2 ? 'fa-check' : ''},
+              'style-2': {
+                name: 'Green',
+                icon: contextMenuNode.color === 2 ? 'fa-check' : '',
+                visible: !contextMenuNode.instance, // Hide green option for instances
+              },
               'style-3': {name: 'Blue', icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
               'style-4': {name: 'Orange', icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
               'sep1': '---------',
-              'style-0': {name: 'Default', icon: contextMenuNode.color === 0 ? 'fa-check' : 'fa-undo'}
+              'style-0': {
+                name: 'Default',
+                icon: contextMenuNode.color === 0 || (contextMenuNode.color === 2 && contextMenuNode.instance) ? 'fa-check' : 'fa-undo'
+              }
             }
           },
-          'sep2': '---------',
+          sep2: '---------',
         };
 
         nodeItems = $.extend(nodeItems, colorData);
