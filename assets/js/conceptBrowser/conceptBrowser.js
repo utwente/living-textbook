@@ -114,6 +114,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   var clickSend = false;
   var contextMenuNode = null, lastTransformed;
   var isLoaded = false, isPaused = false;
+  const filters = {
+    showInstances: true,
+  };
 
   // Initialize the graph object
   cbGraph = {nodes: [], links: [], linkNodes: []};
@@ -475,15 +478,25 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function findNode() {
     if (!isLoaded) return;
 
-    var transformed;
+    let transformed;
     if (typeof d3.event.clientX === 'undefined' || typeof d3.event.clientY === 'undefined') {
       if (!lastTransformed) return;
       transformed = lastTransformed;
     } else {
       transformed = lastTransformed = transformLocation(d3.event);
     }
-    var node = cbSimulation.find(transformed.x, transformed.y, 20);
-    return node && node.linkNode !== true ? node : undefined;
+
+    const node = cbSimulation.find(transformed.x, transformed.y, 20);
+
+    if (!node) {
+      return undefined;
+    }
+
+    if (node.linkNode || (node.instance && !filters.showInstances)) {
+      return undefined;
+    }
+
+    return node;
   }
 
   /**
@@ -963,6 +976,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param link
    */
   function drawLink(link) {
+    if (!filters.showInstances && (link.target.instance || link.source.instance)) {
+      return;
+    }
+
     context.moveTo(link.target.x, link.target.y);
     context.lineTo(link.source.x, link.source.y);
   }
@@ -997,6 +1014,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param link
    */
   function drawLinkText(link) {
+    if (!filters.showInstances && (link.target.instance || link.source.instance)) {
+      return;
+    }
+
     // Only draw the text when the link is active
     if (link.relationName &&
         (!isDragging && (link.source.index === highlightedNode.index || link.target.index === highlightedNode.index)) ||
@@ -1041,6 +1062,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param link
    */
   function drawLinkArrow(link) {
+    if (!filters.showInstances && (link.target.instance || link.source.instance)) {
+      return;
+    }
+
     const xDistance = link.source.x - link.target.x;
     const yDistance = link.source.y - link.target.y;
 
@@ -1107,6 +1132,9 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function drawNode(node) {
     if (node.instance) {
+      if (!filters.showInstances) {
+        return;
+      }
       context.moveTo(node.x - node.radius, node.y - node.radius);
       context.rect(node.x - node.radius, node.y - node.radius, node.radius * 2, node.radius * 2);
     } else {
@@ -1145,6 +1173,10 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param node
    */
   function drawNodeText(node) {
+    if (!filters.showInstances && node.instance) {
+      return;
+    }
+
     // Calculate font(size)
     let scaledFontSize = Math.ceil(bConfig.defaultNodeLabelFontSize * node.fontScale);
     context.font = 'bold ' + scaledFontSize + 'px ' + bConfig.fontFamily;
@@ -1478,6 +1510,12 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     });
     $filterBtn.on('hidden.bs.popover', function () {
       $filterBtn.tooltip('enable');
+    });
+
+    // Create handlers for filters
+    $('#filter-show-instances').on('change', function () {
+      filters.showInstances = $(this).is(':checked');
+      window.requestAnimationFrame(drawGraph);
     });
 
     // Create drag handlers
