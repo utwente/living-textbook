@@ -94,6 +94,9 @@ auth:
 browser:
   actions: 'Actions'
   close: 'Close concept map'
+  filter: 'Display filters'
+  filters:
+    show-instances: 'Show instances'
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open map'
   pause: 'Pause animation'

@@ -1460,6 +1460,26 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       zoomFromButton(cbTransform.k / cb.zoomButtonFactor);
     });
 
+    // Create filter button handler
+    const $filterBtn = $('#filter-button');
+    $filterBtn.popover({
+      html: true,
+      trigger: 'manual',
+      placement: 'bottom',
+      template: '<div class="popover filter-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
+      content: $('#filter-content')
+    });
+    $filterBtn.on('click', function () {
+      $filterBtn.popover('toggle');
+    });
+    $filterBtn.on('show.bs.popover', function () {
+      $filterBtn.tooltip('hide');
+      $filterBtn.tooltip('disable');
+    });
+    $filterBtn.on('hidden.bs.popover', function () {
+      $filterBtn.tooltip('enable');
+    });
+
     // Create drag handlers
     cbDrag = d3.drag()
         .container(canvas)

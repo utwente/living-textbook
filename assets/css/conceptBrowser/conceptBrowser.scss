@@ -74,3 +74,21 @@ $button-padding: 2px;
 #context-menu-layer, .context-menu-list, .context-menu-root {
   z-index: 100 !important;
 }
+
+#filter-content {
+  display: none;
+}
+
+.filter-popover {
+  max-width: none;
+
+  .popover-header {
+  }
+
+  .popover-body {
+    #filter-content {
+      min-width: 10vw;
+      display: block;
+    }
+  }
+}

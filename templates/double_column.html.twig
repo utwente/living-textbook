@@ -50,6 +50,18 @@
                       title="{{ 'browser.fullscreen-toggle'|trans }}">
                 <i class="fa fa-fw fa-arrows-alt"></i>
               </button>
+              <button id="filter-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                      title="{{ 'browser.filter'|trans }}">
+                <i class="fa fa-fw fa-filter"></i>
+              </button>
+              <div id="filter-content">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="filter-show-instances" checked>
+                  <label class="custom-control-label" for="filter-show-instances">
+                    {{ 'browser.filters.show-instances'|trans }}
+                  </label>
+                </div>
+              </div>
               <button id="refresh-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
                       title="{{ 'browser.refresh'|trans }}">
                 <i class="fa fa-fw fa-refresh"></i>
