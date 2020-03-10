@@ -85,11 +85,11 @@
   {{ buttons.footer() }}
 {% endblock %}
 
-{% block content_title %}{% endblock %}
+{% block content_title %}
+  <h2>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</h2>
+{% endblock %}
 
 {% block content %}
-  <h2>{{ 'dashboard.study-area-text'|trans({'%studyArea%': studyArea.name}) }}</h2>
-
   {% if studyArea.description is not null %}
     <div class="ltb-text-container">
       {{ studyArea.description|striptags(allowed_ckeditor_tags)|raw }}
