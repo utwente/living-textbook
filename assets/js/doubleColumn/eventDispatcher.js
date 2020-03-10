@@ -75,6 +75,16 @@ require('../event/eventTypes');
   };
 
   /**
+   * Create instance event
+   * @param id
+   */
+  eDispatch.createInstance = function (id) {
+    dispatchParent(types.CREATE_INSTANCE, {
+      id: id
+    });
+  };
+
+  /**
    * Navigate to a specific learning path in the content window
    * @param id
    */

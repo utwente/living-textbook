@@ -63,6 +63,9 @@ import Routing from 'fos-routing';
       case types.TRACKING_CONSENT:
         onTrackingConsent(data);
         break;
+      case types.CREATE_INSTANCE:
+        onCreateInstance(data);
+        break;
       default:
         console.warn('Unknown event!', type);
     }
@@ -238,6 +241,20 @@ import Routing from 'fos-routing';
     }
 
     tracker.saveTrackingConsent(data.agree);
+  }
+
+  /**
+   * Handle create instance event
+   * @param data
+   */
+  function onCreateInstance(data) {
+    // Forward to page load
+    onPageLoad({
+      url: Routing.generate('app_concept_instantiate', {
+        _studyArea: _studyArea,
+        concept: data.id
+      })
+    });
   }
 
 }(window.eHandler = window.eHandler || {}, window.eType, window.tracker, $));

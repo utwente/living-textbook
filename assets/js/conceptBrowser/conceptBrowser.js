@@ -608,6 +608,14 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   }
 
   /**
+   * Start concept creation from the selected concept
+   * @param concept
+   */
+  function createInstance(concept) {
+    dispatcher.createInstance(concept.id);
+  }
+
+  /**
    * Keyboard event handler
    * space -> Stop simulation
    */
@@ -1487,6 +1495,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
             if (key === 'quit') return;
             if (key.startsWith('style')) colorNode(contextMenuNode, parseInt(key.substr(6)));
             if (key === 'reset') resetNodeColors();
+            if (key === 'create-instance') createInstance(contextMenuNode);
             if (key === 'center') cb.centerView();
             cbSimulation.restart();
           },
@@ -1519,12 +1528,12 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       };
     } else {
       // Node
-      var nodeItems = {};
+      let nodeItems = {};
 
       // Generate individuals, if any
       if (contextMenuNode.individuals !== undefined) {
-        var individualsItems = {};
-        var individualsTextItems = contextMenuNode.individuals.split(';');
+        const individualsItems = {};
+        const individualsTextItems = contextMenuNode.individuals.split(';');
         individualsTextItems.map(function (item) {
           item = item.trim();
           individualsItems['individual-' + item] = {
@@ -1543,7 +1552,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
       // Color data
       if (!contextMenuNode.empty) {
-        var colorData = {
+        const colorData = {
           styles: {
             name: 'Change color',
             icon: 'fa-paint-brush',
@@ -1569,9 +1578,12 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
         nodeItems = $.extend(nodeItems, colorData);
       }
 
+
       // Merge with default data
-      var defaultData = {
-        'quit': {name: 'Close', icon: 'fa-times'}
+      const defaultData = {
+        'create-instance': {name: 'Instantiate', icon: 'fa-code-fork'},
+        sep3: '---------',
+        quit: {name: 'Close', icon: 'fa-times'}
       };
 
       return $.extend(nodeItems, defaultData);

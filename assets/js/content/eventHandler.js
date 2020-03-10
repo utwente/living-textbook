@@ -1,4 +1,4 @@
-import {setDoubleColumnDetected} from "../content";
+import {setDoubleColumnDetected} from '../content';
 
 require('../event/eventTypes');
 
@@ -42,6 +42,7 @@ require('../event/eventTypes');
       case types.CLOSE_CONCEPT_BROWSER:
       case types.CONCEPT_SELECTED:
       case types.SHOW_CONCEPT:
+      case types.CREATE_INSTANCE:
       case types.OPEN_LEARNING_PATH_BROWSER:
       case types.CLOSE_LEARNING_PATH_BROWSER:
       case types.NAVIGATE_LEARNING_PATH:

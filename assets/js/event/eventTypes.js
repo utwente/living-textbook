@@ -18,6 +18,7 @@
   eType.CLOSE_CONCEPT_BROWSER = 'close_concept_browser';
   eType.CLOSED_CONCEPT_BROWSER = 'closed_concept_browser';
   eType.CONCEPT_SELECTED = 'concept_selected';
+  eType.CREATE_INSTANCE = 'create_instance';
   eType.SHOW_CONCEPT = 'show_concept';
 
   // Toggle learning path browser

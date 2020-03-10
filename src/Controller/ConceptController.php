@@ -284,7 +284,7 @@ class ConceptController extends AbstractController
   /**
    * Instantiate an instance from a selected base concept
    *
-   * @Route("/instantiate/{concept<\d+>?null}")
+   * @Route("/instantiate/{concept<\d+>?null}", options={"expose"=true})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_concept_listinstances", subject="requestStudyArea")
