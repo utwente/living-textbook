@@ -33,6 +33,9 @@ class ConceptRelationRepository extends ServiceEntityRepository
    * @param RelationType $relationType
    *
    * @return int
+   *
+   * @noinspection PhpDocMissingThrowsInspection
+   * @noinspection PhpUnhandledExceptionInspection
    */
   public function getByRelationTypeCount(RelationType $relationType)
   {
@@ -65,9 +68,9 @@ class ConceptRelationRepository extends ServiceEntityRepository
   /**
    * @param RelationType $relationType
    *
-   * @return \Doctrine\ORM\QueryBuilder
+   * @return QueryBuilder
    */
-  public function getByRelationTypeQb(RelationType $relationType): \Doctrine\ORM\QueryBuilder
+  public function getByRelationTypeQb(RelationType $relationType): QueryBuilder
   {
     return $this->createQueryBuilder('cr')
         ->join('cr.source', 'c')
@@ -107,6 +110,9 @@ class ConceptRelationRepository extends ServiceEntityRepository
    *
    * @return integer
    * @throws NonUniqueResultException
+   *
+   * @noinspection PhpDocMissingThrowsInspection
+   * @noinspection PhpUnhandledExceptionInspection
    */
   public function getCountForStudyArea(StudyArea $studyArea): int
   {

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Concept;
+use App\Entity\ConceptRelation;
 use App\Entity\PendingChange;
 use App\Entity\User;
 use App\Form\Concept\EditConceptType;
@@ -12,6 +13,7 @@ use App\Form\Type\SaveType;
 use App\Repository\AnnotationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
+use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
@@ -25,12 +27,14 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -274,6 +278,135 @@ class ConceptController extends AbstractController
     return [
         'concept' => $concept,
         'form'    => $form->createView(),
+    ];
+  }
+
+  /**
+   * Instantiate an instance from a selected base concept
+   *
+   * @Route("/instantiate/{concept<\d+>?null}")
+   * @Template()
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea(route="app_concept_listinstances", subject="requestStudyArea")
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param Concept|null           $concept
+   * @param RelationTypeRepository $relationRepository
+   * @param EntityManagerInterface $em
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|RedirectResponse
+   */
+  public function instantiate(
+      Request $request, RequestStudyArea $requestStudyArea, ?Concept $concept, RelationTypeRepository $relationRepository,
+      EntityManagerInterface $em, TranslatorInterface $translator)
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    // Block when in review mode
+    if ($studyArea->isReviewModeEnabled()) {
+      $this->addFlash('notice', $translator->trans('concept.instantiate.not-possible-review-enabled'));
+
+      return $this->redirectToRoute('app_concept_listinstances');
+    }
+
+    // Check study area
+    if ($concept && $concept->getStudyArea()->getId() != $studyArea->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    // Create the form
+    $form = $this->createFormBuilder(['concept' => $concept])
+        ->add('concept', EntityType::class, [
+            'placeholder'   => 'dashboard.select-one',
+            'required'      => true,
+            'hide_label'    => true,
+            'choice_label'  => 'name',
+            'class'         => Concept::class,
+            'select2'       => true,
+            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
+              return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea, true);
+            },
+            'constraints'   => [
+                new NotNull(),
+            ],
+        ])
+        ->add('submit', SaveType::class, [
+            'save_label'           => 'concept.instantiate.instantiate',
+            'save_icon'            => 'fa-code-fork',
+            'enable_cancel'        => true,
+            'cancel_route'         => 'app_concept_listinstances',
+            'enable_save_and_list' => false,
+            'attr'                 => array(
+                'class' => 'btn btn-outline-success',
+            ),
+        ])
+        ->getForm();
+
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+      // Time to create the instances
+      /** @var Concept $baseConcept */
+      $baseConcept          = $form->getData()['concept'];
+      $instanceRelationType = $relationRepository->getOrCreateRelation(
+          $studyArea, $translator->trans('concept.instantiate.default-relation-name'));
+
+      $createInstance = function (Concept $base) use ($studyArea, $instanceRelationType): Concept {
+        return (new Concept())
+            ->setStudyArea($studyArea)
+            ->setInstance(true)
+            ->setName($base->getName())
+            ->addOutgoingRelation(
+                (new ConceptRelation())
+                    ->setRelationType($instanceRelationType)
+                    ->setTarget($base)
+            );
+      };
+
+      $baseInstance = $createInstance($baseConcept);
+      $em->persist($baseInstance);
+
+      // Create instances for all first level relations
+      foreach ($baseConcept->getIncomingRelations() as $incomingRelation) {
+        $source = $incomingRelation->getSource();
+        if ($source->isInstance()) {
+          continue;
+        }
+        $instance = $createInstance($source);
+        $em->persist($instance);
+
+        $baseInstance->addIncomingRelation(
+            (new ConceptRelation())
+                ->setRelationType($incomingRelation->getRelationType())
+                ->setSource($instance)
+        );
+      }
+      foreach ($baseConcept->getOutgoingRelations() as $outgoingRelation) {
+        $target = $outgoingRelation->getTarget();
+        if ($target->isInstance()) {
+          continue;
+        }
+
+        $instance = $createInstance($target);
+        $em->persist($instance);
+
+        $baseInstance->addOutgoingRelation(
+            (new ConceptRelation())
+                ->setRelationType($outgoingRelation->getRelationType())
+                ->setTarget($instance)
+        );
+      }
+
+      $em->flush();
+
+      $this->addFlash('success', $translator->trans('concept.instantiate.success'));
+
+      return $this->redirectToRoute('app_concept_listinstances');
+    }
+
+    return [
+        'form' => $form->createView(),
     ];
   }
 

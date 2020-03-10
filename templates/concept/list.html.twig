@@ -5,7 +5,11 @@
     {% import '_macro/_action_buttons.html.twig' as buttons %}
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
-    {{ buttons.add_button(path('app_concept_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {% if instances|default(false) %}
+      {{ buttons._action_button(path('app_concept_instantiate'), 'fa-code-fork', 'concept.instantiate.instantiate', 'success', false, false, _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {% else %}
+      {{ buttons.add_button(path('app_concept_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {% endif %}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}

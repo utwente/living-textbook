@@ -18,15 +18,31 @@ class ConceptRepository extends ServiceEntityRepository
 
   /**
    * @param StudyArea $studyArea
+   * @param bool      $conceptsOnly
+   * @param bool      $instancesOnly
    *
    * @return QueryBuilder
    */
-  public function findForStudyAreaOrderByNameQb(StudyArea $studyArea): QueryBuilder
+  public function findForStudyAreaOrderByNameQb(
+      StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): QueryBuilder
   {
-    return $this->createQueryBuilder('c')
+    if ($conceptsOnly && $instancesOnly) {
+      throw new InvalidArgumentException('You cannot select both only options at the same time!');
+    }
+
+    $qb = $this->createQueryBuilder('c')
         ->where('c.studyArea = :studyArea')
         ->setParameter(':studyArea', $studyArea)
         ->orderBy('c.name', 'ASC');
+
+    if ($conceptsOnly) {
+      $qb->andWhere('c.instance = false');
+    }
+    if ($instancesOnly) {
+      $qb->andWhere('c.instance = true');
+    }
+
+    return $qb;
   }
 
   /**
@@ -40,18 +56,7 @@ class ConceptRepository extends ServiceEntityRepository
   public function findForStudyAreaOrderedByName(
       StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false)
   {
-    if ($conceptsOnly && $instancesOnly) {
-      throw new InvalidArgumentException('You cannot select both only options at the same time!');
-    }
-
-    $qb = $this->findForStudyAreaOrderByNameQb($studyArea);
-
-    if ($conceptsOnly) {
-      $qb->andWhere('c.instance = false');
-    }
-    if ($instancesOnly) {
-      $qb->andWhere('c.instance = true');
-    }
+    $qb = $this->findForStudyAreaOrderByNameQb($studyArea, $conceptsOnly, $instancesOnly);
 
     $this->loadRelations($qb, 'c');
 

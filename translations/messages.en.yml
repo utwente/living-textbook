@@ -121,6 +121,16 @@ concept:
   instance: 'Instance'
   instance-list-title: 'Instance list'
   instance-text: 'This is an instance of a concept.'
+  instantiate:
+    default-relation-name: 'is a'
+    instantiate: 'Instantiate'
+    instantiate-text: >-
+      Choose the base concept to instantiate a new instance for.
+      For all first level relations an instance will be created as well.
+      Relevant relations will be added automatically.
+      In order to see the changes in the concept map, you will need to refresh is after the instantiation process is done.
+    not-possible-review-enabled: 'It is not possible to instantiate an instance as review mode is enabled.'
+    success: 'The instances have been created! Refresh the browser to see them.'
   introduction: 'Introduction'
   learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
