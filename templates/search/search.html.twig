@@ -34,20 +34,27 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
+      <a class="nav-link{% if conceptData|length == 0 and instanceData|length != 0 %} active{% endif %}"
+         id="tab-instances-button"
+         href="#tab-instances" role="tab" data-toggle="tab">
+        {{ 'search.result.instances'|trans }}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
          id="tab-abbreviations-button" href="#tab-abbreviations" role="tab" data-toggle="tab">
         {{ 'search.result.abbreviations'|trans }}
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
+      <a class="nav-link{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
          id="tab-external-resources-button" href="#tab-external-resources" role="tab"
          data-toggle="tab">
         {{ 'search.result.external-resources'|trans }}
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+      <a class="nav-link{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
         and learningOutcomeData|length != 0 %} active{% endif %}"
          id="tab-learning-outcomes-button" href="#tab-learning-outcomes" role="tab"
          data-toggle="tab">
@@ -56,7 +63,7 @@
     </li>
     {% if app.user %}
       <li class="nav-item">
-        <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+        <a class="nav-link{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
           and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
            id="tab-own-annotations-button" href="#tab-own-annotations" role="tab"
            data-toggle="tab">
@@ -64,7 +71,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+        <a class="nav-link{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
           and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
            id="tab-all-annotations-button" href="#tab-all-annotations" role="tab"
            data-toggle="tab">
@@ -109,8 +116,44 @@
       {% endif %}
     </div>
 
-    <div class="tab-pane{% if conceptData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
-         id="tab-abbreviations" role="tabpanel" aria-labelledby="tab-abbreviations-button">
+    <div class="tab-pane{% if conceptData|length == 0 and instanceData|length != 0 %} active{% endif %}"
+         id="tab-instances" role="tabpanel"
+         aria-labelledby="tab-instances-button">
+      {% if instanceData|length == 0 %}
+        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.instances'|trans|lower }) }}</p>
+      {% else %}
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>{{ 'concept.name'|trans }}</th>
+              <th>{{ 'search.found-in'|trans }}</th>
+              <th>{{ 'search.preview'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for concept in instanceData %}
+              {% for result in concept.results %}
+                <tr>
+                  {% if loop.first %}
+                    <td rowspan="{{ concept.results|length }}">
+                      <a href="{{ path('app_concept_show', { 'concept': concept._id }) }}">{{ concept._title }}</a>
+                    </td>
+                  {% endif %}
+                  <td>{{ ('concept.' ~ result.property)|trans }}</td>
+                  <td>{{ result.data|striptags|highlight(search) }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+
+    <div
+        class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
+        id="tab-abbreviations" role="tabpanel" aria-labelledby="tab-abbreviations-button">
       {% if abbreviationData|length == 0 %}
         <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.abbreviations'|trans|lower }) }}</p>
       {% else %}
@@ -142,7 +185,7 @@
     </div>
 
     <div
-        class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
+        class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
         id="tab-external-resources" role="tabpanel" aria-labelledby="tab-external-resources-button">
       {% if externalResourceData|length == 0 %}
         <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.external-resources'|trans|lower }) }}</p>
@@ -182,7 +225,7 @@
     </div>
 
     <div
-        class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+        class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
           and learningOutcomeData|length != 0 %} active{% endif %}"
         id="tab-learning-outcomes" role="tabpanel" aria-labelledby="tab-learning-outcomes-button">
       {% if learningOutcomeData|length == 0 %}
@@ -219,7 +262,7 @@
 
     {% if app.user %}
       <div
-          class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+          class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
             and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
           id="tab-own-annotations" role="tabpanel" aria-labelledby="tab-own-annotations-button">
         {% if ownAnnotationsData|length == 0 %}
@@ -230,7 +273,7 @@
       </div>
 
       <div
-          class="tab-pane{% if conceptData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
+          class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
             and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
           id="tab-all-annotations" role="tabpanel" aria-labelledby="tab-all-annotations-button">
         {% if allAnnotationsData|length == 0 %}

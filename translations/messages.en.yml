@@ -574,6 +574,7 @@ search:
     all-annotations: "All annotations"
     concepts: "Concepts"
     external-resources: "External resources"
+    instances: "Instances"
     learning-outcomes: "Learning outcomes"
     own-annotations: "Own annotations"
   results: 'Search results'
