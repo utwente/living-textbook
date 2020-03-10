@@ -6,7 +6,6 @@ use App\Entity\Concept;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
 
@@ -65,17 +64,35 @@ class ConceptRepository extends ServiceEntityRepository
 
   /**
    * @param StudyArea $studyArea
+   * @param bool      $conceptsOnly
+   * @param bool      $instancesOnly
    *
-   * @return mixed
-   * @throws NonUniqueResultException
+   * @return int
+   *
+   * @noinspection PhpDocMissingThrowsInspection
+   * @noinspection PhpUnhandledExceptionInspection
    */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(
+      StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): int
   {
-    return $this->createQueryBuilder('c')
+    if ($conceptsOnly && $instancesOnly) {
+      throw new InvalidArgumentException('You cannot select both only options at the same time!');
+    }
+
+    $qb = $this->createQueryBuilder('c')
         ->select('COUNT(c.id)')
         ->where('c.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getSingleScalarResult();
+        ->setParameter('studyArea', $studyArea);
+
+
+    if ($conceptsOnly) {
+      $qb->andWhere('c.instance = false');
+    }
+    if ($instancesOnly) {
+      $qb->andWhere('c.instance = true');
+    }
+
+    return $qb->getQuery()->getSingleScalarResult();
   }
 
   /**
