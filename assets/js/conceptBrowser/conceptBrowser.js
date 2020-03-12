@@ -1224,7 +1224,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param color
    */
   function colorNode(node, color) {
-    node.color = color === 0 && node.instance ? 2 : color; // Green default for instance nodes
+    node.color = color === 0 && node.instance ? bConfig.instanceDefaultColor : color;
 
     if (typeof (Storage) !== 'undefined') {
       if (color === 0) {
@@ -1240,7 +1240,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function resetNodeColors() {
     cbGraph.nodes.map(function (node) {
-      node.color = node.instance ? 2 : 0; // Green default for instance nodes
+      node.color = node.instance ? bConfig.instanceDefaultColor : 0;
     });
 
     // Clear local storage for loaded nodes only
@@ -1261,7 +1261,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       if (color !== null) {
         node.color = parseInt(color);
       } else if (node.instance) {
-        node.color = 2; // Green default for instances
+        node.color = bConfig.instanceDefaultColor;
       }
     }
   }
@@ -1615,18 +1615,30 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
             name: 'Change color',
             icon: 'fa-paint-brush',
             items: {
-              'style-1': {name: 'Red', icon: contextMenuNode.color === 1 ? 'fa-check' : ''},
+              'style-1': {
+                name: 'Red',
+                icon: contextMenuNode.color === 1 ? 'fa-check' : '',
+                visible: !contextMenuNode.instance || bConfig.instanceDefaultColor !== 1,
+              },
               'style-2': {
                 name: 'Green',
                 icon: contextMenuNode.color === 2 ? 'fa-check' : '',
-                visible: !contextMenuNode.instance, // Hide green option for instances
+                visible: !contextMenuNode.instance || bConfig.instanceDefaultColor !== 2,
               },
-              'style-3': {name: 'Blue', icon: contextMenuNode.color === 3 ? 'fa-check' : ''},
-              'style-4': {name: 'Orange', icon: contextMenuNode.color === 4 ? 'fa-check' : ''},
+              'style-3': {
+                name: 'Blue',
+                icon: contextMenuNode.color === 3 ? 'fa-check' : '',
+                visible: !contextMenuNode.instance || bConfig.instanceDefaultColor !== 3,
+              },
+              'style-4': {
+                name: 'Orange',
+                icon: contextMenuNode.color === 4 ? 'fa-check' : '',
+                visible: !contextMenuNode.instance || bConfig.instanceDefaultColor !== 4,
+              },
               'sep1': '---------',
               'style-0': {
                 name: 'Default',
-                icon: contextMenuNode.color === 0 || (contextMenuNode.color === 2 && contextMenuNode.instance) ? 'fa-check' : 'fa-undo'
+                icon: contextMenuNode.color === 0 || (contextMenuNode.color === bConfig.instanceDefaultColor && contextMenuNode.instance) ? 'fa-check' : 'fa-undo'
               }
             }
           },

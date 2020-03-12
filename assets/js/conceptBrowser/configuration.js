@@ -40,6 +40,9 @@
   bConfig.whiteNodeLabelColor = '#fff';
   bConfig.activeNodeLabelStrokeStyle = '#fff';
 
+  // Instance defaults
+  bConfig.instanceDefaultColor = 4;
+
   bConfig.applyStyle = function (style) {
     switch (style) {
       case -1: { // Grey 'empty' state
