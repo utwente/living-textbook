@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\RelationTypeRepository")
  *
- * We do not enable the soft-deletable extension here, as soft-deleted relation should still work after they have been
- * removed. The should however no longer be displayed in the list/edit possibilities.
+ * We do not enable the soft-deletable extension here, as soft-deleted relations should still work after they have been
+ * removed. They should however no longer be displayed in the list/edit possibilities.
  * //Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class RelationType implements StudyAreaFilteredInterface, ReviewableInterface

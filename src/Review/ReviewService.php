@@ -6,6 +6,7 @@ use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Concept;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
+use App\Entity\RelationType;
 use App\Entity\Review;
 use App\Entity\StudyArea;
 use App\Entity\User;
@@ -662,7 +663,7 @@ class ReviewService
       $directCallback($object);
     }
 
-    if ($changeType === PendingChange::CHANGE_TYPE_REMOVE) {
+    if ($changeType === PendingChange::CHANGE_TYPE_REMOVE && !$object instanceof RelationType) {
       $this->entityManager->remove($object);
     } else if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       $this->entityManager->persist($object);
