@@ -68,6 +68,10 @@ class ConceptController extends AbstractController
     $concept  = (new Concept())->setStudyArea($studyArea);
     $snapshot = $reviewService->getSnapshot($concept);
 
+    if ($request->query->has('instance')) {
+      $concept->setInstance(true);
+    }
+
     // Create form and handle request
     $form = $this->createForm(EditConceptType::class, $concept, [
         'concept' => $concept,
@@ -82,7 +86,7 @@ class ConceptController extends AbstractController
 
       // Check for forward to list
       if (!$concept->getId() || SaveType::isListClicked($form)) {
-        return $this->redirectToRoute('app_concept_list');
+        return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
       }
 
       // Forward to show page
@@ -127,7 +131,7 @@ class ConceptController extends AbstractController
           '%item%' => $trans->trans('concept._name'),
       ]));
 
-      return $this->redirectToRoute('app_concept_list');
+      return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
     }
 
     // Map original relations
@@ -170,7 +174,7 @@ class ConceptController extends AbstractController
 
       // Check for forward to list
       if (SaveType::isListClicked($form)) {
-        return $this->redirectToRoute('app_concept_list');
+        return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
       }
 
       // Forward to show
@@ -505,7 +509,7 @@ class ConceptController extends AbstractController
           '%item%' => $trans->trans('concept._name'),
       ]));
 
-      return $this->redirectToRoute('app_concept_list');
+      return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
     }
 
     $form = $this->createForm(RemoveType::class, NULL, [
@@ -521,7 +525,7 @@ class ConceptController extends AbstractController
 
       $this->addFlash('success', $trans->trans('concept.removed', ['%item%' => $concept->getName()]));
 
-      return $this->redirectToRoute('app_concept_list');
+      return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
     }
 
     return [

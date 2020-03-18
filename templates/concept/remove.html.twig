@@ -10,8 +10,8 @@
   {% if learningPaths|length > 0 %}
     <div class="alert alert-danger fade-in" role="alert">
       <span class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></span>
-      {{ 'concept.remove-in-learning-path'|trans({'%count%': learningPaths|length}) }}
-      {{ 'concept.remove-in-learning-path-warning'|trans }}
+      {{ 'concept.remove-in-learning-path'|trans({'%count%': learningPaths|length, '%type%': concept.instance ? 'concept.instance'|trans|lower : 'concept._name'|trans|lower }) }}
+      {{ 'concept.remove-in-learning-path-warning'|trans({'%type%': concept.instance ? 'concept.instance'|trans|lower : 'concept._name'|trans|lower }) }}
       <ul style="margin-bottom: 0">
         {% for learningPath in learningPaths %}
           <li>

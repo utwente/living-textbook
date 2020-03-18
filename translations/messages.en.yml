@@ -110,12 +110,13 @@ browser:
   zoom-out: 'Zoom out'
 
 concept:
+  _type: {}
   _name: 'Concept'
-  add-title: 'Add new concept'
+  add-title: 'Add new'
   concept: 'Concept'
   contributors: 'Contributors'
   definition: 'Definition'
-  edit-title: 'Edit concept "%item%"'
+  edit-title: 'Edit "%item%"'
   examples: 'Examples'
   external-resources: 'External resources'
   how-to: 'How to'
@@ -138,23 +139,23 @@ concept:
   learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
   name: 'Name'
-  new: 'New concept'
-  no-relations-possible-concept: "There are no other concepts available."
+  new: 'New concept/instance'
+  no-relations-possible-concept: "There are no other concepts or instances available."
   no-relations-possible-linktype: "There are no link types defined."
   online-source: 'Browse online'
   outgoing-relations: 'Outgoing relations'
   prior-knowledge: 'Prior knowledge'
   relations: 'Relations'
-  remove: 'Remove concept "%item%"'
-  remove-in-learning-path: '{1} Beware! This concept is used in a learning path.|]1,Inf[ Beware! This concept is used in %count% learning paths.'
-  remove-in-learning-path-warning: 'When removing this concept, it will also be removed from any linked learning path.'
-  remove-text: 'Are you sure you want to remove the concept "%item%" and all of its relations?'
-  removed: 'Concept "%item%" has been removed successfully'
-  saved: 'Concept "%item%" has been saved successfully.'
+  remove: 'Remove "%item%"'
+  remove-in-learning-path: '{1} Beware! This %type% is used in a learning path.|]1,Inf[ Beware! This %type% is used in %count% learning paths.'
+  remove-in-learning-path-warning: 'When removing this %type%, it will also be removed from any linked learning path.'
+  remove-text: 'Are you sure you want to remove "%item%" and all of its relations?'
+  removed: '"%item%" has been removed successfully'
+  saved: '"%item%" has been saved successfully.'
   self-assessment: 'Self assessment'
   synonyms: 'Synonyms'
   theory-explanation: 'Explanation'
-  updated: 'Concept "%item%" has been successfully updated.'
+  updated: '"%item%" has been successfully updated.'
 
 contributor:
   _name: 'Contributor'
@@ -168,7 +169,7 @@ contributor:
   no-url: 'No url'
   saved: 'Contributor "%item%" has been saved successfully.'
   remove: 'Remove contributor "%item%"'
-  remove-concepts: 'Note that the contributor will also be removed from the following concepts:'
+  remove-concepts: 'Note that the contributor will also be removed from the following concepts/instances:'
   remove-text: 'Are you sure you want to remove the contributor "%item%"?'
   removed: 'Contributor "%item%" has been removed successfully.'
   updated: 'Contributor "%item%" has been successfully updated.'
@@ -177,28 +178,28 @@ contributor:
 data:
   concepts: 'Concepts'
   concepts-duplicated: 'The study area has been duplicated successfully. Start browsing it directly!'
-  concepts-to-duplicate: 'Concepts to duplicate'
+  concepts-to-duplicate: 'Concepts/instances to duplicate'
   download:
     text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
     title: 'Export'
     type: 'Export type'
     provider:
-      concept-id-name: 'Concept (with id)'
+      concept-id-name: 'Concept/instance (with id)'
       learning-path: 'Learning path'
       linked-simple-node: 'Simple linked node'
       rdf: 'RDF (as JSON-LD)'
-      relation: 'Concept relations'
+      relation: 'Relations'
   duplicate: 'Duplicate'
   duplicate-text: >-
     Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
     In order to select an existing area, you need to have write right, and review mode must be disabled.
-    You can either select a concept subset, or tick "Select all" to duplicate all concepts.
+    You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
     Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
   json-file: 'JSON data file'
   json-incorrect: 'JSON data incorrect! %message%'
   json-uploaded: 'JSON data successfully imported!'
   select-all: 'Select all'
-  select-all-info: 'Note that when you do not select all concepts to be copied, some data (such as learning paths) might be adjusted!'
+  select-all-info: 'Note that when you do not select all concepts/instances to be copied, some data (such as learning paths) might be adjusted!'
   study-area: 'Study area'
   upload-json: 'Upload JSON file'
   upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
@@ -263,7 +264,7 @@ excel:
   sheet:
     detailed-concept-overview:
       _tab: "Detailed concept overview"
-      concept-name: "Concept name"
+      concept-name: "Concept/instance name"
       definition: "Definition"
       introduction: "Introduction"
       explanation: "Explanation"
@@ -286,7 +287,7 @@ excel:
       name: "Study area name"
       owner: "Study area owner"
     general-concept-statistics:
-      _tab: "General concept statistics"
+      _tab: "General concept/instance statistics"
       no-text: "Without any (text) content"
       no-definition: "Without definition"
       no-introduction: "Without introduction"
@@ -295,7 +296,7 @@ excel:
       no-relation: "Without relations"
       more-relations-5: "More than 5 relations"
       more-relations-10: "More than 10 relations"
-      total-concepts: "Total concepts"
+      total-concepts: "Total concepts/instances"
     general-relationship-statistics:
       _tab: "General relation statistics"
       type: "Relationship \"%type%\""
@@ -327,7 +328,7 @@ external-resource:
   no-url: 'No url'
   saved: 'External resource "%item%" has been saved successfully.'
   remove: 'Remove external resource "%item%"'
-  remove-concepts: 'Note that the external resource will also be removed from the following concepts:'
+  remove-concepts: 'Note that the external resource will also be removed from the following concepts/instances:'
   remove-text: 'Are you sure you want to remove the external resource "%item%"?'
   removed: 'External resource "%item%" has been removed successfully.'
   title: 'Title'
@@ -376,7 +377,7 @@ learning-outcome:
   name: 'Name'
   number: 'Number'
   remove: 'Remove learning outcome "%item%"'
-  remove-concepts: 'Note that the learning outcome will also be removed from the following concepts:'
+  remove-concepts: 'Note that the learning outcome will also be removed from the following concepts/instances:'
   remove-text: 'Are you sure you want to remove the learning outcome "%item%"?'
   removed: 'Learning outcome "%item%" has been removed successfully.'
   saved: 'Learning outcome "%item%" has been saved successfully.'
@@ -390,11 +391,11 @@ learning-path:
   close: 'Close learning path'
   current-elements: 'Current elements'
   edit-title: 'Edit learning path "%item%"'
-  element-concept: 'Concept'
+  element-concept: 'Concept/instance'
   element-description: 'Description'
   element-errors: 'One or more elements contain errors'
   elements: 'Elements'
-  elements-info: 'Select concepts and/or learning outcomes (which will add the containing concepts) below to add them to the learning path elements.'
+  elements-info: 'Select concepts/instances and/or learning outcomes (which will add the containing concepts/instances) below to add them to the learning path elements.'
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
@@ -559,11 +560,11 @@ print:
     internal: |
       We found an image reference (%image%) which does not exist in this study area.
       This might be due to the fact that it has been renamed or removed earlier,
-      a mistake with the image reference in the concept, or a system error.
+      a mistake with the image reference in the concept/instance, or a system error.
       Please verify whether you have this image available.
     title: "Image not found"
   show:
-    concept: "Back to concept"
+    concept: "Back to concept/instance"
 
 relation:
   source: 'Source'
@@ -649,7 +650,7 @@ study-area:
   print-introduction-header: "Print introduction"
   print-introduction-help: "Value will be displayed as introduction page in any printed content. If empty, it will be skipped."
   remove: 'Remove study area "%item%"'
-  remove-impossible: 'It is impossible to remove this study area, because there are concepts which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
+  remove-impossible: 'It is impossible to remove this study area, because there are concepts/instances which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
   review-mode: 'Review mode'
@@ -659,8 +660,7 @@ study-area:
     can be published! When fields are disabled, there is already a change pending.
   required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study areas for you."
   saved: 'Study area "%item%" has been saved successfully.'
-  search-concept: 'Search for concepts'
-  show: 'This study area is owned by %owner%. It contains the following concepts:'
+  show: 'This study area is owned by %owner%. It contains the following concepts/instances:'
   switch-to: 'Switch'
   track-users: 'Track study area usage'
   track-users-help: >-
@@ -792,7 +792,7 @@ review:
 
 tracking:
   export:
-    concept: 'Concept'
+    concept: 'Concept/instance'
     description: "Tracking detail export for the study area \"%item%\"."
     event: "Event"
     learning-outcome: 'Learning outcome'
@@ -813,7 +813,7 @@ url:
   bad-external: 'Broken external URLs'
   bad-internal: 'Broken internal URLs'
   bad-internal-wrong: 'Internal URLs linking to the wrong study area'
-  concept-path: 'Concept: %name% - %path%'
+  concept-path: 'Concept/instance: %name% - %path%'
   contributor-path: 'Contributor: %name% - %path%'
   external-resource-path: 'External resource: %title% - %path%'
   good: 'Healthy'

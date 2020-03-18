@@ -6,7 +6,7 @@
   {% if concept.id %}
     {{ remove_button(path('app_concept_remove', {'concept': concept.id})) }}
   {% endif %}
-  {{ list_button(path('app_concept_list')) }}
+  {{ list_button(path(concept.instance ? 'app_concept_listinstances' : 'app_concept_list')) }}
   {{ footer() }}
 {% endblock %}
 

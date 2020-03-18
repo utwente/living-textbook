@@ -16,7 +16,7 @@
     {{ buttons.edit_button(path('app_concept_edit', {'concept': concept.id}), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.remove_button(path('app_concept_remove', {'concept': concept.id}), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
   {% endif %}
-  {{ buttons.list_button(path('app_concept_list')) }}
+  {{ buttons.list_button(path(concept.instance ? 'app_concept_listinstances': 'app_concept_list')) }}
   {{ buttons.footer() }}
 
 {% endblock %}

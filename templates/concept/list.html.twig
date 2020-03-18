@@ -7,9 +7,8 @@
     {{ buttons.progress_button() }}
     {% if instances|default(false) %}
       {{ buttons._action_button(path('app_concept_instantiate'), 'fa-code-fork', 'concept.instantiate.instantiate', 'success', false, false, _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
-    {% else %}
-      {{ buttons.add_button(path('app_concept_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {% endif %}
+    {{ buttons.add_button(path('app_concept_add', instances|default(false) ? {instance: true} : {}), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
