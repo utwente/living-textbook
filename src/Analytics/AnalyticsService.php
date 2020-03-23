@@ -200,7 +200,7 @@ class AnalyticsService
 
     // Set some global settings
     $settings['period']       = [
-        'usePeriod' => false,
+        'usePeriod' => true,
         'startDate' => $this->formatPythonDateTime($start, false),
         'endDate'   => $this->formatPythonDateTime($end, false),
     ];
