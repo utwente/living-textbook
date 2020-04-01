@@ -263,7 +263,7 @@ excel:
   incoming-relations: "Incoming relations"
   sheet:
     detailed-concept-overview:
-      _tab: "Detailed concept overview"
+      _tab: "(Details) Concepts & instances"
       concept-name: "Concept/instance name"
       definition: "Definition"
       introduction: "Introduction"
@@ -278,16 +278,16 @@ excel:
       last-edit-time: "Last time of editing"
       last-editor: "Last editor's name"
     detailed-relationships-overview:
-      _tab: "Detailed relation overview"
+      _tab: "(Details) Relations"
     general-info:
-      _tab: "General study area info"
+      _tab: "Study area information"
       access-type: "Study area access type"
       creation-data: "Creation data of study area"
       last-edit: "Last edit"
       name: "Study area name"
       owner: "Study area owner"
     general-concept-statistics:
-      _tab: "General concept/instance statistics"
+      _tab: "(Statistics) Concepts&instances"
       no-text: "Without any (text) content"
       no-definition: "Without definition"
       no-introduction: "Without introduction"
@@ -298,7 +298,7 @@ excel:
       more-relations-10: "More than 10 relations"
       total-concepts: "Total concepts/instances"
     general-relationship-statistics:
-      _tab: "General relation statistics"
+      _tab: "(Statistics) Relations"
       type: "Relationship \"%type%\""
       number: "Number of relationships"
       number-per-type: "Number of relationships per type"
