@@ -2,10 +2,10 @@
   // Create function to create and/or update the searcher
   conceptSearch.createSearch = function ($search, data) {
     if (typeof $search === 'undefined') {
-      throw 'Search field not given!';
+      throw new Error('Search field not given!');
     }
     if (typeof data === 'undefined') {
-      throw 'No data given!';
+      throw new Error('No data given!');
     }
 
     // Destroy previous typeahead, if any

@@ -31,7 +31,7 @@ $(function () {
     conceptSearch.createSearch($('#search'), data);
     cb.init(data);
   }).fail(function (error) {
-    throw error;
+    console.error(error);
   });
 
   // Load tooltips
@@ -64,7 +64,7 @@ $(function () {
       // conceptSearch.updateData($('#search'), data);
       cb.update(data);
     }).fail(function (error) {
-      throw error;
+      console.error(error);
     }).always(function () {
       $icon.removeClass('fa-spin').removeClass('fa-circle-o-notch').addClass('fa-refresh');
       $button.removeAttr('disabled');

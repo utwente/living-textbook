@@ -259,7 +259,7 @@ import Routing from 'fos-routing';
       $loader.hide();
       onResize();
     }).fail(function (error) {
-      throw error;
+      console.error(error);
     });
   }
 
