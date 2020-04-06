@@ -152,7 +152,7 @@ class AnalyticsService
                 'id'            => $learningPath->getId(),
             ],
         ],
-        'functions'     => ['allUsersPerDayPerLearningPath'], // This single function delivers the required output here
+        'functions'     => ['usersPerDayPerLearningPath'], // This single function delivers the required output here
     ];
 
     // Build the visualisation

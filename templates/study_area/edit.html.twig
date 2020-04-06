@@ -20,11 +20,16 @@
           .on('change', function () {
             var openAccess = $(this).is(':checked');
             var $trackUsersForm = $('#{{ form.trackUsers.vars.id }}').closest('.form-group');
+            var $analyticsDashboardEnabledForm = $('#{{ form.analyticsDashboardEnabled.vars.id }}').closest('.form-group');
 
             if (openAccess) {
               $trackUsersForm.hide();
+              $analyticsDashboardEnabledForm.hide();
             } else {
               $trackUsersForm.show();
+              if ($('#{{ form.trackUsers.vars.id }}').is(':checked')) {
+                $analyticsDashboardEnabledForm.show();
+              }
             }
           })
           .change();
