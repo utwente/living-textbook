@@ -115,12 +115,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/php-htmldiff.git",
-                "reference": "e8b0e75c2775c796cb6b77db9f54e971533881b3"
+                "reference": "e409f8e2c2f616edd15599422cc92ea30ab1d897"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/php-htmldiff/zipball/e8b0e75c2775c796cb6b77db9f54e971533881b3",
-                "reference": "e8b0e75c2775c796cb6b77db9f54e971533881b3",
+                "url": "https://api.github.com/repos/Drenso/php-htmldiff/zipball/e409f8e2c2f616edd15599422cc92ea30ab1d897",
+                "reference": "e409f8e2c2f616edd15599422cc92ea30ab1d897",
                 "shasum": ""
             },
             "require": {
@@ -172,7 +172,7 @@
                 "issues": "https://github.com/caxy/php-htmldiff/issues",
                 "source": "https://github.com/Drenso/php-htmldiff/tree/purifier-disable"
             },
-            "time": "2020-01-28T15:29:20+00:00"
+            "time": "2020-05-01T06:50:04+00:00"
         },
         {
             "name": "clue/stream-filter",
