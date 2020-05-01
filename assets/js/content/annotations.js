@@ -458,7 +458,7 @@
     // Set data on the right places
     const $mark = $('h2.annotated[data-annotations-context="' + context + '"]').first();
     const $noteButton = $annotationHeaderContextButton.find('.annotation-header-note-button');
-    let annotations = $mark.data('annotations');
+    const annotations = $mark.data('annotations') || [];
     $noteButton.data('annotations', annotations);
     $noteButton.data('annotations-context', context);
     let count = 0;
@@ -1104,7 +1104,7 @@
    * Show the collection annotation modal
    */
   function openCollectionAnnotationsModal($button, isOutdatedNotes) {
-    const annotationsData = $button.data('annotations').sort(function (annotation) {
+    const annotationsData = ($button.data('annotations') || []).sort(function (annotation) {
       return typeof annotation.text != 'undefined';
     });
 
@@ -1528,7 +1528,7 @@
         .done(function () {
           // Remove the removed annotation from the view
           $button.closest('.annotations-note-collection').remove();
-          const newAnnotations = $collectionContainer.data('annotations').filter(function (annotation) {
+          const newAnnotations = ($collectionContainer.data('annotations') || []).filter(function (annotation) {
             return annotation.id !== removeId;
           });
 
