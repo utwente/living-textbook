@@ -10,6 +10,25 @@ export default class Tracker {
     private static readonly LEARNING_PATH_BROWSER_CLOSE = 'learning_path_browser_close';
     private static readonly GENERAL_LINK_CLICK = 'general_link_click';
 
+    /**
+     * Send the actual beacon, checking whether the function exists
+     * @param url
+     * @param data
+     */
+    private static sendBeacon(url: string, data?: any) {
+        if (typeof window.navigator.sendBeacon === 'function') {
+            window.navigator.sendBeacon(url,  data);
+        } else {
+            // Possibly unreliable, but better than nothing if the beacon API is not supported
+            $.ajax({
+                async: false,
+                method: 'POST',
+                url,
+                data,
+            });
+        }
+    }
+
     private readonly sessionId = uuid();
     private readonly studyArea: number;
     private readonly trackUser: boolean;
@@ -59,7 +78,6 @@ export default class Tracker {
     public getTrackingConsent(): 'true' | 'false' | null {
         return this.trackingConsent;
     }
-
 
     /**
      * Track the user' page load
@@ -236,7 +254,7 @@ export default class Tracker {
         console.info(`Sending ${pageloadData.length} pageload events...`);
 
         // Send the data
-        window.navigator.sendBeacon(
+        Tracker.sendBeacon(
             this.routing.generate('app_tracking_pageload', {_studyArea: this.studyArea}),
             JSON.stringify(pageloadData),
         );
@@ -262,7 +280,7 @@ export default class Tracker {
         console.info(`Sending ${eventData.length} events...`);
 
         // Send the data
-        window.navigator.sendBeacon(
+        Tracker.sendBeacon(
             this.routing.generate('app_tracking_event', {_studyArea: this.studyArea}),
             JSON.stringify(eventData),
         );
