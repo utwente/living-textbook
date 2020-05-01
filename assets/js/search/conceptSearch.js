@@ -16,7 +16,7 @@
     // Bind search result changed handler
     $search.change(function () {
       var current = $search.typeahead('getActive');
-      if (current.name === $search.val()) {
+      if (current && current.name === $search.val()) {
         cb.moveToConceptById(current.id);
       }
     });
