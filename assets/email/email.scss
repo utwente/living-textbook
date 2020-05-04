@@ -12,6 +12,7 @@ $light-gray: $background-color;
 $medium-gray: darken($background-color, 20%);
 $dark-gray: darken($background-color, 40%);
 $image-margin: 16px;
+$button-margin: 0;
 
 @import '~foundation-emails/scss/foundation-emails';
 
