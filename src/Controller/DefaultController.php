@@ -419,6 +419,37 @@ class DefaultController extends AbstractController
   }
 
   /**
+   * Filter an Url based on whether it's original object is deleted
+   *
+   * @param $entry
+   *
+   * @return bool
+   */
+  private function filterDeleted(Url $entry): bool
+  {
+    $context = $entry->getContext();
+    $class   = $context->getClass();
+    $id      = $context->getId();
+
+    switch ($class) {
+      case StudyArea::class:
+        return true; // Cannot be deleted in this context
+      case Concept::class:
+        return array_key_exists($id, $this->concepts);
+      case LearningOutcome::class:
+        return array_key_exists($id, $this->learningOutcomes);
+      case LearningPath::class:
+        return array_key_exists($id, $this->learningPaths);
+      case ExternalResource::class:
+        return array_key_exists($id, $this->externalResources);
+      case Contributor::class:
+        return array_key_exists($id, $this->contributors);
+      default:
+        return false;
+    }
+  }
+
+  /**
    * Filter an Url based on it being internal or not
    *
    * @param $entry
@@ -465,6 +496,7 @@ class DefaultController extends AbstractController
    */
   private function splitUrlLocation(?array $urls): array
   {
+    $urls = array_filter($urls, [$this, 'filterDeleted']);
     usort($urls, [$this, 'sortUrls']);
     $internalUrls = array_filter($urls, [$this, 'filterInternal']);
     $externalUrls = array_diff($urls, $internalUrls);
