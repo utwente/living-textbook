@@ -212,17 +212,18 @@ class AnalyticsService
 
     // Retrieve the output directory
     $outputDir             = $this->outputDir($object, $settingsHash);
+    $buildSuccessFile      = $outputDir . '/build-completed';
     $settings['outputDir'] = $outputDir;
 
-    // Acquire a lock for the current output directory
+    // Acquire a lock, only a single build can be run at the same time due to memory constraints
     // Phan doesn't like the Symfony way of deprecating the StoreInterface @phan-suppress-next-line PhanDeprecatedInterface
     $lockFactory = new LockFactory(new SemaphoreStore());
-    $lock        = $lockFactory->createLock('data-visualisation-' . basename($outputDir));
+    $lock        = $lockFactory->createLock('data-visualisation');
     $lock->acquire(true);
 
     try {
       // If the output directory still exists, no need to rebuild if force is not set
-      if (!$forceBuild && $this->fileSystem->exists($outputDir)) {
+      if (!$forceBuild && $this->fileSystem->exists($outputDir) && $this->fileSystem->exists($buildSuccessFile)) {
         return $outputDir;
       }
 
@@ -234,14 +235,23 @@ class AnalyticsService
       // Create output directories
       $this->fileSystem->mkdir($outputDir . '/input');
 
+      // Allow for more memory usage
+      ini_set('memory_limit', '1024M');
+
       // Retrieve the required input files
       try {
         $settings['dataFilename'] = $this->retrieveTrackingDataExport($object->getStudyArea(), $outputDir);
+
+        // Try to free up memory
+        gc_collect_cycles();
       } catch (Exception $e) {
         throw new VisualisationDependenciesFailed('trackingData', $e);
       }
       try {
         $settings['nameFilename'] = $this->retrieveConceptNamesExport($object->getStudyArea(), $outputDir);
+
+        // Try to free up memory
+        gc_collect_cycles();
       } catch (Exception $e) {
         throw new VisualisationDependenciesFailed('conceptNames', $e);
       }
@@ -259,6 +269,12 @@ class AnalyticsService
       if (!$process->isSuccessful()) {
         throw new VisualisationBuildFailed($process);
       }
+
+      // Try to free up memory
+      gc_collect_cycles();
+
+      // Mark the build as successful
+      $this->fileSystem->touch($buildSuccessFile);
     } catch (Exception $e) {
       // Remove the output directory on errors
       $this->fileSystem->remove($outputDir);
