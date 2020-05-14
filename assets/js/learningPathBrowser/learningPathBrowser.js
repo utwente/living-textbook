@@ -663,7 +663,7 @@ import Routing from 'fos-routing';
    * Find an description based on the event location
    * @returns {*}
    */
-  function findDescription() {
+  function findDescriptionElement() {
     // Retrieve the actual location
     const loc = getEventLocation();
 
@@ -768,8 +768,8 @@ import Routing from 'fos-routing';
       window.requestAnimationFrame(drawGraph);
     }
 
-    let description = findDescription();
-    if (description === undefined) {
+    const descriptionElement = findDescriptionElement();
+    if (descriptionElement === undefined) {
       if (tooltipElement !== null) {
         tooltipElement = null;
         $tooltipHandle.tooltip('hide');
@@ -778,10 +778,10 @@ import Routing from 'fos-routing';
     }
 
     if (tooltipElement === null) {
-      tooltipElement = description;
+      tooltipElement = descriptionElement;
       $tooltipHandle.css({
-        top: (description.y - pathDescriptionRadius) + 'px',
-        left: pathDescriptionX(description)
+        top: (descriptionElement.y - pathDescriptionRadius) + 'px',
+        left: pathDescriptionX(descriptionElement)
       });
       $tooltipHandle.tooltip('show');
     }
@@ -977,6 +977,10 @@ import Routing from 'fos-routing';
   // Tooltip
   $tooltipHandle.tooltip({
     title: function () {
+      if (!tooltipElement) {
+        return '';
+      }
+
       return tooltipElement.description;
     },
     placement: 'top',
