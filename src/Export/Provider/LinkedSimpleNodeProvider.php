@@ -75,8 +75,9 @@ class LinkedSimpleNodeProvider implements ProviderInterface
         {
             "numberOfLinks": <number-of-relations>,
             "label": "<concept-name>",
-            "link": "<concept-url>"
-            "definition": "<concept-definition>"
+            "link": "<concept-url>",
+            "definition": "<concept-definition>",
+            "self_assessment": "<concept-self-assessment>",
         }
     ],
     "links": [
@@ -165,6 +166,8 @@ EOT;
     // Create JSON data
     {
       // Return as JSON
+      $serializationContext = SerializationContext::create();
+      $serializationContext->setSerializeNull(true);
       $json = $this->serializer->serialize(
           [
               'nodes'              => $concepts,
@@ -174,7 +177,7 @@ EOT;
           ],
           'json',
           /** @phan-suppress-next-line PhanTypeMismatchArgument */
-          SerializationContext::create()->setGroups(['download_json']));
+          $serializationContext->setGroups(['download_json']));
 
       $response = new JsonResponse($json, Response::HTTP_OK, [], true);
       ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));

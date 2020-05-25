@@ -724,6 +724,19 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
+   * @return string|null
+   *
+   * @JMSA\Expose()
+   * @JMSA\VirtualProperty()
+   * @JMSA\SerializedName("self_assessment")
+   * @JMSA\Groups({"download_json"})
+   */
+  public function getSelfAssessmentText(): ?string
+  {
+    return $this->getSelfAssessment()->getText();
+  }
+
+  /**
    * @return string
    */
   public function getName(): string
