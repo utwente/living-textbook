@@ -314,15 +314,16 @@ class StudyAreaDuplicator
     foreach ($this->concepts as $concept) {
       $newConcept = new Concept();
       $newConcept
+          ->setStudyArea($this->newStudyArea)
           ->setName($concept->getName())
+          ->setInstance($concept->isInstance())
           ->setDefinition($concept->getDefinition())
-          ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
           ->setSynonyms($concept->getSynonyms())
+          ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
           ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
           ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
           ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
-          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()))
-          ->setStudyArea($this->newStudyArea);
+          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()));
 
       // Set learning outcomes
       foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
