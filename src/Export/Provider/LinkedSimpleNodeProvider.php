@@ -8,6 +8,7 @@ use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
+use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
@@ -27,6 +28,10 @@ class LinkedSimpleNodeProvider implements ProviderInterface
    */
   private $conceptRelationRepository;
   /**
+   * @var ContributorRepository
+   */
+  private $contributorRepository;
+  /**
    * @var ExternalResourceRepository
    */
   private $externalResourceRepository;
@@ -45,11 +50,13 @@ class LinkedSimpleNodeProvider implements ProviderInterface
 
   public function __construct(
       ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-      RelationTypeRepository $relationTypeRepository, SerializerInterface $serializer)
+      ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
+      LearningOutcomeRepository $learningOutcomeRepository, RelationTypeRepository $relationTypeRepository,
+      SerializerInterface $serializer)
   {
     $this->conceptRepository          = $conceptRepository;
     $this->conceptRelationRepository  = $conceptRelationRepository;
+    $this->contributorRepository      = $contributorRepository;
     $this->externalResourceRepository = $externalResourceRepository;
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
     $this->relationTypeRepository     = $relationTypeRepository;
@@ -88,6 +95,15 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "relationName": "<relation-name>"
         }
     ],
+    "contributors": [
+        {
+            "nodes": [<node-ids>],
+            "name": "<contributor-name>",
+            "description": "<contributor-description>",
+            "url": "<contributor-url>",
+            "email": "<contributor-email>"
+        }
+    ],
     "external_resources": [
         {
             "nodes": [<node-ids>],
@@ -119,6 +135,7 @@ EOT;
     // Retrieve the concepts
     $concepts          = $this->conceptRepository->findForStudyAreaOrderedByName($studyArea);
     $links             = $this->conceptRelationRepository->findByConcepts($concepts);
+    $contributors      = $this->contributorRepository->findForStudyArea($studyArea);
     $externalResources = $this->externalResourceRepository->findForStudyAreaOrderedByTitle($studyArea);
     $learningOutcomes  = $this->learningOutcomeRepository->findForStudyAreaOrderedByName($studyArea);
 
@@ -135,6 +152,20 @@ EOT;
           'target'       => $idMap[$link->getTargetId()],
           'source'       => $idMap[$link->getSourceId()],
           'relationName' => $link->getRelationName(),
+      ];
+    }
+
+    // Create contributors data
+    $mappedContributors = [];
+    foreach ($contributors as $contributor) {
+      $mappedContributors[] = [
+          'nodes'       => $contributor->getConcepts()->map(function (Concept $concept) use ($idMap) {
+            return $idMap[$concept->getId()];
+          }),
+          'name'        => $contributor->getName(),
+          'description' => $contributor->getDescription(),
+          'url'         => $contributor->getUrl(),
+          'email'       => $contributor->getEmail(),
       ];
     }
 
@@ -173,6 +204,7 @@ EOT;
           [
               'nodes'              => $concepts,
               'links'              => $mappedLinks,
+              'contributors'       => $mappedContributors,
               'external_resources' => $mappedExternalResources,
               'learning_outcomes'  => $mappedLearningOutcomes,
           ],
