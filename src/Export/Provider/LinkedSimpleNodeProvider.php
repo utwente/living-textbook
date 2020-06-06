@@ -75,9 +75,10 @@ class LinkedSimpleNodeProvider implements ProviderInterface
         {
             "numberOfLinks": <number-of-relations>,
             "label": "<concept-name>",
-            "link": "<concept-url>",
-            "definition": "<concept-definition>",
             "self_assessment": "<concept-self-assessment>",
+            "instance": "<concept-instance>",
+            "definition": "<concept-definition>",
+            "link": "<concept-url>",
         }
     ],
     "links": [

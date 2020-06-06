@@ -73,7 +73,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    *
    * @ORM\Column(name="instance", type="boolean")
    * @JMSA\Expose()
-   * @JMSA\Groups({"Default", "review_change"})
+   * @JMSA\Groups({"Default", "review_change", "download_json"})
    * @JMSA\Type("boolean")
    */
   private $instance;
