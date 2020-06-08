@@ -140,6 +140,13 @@ class StudyArea
   private $learningPaths;
 
   /**
+   * @var Collection|Tag[]
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private $tags;
+
+  /**
    * @var DateTime
    *
    * @ORM\Column(name="frozen_on", type="datetime", nullable=true)
@@ -229,6 +236,13 @@ class StudyArea
     $this->name                      = '';
     $this->concepts                  = new ArrayCollection();
     $this->userGroups                = new ArrayCollection();
+    $this->relationTypes             = new ArrayCollection();
+    $this->abbreviations             = new ArrayCollection();
+    $this->externalResources         = new ArrayCollection();
+    $this->contributors              = new ArrayCollection();
+    $this->learningOutcomes          = new ArrayCollection();
+    $this->learningPaths             = new ArrayCollection();
+    $this->tags                      = new ArrayCollection();
     $this->accessType                = self::ACCESS_PRIVATE;
     $this->trackUsers                = false;
     $this->openAccess                = false;
@@ -626,6 +640,9 @@ class StudyArea
     }
     foreach ($this->learningPaths as $learningPath) {
       $check($learningPath);
+    }
+    foreach ($this->tags as $tag) {
+      $check($tag);
     }
 
     // Return result

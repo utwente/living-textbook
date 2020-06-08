@@ -156,7 +156,7 @@
 
 {% macro build_simple_list_diff(field, list) %}
   <ul>
-    {% from '_data/_data_templates.html.twig' import render_contributor, render_external_resource, render_learning_outcome, render_prior_knowledge %}
+    {% from '_data/_data_templates.html.twig' import render_contributor, render_external_resource, render_learning_outcome, render_prior_knowledge, render_tag %}
     {% for item in list %}
       <li>
         {% if field == 'externalResources' %}
@@ -167,6 +167,8 @@
           {{ render_prior_knowledge(item) }}
         {% elseif field == 'contributors' %}
           {{ render_contributor(item) }}
+        {% elseif field == 'tags' %}
+          {{ render_tag(item) }}
         {% endif %}
       </li>
     {% endfor %}

@@ -1,0 +1,15 @@
+$tag-grid: map-get($spacers, 1);
+
+.concept-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -1 * $tag-grid;
+  margin-bottom: map-get($spacers, 2);
+
+  .concept-tag {
+    border: 2px solid;
+    margin: $tag-grid;
+    padding: 0.1rem 0.75rem;
+  }
+}
+

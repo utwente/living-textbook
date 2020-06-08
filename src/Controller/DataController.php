@@ -25,6 +25,7 @@ use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\RelationTypeRepository;
+use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Router\LtbRouter;
 use App\UrlUtils\UrlScanner;
@@ -390,6 +391,7 @@ class DataController extends AbstractController
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    * @param LearningPathRepository     $learningPathRepo
+   * @param TagRepository              $tagRepository
    *
    * @return array|Response
    * @throws \Exception
@@ -399,7 +401,8 @@ class DataController extends AbstractController
       EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
       AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
-      LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo)
+      LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo,
+      TagRepository $tagRepository)
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -441,7 +444,7 @@ class DataController extends AbstractController
       $duplicator = new StudyAreaDuplicator(
           $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router,
           $abbreviationRepo, $conceptRelationRepo, $contributorRepository, $externalResourceRepo, $learningOutcomeRepo,
-          $learningPathRepo, $studyAreaToDuplicate, $targetStudyArea, $concepts->toArray());
+          $learningPathRepo, $tagRepository, $studyAreaToDuplicate, $targetStudyArea, $concepts->toArray());
       $duplicator->duplicate();
 
       $this->addFlash('success', $trans->trans('data.concepts-duplicated'));

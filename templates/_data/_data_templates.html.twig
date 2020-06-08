@@ -192,6 +192,23 @@
   </div>
 {% endmacro %}
 
+{% macro data_tags(data) %}
+  {% if data|length > 0 %}
+    <div class="concept-tags">
+      {% from _self import render_tag %}
+      {% for tag in data %}
+        {{ render_tag(tag) }}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_tag(tag) %}
+  <div class="concept-tag" data-color="{{ tag.color }}">
+    <span>{{ tag.name }}</span>
+  </div>
+{% endmacro %}
+
 {% macro data_concepts(data) %}
   {% if data|length > 0 %}
     <h2>{{ 'menu.concept'|trans }}</h2>

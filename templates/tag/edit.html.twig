@@ -1,0 +1,17 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.edit_row(
+    path('app_tag_remove', {'tag': tag.id}),
+    path('app_tag_list')
+  ) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'tag.edit-title'|trans({'%item%': tag.name}) }}
+{% endblock %}
+
+{% block content %}
+  {{ form(form) }}
+{% endblock %}

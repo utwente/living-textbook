@@ -154,6 +154,7 @@ concept:
   saved: '"%item%" has been saved successfully.'
   self-assessment: 'Self assessment'
   synonyms: 'Synonyms'
+  tags: 'Tags'
   theory-explanation: 'Explanation'
   updated: '"%item%" has been successfully updated.'
 
@@ -248,6 +249,7 @@ dashboard:
   study-area-open-access-multiple: 'You can select an open access area to browse below.'
   study-area-text: 'Welcome to the "%studyArea%" study area.'
   study-area-switch: 'Search for another study area'
+  tag-count: '{0} No tags|{1} One tag|]1,Inf[ %count% tags'
   url-count: '{0} No URLs|{1} One URL of which %brokenCount% broken|]1,Inf[ %count% URLs of which %brokenCount% broken'
   url-count-broken-not-scanned: '{0} No URLs|{1} One URL, not yet scanned for broken URLs|]1,Inf[ %count% URLs, not yet scanned for broken URLs'
   url-not-scanned: 'URLs not scanned yet, click to scan.'
@@ -462,6 +464,7 @@ menu:
   show: 'Show'
   study-area: 'Study areas'
   study-area-groups: "Study area groups"
+  tags: 'Tags'
   tracking-export: 'Tracking data'
   urls: 'URLs'
 
@@ -796,6 +799,19 @@ review:
   submitted-at: 'Submitted at'
   toggle-preview: 'Toggle preview'
   update: 'Updated content'
+
+tag:
+  add-title: 'Add tag'
+  color: 'Colour'
+  edit-title: 'Edit tag "%tag%"'
+  list-title: 'Tag list'
+  name: 'Name'
+  remove-concepts: 'Note that the tag will also be removed from the following concepts/instances:'
+  remove-text: 'Are you sure you want to remove the tag "%item%"?'
+  remove-title: 'Remove tag "%item%"'
+  removed: 'Tag "%item%" has been removed successfully.'
+  saved: 'Tag "%item%" has been saved successfully.'
+  updated: 'Tag "%item%" has been successfully updated.'
 
 tracking:
   export:

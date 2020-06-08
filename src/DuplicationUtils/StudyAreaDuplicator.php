@@ -12,12 +12,14 @@ use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\Tag;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
+use App\Repository\TagRepository;
 use App\Router\LtbRouter;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
@@ -32,6 +34,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class StudyAreaDuplicator
 {
+  /**
+   * @var TagRepository
+   */
+  private $tagRepository;
   /** @var UrlContext */
   private $urlContext;
 
@@ -89,6 +95,9 @@ class StudyAreaDuplicator
   /** @var Abbreviation[] Array of duplicated abbreviations ([original id] = new abbreviation) */
   private $newAbbreviations = [];
 
+  /** @var Tag[] Array of duplicated tags ([original id] = new tag) */
+  private $newTags = [];
+
   /** @var Concept[] Array of duplicated concepts ([original id] = new concept) */
   private $newConcepts = [];
 
@@ -104,8 +113,8 @@ class StudyAreaDuplicator
    * @param ContributorRepository      $contributorRepository
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
-   *
    * @param LearningPathRepository     $learningPathRepository
+   * @param TagRepository              $tagRepository
    * @param StudyArea                  $studyAreaToDuplicate Study area to duplicate
    * @param StudyArea                  $newStudyArea         New study area
    * @param Concept[]                  $concepts             Concepts to copy
@@ -115,7 +124,7 @@ class StudyAreaDuplicator
       AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
       LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepository,
-      StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
+      TagRepository $tagRepository, StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
   {
     $this->urlContext           = new UrlContext(self::class);
     $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
@@ -128,6 +137,7 @@ class StudyAreaDuplicator
     $this->externalResourceRepo = $externalResourceRepo;
     $this->learningOutcomeRepo  = $learningOutcomeRepo;
     $this->learningPathRepo     = $learningPathRepository;
+    $this->tagRepository        = $tagRepository;
     $this->studyAreaToDuplicate = $studyAreaToDuplicate;
     $this->newStudyArea         = $newStudyArea;
     $this->concepts             = $concepts;
@@ -157,6 +167,9 @@ class StudyAreaDuplicator
 
       // Duplicate the study area abbreviations
       $this->duplicateAbbreviations();
+
+      // Duplicate tags
+      $this->duplicateTags();
 
       // Duplicate the concepts
       $this->duplicateConcepts();
@@ -305,6 +318,20 @@ class StudyAreaDuplicator
     }
   }
 
+  private function duplicateTags(): void
+  {
+    $tags = $this->tagRepository->findForStudyArea($this->studyAreaToDuplicate);
+    foreach ($tags as $tag) {
+      $newTag = (new Tag())
+          ->setStudyArea($this->newStudyArea)
+          ->setName($tag->getName())
+          ->setColor($tag->getColor());
+
+      $this->em->persist($newTag);
+      $this->newTags[$tag->getId()] = $newTag;
+    }
+  }
+
   /**
    * Duplicate the concepts
    */
@@ -338,6 +365,11 @@ class StudyAreaDuplicator
       // Set contributors
       foreach ($concept->getContributors() as $oldContributor) {
         $newConcept->addContributor($this->newContributors[$oldContributor->getId()]);
+      }
+
+      // Set tags
+      foreach ($concept->getTags() as $oldTag) {
+        $newConcept->addTag($this->newTags[$oldTag->getId()]);
       }
 
       // Save current prior knowledge to update them later when the concept map is complete

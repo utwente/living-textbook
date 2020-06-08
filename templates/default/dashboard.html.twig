@@ -3,34 +3,34 @@
 {% block stylesheets %}
   {{ parent() }}
   <style type="text/css">
-    #tracking-consent-dashboard {
-      position: relative;
-      display: none;
-    }
+      #tracking-consent-dashboard {
+          position: relative;
+          display: none;
+      }
 
-    #tracking-consent-dashboard .tcd {
-      display: none;
-    }
+      #tracking-consent-dashboard .tcd {
+          display: none;
+      }
 
-    #tracking-consent-dashboard .tcd.tcd-unknown {
-      display: block;
-    }
+      #tracking-consent-dashboard .tcd.tcd-unknown {
+          display: block;
+      }
 
-    #tracking-consent-dashboard .tcd-loader {
-      display: block;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: rgba(255, 255, 255, 0.9);
-      text-align: center;
-    }
+      #tracking-consent-dashboard .tcd-loader {
+          display: block;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: rgba(255, 255, 255, 0.9);
+          text-align: center;
+      }
 
-    #tracking-consent-dashboard .tcd-loader > i {
-      position: absolute;
-      top: 40%
-    }
+      #tracking-consent-dashboard .tcd-loader > i {
+          position: absolute;
+          top: 40%
+      }
   </style>
 
   {% from '_macro/_studyarea_select.html.twig' import select2_optgroup_css as select2_optgroup_css %}
@@ -103,7 +103,8 @@
     or contributorCount != 0
     or externalResourceCount != 0
     or learningOutcomeCount != 0
-    or learningPathCount != 0 %}
+    or learningPathCount != 0
+    or tagCount != 0 %}
     <p>{{ 'dashboard.study-area-contains'|trans() }}</p>
   {% else %}
     <p>{{ 'dashboard.study-area-empty'|trans() }}</p>
@@ -121,6 +122,14 @@
         {% if instanceCount > 0 %}<a href="{{ path('app_concept_listinstances') }}">{% endif %}
           {{ 'dashboard.instance-count'|trans({'%count%': instanceCount}) }}
           {% if instanceCount > 0 %}</a>{% endif %}
+      </li>
+    {% endif %}
+    {% if not studyArea.openAccess or tagCount > 0 %}
+      <li>
+        {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) and tagCount > 0 %}<a
+            href="{{ path('app_tag_list') }}">{% endif %}
+          {{ 'dashboard.tag-count'|trans({'%count%': tagCount}) }}
+          {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) and tagCount > 0 %}</a>{% endif %}
       </li>
     {% endif %}
     {% if not studyArea.openAccess or relationCount > 0 %}

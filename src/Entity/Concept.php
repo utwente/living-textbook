@@ -247,6 +247,19 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $contributors;
 
   /**
+   * @var Tag[]|Collection
+   *
+   * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="concepts")
+   *
+   * @Assert\NotNull()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Type("ArrayCollection<App\Entity\Tag>")
+   * @JMSA\MaxDepth(2)
+   */
+  private $tags;
+
+  /**
    * @var DataSelfAssessment
    *
    * @ORM\OneToOne(targetEntity="App\Entity\Data\DataSelfAssessment", cascade={"persist", "remove"})
@@ -327,6 +340,9 @@ class Concept implements SearchableInterface, ReviewableInterface
 
     // Contributors
     $this->contributors = new ArrayCollection();
+
+    // Tags
+    $this->tags = new ArrayCollection();
 
     // Initialize data
     $this->introduction      = new DataIntroduction();
@@ -475,6 +491,9 @@ class Concept implements SearchableInterface, ReviewableInterface
     foreach ($this->getOutgoingRelations() as $outgoingRelation) {
       $check($outgoingRelation);
     }
+    foreach ($this->getTags() as $tag) {
+      $check($tag);
+    }
 
     // Return result
     return [$lastUpdated, $lastUpdatedBy];
@@ -607,6 +626,17 @@ class Concept implements SearchableInterface, ReviewableInterface
             $newContributorRef = $em->getReference(Contributor::class, $newContributor->getId());
             assert($newContributorRef instanceof Contributor);
             $this->addContributor($newContributorRef);
+          }
+          break;
+        }
+        case 'tags':
+        {
+          $this->getTags()->clear();
+
+          foreach ($changeObj->getTags() as $newTag) {
+            $newTagRef = $em->getReference(Tag::class, $newTag->getId());
+            assert($newTagRef instanceof Tag);
+            $this->addTag($newTagRef);
           }
           break;
         }
@@ -1101,6 +1131,38 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function removeLearningOutcome(LearningOutcome $learningOutcome): Concept
   {
     $this->learningOutcomes->removeElement($learningOutcome);
+
+    return $this;
+  }
+
+  /**
+   * @return Tag[]|Collection
+   */
+  public function getTags()
+  {
+    return $this->tags;
+  }
+
+  /**
+   * @param Tag $tag
+   *
+   * @return Concept
+   */
+  public function addTag(Tag $tag): Concept
+  {
+    $this->tags->add($tag);
+
+    return $this;
+  }
+
+  /**
+   * @param Tag $tag
+   *
+   * @return Concept
+   */
+  public function removeTag(Tag $tag): Concept
+  {
+    $this->tags->removeElement($tag);
 
     return $this;
   }

@@ -1,0 +1,56 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+    {% import '_macro/_action_buttons.html.twig' as buttons %}
+    {{ buttons.header() }}
+    {{ buttons.add_button(path('app_tag_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {{ buttons.footer() }}
+  {% endif %}
+{% endblock %}
+
+{% block title %}
+  {{ 'tag.list-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  <table id="tag-table" class="table table-hover table-datatable table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'tag.name'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'tag.color'|trans }}<i class="sort"></i></th>
+      {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+        <th scope="col" class="actions">{{ 'form.actions'|trans }}</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for tag in tags %}
+      <tr>
+        <td>{{ tag.name }}</td>
+        <td>
+          <div
+              style="background-color: {{ tag.color }}; width: 1.5rem; height: 1.5rem; border-radius: 0.5rem;"></div>
+        </td>
+        {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+          <td class="actions">
+            {{ buttons.edit_button_disabled_when_frozen(path('app_tag_edit', {'tag': tag.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_tag_remove', {'tag': tag.id})) }}
+          </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block javascripts_bottom %}
+  {% if is_granted('STUDYAREA_EDIT', studyArea) %}
+    {{ dataTable('tag-table', {
+      columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+    }) }}
+  {% else %}
+    {{ dataTable('tag-table') }}
+  {% endif %}
+{% endblock %}

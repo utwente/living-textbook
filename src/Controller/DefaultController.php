@@ -18,6 +18,7 @@ use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
+use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
@@ -182,6 +183,7 @@ class DefaultController extends AbstractController
    * @param ExternalResourceRepository $externalResourceRepo
    * @param LearningOutcomeRepository  $learningOutcomeRepo
    * @param LearningPathRepository     $learningPathRepo
+   * @param TagRepository              $tagRepository
    * @param UrlChecker                 $urlChecker
    * @param TranslatorInterface        $translator
    *
@@ -196,7 +198,8 @@ class DefaultController extends AbstractController
       ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo,
       ContributorRepository $contributorRepository, AbbreviationRepository $abbreviationRepository,
       ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-      LearningPathRepository $learningPathRepo, UrlChecker $urlChecker, TranslatorInterface $translator)
+      LearningPathRepository $learningPathRepo, TagRepository $tagRepository,
+      UrlChecker $urlChecker, TranslatorInterface $translator)
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -258,6 +261,7 @@ class DefaultController extends AbstractController
         'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
         'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
         'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
+        'tagCount'              => $tagRepository->getCountForStudyArea($studyArea),
     ], $urlData);
   }
 

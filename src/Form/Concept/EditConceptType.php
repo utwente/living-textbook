@@ -12,6 +12,7 @@ use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
+use App\Entity\Tag;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Review\DisplayPendingChangeType;
 use App\Form\Type\HiddenEntityType;
@@ -22,6 +23,7 @@ use App\Repository\ConceptRepository;
 use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
+use App\Repository\TagRepository;
 use App\Review\Model\PendingChangeObjectInfo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -69,6 +71,22 @@ class EditConceptType extends AbstractType
         ])
         ->add('name_review', DisplayPendingChangeType::class, [
             'field'               => 'name',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('tags', EntityType::class, [
+            'label'         => 'concept.tags',
+            'class'         => Tag::class,
+            'choice_label'  => 'name',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (TagRepository $tagRepository) use ($concept) {
+              return $tagRepository->findForStudyAreaQb($concept->getStudyArea());
+            },
+            'select2'       => true,
+            'disabled'      => in_array('tags', $disabledFields),
+        ])
+        ->add('tags_review', DisplayPendingChangeType::class, [
+            'field'               => 'tags',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('instance', CheckboxType::class, [
