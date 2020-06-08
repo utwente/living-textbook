@@ -73,7 +73,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    *
    * @ORM\Column(name="instance", type="boolean")
    * @JMSA\Expose()
-   * @JMSA\Groups({"Default", "review_change", "download_json"})
+   * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("boolean")
    */
   private $instance;
@@ -86,7 +86,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
-   * @JMSA\Groups({"download_json", "review_change"})
+   * @JMSA\Groups({"review_change"})
    * @JMSA\Type("string")
    */
   private $definition;
@@ -304,14 +304,6 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $studyArea;
 
   /**
-   * @var string|null
-   *
-   * @JMSA\Expose
-   * @JMSA\Groups({"download_json"})
-   */
-  private $link;
-
-  /**
    * Concept constructor.
    */
   public function __construct()
@@ -411,7 +403,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    *
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
-   * @JMSA\Groups({"relations","download_json"})
+   * @JMSA\Groups({"relations"})
    *
    * @noinspection PhpUnused
    */
@@ -707,33 +699,6 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function getReviewTitle(): string
   {
     return $this->getName();
-  }
-
-  /**
-   * @return string
-   *
-   * @JMSA\Expose()
-   * @JMSA\VirtualProperty()
-   * @JMSA\Groups({"download_json"})
-   *
-   * @noinspection PhpUnused
-   */
-  public function getLabel()
-  {
-    return $this->getName();
-  }
-
-  /**
-   * @return string|null
-   *
-   * @JMSA\Expose()
-   * @JMSA\VirtualProperty()
-   * @JMSA\SerializedName("self_assessment")
-   * @JMSA\Groups({"download_json"})
-   */
-  public function getSelfAssessmentText(): ?string
-  {
-    return $this->getSelfAssessment()->getText();
   }
 
   /**
@@ -1138,26 +1103,5 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->learningOutcomes->removeElement($learningOutcome);
 
     return $this;
-  }
-
-  /**
-   * @param string $link
-   *
-   * @return Concept
-   */
-  public function setLink(string $link): Concept
-  {
-    $this->link = $link;
-
-    return $this;
-  }
-
-  /**
-   * @return null|string
-   * @internal Used for serialization only
-   */
-  public function getLink(): ?string
-  {
-    return $this->link;
   }
 }
