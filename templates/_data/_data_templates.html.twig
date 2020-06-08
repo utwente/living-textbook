@@ -26,32 +26,32 @@
 {% endmacro %}
 
 {% macro data_introduction(data) %}
-  {% set title = 'concept.introduction'|trans %}
+  {% set title = naming.get.concept.introduction %}
   {% set annotationContext = 'introduction' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_synonyms(data) %}
   {% if data|length > 0 %}
-    <h2>{{ 'concept.synonyms'|trans }}</h2>
+    <h2>{{ naming.get.concept.synonyms }}</h2>
     <p>{{ data }}</p>
   {% endif %}
 {% endmacro %}
 
 {% macro data_theory_explanation(data) %}
-  {% set title = 'concept.theory-explanation'|trans %}
+  {% set title = naming.get.concept.theoryExplanation %}
   {% set annotationContext = 'theory_explanation' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_how_to(data) %}
-  {% set title = 'concept.how-to'|trans %}
+  {% set title = naming.get.concept.howTo %}
   {% set annotationContext = 'how-to' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_examples(data) %}
-  {% set title = 'concept.examples'|trans %}
+  {% set title = naming.get.concept.examples %}
   {% set annotationContext = 'examples' %}
   {{ block('data_display_block') }}
 {% endmacro %}
@@ -110,7 +110,7 @@
 {% endmacro %}
 
 {% macro data_self_assessment(data) %}
-  {% set title = 'concept.self-assessment'|trans %}
+  {% set title = naming.get.concept.selfAssessment %}
   {% set annotationContext = 'self-assessment' %}
   {{ block('data_display_block') }}
 {% endmacro %}
@@ -155,7 +155,7 @@
 
 {% macro data_prior_knowledge(data) %}
   {% if data|length > 0 %}
-    <h2>{{ 'concept.prior-knowledge'|trans }}</h2>
+    <h2>{{ naming.get.concept.priorKnowledge }}</h2>
     <ul>
       {% from _self import render_prior_knowledge %}
       {% for priorKnowledge in data %}

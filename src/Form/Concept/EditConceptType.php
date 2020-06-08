@@ -16,6 +16,7 @@ use App\Form\Data\BaseDataTextType;
 use App\Form\Review\DisplayPendingChangeType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
+use App\Naming\NamingService;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\ContributorRepository;
@@ -33,22 +34,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EditConceptType extends AbstractType
 {
-
-  /** @var TranslatorInterface */
+  /**
+   * @var NamingService
+   */
+  private $namingService;
+  /**
+   * @var TranslatorInterface
+   */
   private $translator;
 
-  /**
-   * EditConceptType constructor.
-   *
-   * @param TranslatorInterface $translator
-   */
-  public function __construct(TranslatorInterface $translator)
+  public function __construct(TranslatorInterface $translator, NamingService $namingService)
   {
-    $this->translator = $translator;
+    $this->translator    = $translator;
+    $this->namingService = $namingService;
   }
 
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    $fieldNames = $this->namingService->get()->concept();
 
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
     $pendingChangeObjectInfo = $options['pending_change_info'];
@@ -78,64 +81,70 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('definition', TextareaType::class, [
-            'label'      => 'concept.definition',
-            'empty_data' => '',
-            'required'   => false,
-            'disabled'   => in_array('definition', $disabledFields),
+            'label'              => $fieldNames->definition(),
+            'translation_domain' => false,
+            'empty_data'         => '',
+            'required'           => false,
+            'disabled'           => in_array('definition', $disabledFields),
         ])
         ->add('definition_review', DisplayPendingChangeType::class, [
             'field'               => 'definition',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('introduction', BaseDataTextType::class, [
-            'label'      => 'concept.introduction',
-            'data_class' => DataIntroduction::class,
-            'studyArea'  => $studyArea,
-            'required'   => false,
-            'disabled'   => in_array('introduction', $disabledFields),
+            'label'              => $fieldNames->introduction(),
+            'translation_domain' => false,
+            'data_class'         => DataIntroduction::class,
+            'studyArea'          => $studyArea,
+            'required'           => false,
+            'disabled'           => in_array('introduction', $disabledFields),
         ])
         ->add('introduction_review', DisplayPendingChangeType::class, [
             'field'               => 'introduction',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('theoryExplanation', BaseDataTextType::class, [
-            'label'      => 'concept.theory-explanation',
-            'required'   => false,
-            'data_class' => DataTheoryExplanation::class,
-            'studyArea'  => $studyArea,
-            'disabled'   => in_array('theoryExplanation', $disabledFields),
+            'label'              => $fieldNames->theoryExplanation(),
+            'translation_domain' => false,
+            'required'           => false,
+            'data_class'         => DataTheoryExplanation::class,
+            'studyArea'          => $studyArea,
+            'disabled'           => in_array('theoryExplanation', $disabledFields),
         ])
         ->add('theoryExplanation_review', DisplayPendingChangeType::class, [
             'field'               => 'theoryExplanation',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('examples', BaseDataTextType::class, [
-            'label'      => 'concept.examples',
-            'required'   => false,
-            'data_class' => DataExamples::class,
-            'studyArea'  => $studyArea,
-            'disabled'   => in_array('examples', $disabledFields),
+            'label'              => $fieldNames->examples(),
+            'translation_domain' => false,
+            'required'           => false,
+            'data_class'         => DataExamples::class,
+            'studyArea'          => $studyArea,
+            'disabled'           => in_array('examples', $disabledFields),
         ])
         ->add('examples_review', DisplayPendingChangeType::class, [
             'field'               => 'examples',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('howTo', BaseDataTextType::class, [
-            'label'      => 'concept.how-to',
-            'required'   => false,
-            'data_class' => DataHowTo::class,
-            'studyArea'  => $studyArea,
-            'disabled'   => in_array('howTo', $disabledFields),
+            'label'              => $fieldNames->howTo(),
+            'translation_domain' => false,
+            'required'           => false,
+            'data_class'         => DataHowTo::class,
+            'studyArea'          => $studyArea,
+            'disabled'           => in_array('howTo', $disabledFields),
         ])
         ->add('howTo_review', DisplayPendingChangeType::class, [
             'field'               => 'howTo',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('synonyms', TextType::class, [
-            'label'      => 'concept.synonyms',
-            'empty_data' => '',
-            'required'   => false,
-            'disabled'   => in_array('synonyms', $disabledFields),
+            'label'              => $fieldNames->synonyms(),
+            'translation_domain' => false,
+            'empty_data'         => '',
+            'required'           => false,
+            'disabled'           => in_array('synonyms', $disabledFields),
         ])
         ->add('synonyms_review', DisplayPendingChangeType::class, [
             'field'               => 'synonyms',
@@ -176,12 +185,13 @@ class EditConceptType extends AbstractType
 
         // This field is also used by the ckeditor plugin for concept selection
         ->add('priorKnowledge', EntityType::class, [
-            'label'         => 'concept.prior-knowledge',
-            'class'         => Concept::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (ConceptRepository $conceptRepository) use ($concept) {
+            'label'              => $fieldNames->priorKnowledge(),
+            'translation_domain' => false,
+            'class'              => Concept::class,
+            'choice_label'       => 'name',
+            'required'           => false,
+            'multiple'           => true,
+            'query_builder'      => function (ConceptRepository $conceptRepository) use ($concept) {
               $qb = $conceptRepository->createQueryBuilder('c');
 
               if ($concept->getId()) {
@@ -195,18 +205,18 @@ class EditConceptType extends AbstractType
 
               return $qb;
             },
-            'select2'       => true,
-            'attr'          => [
+            'select2'            => true,
+            'attr'               => [
                 'data-ckeditor-selector' => 'concepts', // Register for ckeditor
             ],
-            'disabled'      => in_array('priorKnowledge', $disabledFields),
+            'disabled'           => in_array('priorKnowledge', $disabledFields),
         ])
         ->add('priorKnowledge_review', DisplayPendingChangeType::class, [
             'field'               => 'priorKnowledge',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('selfAssessment', BaseDataTextType::class, [
-            'label'      => 'concept.self-assessment',
+            'label'      => $fieldNames->selfAssessment(),
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
             'studyArea'  => $studyArea,
