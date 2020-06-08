@@ -14,7 +14,6 @@ use Pandoc\Pandoc;
 use Pandoc\PandocException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class LtbSection extends Section
 {
@@ -31,9 +30,6 @@ abstract class LtbSection extends Section
   /** @var LtbRouter */
   protected $router;
 
-  /** @var TranslatorInterface */
-  protected $translator;
-
   /** @var string */
   protected $projectDir;
 
@@ -43,21 +39,19 @@ abstract class LtbSection extends Section
   /**
    * LtbSection constructor.
    *
-   * @param string              $name
-   * @param LtbRouter           $router
-   * @param TranslatorInterface $translator
-   * @param string              $projectDir
+   * @param string    $name
+   * @param LtbRouter $router
+   * @param string    $projectDir
    *
    * @throws LatexException
    */
-  public function __construct(string $name, LtbRouter $router, TranslatorInterface $translator, string $projectDir)
+  public function __construct(string $name, LtbRouter $router, string $projectDir)
   {
     $this->pandoc     = new Pandoc();
     $this->fileSystem = new Filesystem();
     $this->parser     = new Parser();
 
     $this->router     = $router;
-    $this->translator = $translator;
     $this->projectDir = $projectDir;
 
     // Generate base url
@@ -80,7 +74,7 @@ abstract class LtbSection extends Section
   {
     // See https://tex.stackexchange.com/a/282/110054
     $this->addElement((new CustomCommand('\\FloatBarrier')));
-    $this->addElement((new SubSection($this->translator->trans($title)))->addElement(new CustomCommand($this->convertHtmlToLatex($html))));
+    $this->addElement((new SubSection($title))->addElement(new CustomCommand($this->convertHtmlToLatex($html))));
   }
 
   /**

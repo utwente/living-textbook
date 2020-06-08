@@ -3,6 +3,7 @@
 namespace App\ConceptPrint\Section;
 
 use App\Entity\Concept;
+use App\Naming\NamingService;
 use App\Router\LtbRouter;
 use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
@@ -19,22 +20,23 @@ class ConceptSection extends LtbSection
    * @param Concept             $concept
    * @param LtbRouter           $router
    * @param TranslatorInterface $translator
+   * @param NamingService       $namingService
    * @param string              $projectDir
    *
    * @throws LatexException
    * @throws PandocException
    */
-  public function __construct(Concept $concept, LtbRouter $router, TranslatorInterface $translator, string $projectDir)
+  public function __construct(
+      Concept $concept, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
   {
-
-    parent::__construct($concept->getName(), $router, $translator, $projectDir);
+    parent::__construct($concept->getName(), $router, $projectDir);
 
     // Use sloppy to improve text breaks
     $this->addElement(new CustomCommand('\\sloppy'));
 
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
         $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-        $this->translator->trans('concept.online-source')
+        $translator->trans('concept.online-source')
     )));
 
     // Add concept data
@@ -42,17 +44,18 @@ class ConceptSection extends LtbSection
       $this->addElement(new CustomCommand('\\\\'));
       $this->addElement(new Text($concept->getDefinition()));
     }
+    $fieldNames = $namingService->get()->concept();
     if ($concept->getIntroduction()->hasData()) {
-      $this->addSection('concept.introduction', $concept->getIntroduction()->getText());
+      $this->addSection($fieldNames->introduction(), $concept->getIntroduction()->getText());
     }
     if ($concept->getTheoryExplanation()->hasData()) {
-      $this->addSection('concept.theory-explanation', $concept->getTheoryExplanation()->getText());
+      $this->addSection($fieldNames->theoryExplanation(), $concept->getTheoryExplanation()->getText());
     }
     if ($concept->getHowTo()->hasData()) {
-      $this->addSection('concept.how-to', $concept->getHowTo()->getText());
+      $this->addSection($fieldNames->howTo(), $concept->getHowTo()->getText());
     }
     if ($concept->getExamples()->hasData()) {
-      $this->addSection('concept.examples', $concept->getExamples()->getText());
+      $this->addSection($fieldNames->examples(), $concept->getExamples()->getText());
     }
 
     // Undo sloppy

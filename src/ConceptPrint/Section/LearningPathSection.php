@@ -5,6 +5,7 @@ namespace App\ConceptPrint\Section;
 use App\Entity\Concept;
 use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
+use App\Naming\NamingService;
 use App\Router\LtbRouter;
 use BobV\LatexBundle\Exception\LatexException;
 use BobV\LatexBundle\Latex\Element\CustomCommand;
@@ -23,18 +24,20 @@ class LearningPathSection extends LtbSection
    * @param LearningPath        $learningPath
    * @param LtbRouter           $router
    * @param TranslatorInterface $translator
+   * @param NamingService       $namingService
    * @param string              $projectDir
    *
    * @throws LatexException
    * @throws PandocException
    */
-  public function __construct(LearningPath $learningPath, LtbRouter $router, TranslatorInterface $translator, string $projectDir)
+  public function __construct(
+      LearningPath $learningPath, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
   {
-    parent::__construct($learningPath->getName(), $router, $translator, $projectDir);
+    parent::__construct($learningPath->getName(), $router, $projectDir);
 
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
         $this->router->generateBrowserUrl('app_learningpath_show', ['learningPath' => $learningPath->getId()]),
-        $this->translator->trans('learning-path.online-source')
+        $translator->trans('learning-path.online-source')
     )));
 
     // Add learning path data
@@ -44,7 +47,7 @@ class LearningPathSection extends LtbSection
 
     // Add question
     if ($learningPath->getQuestion() != '') {
-      $this->addSection('learning-path.question', $learningPath->getQuestion());
+      $this->addSection($translator->trans('learning-path.question'), $learningPath->getQuestion());
     }
 
     // Retrieve the concepts
@@ -53,7 +56,7 @@ class LearningPathSection extends LtbSection
     });
 
     // Add concept list
-    $this->addElement((new SubSection($this->translator->trans('menu.concept')))
+    $this->addElement((new SubSection($translator->trans('menu.concept')))
         ->addElement(new Listing($concepts->map(function (Concept $concept) {
           return $concept->getName();
         })->toArray())));
@@ -61,7 +64,7 @@ class LearningPathSection extends LtbSection
     // Add each concept from the learning path
     foreach ($concepts as $concept) {
       $this->addElement(new CustomCommand('\\newpage'));
-      $this->addElement(new ConceptSection($concept, $router, $translator, $projectDir));
+      $this->addElement(new ConceptSection($concept, $router, $translator, $namingService, $projectDir));
     }
   }
 }

@@ -8,6 +8,7 @@ use App\ConceptPrint\Section\LearningPathSection;
 use App\Entity\Concept;
 use App\Entity\LearningPath;
 use App\Entity\StudyArea;
+use App\Naming\NamingService;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Router\LtbRouter;
 use BobV\LatexBundle\Exception\ImageNotFoundException;
@@ -40,13 +41,14 @@ class PrintController extends AbstractController
    * @param LatexGeneratorInterface $generator
    * @param TranslatorInterface     $translator
    * @param LtbRouter               $router
+   * @param NamingService           $namingService
    *
    * @return Response
    * @throws Exception
    */
   public function printSingleConcept(
       RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
-      TranslatorInterface $translator, LtbRouter $router)
+      TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
   {
     // Check if correct study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -61,7 +63,7 @@ class PrintController extends AbstractController
         ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
         ->setHeader($concept->getStudyArea(), $translator)
         ->addIntroduction($concept->getStudyArea(), $translator)
-        ->addElement(new ConceptSection($concept, $router, $translator, $projectDir));
+        ->addElement(new ConceptSection($concept, $router, $translator, $namingService, $projectDir));
 
     // Return PDF
     try {
@@ -81,13 +83,14 @@ class PrintController extends AbstractController
    * @param LatexGeneratorInterface $generator
    * @param TranslatorInterface     $translator
    * @param LtbRouter               $router
+   * @param NamingService           $namingService
    *
    * @return Response
    * @throws Exception
    */
   public function printLearningPath(
       RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
-      TranslatorInterface $translator, LtbRouter $router)
+      TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
   {
     // Check if correct study area
     if ($learningPath->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -102,7 +105,7 @@ class PrintController extends AbstractController
         ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
         ->setHeader($learningPath->getStudyArea(), $translator)
         ->addIntroduction($learningPath->getStudyArea(), $translator)
-        ->addElement(new LearningPathSection($learningPath, $router, $translator, $projectDir));
+        ->addElement(new LearningPathSection($learningPath, $router, $translator, $namingService, $projectDir));
 
     // Return PDF
     try {
@@ -157,7 +160,6 @@ class PrintController extends AbstractController
         ]);
       default:
         throw $e;
-        break;
     }
   }
 
