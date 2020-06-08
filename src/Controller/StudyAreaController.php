@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\StudyAreaFieldConfiguration;
 use App\Entity\StudyAreaGroup;
 use App\Form\StudyArea\EditStudyAreaType;
+use App\Form\StudyArea\FieldConfigurationType;
 use App\Form\StudyArea\TransferOwnerType;
 use App\Form\StudyAreaGroup\StudyAreaGroupType;
 use App\Form\Type\RemoveType;
@@ -21,6 +23,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -250,6 +253,40 @@ class StudyAreaController extends AbstractController
     return [
         'group' => $group,
         'form'  => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/fields")
+   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   * @Template
+   *
+   * @param Request                $request
+   * @param RequestStudyArea       $requestStudyArea
+   * @param EntityManagerInterface $entityManager
+   * @param TranslatorInterface    $translator
+   *
+   * @return array|RedirectResponse
+   */
+  public function fieldConfiguration(
+      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $entityManager,
+      TranslatorInterface $translator)
+  {
+    $studyAreaConfiguration = $requestStudyArea->getStudyArea()->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
+    $form                   = $this->createForm(FieldConfigurationType::class, $studyAreaConfiguration)
+        ->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $requestStudyArea->getStudyArea()->setFieldConfiguration($studyAreaConfiguration);
+      $entityManager->flush();
+
+      $this->addFlash('success', $translator->trans('study-area.field-configuration.updated'));
+
+      return $this->redirectToRoute('app_studyarea_fieldconfiguration');
+    }
+
+    return [
+        'form' => $form->createView(),
     ];
   }
 

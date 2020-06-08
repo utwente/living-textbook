@@ -175,6 +175,11 @@
             {% endif %}
 
             {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+              <a class="dropdown-item"
+                 href="{{ path('app_studyarea_fieldconfiguration') }}">{{ 'menu.field-configration'|trans }}</a>
+            {% endif %}
+
+            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_permissions_studyarea') }}">{{ 'menu.permissions'|trans }}</a>
             {% endif %}
 

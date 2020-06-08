@@ -447,6 +447,7 @@ menu:
   concept: 'Concepts'
   case-study: 'Case studies'
   fallback-users: 'Local accounts'
+  field-configration: 'Field configuration'
   import-data: 'Import'
   instances: 'Instances'
   learning-outcomes: 'Learning outcomes'
@@ -609,6 +610,12 @@ study-area:
   description: 'Description'
   edit-title: 'Edit study area "%item%"'
   existing: 'Existing study area'
+  field-configuration:
+    text: >-
+      Here you can update the field configuration of the current study area. You can configure the names that should
+      be displayed for the several fields in the area. If you keep a field empty, the default name will be used.
+    title: "Field configuration"
+    updated: "Field configuration updated successfully!"
   freeze: 'Freeze study area "%item%"'
   freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone without risking data loss.'
   freeze-succeeded: 'Study area "%item%" has been frozen successfully.'

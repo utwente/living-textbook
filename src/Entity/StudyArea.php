@@ -212,6 +212,16 @@ class StudyArea
   private $reviewModeEnabled;
 
   /**
+   * The study area field names object
+   *
+   * @var StudyAreaFieldConfiguration|null
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\StudyAreaFieldConfiguration", cascade={"all"})
+   * @ORM\JoinColumn(nullable=true)
+   */
+  private $fieldConfiguration;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -955,6 +965,26 @@ class StudyArea
   public function setReviewModeEnabled(bool $reviewModeEnabled): self
   {
     $this->reviewModeEnabled = $reviewModeEnabled;
+
+    return $this;
+  }
+
+  /**
+   * @return StudyAreaFieldConfiguration|null
+   */
+  public function getFieldConfiguration(): ?StudyAreaFieldConfiguration
+  {
+    return $this->fieldConfiguration;
+  }
+
+  /**
+   * @param StudyAreaFieldConfiguration|null $fieldConfiguration
+   *
+   * @return StudyArea
+   */
+  public function setFieldConfiguration(?StudyAreaFieldConfiguration $fieldConfiguration): self
+  {
+    $this->fieldConfiguration = $fieldConfiguration;
 
     return $this;
   }

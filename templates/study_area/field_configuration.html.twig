@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'study-area.field-configuration.title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'study-area.field-configuration.text'|trans }}</p>
+
+  {{ form(form) }}
+{% endblock %}
