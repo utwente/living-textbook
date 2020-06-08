@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8daecf04cf9373dc57db244fb139891f",
+    "content-hash": "9265ed8cecd3d59a9d999c738a84863b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1612,16 +1612,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v1.4.2",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "e692889ed864581b655725bd40880a69e0fc1d24"
+                "reference": "7f319095eec2bd4c99fb9253d1ddb1c323cd85ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/e692889ed864581b655725bd40880a69e0fc1d24",
-                "reference": "e692889ed864581b655725bd40880a69e0fc1d24",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/7f319095eec2bd4c99fb9253d1ddb1c323cd85ad",
+                "reference": "7f319095eec2bd4c99fb9253d1ddb1c323cd85ad",
                 "shasum": ""
             },
             "require": {
@@ -1665,19 +1665,19 @@
                 "oidc",
                 "symfony"
             ],
-            "time": "2020-02-14T16:23:38+00:00"
+            "time": "2020-06-08T07:15:55+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
             "version": "0.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/njh/easyrdf.git",
+                "url": "https://github.com/easyrdf/easyrdf.git",
                 "reference": "acd09dfe0555fbcfa254291e433c45fdd4652566"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/njh/easyrdf/zipball/acd09dfe0555fbcfa254291e433c45fdd4652566",
+                "url": "https://api.github.com/repos/easyrdf/easyrdf/zipball/acd09dfe0555fbcfa254291e433c45fdd4652566",
                 "reference": "acd09dfe0555fbcfa254291e433c45fdd4652566",
                 "shasum": ""
             },
@@ -10150,5 +10150,6 @@
         "ext-json": "*",
         "ext-libxml": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

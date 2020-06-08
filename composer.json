@@ -17,7 +17,7 @@
         "bobv/latex-bundle": "^1.4.0",
         "caxy/php-htmldiff": "dev-purifier-disable",
         "components/elfinder": "^3.1.1",
-        "drenso/symfony-oidc-bundle": "^v1.1",
+        "drenso/symfony-oidc-bundle": "^v1.5",
         "easyrdf/easyrdf": "^0.9.1",
         "friendsofsymfony/ckeditor-bundle": "^2.0",
         "friendsofsymfony/jsrouting-bundle": "^2.1",
