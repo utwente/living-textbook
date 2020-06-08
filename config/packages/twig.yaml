@@ -16,5 +16,6 @@ twig:
     '%kernel.project_dir%/public/email': email_assets
   globals:
     allowed_ckeditor_tags: '%ckeditor_tags%'
+    naming: '@App\Naming\NamingService'
     sentry_dsn: ~ # This disables sentry by default, we enable it explicitly in the prod environment
     sentry_release: '%sentry_release%'

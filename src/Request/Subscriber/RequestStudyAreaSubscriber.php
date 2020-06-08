@@ -4,6 +4,7 @@ namespace App\Request\Subscriber;
 
 use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Naming\NamingService;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use ReflectionException;
@@ -31,6 +32,10 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
   /** @var string Study area twig key */
   public const TWIG_STUDY_AREA_KEY = '_twigStudyArea';
+  /**
+   * @var NamingService
+   */
+  private $namingService;
 
   /** @var RouterInterface */
   private $router;
@@ -50,20 +55,15 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   /** @var int|null */
   private $studyAreaId;
 
-  /**
-   * RequestStudyAreaSubscriber constructor.
-   *
-   * @param RouterInterface       $router
-   * @param StudyAreaRepository   $studyAreaRepository
-   * @param TokenStorageInterface $tokenStorage
-   * @param Environment           $twig
-   */
-  public function __construct(RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage, Environment $twig)
+  public function __construct(
+      RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage,
+      Environment $twig, NamingService $namingService)
   {
     $this->router              = $router;
     $this->studyAreaRepository = $studyAreaRepository;
     $this->tokenStorage        = $tokenStorage;
     $this->twig                = $twig;
+    $this->namingService       = $namingService;
     $this->studyArea           = NULL;
     $this->studyAreaId         = NULL;
   }
@@ -78,6 +78,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     return array(
         KernelEvents::CONTROLLER           => [
             array('determineStudyArea', 100),
+            array('injectStudyAreaInNamingService', 99),
         ],
         KernelEvents::CONTROLLER_ARGUMENTS => [
             array('injectStudyAreaInControllerArguments', 100),
@@ -208,11 +209,27 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
    */
   public function injectStudyAreaInView()
   {
+    $this->testCache();
+    $this->twig->addGlobal(self::TWIG_STUDY_AREA_KEY, $this->studyArea);
+  }
+
+  /**
+   * Inject the StudyArea in the naming service
+   */
+  public function injectStudyAreaInNamingService()
+  {
+    $this->testCache();
+    $this->namingService->injectStudyArea($this->studyArea);
+  }
+
+  /**
+   * Test the internal study area cache
+   */
+  private function testCache(): void
+  {
     // Cache study area during request
     if ($this->studyArea == NULL && $this->studyAreaId !== NULL && $this->studyAreaId !== -1) {
       $this->studyArea = $this->studyAreaRepository->find($this->studyAreaId);
     }
-
-    $this->twig->addGlobal(self::TWIG_STUDY_AREA_KEY, $this->studyArea);
   }
 }

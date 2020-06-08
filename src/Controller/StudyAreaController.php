@@ -13,6 +13,7 @@ use App\Form\StudyArea\TransferOwnerType;
 use App\Form\StudyAreaGroup\StudyAreaGroupType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
+use App\Naming\NamingService;
 use App\Repository\PageLoadRepository;
 use App\Repository\StudyAreaGroupRepository;
 use App\Repository\TrackingEventRepository;
@@ -265,12 +266,13 @@ class StudyAreaController extends AbstractController
    * @param RequestStudyArea       $requestStudyArea
    * @param EntityManagerInterface $entityManager
    * @param TranslatorInterface    $translator
+   * @param NamingService          $namingService
    *
    * @return array|RedirectResponse
    */
   public function fieldConfiguration(
       Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $entityManager,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator, NamingService $namingService)
   {
     $studyAreaConfiguration = $requestStudyArea->getStudyArea()->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
     $form                   = $this->createForm(FieldConfigurationType::class, $studyAreaConfiguration)
@@ -280,6 +282,7 @@ class StudyAreaController extends AbstractController
       $requestStudyArea->getStudyArea()->setFieldConfiguration($studyAreaConfiguration);
       $entityManager->flush();
 
+      $namingService->clearCache();
       $this->addFlash('success', $translator->trans('study-area.field-configuration.updated'));
 
       return $this->redirectToRoute('app_studyarea_fieldconfiguration');
