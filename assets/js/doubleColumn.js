@@ -24,7 +24,7 @@ $(function () {
   require('./search/conceptSearch');
   require('./learningPathBrowser/learningPathBrowser');
 
-  global.cb = new ConceptBrowser();
+  global.cb = new ConceptBrowser('graph_container_canvas');
 
   $.get({
     url: Routing.generate('app_data_export', {_studyArea: _studyArea}),

@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import {ZoomTransform} from 'd3-zoom';
 import BrowserConfigurationInstance, {BrowserConfiguration} from './BrowserConfiguration';
+import ConceptBrowserRenderer from './ConceptBrowserRenderer';
 
 require('../../css/conceptBrowser/conceptBrowser.scss');
 
@@ -59,73 +60,57 @@ export interface LinkNodeType extends NodeType, LinkType {
  */
 export default class ConceptBrowser {
     private readonly config: BrowserConfiguration = BrowserConfigurationInstance;
+    private readonly renderer!: ConceptBrowserRenderer;
 
     // Display settings
-    private mapWidth: number = 3000;
-    private mapWidthDragMargin: number = this.mapWidth / 30;
-    private mapHeight: number = 2000;
-    private mapHeightDragMargin: number = this.mapHeight / 20;
-    private zoomMargin: number = 25;
+    private readonly mapWidth: number = 3000;
+    private readonly mapWidthDragMargin: number = this.mapWidth / 30;
+    private readonly mapHeight: number = 2000;
+    private readonly mapHeightDragMargin: number = this.mapHeight / 20;
+    private readonly zoomMargin: number = 25;
 
     // Force settings
-    private collideStrength: number = 0.6;
-    private collideIterations: number = 1;
-    private linkStrength: number = 0.9;
-    private manyBodyStrength: number = -70;
-    private manyBodyDistanceMin: number = 20;
-    private manyBodyDistanceMax: number = 1500;
-    private boundForceStrenght: number = 80;
-    private linkNodeRadius: number = 20;
-    private nodeRadiusMargin: number = 10;
+    private readonly collideStrength: number = 0.6;
+    private readonly collideIterations: number = 1;
+    private readonly linkStrength: number = 0.9;
+    private readonly manyBodyStrength: number = -70;
+    private readonly manyBodyDistanceMin: number = 20;
+    private readonly manyBodyDistanceMax: number = 1500;
+    private readonly boundForceStrength: number = 80;
+    private readonly linkNodeRadius: number = 20;
+    private readonly nodeRadiusMargin: number = 10;
 
     // General settings
-    private drawGrid: boolean = false;
-    private drawLinkNodes: boolean = false;
-    private zoomExtent: [number, number] = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
-    private zoomButtonFactor: number = 1.5;
-
-    /******************************************************************************************************
-     * Style configuration variables
-     *****************************************************************************************************/
-
-    public applyStyle(style: number) {
-        this.config.applyStyle(style);
-
-        if (d3.event && !d3.event.active) this.cbSimulation.restart();
-    };
+    private readonly zoomExtent: [number, number] = [0.1, 8]; // [min,max] zoom, min is also limited by screen size
+    private readonly zoomButtonFactor: number = 1.5;
 
     /******************************************************************************************************
      * Internal variables
      *****************************************************************************************************/
 
     private readonly canvas: HTMLCanvasElement;
-    private context!: CanvasRenderingContext2D;
-    private canvasWidth: any;
-    private canvasHeight: any;
-    private halfCanvasWidth: any;
-    private halfCanvasHeight: any;
+    private _canvasWidth!: number;
+    private _canvasHeight!: number;
+    private _halfCanvasWidth!: number;
+    private _halfCanvasHeight!: number;
     private halfMapWidth: number = this.mapWidth / 2;
     private halfMapHeight: number = this.mapHeight / 2;
     private cbCanvas: any;
     private cbSimulation: any;
     private cbZoom: any;
-    private cbTransform = d3.zoomIdentity;
+    private _cbTransform = d3.zoomIdentity;
     private cbDrag: any;
     private dragPosY: any;
     private dragPosX: any;
-    private isDragging = false;
-    private highlightedNode: NodeType | null = null;
-    private specialHighlightedNode: NodeType | null = null;
+    private _isDragging = false;
+    private _highlightedNode: NodeType | null = null;
+    private _specialHighlightedNode: NodeType | null = null;
     private mouseMoveDisabled = false;
     private clickSend = false;
     private contextMenuNode: NodeType | null = null;
     private lastTransformed: any;
     private isLoaded = false;
     private isPaused = false;
-
-    private readonly filters = {
-        showInstances: true,
-    };
 
     // Initialize the graph object
     private cbGraph: { nodes: NodeType[], links: LinkType[], linkNodes: LinkNodeType[] } = {
@@ -134,8 +119,57 @@ export default class ConceptBrowser {
         linkNodes: [],
     };
 
-    constructor() {
-        this.canvas = document.getElementById('graph_container_canvas') as HTMLCanvasElement;
+    public get canvasWidth(): number {
+        return this._canvasWidth;
+    }
+
+    public get canvasHeight(): number {
+        return this._canvasHeight;
+    }
+
+    public get halfCanvasWidth(): number {
+        return this._halfCanvasWidth;
+    }
+
+    public get halfCanvasHeight(): number {
+        return this._halfCanvasHeight;
+    }
+
+    public get cbTransform(): ZoomTransform {
+        return this._cbTransform;
+    }
+
+    public get nodes(): NodeType[] {
+        return this.cbGraph.nodes;
+    }
+
+    public get links(): LinkType[] {
+        return this.cbGraph.links;
+    }
+
+    public get linkNodes(): LinkNodeType[] {
+        return this.cbGraph.linkNodes;
+    }
+
+    public get isDragging(): boolean {
+        return this._isDragging;
+    }
+
+    public get highlightedNode(): NodeType | null {
+        return this._highlightedNode;
+    }
+
+    public get specialHighlightedNode(): NodeType | null {
+        return this._specialHighlightedNode;
+    }
+
+    /******************************************************************************************************
+     * Property getters for external access
+     *****************************************************************************************************/
+
+    constructor(elementId: string) {
+        this.canvas = document.getElementById(elementId) as HTMLCanvasElement;
+        this.renderer = new ConceptBrowserRenderer(this, this.canvas, this.config, this.mapWidth, this.mapHeight);
         this.cbCanvas = d3.select(this.canvas);
         this.resizeCanvas();
     }
@@ -165,7 +199,7 @@ export default class ConceptBrowser {
     public centerView(duration?: number) {
         // Find current locations of all nodes, and select max
         let minX = this.mapWidth, maxX = 0, minY = this.mapHeight, maxY = 0;
-        this.cbGraph.nodes.map((node) => {
+        this.cbGraph.nodes.forEach((node) => {
             minX = Math.min(minX, node.x - node.radius);
             maxX = Math.max(maxX, node.x + node.radius);
             minY = Math.min(minY, node.y - node.radius);
@@ -230,16 +264,11 @@ export default class ConceptBrowser {
     private resizeCanvas() {
         // Get container size, and set sizes and zoom extent
         const $container = $('#graph_container_div');
-        this.canvas.width = this.canvasWidth = ((d3.event && d3.event.detail && d3.event.detail.width) ? d3.event.detail.width : $container.innerWidth());
-        this.canvas.height = this.canvasHeight = ((d3.event && d3.event.detail && d3.event.detail.height) ? d3.event.detail.height : $container.innerHeight());
-        this.halfCanvasWidth = this.canvasWidth / 2;
-        this.halfCanvasHeight = this.canvasHeight / 2;
+        this.canvas.width = this._canvasWidth = ((d3.event && d3.event.detail && d3.event.detail.width) ? d3.event.detail.width : $container.innerWidth());
+        this.canvas.height = this._canvasHeight = ((d3.event && d3.event.detail && d3.event.detail.height) ? d3.event.detail.height : $container.innerHeight());
+        this._halfCanvasWidth = this.canvasWidth / 2;
+        this._halfCanvasHeight = this.canvasHeight / 2;
         this.zoomExtent[0] = Math.max(this.canvasWidth / this.mapWidth, this.canvasHeight / this.mapHeight, 0.1);
-
-        // Get context if not available
-        if (this.context === undefined) {
-            this.context = this.canvas.getContext('2d')!;
-        }
 
         // Check if the event loop is running, if not, restart
         if (d3.event && !d3.event.active) this.cbSimulation.restart();
@@ -248,7 +277,7 @@ export default class ConceptBrowser {
     /**
      * Retrieve the node radius
      */
-    private getNodeRadius(node: NodeType): number {
+    public getNodeRadius(node: NodeType): number {
         // Check whether link node
         if (node.linkNode === true) {
             node.radius = 1;
@@ -284,7 +313,7 @@ export default class ConceptBrowser {
      */
     private generateLinkNodes() {
         this.cbGraph.linkNodes = [];
-        this.cbGraph.links.map((link) => {
+        this.cbGraph.links.forEach((link) => {
             this.cbGraph.linkNodes.push({
                 // We need to have the object, so select it if available
                 source: link.source.hasOwnProperty('id')
@@ -312,9 +341,19 @@ export default class ConceptBrowser {
      * Calculate the link node locations
      */
     private updateLinkNodeLocations() {
-        this.cbGraph.linkNodes.map((linkNode) => {
+        this.cbGraph.linkNodes.forEach((linkNode) => {
             linkNode.x = (linkNode.source.x + linkNode.target.x) * 0.5;
             linkNode.y = (linkNode.source.y + linkNode.target.y) * 0.5;
+        });
+    }
+
+    /**
+     * Limit the node position based on the map dimensions
+     */
+    private limitNodes() {
+        this.cbGraph.nodes.forEach((node) => {
+            node.x = Math.max(node.radius, Math.min(this.mapWidth - node.radius, node.x));
+            node.y = Math.max(node.radius, Math.min(this.mapHeight - node.radius, node.y));
         });
     }
 
@@ -324,14 +363,6 @@ export default class ConceptBrowser {
     private reloadSimulation() {
         this.cbSimulation.nodes(this.cbGraph.nodes.concat(this.cbGraph.linkNodes));
         this.cbSimulation.force('link').links(this.cbGraph.links);
-    }
-
-    /**
-     * Limit the node position based on the map dimensions
-     */
-    private limitNode(node: NodeType) {
-        node.x = Math.max(node.radius, Math.min(this.mapWidth - node.radius, node.x));
-        node.y = Math.max(node.radius, Math.min(this.mapHeight - node.radius, node.y));
     }
 
     /**
@@ -352,7 +383,7 @@ export default class ConceptBrowser {
      * Mark the given node as being dragged
      */
     private setNodeAsDragged(node: NodeType) {
-        this.isDragging = true;
+        this._isDragging = true;
         node.dragged = true;
         this.clearNodeHighlight();
         this.setHighlightsByNode(node);
@@ -363,7 +394,7 @@ export default class ConceptBrowser {
      * @param node
      */
     private clearNodeAsDragged(node: NodeType) {
-        this.isDragging = false;
+        this._isDragging = false;
         node.dragged = false;
         this.clearHighlightsByNode(node);
     }
@@ -387,13 +418,15 @@ export default class ConceptBrowser {
         // Only set other highlight when nodeOnly is not set
         if (!nodeOnly) {
             // Set as highlighted
-            this.highlightedNode = node;
+            this._highlightedNode = node;
             node.highlighted = true;
             this.setHighlightsByNode(node);
         } else {
-            this.specialHighlightedNode = node;
+            this._specialHighlightedNode = node;
             node.specialHilight = true;
         }
+
+        this.renderer.requestStateRefresh();
     }
 
     /**
@@ -403,12 +436,14 @@ export default class ConceptBrowser {
         if (this.highlightedNode !== null) {
             this.highlightedNode.highlighted = false;
             this.clearHighlightsByNode(this.highlightedNode);
-            this.highlightedNode = null;
+            this._highlightedNode = null;
         }
         if (this.specialHighlightedNode !== null) {
             this.specialHighlightedNode.specialHilight = false;
-            this.specialHighlightedNode = null;
+            this._specialHighlightedNode = null;
         }
+
+        this.renderer.requestStateRefresh();
     }
 
     /**
@@ -416,7 +451,7 @@ export default class ConceptBrowser {
      * @param node
      */
     private setHighlightsByNode(node: NodeType) {
-        this.cbGraph.links.map((link) => {
+        this.cbGraph.links.forEach((link) => {
             if (link.target.index === node.index) link.source.highlighted = true;
             if (link.source.index === node.index) link.target.highlighted = true;
         });
@@ -427,12 +462,11 @@ export default class ConceptBrowser {
      * @param node
      */
     private clearHighlightsByNode(node: NodeType) {
-        this.cbGraph.links.map((link) => {
+        this.cbGraph.links.forEach((link) => {
             if (link.target.index === node.index) link.source.highlighted = false;
             if (link.source.index === node.index) link.target.highlighted = false;
         });
     }
-
 
     /**
      * Retrieve the link minimum length
@@ -446,7 +480,7 @@ export default class ConceptBrowser {
     /**
      * Estimate the length of the link label
      */
-    private getLinkLabelLength(link: LinkType): number {
+    public getLinkLabelLength(link: LinkType): number {
         return link.relationName.length * 5 + 10;
     }
 
@@ -460,7 +494,6 @@ export default class ConceptBrowser {
             y: (loc.clientY - this.cbTransform.y) / this.cbTransform.k,
         };
     }
-
 
     /******************************************************************************************************
      * Event handlers
@@ -487,7 +520,7 @@ export default class ConceptBrowser {
             return undefined;
         }
 
-        if (node.linkNode || (node.instance && !this.filters.showInstances)) {
+        if (node.linkNode || (node.instance && !this.renderer.showInstances)) {
             return undefined;
         }
 
@@ -710,7 +743,7 @@ export default class ConceptBrowser {
         if (!nodeOnly) {
             const zoomMargin = this.zoomMargin;
             // Find current locations of highlighted nodes
-            this.cbGraph.nodes.map((node) => {
+            this.cbGraph.nodes.forEach((node) => {
                 if (!node.highlighted) return;
                 minX = Math.min(minX, node.x - node.radius - zoomMargin);
                 maxX = Math.max(maxX, node.x + node.radius + zoomMargin);
@@ -729,7 +762,6 @@ export default class ConceptBrowser {
             this.moveToTransform(transform);
         }
     }
-
 
     /**
      * Move the view to the given view bounds
@@ -776,8 +808,8 @@ export default class ConceptBrowser {
      * Limits the transformation and calls the draw function
      */
     private zoomGraph() {
-        this.cbTransform = this.limitTransform(d3.event.transform);
-        window.requestAnimationFrame(() => this.drawGraph());
+        this._cbTransform = this.limitTransform(d3.event.transform);
+        this.renderer.requestFrame();
     }
 
     /**
@@ -797,422 +829,8 @@ export default class ConceptBrowser {
     }
 
     /******************************************************************************************************
-     * Canvas draw methods
-     *****************************************************************************************************/
-
-    /**
-     * Draws the complete concept browser, refreshes the view on every iteration
-     * @note Order in this function is important!
-     */
-    private drawGraph() {
-        // Limit the nodes
-        this.cbGraph.nodes.map((n) => this.limitNode(n));
-
-        // Save state
-        this.context.save();
-
-        // Clear canvas
-        this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-        // Adjust scaling
-        this.context.translate(this.cbTransform.x, this.cbTransform.y);
-        this.context.scale(this.cbTransform.k, this.cbTransform.k);
-
-        // Draw grid lines
-        if (this.drawGrid) {
-            this.context.beginPath();
-            for (let i = 0; i <= this.mapWidth; i += 100) {
-                this.context.moveTo(i, 0);
-                this.context.lineTo(i, this.mapHeight);
-            }
-            for (let j = 0; j <= this.mapHeight; j += 100) {
-                this.context.moveTo(0, j);
-                this.context.lineTo(this.mapWidth, j);
-            }
-            this.context.strokeStyle = 'black';
-            this.context.stroke();
-
-            // Draw canvas size rectangle
-            this.context.beginPath();
-            this.context.moveTo(0, 0);
-            this.context.lineTo(this.canvasWidth, 0);
-            this.context.lineTo(this.canvasWidth, this.canvasHeight);
-            this.context.lineTo(0, this.canvasHeight);
-            this.context.lineTo(0, 0);
-            this.context.strokeStyle = 'blue';
-            this.context.stroke();
-
-            this.context.beginPath();
-            this.context.fillStyle = '#ff0000';
-            this.context.arc(this.halfCanvasWidth, this.halfCanvasHeight, 10, 0, 2 * Math.PI);
-            this.context.fill();
-        }
-
-        //////////////////////
-        // NORMAL           //
-        //////////////////////
-
-        // Draw normal links
-        this.context.beginPath();
-        this.context.lineWidth = this.config.linkLineWidth;
-        this.context.strokeStyle = this.isDragging || this.highlightedNode !== null
-            ? this.config.fadedLinksStrokeStyle : this.config.defaultLinkStrokeStyle;
-        this.cbGraph.links.map((l) => this.drawNormalLink(l));
-        this.context.stroke();
-
-        // Draw normal nodes
-        for (let nn = -1; nn <= 4; nn++) {
-            this.applyStyle(nn);
-            this.context.beginPath();
-            this.context.fillStyle = this.isDragging || this.highlightedNode !== null
-                ? this.config.fadedNodeFillStyle : this.config.defaultNodeFillStyle;
-            this.cbGraph.nodes.filter(this.filterNodeOnColor(nn)).map((n) => this.drawNormalNode(n));
-            this.context.fill();
-        }
-
-        // Draw link nodes
-        if (this.drawLinkNodes) {
-            this.context.beginPath();
-            this.context.fillStyle = this.config.fadedNodeFillStyle;
-            this.cbGraph.linkNodes.map((n) => this.drawNormalNode(n));
-            this.context.fill();
-        }
-
-        // Draw normal link arrows
-        this.context.fillStyle = this.isDragging || this.highlightedNode !== null
-            ? this.config.fadedLinksStrokeStyle : this.config.defaultLinkStrokeStyle;
-        this.cbGraph.links.map((l) => this.drawNormalLinkArrow(l));
-
-        //////////////////////
-        // DRAGGED          //
-        //////////////////////
-
-        // Draw dragged links
-        if (this.isDragging) {
-            this.context.beginPath();
-            this.context.lineWidth = this.config.linkLineWidth;
-            this.context.strokeStyle = this.config.draggedLinkStrokeStyle;
-            this.cbGraph.links.map((l) => this.drawDraggedLink(l));
-            this.context.stroke();
-        }
-
-        // Draw dragged nodes
-        if (this.isDragging) {
-            for (let dn = -1; dn <= 4; dn++) {
-                this.applyStyle(dn);
-                this.context.beginPath();
-                this.context.lineWidth = this.config.nodeLineWidth;
-                this.context.fillStyle = this.config.draggedNodeFillStyle;
-                this.context.strokeStyle = this.config.draggedNodeStrokeStyle;
-                this.cbGraph.nodes.filter(this.filterNodeOnColor(dn)).map((n) => this.drawDraggedNode(n));
-                this.context.fill();
-                this.context.stroke();
-            }
-        }
-
-        // Draw dragged link arrows
-        if (this.isDragging) {
-            this.context.fillStyle = this.config.draggedLinkStrokeStyle;
-            this.cbGraph.links.map((l) => this.drawDraggedLinkArrow(l));
-        }
-
-        //////////////////////
-        // HIGHLIGHT        //
-        //////////////////////
-
-        // Draw highlighted links
-        if (this.highlightedNode !== null) {
-            this.context.beginPath();
-            this.context.lineWidth = this.config.linkLineWidth;
-            this.context.strokeStyle = this.config.highlightedLinkStrokeStyle;
-            this.cbGraph.links.map((l) => this.drawHighlightedLink(l));
-            this.context.stroke();
-        }
-
-        // Draw highlighted nodes
-        for (let hn = -1; hn <= 4; hn++) {
-            this.applyStyle(hn);
-            this.context.beginPath();
-            this.context.lineWidth = this.config.nodeLineWidth;
-            this.context.fillStyle = this.config.highlightedNodeFillStyle;
-            this.context.strokeStyle = this.config.highlightedNodeStrokeStyle;
-            this.cbGraph.nodes.filter(this.filterNodeOnColor(hn)).map((n) => this.drawHighlightedNode(n));
-            this.context.fill();
-            this.context.stroke();
-        }
-
-        // Draw highlighted link arrows
-        if (this.highlightedNode !== null) {
-            this.context.fillStyle = this.config.highlightedLinkStrokeStyle;
-            this.cbGraph.links.map((l) => this.drawHighlightedLinkArrow(l));
-        }
-
-        //////////////////////
-        // LABELS           //
-        //////////////////////
-
-        // Set this lower to prevent horns on M/W letters
-        // https://github.com/CreateJS/EaselJS/issues/781
-        this.context.miterLimit = 2.5;
-
-        // Draw link labels
-        if (this.isDragging || this.highlightedNode !== null) {
-            this.context.fillStyle = this.config.defaultNodeLabelColor;
-            this.context.textBaseline = 'top';
-            this.context.strokeStyle = this.config.activeNodeLabelStrokeStyle;
-            this.cbGraph.links.map((l) => this.drawLinkText(l));
-        }
-
-        // Draw node labels
-        this.context.fillStyle = this.config.defaultNodeLabelColor;
-        this.context.textBaseline = 'middle';
-        this.context.textAlign = 'center';
-        this.context.strokeStyle = this.config.activeNodeLabelStrokeStyle;
-        this.cbGraph.nodes.map((n) => this.drawNodeText(n));
-
-        // Restore state
-        this.context.restore();
-    }
-
-    /**
-     * Draw the link line
-     */
-    private drawLink(link: LinkType) {
-        if (!this.filters.showInstances && (link.target.instance || link.source.instance)) {
-            return;
-        }
-
-        this.context.moveTo(link.target.x, link.target.y);
-        this.context.lineTo(link.source.x, link.source.y);
-    }
-
-    /**
-     * Draw a link when in normal state
-     */
-    private drawNormalLink(link: LinkType) {
-        if ((link.target.dragged && link.source.dragged) || (link.target.highlighted && link.source.highlighted)) return;
-        this.drawLink(link);
-    }
-
-    /**
-     * Draw a link when in dragged state
-     */
-    private drawDraggedLink(link: LinkType) {
-        if (link.source.dragged || link.target.dragged) this.drawLink(link);
-    }
-
-    /**
-     * Draw a link when in highlight state
-     */
-    private drawHighlightedLink(link: LinkType) {
-        if (link.source.index === this.highlightedNode!.index || link.target.index === this.highlightedNode!.index) this.drawLink(link);
-    }
-
-    /**
-     * Draw the link text
-     * @param link
-     */
-    private drawLinkText(link: LinkType) {
-        if (!this.filters.showInstances && (link.target.instance || link.source.instance)) {
-            return;
-        }
-
-        // Only draw the text when the link is active
-        if (link.relationName &&
-            (!this.isDragging && (link.source.index === this.highlightedNode!.index || link.target.index === this.highlightedNode!.index)) ||
-            (link.source.dragged || link.target.dragged)) {
-
-            // Calculate font(size)
-            const fontScale = Math.min(link.source.fontScale, link.target.fontScale);
-            const scaledFontSize = Math.ceil(this.config.defaultNodeLabelFontSize * fontScale);
-            this.context.font = scaledFontSize + 'px ' + this.config.fontFamily;
-            this.context.lineWidth = this.config.activeNodeLabelLineWidth * fontScale;
-
-            // Calculate angle of label
-            let startRadians = Math.atan((link.source.y - link.target.y) / (link.source.x - link.target.x));
-            startRadians += (link.source.x >= link.target.x) ? Math.PI : 0;
-
-            // Transform the context
-            this.context.save();
-            this.context.translate(link.source.x, link.source.y);
-            this.context.rotate(startRadians);
-
-            // Check rotation and add extra if required
-            let linkLabelLength = this.getLinkLabelLength(link);
-            let sourceRadius = this.getNodeRadius(link.source) + 5;
-            if ((startRadians * 2) > Math.PI) {
-                this.context.rotate(Math.PI);
-                this.context.textAlign = 'right';
-                this.context.strokeText(link.relationName, -sourceRadius, 0, linkLabelLength);
-                this.context.fillText(link.relationName, -sourceRadius, 0, linkLabelLength);
-            } else {
-                this.context.textAlign = 'left';
-                this.context.strokeText(link.relationName, sourceRadius, 0, linkLabelLength);
-                this.context.fillText(link.relationName, sourceRadius, 0, linkLabelLength);
-            }
-
-            // Restore context
-            this.context.restore();
-        }
-    }
-
-    /**
-     * Draw the link arrow
-     */
-    private drawLinkArrow(link: LinkType) {
-        if (!this.filters.showInstances && (link.target.instance || link.source.instance)) {
-            return;
-        }
-
-        const xDistance = link.source.x - link.target.x;
-        const yDistance = link.source.y - link.target.y;
-
-        // Calculate head rotation
-        const radians = Math.atan(yDistance / xDistance);
-        const startRadians = radians + ((link.source.x >= link.target.x) ? -1 : 1) * Math.PI / 2;
-
-        // Calculate the arrow head starting point
-        let arrowHeadStart;
-        if (link.target.instance) {
-            // Calculate arrow head start for instance, as they are not circles
-            if (radians > Math.PI / 4) {
-                arrowHeadStart = link.target.radius / Math.sin(radians);
-            } else if (radians < -Math.PI / 4) {
-                arrowHeadStart = -link.target.radius / Math.sin(radians);
-            } else {
-                arrowHeadStart = link.target.radius / Math.cos(radians);
-            }
-        } else {
-            arrowHeadStart = link.target.radius;
-        }
-
-        // Draw the triangle
-        this.context.save();
-        this.context.beginPath();
-        this.context.translate(link.target.x, link.target.y);
-        this.context.rotate(startRadians);
-        this.context.moveTo(0, arrowHeadStart - 1);
-        this.context.lineTo(3, 9 + arrowHeadStart);
-        this.context.lineTo(-3, 9 + arrowHeadStart);
-        this.context.closePath();
-        this.context.restore();
-        this.context.fill();
-    }
-
-    /**
-     * Draw a link arrow when in normal state
-     */
-    private drawNormalLinkArrow(link: LinkType) {
-        if ((link.target.dragged && link.source.dragged) || (link.target.highlighted && link.source.highlighted)) return;
-        this.drawLinkArrow(link);
-    }
-
-    /**
-     * Draw a link arrow when in dragged state
-     */
-    private drawDraggedLinkArrow(link: LinkType) {
-        if (link.target.dragged || link.source.dragged) this.drawLinkArrow(link);
-    }
-
-    /**
-     * Draw a link arrow when in highlighted state
-     */
-    private drawHighlightedLinkArrow(link: LinkType) {
-        if (link.target.index === this.highlightedNode!.index || link.source.index === this.highlightedNode!.index) this.drawLinkArrow(link);
-    }
-
-
-    /**
-     * Draw the node
-     * @param node
-     */
-    private drawNode(node: NodeType) {
-        if (node.instance) {
-            if (!this.filters.showInstances) {
-                return;
-            }
-            this.context.moveTo(node.x - node.radius, node.y - node.radius);
-            this.context.rect(node.x - node.radius, node.y - node.radius, node.radius * 2, node.radius * 2);
-        } else {
-            this.context.moveTo(node.x + node.radius, node.y);
-            this.context.arc(node.x, node.y, node.radius, 0, 2 * Math.PI);
-        }
-    }
-
-    /**
-     * Draw a node when in normal state
-     * @param node
-     */
-    private drawNormalNode(node: NodeType) {
-        if (node.highlighted || node.dragged) return;
-        this.drawNode(node);
-    }
-
-    /**
-     * Draw a node when in dragged state
-     * @param node
-     */
-    private drawDraggedNode(node: NodeType) {
-        if (node.dragged) this.drawNode(node);
-    }
-
-    /**
-     * Draw a node when in highlighted state
-     * @param node
-     */
-    private drawHighlightedNode(node: NodeType) {
-        if (node.highlighted || node.specialHilight) this.drawNode(node);
-    }
-
-
-    /**
-     * Draw the node text
-     * @param node
-     */
-    private drawNodeText(node: NodeType) {
-        if (!this.filters.showInstances && node.instance) {
-            return;
-        }
-
-        // Calculate font(size)
-        let scaledFontSize = Math.ceil(this.config.defaultNodeLabelFontSize * node.fontScale);
-        this.context.font = 'bold ' + scaledFontSize + 'px ' + this.config.fontFamily;
-        this.context.lineWidth = this.config.activeNodeLabelLineWidth * node.fontScale;
-
-        // Set font if accordingly, or skip if not
-        if (!((this.isDragging && node.dragged)
-            || ((this.highlightedNode !== null || this.isDragging) && node.highlighted)
-            || (this.specialHighlightedNode !== null && node.specialHilight))) {
-
-            // Skip this text if not required to render
-            if (this.isDragging || this.highlightedNode !== null) return;
-        }
-
-        // Draw the actual text (which can be multiple lines)
-        let yStart = node.y - node.expandedLabelStart;
-        node.expandedLabel.map((line) => {
-            if (node.dragged || node.highlighted || node.specialHilight) this.context.strokeText(line, node.x, yStart);
-            this.context.fillText(line, node.x, yStart);
-            yStart += scaledFontSize;
-        });
-    }
-
-
-    /******************************************************************************************************
      * Color functions
      *****************************************************************************************************/
-
-    /**
-     * Function to filter nodes on a given color index
-     */
-    private filterNodeOnColor(color: number) {
-        return function (node: NodeType) {
-            if (color === -1) {
-                return node.empty;
-            }
-            return !node.empty && node.color === color;
-        };
-    }
 
     /**
      * Color the given node and save in the local storage
@@ -1227,22 +845,26 @@ export default class ConceptBrowser {
                 localStorage.setItem('nodeColor.' + node.id, String(color));
             }
         }
+
+        this.renderer.requestStateRefresh();
     }
 
     /**
      * Resets all node colors and clears the local storage
      */
     private resetNodeColors() {
-        this.cbGraph.nodes.map((node) => {
+        this.cbGraph.nodes.forEach((node) => {
             node.color = node.instance ? this.config.instanceDefaultColor : 0;
         });
 
         // Clear local storage for loaded nodes only
         if (typeof (Storage) !== 'undefined') {
-            this.cbGraph.nodes.map((node) => {
+            this.cbGraph.nodes.forEach((node) => {
                 localStorage.removeItem('nodeColor.' + node.id);
             });
         }
+
+        this.renderer.requestStateRefresh();
     }
 
     /**
@@ -1270,8 +892,8 @@ export default class ConceptBrowser {
      */
     private keepInBoxForce(alpha: number) {
         for (let i = 0, n = this.cbGraph.nodes.length,
-                 node, kx = (alpha * this.boundForceStrenght) / this.mapWidth,
-                 ky = (alpha * this.boundForceStrenght) / this.mapHeight; i < n; ++i) {
+                 node, kx = (alpha * this.boundForceStrength) / this.mapWidth,
+                 ky = (alpha * this.boundForceStrength) / this.mapHeight; i < n; ++i) {
             // Set variables
             node = this.cbGraph.nodes[i];
 
@@ -1306,7 +928,7 @@ export default class ConceptBrowser {
         // Map the new data
         const availConcepts: any[] = [];
         const availLinks: any[] = [];
-        data.map((concept) => {
+        data.forEach((concept) => {
             availConcepts.push(concept.id);
             let node = this.getNodeById(concept.id);
             if (!node) {
@@ -1334,9 +956,9 @@ export default class ConceptBrowser {
         });
 
         // Loop data again, as now we have all nodes available to create the links
-        data.map((concept) => {
+        data.forEach((concept) => {
             // Update relations
-            concept.relations.map((relation: any) => {
+            concept.relations.forEach((relation: any) => {
                 availLinks.push(relation.id);
                 let link = this.getLinkById(relation.id);
                 if (!link) {
@@ -1353,7 +975,6 @@ export default class ConceptBrowser {
                 link.relationName = relation.relationName;
             });
         });
-
 
         // Remove missing nodes
         this.cbGraph.nodes = this.cbGraph.nodes.filter(function (node) {
@@ -1392,7 +1013,7 @@ export default class ConceptBrowser {
         };
 
         // Map the nodes and relations to their js equivalent
-        data.map((concept: any) => {
+        data.forEach((concept: any) => {
             // Node mapping
             this.cbGraph.nodes.push({
                 id: concept.id,
@@ -1404,7 +1025,7 @@ export default class ConceptBrowser {
             } as NodeType);
 
             // Relation mapping
-            concept.relations.map((relation: any) => {
+            concept.relations.forEach((relation: any) => {
                 this.cbGraph.links.push({
                     id: relation.id,
                     source: concept.id,
@@ -1440,7 +1061,7 @@ export default class ConceptBrowser {
                 d3.forceCenter(this.mapWidth / 2, this.mapHeight / 2));
 
         // Calculate some one-time values before rendering starts
-        this.cbGraph.nodes.map((node) => {
+        this.cbGraph.nodes.forEach((node) => {
             this.getNodeRadius(node);
             this.loadNodeColor(node);
             this.updateNodeFontScale(node);
@@ -1449,16 +1070,22 @@ export default class ConceptBrowser {
 
         this.generateLinkNodes();
 
+        // Build initial renderer state
+        this.renderer.requestStateRefresh();
+
         // Load data (nodes and links)
         this.reloadSimulation();
 
         // Load handlers for the tick event
         this.cbSimulation.on('tick', () => {
+            // Limit nodes
+            this.limitNodes();
+
             // Update link node positions
             this.updateLinkNodeLocations();
 
             // Draw the actual graph
-            window.requestAnimationFrame(() => this.drawGraph());
+            this.renderer.requestFrame();
         });
 
         // Create zoom handler
@@ -1501,9 +1128,9 @@ export default class ConceptBrowser {
         });
 
         // Create handlers for filters
-        $('#filter-show-instances').on('change', () => {
-            this.filters.showInstances = $(this).is(':checked');
-            window.requestAnimationFrame(() => this.drawGraph());
+        $('#filter-show-instances').on('change', (event) => {
+            this.renderer.setShowInstances($(event.currentTarget).is(':checked'));
+            this.renderer.requestFrame();
         });
 
         // Create drag handlers
@@ -1580,7 +1207,7 @@ export default class ConceptBrowser {
             if (this.contextMenuNode.individuals !== undefined) {
                 const individualsItems: { [key: string]: any } = {};
                 const individualsTextItems = this.contextMenuNode.individuals.split(';');
-                individualsTextItems.map((item) => {
+                individualsTextItems.forEach((item) => {
                     item = item.trim();
                     individualsItems['individual-' + item] = {
                         name: item,
