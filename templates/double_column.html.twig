@@ -55,12 +55,32 @@
                 <i class="fa fa-fw fa-filter"></i>
               </button>
               <div id="filter-content">
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="filter-show-instances" checked>
-                  <label class="custom-control-label" for="filter-show-instances">
-                    {{ 'browser.filters.show-instances'|trans }}
-                  </label>
-                </div>
+                <form onsubmit="return false;">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="filter-show-instances" checked>
+                    <label class="custom-control-label" for="filter-show-instances">
+                      {{ 'browser.filters.show-instances'|trans }}
+                    </label>
+                  </div>
+
+                  <div>
+                    <label class="col-form-label font-weight-bold">
+                      {{ 'browser.filters.tags'|trans }}
+                    </label>
+                  </div>
+                  <div class="d-flex">
+                    <div class="flex-fill">
+                      <select id="filter-tags" multiple></select>
+                    </div>
+                    <div class="flex-grow-0 flex-shrink-0 ml-1 align-self-center">
+                      <input id="filter-tags-or" type="checkbox" data-toggle="toggle" checked
+                             data-size="sm"
+                             data-width="60px" data-height="17px" {# Are required for correct rendering #}
+                             data-on="{{ 'browser.filters.or'|trans }}" data-off="{{ 'browser.filters.and'|trans }}"
+                             data-onstyle="primary" data-offstyle="primary">
+                    </div>
+                  </div>
+                </form>
               </div>
               <button id="refresh-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
                       title="{{ 'browser.refresh'|trans }}">

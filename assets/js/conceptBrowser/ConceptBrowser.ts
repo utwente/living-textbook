@@ -13,7 +13,12 @@ export interface JsonType {
     relations: Array<{
         id: number;
         target: number;
-        relationName: number;
+        relationName: string;
+    }>;
+    tags: Array<{
+        id: number;
+        color: string;
+        name: string;
     }>;
 }
 
@@ -41,6 +46,7 @@ export interface NodeType {
     specialHilight: boolean;
     linkNode?: boolean;
     empty: boolean;
+    tags: number[];
 }
 
 export interface LinkType {
@@ -119,6 +125,14 @@ export default class ConceptBrowser {
         links: [],
         linkNodes: [],
     };
+
+    private tags: {
+        [id: number]: {
+            id: number;
+            name: string;
+            color: string;
+        },
+    } = {};
 
     public get canvasWidth(): number {
         return this._canvasWidth;
@@ -547,7 +561,7 @@ export default class ConceptBrowser {
             return undefined;
         }
 
-        if (node.linkNode || (node.instance && !this.renderer.showInstances)) {
+        if (node.linkNode || this.renderer.isFiltered(node)) {
             return undefined;
         }
 
@@ -981,6 +995,9 @@ export default class ConceptBrowser {
         // Reset the link nodes
         this.cbGraph.linkNodes = [];
 
+        // Reset the tags
+        this.tags = {};
+
         // Map the new data
         const availConcepts: any[] = [];
         const availLinks: any[] = [];
@@ -1005,10 +1022,19 @@ export default class ConceptBrowser {
             node.instance = concept.instance;
             node.numberOfLinks = concept.numberOfLinks;
             node.empty = concept.isEmpty;
+            node.tags = concept.tags.map((t) => t.id);
             this.getNodeRadius(node);
             this.loadNodeColor(node);
             this.updateNodeFontScale(node);
             this.config.updateLabel(node, node.fontScale);
+
+            // Rebuild the tag data
+            concept.tags.forEach((tag) => {
+                if (tag.id in this.tags) {
+                    return;
+                }
+                this.tags[tag.id] = tag;
+            });
         });
 
         // Loop data again, as now we have all nodes available to create the links
@@ -1048,6 +1074,12 @@ export default class ConceptBrowser {
         // Reload the nodes and links
         this.reloadSimulation();
 
+        // Reload the filters
+        this.initFilters();
+
+        // Reload the renderer state
+        this.renderer.requestStateRefresh();
+
         // Restart simulation
         this.cbSimulation.alpha(0.01);
         this.cbSimulation.restart();
@@ -1067,27 +1099,39 @@ export default class ConceptBrowser {
             links: [],
             linkNodes: [],
         };
+        this.tags = {};
 
         // Map the nodes and relations to their js equivalent
-        data.forEach((concept: any) => {
+        data.forEach((concept) => {
             // Node mapping
             this.cbGraph.nodes.push({
                 id: concept.id,
                 label: concept.name,
                 instance: concept.instance,
                 empty: concept.isEmpty,
+                tags: concept.tags.map((t) => t.id),
                 link: '',
                 numberOfLinks: concept.numberOfLinks,
             } as NodeType);
 
             // Relation mapping
-            concept.relations.forEach((relation: any) => {
+            concept.relations.forEach((relation) => {
                 this.cbGraph.links.push({
                     id: relation.id,
+                    // @ts-ignore
                     source: concept.id,
+                    // @ts-ignore
                     target: relation.target,
                     relationName: relation.relationName,
                 });
+            });
+
+            // Tag mappings
+            concept.tags.forEach((tag) => {
+                if (tag.id in this.tags) {
+                    return;
+                }
+                this.tags[tag.id] = tag;
             });
         });
 
@@ -1125,9 +1169,6 @@ export default class ConceptBrowser {
         });
 
         this.generateLinkNodes();
-
-        // Build initial renderer state
-        this.renderer.requestStateRefresh();
 
         // Load data (nodes and links)
         this.reloadSimulation();
@@ -1184,11 +1225,8 @@ export default class ConceptBrowser {
             $filterBtn.tooltip('enable');
         });
 
-        // Create handlers for filters
-        $('#filter-show-instances').on('change', (event) => {
-            this.renderer.setShowInstances($(event.currentTarget).is(':checked'));
-            this.renderer.requestFrame();
-        });
+        // Initialize the filters
+        this.initFilters();
 
         // Create drag handlers
         this.cbDrag = d3.drag()
@@ -1343,5 +1381,53 @@ export default class ConceptBrowser {
 
             return $.extend(nodeItems, defaultData);
         }
+    }
+
+    /**
+     * Initialize the filters
+     */
+    private initFilters() {
+        // Create instance filter
+        const $filterInstances = $('#filter-show-instances');
+        $filterInstances.off('change');
+        $filterInstances.on('change', () => {
+            this.renderer.setShowInstances($filterInstances.is(':checked'));
+            this.renderer.requestFrame();
+        });
+
+        // Create tag filter
+        const $filterTags = $('#filter-tags');
+        const currentValue = $filterTags.val() as string[];
+        if ($filterTags.data('select2') !== undefined) {
+            // @ts-ignore
+            $filterTags.select2('destroy');
+        }
+        $filterTags.off('change');
+        $filterTags.val([]);
+
+        // Rebuild options
+        $filterTags.find('option').remove();
+        Object.values(this.tags).forEach((tag) => {
+            $filterTags.append(new Option(tag.name, String(tag.id), false, currentValue.includes(String(tag.id))));
+        });
+
+        // Create select2 for tag filter
+        // @ts-ignore
+        $filterTags.select2({
+            width: '100%',
+            theme: 'bootstrap',
+            allowClear: true,
+            placeholder: '',
+        });
+        $filterTags.on('change', () => {
+            this.renderer.setFilterTags(($filterTags.val() as string[]).map((t) => Number(t)));
+        });
+
+        // Create tag filter and/or handler
+        const $filterTagsOr = $('#filter-tags-or');
+        $filterTagsOr.off('change');
+        $filterTagsOr.on('change', () => {
+            this.renderer.setFilterTagsOr($filterTagsOr.is(':checked'));
+        });
     }
 }

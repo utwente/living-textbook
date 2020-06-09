@@ -406,7 +406,7 @@
                 <td class="actions">
                   <div class="collapse collapse-group-{{ group }}">
                     {{ buttons._action_button(
-                      path('_home', {'_studyArea': studyArea.id}), 'fa-exchange', 'study-area.switch-to'|trans,
+                      path('_home', {'_studyArea': studyArea.id}), 'fa-exchange', 'study-area.switch-to',
                       'primary top-level', false, false, studyArea.id == currentStudyArea.id ? 'study-area.current'|trans : false
                     ) }}
 

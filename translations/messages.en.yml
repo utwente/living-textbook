@@ -96,7 +96,10 @@ browser:
   close: 'Close concept map'
   filter: 'Display filters'
   filters:
+    and: 'AND'
+    or: 'OR'
     show-instances: 'Show instances'
+    tags: 'Filter on tags'
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open map'
   pause: 'Pause animation'

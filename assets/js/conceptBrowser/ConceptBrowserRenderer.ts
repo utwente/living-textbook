@@ -30,8 +30,6 @@ export default class ConceptBrowserRenderer {
         highlight: NodesPerColor;
     };
 
-    private shouldRefreshState: boolean = true;
-
     private linksToRender!: {
         all: LinkType[];
         normal: LinkType[];
@@ -40,8 +38,17 @@ export default class ConceptBrowserRenderer {
         text: LinkType[];
     };
 
-    private readonly filters = {
+    private shouldRefreshState: boolean = true;
+    private filteredNodeIds: number[] = [];
+
+    private readonly filters: {
+        showInstances: boolean;
+        tags: number[];
+        tagOr: boolean;
+    } = {
         showInstances: true,
+        tags: [],
+        tagOr: true,
     };
 
     constructor(cb: ConceptBrowser, canvas: HTMLCanvasElement, config: BrowserConfiguration, width: number, height: number) {
@@ -57,8 +64,14 @@ export default class ConceptBrowserRenderer {
         this.requestStateRefresh();
     }
 
-    public get showInstances(): boolean {
-        return this.filters.showInstances;
+    public setFilterTags(tagIds: number[]) {
+        this.filters.tags = tagIds;
+        this.requestStateRefresh();
+    }
+
+    public setFilterTagsOr(orState: boolean) {
+        this.filters.tagOr = orState;
+        this.requestStateRefresh();
     }
 
     public requestFrame() {
@@ -67,6 +80,11 @@ export default class ConceptBrowserRenderer {
 
     public requestStateRefresh() {
         this.shouldRefreshState = true;
+        this.requestFrame();
+    }
+
+    public isFiltered(node: NodeType) {
+        return this.filteredNodeIds.includes(node.id);
     }
 
     /**
@@ -91,9 +109,25 @@ export default class ConceptBrowserRenderer {
         let state: 'normal' | 'dragged' | 'highlight' = 'normal';
         let color: number = 0;
 
+        this.filteredNodeIds = [];
         this.cb.nodes.forEach((node) => {
             if (!this.filters.showInstances && node.instance) {
+                this.filteredNodeIds.push(node.id);
                 return;
+            }
+
+            if (this.filters.tags.length > 0) {
+                if (this.filters.tagOr) {
+                    if (!node.tags.some((t) => this.filters.tags.includes(t))) {
+                        this.filteredNodeIds.push(node.id);
+                        return;
+                    }
+                } else {
+                    if (node.tags.filter((t) => this.filters.tags.includes(t)).length !== this.filters.tags.length) {
+                        this.filteredNodeIds.push(node.id);
+                        return;
+                    }
+                }
             }
 
             if (node.highlighted || node.specialHilight) {
@@ -115,7 +149,7 @@ export default class ConceptBrowserRenderer {
         });
 
         this.cb.links.forEach((link) => {
-            if (!this.filters.showInstances && (link.target.instance || link.source.instance)) {
+            if (this.isFiltered(link.target) || this.isFiltered(link.source)) {
                 return;
             }
 

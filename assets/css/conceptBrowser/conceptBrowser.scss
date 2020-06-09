@@ -80,7 +80,8 @@ $button-padding: 2px;
 }
 
 .filter-popover {
-  max-width: none;
+  max-width: 40vw;
+  min-width: 40vw;
 
   .popover-header {
   }
