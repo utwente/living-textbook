@@ -1,6 +1,6 @@
-import {Configuration} from '@/analytics/configuration';
 import * as d3 from 'd3';
 import {ZoomTransform} from 'd3-zoom';
+import BrowserConfigurationInstance, {BrowserConfiguration} from '../conceptBrowser/BrowserConfiguration';
 
 export interface FlowThroughElement {
     id: number;
@@ -114,6 +114,8 @@ export default class AnalyticsBrowser {
         const dy = 2 * (1 - t) * (cpy - sy) + 2 * t * (ey - cpy);
         return -Math.atan2(dx, dy) + 0.5 * Math.PI;
     }
+
+    private readonly config: BrowserConfiguration = BrowserConfigurationInstance;
 
     private readonly data: FlowThroughElement[];
     private readonly elements: SimpleBrowserElement[];
@@ -343,12 +345,6 @@ export default class AnalyticsBrowser {
         this.canvas.setAttribute('height', Math.round(window.innerHeight / 2).toFixed());
 
         window.requestAnimationFrame(() => this.drawGraph());
-    }
-
-    // noinspection JSMethodCanBeStatic
-    private get config(): Configuration {
-        // @ts-ignore
-        return window.bConfig;
     }
 
     private drawGraph() {

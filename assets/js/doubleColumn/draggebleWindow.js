@@ -183,14 +183,14 @@
 
       // Prerender the canvas
       if (rightWidth > 0) {
-        cb.resizeCanvasWithSizes(rightWidth);
+        cb.requestResizeCanvasWithSizes(rightWidth);
       }
     } else {
       leftFrame.width(leftWidth);
       rightFrame.width(rightWidth);
       rightFrame.find('.animation-opacity-container').css('opacity', rightWidth <= 0 ? 0 : 1);
       callback();
-      cb.resizeCanvas();
+      cb.requestResizeCanvas();
     }
 
     iframeLoaderUpdate();

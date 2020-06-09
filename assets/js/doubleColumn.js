@@ -8,6 +8,7 @@ global.d3 = d3;
 import Routing from 'fos-routing';
 // Create global tracker
 import Tracker from './tracking/tracker';
+import ConceptBrowser from './conceptBrowser/ConceptBrowser';
 
 global.tracker = new Tracker(_studyArea, _trackUser);
 
@@ -21,8 +22,9 @@ $(function () {
   require('./doubleColumn/eventDispatcher');
   require('./doubleColumn/draggebleWindow');
   require('./search/conceptSearch');
-  require('./conceptBrowser/conceptBrowser');
   require('./learningPathBrowser/learningPathBrowser');
+
+  global.cb = new ConceptBrowser();
 
   $.get({
     url: Routing.generate('app_data_export', {_studyArea: _studyArea}),

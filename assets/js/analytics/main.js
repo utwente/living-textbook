@@ -1,7 +1,6 @@
 import Analytics from './analytics';
 
 require('../../css/analytics/analytics.scss');
-require('../conceptBrowser/configuration.js');
 
 $(function () {
   global.analyticsDashboard = new Analytics(global.Routing);

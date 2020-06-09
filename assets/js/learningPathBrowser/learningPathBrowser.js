@@ -1,15 +1,17 @@
-require('../conceptBrowser/configuration.js');
 require('../../css/learningPathBrowser/learningPathBrowser.scss');
 
 // Import routing
 import Routing from 'fos-routing';
+import BrowserConfigurationInstance from '../conceptBrowser/BrowserConfiguration';
 
 /**
  * Register lpb namespace in the browser, for usage of the learning path browser object
  *
  * $ has been defined globally in the app.js
  */
-(function (lpb, bConfig, dispatcher, $, d3, undefined) {
+(function (lpb, dispatcher, $, d3, undefined) {
+
+  const bConfig = BrowserConfigurationInstance;
 
   /******************************************************************************************************
    * Configuration variables
@@ -1007,4 +1009,4 @@ import Routing from 'fos-routing';
   initCanvas();
   initProcessing();
 
-}(window.lpb = window.lpb || {}, bConfig, eDispatch, jQuery, d3));
+}(window.lpb = window.lpb || {}, eDispatch, jQuery, d3));
