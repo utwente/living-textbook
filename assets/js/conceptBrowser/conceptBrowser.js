@@ -48,7 +48,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Data types
    * Required for JS-hinting
    *****************************************************************************************************/
-  var Types = {};
+  const Types = {};
 
   Types.JsonType = {
     numberOfLinks: 0,
@@ -106,14 +106,14 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Internal variables
    *****************************************************************************************************/
 
-  var canvas, context, canvasWidth, canvasHeight, halfCanvasWidth, halfCanvasHeight;
-  var halfMapWidth = cb.mapWidth / 2, halfMapHeight = cb.mapHeight / 2;
-  var cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
-  var dragPosY, dragPosX, isDragging = false;
-  var highlightedNode = null, specialHighlightedNode = null, mouseMoveDisabled = false;
-  var clickSend = false;
-  var contextMenuNode = null, lastTransformed;
-  var isLoaded = false, isPaused = false;
+  let canvas, context, canvasWidth, canvasHeight, halfCanvasWidth, halfCanvasHeight;
+  let halfMapWidth = cb.mapWidth / 2, halfMapHeight = cb.mapHeight / 2;
+  let cbCanvas, cbSimulation, cbGraph, cbZoom, cbTransform = d3.zoomIdentity, cbDrag;
+  let dragPosY, dragPosX, isDragging = false;
+  let highlightedNode = null, specialHighlightedNode = null, mouseMoveDisabled = false;
+  let clickSend = false;
+  let contextMenuNode = null, lastTransformed;
+  let isLoaded = false, isPaused = false;
   const filters = {
     showInstances: true,
   };
@@ -148,7 +148,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   cb.moveToConceptById = function (id, nodeOnly) {
     // Find the node by id
-    var node = getNodeById(id);
+    const node = getNodeById(id);
 
     // If found, move to it
     if (node) {
@@ -162,7 +162,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   cb.centerView = function (duration) {
     // Find current locations of all nodes, and select max
-    var minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
+    let minX = cb.mapWidth, maxX = 0, minY = cb.mapHeight, maxY = 0;
     cbGraph.nodes.map(function (node) {
       minX = Math.min(minX, node.x - node.radius);
       maxX = Math.max(maxX, node.x + node.radius);
@@ -186,7 +186,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param height
    */
   cb.resizeCanvasWithSizes = function (width, height) {
-    d3.select(window).dispatch('custom_resize', {detail: {width: width, height: height}});
+    d3.select(window).dispatch('custom_resize', {
+      bubbles: true,
+      cancelable: true,
+      detail: {width: width, height: height}
+    });
   };
 
   /******************************************************************************************************
@@ -200,7 +204,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function getNodeById(id) {
     // Find the node by id
-    var result = cbGraph.nodes.filter(function (node) {
+    const result = cbGraph.nodes.filter(function (node) {
       return node.id === id;
     });
 
@@ -215,7 +219,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function getLinkById(id) {
     // Find the link by id
-    var result = cbGraph.links.filter(function (link) {
+    const result = cbGraph.links.filter(function (link) {
       return link.id === id;
     });
 
@@ -229,7 +233,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    */
   function resizeCanvas() {
     // Get container size, and set sizes and zoom extent
-    var $container = $('#graph_container_div');
+    const $container = $('#graph_container_div');
     canvas.width = canvasWidth = ((d3.event && d3.event.detail && d3.event.detail.width) ? d3.event.detail.width : $container.innerWidth());
     canvas.height = canvasHeight = ((d3.event && d3.event.detail && d3.event.detail.height) ? d3.event.detail.height : $container.innerHeight());
     halfCanvasWidth = canvasWidth / 2;
@@ -547,7 +551,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Communicates with the content in order to open the correct page
    */
   function onClick() {
-    var node = findNode();
+    const node = findNode();
     if (node && !mouseMoveDisabled) {
       setNodeAsHighlight(node);
     }
@@ -572,7 +576,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function onRightClick() {
     d3.event.preventDefault();
 
-    var node = findNode();
+    const node = findNode();
     contextMenuNode = typeof node !== 'undefined' ? node : null;
     $('#graph_container_div').contextMenu({x: d3.event.clientX, y: d3.event.clientY});
   }
@@ -588,8 +592,8 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * Pause/play the animation
    */
   function pausePlayAnimation() {
-    var $pauseButton = $('#pause-button');
-    var $playButton = $('#play-button');
+    const $pauseButton = $('#pause-button');
+    const $playButton = $('#play-button');
 
     if (isPaused) {
       // Reset the fixed position for each node
@@ -633,7 +637,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * space -> Stop simulation
    */
   function onKeyDown() {
-    var node = findNode();
+    const node = findNode();
 
     switch (d3.event.keyCode) {
       case 32: // Space
@@ -743,11 +747,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     if (!isLoaded) return;
 
     // Calculate scale
-    var scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
+    let scale = 0.9 / Math.max((maxX - minX) / canvasWidth, (maxY - minY) / canvasHeight);
     scale = Math.min(cb.zoomExtent[1], Math.max(1, scale));
 
     // Calculate zoom identity
-    var transform = d3.zoomIdentity
+    const transform = d3.zoomIdentity
         .translate(halfCanvasWidth, halfCanvasHeight)
         .scale(scale)
         .translate(-(minX + maxX) / 2, -(minY + maxY) / 2);
@@ -785,7 +789,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param newScale New scale
    */
   function zoomFromButton(newScale) {
-    var transform = d3.zoomIdentity
+    const transform = d3.zoomIdentity
         .translate(halfCanvasWidth, halfCanvasHeight)
         .scale(Math.max(cb.zoomExtent[0], Math.min(cb.zoomExtent[1], newScale)))
         .translate(
@@ -821,11 +825,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     // Draw grid lines
     if (cb.drawGrid) {
       context.beginPath();
-      for (var i = 0; i <= cb.mapWidth; i += 100) {
+      for (let i = 0; i <= cb.mapWidth; i += 100) {
         context.moveTo(i, 0);
         context.lineTo(i, cb.mapHeight);
       }
-      for (var j = 0; j <= cb.mapHeight; j += 100) {
+      for (let j = 0; j <= cb.mapHeight; j += 100) {
         context.moveTo(0, j);
         context.lineTo(cb.mapWidth, j);
       }
@@ -860,7 +864,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     context.stroke();
 
     // Draw normal nodes
-    for (var nn = -1; nn <= 4; nn++) {
+    for (let nn = -1; nn <= 4; nn++) {
       cb.applyStyle(nn);
       context.beginPath();
       context.fillStyle = isDragging || highlightedNode !== null ? bConfig.fadedNodeFillStyle : bConfig.defaultNodeFillStyle;
@@ -895,7 +899,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
 
     // Draw dragged nodes
     if (isDragging) {
-      for (var dn = -1; dn <= 4; dn++) {
+      for (let dn = -1; dn <= 4; dn++) {
         cb.applyStyle(dn);
         context.beginPath();
         context.lineWidth = bConfig.nodeLineWidth;
@@ -927,7 +931,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     }
 
     // Draw highlighted nodes
-    for (var hn = -1; hn <= 4; hn++) {
+    for (let hn = -1; hn <= 4; hn++) {
       cb.applyStyle(hn);
       context.beginPath();
       context.lineWidth = bConfig.nodeLineWidth;
@@ -1257,7 +1261,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
   function loadNodeColor(node) {
     node.color = 0;
     if (typeof (Storage) !== 'undefined') {
-      var color = localStorage.getItem('nodeColor.' + node.id);
+      const color = localStorage.getItem('nodeColor.' + node.id);
       if (color !== null) {
         node.color = parseInt(color);
       } else if (node.instance) {
@@ -1275,7 +1279,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    * @param alpha
    */
   function keepInBoxForce(alpha) {
-    for (var i = 0, n = cbGraph.nodes.length,
+    for (let i = 0, n = cbGraph.nodes.length,
              node, kx = (alpha * cb.boundForceStrenght) / cb.mapWidth,
              ky = (alpha * cb.boundForceStrenght) / cb.mapHeight; i < n; ++i) {
       // Set variables
@@ -1300,7 +1304,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
    *****************************************************************************************************/
 
   cb.updateNodeName = function (id, name) {
-    var node = getNodeById(id);
+    const node = getNodeById(id);
 
     if (node) {
       node.label = name;
@@ -1318,11 +1322,11 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
     cbGraph.linkNodes = [];
 
     // Map the new data
-    var availConcepts = [];
-    var availLinks = [];
+    const availConcepts = [];
+    const availLinks = [];
     data.map(function (concept) {
       availConcepts.push(concept.id);
-      var node = getNodeById(concept.id);
+      let node = getNodeById(concept.id);
       if (!node) {
         // Create
         node = {
@@ -1352,7 +1356,7 @@ require('../../css/conceptBrowser/conceptBrowser.scss');
       // Update relations
       concept.relations.map(function (relation) {
         availLinks.push(relation.id);
-        var link = getLinkById(relation.id);
+        let link = getLinkById(relation.id);
         if (!link) {
           // Create
           link = {
