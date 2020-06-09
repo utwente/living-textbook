@@ -1,4 +1,4 @@
-import {NodeType} from "@/conceptBrowser/ConceptBrowser";
+import {NodeType} from './ConceptBrowser';
 
 // noinspection JSMethodCanBeStatic
 export class BrowserConfiguration {
@@ -126,7 +126,7 @@ export class BrowserConfiguration {
                 break;
             }
         }
-    };
+    }
 
     /**
      * Darken theme node color
@@ -162,17 +162,6 @@ export class BrowserConfiguration {
         }
 
         return this.shadeHexColor(colorCode, -0.2);
-    };
-
-
-    /**
-     * Shade color
-     * Source: https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
-     */
-    private shadeHexColor(color: string, percent: number): string {
-        const f = parseInt(color.slice(1), 16), t = percent < 0 ? 0 : 255, p = percent < 0 ? percent * -1 : percent,
-            R = f >> 16, G = f >> 8 & 0x00FF, B = f & 0x0000FF;
-        return '#' + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
     }
 
     /**
@@ -182,7 +171,9 @@ export class BrowserConfiguration {
         // Set default label values
         node.expandedLabelStart = 0;
         node.expandedLabel = [];
-        if (node.label === '') return;
+        if (node.label === '') {
+            return;
+        }
 
         // Calculate node text lines
         const lines = node.label.split(' ');
@@ -202,7 +193,28 @@ export class BrowserConfiguration {
 
         // Calculate offset for the amount of lines
         node.expandedLabelStart = (node.expandedLabel.length - 1) * (0.5 * this.defaultNodeLabelFontSize * scaleFactor);
-    };
+    }
+
+    /**
+     * Shade color
+     * Source: https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+     */
+    private shadeHexColor(color: string, percent: number): string {
+        const f = parseInt(color.slice(1), 16);
+        const t = percent < 0 ? 0 : 255;
+        const p = percent < 0 ? percent * -1 : percent;
+
+        /* tslint:disable:no-bitwise */
+        const R = f >> 16;
+        const G = f >> 8 & 0x00FF;
+        const B = f & 0x0000FF;
+        /* tslint:enable:no-bitwise */
+
+        return '#'
+            + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000
+                + (Math.round((t - G) * p) + G) * 0x100
+                + (Math.round((t - B) * p) + B)).toString(16).slice(1);
+    }
 }
 
 const instance = new BrowserConfiguration();

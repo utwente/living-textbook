@@ -5,6 +5,7 @@ interface NodesPerColor {
     [color: number]: NodeType[];
 }
 
+/* tslint:disable:variable-name */
 // noinspection JSMethodCanBeStatic
 export default class ConceptBrowserRenderer {
     // Concept browser reference
@@ -37,7 +38,7 @@ export default class ConceptBrowserRenderer {
         dragged: LinkType[];
         highlight: LinkType[];
         text: LinkType[];
-    }
+    };
 
     private readonly filters = {
         showInstances: true,
@@ -85,7 +86,7 @@ export default class ConceptBrowserRenderer {
             dragged: [],
             highlight: [],
             text: [],
-        }
+        };
 
         let state: 'normal' | 'dragged' | 'highlight' = 'normal';
         let color: number = 0;
@@ -96,7 +97,7 @@ export default class ConceptBrowserRenderer {
             }
 
             if (node.highlighted || node.specialHilight) {
-                state = 'highlight'
+                state = 'highlight';
             } else if (node.dragged) {
                 state = 'dragged';
             } else {
@@ -118,7 +119,8 @@ export default class ConceptBrowserRenderer {
                 return;
             }
 
-            if (this.cb.highlightedNode && (link.source.index === this.cb.highlightedNode.index || link.target.index === this.cb.highlightedNode.index)) {
+            if (this.cb.highlightedNode
+                && (link.source.index === this.cb.highlightedNode.index || link.target.index === this.cb.highlightedNode.index)) {
                 state = 'highlight';
             } else if (link.source.dragged || link.target.dragged) {
                 state = 'dragged';
@@ -131,8 +133,10 @@ export default class ConceptBrowserRenderer {
 
             // Only draw the text when the link is active
             if (link.relationName &&
-                (!this.cb.isDragging && (this.cb.highlightedNode && (link.source.index === this.cb.highlightedNode.index || link.target.index === this.cb.highlightedNode.index))) ||
-                (link.source.dragged || link.target.dragged)) {
+                (!this.cb.isDragging
+                    && (this.cb.highlightedNode
+                        && (link.source.index === this.cb.highlightedNode.index || link.target.index === this.cb.highlightedNode.index)))
+                || (link.source.dragged || link.target.dragged)) {
                 this.linksToRender.text.push(link);
             }
         });
@@ -160,7 +164,7 @@ export default class ConceptBrowserRenderer {
         this.context.scale(this.cb.cbTransform.k, this.cb.cbTransform.k);
 
         // Draw grid lines
-        this.drawGrid()
+        this.drawGrid();
 
         //////////////////////
         // NORMAL           //
@@ -183,7 +187,7 @@ export default class ConceptBrowserRenderer {
                 ? this.config.fadedNodeFillStyle : this.config.defaultNodeFillStyle;
             this.nodesToRender.normal[color].forEach((n) => this.drawNode(n));
             this.context.fill();
-        })
+        });
 
         // Draw link nodes
         if (this._drawLinkNodes) {
@@ -315,8 +319,8 @@ export default class ConceptBrowserRenderer {
         this.context.rotate(startRadians);
 
         // Check rotation and add extra if required
-        let linkLabelLength = this.cb.getLinkLabelLength(link);
-        let sourceRadius = this.cb.getNodeRadius(link.source) + 5;
+        const linkLabelLength = this.cb.getLinkLabelLength(link);
+        const sourceRadius = this.cb.getNodeRadius(link.source) + 5;
         if ((startRadians * 2) > Math.PI) {
             this.context.rotate(Math.PI);
             this.context.textAlign = 'right';
@@ -389,7 +393,7 @@ export default class ConceptBrowserRenderer {
      */
     private drawNodeText(node: NodeType) {
         // Calculate font(size)
-        let scaledFontSize = Math.ceil(this.config.defaultNodeLabelFontSize * node.fontScale);
+        const scaledFontSize = Math.ceil(this.config.defaultNodeLabelFontSize * node.fontScale);
         this.context.font = 'bold ' + scaledFontSize + 'px ' + this.config.fontFamily;
         this.context.lineWidth = this.config.activeNodeLabelLineWidth * node.fontScale;
 
@@ -399,13 +403,18 @@ export default class ConceptBrowserRenderer {
             || (this.cb.specialHighlightedNode !== null && node.specialHilight))) {
 
             // Skip this text if not required to render
-            if (this.cb.isDragging || this.cb.highlightedNode !== null) return;
+            if (this.cb.isDragging || this.cb.highlightedNode !== null) {
+                return;
+            }
         }
 
         // Draw the actual text (which can be multiple lines)
         let yStart = node.y - node.expandedLabelStart;
         node.expandedLabel.forEach((line) => {
-            if (node.dragged || node.highlighted || node.specialHilight) this.context.strokeText(line, node.x, yStart);
+            if (node.dragged || node.highlighted || node.specialHilight) {
+                this.context.strokeText(line, node.x, yStart);
+            }
+
             this.context.fillText(line, node.x, yStart);
             yStart += scaledFontSize;
         });

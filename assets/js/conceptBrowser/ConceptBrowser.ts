@@ -1,59 +1,60 @@
 import * as d3 from 'd3';
 import {ZoomTransform} from 'd3-zoom';
+import '../../css/conceptBrowser/conceptBrowser.scss';
 import BrowserConfigurationInstance, {BrowserConfiguration} from './BrowserConfiguration';
 import ConceptBrowserRenderer from './ConceptBrowserRenderer';
 
-require('../../css/conceptBrowser/conceptBrowser.scss');
-
 export interface JsonType {
-    numberOfLinks: number,
-    id: number,
-    name: string,
+    numberOfLinks: number;
+    id: number;
+    name: string;
     instance: boolean;
-    isEmpty: boolean,
+    isEmpty: boolean;
     relations: Array<{
-        id: number,
-        target: number,
-        relationName: number
-    }>,
+        id: number;
+        target: number;
+        relationName: number;
+    }>;
 }
 
 export interface NodeType {
     id: number;
-    index: number,
-    x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    fx: number | null,
-    fy: number | null,
-    color: number,
-    radius: number,
-    label: string,
+    index: number;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    fx: number | null;
+    fy: number | null;
+    color: number;
+    radius: number;
+    label: string;
     instance: boolean;
-    expandedLabel: string[],
-    expandedLabelStart: number,
-    fontScale: number,
-    link: string,
-    numberOfLinks: number,
-    individuals: string,
-    dragged: boolean,
-    highlighted: boolean,
+    expandedLabel: string[];
+    expandedLabelStart: number;
+    fontScale: number;
+    link: string;
+    numberOfLinks: number;
+    individuals: string;
+    dragged: boolean;
+    highlighted: boolean;
     specialHilight: boolean;
-    linkNode?: boolean,
-    empty: boolean
+    linkNode?: boolean;
+    empty: boolean;
 }
 
 export interface LinkType {
-    id: number,
-    source: NodeType,
-    target: NodeType,
-    relationName: string
+    id: number;
+    source: NodeType;
+    target: NodeType;
+    relationName: string;
 }
 
 export interface LinkNodeType extends NodeType, LinkType {
 }
 
+
+/* tslint:disable:variable-name member-ordering */
 // noinspection JSMethodCanBeStatic
 /**
  * The concept browser class
@@ -191,14 +192,17 @@ export default class ConceptBrowser {
         if (node) {
             this.moveToNode(node, nodeOnly);
         }
-    };
+    }
 
     /**
      * Recenter the viewport
      */
     public centerView(duration?: number) {
         // Find current locations of all nodes, and select max
-        let minX = this.mapWidth, maxX = 0, minY = this.mapHeight, maxY = 0;
+        let minX = this.mapWidth;
+        let maxX = 0;
+        let minY = this.mapHeight;
+        let maxY = 0;
         this.cbGraph.nodes.forEach((node) => {
             minX = Math.min(minX, node.x - node.radius);
             maxX = Math.max(maxX, node.x + node.radius);
@@ -207,14 +211,14 @@ export default class ConceptBrowser {
         });
 
         this.moveToPosition(minX, maxX, minY, maxY, duration);
-    };
+    }
 
     /**
      * Create an event to resize the canvas
      */
     public requestResizeCanvas() {
         d3.select(window).dispatch('custom_resize');
-    };
+    }
 
     /**
      * Create an event to resize the canvas to a specific size
@@ -223,9 +227,9 @@ export default class ConceptBrowser {
         d3.select(window).dispatch('custom_resize', {
             bubbles: true,
             cancelable: true,
-            detail: {width: width, height: height},
+            detail: {width, height},
         });
-    };
+    }
 
     /******************************************************************************************************
      * Utility functions
@@ -236,7 +240,7 @@ export default class ConceptBrowser {
      */
     private getNodeById(id: number): NodeType | null {
         // Find the node by id
-        const result = this.cbGraph.nodes.filter(function (node) {
+        const result = this.cbGraph.nodes.filter((node) => {
             return node.id === id;
         });
 
@@ -249,7 +253,7 @@ export default class ConceptBrowser {
      */
     private getLinkById(id: number): LinkType | null {
         // Find the link by id
-        const result = this.cbGraph.links.filter(function (link) {
+        const result = this.cbGraph.links.filter((link) => {
             return link.id === id;
         });
 
@@ -264,14 +268,18 @@ export default class ConceptBrowser {
     private resizeCanvas() {
         // Get container size, and set sizes and zoom extent
         const $container = $('#graph_container_div');
-        this.canvas.width = this._canvasWidth = ((d3.event && d3.event.detail && d3.event.detail.width) ? d3.event.detail.width : $container.innerWidth());
-        this.canvas.height = this._canvasHeight = ((d3.event && d3.event.detail && d3.event.detail.height) ? d3.event.detail.height : $container.innerHeight());
+        this.canvas.width = this._canvasWidth
+            = ((d3.event && d3.event.detail && d3.event.detail.width) ? d3.event.detail.width : $container.innerWidth());
+        this.canvas.height = this._canvasHeight
+            = ((d3.event && d3.event.detail && d3.event.detail.height) ? d3.event.detail.height : $container.innerHeight());
         this._halfCanvasWidth = this.canvasWidth / 2;
         this._halfCanvasHeight = this.canvasHeight / 2;
         this.zoomExtent[0] = Math.max(this.canvasWidth / this.mapWidth, this.canvasHeight / this.mapHeight, 0.1);
 
         // Check if the event loop is running, if not, restart
-        if (d3.event && !d3.event.active) this.cbSimulation.restart();
+        if (d3.event && !d3.event.active) {
+            this.cbSimulation.restart();
+        }
     }
 
     /**
@@ -285,7 +293,7 @@ export default class ConceptBrowser {
         }
 
         // Update radius
-        let linkCount = node.numberOfLinks ? node.numberOfLinks : 1;
+        const linkCount = node.numberOfLinks ? node.numberOfLinks : 1;
         node.radius = this.config.baseNodeRadius + this.config.extendNodeRatio * linkCount;
 
         return node.radius + this.nodeRadiusMargin;
@@ -303,9 +311,10 @@ export default class ConceptBrowser {
         }
 
         // Calculate the new font scale
-        let linkCount = node.numberOfLinks ? node.numberOfLinks : 1;
-        let scaleFactor = Math.max(0, Math.min(Math.floor(linkCount / this.config.nodeLabelFontScaleStep), 3)) - 3;
-        node.fontScale = (this.config.defaultNodeLabelFontSize + (scaleFactor * this.config.nodeLabelFontScaleStepSize)) / this.config.defaultNodeLabelFontSize;
+        const linkCount = node.numberOfLinks ? node.numberOfLinks : 1;
+        const scaleFactor = Math.max(0, Math.min(Math.floor(linkCount / this.config.nodeLabelFontScaleStep), 3)) - 3;
+        node.fontScale = (this.config.defaultNodeLabelFontSize + (scaleFactor * this.config.nodeLabelFontScaleStepSize))
+            / this.config.defaultNodeLabelFontSize;
     }
 
     /**
@@ -318,13 +327,13 @@ export default class ConceptBrowser {
                 // We need to have the object, so select it if available
                 source: link.source.hasOwnProperty('id')
                     ? link.source
-                    : this.cbGraph.nodes.filter(function (node) {
+                    : this.cbGraph.nodes.filter((node) => {
                         // @ts-ignore
                         return node.id === link.source;
                     })[0],
                 target: link.target.hasOwnProperty('id')
                     ? link.target
-                    : this.cbGraph.nodes.filter(function (node) {
+                    : this.cbGraph.nodes.filter((node) => {
                         // @ts-ignore
                         return node.id === link.target;
                     })[0],
@@ -406,14 +415,20 @@ export default class ConceptBrowser {
      */
     private setNodeAsHighlight(node: NodeType, nodeOnly?: boolean) {
         // Check if node the same
-        if (this.highlightedNode && this.highlightedNode.index === node.index) return;
-        if (nodeOnly && this.specialHighlightedNode && this.specialHighlightedNode.index === node.index) return;
+        if (this.highlightedNode && this.highlightedNode.index === node.index) {
+            return;
+        }
+        if (nodeOnly && this.specialHighlightedNode && this.specialHighlightedNode.index === node.index) {
+            return;
+        }
 
         // Check for previous highlight
         this.clearNodeHighlight();
 
         // Check whether the given node exists
-        if (node === undefined) return;
+        if (node === undefined) {
+            return;
+        }
 
         // Only set other highlight when nodeOnly is not set
         if (!nodeOnly) {
@@ -452,8 +467,12 @@ export default class ConceptBrowser {
      */
     private setHighlightsByNode(node: NodeType) {
         this.cbGraph.links.forEach((link) => {
-            if (link.target.index === node.index) link.source.highlighted = true;
-            if (link.source.index === node.index) link.target.highlighted = true;
+            if (link.target.index === node.index) {
+                link.source.highlighted = true;
+            }
+            if (link.source.index === node.index) {
+                link.target.highlighted = true;
+            }
         });
     }
 
@@ -463,8 +482,12 @@ export default class ConceptBrowser {
      */
     private clearHighlightsByNode(node: NodeType) {
         this.cbGraph.links.forEach((link) => {
-            if (link.target.index === node.index) link.source.highlighted = false;
-            if (link.source.index === node.index) link.target.highlighted = false;
+            if (link.target.index === node.index) {
+                link.source.highlighted = false;
+            }
+            if (link.source.index === node.index) {
+                link.target.highlighted = false;
+            }
         });
     }
 
@@ -504,11 +527,15 @@ export default class ConceptBrowser {
      * @returns {undefined}
      */
     private findNode() {
-        if (!this.isLoaded) return;
+        if (!this.isLoaded) {
+            return;
+        }
 
         let transformed;
         if (typeof d3.event.clientX === 'undefined' || typeof d3.event.clientY === 'undefined') {
-            if (!this.lastTransformed) return;
+            if (!this.lastTransformed) {
+                return;
+            }
             transformed = this.lastTransformed;
         } else {
             transformed = this.lastTransformed = this.transformLocation(d3.event);
@@ -531,7 +558,9 @@ export default class ConceptBrowser {
      * Event fired when the drag action starts
      */
     private onDragStarted() {
-        if (!d3.event.active) this.cbSimulation.alphaTarget(0.3).restart();
+        if (!d3.event.active) {
+            this.cbSimulation.alphaTarget(0.3).restart();
+        }
         d3.event.subject.fx = this.dragPosX = d3.event.subject.x;
         d3.event.subject.fy = this.dragPosY = d3.event.subject.y;
 
@@ -553,7 +582,9 @@ export default class ConceptBrowser {
      * Event fired when the drag action stops
      */
     private onDragEnded() {
-        if (!d3.event.active) this.cbSimulation.alphaTarget(0);
+        if (!d3.event.active) {
+            this.cbSimulation.alphaTarget(0);
+        }
         if (!this.isPaused) {
             d3.event.subject.fx = null;
             d3.event.subject.fy = null;
@@ -566,7 +597,9 @@ export default class ConceptBrowser {
      * Event for mouse move, to select a node to highlight
      */
     private onMouseMove() {
-        if (this.mouseMoveDisabled) return;
+        if (this.mouseMoveDisabled) {
+            return;
+        }
         this.highlightNode(this.findNode());
     }
 
@@ -675,36 +708,48 @@ export default class ConceptBrowser {
             case 73: // I
             /* falls through */
             case 48: // 0
-                if (node !== undefined) this.colorNode(node, 0);
+                if (node !== undefined) {
+                    this.colorNode(node, 0);
+                }
                 break;
 
             case 82: // R
             /* falls through */
             case 49: // 1
-                if (node !== undefined) this.colorNode(node, 1);
+                if (node !== undefined) {
+                    this.colorNode(node, 1);
+                }
                 break;
 
             case 71: // G
             /* falls through */
             case 50: // 2
-                if (node !== undefined) this.colorNode(node, 2);
+                if (node !== undefined) {
+                    this.colorNode(node, 2);
+                }
                 break;
 
             case 66: // B
             /* falls through */
             case 51: // 3
-                if (node !== undefined) this.colorNode(node, 3);
+                if (node !== undefined) {
+                    this.colorNode(node, 3);
+                }
                 break;
 
             case 79: // O
             /* falls through */
             case 52: // 4
-                if (node !== undefined) this.colorNode(node, 4);
+                if (node !== undefined) {
+                    this.colorNode(node, 4);
+                }
                 break;
         }
 
         // Check if the event loop is running, if not, restart
-        if (!d3.event.active) this.cbSimulation.restart();
+        if (!d3.event.active) {
+            this.cbSimulation.restart();
+        }
     }
 
     /**
@@ -719,7 +764,9 @@ export default class ConceptBrowser {
         }
 
         // Check if the event loop is running, if not, restart
-        if (!d3.event.active) this.cbSimulation.restart();
+        if (!d3.event.active) {
+            this.cbSimulation.restart();
+        }
     }
 
     /**
@@ -730,7 +777,9 @@ export default class ConceptBrowser {
      */
     private moveToNode(node: NodeType, nodeOnly?: boolean) {
         // Check for node existence
-        if (node === undefined) return;
+        if (node === undefined) {
+            return;
+        }
 
         // Stop simulation for now to prevent node walking
         this.mouseMoveDisabled = true;
@@ -739,23 +788,28 @@ export default class ConceptBrowser {
         // Set clicked node as highlighted
         this.setNodeAsHighlight(node, nodeOnly);
 
-        let minX = this.mapWidth, maxX = 0, minY = this.mapHeight, maxY = 0;
+        let minX = this.mapWidth;
+        let maxX = 0;
+        let minY = this.mapHeight;
+        let maxY = 0;
         if (!nodeOnly) {
             const zoomMargin = this.zoomMargin;
             // Find current locations of highlighted nodes
-            this.cbGraph.nodes.forEach((node) => {
-                if (!node.highlighted) return;
-                minX = Math.min(minX, node.x - node.radius - zoomMargin);
-                maxX = Math.max(maxX, node.x + node.radius + zoomMargin);
-                minY = Math.min(minY, node.y - node.radius - zoomMargin);
-                maxY = Math.max(maxY, node.y + node.radius + zoomMargin);
+            this.cbGraph.nodes.forEach((n) => {
+                if (!n.highlighted) {
+                    return;
+                }
+                minX = Math.min(minX, n.x - n.radius - zoomMargin);
+                maxX = Math.max(maxX, n.x + n.radius + zoomMargin);
+                minY = Math.min(minY, n.y - n.radius - zoomMargin);
+                maxY = Math.max(maxY, n.y + n.radius + zoomMargin);
             });
 
             // Do the actual move
             this.moveToPosition(minX, maxX, minY, maxY);
         } else {
             // Calculate transform for move without zoom change
-            let transform = d3.zoomIdentity
+            const transform = d3.zoomIdentity
                 .translate(this.halfCanvasWidth, this.halfCanvasHeight)
                 .scale(this.cbTransform.k)
                 .translate(-node.x, -node.y);
@@ -772,7 +826,9 @@ export default class ConceptBrowser {
      * @param duration
      */
     private moveToPosition(minX: number, maxX: number, minY: number, maxY: number, duration?: number) {
-        if (!this.isLoaded) return;
+        if (!this.isLoaded) {
+            return;
+        }
 
         // Calculate scale
         let scale = 0.9 / Math.max((maxX - minX) / this.canvasWidth, (maxY - minY) / this.canvasHeight);
@@ -875,7 +931,7 @@ export default class ConceptBrowser {
         if (typeof (Storage) !== 'undefined') {
             const color = localStorage.getItem('nodeColor.' + node.id);
             if (color !== null) {
-                node.color = parseInt(color);
+                node.color = parseInt(color, 10);
             } else if (node.instance) {
                 node.color = this.config.instanceDefaultColor;
             }
@@ -916,7 +972,7 @@ export default class ConceptBrowser {
             this.config.updateLabel(node, node.fontScale);
             this.cbSimulation.restart();
         }
-    };
+    }
 
     public update(data: JsonType[]) {
         // First, stop de simulation
@@ -977,11 +1033,11 @@ export default class ConceptBrowser {
         });
 
         // Remove missing nodes
-        this.cbGraph.nodes = this.cbGraph.nodes.filter(function (node) {
+        this.cbGraph.nodes = this.cbGraph.nodes.filter((node) => {
             return availConcepts.indexOf(node.id) !== -1;
         });
         // Remove missing links
-        this.cbGraph.links = this.cbGraph.links.filter(function (link) {
+        this.cbGraph.links = this.cbGraph.links.filter((link) => {
             return availLinks.indexOf(link.id) !== -1;
         });
 
@@ -995,7 +1051,7 @@ export default class ConceptBrowser {
         // Restart simulation
         this.cbSimulation.alpha(0.01);
         this.cbSimulation.restart();
-    };
+    }
 
     /******************************************************************************************************
      * Register init function
@@ -1054,7 +1110,7 @@ export default class ConceptBrowser {
                 // @ts-ignore
                 .distance((l) => this.getLinkDistance(l))
                 .strength(this.linkStrength)
-                .id(function (d: any) {
+                .id((d: any) => {
                     return d.id;
                 }))
             .force('center',                            // To force the node to move around the map center
@@ -1113,17 +1169,18 @@ export default class ConceptBrowser {
             html: true,
             trigger: 'manual',
             placement: 'bottom',
+            // tslint:disable-next-line:max-line-length
             template: '<div class="popover filter-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
             content: $('#filter-content'),
         });
-        $filterBtn.on('click', function () {
+        $filterBtn.on('click', () => {
             $filterBtn.popover('toggle');
         });
-        $filterBtn.on('show.bs.popover', function () {
+        $filterBtn.on('show.bs.popover', () => {
             $filterBtn.tooltip('hide');
             $filterBtn.tooltip('disable');
         });
-        $filterBtn.on('hidden.bs.popover', function () {
+        $filterBtn.on('hidden.bs.popover', () => {
             $filterBtn.tooltip('enable');
         });
 
@@ -1165,11 +1222,21 @@ export default class ConceptBrowser {
                 //noinspection JSUnusedGlobalSymbols
                 return {
                     callback: (key: string) => {
-                        if (key === 'quit') return;
-                        if (key.startsWith('style')) this.colorNode(this.contextMenuNode!, parseInt(key.substr(6)));
-                        if (key === 'reset') this.resetNodeColors();
-                        if (key === 'create-instance') this.createInstance(this.contextMenuNode!);
-                        if (key === 'center') this.centerView();
+                        if (key === 'quit') {
+                            return;
+                        }
+                        if (key.startsWith('style')) {
+                            this.colorNode(this.contextMenuNode!, parseInt(key.substr(6), 10));
+                        }
+                        if (key === 'reset') {
+                            this.resetNodeColors();
+                        }
+                        if (key === 'create-instance') {
+                            this.createInstance(this.contextMenuNode!);
+                        }
+                        if (key === 'center') {
+                            this.centerView();
+                        }
                         this.cbSimulation.restart();
                     },
                     items: this.getContextMenuItems(),
@@ -1183,7 +1250,7 @@ export default class ConceptBrowser {
         setTimeout(() => {
             this.centerView(500);
         }, 500);
-    };
+    }
 
     /**
      * Context menu builder
@@ -1193,11 +1260,11 @@ export default class ConceptBrowser {
         if (this.contextMenuNode === null) {
             // Global
             return {
-                'reset': {name: 'Reset node colors', icon: 'fa-undo'},
-                'sep1': '---------',
-                'center': {name: 'Back to center', icon: 'fa-sign-in'},
-                'sep2': '---------',
-                'quit': {name: 'Close', icon: 'fa-times'},
+                reset: {name: 'Reset node colors', icon: 'fa-undo'},
+                sep1: '---------',
+                center: {name: 'Back to center', icon: 'fa-sign-in'},
+                sep2: '---------',
+                quit: {name: 'Close', icon: 'fa-times'},
             };
         } else {
             // Node
@@ -1253,7 +1320,10 @@ export default class ConceptBrowser {
                             'sep1': '---------',
                             'style-0': {
                                 name: 'Default',
-                                icon: this.contextMenuNode.color === 0 || (this.contextMenuNode.color === this.config.instanceDefaultColor && this.contextMenuNode.instance) ? 'fa-check' : 'fa-undo',
+                                icon:
+                                    this.contextMenuNode.color === 0
+                                    || (this.contextMenuNode.color === this.config.instanceDefaultColor && this.contextMenuNode.instance)
+                                        ? 'fa-check' : 'fa-undo',
                             },
                         },
                     },
@@ -1267,8 +1337,8 @@ export default class ConceptBrowser {
             // Merge with default data
             const defaultData = {
                 'create-instance': {name: 'Instantiate', icon: 'fa-code-fork'},
-                sep3: '---------',
-                quit: {name: 'Close', icon: 'fa-times'},
+                'sep3': '---------',
+                'quit': {name: 'Close', icon: 'fa-times'},
             };
 
             return $.extend(nodeItems, defaultData);
