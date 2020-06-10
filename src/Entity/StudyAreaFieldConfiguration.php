@@ -26,56 +26,56 @@ class StudyAreaFieldConfiguration
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptDefinitionName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptIntroductionName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptSynonymsName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptPriorKnowledgeName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptTheoryExplanationName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptHowtoName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptExamplesName;
 
   /**
    * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
-   * @Assert\Length(max="100")
+   * @Assert\Length(max="50")
    */
   private $conceptSelfAssessmentName;
 
