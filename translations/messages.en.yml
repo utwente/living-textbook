@@ -99,6 +99,10 @@ browser:
     and: 'AND'
     or: 'OR'
     show-instances: 'Show instances'
+    tag-color: 'Color on tag'
+    tag-color-help: >-
+      When using the color filter, custom and empty node colors will be disabled.
+      Note that only one color can be applied per node: the first matching tag will be used for the color.
     tags: 'Filter on tags'
   fullscreen-toggle: 'Toggle fullscreen'
   open: 'Open map'

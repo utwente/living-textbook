@@ -466,13 +466,15 @@ export default class ConceptBrowser {
             this.highlightedNode.highlighted = false;
             this.clearHighlightsByNode(this.highlightedNode);
             this._highlightedNode = null;
+
+            this.renderer.requestStateRefresh();
         }
         if (this.specialHighlightedNode !== null) {
             this.specialHighlightedNode.specialHilight = false;
             this._specialHighlightedNode = null;
-        }
 
-        this.renderer.requestStateRefresh();
+            this.renderer.requestStateRefresh();
+        }
     }
 
     /**
@@ -1407,7 +1409,7 @@ export default class ConceptBrowser {
 
         // Rebuild options
         $filterTags.find('option').remove();
-        Object.values(this.tags).forEach((tag) => {
+        Object.values(this.tags).sort((a, b) => a.name.localeCompare(b.name)).forEach((tag) => {
             $filterTags.append(new Option(tag.name, String(tag.id), false, currentValue.includes(String(tag.id))));
         });
 
@@ -1429,5 +1431,117 @@ export default class ConceptBrowser {
         $filterTagsOr.on('change', () => {
             this.renderer.setFilterTagsOr($filterTagsOr.is(':checked'));
         });
+
+        // Create tag color selectors
+        this.buildTagColorSelectors();
+    }
+
+    private buildTagColorSelectors() {
+        let sortedTags = Object.values(this.tags).sort((a, b) => a.name.localeCompare(b.name));
+
+        const $prototype = $('#filter-tag-color-prototype > div');
+        const $container = $('#filter-tag-color-container');
+        const currentValues: Array<{ tag: any, color: any }> = [];
+        $container.children('div')
+            .each((index, element) => {
+                const $row = $(element);
+                const $select = $row.find('select');
+                const $color = $row.find('input[type="color"]');
+                currentValues.push({
+                    tag: $select.val(),
+                    color: $color.length === 1 ? $color.val() : null,
+                });
+
+                if ($select.data('select2') !== undefined) {
+                    // @ts-ignore
+                    $select.select2('destroy');
+                }
+            })
+            .remove();
+
+        const rows: Array<{ $elem: JQuery<HTMLElement>; tag: string | null; color: string | null }> = [];
+        currentValues.forEach((item) => {
+            if (!item.tag) {
+                return;
+            }
+
+            rows.push({
+                $elem: $prototype.clone(),
+                tag: String(item.tag),
+                color: item.color ? String(item.color) : null,
+            });
+        });
+
+        rows.push({
+            $elem: $prototype.clone(),
+            tag: null,
+            color: null,
+        });
+
+        rows.forEach((row) => {
+            if (sortedTags.length === 0) {
+                return;
+            }
+
+            const selectedTag = sortedTags.find((t) => String(t.id) === row.tag);
+
+            if (row.tag && !selectedTag) {
+                return;
+            }
+
+            $container.append(row.$elem);
+
+            const $select = row.$elem.find('select');
+            $select.append(new Option());
+            sortedTags.forEach((tag) => {
+                $select.append(new Option(tag.name, String(tag.id), false, false));
+            });
+
+            if (selectedTag) {
+                row.color = row.color || selectedTag.color;
+
+                $select.val(String(selectedTag.id));
+                $select.data('default-color', selectedTag.color);
+                row.$elem.find('input[type="color"]')
+                    .val(row.color)
+                    .on('change', () => this.buildTagColorSelectors());
+
+                sortedTags = sortedTags.filter((t) => t.id !== selectedTag.id);
+            } else {
+                row.$elem.find('.color-picker').remove();
+            }
+
+            $select
+                // @ts-ignore
+                .select2({
+                    width: '100%',
+                    theme: 'bootstrap',
+                    placeholder: 'Select a tag',
+                    allowClear: true,
+                })
+                .on('change', (event: Event) => {
+                    // Test whether the default color is still selected
+                    const $selectTarget = $(event.target!);
+                    const $row = $selectTarget.closest('.filter-tag-color');
+                    const $colorPicker = $row.find('input[type="color"]');
+                    if ($colorPicker.length === 1) {
+                        const defaultColor = $selectTarget.data('default-color');
+                        if (defaultColor && defaultColor === $colorPicker.val()) {
+                            $colorPicker.remove();
+                        }
+                    }
+
+                    this.buildTagColorSelectors();
+                });
+        });
+
+        this.renderer.setFilterTagColors(rows
+            .filter((row) => row.tag !== null)
+            .map((row) => {
+                return {
+                    tag: Number(row.tag),
+                    color: row.color!,
+                };
+            }));
     }
 }

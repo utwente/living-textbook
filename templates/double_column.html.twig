@@ -80,6 +80,29 @@
                              data-onstyle="primary" data-offstyle="primary">
                     </div>
                   </div>
+
+                  <div>
+                    <label class="col-form-label font-weight-bold">
+                      {{ 'browser.filters.tag-color'|trans }}
+                    </label>
+
+                    <div id="filter-tag-color-prototype" class="d-none">
+                      <div class="d-flex my-1 filter-tag-color">
+                        <div class="flex-fill">
+                          <select></select>
+                        </div>
+                        <div class="color-picker ml-1" style="width: 60px">
+                          <input type="color" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="filter-tag-color-container" class="mt-n1"></div>
+
+                    <div>
+                      <small class="form-text text-muted">{{ 'browser.filters.tag-color-help'|trans }}</small>
+                    </div>
+                  </div>
                 </form>
               </div>
               <button id="refresh-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"

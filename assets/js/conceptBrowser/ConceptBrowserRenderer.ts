@@ -2,7 +2,7 @@ import {BrowserConfiguration} from '@/conceptBrowser/BrowserConfiguration';
 import ConceptBrowser, {LinkType, NodeType} from '@/conceptBrowser/ConceptBrowser';
 
 interface NodesPerColor {
-    [color: number]: NodeType[];
+    [color: string]: NodeType[];
 }
 
 /* tslint:disable:variable-name */
@@ -24,7 +24,7 @@ export default class ConceptBrowserRenderer {
     private context: CanvasRenderingContext2D;
 
     private nodesToRender!: {
-        all: NodeType[];
+        all: NodesPerColor;
         normal: NodesPerColor;
         dragged: NodesPerColor;
         highlight: NodesPerColor;
@@ -45,10 +45,15 @@ export default class ConceptBrowserRenderer {
         showInstances: boolean;
         tags: number[];
         tagOr: boolean;
+        tagColors: Array<{
+            tag: number,
+            color: string,
+        }>;
     } = {
         showInstances: true,
         tags: [],
         tagOr: true,
+        tagColors: [],
     };
 
     constructor(cb: ConceptBrowser, canvas: HTMLCanvasElement, config: BrowserConfiguration, width: number, height: number) {
@@ -74,6 +79,11 @@ export default class ConceptBrowserRenderer {
         this.requestStateRefresh();
     }
 
+    public setFilterTagColors(tagColors: Array<{ tag: number; color: string }>) {
+        this.filters.tagColors = tagColors;
+        this.requestStateRefresh();
+    }
+
     public requestFrame() {
         window.requestAnimationFrame(() => this.draw());
     }
@@ -91,9 +101,13 @@ export default class ConceptBrowserRenderer {
      * Rebuilds the internal state, which uses cached filtering for the nodes
      */
     private refreshState() {
+        if (process.env.NODE_ENV === 'development') {
+            console.info('Refreshing state');
+        }
+
         // Clear state
         this.nodesToRender = {
-            all: [],
+            all: {},
             normal: {},
             dragged: {},
             highlight: {},
@@ -107,16 +121,19 @@ export default class ConceptBrowserRenderer {
         };
 
         let state: 'normal' | 'dragged' | 'highlight' = 'normal';
-        let color: number = 0;
+        let color: number | string = 0;
 
         this.filteredNodeIds = [];
         this.cb.nodes.forEach((node) => {
+            // Is the instance filter enabled?
             if (!this.filters.showInstances && node.instance) {
                 this.filteredNodeIds.push(node.id);
                 return;
             }
 
+            // Is the tag filter enabled?
             if (this.filters.tags.length > 0) {
+                // Depending on the tag filter type, filter matching nodes
                 if (this.filters.tagOr) {
                     if (!node.tags.some((t) => this.filters.tags.includes(t))) {
                         this.filteredNodeIds.push(node.id);
@@ -130,6 +147,7 @@ export default class ConceptBrowserRenderer {
                 }
             }
 
+            // Determine node state
             if (node.highlighted || node.specialHilight) {
                 state = 'highlight';
             } else if (node.dragged) {
@@ -138,13 +156,29 @@ export default class ConceptBrowserRenderer {
                 state = 'normal';
             }
 
-            color = node.empty ? -1 : node.color;
+            // Determine the node color
+            // When tag colouring is enabled, the normal node color will be ignored
+            if (this.filters.tagColors.length === 0) {
+                color = node.empty ? -1 : node.color;
+            } else {
+                // Determine color based on tag
+                color = 0;
+                for (const tag of this.filters.tagColors) {
+                    if (node.tags.includes(tag.tag)) {
+                        color = tag.color;
+                        break;
+                    }
+                }
+            }
 
+            if (!this.nodesToRender.all[color]) {
+                this.nodesToRender.all[color] = [];
+            }
             if (!this.nodesToRender[state][color]) {
                 this.nodesToRender[state][color] = [];
             }
 
-            this.nodesToRender.all.push(node);
+            this.nodesToRender.all[color].push(node);
             this.nodesToRender[state][color].push(node);
         });
 
@@ -213,8 +247,7 @@ export default class ConceptBrowserRenderer {
         this.context.stroke();
 
         // Draw normal nodes
-        Object.keys(this.nodesToRender.normal).forEach((key) => {
-            const color = Number(key);
+        Object.keys(this.nodesToRender.normal).forEach((color) => {
             this.config.applyStyle(color);
             this.context.beginPath();
             this.context.fillStyle = this.cb.isDragging || this.cb.highlightedNode !== null
@@ -249,8 +282,7 @@ export default class ConceptBrowserRenderer {
             this.context.stroke();
 
             // Draw dragged nodes
-            Object.keys(this.nodesToRender.dragged).forEach((key) => {
-                const color = Number(key);
+            Object.keys(this.nodesToRender.dragged).forEach((color) => {
                 this.config.applyStyle(color);
                 this.context.beginPath();
                 this.context.lineWidth = this.config.nodeLineWidth;
@@ -280,8 +312,7 @@ export default class ConceptBrowserRenderer {
         }
 
         // Draw highlighted nodes
-        Object.keys(this.nodesToRender.highlight).forEach((key) => {
-            const color = Number(key);
+        Object.keys(this.nodesToRender.highlight).forEach((color) => {
             this.config.applyStyle(color);
             this.context.beginPath();
             this.context.lineWidth = this.config.nodeLineWidth;
@@ -315,11 +346,14 @@ export default class ConceptBrowserRenderer {
         }
 
         // Draw node labels
-        this.context.fillStyle = this.config.defaultNodeLabelColor;
         this.context.textBaseline = 'middle';
         this.context.textAlign = 'center';
-        this.context.strokeStyle = this.config.activeNodeLabelStrokeStyle;
-        this.nodesToRender.all.forEach((n) => this.drawNodeText(n));
+        Object.keys(this.nodesToRender.all).forEach((color) => {
+            this.config.applyStyle(color);
+            this.context.fillStyle = this.config.defaultNodeLabelColor;
+            this.context.strokeStyle = this.config.activeNodeLabelStrokeStyle;
+            this.nodesToRender.all[color].forEach((n) => this.drawNodeText(n));
+        });
 
         // Restore state
         this.context.restore();

@@ -1,3 +1,4 @@
+import Color from 'color';
 import {NodeType} from './ConceptBrowser';
 
 // noinspection JSMethodCanBeStatic
@@ -36,29 +37,52 @@ export class BrowserConfiguration {
     public highlightedLinkStrokeStyle = this.draggedLinkStrokeStyle;
 
     // Node label styles
-    public defaultNodeLabelColor = '#000';
-    public whiteNodeLabelColor = '#fff';
-    public activeNodeLabelStrokeStyle = '#fff';
+    public defaultNodeLabelColor = '';
+    public whiteNodeLabelColor = '';
+    public activeNodeLabelStrokeStyle = '';
 
     // Instance defaults
     public instanceDefaultColor = 4;
 
-    public applyStyle(style: number) {
+    private customColorCache: {
+        [color: string]: {
+            defaultNodeFillStyle: string;
+            defaultNodeStrokeStyle: string;
+            draggedNodeFillStyle: string;
+            draggedNodeStrokeStyle: string;
+            fadedNodeFillStyle: string;
+            fadedNodeStrokeStyle: string;
+            highlightedNodeFillStyle: string;
+            highlightedNodeStrokeStyle: string;
+            defaultNodeLabelColor: string;
+            whiteNodeLabelColor: string;
+            activeNodeLabelStrokeStyle: string;
+        };
+    } = {};
+
+    public applyStyle(style: string | number) {
+        if (typeof style === 'number') {
+            style = String(style);
+        }
+
         switch (style) {
-            case -1: { // Grey 'empty' state
+            case '-1': { // Grey 'empty' state
                 // Node styles
-                this.defaultNodeFillStyle = '#8e8e8e';
+                this.defaultNodeFillStyle = '#a2a2a2';
                 this.defaultNodeStrokeStyle = '#d5d5d5';
                 this.draggedNodeFillStyle = this.defaultNodeFillStyle;
-                this.draggedNodeStrokeStyle = '#737373';
+                this.draggedNodeStrokeStyle = '#999999';
                 this.fadedNodeFillStyle = '#bdbdbd';
                 this.fadedNodeStrokeStyle = '#e1e1e1';
                 this.highlightedNodeFillStyle = this.draggedNodeFillStyle;
                 this.highlightedNodeStrokeStyle = this.draggedNodeStrokeStyle;
+                this.defaultNodeLabelColor = '#000';
+                this.whiteNodeLabelColor = '#fff';
+                this.activeNodeLabelStrokeStyle = '#fff';
 
                 break;
             }
-            case 1: {
+            case '1': {
                 // Node styles
                 this.defaultNodeFillStyle = '#de5356';
                 this.defaultNodeStrokeStyle = '#fff';
@@ -68,10 +92,13 @@ export class BrowserConfiguration {
                 this.fadedNodeStrokeStyle = '#fff';
                 this.highlightedNodeFillStyle = this.draggedNodeFillStyle;
                 this.highlightedNodeStrokeStyle = this.draggedNodeStrokeStyle;
+                this.defaultNodeLabelColor = '#000';
+                this.whiteNodeLabelColor = '#fff';
+                this.activeNodeLabelStrokeStyle = '#fff';
 
                 break;
             }
-            case 2: {
+            case '2': {
                 // Node styles
                 this.defaultNodeFillStyle = '#75de79';
                 this.defaultNodeStrokeStyle = '#fff';
@@ -81,10 +108,13 @@ export class BrowserConfiguration {
                 this.fadedNodeStrokeStyle = '#fff';
                 this.highlightedNodeFillStyle = this.draggedNodeFillStyle;
                 this.highlightedNodeStrokeStyle = this.draggedNodeStrokeStyle;
+                this.defaultNodeLabelColor = '#000';
+                this.whiteNodeLabelColor = '#fff';
+                this.activeNodeLabelStrokeStyle = '#fff';
 
                 break;
             }
-            case 3: {
+            case '3': {
                 // Node styles
                 this.defaultNodeFillStyle = '#a4a5fe';
                 this.defaultNodeStrokeStyle = '#fff';
@@ -94,10 +124,13 @@ export class BrowserConfiguration {
                 this.fadedNodeStrokeStyle = '#fff';
                 this.highlightedNodeFillStyle = this.draggedNodeFillStyle;
                 this.highlightedNodeStrokeStyle = this.draggedNodeStrokeStyle;
+                this.defaultNodeLabelColor = '#000';
+                this.whiteNodeLabelColor = '#fff';
+                this.activeNodeLabelStrokeStyle = '#fff';
 
                 break;
             }
-            case 4: {
+            case '4': {
                 // Node styles
                 this.defaultNodeFillStyle = '#deaf6c';
                 this.defaultNodeStrokeStyle = '#fff';
@@ -107,12 +140,13 @@ export class BrowserConfiguration {
                 this.fadedNodeStrokeStyle = this.fadedNodeFillStyle;
                 this.highlightedNodeFillStyle = this.draggedNodeFillStyle;
                 this.highlightedNodeStrokeStyle = this.draggedNodeStrokeStyle;
+                this.defaultNodeLabelColor = '#000';
+                this.whiteNodeLabelColor = '#fff';
+                this.activeNodeLabelStrokeStyle = '#fff';
 
                 break;
             }
-            case 0:
-            /* falls through */
-            default: {
+            case '0': {
                 // Node styles
                 this.defaultNodeFillStyle = '#b1ded2';
                 this.defaultNodeStrokeStyle = '#fff';
@@ -122,7 +156,46 @@ export class BrowserConfiguration {
                 this.fadedNodeStrokeStyle = '#fff';
                 this.highlightedNodeFillStyle = this.draggedNodeFillStyle;
                 this.highlightedNodeStrokeStyle = this.draggedNodeStrokeStyle;
+                this.defaultNodeLabelColor = '#000';
+                this.whiteNodeLabelColor = '#fff';
+                this.activeNodeLabelStrokeStyle = '#fff';
 
+                break;
+            }
+            default: {
+                // Node styles need to be calculated from the supplied color
+                // We use an in memory cache to speed up the selection in case of repetition
+                if (!(style in this.customColorCache)) {
+                    style = String(style);
+                    const color = Color(style);
+                    const isDark = color.isDark();
+                    this.customColorCache[style] = {
+                        defaultNodeFillStyle: style,
+                        defaultNodeStrokeStyle: '#fff',
+                        draggedNodeFillStyle: style,
+                        draggedNodeStrokeStyle: color.darken(0.4).hex(),
+                        fadedNodeFillStyle: color.lighten(0.4).hex(),
+                        fadedNodeStrokeStyle: '#fff',
+                        highlightedNodeFillStyle: style,
+                        highlightedNodeStrokeStyle: color.darken(0.4).hex(),
+                        defaultNodeLabelColor: isDark ? '#fff' : '#000',
+                        whiteNodeLabelColor: isDark ? '#000' : '#fff',
+                        activeNodeLabelStrokeStyle: isDark ? '#000' : '#fff',
+                    };
+                }
+
+                const customColor = this.customColorCache[style];
+                this.defaultNodeFillStyle = customColor.defaultNodeFillStyle;
+                this.defaultNodeStrokeStyle = customColor.defaultNodeStrokeStyle;
+                this.draggedNodeFillStyle = customColor.draggedNodeFillStyle;
+                this.draggedNodeStrokeStyle = customColor.draggedNodeStrokeStyle;
+                this.fadedNodeFillStyle = customColor.fadedNodeFillStyle;
+                this.fadedNodeStrokeStyle = customColor.fadedNodeStrokeStyle;
+                this.highlightedNodeFillStyle = customColor.highlightedNodeFillStyle;
+                this.highlightedNodeStrokeStyle = customColor.highlightedNodeStrokeStyle;
+                this.defaultNodeLabelColor = customColor.defaultNodeLabelColor;
+                this.whiteNodeLabelColor = customColor.whiteNodeLabelColor;
+                this.activeNodeLabelStrokeStyle = customColor.activeNodeLabelStrokeStyle;
                 break;
             }
         }
