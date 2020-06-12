@@ -1,5 +1,11 @@
+@import '_font';
+
 // Darker the background of hovers
 $dropdown-link-hover-bg: #d2d2d2;
+
+// Override font family for bootstrap
+$font-family-sans-serif: $font-family;
+$popover-font-size: 1rem;
 
 // Import bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -91,6 +97,12 @@ $dropdown-link-hover-bg: #d2d2d2;
 
 .tooltip-wide .tooltip-inner {
   max-width: 60vw;
+}
+
+.popover {
+  .popover-header {
+    font-weight: bold;
+  }
 }
 
 // Add min-width handler for certain sizes

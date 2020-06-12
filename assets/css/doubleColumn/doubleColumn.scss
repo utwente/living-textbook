@@ -1,6 +1,9 @@
 @import '../vars/vars';
 @import '../mixins/mixins';
 
+// Import certain styling from content
+@import '../content/forms';
+
 body, #double-column-container, #bottom-container {
   margin: 0;
   padding: 0;
