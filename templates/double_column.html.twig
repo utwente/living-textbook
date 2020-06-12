@@ -63,53 +63,56 @@
                     </label>
                   </div>
 
-                  <div class="mt-2">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="filter-tags-enabled" checked>
-                      <label class="checkbox-custom custom-control-label w-100" for="filter-tags-enabled">
-                        {{ 'browser.filters.tags'|trans }}
-                      </label>
-                    </div>
-                    <div style="padding-left: 1.5rem">
-                      <div class="d-flex">
-                        <div class="flex-fill">
-                          <select id="filter-tags" multiple></select>
-                        </div>
-                        <div class="flex-grow-0 flex-shrink-0 ml-1 align-self-center">
-                          <input id="filter-tags-or" type="checkbox" data-toggle="toggle" checked
-                                 data-size="sm"
-                                 data-width="60px" data-height="17px" {# Are required for correct rendering #}
-                                 data-on="{{ 'browser.filters.or'|trans }}"
-                                 data-off="{{ 'browser.filters.and'|trans }}"
-                                 data-onstyle="primary" data-offstyle="primary">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <div id="filter-content-tags">
 
-                  <div class="mt-2">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="filter-tag-colors-enabled" checked>
-                      <label class="checkbox-custom custom-control-label" for="filter-tag-colors-enabled">
-                        {{ 'browser.filters.tag-color'|trans }}
-                      </label>
-                    </div>
-                    <div style="padding-left: 1.5rem;">
-                      <div id="filter-tag-color-prototype" class="d-none">
-                        <div class="d-flex my-1 filter-tag-color">
+                    <div class="mt-2">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="filter-tags-enabled" checked>
+                        <label class="checkbox-custom custom-control-label w-100" for="filter-tags-enabled">
+                          {{ 'browser.filters.tags'|trans }}
+                        </label>
+                      </div>
+                      <div style="padding-left: 1.5rem">
+                        <div class="d-flex">
                           <div class="flex-fill">
-                            <select></select>
+                            <select id="filter-tags" multiple></select>
                           </div>
-                          <div class="color-picker ml-1" style="width: 60px">
-                            <input type="color" class="form-control">
+                          <div class="flex-grow-0 flex-shrink-0 ml-1 align-self-center">
+                            <input id="filter-tags-or" type="checkbox" data-toggle="toggle" checked
+                                   data-size="sm"
+                                   data-width="60px" data-height="17px" {# Are required for correct rendering #}
+                                   data-on="{{ 'browser.filters.or'|trans }}"
+                                   data-off="{{ 'browser.filters.and'|trans }}"
+                                   data-onstyle="primary" data-offstyle="primary">
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div id="filter-tag-color-container" class="mt-n1"></div>
+                    <div class="mt-2">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="filter-tag-colors-enabled" checked>
+                        <label class="checkbox-custom custom-control-label" for="filter-tag-colors-enabled">
+                          {{ 'browser.filters.tag-color'|trans }}
+                        </label>
+                      </div>
+                      <div style="padding-left: 1.5rem;">
+                        <div id="filter-tag-color-prototype" class="d-none">
+                          <div class="d-flex my-1 filter-tag-color">
+                            <div class="flex-fill">
+                              <select></select>
+                            </div>
+                            <div class="color-picker ml-1" style="width: 60px">
+                              <input type="color" class="form-control">
+                            </div>
+                          </div>
+                        </div>
 
-                      <div>
-                        <small class="form-text text-muted">{{ 'browser.filters.tag-color-help'|trans }}</small>
+                        <div id="filter-tag-color-container" class="mt-n1"></div>
+
+                        <div>
+                          <small class="form-text text-muted">{{ 'browser.filters.tag-color-help'|trans }}</small>
+                        </div>
                       </div>
                     </div>
                   </div>

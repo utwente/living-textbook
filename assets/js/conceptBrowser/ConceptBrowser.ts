@@ -1419,6 +1419,7 @@ export default class ConceptBrowser {
     private initFilters() {
         // Clear state
         this.$select2Elements = [];
+        const tagValues = Object.values(this.tags);
 
         // Create instance filter
         const $filterInstances = $('#filter-show-instances');
@@ -1447,7 +1448,7 @@ export default class ConceptBrowser {
 
         // Rebuild options
         $filterTags.find('option').remove();
-        Object.values(this.tags).sort((a, b) => a.name.localeCompare(b.name)).forEach((tag) => {
+        tagValues.sort((a, b) => a.name.localeCompare(b.name)).forEach((tag) => {
             $filterTags.append(new Option(tag.name, String(tag.id), false, currentValue.includes(String(tag.id))));
         });
 
@@ -1481,6 +1482,12 @@ export default class ConceptBrowser {
 
         // Create tag color selectors
         this.buildTagColorSelectors();
+
+        if (tagValues.length === 0) {
+            $('#filter-content-tags').hide();
+        } else {
+            $('#filter-content-tags').show();
+        }
     }
 
     /**
