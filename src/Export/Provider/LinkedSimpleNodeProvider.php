@@ -95,7 +95,8 @@ class LinkedSimpleNodeProvider implements ProviderInterface
    */
   public function getPreview(): string
   {
-    $fieldNames = $this->namingService->get()->concept();
+    $names      = $this->namingService->get();
+    $fieldNames = $names->concept();
 
     return sprintf(<<<'EOT'
 {
@@ -105,8 +106,8 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "label": "<concept-name>",
             "link": "<concept-url>",
             "numberOfLinks": <number-of-relations>,
-            "%s": "<concept-%s>",
-            "%s": "<concept-%s>",
+            "%1$s": "<concept-%2$s>",
+            "%3$s": "<concept-%4$s>",
         }
     ],
     "links": [
@@ -133,12 +134,12 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "url": "<external-resource-url>",
         }
     ]
-    "learning_outcomes": [
+    "%5$s": [
         {
             "nodes": [<node-ids>],
-            "number": "<learning-outcome-number>",
-            "name": "<learning-outcome-name>",
-            "content": "<learning-outcome-content>",
+            "number": "<%6$s-number>",
+            "name": "<%6$s-name>",
+            "content": "<%6$s-content>",
         }
     ]
 }
@@ -146,7 +147,10 @@ EOT,
         $this->fieldName($fieldNames->definition()),
         $this->fieldDescription($fieldNames->definition()),
         $this->fieldName($fieldNames->selfAssessment()),
-        $this->fieldDescription($fieldNames->selfAssessment()));
+        $this->fieldDescription($fieldNames->selfAssessment()),
+        $this->fieldName($names->learningOutcome()->objs()),
+        $this->fieldDescription($names->learningOutcome()->obj())
+    );
   }
 
   /**
@@ -222,29 +226,31 @@ EOT,
 
     // Create JSON data
     {
-      $fieldNames     = $this->namingService->get()->concept();
-      $definition     = $this->fieldName($fieldNames->definition());
-      $selfAssessment = $this->fieldName($fieldNames->selfAssessment());
+      $names                = $this->namingService->get();
+      $fieldNames           = $names->concept();
+      $definitionName       = $this->fieldName($fieldNames->definition());
+      $selfAssessmentName   = $this->fieldName($fieldNames->selfAssessment());
+      $learningOutcomeField = $this->fieldName($names->learningOutcome()->objs());
 
       // Return as JSON
       $serializationContext = SerializationContext::create();
       $serializationContext->setSerializeNull(true);
       $json = $this->serializer->serialize(
           [
-              'nodes'              => array_map(function (Concept $concept) use ($definition, $selfAssessment) {
+              'nodes'               => array_map(function (Concept $concept) use ($definitionName, $selfAssessmentName) {
                 return [
-                    'instance'      => $concept->isInstance(),
-                    'label'         => $concept->getName(),
-                    'link'          => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-                    'numberOfLinks' => $concept->getNumberOfLinks(),
-                    $definition     => $concept->getDefinition(),
-                    $selfAssessment => $concept->getSelfAssessment()->getText(),
+                    'instance'          => $concept->isInstance(),
+                    'label'             => $concept->getName(),
+                    'link'              => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+                    'numberOfLinks'     => $concept->getNumberOfLinks(),
+                    $definitionName     => $concept->getDefinition(),
+                    $selfAssessmentName => $concept->getSelfAssessment()->getText(),
                 ];
               }, $concepts),
-              'links'              => $mappedLinks,
-              'contributors'       => $mappedContributors,
-              'external_resources' => $mappedExternalResources,
-              'learning_outcomes'  => $mappedLearningOutcomes,
+              'links'               => $mappedLinks,
+              'contributors'        => $mappedContributors,
+              'external_resources'  => $mappedExternalResources,
+              $learningOutcomeField => $mappedLearningOutcomes,
           ],
           'json', $serializationContext);
 
