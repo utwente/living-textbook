@@ -59,9 +59,10 @@ Encore
       Popper: ['popper.js', 'default']
     })
 
+    // Polyfill and transpilation options
     .configureBabel(function () {
     }, {
-      useBuiltIns: 'entry', // or try "usage"
+      useBuiltIns: 'usage',
       corejs: 3
     })
 ;
