@@ -215,6 +215,11 @@ export default class ConceptBrowserRenderer {
      * @note Order in this function is important!
      */
     private draw() {
+        // Do not draw when not visible
+        if (!this.cb.isVisible) {
+            return;
+        }
+
         // Refresh state when requested
         if (this.shouldRefreshState) {
             this.shouldRefreshState = false;
