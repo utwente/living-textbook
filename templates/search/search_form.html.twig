@@ -2,7 +2,12 @@
 <script type="text/javascript">
   function doSearch_{{ id }}(e) {
     e.preventDefault();
-    eDispatch.pageLoad('{{ path('search') }}/' + $('#search_{{ id }}').val());
+    var path = '{{ path('search') }}/' + $('#search_{{ id }}').val();
+    if (inDoubleColumn) {
+      eDispatch.pageLoad(path);
+    } else {
+      window.location.href = path;
+    }
     return false;
   }
 </script>
