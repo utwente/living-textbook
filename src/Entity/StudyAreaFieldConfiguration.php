@@ -80,6 +80,13 @@ class StudyAreaFieldConfiguration
   private $conceptSelfAssessmentName;
 
   /**
+   * @var string|null
+   * @ORM\Column(type="string", length=50, nullable=true)
+   * @Assert\Length(max="50")
+   */
+  private $learningOutcomeObjName;
+
+  /**
    * @return string|null
    */
   public function getConceptDefinitionName(): ?string
@@ -235,6 +242,26 @@ class StudyAreaFieldConfiguration
   public function setConceptSelfAssessmentName(?string $conceptSelfAssessmentName): self
   {
     $this->conceptSelfAssessmentName = $conceptSelfAssessmentName;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getLearningOutcomeObjName(): ?string
+  {
+    return $this->learningOutcomeObjName;
+  }
+
+  /**
+   * @param string|null $learningOutcomeObjName
+   *
+   * @return StudyAreaFieldConfiguration
+   */
+  public function setLearningOutcomeObjName(?string $learningOutcomeObjName): self
+  {
+    $this->learningOutcomeObjName = $learningOutcomeObjName;
 
     return $this;
   }

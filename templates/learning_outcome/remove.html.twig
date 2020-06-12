@@ -1,14 +1,14 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'learning-outcome.remove'|trans({"%item%": learningOutcome.name}) }}
+  {{ 'learning-outcome.remove'|trans({"%item%": learningOutcome.name, '%singular%': naming.get.learningOutcome.obj}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'learning-outcome.remove-text'|trans({"%item%": learningOutcome.name}) }}</p>
+  <p>{{ 'learning-outcome.remove-text'|trans({"%item%": learningOutcome.name, '%plural%': naming.get.learningOutcome.objs}) }}</p>
 
   {% if learningOutcome.concepts|length > 0 %}
-    <p>{{ 'learning-outcome.remove-concepts'|trans }}</p>
+    <p>{{ 'learning-outcome.remove-concepts'|trans({'%singular%': naming.get.learningOutcome.obj}) }}</p>
     <ul>
       {% for concept in learningOutcome.concepts %}
         <li>{{ concept.name }}</li>

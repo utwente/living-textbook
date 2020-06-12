@@ -143,7 +143,6 @@ concept:
     not-possible-review-enabled: 'It is not possible to instantiate an instance as review mode is enabled.'
     success: 'The instances have been created! Refresh the browser to see them.'
   introduction: 'Introduction'
-  learning-outcomes: 'Learning outcomes'
   list-title: 'Concept list'
   name: 'Name'
   new: 'New concept/instance'
@@ -240,7 +239,7 @@ dashboard:
   contributor-count: '{0} No contributors|{1} One contributor|]1,Inf[ %count% contributors'
   external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
   instance-count: '{0} No instances|{1} One instance|]1,Inf[ %count% instances'
-  learning-outcome-count: '{0} No learning outcomes|{1} One learning outcome|]1,Inf[ %count% learning outcomes'
+  learning-outcome-count: '{0} No %plural%|{1} One %singular%|]1,Inf[ %count% %plural%'
   learning-path-count: '{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths'
   open: 'Open dashboard'
   relation-count: '{0} No relations|{1} One relation|]1,Inf[ %count% relations'
@@ -279,7 +278,6 @@ excel:
       explanation: "Explanation"
       prior-knowledge: "Prior knowledge"
       examples: "Examples"
-      learning-outcomes: "Learning outcomes"
       how-to: "How to"
       self-assessment: "Self assessment"
       external-links: "External links"
@@ -301,7 +299,7 @@ excel:
       no-definition: "Without definition"
       no-introduction: "Without introduction"
       no-prior-knowledge: "Without prior knowledge"
-      no-learning-outcomes: "Without learning outcomes"
+      no-learning-outcomes: "Without %plural%"
       no-relation: "Without relations"
       more-relations-5: "More than 5 relations"
       more-relations-10: "More than 10 relations"
@@ -344,6 +342,10 @@ external-resource:
   updated: 'External resource "%item%" has been successfully updated.'
   url: 'Url'
 
+field-configuration:
+  obj-name: 'Object name'
+  obj-help: 'Make sure to use a singular name here, we''ll automatically transform it into the plural form.'
+
 form:
   action-bar: 'Action bar'
   actions: 'Actions'
@@ -380,18 +382,18 @@ help:
 
 learning-outcome:
   _name: 'Learning outcome'
-  add-title: 'Add new learning outcome'
-  edit-title: 'Edit learning outcome "%item%"'
-  list-title: 'Learning outcome list'
+  add-title: 'Add new %singular%'
+  edit-title: 'Edit %singular% "%item%"'
+  list-title: '%singular% list'
   name: 'Name'
   number: 'Number'
-  remove: 'Remove learning outcome "%item%"'
-  remove-concepts: 'Note that the learning outcome will also be removed from the following concepts/instances:'
-  remove-text: 'Are you sure you want to remove the learning outcome "%item%"?'
-  removed: 'Learning outcome "%item%" has been removed successfully.'
-  saved: 'Learning outcome "%item%" has been saved successfully.'
+  remove: 'Remove %singular% "%item%"'
+  remove-concepts: 'Note that the %singular% will also be removed from the following concepts/instances:'
+  remove-text: 'Are you sure you want to remove the %plural% "%item%"?'
+  removed: '%singular% "%item%" has been removed successfully.'
+  saved: '%singular% "%item%" has been saved successfully.'
   text: 'Content'
-  updated: 'Learning outcome "%item%" has been successfully updated.'
+  updated: '%singular% "%item%" has been successfully updated.'
 
 learning-path:
   _name: 'Learning path'
@@ -404,7 +406,7 @@ learning-path:
   element-description: 'Description'
   element-errors: 'One or more elements contain errors'
   elements: 'Elements'
-  elements-info: 'Select concepts/instances and/or learning outcomes (which will add the containing concepts/instances) below to add them to the learning path elements.'
+  elements-info: 'Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements.'
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
@@ -456,10 +458,9 @@ menu:
   concept: 'Concepts'
   case-study: 'Case studies'
   fallback-users: 'Local accounts'
-  field-configration: 'Field configuration'
+  field-configration: 'Object & field naming'
   import-data: 'Import'
   instances: 'Instances'
-  learning-outcomes: 'Learning outcomes'
   learning-paths: 'Learning paths'
   permissions: 'Permissions'
   print: 'Print'
@@ -600,7 +601,6 @@ search:
     concepts: "Concepts"
     external-resources: "External resources"
     instances: "Instances"
-    learning-outcomes: "Learning outcomes"
     own-annotations: "Own annotations"
   results: 'Search results'
   results-for: 'Search results for "%item%"'
@@ -622,10 +622,11 @@ study-area:
   existing: 'Existing study area'
   field-configuration:
     text: >-
-      Here you can update the field configuration of the current study area. You can configure the names that should
-      be displayed for the several fields in the area. If you keep a field empty, the default name will be used.
-    title: "Field configuration"
-    updated: "Field configuration updated successfully!"
+      Here you can update the object and field naming for the current study area.
+      You can configure the names that should be displayed for several objects and fields available in the area.
+      If you keep a field empty, the default name will be used.
+    title: "Object & field naming"
+    updated: "Object & field naming updated successfully!"
   freeze: 'Freeze study area "%item%"'
   freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone without risking data loss.'
   freeze-succeeded: 'Study area "%item%" has been frozen successfully.'
@@ -825,7 +826,6 @@ tracking:
     concept: 'Concept/instance'
     description: "Tracking detail export for the study area \"%item%\"."
     event: "Event"
-    learning-outcome: 'Learning outcome'
     learning-path: 'Learning path'
     link: "Link"
     link-blank: "Blank"
@@ -851,7 +851,7 @@ url:
   good-internal: 'Healthy internal URLs'
   internal-wrong: 'Internal URL, wrong study area'
   last-scanned: 'Last scanned: %date%'
-  learning-outcome-path: 'Learning outcome: %name% - %path%'
+  learning-outcome-path: '%singular%: %name% - %path%'
   learning-path-path: 'Learning path: %name% - %path%'
   rescan: 'Recheck'
   rescan-study-area: 'Rescan complete study area'

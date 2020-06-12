@@ -161,7 +161,9 @@
     {% if not studyArea.openAccess or learningOutcomeCount > 0 %}
       <li>
         {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
-          {{ 'dashboard.learning-outcome-count'|trans({'%count%': learningOutcomeCount}) }}
+          {{ 'dashboard.learning-outcome-count'|trans({
+            '%count%': learningOutcomeCount, '%singular%': naming.get.learningOutcome.obj, '%plural%': naming.get.learningOutcome.objs
+          }) }}
           {% if learningOutcomeCount > 0 %}</a>{% endif %}
       </li>
     {% endif %}

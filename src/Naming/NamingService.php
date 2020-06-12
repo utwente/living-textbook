@@ -5,10 +5,12 @@ namespace App\Naming;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Naming\Model\ResolvedConceptNames;
+use App\Naming\Model\ResolvedLearningOutcomeNames;
 use App\Naming\Model\ResolvedNames;
 use App\Repository\StudyAreaFieldConfigurationRepository;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -103,7 +105,12 @@ class NamingService
               $conf->getConceptSelfAssessmentName() ?: $this->translator->trans('concept.self-assessment')
           );
 
-          $result = new ResolvedNames($conceptNames);
+          $learningOutcomeNames = new ResolvedLearningOutcomeNames(
+              $conf->getLearningOutcomeObjName() ?: $this->translator->trans('learning-outcome._name')
+          );
+
+          $result = new ResolvedNames($conceptNames, $learningOutcomeNames);
+          $result->resolvePlurals(new EnglishInflector());
 
           $item->tag(self::CACHE_TAG);
 

@@ -58,7 +58,7 @@
         and learningOutcomeData|length != 0 %} active{% endif %}"
          id="tab-learning-outcomes-button" href="#tab-learning-outcomes" role="tab"
          data-toggle="tab">
-        {{ 'search.result.learning-outcomes'|trans }}
+        {{ naming.get.learningOutcome.objs|capitalize }}
       </a>
     </li>
     {% if app.user %}
@@ -229,7 +229,7 @@
           and learningOutcomeData|length != 0 %} active{% endif %}"
         id="tab-learning-outcomes" role="tabpanel" aria-labelledby="tab-learning-outcomes-button">
       {% if learningOutcomeData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.learning-outcomes'|trans|lower }) }}</p>
+        <p>{{ 'search.no-results'|trans({'%item%' : naming.get.learningOutcome.objs }) }}</p>
       {% else %}
         <div class="table-responsive">
           <table class="table table-hover">

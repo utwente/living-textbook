@@ -2,53 +2,44 @@
 
 namespace App\Naming\Model;
 
-class ResolvedConceptNames
+use Symfony\Component\String\Inflector\InflectorInterface;
+
+class ResolvedConceptNames implements ResolvedNamesInterface
 {
-  /**
-   * @var string
-   */
+  /** @var string */
   private $definition;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $examples;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $howTo;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $introduction;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $priorKnowledge;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $selfAssessment;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $synonyms;
-  /**
-   * @var string
-   */
+  /** @var string */
   private $theoryExplanation;
 
   public function __construct(
       string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
       string $howTo, string $examples, string $selfAssessment)
   {
-    $this->definition        = $definition;
-    $this->introduction      = $introduction;
-    $this->synonyms          = $synonyms;
-    $this->priorKnowledge    = $priorKnowledge;
-    $this->theoryExplanation = $theoryExplanation;
-    $this->howTo             = $howTo;
-    $this->examples          = $examples;
-    $this->selfAssessment    = $selfAssessment;
+    $this->definition        = strtolower($definition);
+    $this->introduction      = strtolower($introduction);
+    $this->synonyms          = strtolower($synonyms);
+    $this->priorKnowledge    = strtolower($priorKnowledge);
+    $this->theoryExplanation = strtolower($theoryExplanation);
+    $this->howTo             = strtolower($howTo);
+    $this->examples          = strtolower($examples);
+    $this->selfAssessment    = strtolower($selfAssessment);
+  }
+
+  public function resolvePlurals(InflectorInterface $inflector)
+  {
+    // Nothing to do here
   }
 
   /**

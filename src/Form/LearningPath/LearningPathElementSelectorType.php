@@ -5,6 +5,7 @@ namespace App\Form\LearningPath;
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
+use App\Naming\NamingService;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningOutcomeRepository;
 use JMS\Serializer\SerializerInterface;
@@ -21,13 +22,19 @@ class LearningPathElementSelectorType extends AbstractType
 {
   /** @var LearningOutcomeRepository */
   private $learningOutcomeRepository;
+  /**
+   * @var NamingService
+   */
+  private $namingService;
   /** @var SerializerInterface */
   private $serializer;
 
-  public function __construct(LearningOutcomeRepository $learningOutcomeRepository, SerializerInterface $serializer)
+  public function __construct(
+      LearningOutcomeRepository $learningOutcomeRepository, SerializerInterface $serializer, NamingService $namingService)
   {
     $this->learningOutcomeRepository = $learningOutcomeRepository;
     $this->serializer                = $serializer;
+    $this->namingService             = $namingService;
   }
 
   public function buildForm(FormBuilderInterface $builder, array $options)
@@ -48,7 +55,7 @@ class LearningPathElementSelectorType extends AbstractType
             'select2_placeholder' => 'learning-path.select',
         ])
         ->add('learningOutcomes', EntityType::class, [
-            'label'               => 'menu.learning-outcomes',
+            'label'               => ucfirst($this->namingService->get()->learningOutcome()->objs()),
             'class'               => LearningOutcome::class,
             'choice_label'        => 'name',
             'required'            => false,

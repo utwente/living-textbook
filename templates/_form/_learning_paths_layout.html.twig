@@ -2,7 +2,7 @@
   <div class="form-group row">
     {{ form_label(form) }}
     <div class="col-12">
-      {{ 'learning-path.elements-info'|trans }}
+      {{ 'learning-path.elements-info'|trans({'%learning_outcomes%': naming.get.learningOutcome.objs}) }}
     </div>
     <div class="col-12">
       {%- if errors|length > 0 -%}
@@ -31,14 +31,16 @@
 {% block learning_path_element_selector_widget %}
   <div class="form-group row">
     <label class="col-form-label col-12" for="{{ form.concepts.vars.id }}">
-      {{ form.concepts.vars.label|trans }}</label>
+      {{ form.concepts.vars.label|trans }}
+    </label>
     <div class="col-12">
       {{ form_widget(form.concepts) }}
     </div>
   </div>
   <div class="form-group row">
     <label class="col-form-label col-12" for="{{ form.learningOutcomes.vars.id }}">
-      {{ form.learningOutcomes.vars.label|trans }}</label>
+      {{ form.learningOutcomes.vars.label }}
+    </label>
     <div class="col-12">
       {{ form_widget(form.learningOutcomes) }}
     </div>

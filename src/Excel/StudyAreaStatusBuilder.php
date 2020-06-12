@@ -5,6 +5,7 @@ namespace App\Excel;
 use App\Entity\Concept;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Naming\NamingService;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
@@ -22,6 +23,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class StudyAreaStatusBuilder
 {
+  /**  @var NamingService */
+  private $namingService;
+
   /** @var TranslatorInterface */
   private $translator;
 
@@ -57,16 +61,18 @@ class StudyAreaStatusBuilder
    * @param ConceptRelationRepository $conceptRelationRepo
    * @param RelationTypeRepository    $relationTypeRepo
    * @param SpreadsheetHelper         $spreadsheetHelper
+   * @param NamingService             $namingService
    */
   public function __construct(TranslatorInterface $translator, ConceptRepository $conceptRepo,
                               ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo,
-                              SpreadsheetHelper $spreadsheetHelper)
+                              SpreadsheetHelper $spreadsheetHelper, NamingService $namingService)
   {
     $this->translator          = $translator;
     $this->conceptRelationRepo = $conceptRelationRepo;
     $this->conceptRepo         = $conceptRepo;
     $this->relationTypeRepo    = $relationTypeRepo;
     $this->spreadsheetHelper   = $spreadsheetHelper;
+    $this->namingService       = $namingService;
   }
 
   /**
@@ -169,7 +175,10 @@ class StudyAreaStatusBuilder
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.general-concept-statistics.no-definition', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.general-concept-statistics.no-introduction', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.general-concept-statistics.no-learning-outcomes', true);
+    $this->spreadsheetHelper->setCellValue($sheet, $column + 6, $row,
+        $this->translator->trans('excel.sheet.general-concept-statistics.no-learning-outcomes', [
+            '%plural%' => $this->namingService->get()->learningOutcome()->objs(),
+        ]), true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
@@ -329,7 +338,7 @@ class StudyAreaStatusBuilder
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.detailed-concept-overview.examples', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 6, $row, 'excel.sheet.detailed-concept-overview.learning-outcomes', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 6, $row, ucfirst($this->namingService->get()->learningOutcome()->objs()), true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.external-links', true);

@@ -5,6 +5,7 @@ namespace App\Excel;
 use App\Entity\PageLoad;
 use App\Entity\StudyArea;
 use App\Entity\TrackingEvent;
+use App\Naming\NamingService;
 use App\Repository\PageLoadRepository;
 use App\Repository\TrackingEventRepository;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -15,6 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TrackingExportBuilder
 {
+  /** @var NamingService */
+  private $namingService;
+
   /** @var TranslatorInterface */
   private $translator;
 
@@ -34,15 +38,17 @@ class TrackingExportBuilder
    * @param SpreadsheetHelper       $spreadsheetHelper
    * @param PageLoadRepository      $pageLoadRepository
    * @param TrackingEventRepository $trackingEventRepository
+   * @param NamingService           $namingService
    */
   public function __construct(
       TranslatorInterface $translator, SpreadsheetHelper $spreadsheetHelper, PageLoadRepository $pageLoadRepository,
-      TrackingEventRepository $trackingEventRepository)
+      TrackingEventRepository $trackingEventRepository, NamingService $namingService)
   {
     $this->translator              = $translator;
     $this->spreadsheetHelper       = $spreadsheetHelper;
     $this->pageLoadRepository      = $pageLoadRepository;
     $this->trackingEventRepository = $trackingEventRepository;
+    $this->namingService           = $namingService;
   }
 
 
@@ -128,7 +134,7 @@ class TrackingExportBuilder
     $contextMap['learningpath'] = $column;
 
     $sheet->getColumnDimensionByColumn(++$column)->setAutoSize(true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'tracking.export.learning-outcome', true);
+    $this->spreadsheetHelper->setCellValue($sheet, $column, $row, $this->namingService->get()->learningOutcome()->obj(), true);
     $contextMap['learningoutcome'] = $column;
 
     $contextMap['__next'] = ++$column;

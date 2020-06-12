@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block title %}
-  {{ 'learning-outcome.list-title'|trans }}
+  {{ 'learning-outcome.list-title'|trans({'%singular%': naming.get.learningOutcome.obj|capitalize }) }}
 {% endblock %}
 
 {% block content %}

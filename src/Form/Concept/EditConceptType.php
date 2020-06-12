@@ -53,7 +53,8 @@ class EditConceptType extends AbstractType
 
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    $fieldNames = $this->namingService->get()->concept();
+    $names      = $this->namingService->get();
+    $fieldNames = $names->concept();
 
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
     $pendingChangeObjectInfo = $options['pending_change_info'];
@@ -185,16 +186,17 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('learningOutcomes', EntityType::class, [
-            'label'         => 'concept.learning-outcomes',
-            'class'         => LearningOutcome::class,
-            'choice_label'  => 'shortName',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
+            'label'              => ucfirst($names->learningOutcome()->objs()),
+            'translation_domain' => false,
+            'class'              => LearningOutcome::class,
+            'choice_label'       => 'shortName',
+            'required'           => false,
+            'multiple'           => true,
+            'query_builder'      => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
               return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
             },
-            'select2'       => true,
-            'disabled'      => in_array('learningOutcomes', $disabledFields),
+            'select2'            => true,
+            'disabled'           => in_array('learningOutcomes', $disabledFields),
         ])
         ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
             'field'               => 'learningOutcomes',

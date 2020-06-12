@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-  {{ 'learning-outcome.edit-title'|trans({'%item%': learningOutcome.name}) }}
+  {{ 'learning-outcome.edit-title'|trans({'%item%': learningOutcome.name, '%singular%': naming.get().learningOutcome.obj}) }}
 {% endblock %}
 
 {% block content %}

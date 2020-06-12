@@ -103,7 +103,7 @@
           {% if is_granted('MENU_LEARNING_OUTCOMES', _twigStudyArea) %}
             {% set anyContent = true %}
             <a class="dropdown-item"
-               href="{{ path('app_learningoutcome_list') }}">{{ 'menu.learning-outcomes'|trans }}</a>
+               href="{{ path('app_learningoutcome_list') }}">{{ naming.get.learningOutcome.objs|capitalize }}</a>
           {% endif %}
         </div>
       </li>

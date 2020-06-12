@@ -8,6 +8,7 @@ use App\Entity\PendingChange;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
 use App\Form\Type\RemoveType;
 use App\Form\Type\SaveType;
+use App\Naming\NamingService;
 use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
@@ -39,11 +40,13 @@ class LearningOutcomeController extends AbstractController
    * @param RequestStudyArea    $requestStudyArea
    * @param ReviewService       $reviewService
    * @param TranslatorInterface $trans
+   * @param NamingService       $namingService
    *
    * @return array|Response
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans,
+      NamingService $namingService)
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -62,7 +65,10 @@ class LearningOutcomeController extends AbstractController
       $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       // Return to list
-      $this->addFlash('success', $trans->trans('learning-outcome.saved', ['%item%' => $learningOutcome->getShortName()]));
+      $this->addFlash('success', $trans->trans('learning-outcome.saved', [
+          '%item%'     => $learningOutcome->getShortName(),
+          '%singular%' => ucfirst($namingService->get()->learningOutcome()->obj()),
+      ]));
 
       if (!$learningOutcome->getId() || SaveType::isListClicked($form)) {
         return $this->redirectToRoute('app_learningoutcome_list');
@@ -89,12 +95,13 @@ class LearningOutcomeController extends AbstractController
    * @param LearningOutcome     $learningOutcome
    * @param ReviewService       $reviewService
    * @param TranslatorInterface $trans
+   * @param NamingService       $namingService
    *
    * @return array|Response
    */
   public function edit(
       Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
-      ReviewService $reviewService, TranslatorInterface $trans)
+      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService)
   {
     // Check if correct study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -105,7 +112,7 @@ class LearningOutcomeController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $learningOutcome)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-          '%item%' => $trans->trans('learning-outcome._name'),
+          '%item%' => ucfirst($namingService->get()->learningOutcome()->obj()),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -127,7 +134,10 @@ class LearningOutcomeController extends AbstractController
       $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
 
       // Return to list
-      $this->addFlash('success', $trans->trans('learning-outcome.updated', ['%item%' => $learningOutcome->getShortName()]));
+      $this->addFlash('success', $trans->trans('learning-outcome.updated', [
+          '%item%'     => $learningOutcome->getShortName(),
+          '%singular%' => ucfirst($namingService->get()->learningOutcome()->obj()),
+      ]));
 
       if (SaveType::isListClicked($form)) {
         return $this->redirectToRoute('app_learningoutcome_list');
@@ -172,12 +182,13 @@ class LearningOutcomeController extends AbstractController
    * @param LearningOutcome     $learningOutcome
    * @param ReviewService       $reviewService
    * @param TranslatorInterface $trans
+   * @param NamingService       $namingService
    *
    * @return array|Response
    */
   public function remove(
       Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
-      ReviewService $reviewService, TranslatorInterface $trans)
+      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService)
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -189,7 +200,7 @@ class LearningOutcomeController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $learningOutcome)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-          '%item%' => $trans->trans('learning-outcome._name'),
+          '%item%' => ucfirst($namingService->get()->learningOutcome()->obj()),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -205,7 +216,10 @@ class LearningOutcomeController extends AbstractController
       // Remove it
       $reviewService->storeChange($studyArea, $learningOutcome, PendingChange::CHANGE_TYPE_REMOVE);
 
-      $this->addFlash('success', $trans->trans('learning-outcome.removed', ['%item%' => $learningOutcome->getShortName()]));
+      $this->addFlash('success', $trans->trans('learning-outcome.removed', [
+          '%item%'     => $learningOutcome->getShortName(),
+          '%singular%' => ucfirst($namingService->get()->learningOutcome()->obj()),
+      ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
     }

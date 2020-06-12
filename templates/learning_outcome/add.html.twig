@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block title %}
-  {{ 'learning-outcome.add-title'|trans }}
+  {{ 'learning-outcome.add-title'|trans({'%singular%': naming.get.learningOutcome.obj}) }}
 {% endblock %}
 
 {% block content %}

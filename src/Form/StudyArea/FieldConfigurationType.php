@@ -12,7 +12,9 @@ class FieldConfigurationType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-    $this->conceptFields($builder);
+    $this
+        ->conceptFields($builder)
+        ->learningOutcomeFields($builder);
 
     $builder
         ->add('submit', SaveType::class, [
@@ -28,10 +30,7 @@ class FieldConfigurationType extends AbstractType
     ]);
   }
 
-  /**
-   * @param FormBuilderInterface $builder
-   */
-  private function conceptFields(FormBuilderInterface $builder): void
+  private function conceptFields(FormBuilderInterface $builder): self
   {
     $builder
         ->add('concept_definition_name', NULL, [
@@ -83,5 +82,22 @@ class FieldConfigurationType extends AbstractType
                 'placeholder' => 'concept.self-assessment',
             ],
         ]);
+
+    return $this;
+  }
+
+  private function learningOutcomeFields(FormBuilderInterface $builder): self
+  {
+    $builder
+        ->add('learningOutcomeObjName', NULL, [
+            'form_header' => 'learning-outcome._name',
+            'label'       => 'field-configuration.obj-name',
+            'help'        => 'field-configuration.obj-help',
+            'attr'        => [
+                'placeholder' => 'learning-outcome._name',
+            ],
+        ]);
+
+    return $this;
   }
 }
