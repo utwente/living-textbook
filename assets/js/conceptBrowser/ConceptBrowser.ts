@@ -1245,6 +1245,9 @@ export default class ConceptBrowser {
             .on('click', () => {
                 this.$filterBtn.popover('toggle');
             })
+            .on('shown.bs.popover', () => {
+                this.initFilters();
+            })
             .on('show.bs.popover', () => {
                 this.$filterBtn.tooltip('hide');
                 this.$filterBtn.tooltip('disable');
@@ -1419,15 +1422,22 @@ export default class ConceptBrowser {
 
         // Create instance filter
         const $filterInstances = $('#filter-show-instances');
-        $filterInstances.off('change');
-        $filterInstances.on('change', () => {
-            this.renderer.setShowInstances($filterInstances.is(':checked'));
-            this.renderer.requestFrame();
-        });
+        $filterInstances
+            .off('change')
+            .on('change', () => {
+                this.renderer.setShowInstances($filterInstances.is(':checked'));
+            });
 
         // Create tag filter
+        const $filterTagsEnabled = $('#filter-tags-enabled');
+        $filterTagsEnabled
+            .off('change')
+            .on('change', () => {
+                this.renderer.setFilterTagsEnabled($filterTagsEnabled.is(':checked'));
+            });
+
         const $filterTags = $('#filter-tags');
-        const currentValue = $filterTags.val() as string[];
+        const currentValue = $filterTags.val() as string[] || [];
         if ($filterTags.data('select2') !== undefined) {
             // @ts-ignore
             $filterTags.select2('destroy');
@@ -1442,7 +1452,6 @@ export default class ConceptBrowser {
         });
 
         // Create select2 for tag filter
-        // @ts-ignore
         $filterTags
             // @ts-ignore
             .select2({
@@ -1462,6 +1471,13 @@ export default class ConceptBrowser {
         $filterTagsOr.on('change', () => {
             this.renderer.setFilterTagsOr($filterTagsOr.is(':checked'));
         });
+
+        const $filterTagColorEnabled = $('#filter-tag-colors-enabled');
+        $filterTagColorEnabled
+            .off('change')
+            .on('change', () => {
+                this.renderer.setFilterTagColorsEnabled($filterTagColorEnabled.is(':checked'));
+            });
 
         // Create tag color selectors
         this.buildTagColorSelectors();

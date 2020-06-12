@@ -44,16 +44,20 @@ export default class ConceptBrowserRenderer {
     private readonly filters: {
         showInstances: boolean;
         tags: number[];
+        tagsEnabled: boolean;
         tagOr: boolean;
         tagColors: Array<{
             tag: number,
             color: string,
         }>;
+        tagColorsEnabled: boolean;
     } = {
         showInstances: true,
         tags: [],
+        tagsEnabled: true,
         tagOr: true,
         tagColors: [],
+        tagColorsEnabled: true,
     };
 
     constructor(cb: ConceptBrowser, canvas: HTMLCanvasElement, config: BrowserConfiguration, width: number, height: number) {
@@ -74,6 +78,11 @@ export default class ConceptBrowserRenderer {
         this.requestStateRefresh();
     }
 
+    public setFilterTagsEnabled(enabled: boolean) {
+        this.filters.tagsEnabled = enabled;
+        this.requestStateRefresh();
+    }
+
     public setFilterTagsOr(orState: boolean) {
         this.filters.tagOr = orState;
         this.requestStateRefresh();
@@ -81,6 +90,11 @@ export default class ConceptBrowserRenderer {
 
     public setFilterTagColors(tagColors: Array<{ tag: number; color: string }>) {
         this.filters.tagColors = tagColors;
+        this.requestStateRefresh();
+    }
+
+    public setFilterTagColorsEnabled(enabled: boolean) {
+        this.filters.tagColorsEnabled = enabled;
         this.requestStateRefresh();
     }
 
@@ -132,7 +146,7 @@ export default class ConceptBrowserRenderer {
             }
 
             // Is the tag filter enabled?
-            if (this.filters.tags.length > 0) {
+            if (this.filters.tagsEnabled && this.filters.tags.length > 0) {
                 // Depending on the tag filter type, filter matching nodes
                 if (this.filters.tagOr) {
                     if (!node.tags.some((t) => this.filters.tags.includes(t))) {
@@ -158,7 +172,7 @@ export default class ConceptBrowserRenderer {
 
             // Determine the node color
             // When tag colouring is enabled, the normal node color will be ignored
-            if (this.filters.tagColors.length === 0) {
+            if (!this.filters.tagColorsEnabled || this.filters.tagColors.length === 0) {
                 color = node.empty ? -1 : node.color;
             } else {
                 // Determine color based on tag
