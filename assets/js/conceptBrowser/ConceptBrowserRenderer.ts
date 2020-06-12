@@ -339,6 +339,7 @@ export default class ConceptBrowserRenderer {
 
         // Draw link labels
         if (this.cb.isDragging || this.cb.highlightedNode !== null) {
+            this.config.applyStyle(0);
             this.context.fillStyle = this.config.defaultNodeLabelColor;
             this.context.textBaseline = 'top';
             this.context.strokeStyle = this.config.activeNodeLabelStrokeStyle;
