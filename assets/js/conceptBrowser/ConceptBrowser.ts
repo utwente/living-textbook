@@ -92,6 +92,13 @@ export default class ConceptBrowser {
     private readonly zoomButtonFactor: number = 1.5;
 
     /******************************************************************************************************
+     * Control element references
+     *****************************************************************************************************/
+
+    private $filterBtn!: JQuery<HTMLElement>;
+    private $select2Elements: Array<JQuery<HTMLElement>> = [];
+
+    /******************************************************************************************************
      * Internal variables
      *****************************************************************************************************/
 
@@ -118,6 +125,7 @@ export default class ConceptBrowser {
     private lastTransformed: any;
     private isLoaded = false;
     private isPaused = false;
+    private _isVisible = false;
 
     // Initialize the graph object
     private cbGraph: { nodes: NodeType[], links: LinkType[], linkNodes: LinkNodeType[] } = {
@@ -178,6 +186,10 @@ export default class ConceptBrowser {
         return this._specialHighlightedNode;
     }
 
+    public get isVisible(): boolean {
+        return this._isVisible;
+    }
+
     /******************************************************************************************************
      * Property getters for external access
      *****************************************************************************************************/
@@ -198,7 +210,7 @@ export default class ConceptBrowser {
      * @param id
      * @param nodeOnly Only set the actual node as highlighted
      */
-    public moveToConceptById(id: number, nodeOnly: boolean) {
+    public moveToConceptById(id: number, nodeOnly?: boolean) {
         // Find the node by id
         const node = this.getNodeById(id);
 
@@ -245,6 +257,19 @@ export default class ConceptBrowser {
         });
     }
 
+    /**
+     * Set the opened state
+     */
+    public setOpenedState(value: boolean) {
+        this._isVisible = value;
+
+        if (!this.isVisible) {
+            this.closeFilters();
+        } else {
+            this.renderer.requestFrame();
+        }
+    }
+
     /******************************************************************************************************
      * Utility functions
      *****************************************************************************************************/
@@ -279,7 +304,7 @@ export default class ConceptBrowser {
      * Resize the canvas (draw area)
      * This should be done on draggable window size changes, or browser window changes
      */
-    private resizeCanvas() {
+    public resizeCanvas() {
         // Get container size, and set sizes and zoom extent
         const $container = $('#graph_container_div');
         this.canvas.width = this._canvasWidth
@@ -312,7 +337,6 @@ export default class ConceptBrowser {
 
         return node.radius + this.nodeRadiusMargin;
     }
-
 
     /**
      * Updated the node font scale
@@ -624,6 +648,8 @@ export default class ConceptBrowser {
      * Communicates with the content in order to open the correct page
      */
     private onClick() {
+        this.closeFilters();
+
         const node = this.findNode();
         if (node && !this.mouseMoveDisabled) {
             this.setNodeAsHighlight(node);
@@ -1206,26 +1232,26 @@ export default class ConceptBrowser {
         });
 
         // Create filter button handler
-        const $filterBtn = $('#filter-button');
-        // @ts-ignore
-        $filterBtn.popover({
-            html: true,
-            trigger: 'manual',
-            placement: 'bottom',
-            // tslint:disable-next-line:max-line-length
-            template: '<div class="popover filter-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
-            content: $('#filter-content'),
-        });
-        $filterBtn.on('click', () => {
-            $filterBtn.popover('toggle');
-        });
-        $filterBtn.on('show.bs.popover', () => {
-            $filterBtn.tooltip('hide');
-            $filterBtn.tooltip('disable');
-        });
-        $filterBtn.on('hidden.bs.popover', () => {
-            $filterBtn.tooltip('enable');
-        });
+        this.$filterBtn = $('#filter-button');
+        this.$filterBtn
+            .popover({
+                html: true,
+                trigger: 'manual',
+                placement: 'bottom',
+                // tslint:disable-next-line:max-line-length
+                template: '<div class="popover filter-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
+                content: document.getElementById('filter-content')!,
+            })
+            .on('click', () => {
+                this.$filterBtn.popover('toggle');
+            })
+            .on('show.bs.popover', () => {
+                this.$filterBtn.tooltip('hide');
+                this.$filterBtn.tooltip('disable');
+            })
+            .on('hidden.bs.popover', () => {
+                this.$filterBtn.tooltip('enable');
+            });
 
         // Initialize the filters
         this.initFilters();
@@ -1373,7 +1399,6 @@ export default class ConceptBrowser {
                 nodeItems = $.extend(nodeItems, colorData);
             }
 
-
             // Merge with default data
             const defaultData = {
                 'create-instance': {name: 'Instantiate', icon: 'fa-code-fork'},
@@ -1389,6 +1414,9 @@ export default class ConceptBrowser {
      * Initialize the filters
      */
     private initFilters() {
+        // Clear state
+        this.$select2Elements = [];
+
         // Create instance filter
         const $filterInstances = $('#filter-show-instances');
         $filterInstances.off('change');
@@ -1415,15 +1443,18 @@ export default class ConceptBrowser {
 
         // Create select2 for tag filter
         // @ts-ignore
-        $filterTags.select2({
-            width: '100%',
-            theme: 'bootstrap',
-            allowClear: true,
-            placeholder: '',
-        });
-        $filterTags.on('change', () => {
-            this.renderer.setFilterTags(($filterTags.val() as string[]).map((t) => Number(t)));
-        });
+        $filterTags
+            // @ts-ignore
+            .select2({
+                width: '100%',
+                theme: 'bootstrap',
+                allowClear: true,
+                placeholder: '',
+            })
+            .on('change', () => {
+                this.renderer.setFilterTags(($filterTags.val() as string[]).map((t) => Number(t)));
+            });
+        this.$select2Elements.push($filterTags);
 
         // Create tag filter and/or handler
         const $filterTagsOr = $('#filter-tags-or');
@@ -1436,6 +1467,25 @@ export default class ConceptBrowser {
         this.buildTagColorSelectors();
     }
 
+    /**
+     * Close the filter popover
+     */
+    public closeFilters() {
+        if (this.$filterBtn) {
+            this.$filterBtn.popover('hide');
+        }
+
+        this.$select2Elements.forEach(($element) => {
+            if ($element.data('select2') !== undefined) {
+                // @ts-ignore
+                $element.select2('close');
+            }
+        });
+    }
+
+    /**
+     * Build/update the tag color selectors
+     */
     private buildTagColorSelectors() {
         let sortedTags = Object.values(this.tags).sort((a, b) => a.name.localeCompare(b.name));
 
@@ -1533,6 +1583,7 @@ export default class ConceptBrowser {
 
                     this.buildTagColorSelectors();
                 });
+            this.$select2Elements.push($select);
         });
 
         this.renderer.setFilterTagColors(rows

@@ -15,10 +15,15 @@
 
     // Bind search result changed handler
     $search.change(function () {
-      var current = $search.typeahead('getActive');
+      const current = $search.typeahead('getActive');
       if (current && current.name === $search.val()) {
         cb.moveToConceptById(current.id);
       }
+    });
+
+    // Bind click handler
+    $search.on('click', function () {
+      cb.closeFilters();
     });
 
     // Create the actual search functionality, which is a bootstrap typeahead

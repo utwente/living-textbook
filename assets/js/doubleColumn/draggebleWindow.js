@@ -22,6 +22,14 @@
   let firstOpen = true;
 
   /**
+   * @param {boolean} value
+   */
+  function setOpened(value) {
+    opened = value;
+    cb.setOpenedState(opened);
+  }
+
+  /**
    * Verify whether the window is opened
    * @returns {boolean}
    */
@@ -45,7 +53,7 @@
     }
 
     // Setup variables
-    opened = true;
+    setOpened(true);
     readyHandler = typeof readyHandler === 'function' ? readyHandler : function () {
       if (!firstOpen) return;
 
@@ -76,7 +84,7 @@
    */
   dw.closeWindow = function () {
     if (!opened) return;
-    opened = false;
+    setOpened(false);
     openedX = lastX;
 
     // Resize the window in order to close it
