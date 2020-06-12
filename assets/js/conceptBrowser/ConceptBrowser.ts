@@ -126,6 +126,7 @@ export default class ConceptBrowser {
     private isLoaded = false;
     private isPaused = false;
     private _isVisible = false;
+    private tagColorRebuildPending = false;
 
     // Initialize the graph object
     private cbGraph: { nodes: NodeType[], links: LinkType[], linkNodes: LinkNodeType[] } = {
@@ -1510,6 +1511,7 @@ export default class ConceptBrowser {
      * Build/update the tag color selectors
      */
     private buildTagColorSelectors() {
+        this.tagColorRebuildPending = true;
         let sortedTags = Object.values(this.tags).sort((a, b) => a.name.localeCompare(b.name));
 
         const $prototype = $('#filter-tag-color-prototype > div');
@@ -1592,7 +1594,16 @@ export default class ConceptBrowser {
                     placeholder: 'Select a tag',
                     allowClear: true,
                 })
+                .on('select2:opening', (event: Event) => {
+                    if (this.tagColorRebuildPending) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                })
                 .on('change', (event: Event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
                     // Test whether the default color is still selected
                     const $selectTarget = $(event.target!);
                     const $row = $selectTarget.closest('.filter-tag-color');
@@ -1604,7 +1615,9 @@ export default class ConceptBrowser {
                         }
                     }
 
-                    this.buildTagColorSelectors();
+                    // Required to prevent select2 from opening a destroyed instance
+                    this.tagColorRebuildPending = true;
+                    setTimeout(() => this.buildTagColorSelectors(), 1);
                 });
             this.$select2Elements.push($select);
         });
@@ -1617,5 +1630,7 @@ export default class ConceptBrowser {
                     color: row.color!,
                 };
             }));
+
+        this.tagColorRebuildPending = false;
     }
 }
