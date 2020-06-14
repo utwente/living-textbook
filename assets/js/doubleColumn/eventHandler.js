@@ -9,7 +9,7 @@ import Routing from 'fos-routing';
 (function (eHandler, types, tracker, $) {
   // Initialize current state
   eHandler.previousUrl = null;
-  eHandler.currentUrl = $('#data-iframe').attr('src');
+  eHandler.currentUrl = $('#left-container-content').data('current-url');
 
   /**
    * Register message handler for communication
