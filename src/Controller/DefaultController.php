@@ -19,6 +19,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
 use App\Repository\TagRepository;
+use App\Repository\UserBrowserStateRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
@@ -68,14 +69,17 @@ class DefaultController extends AbstractController
    * @Template("double_column.html.twig")
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param string           $pageUrl
-   * @param RouterInterface  $router
-   * @param Profiler|null    $profiler
+   * @param RequestStudyArea           $requestStudyArea
+   * @param string                     $pageUrl
+   * @param RouterInterface            $router
+   * @param UserBrowserStateRepository $userBrowserStateRepository
+   * @param Profiler|null              $profiler
    *
    * @return array|RedirectResponse
    */
-  public function index(RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router, ?Profiler $profiler)
+  public function index(
+      RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
+      UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler)
   {
     // Disable profiler on the home page
     if ($profiler) {
@@ -97,9 +101,13 @@ class DefaultController extends AbstractController
       return $this->redirectToRoute('app_default_landing');
     }
 
+    $user = $this->getUser();
+    assert($user instanceof User);
+
     return [
-        'studyArea' => $studyArea,
-        'pageUrl'   => $pageUrl != ''
+        'studyArea'    => $studyArea,
+        'browserState' => $userBrowserStateRepository->findForUser($user, $studyArea),
+        'pageUrl'      => $pageUrl != ''
             ? '/' . $studyArea->getId() . '/' . $pageUrl
             : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),
     ];

@@ -5,9 +5,23 @@ interface NodesPerColor {
     [color: string]: NodeType[];
 }
 
+type FilterObjectType = {
+    showInstances: boolean;
+    tags: number[];
+    tagsEnabled: boolean;
+    tagOr: boolean;
+    tagColors: Array<{
+        tag: number,
+        color: string,
+    }>;
+    tagColorsEnabled: boolean;
+};
+
 /* tslint:disable:variable-name */
 // noinspection JSMethodCanBeStatic
 export default class ConceptBrowserRenderer {
+    private readonly filterStoreTimeout = 5000;
+
     // Concept browser reference
     private readonly cb: ConceptBrowser;
     private readonly config: BrowserConfiguration;
@@ -22,6 +36,9 @@ export default class ConceptBrowserRenderer {
 
     // Render context
     private context: CanvasRenderingContext2D;
+
+    // Filter state store timeout
+    private storeTimeout: number | null = null;
 
     private nodesToRender!: {
         all: NodesPerColor;
@@ -41,17 +58,7 @@ export default class ConceptBrowserRenderer {
     private shouldRefreshState: boolean = true;
     private filteredNodeIds: number[] = [];
 
-    private readonly filters: {
-        showInstances: boolean;
-        tags: number[];
-        tagsEnabled: boolean;
-        tagOr: boolean;
-        tagColors: Array<{
-            tag: number,
-            color: string,
-        }>;
-        tagColorsEnabled: boolean;
-    } = {
+    private readonly filters: FilterObjectType = {
         showInstances: true,
         tags: [],
         tagsEnabled: true,
@@ -66,6 +73,19 @@ export default class ConceptBrowserRenderer {
         this.context = canvas.getContext('2d')!;
         this.mapWidth = width;
         this.mapHeight = height;
+
+        // Get default data
+        const state: FilterObjectType | any = $('#filter-content').data('state');
+        if (state) {
+            // Load object manually, as the stored state might be different from the actual required state here
+            this.filters.showInstances = typeof state.showInstances === 'boolean' ? state.showInstances : true;
+            this.filters.tags = Array.isArray(state.tags) ? state.tags : [];
+            this.filters.tagsEnabled = typeof state.tagsEnabled === 'boolean' ? state.tagsEnabled : true;
+            this.filters.tagOr = typeof state.tagOr === 'boolean' ? state.tagOr : true;
+            this.filters.tagColors = Array.isArray(state.tagColors) ? state.tagColors : [];
+            this.filters.tagColorsEnabled = typeof state.tagColorsEnabled === 'boolean'
+                ? state.tagColorsEnabled : true;
+        }
     }
 
     public setShowInstances(show: boolean) {
@@ -117,6 +137,10 @@ export default class ConceptBrowserRenderer {
     private refreshState() {
         if (process.env.NODE_ENV === 'development') {
             console.info('Refreshing state');
+        }
+
+        if (this.storeTimeout) {
+            clearTimeout(this.storeTimeout);
         }
 
         // Clear state
@@ -222,6 +246,21 @@ export default class ConceptBrowserRenderer {
                 this.linksToRender.text.push(link);
             }
         });
+
+        // @ts-ignore
+        this.storeTimeout = setTimeout(() => {
+            if (process.env.NODE_ENV === 'development') {
+                console.info('Storing filter state on server...');
+            }
+
+            $.ajax({
+                // @ts-ignore
+                url: window.Routing.generate('app_browserstate_filterstate', {_studyArea: window._studyArea}),
+                data: JSON.stringify(this.filters),
+                contentType: 'application/json',
+                type: 'POST',
+            });
+        }, this.filterStoreTimeout);
     }
 
     /**

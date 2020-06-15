@@ -1232,6 +1232,9 @@ export default class ConceptBrowser {
             this.zoomFromButton(this.cbTransform.k / this.zoomButtonFactor);
         });
 
+        // Initialize the filters
+        this.initFilters();
+
         // Create filter button handler
         this.$filterBtn = $('#filter-button');
         this.$filterBtn
@@ -1256,16 +1259,6 @@ export default class ConceptBrowser {
             .on('hidden.bs.popover', () => {
                 this.$filterBtn.tooltip('enable');
             });
-
-        // Initialize the filters
-        this.initFilters();
-
-        // Set the default tag filter, if available
-        const $filterTags = $('#filter-tags');
-        const defaultFilterId = $filterTags.data('default-filter');
-        if (Number.isInteger(defaultFilterId) && defaultFilterId in this.tags) {
-            $filterTags.val([defaultFilterId]).trigger('change');
-        }
 
         // Create drag handlers
         this.cbDrag = d3.drag()
@@ -1467,7 +1460,7 @@ export default class ConceptBrowser {
                 width: '100%',
                 theme: 'bootstrap',
                 allowClear: true,
-                placeholder: '',
+                placeholder: 'Select a tag',
             })
             .on('change', () => {
                 this.renderer.setFilterTags(($filterTags.val() as string[]).map((t) => Number(t)));

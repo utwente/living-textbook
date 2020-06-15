@@ -54,72 +54,7 @@
                       title="{{ 'browser.filter'|trans }}">
                 <i class="fa fa-fw fa-filter"></i>
               </button>
-              <div id="filter-content">
-                <form onsubmit="return false;">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="filter-show-instances" checked>
-                    <label class="checkbox-custom custom-control-label" for="filter-show-instances">
-                      {{ 'browser.filters.show-instances'|trans }}
-                    </label>
-                  </div>
-
-                  <div id="filter-content-tags">
-
-                    <div class="mt-2">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="filter-tags-enabled" checked>
-                        <label class="checkbox-custom custom-control-label w-100" for="filter-tags-enabled">
-                          {{ 'browser.filters.tags'|trans }}
-                        </label>
-                      </div>
-                      <div style="padding-left: 1.5rem">
-                        <div class="d-flex">
-                          <div class="flex-fill">
-                            <select id="filter-tags" multiple
-                                    {% if studyArea.defaultTagFilter %}data-default-filter="{{ studyArea.defaultTagFilter.id }}"{% endif %}>
-                            </select>
-                          </div>
-                          <div class="flex-grow-0 flex-shrink-0 ml-1 align-self-center">
-                            <input id="filter-tags-or" type="checkbox" data-toggle="toggle" checked
-                                   data-size="sm"
-                                   data-width="60px" data-height="17px" {# Are required for correct rendering #}
-                                   data-on="{{ 'browser.filters.or'|trans }}"
-                                   data-off="{{ 'browser.filters.and'|trans }}"
-                                   data-onstyle="primary" data-offstyle="primary">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="mt-2">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="filter-tag-colors-enabled" checked>
-                        <label class="checkbox-custom custom-control-label" for="filter-tag-colors-enabled">
-                          {{ 'browser.filters.tag-color'|trans }}
-                        </label>
-                      </div>
-                      <div style="padding-left: 1.5rem;">
-                        <div id="filter-tag-color-prototype" class="d-none">
-                          <div class="d-flex my-1 filter-tag-color">
-                            <div class="flex-fill">
-                              <select></select>
-                            </div>
-                            <div class="color-picker ml-1" style="width: 60px">
-                              <input type="color" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-
-                        <div id="filter-tag-color-container" class="mt-n1"></div>
-
-                        <div>
-                          <small class="form-text text-muted">{{ 'browser.filters.tag-color-help'|trans }}</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+              {{ block('filters') }}
               <button id="refresh-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
                       title="{{ 'browser.refresh'|trans }}">
                 <i class="fa fa-fw fa-refresh"></i>
@@ -231,5 +166,100 @@
         </div>
       </div>
     </div>
+  </div>
+{% endblock %}
+
+{% block filters %}
+  {% set state = browserState ? browserState.filterState : {} %}
+  {% if state.tags is not defined and studyArea.defaultTagFilter %}
+    {% set state = state|merge({tags: [studyArea.defaultTagFilter.id]}) %}
+  {% endif %}
+
+  <div id="filter-content" {% if state is not null %}data-state="{{ state|serialize }}"{% endif %}>
+    <form onsubmit="return false;">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="filter-show-instances"
+               {% if state.showInstances is not defined or state.showInstances is not same as(false) %}checked{% endif %}>
+        <label class="checkbox-custom custom-control-label" for="filter-show-instances">
+          {{ 'browser.filters.show-instances'|trans }}
+        </label>
+      </div>
+
+      <div id="filter-content-tags">
+
+        <div class="mt-2">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="filter-tags-enabled"
+                   {% if state.tagsEnabled is not defined or state.tagsEnabled is not same as(false) %}checked{% endif %}>
+            <label class="checkbox-custom custom-control-label w-100" for="filter-tags-enabled">
+              {{ 'browser.filters.tags'|trans }}
+            </label>
+          </div>
+          <div style="padding-left: 1.5rem">
+            <div class="d-flex">
+              <div class="flex-fill">
+                <select id="filter-tags" multiple>
+                  {% if state.tags is defined and state.tags is iterable %}
+                    {% for tagId in state.tags %}
+                      <option value="{{ tagId }}" selected>-</option>
+                    {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+              <div class="flex-grow-0 flex-shrink-0 ml-1 align-self-center">
+                <input id="filter-tags-or" type="checkbox" data-toggle="toggle"
+                       {% if state.tagOr is not defined or state.tagOr is not same as(false) %}checked{% endif %}
+                       data-size="sm"
+                       data-width="60px" data-height="17px" {# Are required for correct rendering #}
+                       data-on="{{ 'browser.filters.or'|trans }}"
+                       data-off="{{ 'browser.filters.and'|trans }}"
+                       data-onstyle="primary" data-offstyle="primary">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="filter-tag-colors-enabled"
+                   {% if state.tagColorsEnabled is not defined or state.tagColorsEnabled is not same as(false) %}checked{% endif %}>
+            <label class="checkbox-custom custom-control-label" for="filter-tag-colors-enabled">
+              {{ 'browser.filters.tag-color'|trans }}
+            </label>
+          </div>
+          <div style="padding-left: 1.5rem;">
+            <div id="filter-tag-color-prototype" class="d-none">
+              <div class="d-flex my-1 filter-tag-color">
+                <div class="flex-fill">
+                  <select></select>
+                </div>
+                <div class="color-picker ml-1" style="width: 60px">
+                  <input type="color" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <div id="filter-tag-color-container" class="mt-n1">
+              {% if state.tagColors is defined and state.tagColors is iterable %}
+                {% for tagColor in state.tagColors %}
+                  <div class="filter-tag-color">
+                    <select>
+                      <option value="{{ tagColor.tag }}" selected>-</option>
+                    </select>
+                    <div class="color-picker">
+                      <input type="color" value="{{ tagColor.color }}">
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+            <div>
+              <small class="form-text text-muted">{{ 'browser.filters.tag-color-help'|trans }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 {% endblock %}
