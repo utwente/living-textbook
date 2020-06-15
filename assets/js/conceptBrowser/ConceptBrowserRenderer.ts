@@ -205,8 +205,8 @@ export default class ConceptBrowserRenderer {
             if (!this.filters.tagColorsEnabled || this.filters.tagColors.length === 0) {
                 color = node.empty ? -1 : node.color;
             } else {
-                // Determine color based on tag
-                color = 0;
+                // Determine color based on tag, but keep instance default color for instances without selected tag
+                color = node.instance ? 4 : 0;
                 for (const tag of this.filters.tagColors) {
                     if (node.tags.includes(tag.tag)) {
                         color = tag.color;

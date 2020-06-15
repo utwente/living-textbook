@@ -70,7 +70,7 @@ class Tag implements StudyAreaFilteredInterface
   public function __construct()
   {
     $this->name  = '';
-    $this->color = '#b1ded2';
+    $this->color = '#8FBDAF';
 
     $this->concepts = new ArrayCollection();
   }

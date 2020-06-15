@@ -435,6 +435,7 @@ export default class ConceptBrowser {
         node.dragged = true;
         this.clearNodeHighlight();
         this.setHighlightsByNode(node);
+        this.renderer.requestStateRefresh();
     }
 
     /**
@@ -445,6 +446,7 @@ export default class ConceptBrowser {
         this._isDragging = false;
         node.dragged = false;
         this.clearHighlightsByNode(node);
+        this.renderer.requestStateRefresh();
     }
 
     /**
@@ -649,8 +651,6 @@ export default class ConceptBrowser {
      * Communicates with the content in order to open the correct page
      */
     private onClick() {
-        this.closeFilters();
-
         const node = this.findNode();
         if (node && !this.mouseMoveDisabled) {
             this.setNodeAsHighlight(node);
