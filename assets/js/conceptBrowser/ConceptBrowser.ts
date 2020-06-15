@@ -1260,6 +1260,13 @@ export default class ConceptBrowser {
         // Initialize the filters
         this.initFilters();
 
+        // Set the default tag filter, if available
+        const $filterTags = $('#filter-tags');
+        const defaultFilterId = $filterTags.data('default-filter');
+        if (Number.isInteger(defaultFilterId) && defaultFilterId in this.tags) {
+            $filterTags.val([defaultFilterId]).trigger('change');
+        }
+
         // Create drag handlers
         this.cbDrag = d3.drag()
             .container(this.canvas)

@@ -4,9 +4,11 @@ namespace App\Form\StudyArea;
 
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaGroup;
+use App\Entity\Tag;
 use App\Form\Type\CkEditorType;
 use App\Form\Type\SaveType;
 use App\Repository\StudyAreaGroupRepository;
+use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -44,13 +46,14 @@ class EditStudyAreaType extends AbstractType
             'empty_data' => '',
         ])
         ->add('accessType', ChoiceType::class, [
-            'label'        => 'study-area.access-type',
-            'help'         => 'study-area.access-type-change-note',
-            'choices'      => $studyArea->getAvailableAccessTypes($this->authorizationChecker, $this->em),
-            'choice_label' => function ($value, $key, $index) {
+            'label'                     => 'study-area.access-type',
+            'help'                      => 'study-area.access-type-change-note',
+            'choices'                   => $studyArea->getAvailableAccessTypes($this->authorizationChecker, $this->em),
+            'choice_label'              => function ($value) {
               return ucfirst($value);
             },
-            'select2'      => true,
+            'choice_translation_domain' => false,
+            'select2'                   => true,
         ]);
 
     if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
@@ -104,11 +107,23 @@ class EditStudyAreaType extends AbstractType
           ]);
     }
 
-    $builder->add('reviewModeEnabled', CheckboxType::class, [
-        'label'    => 'study-area.review-mode',
-        'help'     => 'study-area.review-mode-help',
-        'required' => false,
-    ]);
+    $builder
+        ->add('reviewModeEnabled', CheckboxType::class, [
+            'label'    => 'study-area.review-mode',
+            'help'     => 'study-area.review-mode-help',
+            'required' => false,
+        ])
+        ->add('defaultTagFilter', EntityType::class, [
+            'required'      => false,
+            'label'         => 'study-area.default-tag-filter',
+            'help'          => 'study-area.default-tag-filter-help',
+            'class'         => Tag::class,
+            'choice_label'  => 'name',
+            'select2'       => true,
+            'query_builder' => function (TagRepository $tagRepository) use ($studyArea) {
+              return $tagRepository->findForStudyAreaQb($studyArea);
+            },
+        ]);
 
     if (!$options['hide_submit']) {
       $builder

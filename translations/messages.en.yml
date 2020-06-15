@@ -617,6 +617,8 @@ study-area:
     owner to inspect the behavior of the users.
   current: 'Current'
   current-area: 'Now browsing "%item%"'
+  default-tag-filter: 'Default tag filter'
+  default-tag-filter-help: 'The selected tag will be used a default filter when the concept browser is loaded for the first time.'
   description: 'Description'
   edit-title: 'Edit study area "%item%"'
   existing: 'Existing study area'

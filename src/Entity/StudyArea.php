@@ -229,6 +229,16 @@ class StudyArea
   private $fieldConfiguration;
 
   /**
+   * A default tag filter for the browser
+   *
+   * @var Tag|null
+   *
+   * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
+   * @ORM\JoinColumn(nullable=true)
+   */
+  private $defaultTagFilter;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -1002,6 +1012,26 @@ class StudyArea
   public function setFieldConfiguration(?StudyAreaFieldConfiguration $fieldConfiguration): self
   {
     $this->fieldConfiguration = $fieldConfiguration;
+
+    return $this;
+  }
+
+  /**
+   * @return Tag|null
+   */
+  public function getDefaultTagFilter(): ?Tag
+  {
+    return $this->defaultTagFilter;
+  }
+
+  /**
+   * @param Tag|null $defaultTagFilter
+   *
+   * @return StudyArea
+   */
+  public function setDefaultTagFilter(?Tag $defaultTagFilter): self
+  {
+    $this->defaultTagFilter = $defaultTagFilter;
 
     return $this;
   }
