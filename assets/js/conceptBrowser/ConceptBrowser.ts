@@ -1104,7 +1104,7 @@ export default class ConceptBrowser {
         this.reloadSimulation();
 
         // Reload the filters
-        this.initFilters();
+        this.updateFilters();
 
         // Reload the renderer state
         this.renderer.requestStateRefresh();
@@ -1233,10 +1233,10 @@ export default class ConceptBrowser {
         });
 
         // Initialize the filters
-        this.initFilters();
+        this.$filterBtn = $('#filter-button');
+        this.updateFilters();
 
         // Create filter button handler
-        this.$filterBtn = $('#filter-button');
         this.$filterBtn
             .popover({
                 html: true,
@@ -1250,7 +1250,7 @@ export default class ConceptBrowser {
                 this.$filterBtn.popover('toggle');
             })
             .on('shown.bs.popover', () => {
-                this.initFilters();
+                this.updateFilters();
             })
             .on('show.bs.popover', () => {
                 this.$filterBtn.tooltip('hide');
@@ -1417,7 +1417,7 @@ export default class ConceptBrowser {
     /**
      * Initialize the filters
      */
-    private initFilters() {
+    private updateFilters() {
         // Clear state
         this.$select2Elements = [];
         const tagValues = Object.values(this.tags);
@@ -1428,6 +1428,9 @@ export default class ConceptBrowser {
             .off('change')
             .on('change', () => {
                 this.renderer.setShowInstances($filterInstances.is(':checked'));
+
+                // Update the filter button state
+                this.updateFilterState();
             });
 
         // Create tag filter
@@ -1436,6 +1439,9 @@ export default class ConceptBrowser {
             .off('change')
             .on('change', () => {
                 this.renderer.setFilterTagsEnabled($filterTagsEnabled.is(':checked'));
+
+                // Update the filter button state
+                this.updateFilterState();
             });
 
         const $filterTags = $('#filter-tags');
@@ -1464,6 +1470,9 @@ export default class ConceptBrowser {
             })
             .on('change', () => {
                 this.renderer.setFilterTags(($filterTags.val() as string[]).map((t) => Number(t)));
+
+                // Update the filter button state
+                this.updateFilterState();
             });
         this.$select2Elements.push($filterTags);
 
@@ -1472,6 +1481,9 @@ export default class ConceptBrowser {
         $filterTagsOr.off('change');
         $filterTagsOr.on('change', () => {
             this.renderer.setFilterTagsOr($filterTagsOr.is(':checked'));
+
+            // Update the filter button state
+            this.updateFilterState();
         });
 
         const $filterTagColorEnabled = $('#filter-tag-colors-enabled');
@@ -1479,6 +1491,9 @@ export default class ConceptBrowser {
             .off('change')
             .on('change', () => {
                 this.renderer.setFilterTagColorsEnabled($filterTagColorEnabled.is(':checked'));
+
+                // Update the filter button state
+                this.updateFilterState();
             });
 
         // Create tag color selectors
@@ -1489,6 +1504,9 @@ export default class ConceptBrowser {
         } else {
             $('#filter-content-tags').show();
         }
+
+        // Update the filter button state
+        this.updateFilterState();
     }
 
     /**
@@ -1579,7 +1597,12 @@ export default class ConceptBrowser {
                 $select.data('default-color', selectedTag.color);
                 row.$elem.find('input[type="color"]')
                     .val(row.color)
-                    .on('change', () => this.buildTagColorSelectors());
+                    .on('change', () => {
+                        this.buildTagColorSelectors();
+
+                        // Update the filter button state
+                        this.updateFilterState();
+                    });
 
                 sortedTags = sortedTags.filter((t) => t.id !== selectedTag.id);
             } else {
@@ -1617,7 +1640,12 @@ export default class ConceptBrowser {
 
                     // Required to prevent select2 from opening a destroyed instance
                     this.tagColorRebuildPending = true;
-                    setTimeout(() => this.buildTagColorSelectors(), 1);
+                    setTimeout(() => {
+                        this.buildTagColorSelectors();
+
+                        // Update the filter button state
+                        this.updateFilterState();
+                    }, 1);
                 });
             this.$select2Elements.push($select);
         });
@@ -1632,5 +1660,12 @@ export default class ConceptBrowser {
             }));
 
         this.tagColorRebuildPending = false;
+    }
+
+    private updateFilterState() {
+        this.$filterBtn
+            .removeClass('btn-light')
+            .removeClass('btn-primary')
+            .addClass(this.renderer.anyFilterEnabled() ? 'btn-primary' : 'btn-light');
     }
 }

@@ -127,8 +127,14 @@ export default class ConceptBrowserRenderer {
         this.requestFrame();
     }
 
-    public isFiltered(node: NodeType) {
+    public isFiltered(node: NodeType): boolean {
         return this.filteredNodeIds.includes(node.id);
+    }
+
+    public anyFilterEnabled(): boolean {
+        return !this.filters.showInstances
+            || (this.filters.tagsEnabled && this.filters.tags.length > 0)
+            || (this.filters.tagColorsEnabled && this.filters.tagColors.length > 0);
     }
 
     /**
