@@ -1423,11 +1423,11 @@ export default class ConceptBrowser {
         const tagValues = Object.values(this.tags);
 
         // Create instance filter
-        const $filterInstances = $('#filter-show-instances');
+        const $filterInstances = $('#filter-hide-instances');
         $filterInstances
             .off('change')
             .on('change', () => {
-                this.renderer.setShowInstances($filterInstances.is(':checked'));
+                this.renderer.setHideInstances($filterInstances.is(':checked'));
 
                 // Update the filter button state
                 this.updateFilterState();

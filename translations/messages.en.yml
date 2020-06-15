@@ -98,7 +98,7 @@ browser:
   filters:
     and: 'AND'
     or: 'OR'
-    show-instances: 'Show instances'
+    hide-instances: 'Hide instances'
     tag-color: 'Color on tag'
     tag-color-help: >-
       When using the color filter, custom and empty node colors will be disabled.

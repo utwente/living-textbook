@@ -5,8 +5,8 @@ interface NodesPerColor {
     [color: string]: NodeType[];
 }
 
-type FilterObjectType = {
-    showInstances: boolean;
+interface FilterObjectType {
+    hideInstances: boolean;
     tags: number[];
     tagsEnabled: boolean;
     tagOr: boolean;
@@ -15,7 +15,7 @@ type FilterObjectType = {
         color: string,
     }>;
     tagColorsEnabled: boolean;
-};
+}
 
 /* tslint:disable:variable-name */
 // noinspection JSMethodCanBeStatic
@@ -59,7 +59,7 @@ export default class ConceptBrowserRenderer {
     private filteredNodeIds: number[] = [];
 
     private readonly filters: FilterObjectType = {
-        showInstances: true,
+        hideInstances: false,
         tags: [],
         tagsEnabled: true,
         tagOr: true,
@@ -78,7 +78,7 @@ export default class ConceptBrowserRenderer {
         const state: FilterObjectType | any = $('#filter-content').data('state');
         if (state) {
             // Load object manually, as the stored state might be different from the actual required state here
-            this.filters.showInstances = typeof state.showInstances === 'boolean' ? state.showInstances : true;
+            this.filters.hideInstances = typeof state.hideInstances === 'boolean' ? state.hideInstances : false;
             this.filters.tags = Array.isArray(state.tags) ? state.tags : [];
             this.filters.tagsEnabled = typeof state.tagsEnabled === 'boolean' ? state.tagsEnabled : true;
             this.filters.tagOr = typeof state.tagOr === 'boolean' ? state.tagOr : true;
@@ -88,8 +88,8 @@ export default class ConceptBrowserRenderer {
         }
     }
 
-    public setShowInstances(show: boolean) {
-        this.filters.showInstances = show;
+    public setHideInstances(show: boolean) {
+        this.filters.hideInstances = show;
         this.requestStateRefresh();
     }
 
@@ -132,7 +132,7 @@ export default class ConceptBrowserRenderer {
     }
 
     public anyFilterEnabled(): boolean {
-        return !this.filters.showInstances
+        return this.filters.hideInstances
             || (this.filters.tagsEnabled && this.filters.tags.length > 0)
             || (this.filters.tagColorsEnabled && this.filters.tagColors.length > 0);
     }
@@ -170,7 +170,7 @@ export default class ConceptBrowserRenderer {
         this.filteredNodeIds = [];
         this.cb.nodes.forEach((node) => {
             // Is the instance filter enabled?
-            if (!this.filters.showInstances && node.instance) {
+            if (this.filters.hideInstances && node.instance) {
                 this.filteredNodeIds.push(node.id);
                 return;
             }

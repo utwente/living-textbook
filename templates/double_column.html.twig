@@ -178,10 +178,10 @@
   <div id="filter-content" {% if state is not null %}data-state="{{ state|serialize }}"{% endif %}>
     <form onsubmit="return false;">
       <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="filter-show-instances"
-               {% if state.showInstances is not defined or state.showInstances is not same as(false) %}checked{% endif %}>
-        <label class="checkbox-custom custom-control-label" for="filter-show-instances">
-          {{ 'browser.filters.show-instances'|trans }}
+        <input type="checkbox" class="custom-control-input" id="filter-hide-instances"
+               {% if state.hideInstances is defined and state.hideInstances is same as(true) %}checked{% endif %}>
+        <label class="checkbox-custom custom-control-label" for="filter-hide-instances">
+          {{ 'browser.filters.hide-instances'|trans }}
         </label>
       </div>
 
