@@ -102,11 +102,11 @@ class DefaultController extends AbstractController
     }
 
     $user = $this->getUser();
-    assert($user instanceof User);
+    assert($user === NULL || $user instanceof User);
 
     return [
         'studyArea'    => $studyArea,
-        'browserState' => $userBrowserStateRepository->findForUser($user, $studyArea),
+        'browserState' => $user ? $userBrowserStateRepository->findForUser($user, $studyArea) : NULL,
         'pageUrl'      => $pageUrl != ''
             ? '/' . $studyArea->getId() . '/' . $pageUrl
             : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),

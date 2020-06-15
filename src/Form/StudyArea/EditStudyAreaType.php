@@ -107,23 +107,26 @@ class EditStudyAreaType extends AbstractType
           ]);
     }
 
-    $builder
-        ->add('reviewModeEnabled', CheckboxType::class, [
-            'label'    => 'study-area.review-mode',
-            'help'     => 'study-area.review-mode-help',
-            'required' => false,
-        ])
-        ->add('defaultTagFilter', EntityType::class, [
-            'required'      => false,
-            'label'         => 'study-area.default-tag-filter',
-            'help'          => 'study-area.default-tag-filter-help',
-            'class'         => Tag::class,
-            'choice_label'  => 'name',
-            'select2'       => true,
-            'query_builder' => function (TagRepository $tagRepository) use ($studyArea) {
-              return $tagRepository->findForStudyAreaQb($studyArea);
-            },
-        ]);
+    $builder->add('reviewModeEnabled', CheckboxType::class, [
+        'label'    => 'study-area.review-mode',
+        'help'     => 'study-area.review-mode-help',
+        'required' => false,
+    ]);
+
+    if ($studyArea->getId()) {
+      $builder
+          ->add('defaultTagFilter', EntityType::class, [
+              'required'      => false,
+              'label'         => 'study-area.default-tag-filter',
+              'help'          => 'study-area.default-tag-filter-help',
+              'class'         => Tag::class,
+              'choice_label'  => 'name',
+              'select2'       => true,
+              'query_builder' => function (TagRepository $tagRepository) use ($studyArea) {
+                return $tagRepository->findForStudyAreaQb($studyArea);
+              },
+          ]);
+    }
 
     if (!$options['hide_submit']) {
       $builder
