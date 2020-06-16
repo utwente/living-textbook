@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -29,13 +30,15 @@ class BrowserStateController extends AbstractController
    * @param UserBrowserStateRepository $repository
    * @param SerializerInterface        $serializer
    *
-   * @return JsonResponse
+   * @return Response
    */
   public function filterState(
       RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
-      SerializerInterface $serializer): JsonResponse
+      SerializerInterface $serializer): Response
   {
-    $user = $this->getUser();
+    if (!$user = $this->getUser()) {
+      return new Response(NULL, Response::HTTP_FORBIDDEN);
+    }
     assert($user instanceof User);
 
     if (!$state = $repository->findForUser($user, $requestStudyArea->getStudyArea())) {
@@ -57,13 +60,15 @@ class BrowserStateController extends AbstractController
    * @param SerializerInterface        $serializer
    * @param EntityManagerInterface     $em
    *
-   * @return JsonResponse
+   * @return Response
    */
   public function storeFilterState(
       Request $request, RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
-      SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
+      SerializerInterface $serializer, EntityManagerInterface $em): Response
   {
-    $user = $this->getUser();
+    if (!$user = $this->getUser()) {
+      return new Response(NULL, Response::HTTP_FORBIDDEN);
+    }
     assert($user instanceof User);
 
     if (!$state = $repository->findForUser($user, $requestStudyArea->getStudyArea())) {

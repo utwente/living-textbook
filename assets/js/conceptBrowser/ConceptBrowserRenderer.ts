@@ -259,13 +259,21 @@ export default class ConceptBrowserRenderer {
                 console.info('Storing filter state on server...');
             }
 
-            $.ajax({
-                // @ts-ignore
-                url: window.Routing.generate('app_browserstate_filterstate', {_studyArea: window._studyArea}),
-                data: JSON.stringify(this.filters),
-                contentType: 'application/json',
-                type: 'POST',
-            });
+            $
+                .ajax({
+                    // @ts-ignore
+                    url: window.Routing.generate('app_browserstate_filterstate', {_studyArea: window._studyArea}),
+                    data: JSON.stringify(this.filters),
+                    contentType: 'application/json',
+                    type: 'POST',
+                })
+                .fail((error) => {
+                    if (error.status === 403) {
+                        // Ignore unauthorized requests here, they are from anonymous users in open access areas
+                        return;
+                    }
+                    throw new Error('Error while storing browser state: ' + error.responseText);
+                });
         }, this.filterStoreTimeout);
     }
 
