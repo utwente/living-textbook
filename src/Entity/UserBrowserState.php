@@ -96,19 +96,19 @@ class UserBrowserState implements StudyAreaFilteredInterface
   }
 
   /**
-   * @return array
+   * @return array|null
    */
-  public function getFilterState(): array
+  public function getFilterState(): ?array
   {
     return $this->filterState;
   }
 
   /**
-   * @param array $filterState
+   * @param array|null $filterState
    *
    * @return UserBrowserState
    */
-  public function setFilterState(array $filterState): self
+  public function setFilterState(?array $filterState): self
   {
     $this->filterState = $filterState;
 
