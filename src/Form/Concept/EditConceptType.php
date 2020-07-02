@@ -100,7 +100,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('definition', TextareaType::class, [
-            'label'              => $fieldNames->definition(),
+            'label'              => ucfirst($fieldNames->definition()),
             'translation_domain' => false,
             'empty_data'         => '',
             'required'           => false,
@@ -111,7 +111,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('introduction', BaseDataTextType::class, [
-            'label'              => $fieldNames->introduction(),
+            'label'              => ucfirst($fieldNames->introduction()),
             'translation_domain' => false,
             'data_class'         => DataIntroduction::class,
             'studyArea'          => $studyArea,
@@ -123,7 +123,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('theoryExplanation', BaseDataTextType::class, [
-            'label'              => $fieldNames->theoryExplanation(),
+            'label'              => ucfirst($fieldNames->theoryExplanation()),
             'translation_domain' => false,
             'required'           => false,
             'data_class'         => DataTheoryExplanation::class,
@@ -135,7 +135,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('examples', BaseDataTextType::class, [
-            'label'              => $fieldNames->examples(),
+            'label'              => ucfirst($fieldNames->examples()),
             'translation_domain' => false,
             'required'           => false,
             'data_class'         => DataExamples::class,
@@ -147,7 +147,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('howTo', BaseDataTextType::class, [
-            'label'              => $fieldNames->howTo(),
+            'label'              => ucfirst($fieldNames->howTo()),
             'translation_domain' => false,
             'required'           => false,
             'data_class'         => DataHowTo::class,
@@ -159,7 +159,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('synonyms', TextType::class, [
-            'label'              => $fieldNames->synonyms(),
+            'label'              => ucfirst($fieldNames->synonyms()),
             'translation_domain' => false,
             'empty_data'         => '',
             'required'           => false,
@@ -205,7 +205,7 @@ class EditConceptType extends AbstractType
 
         // This field is also used by the ckeditor plugin for concept selection
         ->add('priorKnowledge', EntityType::class, [
-            'label'              => $fieldNames->priorKnowledge(),
+            'label'              => ucfirst($fieldNames->priorKnowledge()),
             'translation_domain' => false,
             'class'              => Concept::class,
             'choice_label'       => 'name',
@@ -236,7 +236,7 @@ class EditConceptType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('selfAssessment', BaseDataTextType::class, [
-            'label'      => $fieldNames->selfAssessment(),
+            'label'      => ucfirst($fieldNames->selfAssessment()),
             'required'   => false,
             'data_class' => DataSelfAssessment::class,
             'studyArea'  => $studyArea,

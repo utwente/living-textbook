@@ -173,7 +173,7 @@
 
 {% macro data_learning_outcomes(data) %}
   {% if data|length > 0 %}
-    <h2>{{ 'concept.learning-outcomes'|trans }}</h2>
+    <h2>{{ naming.get.learningOutcome.objs|capitalize }}</h2>
     <ul>
       {% from _self import render_learning_outcome %}
       {% for learningOutcome in data %}
