@@ -64,7 +64,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    * @ORM\Column(name="number", type="integer", nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Range(min="1", max="2000")
+   * @Assert\Range(min="1", max="9999")
    * @Serializer\Groups({"Default", "review_change"})
    * @Serializer\Type("int")
    */
