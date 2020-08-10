@@ -53,7 +53,7 @@
     "popper.js": "^1.12.9",
     "regenerator-runtime": "^0.13.3",
     "select2": "4.0.5",
-    "select2-theme-bootstrap4": "0.2.0-beta.2",
+    "select2-theme-bootstrap4": "^1.0.0",
     "symfony-collection": "ninsuo/symfony-collection",
     "uuid": "^3.3.2"
   },
