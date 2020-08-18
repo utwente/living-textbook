@@ -12,7 +12,8 @@
 
 {% macro noteExcerpt(notes) %}
   {% if notes|length > 0 %}
-    <span {% if notes|length > 50 %}title="{{ notes }}" data-toggle="tooltip"{% endif %}>
+    <span {% if notes|length > 50 %}title="{{ notes }}"
+          data-toggle="tooltip" data-container="body" data-boundary="viewport"{% endif %}>
               {{ notes|length > 50 ? notes|slice(0, 50) ~ '...' : notes }}
             </span>
   {% else %}
