@@ -101,7 +101,7 @@
 
 {% block review_relation_diff_row %}
   {% from _self import build_relation_diff %}
-  {% set original = build_relation_diff(orig_relations, incoming, concept) %}
+  {% set original = build_relation_diff(orig_relations|default([]), incoming, concept) %}
 
   {{ block('review_diff_start') }}
   {% if show_original %}
