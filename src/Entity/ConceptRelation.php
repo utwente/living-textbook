@@ -84,7 +84,7 @@ class ConceptRelation
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
    */
-  private $outgoingPosition;
+  private $outgoingPosition = 0;
 
   /**
    * The position field will be filled automatically by a callback in the concept,
@@ -97,16 +97,7 @@ class ConceptRelation
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
    */
-  private $incomingPosition;
-
-  /**
-   * ConceptRelation constructor.
-   */
-  public function __construct()
-  {
-    $this->incomingPosition = 0;
-    $this->outgoingPosition = 0;
-  }
+  private $incomingPosition = 0;
 
   /**
    * @return int|null
