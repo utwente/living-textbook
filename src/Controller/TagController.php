@@ -167,7 +167,7 @@ class TagController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Remove tag from default if set
-      if ($studyArea->getDefaultTagFilter()->getId() === $tag->getId()) {
+      if ($studyArea->getDefaultTagFilter() && $studyArea->getDefaultTagFilter()->getId() === $tag->getId()) {
         $studyArea->setDefaultTagFilter(NULL);
       }
 
