@@ -20,6 +20,8 @@
       <script type="text/javascript">
         window.SENTRY_DSN = '{{ sentry_dsn }}';
         window.SENTRY_RELEASE = '{{ sentry_release }}';
+        window.SENTRY_USERNAME = '{{ app.user ? app.user.username : 'anon.' }}';
+        window.SENTRY_IP_ADDRESS = '{{ app.request.clientIp }}';
       </script>
     {% endif %}
 

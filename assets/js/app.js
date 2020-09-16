@@ -15,6 +15,11 @@ if (window.SENTRY_DSN) {
     dsn: window.SENTRY_DSN,
     release: window.SENTRY_RELEASE,
   });
+
+  Sentry.setUser({
+    username: window.SENTRY_USERNAME,
+    ip_address: window.SENTRY_IP_ADDRESS,
+  });
 }
 
 // Create global $ and jQuery variables
