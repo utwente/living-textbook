@@ -1459,6 +1459,12 @@
    * Remove the selected annotation
    */
   function removeAnnotation() {
+    const removeId = annotationContextData.id;
+    if (removeId === 0){
+      // It is not possible to delete items without an id
+      return;
+    }
+
     console.info('Removing annotation', annotationContextData);
 
     $annotationContextButtons.find('button').prop('disabled', true);
@@ -1470,7 +1476,6 @@
     annotationContextData.onButton = false;
 
     // Generate request
-    let removeId = annotationContextData.id;
     $.ajax(
         {
           type: 'DELETE',
