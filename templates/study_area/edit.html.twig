@@ -16,68 +16,68 @@
 
   {# The fields requiring JS are only available for admins, so remove JS to prevent errors when this is not the case #}
   {% if is_granted("ROLE_SUPER_ADMIN") %}
-  <script type="text/javascript">
-    $(function () {
-      $('#{{ form.openAccess.vars.id }}')
-          .on('change', function () {
-            var openAccess = $(this).is(':checked');
-            var $trackUsersForm = $('#{{ form.trackUsers.vars.id }}').closest('.form-group');
-            var $analyticsDashboardEnabledForm = $('#{{ form.analyticsDashboardEnabled.vars.id }}').closest('.form-group');
+    <script type="text/javascript">
+      $(function () {
+        $('#{{ form.openAccess.vars.id }}')
+            .on('change', function () {
+              var openAccess = $(this).is(':checked');
+              var $trackUsersForm = $('#{{ form.trackUsers.vars.id }}').closest('.form-group');
+              var $analyticsDashboardEnabledForm = $('#{{ form.analyticsDashboardEnabled.vars.id }}').closest('.form-group');
 
-            if (openAccess) {
-              $trackUsersForm.hide();
-              $analyticsDashboardEnabledForm.hide();
-            } else {
-              $trackUsersForm.show();
-              if ($('#{{ form.trackUsers.vars.id }}').is(':checked')) {
-                $analyticsDashboardEnabledForm.show();
+              if (openAccess) {
+                $trackUsersForm.hide();
+                $analyticsDashboardEnabledForm.hide();
+              } else {
+                $trackUsersForm.show();
+                if ($('#{{ form.trackUsers.vars.id }}').is(':checked')) {
+                  $analyticsDashboardEnabledForm.show();
+                }
               }
-            }
-          })
-          .change();
+            })
+            .change();
 
-      $('#{{ form.trackUsers.vars.id }}')
-          .on('change', function () {
-            var trackUsers = $(this).is(':checked');
-            var $analyticsDashboardEnabledForm = $('#{{ form.analyticsDashboardEnabled.vars.id }}').closest('.form-group');
+        $('#{{ form.trackUsers.vars.id }}')
+            .on('change', function () {
+              var trackUsers = $(this).is(':checked');
+              var $analyticsDashboardEnabledForm = $('#{{ form.analyticsDashboardEnabled.vars.id }}').closest('.form-group');
 
-            if (trackUsers) {
-              $analyticsDashboardEnabledForm.show();
-            } else {
-              $analyticsDashboardEnabledForm.hide();
-            }
-          })
-          .change();
+              if (trackUsers) {
+                $analyticsDashboardEnabledForm.show();
+              } else {
+                $analyticsDashboardEnabledForm.hide();
+              }
+            })
+            .change();
 
         {% if trackingEnabled %}
-          function alertDataRemove() {
-            return confirm('{{ 'study-area.tracking-remove-data'|trans }}');
-          }
+        function alertDataRemove() {
+          return confirm('{{ 'study-area.tracking-remove-data'|trans }}');
+        }
 
-          $('#{{ form.openAccess.vars.id }}')
-              .on('change', function () {
-                var $element = $(this);
-                setTimeout(function () {
-                  if ($element.is(':checked')) {
-                    if (!alertDataRemove()) {
-                      $element.click();
-                    }
+        $('#{{ form.openAccess.vars.id }}')
+            .on('change', function () {
+              var $element = $(this);
+              setTimeout(function () {
+                if ($element.is(':checked')) {
+                  if (!alertDataRemove()) {
+                    $element.click();
                   }
-                }, 100);
-              });
-          $('#{{ form.trackUsers.vars.id }}')
-              .on('change', function () {
-                var $element = $(this);
-                setTimeout(function () {
-                  if (!$element.is(':checked')) {
-                    if (!alertDataRemove()) {
-                      $element.click();
-                    }
+                }
+              }, 100);
+            });
+        $('#{{ form.trackUsers.vars.id }}')
+            .on('change', function () {
+              var $element = $(this);
+              setTimeout(function () {
+                if (!$element.is(':checked')) {
+                  if (!alertDataRemove()) {
+                    $element.click();
                   }
-                }, 100);
-              });
+                }
+              }, 100);
+            });
         {% endif %}
-    });
-  </script>
+      });
+    </script>
   {% endif %}
 {% endblock %}
