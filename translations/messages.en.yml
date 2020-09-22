@@ -706,6 +706,7 @@ study-area:
   tracking-consent-title: 'Tracking consent'
   tracking-disabled: 'Tracking disabled'
   tracking-disabled-text: 'User tracking has been disabled for this study area. Click %url_start%here%url_end% to edit the tracking settings.'
+  tracking-remove-data: 'Are you sure? This will remove all existing tracking data, which cannot be undone!'
   transfer-ownership: 'Transfer ownership'
   unfreeze: 'Unfreeze study area'
   unfreeze-text: 'Are you sure you want to unfreeze the study area "%item%"? This could lead to data loss for users of this study area when data is edited, please use this feature responsibly!'

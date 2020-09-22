@@ -216,9 +216,10 @@ class StudyAreaController extends AbstractController
     }
 
     return [
-        'studyArea'  => $studyArea,
-        'form'       => $form->createView(),
-        'list_route' => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
+        'studyArea'       => $studyArea,
+        'form'            => $form->createView(),
+        'list_route'      => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
+        'trackingEnabled' => $studyArea->isTrackUsers(),
     ];
   }
 

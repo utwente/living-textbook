@@ -48,6 +48,35 @@
             }
           })
           .change();
+
+        {% if trackingEnabled %}
+          function alertDataRemove() {
+            return confirm('{{ 'study-area.tracking-remove-data'|trans }}');
+          }
+
+          $('#{{ form.openAccess.vars.id }}')
+              .on('change', function () {
+                var $element = $(this);
+                setTimeout(function () {
+                  if ($element.is(':checked')) {
+                    if (!alertDataRemove()) {
+                      $element.click();
+                    }
+                  }
+                }, 100);
+              });
+          $('#{{ form.trackUsers.vars.id }}')
+              .on('change', function () {
+                var $element = $(this);
+                setTimeout(function () {
+                  if (!$element.is(':checked')) {
+                    if (!alertDataRemove()) {
+                      $element.click();
+                    }
+                  }
+                }, 100);
+              });
+        {% endif %}
     });
   </script>
   {% endif %}
