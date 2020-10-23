@@ -1,0 +1,24 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+    {{ 'learning-outcome.remove-unused'|trans({'%plural%': naming.get.learningOutcome.objs}) }}
+{% endblock %}
+
+{% block content %}
+    <p>{{ 'learning-outcome.remove-unused-text'|trans({'%plural%': naming.get.learningOutcome.objs}) }}</p>
+
+    <ul>
+        {% for learningOutcome in unusedLearningOutcome %}
+            <li>
+                <a href="{{ path('app_learningoutcome_show', {'learningOutcome': learningOutcome.id}) }}">
+                    {{ learningOutcome.number }} - {{ learningOutcome.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% from '_macro/_review.html.twig' import reviewNotice %}
+    {{ reviewNotice(unusedLearningOutcome[0]) }}
+
+    {{ form(form) }}
+{% endblock %}

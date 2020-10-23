@@ -386,13 +386,18 @@ learning-outcome:
   edit-title: 'Edit %singular% "%item%"'
   list-title: '%singular% list'
   name: 'Name'
+  no-unused: 'There aren''t any unused %plural%.'
   number: 'Number'
   remove: 'Remove %singular% "%item%"'
   remove-concepts: 'Note that the %singular% will also be removed from the following concepts/instances:'
   remove-text: 'Are you sure you want to remove the %plural% "%item%"?'
+  remove-unused: 'Remove unused %plural%'
+  remove-unused-short: 'Remove unused'
+  remove-unused-text: 'Are you sure you want to remove all the unused %plural%? The following %plural% will be removed:'
   removed: '%singular% "%item%" has been removed successfully.'
   saved: '%singular% "%item%" has been saved successfully.'
   text: 'Content'
+  unused-removed: 'The unused %plural% have been removed successfully!'
   updated: '%singular% "%item%" has been successfully updated.'
 
 learning-path:

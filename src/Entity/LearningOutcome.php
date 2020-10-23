@@ -100,7 +100,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
 
   public function __construct()
   {
-    $this->number = 0;
+    $this->number = 1;
     $this->name   = '';
     $this->text   = '';
 

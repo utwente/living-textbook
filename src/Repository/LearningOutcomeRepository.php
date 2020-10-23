@@ -123,4 +123,20 @@ class LearningOutcomeRepository extends ServiceEntityRepository
 
     return ++$highestNumber;
   }
+
+  /**
+   * Find all learning outcomes in a study area which are currenlty not in use
+   *
+   * @param StudyArea $studyArea
+   *
+   * @return LearningOutcome[]
+   */
+  public function findUnusedInStudyArea(StudyArea $studyArea): array
+  {
+    return $this->findForStudyAreaQb($studyArea)
+        ->leftJoin('lo.concepts', 'c')
+        ->having('COUNT(c.id) = 0')
+        ->groupBy('lo.id')
+        ->getQuery()->getResult();
+  }
 }

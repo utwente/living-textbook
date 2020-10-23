@@ -174,8 +174,8 @@ class LearningOutcomeController extends AbstractController
    * @Route("/remove/{learningOutcome}", requirements={"learningOutcome"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
-   *                                                          subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show",
+   *   routeParams={"learningOutcome"="{learningOutcome}"}, subject="requestStudyArea")
    *
    * @param Request             $request
    * @param RequestStudyArea    $requestStudyArea
@@ -227,6 +227,71 @@ class LearningOutcomeController extends AbstractController
     return [
         'learningOutcome' => $learningOutcome,
         'form'            => $form->createView(),
+    ];
+  }
+
+  /**
+   * @Route("/remove/unused")
+   * @Template()
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
+   *
+   * @param Request                   $request
+   * @param RequestStudyArea          $requestStudyArea
+   * @param LearningOutcomeRepository $learningOutcomeRepository
+   * @param ReviewService             $reviewService
+   * @param TranslatorInterface       $trans
+   * @param NamingService             $namingService
+   *
+   * @return array|Response
+   */
+  public function removeUnused(
+      Request $request, RequestStudyArea $requestStudyArea, LearningOutcomeRepository $learningOutcomeRepository,
+      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService)
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    $unusedLearningOutcomes = $learningOutcomeRepository->findUnusedInStudyArea($studyArea);
+    if (count($unusedLearningOutcomes) === 0) {
+      $this->addFlash('info', $trans->trans('learning-outcome.no-unused', [
+          '%plural%' => $namingService->get()->learningOutcome()->objs(),
+      ]));
+
+      return $this->redirectToRoute('app_learningoutcome_list');
+    }
+
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route' => 'app_learningoutcome_list',
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      foreach ($unusedLearningOutcomes as $unusedLearningOutcome) {
+        // Verify it can be deleted
+        if (!$reviewService->canObjectBeRemoved($studyArea, $unusedLearningOutcome)) {
+          $this->addFlash('error', $trans->trans('review.remove-not-possible', [
+              '%item%' => sprintf('%s "%s"',
+                  ucfirst($namingService->get()->learningOutcome()->obj()), $unusedLearningOutcome->getName()),
+          ]));
+
+          // Only add warning, but continue with the others
+          continue;
+        }
+
+        // Remove it
+        $reviewService->storeChange($studyArea, $unusedLearningOutcome, PendingChange::CHANGE_TYPE_REMOVE);
+      }
+
+      $this->addFlash('success', $trans->trans('learning-outcome.unused-removed', [
+          '%plural%' => $namingService->get()->learningOutcome()->objs(),
+      ]));
+
+      return $this->redirectToRoute('app_learningoutcome_list');
+    }
+
+    return [
+        'unusedLearningOutcome' => $unusedLearningOutcomes,
+        'form'                  => $form->createView(),
     ];
   }
 

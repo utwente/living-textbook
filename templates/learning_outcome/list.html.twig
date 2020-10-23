@@ -6,6 +6,7 @@
     {{ buttons.header() }}
     {{ buttons.progress_button() }}
     {{ buttons.add_button(path('app_learningoutcome_add'), _twigStudyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {{ buttons._action_button(path('app_learningoutcome_removeunused'), 'fa-trash', 'learning-outcome.remove-unused-short', 'danger') }}
     {{ buttons.footer() }}
   {% endif %}
 {% endblock %}
