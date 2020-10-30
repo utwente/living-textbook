@@ -235,8 +235,9 @@ class AnalyticsService
       // Create output directories
       $this->fileSystem->mkdir($outputDir . '/input');
 
-      // Allow for more memory usage
+      // Allow for more memory and time usage
       ini_set('memory_limit', '1024M');
+      set_time_limit(300);
 
       // Retrieve the required input files
       try {
