@@ -5,6 +5,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/php bin/console messenger:consume %i --time-limit=3600 -vv
+EnvironmentFile=-/etc/environment
 Restart=always
 RestartSec=1
 WorkingDirectory=/opt/application/013-living-textbook
