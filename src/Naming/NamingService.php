@@ -36,7 +36,7 @@ class NamingService
   private $translator;
 
   /**
-   * @var StudyArea
+   * @var StudyArea|null
    */
   private $studyArea;
 
@@ -51,9 +51,9 @@ class NamingService
   /**
    * Injects the current study area into this service
    *
-   * @param StudyArea $studyArea
+   * @param StudyArea|null $studyArea
    */
-  public function injectStudyArea(StudyArea $studyArea)
+  public function injectStudyArea(?StudyArea $studyArea)
   {
     $this->studyArea = $studyArea;
   }
