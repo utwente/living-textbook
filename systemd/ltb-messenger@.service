@@ -1,5 +1,5 @@
 [Unit]
-Description=SAP3 Messenge Consumer (queue %I)
+Description=LTB Messenge Consumer (queue %I)
 After=network.target
 
 [Service]
