@@ -249,7 +249,9 @@ class DefaultController extends AbstractController
 
       $urlData = [
           'urlScanned'      => $urlsScanned,
+        /** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
           'urlScanProgress' => ($urlsScanned ? $urls['urls'] === NULL : false),
+        /** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
           'urlCount'        => ($urlsScanned ? count($urls['urls']) : -1),
           'brokenUrlCount'  => ($badUrls !== NULL ? count($badUrls['bad']) : -1),
       ];

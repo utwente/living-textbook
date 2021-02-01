@@ -41,7 +41,8 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
   public function onAuthenticationSuccess(Request $request, TokenInterface $token)
   {
     // Original target url, as determined by Symfony
-    $targetUrl  = $this->determineTargetUrl($request);
+    $targetUrl = $this->determineTargetUrl($request);
+    /** @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset */
     $targetPath = parse_url($targetUrl)['path'];
 
     // Determine whether to wrap this url or not

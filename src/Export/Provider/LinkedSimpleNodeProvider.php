@@ -263,11 +263,11 @@ EOT,
 
   private function fieldName(string $fieldName): string
   {
-    return u($fieldName)->ascii()->camel();
+    return u($fieldName)->ascii()->camel()->toString();
   }
 
   private function fieldDescription(string $fieldName): string
   {
-    return $this->slugger->slug($fieldName)->lower();
+    return $this->slugger->slug($fieldName)->lower()->toString();
   }
 }

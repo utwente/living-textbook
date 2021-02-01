@@ -365,12 +365,14 @@ class StudyArea
     $result = [];
     foreach ($this->userGroups as $userGroup) {
       foreach ($userGroup->getUsers() as $user) {
+        /** @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
         if (!array_key_exists($user->getId(), $result)) {
           $result[$user->getId()] = new UserPermissions($user, NULL);
         }
         $result[$user->getId()]->addPermissionFromGroup($userGroup);
       }
       foreach ($userGroup->getEmails() as $email) {
+        /** @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
         if (!array_key_exists($email->getEmail(), $result)) {
           $result[$email->getEmail()] = new UserPermissions(NULL, $email);
         }

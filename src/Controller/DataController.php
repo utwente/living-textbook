@@ -263,7 +263,9 @@ class DataController extends AbstractController
               }
 
               $learningOutcome = new LearningOutcome();
+              /** @phan-suppress-next-line PhanTypeMismatchArgument */
               $learningOutcome->setName($jsonLearningOutcome['label']);
+              /** @phan-suppress-next-line PhanTypeMismatchArgument */
               $learningOutcome->setText($jsonLearningOutcome['definition']);
               $learningOutcome->setNumber($learningOutcomeNumber);
               $learningOutcome->setStudyArea($studyArea);
@@ -303,6 +305,7 @@ class DataController extends AbstractController
 
               // Create the external resource
               $externalResource = (new ExternalResource())
+                  /** @phan-suppress-next-line PhanTypeMismatchArgument */
                   ->setTitle($jsonExternalResource['name'])
                   ->setStudyArea($studyArea);
               if (array_key_exists('description', $jsonExternalResource)) {
