@@ -9,50 +9,53 @@ stages:
 include:
   # Prepare
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/symfony/install-dependencies.yml'
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/yarn/install-js-dependencies.yml'
 
   # Lint
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
+    file: '/php/cve-check.yml'
+  - project: 'intern/runner-templates'
+    ref: "2.7"
     file: '/shell/shellcheck.yml'
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/php/phan.yml'
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/ts/tslint.yml'
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/yaml/yamllint.yml'
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/sass/sasslint.yml'
 
   # Build
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/yarn/build-prod.yml'
 
   # Tests
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/php/phpunit.yml'
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/symfony/check-security.yml'
 
   # Sentry
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/sentry/sentry.yml'
 
   # Deploy
   - project: 'intern/runner-templates'
-    ref: "2.1"
+    ref: "2.7"
     file: '/deploy/deploy.yml'
 
 install-dependencies:
@@ -71,7 +74,7 @@ js-analysis:
   image:
     name: hyzual/jshint:latest
     entrypoint: [ "" ]
-  needs: []
+  needs: [ ]
   before_script:
     - cp tests/jshint/.jshintignore .
   script:
