@@ -1,12 +1,6 @@
 {
     "type": "project",
     "license": "proprietary",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Drenso/php-htmldiff"
-        }
-    ],
     "require": {
         "php": "^7.3",
         "ext-curl": "*",
@@ -15,7 +9,7 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "bobv/latex-bundle": "^1.4.0",
-        "caxy/php-htmldiff": "dev-purifier-disable",
+        "caxy/php-htmldiff": "^0.1.11",
         "components/elfinder": "^3.1.1",
         "drenso/symfony-oidc-bundle": "^v1.5",
         "easyrdf/easyrdf": "^0.9.1",

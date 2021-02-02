@@ -200,9 +200,6 @@
     "kriswallsmith/assetic": {
         "version": "v1.4.0"
     },
-    "kub-at/php-simple-html-dom-parser": {
-        "version": "1.9.1"
-    },
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
