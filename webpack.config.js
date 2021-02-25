@@ -65,10 +65,14 @@ Encore
       useBuiltIns: 'usage',
       corejs: 3
     })
-;
 
-if (!Encore.isProduction()) {
-  Encore.disableCssExtraction();
-}
+    .configureDevServerOptions(function (options) {
+      options.disableHostCheck = true;
+    })
+
+    // Fixes CSS HMR
+    // See https://github.com/symfony/webpack-encore/issues/348
+    .disableCssExtraction(Encore.isDevServer())
+;
 
 module.exports = Encore.getWebpackConfig();
