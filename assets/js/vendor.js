@@ -20,7 +20,7 @@ require('popper.js');
 require('bootstrap');
 require('bootstrap-3-typeahead');
 require('bootstrap4-toggle');
-require('bootstrap4-toggle/css/bootstrap4-toggle.css');
+require('bootstrap4-toggle/css/bootstrap4-toggle.min.css');
 
 // Select 2
 require('select2');

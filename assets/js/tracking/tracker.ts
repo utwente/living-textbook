@@ -1,4 +1,4 @@
-import uuid from 'uuid/v1';
+import {v1 as uuid} from 'uuid';
 
 export default class Tracker {
     // Event types
@@ -17,7 +17,7 @@ export default class Tracker {
      */
     private static sendBeacon(url: string, data?: any) {
         if (typeof window.navigator.sendBeacon === 'function') {
-            window.navigator.sendBeacon(url,  data);
+            window.navigator.sendBeacon(url, data);
         } else {
             // Possibly unreliable, but better than nothing if the beacon API is not supported
             $.ajax({
