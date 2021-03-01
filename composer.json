@@ -110,6 +110,13 @@
             "id": "01C1D83D8CDPBGH5RVQBHJ075A",
             "allow-contrib": false,
             "require": "4.4.*"
-        }
+        },
+        "unused": [
+            "symfony/messenger",
+            "symfony/proxy-manager-bridge",
+            "twig/cssinliner-extra",
+            "twig/extensions",
+            "twig/inky-extra"
+        ]
     }
 }
