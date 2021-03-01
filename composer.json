@@ -18,6 +18,7 @@
         "helios-ag/fm-elfinder-bundle": "^9.1.1",
         "jms/serializer-bundle": "^3.3",
         "kick-in/exception-handler-bundle": "dev-symfony-mailer",
+        "league/html-to-markdown": "^4.10",
         "ml/json-ld": "^1.1",
         "phpoffice/phpspreadsheet": "^1.5.1",
         "phpseclib/phpseclib": "^2.0",
@@ -112,6 +113,7 @@
             "require": "4.4.*"
         },
         "unused": [
+            "league/html-to-markdown",
             "symfony/messenger",
             "symfony/proxy-manager-bridge",
             "twig/cssinliner-extra",

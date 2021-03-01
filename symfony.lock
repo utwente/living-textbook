@@ -200,6 +200,9 @@
     "kriswallsmith/assetic": {
         "version": "v1.4.0"
     },
+    "league/html-to-markdown": {
+        "version": "4.10.0"
+    },
     "lorenzo/pinky": {
         "version": "1.0.5"
     },
