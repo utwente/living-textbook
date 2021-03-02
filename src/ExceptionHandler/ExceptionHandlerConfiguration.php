@@ -2,12 +2,12 @@
 
 namespace App\ExceptionHandler;
 
-use Kickin\ExceptionHandlerBundle\Configuration\ConfigurationInterface;
+use Kickin\ExceptionHandlerBundle\Configuration\SymfonyMailerConfigurationInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class ExceptionHandlerConfiguration implements ConfigurationInterface
+class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterface
 {
 
   /** @var bool */
@@ -25,9 +25,6 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
   /** @var string */
   private $appVersion;
 
-  /**
-   * @inheritdoc
-   */
   public function __construct(ParameterBagInterface $parameterBag)
   {
     $this->productionServer  = $parameterBag->get('production_server');
@@ -39,29 +36,23 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
   }
 
   /**
-   * Indicate whether the current environment is a production environment
-   *
-   * @return bool
+   * @inheritdoc
    */
-  public function isProductionEnvironment()
+  public function isProductionEnvironment(): bool
   {
     return $this->productionServer;
   }
 
   /**
-   * Return the backtrace file root folder path
-   *
-   * @return string
+   * @inheritdoc
    */
-  public function getBacktraceFolder()
+  public function getBacktraceFolder(): string
   {
     return $this->cacheDir . '/exception_handler';
   }
 
   /**
-   * Address representation of the error sender
-   *
-   * @return Address|string
+   * @inheritdoc
    */
   public function getSender()
   {
@@ -69,9 +60,7 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
   }
 
   /**
-   * Address representation of the error receiver
-   *
-   * @return mixed
+   * @inheritdoc
    */
   public function getReceiver()
   {
@@ -79,13 +68,9 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
   }
 
   /**
-   * Retrieve user information from the token, and return it in a single string
-   *
-   * @param TokenInterface|null $token
-   *
-   * @return string
+   * @inheritdoc
    */
-  public function getUserInformation(TokenInterface $token = NULL)
+  public function getUserInformation(TokenInterface $token = NULL): string
   {
     if ($token !== NULL) {
       return $token->getUsername();
@@ -95,11 +80,9 @@ class ExceptionHandlerConfiguration implements ConfigurationInterface
   }
 
   /**
-   * Retrieve the system version
-   *
-   * @return mixed
+   * @inheritdoc
    */
-  public function getSystemVersion()
+  public function getSystemVersion(): string
   {
     return $this->appVersion;
   }

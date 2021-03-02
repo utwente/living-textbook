@@ -88,7 +88,7 @@ services:
       $clientId: '%oidc.client_id%'
       $clientSecret: '%oidc.client_secret%'
 
-  Kickin\ExceptionHandlerBundle\Configuration\ConfigurationInterface:
+  Kickin\ExceptionHandlerBundle\Configuration\SymfonyMailerConfigurationInterface:
     alias: 'App\ExceptionHandler\ExceptionHandlerConfiguration'
 
   security.authentication.provider.oidc:

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "244f2111d6bb106e6debb07d8763f09d",
+    "content-hash": "a20847d7fe57ea89a751c050d182fd98",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2702,29 +2702,39 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "dev-symfony-mailer",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "c24e812e8ca74872a5563ab90da340e6a40de63a"
+                "reference": "ef8812a41702dc07dedba02e061933b256be78c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/c24e812e8ca74872a5563ab90da340e6a40de63a",
-                "reference": "c24e812e8ca74872a5563ab90da340e6a40de63a",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/ef8812a41702dc07dedba02e061933b256be78c3",
+                "reference": "ef8812a41702dc07dedba02e061933b256be78c3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.3",
-                "symfony/config": "~4.3",
-                "symfony/dependency-injection": "~4.3",
-                "symfony/event-dispatcher": "~4.3",
-                "symfony/filesystem": "~4.3",
-                "symfony/http-foundation": "~4.3",
-                "symfony/http-kernel": "~4.3",
-                "symfony/mailer": "^4.3",
-                "symfony/security": "~4.3",
-                "symfony/twig-bundle": "~4.3"
+                "symfony/config": "~4.4|~5.0",
+                "symfony/dependency-injection": "~4.4|~5.0",
+                "symfony/event-dispatcher": "~4.4|~5.0",
+                "symfony/filesystem": "~4.4|~5.0",
+                "symfony/http-foundation": "~4.4|~5.0",
+                "symfony/http-kernel": "~4.4|~5.0",
+                "symfony/security": "~4.4|~5.0",
+                "symfony/twig-bundle": "~4.4|~5.0"
+            },
+            "conflict": {
+                "twig/twig": "<2.7.0"
+            },
+            "require-dev": {
+                "symfony/mailer": "~4.4|~5.0",
+                "symfony/swiftmailer-bundle": ">=2.6.0"
+            },
+            "suggest": {
+                "symfony/mailer": "When you want to use the Symfony Mailer, install this bundle",
+                "symfony/swiftmailer-bundle": "When you want to use Swiftmailer, install this bundle"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -2732,6 +2742,7 @@
                     "Kickin\\ExceptionHandlerBundle\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2751,11 +2762,7 @@
                 "exception handler",
                 "symfony"
             ],
-            "support": {
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/symfony-mailer",
-                "issues": "https://github.com/Kick-In/exception-handler-bundle/issues"
-            },
-            "time": "2019-12-19T08:59:57+00:00"
+            "time": "2020-03-31T06:00:06+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -11492,9 +11499,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kick-in/exception-handler-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
