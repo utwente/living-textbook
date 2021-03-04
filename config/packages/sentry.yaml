@@ -3,7 +3,5 @@ sentry:
   options:
     release: '%sentry_release%'
     send_default_pii: true
-    excluded_exceptions:
-      - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-      - Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-      - Symfony\Component\Security\Core\Exception\AccessDeniedException
+    integrations:
+      - 'Sentry\Integration\IgnoreErrorsIntegration'
