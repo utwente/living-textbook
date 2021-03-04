@@ -8,7 +8,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-libxml": "*",
-        "bobv/latex-bundle": "^1.6.1",
+        "bobv/latex-bundle": "^2.5.1",
         "caxy/php-htmldiff": "^0.1.11",
         "components/elfinder": "^3.1.4",
         "drenso/symfony-oidc-bundle": "^v1.10.0",

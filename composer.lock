@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "908fafc601bc47648609fa9b3340adfd",
+    "content-hash": "4050250a60e29189d1d3b1ae6fa543fb",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -53,35 +53,40 @@
         },
         {
             "name": "bobv/latex-bundle",
-            "version": "v1.6.1",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "e6eda60f076ef6f5609d2faa003eee221aa53d82"
+                "reference": "aba79a7ac74fde6ed73f044177806d9ce8a4e7bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/e6eda60f076ef6f5609d2faa003eee221aa53d82",
-                "reference": "e6eda60f076ef6f5609d2faa003eee221aa53d82",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/aba79a7ac74fde6ed73f044177806d9ce8a4e7bc",
+                "reference": "aba79a7ac74fde6ed73f044177806d9ce8a4e7bc",
                 "shasum": ""
             },
             "require": {
-                "symfony/config": ">= 2.3.0",
-                "symfony/console": ">= 2.3.0",
-                "symfony/dependency-injection": ">= 2.3.0",
-                "symfony/filesystem": ">= 2.3.0",
-                "symfony/finder": ">= 2.3.0",
-                "symfony/form": ">= 2.3.0",
-                "symfony/framework-bundle": ">= 2.3.0",
-                "symfony/http-foundation": ">= 2.3.0",
-                "symfony/http-kernel": ">= 2.3.0",
-                "symfony/options-resolver": ">= 2.3.0",
-                "symfony/process": ">= 2.3.0",
-                "twig/twig": ">= 1.9.0"
+                "php": ">=7.0",
+                "symfony/config": "~3.4 || ~4.3 || ~5.0",
+                "symfony/console": "~3.4 || ~4.3 || ~5.0",
+                "symfony/dependency-injection": "~3.4 || ~4.3 || ~5.0",
+                "symfony/filesystem": "~3.4 || ~4.3 || ~5.0",
+                "symfony/finder": "~3.4 || ~4.3 || ~5.0",
+                "symfony/form": "~3.4 || ~4.3 || ~5.0",
+                "symfony/framework-bundle": "~3.4 || ~4.3 || ~5.0",
+                "symfony/http-foundation": "~3.4 || ~4.3 || ~5.0",
+                "symfony/http-kernel": "~3.4 || ~4.3 || ~5.0",
+                "symfony/options-resolver": "~3.4 || ~4.3 || ~5.0",
+                "symfony/process": "~3.4 || ~4.3 || ~5.0",
+                "twig/twig": "~1.9.0 || ~2.0 || ~3.0"
+            },
+            "require-dev": {
+                "symfony/lock": "~3.4 || ~4.3 || ~5.0"
             },
             "suggest": {
                 "friendsofsymfony/ckeditor-bundle": "Allows the usage of the bobv_latex form type, and easily integrates ckeditor into your Symfony application",
-                "spatie/pdf-to-image": "Allows you to convert PDF output into a image."
+                "spatie/pdf-to-image": "Allows you to convert PDF output into a image.",
+                "symfony/lock": "Allows you to generate the pdf file under lock with the LockedLatexGeneratorInterface"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -107,7 +112,7 @@
                 "pdf",
                 "symfony"
             ],
-            "time": "2020-01-16T16:51:17+00:00"
+            "time": "2021-01-31T14:35:48+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
