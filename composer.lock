@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13ba49c2880afd642fdae1fb836c3275",
+    "content-hash": "7a565da495807675f6b99fd62cbf21d4",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5274,9 +5274,9 @@
             "authors": [
                 {
                     "name": "Freek Van der Herten",
-                    "role": "Developer",
                     "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Convert a pdf to an image",
@@ -10661,20 +10661,20 @@
     "packages-dev": [
         {
             "name": "drenso/phan-extensions",
-            "version": "v2.5.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/PhanExtensions.git",
-                "reference": "cedef1c214c259bfaab0652256abf931b00c2781"
+                "reference": "ac15701a0d8cb283f6e542a25e7175f2ca3a717f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/cedef1c214c259bfaab0652256abf931b00c2781",
-                "reference": "cedef1c214c259bfaab0652256abf931b00c2781",
+                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/ac15701a0d8cb283f6e542a25e7175f2ca3a717f",
+                "reference": "ac15701a0d8cb283f6e542a25e7175f2ca3a717f",
                 "shasum": ""
             },
             "require-dev": {
-                "phan/phan": "~1|~2"
+                "phan/phan": "~2|~3"
             },
             "type": "project",
             "notification-url": "https://packagist.org/downloads/",
@@ -10701,7 +10701,7 @@
                 "stubs",
                 "symfony"
             ],
-            "time": "2019-05-31T15:22:44+00:00"
+            "time": "2020-07-03T11:47:46+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
