@@ -1,9 +1,8 @@
 fm_elfinder:
-  assets_path: "/elfinder-assets"
   instances:
     default:
-      editor: ckeditor
-      include_assets: true
+      editor: custom
+      editor_template: elfinder/elfinder.html.twig
       relative_path: true
       connector:
         roots:

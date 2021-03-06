@@ -11,15 +11,6 @@
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
-    "components/elfinder": {
-        "version": "2.2"
-    },
-    "components/jquery": {
-        "version": "3.2.1"
-    },
-    "components/jqueryui": {
-        "version": "1.12.1"
-    },
     "composer/package-versions-deprecated": {
         "version": "1.8.0"
     },
@@ -158,9 +149,6 @@
     "kick-in/exception-handler-bundle": {
         "version": "3.0.0"
     },
-    "kriswallsmith/assetic": {
-        "version": "v1.4.0"
-    },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.2.0"
     },
@@ -250,9 +238,6 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
-    },
-    "robloach/component-installer": {
-        "version": "0.2.3"
     },
     "rollerworks/password-strength-validator": {
         "version": "v1.3.0"

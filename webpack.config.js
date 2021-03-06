@@ -41,6 +41,29 @@ Encore
 
     .addEntry('vendor', './assets/js/vendor.js')
 
+    // Elfinder dedicated assets
+    .copyFiles([
+      {
+        from: './node_modules/requirejs/',
+        to: 'elfinder/requirejs/[path][name].[hash:8].[ext]',
+        pattern: /require\.js$/
+      },
+      {from: './node_modules/jquery/dist', to: 'els/jquery/[path][name].[ext]', pattern: /jquery\.min\.js$/},
+      {
+        from: './node_modules/jquery-ui-dist',
+        to: 'els/jquery-ui/[path][name].[ext]',
+        pattern: /jquery-ui\.min\.(js|css)$/
+      },
+      {
+        from: './node_modules/jquery-ui-themes/themes/smoothness',
+        to: 'els/jquery-ui/themes/smoothness/[path][name].[ext]'
+      },
+      {from: './vendor/studio-42/elfinder/css', to: 'els/css/[path][name].[ext]'},
+      {from: './vendor/studio-42/elfinder/img', to: 'els/img/[path][name].[ext]'},
+      {from: './vendor/studio-42/elfinder/js', to: 'els/js/[path][name].[ext]'},
+      {from: './vendor/studio-42/elfinder/sounds', to: 'els/sounds/[path][name].[ext]'}
+    ])
+
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()

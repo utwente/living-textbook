@@ -114,7 +114,7 @@ class ElFinderController extends AbstractController
     }
 
     // Forward to the original ELfinder controller
-    return $this->forward(sprintf('FM\ElfinderBundle\Controller\ElFinderController::%sAction', $action), [
+    return $this->forward(sprintf('FM\ElfinderBundle\Controller\ElFinderController::%s', $action), [
         'instance'   => $instance,
         'homeFolder' => $folder,
     ], $query);
