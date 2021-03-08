@@ -8,6 +8,8 @@ use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
 use App\Export\Provider\RdfProvider;
 use App\Request\Wrapper\RequestStudyArea;
+use EasyRdf\Exception;
+use EasyRdf\Graph;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,12 +32,12 @@ class ResourceController extends AbstractController
    * @param RdfProvider      $provider
    *
    * @return JsonResponse
-   * @throws \EasyRdf_Exception
+   * @throws Exception
    */
   public function concept(RequestStudyArea $requestStudyArea, Concept $concept, RdfProvider $provider): JsonResponse
   {
     if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
-    $graph = new \EasyRdf_Graph($provider->generateConceptResourceUrl($concept));
+    $graph = new Graph($provider->generateConceptResourceUrl($concept));
     $provider->addConceptResource($concept, $graph);
 
     return $provider->exportGraph($graph);
@@ -50,12 +52,12 @@ class ResourceController extends AbstractController
    * @param RdfProvider      $provider
    *
    * @return JsonResponse
-   * @throws \EasyRdf_Exception
+   * @throws Exception
    */
   public function learningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, RdfProvider $provider): JsonResponse
   {
     if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
-    $graph = new \EasyRdf_Graph($provider->generateLearningPathResourceUrl($learningPath));
+    $graph = new Graph($provider->generateLearningPathResourceUrl($learningPath));
     $provider->addLearningPathResource($learningPath, $graph);
 
     return $provider->exportGraph($graph);
@@ -71,12 +73,12 @@ class ResourceController extends AbstractController
    * @param RdfProvider      $provider
    *
    * @return JsonResponse
-   * @throws \EasyRdf_Exception
+   * @throws Exception
    */
   public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
   {
     if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
-    $graph = new \EasyRdf_Graph($provider->generateLearningOutcomeResourceUrl($learningOutcome));
+    $graph = new Graph($provider->generateLearningOutcomeResourceUrl($learningOutcome));
     $provider->addLearningOutcomeResource($learningOutcome, $graph);
 
     return $provider->exportGraph($graph);
@@ -90,7 +92,7 @@ class ResourceController extends AbstractController
    * @param RdfProvider      $provider
    *
    * @return Response
-   * @throws \EasyRdf_Exception
+   * @throws Exception
    */
   public function studyArea(RequestStudyArea $requestStudyArea, RdfProvider $provider): Response
   {

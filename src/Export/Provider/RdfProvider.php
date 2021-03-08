@@ -11,10 +11,10 @@ use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
-use EasyRdf_Exception;
-use EasyRdf_Graph;
-use EasyRdf_Namespace;
-use EasyRdf_Serialiser_JsonLd;
+use EasyRdf\Exception;
+use EasyRdf\Graph;
+use EasyRdf\RdfNamespace;
+use EasyRdf\Serialiser\JsonLd;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,11 +47,11 @@ class RdfProvider implements ProviderInterface
    * @param StudyArea $studyArea
    *
    * @return JsonResponse
-   * @throws EasyRdf_Exception
+   * @throws Exception
    */
   public function exportStudyArea(StudyArea $studyArea): JsonResponse
   {
-    $graph = new EasyRdf_Graph();
+    $graph = new Graph();
     $this->addStudyAreaResource($studyArea, $graph);
     foreach ($studyArea->getRelationTypes() as $relationType) {
       $this->addRelationTypeResource($relationType, $graph);
@@ -154,7 +154,7 @@ EOT;
    * @param StudyArea $studyArea
    *
    * @return Response
-   * @throws EasyRdf_Exception
+   * @throws Exception
    */
   public function export(StudyArea $studyArea): Response
   {
@@ -165,26 +165,26 @@ EOT;
   }
 
   /**
-   * @param RelationType  $relationType
-   * @param EasyRdf_Graph $graph
+   * @param RelationType $relationType
+   * @param Graph        $graph
    */
-  public function addRelationTypeResource(RelationType $relationType, EasyRdf_Graph $graph): void
+  public function addRelationTypeResource(RelationType $relationType, Graph $graph): void
   {
     $relationTypeResource = $graph->resource('https://ltb.itc.utwente.nl/relationType/' . $relationType->getCamelizedName());
     $relationTypeResource->setType('rdf:Property');
     $relationTypeResource->addLiteral('dcterms:creator', $relationType->getStudyArea()->getOwner()->getFullName());
     $relationTypeResource->addLiteral('rdfs:comment', $relationType->getDescription(), 'en');
-    $relationTypeResource->add('rdfs:domain', ['type' => 'uri', 'value' => EasyRdf_Namespace::expand('skos:Concept')]);
+    $relationTypeResource->add('rdfs:domain', ['type' => 'uri', 'value' => RdfNamespace::expand('skos:Concept')]);
     $relationTypeResource->addLiteral('rdfs:label', $relationType->getName(), 'en');
-    $relationTypeResource->add('rdfs:range', ['type' => 'uri', 'value' => EasyRdf_Namespace::expand('skos:Concept')]);
+    $relationTypeResource->add('rdfs:range', ['type' => 'uri', 'value' => RdfNamespace::expand('skos:Concept')]);
     $relationTypeResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl()]);
   }
 
   /**
-   * @param StudyArea     $studyArea
-   * @param EasyRdf_Graph $graph
+   * @param StudyArea $studyArea
+   * @param Graph     $graph
    */
-  public function addStudyAreaResource(StudyArea $studyArea, EasyRdf_Graph $graph): void
+  public function addStudyAreaResource(StudyArea $studyArea, Graph $graph): void
   {
     $studyAreaResource = $graph->resource($this->generateStudyAreaResourceUrl());
     $studyAreaResource->addType('skos:ConceptScheme');
@@ -194,10 +194,10 @@ EOT;
   }
 
   /**
-   * @param Concept       $concept
-   * @param EasyRdf_Graph $graph
+   * @param Concept $concept
+   * @param Graph   $graph
    */
-  public function addConceptResource(Concept $concept, EasyRdf_Graph $graph): void
+  public function addConceptResource(Concept $concept, Graph $graph): void
   {
     $conceptResource = $graph->resource($this->generateConceptResourceUrl($concept));
     $conceptResource->addType('rdfs:Class');
@@ -224,33 +224,33 @@ EOT;
 
   /**
    * @param LearningOutcome $learningOutcome
-   * @param EasyRdf_Graph   $graph
+   * @param Graph           $graph
    */
-  public function addLearningOutcomeResource(LearningOutcome $learningOutcome, EasyRdf_Graph $graph): void
+  public function addLearningOutcomeResource(LearningOutcome $learningOutcome, Graph $graph): void
   {
     $learningOutcomeResource = $graph->resource($this->generateLearningOutcomeResourceUrl($learningOutcome));
     $learningOutcomeResource->addType('https://ltb.itc.utwente.nl/resource/learningoutcome');
   }
 
   /**
-   * @param LearningPath  $learningPath
-   * @param EasyRdf_Graph $graph
+   * @param LearningPath $learningPath
+   * @param Graph        $graph
    */
-  public function addLearningPathResource(LearningPath $learningPath, EasyRdf_Graph $graph): void
+  public function addLearningPathResource(LearningPath $learningPath, Graph $graph): void
   {
     $learningPathResource = $graph->resource($this->generateLearningPathResourceUrl($learningPath));
     $learningPathResource->addType('https://ltb.itc.utwente.nl/resource/learningpath');
   }
 
   /**
-   * @param EasyRdf_Graph $graph
+   * @param Graph $graph
    *
    * @return JsonResponse
-   * @throws EasyRdf_Exception
+   * @throws Exception
    */
-  public function exportGraph(EasyRdf_Graph $graph): JsonResponse
+  public function exportGraph(Graph $graph): JsonResponse
   {
-    $jsonLd = (new EasyRdf_Serialiser_JsonLd())->serialise($graph, 'jsonld');
+    $jsonLd = (new JsonLd())->serialise($graph, 'jsonld');
     // Pretty print JSON
     $jsonLd = $this->serializer->deserialize($jsonLd, 'array', 'json');
     $jsonLd = $this->serializer->serialize($jsonLd, 'json');
