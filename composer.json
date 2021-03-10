@@ -79,7 +79,7 @@
         "twig/extensions": "^v1.5.4",
         "twig/extra-bundle": "^v3.3.0",
         "twig/inky-extra": "^v3.3.0",
-        "twig/twig": "^v2.14.3"
+        "twig/twig": "^v2.14.4"
     },
     "require-dev": {
         "drenso/phan-extensions": "^3.2.1",

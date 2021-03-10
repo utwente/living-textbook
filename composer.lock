@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25b6532ad9874120729bdf9b357c7194",
+    "content-hash": "9cab75e33f5598a00fd3cbd316a5891e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11018,16 +11018,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.14.3",
+            "version": "v2.14.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "8bc568d460d88b25c00c046256ec14a787ea60d9"
+                "reference": "0b4ba691fb99ec7952d25deb36c0a83061b93bbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/8bc568d460d88b25c00c046256ec14a787ea60d9",
-                "reference": "8bc568d460d88b25c00c046256ec14a787ea60d9",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/0b4ba691fb99ec7952d25deb36c0a83061b93bbf",
+                "reference": "0b4ba691fb99ec7952d25deb36c0a83061b93bbf",
                 "shasum": ""
             },
             "require": {
@@ -11081,7 +11081,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.14.3"
+                "source": "https://github.com/twigphp/Twig/tree/v2.14.4"
             },
             "funding": [
                 {
@@ -11093,7 +11093,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-05T15:34:33+00:00"
+            "time": "2021-03-10T10:05:55+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
