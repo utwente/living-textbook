@@ -59,5 +59,8 @@
     "select2-theme-bootstrap4": "^1.0.0",
     "symfony-collection": "ninsuo/symfony-collection",
     "uuid": "^8.3.2"
+  },
+  "resolutions": {
+    "jquery": "^3.6.0"
   }
 }
