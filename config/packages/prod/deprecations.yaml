@@ -3,6 +3,7 @@
 #    channels: [deprecation]
 #    handlers:
 #        deprecation:
-#            type: stream
+#            type: rotating_file
 #            channels: [deprecation]
 #            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+#            max_files: 30
