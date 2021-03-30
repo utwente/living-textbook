@@ -24,7 +24,7 @@
         "easyrdf/easyrdf": "^1.1.1",
         "friendsofsymfony/ckeditor-bundle": "^2.3.0",
         "friendsofsymfony/jsrouting-bundle": "^2.7.0",
-        "gedmo/doctrine-extensions": "^3.0.3",
+        "gedmo/doctrine-extensions": "^3.0.4",
         "helios-ag/fm-elfinder-bundle": "^10.1.0",
         "jms/serializer": "^3.12.2",
         "jms/serializer-bundle": "^3.9.1",
