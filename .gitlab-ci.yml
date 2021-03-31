@@ -77,6 +77,10 @@ install-dependencies:
       - .secrets.json
       # Extra paths
       - assets/js/_fos_js_routes.js
+      - vendor/studio-42/elfinder/css
+      - vendor/studio-42/elfinder/img
+      - vendor/studio-42/elfinder/js
+      - vendor/studio-42/elfinder/sounds
 
 js-analysis:
   stage: lint
