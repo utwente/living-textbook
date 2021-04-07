@@ -71,8 +71,12 @@ $button-padding: 2px;
   z-index: 10;
 }
 
-#context-menu-layer, .context-menu-list, .context-menu-root {
+#context-menu-layer {
   z-index: 100 !important;
+}
+
+.context-menu-list, .context-menu-root {
+  z-index: 101 !important;
 }
 
 #filter-content {
