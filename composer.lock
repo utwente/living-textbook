@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b0d51dc881925c889abb9a86afbbe0af",
+    "content-hash": "3d10ad601e4d26cf691921465ff3f94b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11195,16 +11195,16 @@
     "packages-dev": [
         {
             "name": "drenso/phan-extensions",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/PhanExtensions.git",
-                "reference": "bd479813f4d9275262a04b655f966a6503cafa3b"
+                "reference": "af53f4a4edf9e12ca74780a32e63c7112c026476"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/bd479813f4d9275262a04b655f966a6503cafa3b",
-                "reference": "bd479813f4d9275262a04b655f966a6503cafa3b",
+                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/af53f4a4edf9e12ca74780a32e63c7112c026476",
+                "reference": "af53f4a4edf9e12ca74780a32e63c7112c026476",
                 "shasum": ""
             },
             "require-dev": {
@@ -11237,9 +11237,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/PhanExtensions/issues",
-                "source": "https://github.com/Drenso/PhanExtensions/tree/v3.3.0"
+                "source": "https://github.com/Drenso/PhanExtensions/tree/v3.4.0"
             },
-            "time": "2021-03-28T13:04:31+00:00"
+            "time": "2021-04-07T19:40:11+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",

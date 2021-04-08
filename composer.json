@@ -82,7 +82,7 @@
         "twig/twig": "^2.14.4"
     },
     "require-dev": {
-        "drenso/phan-extensions": "^3.3.0",
+        "drenso/phan-extensions": "^3.4.0",
         "symfony/phpunit-bridge": "^4.4.21",
         "symfony/profiler-pack": "^1.0.5"
     },
