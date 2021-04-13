@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cd242c2d45bda92a259694981c69bcf",
+    "content-hash": "43bab6828eaf85bac786bcbe544b145c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -124,16 +124,16 @@
         },
         {
             "name": "caxy/php-htmldiff",
-            "version": "v0.1.11",
+            "version": "v0.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/caxy/php-htmldiff.git",
-                "reference": "6bc1c4ad59587027b09bf50c0e086b0f45d86c86"
+                "reference": "7fb8aa0ad77864f1d3604ae4a31af9cbabb91485"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/caxy/php-htmldiff/zipball/6bc1c4ad59587027b09bf50c0e086b0f45d86c86",
-                "reference": "6bc1c4ad59587027b09bf50c0e086b0f45d86c86",
+                "url": "https://api.github.com/repos/caxy/php-htmldiff/zipball/7fb8aa0ad77864f1d3604ae4a31af9cbabb91485",
+                "reference": "7fb8aa0ad77864f1d3604ae4a31af9cbabb91485",
                 "shasum": ""
             },
             "require": {
@@ -179,9 +179,9 @@
             ],
             "support": {
                 "issues": "https://github.com/caxy/php-htmldiff/issues",
-                "source": "https://github.com/caxy/php-htmldiff/tree/v0.1.11"
+                "source": "https://github.com/caxy/php-htmldiff/tree/v0.1.12"
             },
-            "time": "2021-02-02T11:07:36+00:00"
+            "time": "2021-04-05T21:19:33+00:00"
         },
         {
             "name": "clue/stream-filter",
