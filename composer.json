@@ -69,7 +69,7 @@
         "symfony/security-bundle": "^4.4.21",
         "symfony/string": "^5.2.6",
         "symfony/translation": "^4.4.21",
-        "symfony/translation-contracts": "^2.3.0",
+        "symfony/translation-contracts": "^2.4.0",
         "symfony/twig-bridge": "^4.4.21",
         "symfony/twig-bundle": "^4.4.20",
         "symfony/validator": "^4.4.21",
