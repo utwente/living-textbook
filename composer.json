@@ -73,7 +73,7 @@
         "symfony/twig-bridge": "^4.4.21",
         "symfony/twig-bundle": "^4.4.20",
         "symfony/validator": "^4.4.21",
-        "symfony/webpack-encore-bundle": "^1.11.1",
+        "symfony/webpack-encore-bundle": "^1.11.2",
         "symfony/yaml": "^4.4.21",
         "twig/cssinliner-extra": "^3.3.0",
         "twig/extensions": "^1.5.4",
