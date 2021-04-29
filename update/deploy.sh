@@ -74,6 +74,9 @@ done
 # Install vendors (without scripts)
 composer install -o --apcu-autoloader --no-dev --no-scripts
 
+# Rebuild environment file
+composer symfony:dump-env
+
 # Clear cache
 sudo -u www-data php bin/console cache:clear
 
