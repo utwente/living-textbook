@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "181824998a6e2d3927381b52eaa63d70",
+    "content-hash": "6311d3b48cadf8632265e524a4b30f2d",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2274,16 +2274,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine-extensions/DoctrineExtensions.git",
-                "reference": "b0db2c2038ff8476898fe60dd59f92c88c40a385"
+                "reference": "f956c3c4d0c0ffdc5dd879288073772e439b6c1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/b0db2c2038ff8476898fe60dd59f92c88c40a385",
-                "reference": "b0db2c2038ff8476898fe60dd59f92c88c40a385",
+                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/f956c3c4d0c0ffdc5dd879288073772e439b6c1a",
+                "reference": "f956c3c4d0c0ffdc5dd879288073772e439b6c1a",
                 "shasum": ""
             },
             "require": {
@@ -2365,10 +2365,10 @@
             "support": {
                 "email": "gediminas.morkevicius@gmail.com",
                 "issues": "https://github.com/doctrine-extensions/DoctrineExtensions/issues",
-                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.0.4",
+                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.0.5",
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
-            "time": "2021-03-27T22:00:19+00:00"
+            "time": "2021-04-23T09:16:01+00:00"
         },
         {
             "name": "guzzlehttp/promises",
