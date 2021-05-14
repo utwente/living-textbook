@@ -11,7 +11,7 @@
         "ext-mbstring": "*",
         "bobv/latex-bundle": "^2.5.1",
         "caxy/php-htmldiff": "^0.1.12",
-        "doctrine/annotations": "^1.12.1",
+        "doctrine/annotations": "^1.13.0",
         "doctrine/collections": "^1.6.7",
         "doctrine/common": "^2.13.3",
         "doctrine/dbal": "^2.13.1",
