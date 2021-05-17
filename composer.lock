@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab00abbd11c1a78b349070517ba2bf05",
+    "content-hash": "7cdadc73d8232bb6afa76196ba4eddc0",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2429,16 +2429,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -2498,9 +2498,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
@@ -5242,16 +5242,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "fb4f83e6e2d718d1e5fbfe3a20cced83f47f040f"
+                "reference": "02237728bdc5b82b0a14c37417644e3f3606db9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/fb4f83e6e2d718d1e5fbfe3a20cced83f47f040f",
-                "reference": "fb4f83e6e2d718d1e5fbfe3a20cced83f47f040f",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/02237728bdc5b82b0a14c37417644e3f3606db9b",
+                "reference": "02237728bdc5b82b0a14c37417644e3f3606db9b",
                 "shasum": ""
             },
             "require": {
@@ -5330,7 +5330,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.2.1"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.2.2"
             },
             "funding": [
                 {
@@ -5342,20 +5342,20 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-04-06T07:55:41+00:00"
+            "time": "2021-05-06T10:15:01+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "4.1.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "4b5796901c526cadea57a82daa56059f93fbcfa5"
+                "reference": "1a4080a3153a20dc9217571104951647d822f92d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/4b5796901c526cadea57a82daa56059f93fbcfa5",
-                "reference": "4b5796901c526cadea57a82daa56059f93fbcfa5",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/1a4080a3153a20dc9217571104951647d822f92d",
+                "reference": "1a4080a3153a20dc9217571104951647d822f92d",
                 "shasum": ""
             },
             "require": {
@@ -5386,6 +5386,7 @@
                 "phpunit/phpunit": "^8.5||^9.0",
                 "symfony/browser-kit": "^3.4.44||^4.4.20||^5.0.11",
                 "symfony/cache": "^3.4.44||^4.4.20||^5.0.11",
+                "symfony/cache-contracts": "^2.4",
                 "symfony/dom-crawler": "^3.4.44||^4.4.20||^5.0.11",
                 "symfony/framework-bundle": "^3.4.44||^4.4.20||^5.0.11",
                 "symfony/messenger": "^4.4.20||^5.0.11",
@@ -5442,7 +5443,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-symfony/issues",
-                "source": "https://github.com/getsentry/sentry-symfony/tree/4.1.0"
+                "source": "https://github.com/getsentry/sentry-symfony/tree/4.1.1"
             },
             "funding": [
                 {
@@ -5454,7 +5455,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-04-18T21:04:42+00:00"
+            "time": "2021-05-10T07:39:23+00:00"
         },
         {
             "name": "spatie/pdf-to-image",
