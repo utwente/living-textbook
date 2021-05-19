@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c6ba76a9e8e4644b3d1a8f2e973d954",
+    "content-hash": "ff416e91defbf0054326116e99f68960",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -6871,16 +6871,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.13.1",
+            "version": "v1.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "490878469983ec323d324aa4b208b9d977c78fd6"
+                "reference": "b0d7714952d27491b63ab5af5761759d1bd9d7e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/490878469983ec323d324aa4b208b9d977c78fd6",
-                "reference": "490878469983ec323d324aa4b208b9d977c78fd6",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/b0d7714952d27491b63ab5af5761759d1bd9d7e4",
+                "reference": "b0d7714952d27491b63ab5af5761759d1bd9d7e4",
                 "shasum": ""
             },
             "require": {
@@ -6897,7 +6897,7 @@
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.12-dev"
+                    "dev-main": "1.13-dev"
                 },
                 "class": "Symfony\\Flex\\Flex"
             },
@@ -6919,7 +6919,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.13.1"
+                "source": "https://github.com/symfony/flex/tree/v1.13.2"
             },
             "funding": [
                 {
@@ -6935,7 +6935,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-18T14:00:59+00:00"
+            "time": "2021-05-18T20:11:58+00:00"
         },
         {
             "name": "symfony/form",
