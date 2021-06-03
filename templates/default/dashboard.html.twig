@@ -198,7 +198,7 @@
   </ul>
 
   {% if studyArea.frozenOn %}
-    <p>{{ 'dashboard.study-area-frozen'|trans({'%since%': studyArea.frozenOn|localizeddate('medium', 'short') }) }}</p>
+    <p>{{ 'dashboard.study-area-frozen'|trans({'%since%': studyArea.frozenOn|format_datetime('medium', 'short') }) }}</p>
   {% endif %}
 
   {% if studyArea.trackUsers %}

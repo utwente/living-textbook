@@ -605,20 +605,14 @@
     "twig/cssinliner-extra": {
         "version": "v3.0.3"
     },
-    "twig/extensions": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "ddb2e0a77773b7fd75d8d649545f174e664500ab"
-        }
-    },
     "twig/extra-bundle": {
         "version": "v3.0.3"
     },
     "twig/inky-extra": {
         "version": "v3.0.3"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.0"
     },
     "twig/twig": {
         "version": "v2.4.4"

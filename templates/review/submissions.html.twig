@@ -106,10 +106,10 @@
               {{ noteExcerpt(review.notes) }}
             </td>
             {% if reviewed %}
-              <td>{{ review.reviewedAt|localizeddate('medium', 'short') }}</td>
+              <td>{{ review.reviewedAt|format_datetime('medium', 'short') }}</td>
               <td>{{ review.reviewedBy.displayName }}</td>
             {% else %}
-              <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
+              <td>{{ review.requestedReviewAt|format_datetime('medium', 'short') }}</td>
               <td>{{ review.requestedReviewBy.displayName }}</td>
             {% endif %}
             <td class="actions text-right">

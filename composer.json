@@ -76,9 +76,9 @@
         "symfony/webpack-encore-bundle": "^1.11.2",
         "symfony/yaml": "^4.4.25",
         "twig/cssinliner-extra": "^3.3.0",
-        "twig/extensions": "^1.5.4",
         "twig/extra-bundle": "^3.3.1",
         "twig/inky-extra": "^3.3.0",
+        "twig/intl-extra": "^3.3.0",
         "twig/twig": "^2.14.6"
     },
     "require-dev": {
@@ -141,7 +141,8 @@
             "symfony/proxy-manager-bridge",
             "twig/cssinliner-extra",
             "twig/extensions",
-            "twig/inky-extra"
+            "twig/inky-extra",
+            "twig/intl-extra"
         ]
     }
 }

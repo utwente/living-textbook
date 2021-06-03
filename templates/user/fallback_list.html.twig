@@ -53,7 +53,7 @@
     {% for user in open_invites %}
       <tr>
         <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
-        <td data-order="{{ user.invitedAt|date('U') }}">{{ user.invitedAt|localizeddate }}</td>
+        <td data-order="{{ user.invitedAt|date('U') }}">{{ user.invitedAt|format_datetime }}</td>
         <td class="actions">
           {{ buttons.remove_button(path('app_user_fallbackinviteremove', {'user': user.id})) }}
         </td>

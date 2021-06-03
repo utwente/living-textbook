@@ -39,8 +39,8 @@
           <td class="fit">
             {{ noteExcerpt(review.notes) }}
           </td>
-          <td>{{ review.requestedReviewAt|localizeddate('medium', 'short') }}</td>
-          <td>{{ review.approvedAt|localizeddate('medium', 'short') }}</td>
+          <td>{{ review.requestedReviewAt|format_datetime('medium', 'short') }}</td>
+          <td>{{ review.approvedAt|format_datetime('medium', 'short') }}</td>
           <td>{{ review.approvedBy.displayName }}</td>
           <td class="actions">
             {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
