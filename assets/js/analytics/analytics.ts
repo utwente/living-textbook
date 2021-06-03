@@ -1,5 +1,5 @@
-import 'regenerator-runtime/runtime';
 import Routing from 'fos-routing';
+import 'regenerator-runtime/runtime';
 import AnalyticsBrowser, {FlowThroughElement} from './analyticsBrowser';
 
 interface AnalyticsData {
@@ -34,6 +34,7 @@ export default class Analytics {
     private $formBtn?: JQuery;
     private $formInputs?: JQuery;
     private $errorModal?: JQuery;
+    private $title?: JQuery;
     private $tableResults?: JQuery;
     private $imgResults?: JQuery;
     private $browserResults?: JQuery;
@@ -48,6 +49,7 @@ export default class Analytics {
         this.$formBtn = this.$form.find('button');
         this.$formInputs = this.$form.find('select, input, button');
         this.$errorModal = this.$container.find('#analytics-modal');
+        this.$title = this.$container.find('.result-title');
         this.$tableResults = this.$container.find('.table-results');
         this.$imgResults = this.$container.find('.img-results');
         this.$browserResults = this.$container.find('.browser-results');
@@ -139,6 +141,9 @@ export default class Analytics {
             return;
         }
 
+        // Title
+        this.$title!.show();
+
         // Browser
         this.browser = new AnalyticsBrowser(this.data.flowThrough);
         this.$browserResults!.show();
@@ -159,6 +164,9 @@ export default class Analytics {
     }
 
     private hideResults() {
+        // Title
+        this.$title!.hide();
+
         // Table
         this.$tableResults!.hide();
 
