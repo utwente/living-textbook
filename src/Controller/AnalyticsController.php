@@ -7,6 +7,7 @@ use App\Analytics\Exception\VisualisationBuildFailed;
 use App\Analytics\Exception\VisualisationDependenciesFailed;
 use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Form\Analytics\LearningPathAnalyticsType;
+use App\Form\Type\RemoveType;
 use App\Request\Wrapper\RequestStudyArea;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -16,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AnalyticsController
@@ -93,5 +95,34 @@ class AnalyticsController extends AbstractController
     $result = $analyticsService->buildForLearningPath($data);
 
     return JsonResponse::fromJsonString($serializer->serialize($result, 'json'));
+  }
+
+  /**
+   * @Route("/synthesize")
+   * @IsGranted("ROLE_SUPER_ADMIN")
+   * @Template
+   */
+  public function synthesize(
+      Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
+      TranslatorInterface $translator)
+  {
+    // todo: Add synthesize parameters?
+    $form = $this->createForm(RemoveType::class, NULL, [
+        'cancel_route' => 'app_analytics_dashboard',
+        'remove_label' => 'analytics.synthesize',
+    ]);
+
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+      $analyticsService->synthesizeDataForStudyArea($requestStudyArea->getStudyArea());
+
+      $this->addFlash('success', $translator->trans('analytics.synthesize-success'));
+
+      return $this->redirectToRoute('app_analytics_dashboard');
+    }
+
+    return [
+        'form' => $form->createView(),
+    ];
   }
 }

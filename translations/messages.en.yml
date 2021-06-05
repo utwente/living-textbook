@@ -20,11 +20,14 @@ analytics:
   generate: 'Generate'
   heatmap: 'Heat map'
   input: 'Parameters'
-  path-visits: 'Visits'
-  teaching-moment: 'Teaching moment'
   output: 'Results'
-  users-in-period: 'Total users in period'
+  path-visits: 'Visits'
+  synthesize: 'Synthesize analytics data'
+  synthesize-warning: 'Note that when you synthesize the analytics data, all existing tracking data will be removed!'
+  synthesize-success: 'Analytics data has been synthesized successfully!'
+  teaching-moment: 'Teaching moment'
   total-hits-on-path: 'Total hits on learning path'
+  users-in-period: 'Total users in period'
 
 annotations:
   add-placeholder: "Type your annotation..."
@@ -893,7 +896,7 @@ user:
     removed: 'The local account for %user% has been removed.'
     reset-password: 'Reset password for %user%'
     reset-password-short: 'Reset password'
-    reset-password-text:  'Here you can reset the password of a user directly.'
+    reset-password-text: 'Here you can reset the password of a user directly.'
     reset-password-warning: 'Users can also reset their password themselves by using the "Forgot password" option at the login page.'
     self-remove: 'You cannot remove your own account'
     updated: 'Local account for %user% updated.'

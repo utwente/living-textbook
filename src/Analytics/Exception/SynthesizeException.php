@@ -5,7 +5,7 @@ namespace App\Analytics\Exception;
 use RuntimeException;
 use Throwable;
 
-class VisualisationException extends RuntimeException
+class SynthesizeException extends RuntimeException
 {
   public function __construct(Throwable $previous = NULL)
   {

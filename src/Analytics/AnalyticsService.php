@@ -2,6 +2,9 @@
 
 namespace App\Analytics;
 
+use App\Analytics\Exception\SynthesizeBuildFailed;
+use App\Analytics\Exception\SynthesizeDependenciesFailed;
+use App\Analytics\Exception\SynthesizeException;
 use App\Analytics\Exception\VisualisationBuildFailed;
 use App\Analytics\Exception\VisualisationDependenciesFailed;
 use App\Analytics\Exception\VisualisationException;
@@ -15,6 +18,11 @@ use App\Entity\StudyArea;
 use App\Excel\SpreadsheetHelper;
 use App\Excel\TrackingExportBuilder;
 use App\Export\Provider\ConceptIdNameProvider;
+use App\Export\Provider\RelationProvider;
+use App\Repository\LearningPathRepository;
+use App\Repository\PageLoadRepository;
+use App\Repository\TrackingEventRepository;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
 use InvalidArgumentException;
@@ -22,6 +30,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\OutputStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Process\Process;
@@ -51,24 +60,57 @@ class AnalyticsService
    */
   private $baseOutputDir;
   /**
+   * @var LearningPathRepository
+   */
+  private $learningPathRepository;
+  /**
+   * @var PageLoadRepository
+   */
+  private $pageLoadRepository;
+  /**
+   * @var RelationProvider
+   */
+  private $relationProvider;
+  /**
    * @var SpreadsheetHelper
    */
   private $spreadsheetHelper;
   /**
+   * @var TrackingEventRepository
+   */
+  private $trackingEventRepository;
+  /**
    * @var TrackingExportBuilder
    */
   private $trackingExportBuilder;
+  /**
+   * @var string
+   */
+  private $host;
+  /**
+   * @var bool
+   */
+  private $isDebug;
 
   public function __construct(
       TrackingExportBuilder $trackingExportBuilder, ConceptIdNameProvider $conceptIdNameProvider,
-      SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir)
+      SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir,
+      TrackingEventRepository $trackingEventRepository, PageLoadRepository $pageLoadRepository,
+      LearningPathRepository $learningPathRepository, RelationProvider $relationProvider,
+      RequestStack $requestStack, bool $isDebug)
   {
-    $this->trackingExportBuilder = $trackingExportBuilder;
-    $this->conceptIdNameProvider = $conceptIdNameProvider;
-    $this->spreadsheetHelper     = $spreadsheetHelper;
-    $this->analyticsDir          = $projectDir . '/python/data-visualisation';
-    $this->baseOutputDir         = $cacheDir . '/data-visualisation';
-    $this->fileSystem            = new Filesystem();
+    $this->trackingExportBuilder   = $trackingExportBuilder;
+    $this->conceptIdNameProvider   = $conceptIdNameProvider;
+    $this->spreadsheetHelper       = $spreadsheetHelper;
+    $this->analyticsDir            = $projectDir . '/python/data-visualisation';
+    $this->baseOutputDir           = $cacheDir . '/data-visualisation';
+    $this->fileSystem              = new Filesystem();
+    $this->trackingEventRepository = $trackingEventRepository;
+    $this->pageLoadRepository      = $pageLoadRepository;
+    $this->learningPathRepository  = $learningPathRepository;
+    $this->host                    = $requestStack->getCurrentRequest()->getHost();
+    $this->relationProvider        = $relationProvider;
+    $this->isDebug                 = $isDebug;
   }
 
   /**
@@ -178,6 +220,136 @@ class AnalyticsService
   }
 
   /**
+   * Synthesizes new analytics data for the supplied study area.
+   * Any existing data will be purged!
+   *
+   * @param StudyArea $studyArea
+   *
+   * @throws SynthesizeBuildFailed
+   * @throws SynthesizeDependenciesFailed
+   */
+  public function synthesizeDataForStudyArea(StudyArea $studyArea): void
+  {
+    $testMoment = (new DateTimeImmutable())->modify('-1 day')->setTime(14, 30);
+
+    // Create settings
+    $settings = [
+        'debug'                               => $this->isDebug,
+        'userGenerationSettings'              => [
+            'debug'           => $this->isDebug,
+            'ignore'          => 10,
+            'perfect'         => 20,
+            'flawed'          => [150, 130],
+            'conceptBrowsers' => [30, 27],
+            'test'            => 100,
+            'basis'           => ['synthetic-data+', '@' . $this->host],
+        ],
+        'studyArea'                           => $studyArea->getId(),
+        'pathFollowerPath'                    => [
+            'dropOffChance' => 0.04,
+        ],
+        'conceptbrowserFollowerdropOffChance' => 0.08,
+        'testMoment'                          => $testMoment->format('Y-m-d H:i:s'),
+        'learningpaths'                       => [],
+        'conceptData'                         => [],
+    ];
+
+    // Synthesize new data
+    // Acquire a lock, only a single build can be run at the same time due to memory constraints
+    // Phan doesn't like the Symfony way of deprecating the StoreInterface @phan-suppress-next-line PhanDeprecatedInterface
+    $lockFactory = new LockFactory(new SemaphoreStore());
+    $lock        = $lockFactory->createLock('data-synthesizing');
+    $lock->acquire(true);
+
+    // Clear the build dir if it exists
+    $buildDir = $this->outputDir($studyArea, 'synthesizing');
+    if ($this->fileSystem->exists($buildDir)) {
+      $this->fileSystem->remove($buildDir);
+    }
+    $this->fileSystem->mkdir($buildDir);
+
+    try {
+      // Allow for more memory and time usage
+      ini_set('memory_limit', '1024M');
+      set_time_limit(300);
+
+      // Set output file
+      $settings['outputFileName'] = $buildDir . '/synth.csv';
+
+      // Generate learning path data
+      $learningPaths = [
+          'order' => [],
+      ];
+      foreach (array_reverse($this->learningPathRepository->findForStudyArea($studyArea)) as $key => $lp) {
+        array_unshift($learningPaths['order'], (string)$lp->getId());
+        $learningPaths[(string)$lp->getId()] = [
+            'lectureMoment'    => $testMoment->modify(sprintf('-%d week', $key + 1))->format('Y-m-d H:i:s'),
+            'concepts'         => array_values(array_map(function (LearningPathElement $el) {
+              return (string)$el->getConcept()->getId();
+            }, $lp->getElementsOrdered()->toArray())),
+            'learningpathName' => $lp->getName(),
+        ];
+      }
+      $settings['learningpaths'] = $learningPaths;
+
+      // Generate concept data
+      $concepts = [];
+      foreach ($studyArea->getConcepts() as $concept) {
+        $concepts[(string)$concept->getId()] = [
+            'timeOnConcept' => rand(1, 8) * 30,
+        ];
+      }
+      $settings['conceptData'] = $concepts;
+
+      // Retrieve the required input files
+      try {
+        $settings['conceptFileName'] = $this->retrieveRelationExport($studyArea, $buildDir);
+
+        // Try to free up memory
+        gc_collect_cycles();
+      } catch (Exception $e) {
+        throw new SynthesizeDependenciesFailed('relationData', $e);
+      }
+
+      // Write the settings file
+      $settingsFile = $buildDir . '/settings.json';
+      $this->fileSystem->dumpFile($settingsFile, json_encode($settings));
+
+      // Run the actual build
+      $process = Process::fromShellCommandline(
+          sprintf('. %s/bin/activate; python3 SyntheticDataGeneration.py "%s"', self::ENV_DIR, $settingsFile),
+          $this->analyticsDir, NULL, NULL, 120);
+      $process->run();
+
+      if (!$process->isSuccessful()) {
+        throw new SynthesizeBuildFailed($process);
+      }
+
+      // Try to free up memory
+      gc_collect_cycles();
+    } catch (Exception $e) {
+      // Remove the build directory on errors
+      $this->fileSystem->remove($buildDir);
+
+      // Rethrow exception
+      if ($e instanceof SynthesizeBuildFailed || $e instanceof SynthesizeDependenciesFailed) {
+        throw $e;
+      }
+      throw new SynthesizeException($e);
+    } finally {
+      // Release the lock
+      $lock->release();
+    }
+
+    // Purge existing tracking data
+    $this->trackingEventRepository->purgeForStudyArea($studyArea);
+    $this->pageLoadRepository->purgeForStudyArea($studyArea);
+
+    // Load new data
+    // todo
+  }
+
+  /**
    * Builds the visualisation using the supplied parameter file
    *
    * @param StudyAreaFilteredInterface $object
@@ -204,7 +376,7 @@ class AnalyticsService
         'startDate' => $this->formatPythonDateTime($start, false),
         'endDate'   => $this->formatPythonDateTime($end, false),
     ];
-    $settings['debug']        = false;
+    $settings['debug']        = $this->isDebug;
     $settings['heatMapColor'] = 'rainbow';
 
     // Create settings hash for caching
@@ -280,14 +452,14 @@ class AnalyticsService
       // Remove the output directory on errors
       $this->fileSystem->remove($outputDir);
 
-      // Release the lock
-      $lock->release();
-
       // Rethrow exception
       if ($e instanceof VisualisationDependenciesFailed || $e instanceof VisualisationBuildFailed) {
         throw $e;
       }
       throw new VisualisationException($e);
+    } finally {
+      // Release the lock
+      $lock->release();
     }
 
     return $outputDir;
@@ -306,7 +478,7 @@ class AnalyticsService
    */
   private function retrieveTrackingDataExport(StudyArea $studyArea, string $outputDir): string
   {
-    $fileName = $outputDir . '/input/tracking_data.xlsx';
+    $fileName = $outputDir . '/tracking_data.xlsx';
     $this->spreadsheetHelper
         ->createExcelWriter($this->trackingExportBuilder->buildSpreadsheet($studyArea))
         ->save($fileName);
@@ -327,9 +499,19 @@ class AnalyticsService
    */
   private function retrieveConceptNamesExport(StudyArea $studyArea, string $outputDir): string
   {
-    $filename = $outputDir . '/input/concept_names.csv';
+    $filename = $outputDir . '/concept_names.csv';
     $this->spreadsheetHelper
         ->createCsvWriter($this->conceptIdNameProvider->getSpreadSheet($studyArea))
+        ->save($filename);
+
+    return $filename;
+  }
+
+  private function retrieveRelationExport(StudyArea $studyArea, string $outputDir): string
+  {
+    $filename = $outputDir . '/relations.csv';
+    $this->spreadsheetHelper
+        ->createCsvWriter($this->relationProvider->getSpreadsheet($studyArea))
         ->save($filename);
 
     return $filename;
@@ -338,12 +520,12 @@ class AnalyticsService
   /**
    * Retrieve the output directory
    *
-   * @param StudyAreaFilteredInterface $object
-   * @param string                     $hash
+   * @param StudyArea|LearningPath|StudyAreaFilteredInterface $object
+   * @param string                                            $hash
    *
    * @return string
    */
-  private function outputDir(StudyAreaFilteredInterface $object, string $hash): string
+  private function outputDir($object, string $hash): string
   {
     if ($object instanceof StudyArea) {
       $prefix = 'sa';

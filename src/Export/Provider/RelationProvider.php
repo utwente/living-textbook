@@ -9,7 +9,6 @@ use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
-use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -54,11 +53,7 @@ class RelationProvider implements ProviderInterface
 EOT;
   }
 
-  /**
-   * @inheritdoc
-   * @throws Exception
-   */
-  public function export(StudyArea $studyArea): Response
+  public function getSpreadsheet(StudyArea $studyArea): Spreadsheet
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $this->relationTypeRepository->findBy(['studyArea' => $studyArea]);
@@ -94,7 +89,15 @@ EOT;
       $sheet->setCellValueByColumnAndRow($column, $row++, $link->getRelationName());
     }
 
-    return $this->spreadsheetHelper->createCsvResponse($spreadSheet,
+    return $spreadSheet;
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function export(StudyArea $studyArea): Response
+  {
+    return $this->spreadsheetHelper->createCsvResponse($this->getSpreadsheet($studyArea),
         sprintf('%s_concept_relation_export.csv', $studyArea->getName()));
   }
 }
