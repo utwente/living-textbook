@@ -14,6 +14,7 @@ use App\Console\NullStyle;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
+use App\Entity\PageLoad;
 use App\Entity\StudyArea;
 use App\Excel\SpreadsheetHelper;
 use App\Excel\TrackingExportBuilder;
@@ -22,10 +23,13 @@ use App\Export\Provider\RelationProvider;
 use App\Repository\LearningPathRepository;
 use App\Repository\PageLoadRepository;
 use App\Repository\TrackingEventRepository;
+use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\OutputStyle;
 use Symfony\Component\Filesystem\Filesystem;
@@ -49,6 +53,10 @@ class AnalyticsService
    * @var ConceptIdNameProvider
    */
   private $conceptIdNameProvider;
+  /**
+   * @var EntityManagerInterface
+   */
+  private $entityManager;
   /**
    * @var Filesystem
    */
@@ -97,7 +105,7 @@ class AnalyticsService
       SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir,
       TrackingEventRepository $trackingEventRepository, PageLoadRepository $pageLoadRepository,
       LearningPathRepository $learningPathRepository, RelationProvider $relationProvider,
-      RequestStack $requestStack, bool $isDebug)
+      EntityManagerInterface $entityManager, RequestStack $requestStack, bool $isDebug)
   {
     $this->trackingExportBuilder   = $trackingExportBuilder;
     $this->conceptIdNameProvider   = $conceptIdNameProvider;
@@ -109,6 +117,7 @@ class AnalyticsService
     $this->pageLoadRepository      = $pageLoadRepository;
     $this->learningPathRepository  = $learningPathRepository;
     $this->host                    = $requestStack->getCurrentRequest()->getHost();
+    $this->entityManager           = $entityManager;
     $this->relationProvider        = $relationProvider;
     $this->isDebug                 = $isDebug;
   }
@@ -341,12 +350,40 @@ class AnalyticsService
       $lock->release();
     }
 
-    // Purge existing tracking data
-    $this->trackingEventRepository->purgeForStudyArea($studyArea);
-    $this->pageLoadRepository->purgeForStudyArea($studyArea);
-
     // Load new data
-    // todo
+    $this->entityManager->transactional(function () use ($studyArea, &$settings) {
+      // Purge existing tracking data
+      $this->trackingEventRepository->purgeForStudyArea($studyArea);
+      $this->pageLoadRepository->purgeForStudyArea($studyArea);
+
+      // Load new data into db
+      $sheet = (new Csv())->load($settings['outputFileName'])->getActiveSheet();
+      foreach ($sheet->getRowIterator(2) as $i => $row) {
+        if ($i % 1000 === 0) {
+          $this->entityManager->flush();
+          $this->entityManager->clear();
+
+          // Retrieve a new study area reference, as the original object was cleared by the previous call
+          $studyArea = $this->entityManager->getPartialReference(StudyArea::class, $studyArea->getId());
+        }
+
+        $this->entityManager->persist(
+            (new PageLoad())
+                ->setStudyArea($studyArea)
+                ->setUserId($sheet->getCellByColumnAndRow(3, $row->getRowIndex())->getFormattedValue())
+                ->setTimestamp(DateTime::createFromFormat('Y-m-d H:i:s',
+                    $sheet->getCellByColumnAndRow(4, $row->getRowIndex())->getFormattedValue()))
+                ->setSessionId($sheet->getCellByColumnAndRow(5, $row->getRowIndex())->getFormattedValue())
+                ->setPath($sheet->getCellByColumnAndRow(6, $row->getRowIndex())->getFormattedValue())
+                ->setPathContext(unserialize($sheet->getCellByColumnAndRow(7, $row->getRowIndex())->getFormattedValue()))
+                ->setOrigin($sheet->getCellByColumnAndRow(8, $row->getRowIndex())->getFormattedValue())
+                ->setOriginContext(unserialize($sheet->getCellByColumnAndRow(9, $row->getRowIndex())->getFormattedValue()))
+        );
+      }
+
+      $this->entityManager->flush();
+    });
+
   }
 
   /**
