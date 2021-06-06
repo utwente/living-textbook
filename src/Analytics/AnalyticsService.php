@@ -34,7 +34,6 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\OutputStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Process\Process;
@@ -105,7 +104,7 @@ class AnalyticsService
       SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir,
       TrackingEventRepository $trackingEventRepository, PageLoadRepository $pageLoadRepository,
       LearningPathRepository $learningPathRepository, RelationProvider $relationProvider,
-      EntityManagerInterface $entityManager, RequestStack $requestStack, bool $isDebug)
+      EntityManagerInterface $entityManager, string $host, bool $isDebug)
   {
     $this->trackingExportBuilder   = $trackingExportBuilder;
     $this->conceptIdNameProvider   = $conceptIdNameProvider;
@@ -116,7 +115,7 @@ class AnalyticsService
     $this->trackingEventRepository = $trackingEventRepository;
     $this->pageLoadRepository      = $pageLoadRepository;
     $this->learningPathRepository  = $learningPathRepository;
-    $this->host                    = $requestStack->getCurrentRequest()->getHost();
+    $this->host                    = $host;
     $this->entityManager           = $entityManager;
     $this->relationProvider        = $relationProvider;
     $this->isDebug                 = $isDebug;

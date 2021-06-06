@@ -67,6 +67,7 @@ services:
       $projectDir: '%kernel.project_dir%'
       $cacheDir: '%kernel.cache_dir%'
       $isDebug: '%kernel.debug%'
+      $host: '%env(HTTP_HOST)%'
 
   App\Communication\SetFromSubscriber:
     arguments:
