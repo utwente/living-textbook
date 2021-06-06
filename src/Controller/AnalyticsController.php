@@ -6,8 +6,9 @@ use App\Analytics\AnalyticsService;
 use App\Analytics\Exception\VisualisationBuildFailed;
 use App\Analytics\Exception\VisualisationDependenciesFailed;
 use App\Analytics\Model\LearningPathVisualisationRequest;
+use App\Analytics\Model\SynthesizeRequest;
 use App\Form\Analytics\LearningPathAnalyticsType;
-use App\Form\Type\RemoveType;
+use App\Form\Analytics\SynthesizeRequestType;
 use App\Request\Wrapper\RequestStudyArea;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -106,15 +107,12 @@ class AnalyticsController extends AbstractController
       Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
       TranslatorInterface $translator)
   {
-    // todo: Add synthesize parameters?
-    $form = $this->createForm(RemoveType::class, NULL, [
-        'cancel_route' => 'app_analytics_dashboard',
-        'remove_label' => 'analytics.synthesize',
-    ]);
+    $synthRequest = new SynthesizeRequest($requestStudyArea->getStudyArea());
+    $form         = $this->createForm(SynthesizeRequestType::class, $synthRequest);
 
     $form->handleRequest($request);
     if ($form->isSubmitted() && $form->isValid()) {
-      $analyticsService->synthesizeDataForStudyArea($requestStudyArea->getStudyArea());
+      $analyticsService->synthesizeDataForStudyArea($requestStudyArea->getStudyArea(), $synthRequest);
 
       $this->addFlash('success', $translator->trans('analytics.synthesize-success'));
 

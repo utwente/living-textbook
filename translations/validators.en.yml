@@ -1,3 +1,6 @@
+analytics:
+  before-now: 'This date must be in the past'
+
 annotation:
   comments-incorrect: "The comments cannot be set for a mark annotation"
   selection-incorrect: "The selected text is not valid"

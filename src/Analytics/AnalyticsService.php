@@ -10,6 +10,7 @@ use App\Analytics\Exception\VisualisationDependenciesFailed;
 use App\Analytics\Exception\VisualisationException;
 use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Analytics\Model\LearningPathVisualisationResult;
+use App\Analytics\Model\SynthesizeRequest;
 use App\Console\NullStyle;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\LearningPath;
@@ -24,7 +25,6 @@ use App\Repository\LearningPathRepository;
 use App\Repository\PageLoadRepository;
 use App\Repository\TrackingEventRepository;
 use DateTime;
-use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -237,31 +237,10 @@ class AnalyticsService
    * @throws SynthesizeBuildFailed
    * @throws SynthesizeDependenciesFailed
    */
-  public function synthesizeDataForStudyArea(StudyArea $studyArea): void
+  public function synthesizeDataForStudyArea(StudyArea $studyArea, SynthesizeRequest $request): void
   {
-    $testMoment = (new DateTimeImmutable())->modify('-1 day')->setTime(14, 30);
-
     // Create settings
-    $settings = [
-        'debug'                               => $this->isDebug,
-        'userGenerationSettings'              => [
-            'debug'           => $this->isDebug,
-            'ignore'          => 10,
-            'perfect'         => 20,
-            'flawed'          => [150, 130],
-            'conceptBrowsers' => [30, 27],
-            'test'            => 100,
-            'basis'           => ['synthetic-data+', '@' . $this->host],
-        ],
-        'studyArea'                           => $studyArea->getId(),
-        'pathFollowerPath'                    => [
-            'dropOffChance' => 0.04,
-        ],
-        'conceptbrowserFollowerdropOffChance' => 0.08,
-        'testMoment'                          => $testMoment->format('Y-m-d H:i:s'),
-        'learningpaths'                       => [],
-        'conceptData'                         => [],
-    ];
+    $settings = $request->getSettings($this->isDebug, $this->host);
 
     // Synthesize new data
     // Acquire a lock, only a single build can be run at the same time due to memory constraints
@@ -292,7 +271,10 @@ class AnalyticsService
       foreach (array_reverse($this->learningPathRepository->findForStudyArea($studyArea)) as $key => $lp) {
         array_unshift($learningPaths['order'], (string)$lp->getId());
         $learningPaths[(string)$lp->getId()] = [
-            'lectureMoment'    => $testMoment->modify(sprintf('-%d week', $key + 1))->format('Y-m-d H:i:s'),
+            'lectureMoment'    => $request->testMoment
+                ->modify(sprintf('-%d days', $request->daysBeforeTest))
+                ->modify(sprintf('-%d days', $key * $request->daysBetweenLearningPaths))
+                ->format('Y-m-d H:i:s'),
             'concepts'         => array_values(array_map(function (LearningPathElement $el) {
               return (string)$el->getConcept()->getId();
             }, $lp->getElementsOrdered()->toArray())),
