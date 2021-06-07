@@ -82,13 +82,6 @@ Encore
       Popper: ['popper.js', 'default']
     })
 
-    // Polyfill and transpilation options
-    .configureBabel(function () {
-    }, {
-      useBuiltIns: 'usage',
-      corejs: 3
-    })
-
     .configureDevServerOptions(function (options) {
       options.disableHostCheck = true;
     })
