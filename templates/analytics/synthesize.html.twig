@@ -6,6 +6,42 @@
 
 {% block stylesheets %}
   {{ parent() }}
+  <style>
+      #synthesize_request {
+          display: grid;
+          gap: 0.5rem;
+          grid-auto-rows: minmax(auto, auto);
+          grid-auto-flow: dense;
+          grid-template-columns: repeat(1, 1fr);
+      }
+
+      @media screen and (min-width: 768px) {
+          #synthesize_request {
+              grid-template-columns: repeat(2, 1fr);
+          }
+      }
+
+      @media screen and (min-width: 992px) {
+          #synthesize_request {
+              grid-template-columns: repeat(3, 1fr);
+          }
+      }
+
+      @media screen and (min-width: 1400px) {
+          #synthesize_request {
+              grid-template-columns: repeat(4, 1fr);
+          }
+      }
+
+      #synthesize_request .form-group.row {
+          margin-bottom: 0;
+      }
+
+      #synthesize_request .form-group.row:last-of-type {
+          grid-column-start: 1;
+          grid-column-end: -1;
+      }
+  </style>
 {% endblock %}
 
 {% block before_title %}

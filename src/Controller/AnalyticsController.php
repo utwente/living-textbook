@@ -9,6 +9,7 @@ use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Analytics\Model\SynthesizeRequest;
 use App\Form\Analytics\LearningPathAnalyticsType;
 use App\Form\Analytics\SynthesizeRequestType;
+use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use JMS\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -105,8 +106,14 @@ class AnalyticsController extends AbstractController
    */
   public function synthesize(
       Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator, LearningPathRepository $learningPathRepository)
   {
+    if ($learningPathRepository->getCountForStudyArea($requestStudyArea->getStudyArea()) === 0) {
+      $this->addFlash('error', $translator->trans('analytics.synthesize-not-possible'));
+
+      return $this->redirectToRoute('app_analytics_dashboard');
+    }
+
     $synthRequest = new SynthesizeRequest($requestStudyArea->getStudyArea());
     $form         = $this->createForm(SynthesizeRequestType::class, $synthRequest);
 
