@@ -2,7 +2,6 @@
 
 namespace App\Annotation;
 
-use Doctrine\Common\Annotations\Annotation\Required;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 
 /**
@@ -24,7 +23,7 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
   public const KEY = 'deny_on_frozen_study_area';
 
   /**
-   * @Required()
+   * @Required
    * @var string
    */
   public $route;
@@ -35,7 +34,7 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
   public $routeParams = [];
 
   /**
-   * @Required()
+   * @Required
    * @var string
    */
   public $subject;
