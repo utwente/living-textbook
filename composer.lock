@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed5ba65a95b8184d0f879c08b79cc1fc",
+    "content-hash": "96f24b02a7ae422060c69b4797458281",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1784,16 +1784,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v1.11.3",
+            "version": "v1.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "af5cb84dfd16ff270bf48c3aeff2d41b718a3619"
+                "reference": "af864a0a660d2ffd3755f01da1315c350f5a3485"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/af5cb84dfd16ff270bf48c3aeff2d41b718a3619",
-                "reference": "af5cb84dfd16ff270bf48c3aeff2d41b718a3619",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/af864a0a660d2ffd3755f01da1315c350f5a3485",
+                "reference": "af864a0a660d2ffd3755f01da1315c350f5a3485",
                 "shasum": ""
             },
             "require": {
@@ -1802,7 +1802,7 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "php": "^7.3",
+                "php": "^7.3 || ^8.0",
                 "phpseclib/phpseclib": "^2.0.31 || ^3.0.7",
                 "psr/log": "^1.1",
                 "symfony/dependency-injection": "^3.4.26 || ^4.1.12 || ^5.0",
@@ -1844,9 +1844,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v1.11.3"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v1.11.4"
             },
-            "time": "2021-04-13T13:05:37+00:00"
+            "time": "2021-06-09T12:22:26+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
@@ -4443,16 +4443,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.7",
+            "version": "3.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "d369510df0ebd5e1a5d0fe3d4d23c55fa87a403d"
+                "reference": "d9615a6fb970d9933866ca8b4036ec3407b020b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d369510df0ebd5e1a5d0fe3d4d23c55fa87a403d",
-                "reference": "d369510df0ebd5e1a5d0fe3d4d23c55fa87a403d",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d9615a6fb970d9933866ca8b4036ec3407b020b6",
+                "reference": "d9615a6fb970d9933866ca8b4036ec3407b020b6",
                 "shasum": ""
             },
             "require": {
@@ -4534,7 +4534,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.7"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.8"
             },
             "funding": [
                 {
@@ -4550,7 +4550,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-06T14:00:11+00:00"
+            "time": "2021-04-19T03:20:48+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
