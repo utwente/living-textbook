@@ -9,62 +9,62 @@ stages:
 include:
   # Prepare
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/symfony/install-dependencies.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/yarn/install-js-dependencies.yml'
 
   # Lint
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/php/cve-check.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/php/composer-require-checker.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/php/composer-unused.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/shell/shellcheck.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/php/phan.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/ts/tslint.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/yaml/yamllint.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/yarn/audit.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/sass/sasslint.yml'
 
   # Build
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/yarn/build-prod.yml'
 
   # Tests
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/php/phpunit.yml'
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/symfony/check-security.yml'
 
   # Sentry
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/sentry/sentry.yml'
 
   # Deploy
   - project: 'intern/runner-templates'
-    ref: "3.5"
+    ref: "3.10"
     file: '/deploy/deploy.yml'
 
 install-dependencies:
