@@ -51,9 +51,9 @@ class SynthesizeRequest
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
-   * @Assert\LessThan(propertyPath="usersFlawed")
+   * @Assert\LessThanOrEqual(propertyPath="usersFlawed")
    */
-  public $usersFlawedTest = 130;
+  public $usersFlawedTest = 100;
 
   /**
    * Number of concept browsers followers
@@ -72,9 +72,9 @@ class SynthesizeRequest
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
-   * @Assert\LessThan(propertyPath="usersConceptBrowsers")
+   * @Assert\LessThanOrEqual(propertyPath="usersConceptBrowsers")
    */
-  public $usersConceptBrowsersTest = 27;
+  public $usersConceptBrowsersTest = 20;
 
   /**
    * Number of test followers (not including the flawed and conceptBrowsers)
