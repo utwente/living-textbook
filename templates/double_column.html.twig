@@ -4,7 +4,8 @@
   <!--suppress JSUnusedLocalSymbols -->
   <script type="text/javascript">
     var _studyArea = {{ studyArea.id }};
-    var _trackUser = {{ studyArea.trackUsers ? "true" : "false" }};
+    var _openMapOnLoad = {{ openMap ? 'true' : 'false' }};
+    var _trackUser = {{ studyArea.trackUsers ? 'true' : 'false' }};
   </script>
   {{ encore_entry_script_tags('double-column') }}
 {% endblock %}

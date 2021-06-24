@@ -57,7 +57,7 @@
     readyHandler = typeof readyHandler === 'function' ? readyHandler : function () {
       if (!firstOpen) return;
 
-      // When the map is opened, make sure to center the view
+      // When the map is opened for the first time, make sure to center the view
       cb.centerView(500);
     };
 

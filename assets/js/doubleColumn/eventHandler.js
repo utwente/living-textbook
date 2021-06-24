@@ -147,6 +147,21 @@ import Routing from 'fos-routing';
 
     // Trigger tracking
     tracker.trackPageload(firstRequest);
+
+    // If it was the first request, check whether a direct open was requested
+    if (firstRequest && _openMapOnLoad) {
+      // Ensure to reset the state to prevent new triggers
+      _openMapOnLoad = false;
+
+      // Either open just the map, or directly focus on the selected node
+      if (data.concept_id) {
+        dw.openWindow(function () {
+          cb.moveToConceptById(data.concept_id);
+        });
+      } else {
+        dw.openWindow(data.concept_id);
+      }
+    }
   }
 
   /**

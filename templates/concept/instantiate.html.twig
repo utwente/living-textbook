@@ -1,5 +1,12 @@
 {% extends 'single_column.html.twig' %}
 
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript">
+    var _currentConceptId = {{ concept.id }};
+  </script>
+{% endblock %}
+
 {% block title %}
   {{ 'concept.instantiate.instantiate'|trans }}
 {% endblock %}

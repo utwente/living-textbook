@@ -60,7 +60,8 @@ require('../event/eventTypes');
 
     dispatchParent(types.PAGE_LOADED, {
       url: currentPath,
-      title: document.title
+      title: document.title,
+      concept_id: typeof _currentConceptId === 'undefined' ? undefined : _currentConceptId,
     });
   };
 

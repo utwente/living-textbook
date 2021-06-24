@@ -69,16 +69,10 @@ class DefaultController extends AbstractController
    * @Template("double_column.html.twig")
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param RequestStudyArea           $requestStudyArea
-   * @param string                     $pageUrl
-   * @param RouterInterface            $router
-   * @param UserBrowserStateRepository $userBrowserStateRepository
-   * @param Profiler|null              $profiler
-   *
    * @return array|RedirectResponse
    */
   public function index(
-      RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
+      Request $request, RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
       UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler)
   {
     // Disable profiler on the home page
@@ -110,6 +104,7 @@ class DefaultController extends AbstractController
         'pageUrl'      => $pageUrl != ''
             ? '/' . $studyArea->getId() . '/' . $pageUrl
             : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),
+        'openMap'      => $request->query->has('open'),
     ];
   }
 

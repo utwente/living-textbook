@@ -1,5 +1,12 @@
 {% extends 'single_column.html.twig' %}
 
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript">
+    var _currentConceptId = {{ concept.id }};
+  </script>
+{% endblock %}
+
 {% block before_title %}
   {% from '_macro/_action_buttons.html.twig' import header, remove_button, list_button, footer %}
   {{ header() }}

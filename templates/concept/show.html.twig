@@ -1,5 +1,12 @@
 {% extends 'single_column.html.twig' %}
 
+{% block javascripts %}
+  {{ parent() }}
+  <script type="text/javascript">
+    var _currentConceptId = {{ concept.id }};
+  </script>
+{% endblock %}
+
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {% from '_macro/_annotations.html.twig' import toggle as annotationsToggle %}
@@ -18,7 +25,6 @@
   {% endif %}
   {{ buttons.list_button(path(concept.instance ? 'app_concept_listinstances': 'app_concept_list')) }}
   {{ buttons.footer() }}
-
 {% endblock %}
 
 {% block title %}
