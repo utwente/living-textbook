@@ -33,7 +33,7 @@
         "ml/json-ld": "^1.2.0",
         "phpoffice/phpspreadsheet": "^1.18.0",
         "psr/cache": "<2",
-        "rollerworks/password-strength-validator": "^1.4.1",
+        "rollerworks/password-strength-validator": "^1.5.0",
         "ryakad/pandoc-php": "^1.0.0",
         "sensio/framework-extra-bundle": "^6.1.5",
         "sentry/sentry-symfony": "^4.1.4",
