@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f833886cea079ae4f5619fd75fbe3b2",
+    "content-hash": "ec5b47260f959c469c53a98f2ea44d2a",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2935,16 +2935,16 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "ef8812a41702dc07dedba02e061933b256be78c3"
+                "reference": "9c1f43a7b829395ac169a16fffa978d12054ae0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/ef8812a41702dc07dedba02e061933b256be78c3",
-                "reference": "ef8812a41702dc07dedba02e061933b256be78c3",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/9c1f43a7b829395ac169a16fffa978d12054ae0b",
+                "reference": "9c1f43a7b829395ac169a16fffa978d12054ae0b",
                 "shasum": ""
             },
             "require": {
@@ -2955,7 +2955,7 @@
                 "symfony/filesystem": "~4.4|~5.0",
                 "symfony/http-foundation": "~4.4|~5.0",
                 "symfony/http-kernel": "~4.4|~5.0",
-                "symfony/security": "~4.4|~5.0",
+                "symfony/security-core": "~4.4|~5.0",
                 "symfony/twig-bundle": "~4.4|~5.0"
             },
             "conflict": {
@@ -2997,9 +2997,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kick-In/exception-handler-bundle/issues",
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/master"
+                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.0.1"
             },
-            "time": "2020-03-31T06:00:06+00:00"
+            "time": "2021-06-29T18:33:40+00:00"
         },
         {
             "name": "laminas/laminas-code",

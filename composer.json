@@ -28,7 +28,7 @@
         "helios-ag/fm-elfinder-bundle": "^10.1.0",
         "jms/serializer": "^3.12.3",
         "jms/serializer-bundle": "^3.9.1",
-        "kick-in/exception-handler-bundle": "^3.0.0",
+        "kick-in/exception-handler-bundle": "^3.0.1",
         "league/html-to-markdown": "^5.0.0",
         "ml/json-ld": "^1.2.0",
         "phpoffice/phpspreadsheet": "^1.18.0",
