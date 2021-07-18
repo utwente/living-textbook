@@ -74,7 +74,7 @@ class UploadsController extends AbstractController
   {
     // Check if path exists
     $fs = new Filesystem();
-    if (!$fs->exists($requestedFile)) {
+    if (!$fs->exists($requestedFile) || !is_file($requestedFile)) {
       throw $this->createNotFoundException();
     }
 
