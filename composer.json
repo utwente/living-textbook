@@ -93,11 +93,7 @@
         },
         "component-dir": "public/elfinder-assets",
         "cache-dir": "/var/cache/composer",
-        "sort-packages": true,
-        "gitlab-domains": [
-            "gitlab.drenso.dev"
-        ],
-        "gitlab-token": {"gitlab.drenso.dev": "YMzbSnVVjy_jLkGGYbeF"}
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
@@ -132,7 +128,6 @@
     },
     "extra": {
         "symfony": {
-            "id": "01C1D83D8CDPBGH5RVQBHJ075A",
             "allow-contrib": false,
             "require": "4.4.*"
         },
