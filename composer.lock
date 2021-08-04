@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c0fd687edfc01dfa4109c37ae4b9cee",
+    "content-hash": "8506775f78c7c5e63be9f2f69998ebb9",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -57,16 +57,16 @@
         },
         {
             "name": "bobv/latex-bundle",
-            "version": "v2.6.0",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "a28bc6367e21bf90772d68e9b2c3b87f6728756c"
+                "reference": "232f48c51e09787f3bc1f27bfbc3499468290983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/a28bc6367e21bf90772d68e9b2c3b87f6728756c",
-                "reference": "a28bc6367e21bf90772d68e9b2c3b87f6728756c",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/232f48c51e09787f3bc1f27bfbc3499468290983",
+                "reference": "232f48c51e09787f3bc1f27bfbc3499468290983",
                 "shasum": ""
             },
             "require": {
@@ -85,17 +85,20 @@
                 "twig/twig": "~1.9.0 || ~2.0 || ~3.0"
             },
             "require-dev": {
-                "symfony/lock": "~3.4 || ~4.3 || ~5.0"
+                "phpunit/phpunit": "^9.5",
+                "symfony/lock": "~3.4 || ~4.3 || ~5.0",
+                "symfony/string": "~5.0"
             },
             "suggest": {
                 "friendsofsymfony/ckeditor-bundle": "Allows the usage of the bobv_latex form type, and easily integrates ckeditor into your Symfony application",
                 "spatie/pdf-to-image": "Allows you to convert PDF output into a image.",
-                "symfony/lock": "Allows you to generate the pdf file under lock with the LockedLatexGeneratorInterface"
+                "symfony/lock": "Allows you to generate the pdf file under lock with the LockedLatexGeneratorInterface",
+                "symfony/string": "Allows for extended unicode character escaping, available from Symfony 5.4.x-dev and above"
             },
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
-                    "BobV\\LatexBundle\\": ""
+                    "BobV\\LatexBundle\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -109,7 +112,7 @@
                 }
             ],
             "description": "Latex and pdf generator for Symfony 2",
-            "homepage": "http://github.com/bobvandevijver/latex-bundle",
+            "homepage": "https://github.com/bobvandevijver/latex-bundle",
             "keywords": [
                 "generator",
                 "latex",
@@ -118,9 +121,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobvandevijver/latex-bundle/issues",
-                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v2.6.0"
+                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v2.7.2"
             },
-            "time": "2021-06-14T06:32:47+00:00"
+            "time": "2021-07-29T18:20:38+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -9449,16 +9452,16 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
-                "reference": "81db2d4ae86e9f0049828d9343a72b9523884e5d"
+                "reference": "c9012994c4b4fb23e7c57dd86b763a417a04feba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/81db2d4ae86e9f0049828d9343a72b9523884e5d",
-                "reference": "81db2d4ae86e9f0049828d9343a72b9523884e5d",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/c9012994c4b4fb23e7c57dd86b763a417a04feba",
+                "reference": "c9012994c4b4fb23e7c57dd86b763a417a04feba",
                 "shasum": ""
             },
             "require": {
@@ -9468,7 +9471,7 @@
             },
             "require-dev": {
                 "nyholm/psr7": "^1.1",
-                "psr/log": "^1.1",
+                "psr/log": "^1.1 || ^2 || ^3",
                 "symfony/browser-kit": "^4.4 || ^5.0",
                 "symfony/config": "^4.4 || ^5.0",
                 "symfony/event-dispatcher": "^4.4 || ^5.0",
@@ -9517,7 +9520,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/psr-http-message-bridge/issues",
-                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v2.1.0"
+                "source": "https://github.com/symfony/psr-http-message-bridge/tree/v2.1.1"
             },
             "funding": [
                 {
@@ -9533,7 +9536,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-17T10:35:25+00:00"
+            "time": "2021-07-27T17:25:39+00:00"
         },
         {
             "name": "symfony/routing",
