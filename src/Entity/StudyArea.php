@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -13,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -23,6 +25,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Tobias
  *
+ *  @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get", "post"={"security"="is_granted('ROLE_USER')"}},
+ *     itemOperations={"get", "put"={"security"="is_granted('ROLE_USER') or object.owner == user"}},
+ *     normalizationContext={"groups"={"studyarea:read"}},
+ *     denormalizationContext={"groups"={"studyarea:write"}},
+ * )
+ * 
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
  *
@@ -49,6 +59,8 @@ class StudyArea
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
+   * 
+   * @Groups({"studyarea:read", "studyarea:write"})
    */
   private $name;
 
@@ -56,6 +68,7 @@ class StudyArea
    * @var string|null
    *
    * @ORM\Column(name="description", type="text", nullable=true)
+   * @Groups({"studyarea:read", "studyarea:write"})
    */
   private $description;
 
@@ -65,6 +78,7 @@ class StudyArea
    * @ORM\OneToMany(targetEntity="Concept", mappedBy="studyArea", cascade={"persist","remove"})
    *
    * @JMSA\Expose()
+   * @Groups({"studyarea:read", "studyarea:write"})
    */
   private $concepts;
 
@@ -188,6 +202,7 @@ class StudyArea
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
    * @ORM\JoinColumn(nullable=true)
+   * @Groups({"studyarea:read", "studyarea:write"})
    */
   private $group;
 
@@ -320,7 +335,8 @@ class StudyArea
   public function getUserGroups(string $groupType = NULL)
   {
     return $groupType === NULL ? $this->userGroups : $this->userGroups->matching(
-        Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
+      Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType))
+    );
   }
 
   /**
@@ -1037,5 +1053,4 @@ class StudyArea
 
     return $this;
   }
-
 }
