@@ -1,3 +1,7 @@
 logout:
   path: /logout
-  schemes:  [ https ]
+  schemes: [https]
+api_login:
+  path: /api/login
+  schemes: [http, https]
+  methods: ["POST", "GET"]

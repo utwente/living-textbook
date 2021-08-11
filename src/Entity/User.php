@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -9,6 +10,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -24,6 +26,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author BobV
  *
+ *  @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get"={"security"="is_granted('ROLE_SUPER_ADMIN')"}},
+ *     itemOperations={"get"={"security"="is_granted('ROLE_SUPER_ADMIN')"}},
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={"user:write"}},
+ * )
+ * 
  * @ORM\Table(name="user__table", indexes={@ORM\Index(columns={"username"})})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\EntityListeners({"App\Entity\Listener\UserListener"})
@@ -48,6 +58,7 @@ class User implements UserInterface, Serializable
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=2,max=100)
+   * @Groups({"user:read", "user:write"})
    */
   protected $givenName;
 
@@ -60,6 +71,7 @@ class User implements UserInterface, Serializable
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=2,max=100)
+   * @Groups({"user:read", "user:write"})
    */
   protected $familyName;
 
@@ -72,6 +84,7 @@ class User implements UserInterface, Serializable
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=4, max=200)
+   * @Groups({"user:read", "user:write"})
    */
   protected $fullName;
 
@@ -244,9 +257,9 @@ class User implements UserInterface, Serializable
     }
 
     return (new User())
-        ->setUsername($username)
-        ->setIsOidc(true)
-        ->update($token);
+      ->setUsername($username)
+      ->setIsOidc(true)
+      ->update($token);
   }
 
   /**
@@ -273,10 +286,10 @@ class User implements UserInterface, Serializable
   public function update(OidcToken $token): User
   {
     return $this
-        ->setDisplayName($token->getDisplayName())
-        ->setFullName($token->getFullName())
-        ->setGivenName($token->getGivenName())
-        ->setFamilyName($token->getFamilyName());
+      ->setDisplayName($token->getDisplayName())
+      ->setFullName($token->getFullName())
+      ->setGivenName($token->getGivenName())
+      ->setFamilyName($token->getFamilyName());
   }
 
   /**
@@ -299,11 +312,11 @@ class User implements UserInterface, Serializable
   public function serialize()
   {
     return serialize(array(
-        $this->id,
-        $this->username,
-        $this->password,
-        true, // BC-compatibility with serialized sessions
-        $this->isOidc,
+      $this->id,
+      $this->username,
+      $this->password,
+      true, // BC-compatibility with serialized sessions
+      $this->isOidc,
     ));
   }
 
@@ -319,13 +332,12 @@ class User implements UserInterface, Serializable
    */
   public function unserialize($serialized)
   {
-    list (
-        $this->id,
-        $this->username,
-        $this->password,
-        , //  BC-compatibility with serialized sessions
-        $this->isOidc,
-        ) = unserialize($serialized);
+    list(
+      $this->id,
+      $this->username,
+      $this->password,, //  BC-compatibility with serialized sessions
+      $this->isOidc,
+    ) = unserialize($serialized);
   }
 
   /**
@@ -648,5 +660,4 @@ class User implements UserInterface, Serializable
   {
     return $this->annotations;
   }
-
 }

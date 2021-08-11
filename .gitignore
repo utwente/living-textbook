@@ -20,8 +20,12 @@ assets/js/_fos_js_routes.js
 # Uploaded assets
 /public/uploads
 
+# Htaccess
+/public/.htaccess
+
 ###> symfony/framework-bundle ###
 /.env.local
+/.env.localhost
 /.env.*.local
 /public/bundles/
 /var/

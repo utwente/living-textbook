@@ -2,6 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
 use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
@@ -24,6 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\ORMException;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -32,6 +37,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Concept
+ * 
+ *  * @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get", "post"={"security"="is_granted('ROLE_USER')"}},
+ *     itemOperations={"get", "put"={"security"="is_granted('ROLE_USER') or object.owner == user"}, "delete"={"security"="is_granted('ROLE_USER') or object.owner == user"}},
+ *     normalizationContext={"groups"={"concept:read"}},
+ *     denormalizationContext={"groups"={"concept:write"}},
+ * )
  *
  * @author BobV
  *
@@ -63,6 +76,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Expose()
    * @JMSA\Groups({"Default", "review_change", "name_only"})
    * @JMSA\Type("string")
+   * @Groups({"concept:read", "concept:write"})
    */
   private $name;
 
@@ -88,6 +102,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Expose()
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type("string")
+   * @Groups({"concept:read", "concept:write"})
    */
   private $definition;
 
@@ -117,6 +132,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Expose()
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type("string")
+   * @Groups({"concept:read", "concept:write"})
    */
   private $synonyms;
 
@@ -139,6 +155,18 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\MaxDepth(2)
    */
   private $priorKnowledge;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="modelCfg", type="string", nullable=true)
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type("string")
+   * @Groups({"concept:read", "concept:write"})
+   */
+  private $modelCfg;
 
   /**
    * @var Concept[]|Collection
@@ -287,6 +315,8 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\SerializedName("relations")
    * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
    * @JMSA\MaxDepth(3)
+   * 
+   * @Groups({"concept:read", "concept:write"})
    */
   private $outgoingRelations;
 
@@ -303,6 +333,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
    * @JMSA\MaxDepth(3)
+   * @Groups({"concept:read", "concept:write"})
    */
   private $incomingRelations;
 
@@ -313,6 +344,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
+   * @Groups({"concept:read", "concept:write"})
    */
   private $studyArea;
 
@@ -350,6 +382,8 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
     $this->selfAssessment    = new DataSelfAssessment();
+
+    $this->modelCfg = '';
   }
 
   /**
@@ -401,8 +435,8 @@ class Concept implements SearchableInterface, ReviewableInterface
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
       return $val === 0
-          ? strcasecmp($a->$conceptRetriever()->getName(), $b->$conceptRetriever()->getName())
-          : $val;
+        ? strcasecmp($a->$conceptRetriever()->getName(), $b->$conceptRetriever()->getName())
+        : $val;
     });
 
     // Set sort order
@@ -444,11 +478,11 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function hasTextData()
   {
     return $this->getDefinition() != ''
-        || $this->getIntroduction()->hasData()
-        || $this->getExamples()->hasData()
-        || $this->getHowTo()->hasData()
-        || $this->selfAssessment->hasData()
-        || $this->theoryExplanation->hasData();
+      || $this->getIntroduction()->hasData()
+      || $this->getExamples()->hasData()
+      || $this->getHowTo()->hasData()
+      || $this->selfAssessment->hasData()
+      || $this->theoryExplanation->hasData();
   }
 
   /**
@@ -531,9 +565,9 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->filterDataOn($results, $this->getSelfAssessment(), 40, 'self-assessment', $search);
 
     return [
-        '_id'     => $this->getId(),
-        '_title'  => $this->getName(),
-        'results' => $results,
+      '_id'     => $this->getId(),
+      '_title'  => $this->getName(),
+      'results' => $results,
     ];
   }
 
@@ -576,28 +610,26 @@ class Concept implements SearchableInterface, ReviewableInterface
         case 'synonyms':
           $this->setSynonyms($changeObj->getSynonyms());
           break;
-        case 'priorKnowledge':
-        {
-          $this->getPriorKnowledge()->clear();
+        case 'priorKnowledge': {
+            $this->getPriorKnowledge()->clear();
 
-          foreach ($changeObj->getPriorKnowledge() as $newPriorKnowledge) {
-            $newPriorKnowledgeRef = $em->getReference(self::class, $newPriorKnowledge->getId());
-            assert($newPriorKnowledgeRef instanceof self);
-            $this->addPriorKnowledge($newPriorKnowledgeRef);
+            foreach ($changeObj->getPriorKnowledge() as $newPriorKnowledge) {
+              $newPriorKnowledgeRef = $em->getReference(self::class, $newPriorKnowledge->getId());
+              assert($newPriorKnowledgeRef instanceof self);
+              $this->addPriorKnowledge($newPriorKnowledgeRef);
+            }
+            break;
           }
-          break;
-        }
-        case 'learningOutcomes':
-        {
-          $this->getLearningOutcomes()->clear();
+        case 'learningOutcomes': {
+            $this->getLearningOutcomes()->clear();
 
-          foreach ($changeObj->getLearningOutcomes() as $newLearningOutcome) {
-            $newLearningOutcomeRef = $em->getReference(LearningOutcome::class, $newLearningOutcome->getId());
-            assert($newLearningOutcomeRef instanceof LearningOutcome);
-            $this->addLearningOutcome($newLearningOutcomeRef);
+            foreach ($changeObj->getLearningOutcomes() as $newLearningOutcome) {
+              $newLearningOutcomeRef = $em->getReference(LearningOutcome::class, $newLearningOutcome->getId());
+              assert($newLearningOutcomeRef instanceof LearningOutcome);
+              $this->addLearningOutcome($newLearningOutcomeRef);
+            }
+            break;
           }
-          break;
-        }
         case 'theoryExplanation':
           $this->getTheoryExplanation()->setText($changeObj->getTheoryExplanation()->getText());
           break;
@@ -607,92 +639,88 @@ class Concept implements SearchableInterface, ReviewableInterface
         case 'examples':
           $this->getExamples()->setText($changeObj->getExamples()->getText());
           break;
-        case 'externalResources':
-        {
-          $this->getExternalResources()->clear();
+        case 'externalResources': {
+            $this->getExternalResources()->clear();
 
-          foreach ($changeObj->getExternalResources() as $newExternalResource) {
-            $newExternalResourceRef = $em->getReference(ExternalResource::class, $newExternalResource->getId());
-            assert($newExternalResourceRef instanceof ExternalResource);
-            $this->addExternalResource($newExternalResourceRef);
+            foreach ($changeObj->getExternalResources() as $newExternalResource) {
+              $newExternalResourceRef = $em->getReference(ExternalResource::class, $newExternalResource->getId());
+              assert($newExternalResourceRef instanceof ExternalResource);
+              $this->addExternalResource($newExternalResourceRef);
+            }
+            break;
           }
-          break;
-        }
-        case 'contributors':
-        {
-          $this->getContributors()->clear();
+        case 'contributors': {
+            $this->getContributors()->clear();
 
-          foreach ($changeObj->getContributors() as $newContributor) {
-            $newContributorRef = $em->getReference(Contributor::class, $newContributor->getId());
-            assert($newContributorRef instanceof Contributor);
-            $this->addContributor($newContributorRef);
+            foreach ($changeObj->getContributors() as $newContributor) {
+              $newContributorRef = $em->getReference(Contributor::class, $newContributor->getId());
+              assert($newContributorRef instanceof Contributor);
+              $this->addContributor($newContributorRef);
+            }
+            break;
           }
-          break;
-        }
-        case 'tags':
-        {
-          $this->getTags()->clear();
+        case 'tags': {
+            $this->getTags()->clear();
 
-          foreach ($changeObj->getTags() as $newTag) {
-            $newTagRef = $em->getReference(Tag::class, $newTag->getId());
-            assert($newTagRef instanceof Tag);
-            $this->addTag($newTagRef);
+            foreach ($changeObj->getTags() as $newTag) {
+              $newTagRef = $em->getReference(Tag::class, $newTag->getId());
+              assert($newTagRef instanceof Tag);
+              $this->addTag($newTagRef);
+            }
+            break;
           }
-          break;
-        }
         case 'selfAssessment':
           $this->getSelfAssessment()->setText($changeObj->getSelfAssessment()->getText());
           break;
         case 'relations': // This would be outgoingRelations, but the serialized name is relations
-        {
-          // This construct is required for Doctrine to work correctly. Why? No clue.
-          $toRemove = [];
-          foreach ($this->getOutgoingRelations() as $outgoingRelation) {
-            $toRemove[] = $outgoingRelation;
-          }
-          foreach ($toRemove as $outgoingRelation) {
-            $this->getOutgoingRelations()->removeElement($outgoingRelation);
-            if (!$ignoreEm) {
-              $em->remove($outgoingRelation);
+          {
+            // This construct is required for Doctrine to work correctly. Why? No clue.
+            $toRemove = [];
+            foreach ($this->getOutgoingRelations() as $outgoingRelation) {
+              $toRemove[] = $outgoingRelation;
             }
-          }
-
-          foreach ($changeObj->getOutgoingRelations() as $outgoingRelation) {
-            $this->fixConceptRelationReferences($outgoingRelation, $em);
-
-            $this->addOutgoingRelation($outgoingRelation);
-            if (!$ignoreEm) {
-              $em->persist($outgoingRelation);
+            foreach ($toRemove as $outgoingRelation) {
+              $this->getOutgoingRelations()->removeElement($outgoingRelation);
+              if (!$ignoreEm) {
+                $em->remove($outgoingRelation);
+              }
             }
-          }
 
-          break;
-        }
-        case 'incomingRelations':
-        {
-          // This construct is required for Doctrine to work correctly. Why? No clue.
-          $toRemove = [];
-          foreach ($this->getIncomingRelations() as $incomingRelation) {
-            $toRemove[] = $incomingRelation;
-          }
-          foreach ($toRemove as $incomingRelation) {
-            $this->getIncomingRelations()->removeElement($incomingRelation);
-            if (!$ignoreEm) {
-              $em->remove($incomingRelation);
+            foreach ($changeObj->getOutgoingRelations() as $outgoingRelation) {
+              $this->fixConceptRelationReferences($outgoingRelation, $em);
+
+              $this->addOutgoingRelation($outgoingRelation);
+              if (!$ignoreEm) {
+                $em->persist($outgoingRelation);
+              }
             }
+
+            break;
           }
-
-          foreach ($changeObj->getIncomingRelations() as $incomingRelation) {
-            $this->fixConceptRelationReferences($incomingRelation, $em);
-
-            $this->addIncomingRelation($incomingRelation);
-            if (!$ignoreEm) {
-              $em->persist($incomingRelation);
+        case 'incomingRelations': {
+            // This construct is required for Doctrine to work correctly. Why? No clue.
+            $toRemove = [];
+            foreach ($this->getIncomingRelations() as $incomingRelation) {
+              $toRemove[] = $incomingRelation;
             }
-          }
+            foreach ($toRemove as $incomingRelation) {
+              $this->getIncomingRelations()->removeElement($incomingRelation);
+              if (!$ignoreEm) {
+                $em->remove($incomingRelation);
+              }
+            }
 
-          break;
-        }
+            foreach ($changeObj->getIncomingRelations() as $incomingRelation) {
+              $this->fixConceptRelationReferences($incomingRelation, $em);
+
+              $this->addIncomingRelation($incomingRelation);
+              if (!$ignoreEm) {
+                $em->persist($incomingRelation);
+              }
+            }
+
+            break;
+          }
         default:
           throw new IncompatibleFieldChangedException($this, $changedField);
       }
@@ -807,6 +835,26 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function setSynonyms(string $synonyms): Concept
   {
     $this->synonyms = $synonyms;
+
+    return $this;
+  }
+
+  /**
+   * @return string|null
+   */
+  public function getModelCfg(): ?string
+  {
+    return $this->modelCfg;
+  }
+
+  /**
+   * @param string $modelCfg
+   *
+   * @return Concept
+   */
+  public function setModelCfg(string $modelCfg): Concept
+  {
+    $this->modelCfg = $modelCfg;
 
     return $this;
   }
