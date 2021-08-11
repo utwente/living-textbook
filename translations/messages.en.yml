@@ -1,13 +1,13 @@
 submit: Submit
 
 abbreviation:
-  _name: 'Abbreviation'
-  abbreviation: 'Abbreviation'
-  add-title: 'Add new abbreviation'
+  _name: "Abbreviation"
+  abbreviation: "Abbreviation"
+  add-title: "Add new abbreviation"
   edit-title: 'Edit abbreviation "%item%"'
-  list-title: 'Abbreviation list'
-  meaning: 'Meaning'
-  no-url: 'No url'
+  list-title: "Abbreviation list"
+  meaning: "Meaning"
+  no-url: "No url"
   saved: 'Abbreviation "%item%" has been saved successfully.'
   remove: 'Remove abbreviation "%item%"'
   remove-text: 'Are you sure you want to remove the abbreviation "%item%"?'
@@ -15,46 +15,46 @@ abbreviation:
   updated: 'Abbreviation "%item%" has been successfully updated.'
 
 analytics:
-  date-end: 'End date'
-  date-start: 'Start date'
-  generate: 'Generate'
-  heatmap: 'Heat map'
-  input: 'Parameters'
-  output: 'Results'
-  path-visits: 'Visits'
-  synthesize: 'Synthesize analytics data'
+  date-end: "End date"
+  date-start: "Start date"
+  generate: "Generate"
+  heatmap: "Heat map"
+  input: "Parameters"
+  output: "Results"
+  path-visits: "Visits"
+  synthesize: "Synthesize analytics data"
   synthesize-help:
-    usersPerfect: 'This amount of users will be generated as perfect learning path followers'
-    usersFlawed: 'This amount of users will be generated as flawed learning path followers'
-    usersFlawedTest: 'This amount of the users from the flawed learning path followers will be participating in the test'
-    usersConceptBrowsers: 'This amount of users will be generated as concept browser followers'
-    usersConceptBrowsersTest: 'This amount of the users from the concept browser followers will be participating in the test.'
-    usersIgnore: 'This amount of users will be ignored'
-    usersTest: 'This amount of users will follow the test (this excludes the users from the learning path and concept browser groups)'
-    flawedDropOffChance: 'The probability a flawed learning path follower stops after each concept'
-    conceptBrowserDropOffChance: 'The probability a concept browser follower stops after each concept'
-    daysBetweenLearningPaths: 'The amount of days between the calculated teaching moments of each learning path'
-    daysBeforeTest: 'The amount of days between the teaching moment of the last learning path and the test'
-    testMoment: 'The test moment, which will be used to simulate cramming students or repetitive study'
+    usersPerfect: "This amount of users will be generated as perfect learning path followers"
+    usersFlawed: "This amount of users will be generated as flawed learning path followers"
+    usersFlawedTest: "This amount of the users from the flawed learning path followers will be participating in the test"
+    usersConceptBrowsers: "This amount of users will be generated as concept browser followers"
+    usersConceptBrowsersTest: "This amount of the users from the concept browser followers will be participating in the test."
+    usersIgnore: "This amount of users will be ignored"
+    usersTest: "This amount of users will follow the test (this excludes the users from the learning path and concept browser groups)"
+    flawedDropOffChance: "The probability a flawed learning path follower stops after each concept"
+    conceptBrowserDropOffChance: "The probability a concept browser follower stops after each concept"
+    daysBetweenLearningPaths: "The amount of days between the calculated teaching moments of each learning path"
+    daysBeforeTest: "The amount of days between the teaching moment of the last learning path and the test"
+    testMoment: "The test moment, which will be used to simulate cramming students or repetitive study"
   synthesize-label:
-    usersPerfect: 'Perfect users'
-    usersFlawed: 'Flawed path followers'
-    usersFlawedTest: 'Test followers of flawed path followers'
-    usersConceptBrowsers: 'Concept browser users'
-    usersConceptBrowsersTest: 'Test followers of concept browser users'
-    usersIgnore: 'Ignored users'
-    usersTest: 'Test followers'
-    flawedDropOffChance: 'Flawed user drop off probability'
-    conceptBrowserDropOffChance: 'Concept browser user drop off probability'
-    daysBetweenLearningPaths: 'Days between learning paths'
-    daysBeforeTest: 'Days before test'
-    testMoment: 'Test moment'
-  synthesize-not-possible: 'Synthesize not possible as this study area doesn''t have any learning paths!'
-  synthesize-success: 'Analytics data has been synthesized successfully!'
-  synthesize-warning: 'Note that when you synthesize the analytics data, all existing tracking data will be removed!'
-  teaching-moment: 'Teaching moment'
-  total-hits-on-path: 'Total hits on learning path'
-  users-in-period: 'Total users in period'
+    usersPerfect: "Perfect users"
+    usersFlawed: "Flawed path followers"
+    usersFlawedTest: "Test followers of flawed path followers"
+    usersConceptBrowsers: "Concept browser users"
+    usersConceptBrowsersTest: "Test followers of concept browser users"
+    usersIgnore: "Ignored users"
+    usersTest: "Test followers"
+    flawedDropOffChance: "Flawed user drop off probability"
+    conceptBrowserDropOffChance: "Concept browser user drop off probability"
+    daysBetweenLearningPaths: "Days between learning paths"
+    daysBeforeTest: "Days before test"
+    testMoment: "Test moment"
+  synthesize-not-possible: "Synthesize not possible as this study area doesn't have any learning paths!"
+  synthesize-success: "Analytics data has been synthesized successfully!"
+  synthesize-warning: "Note that when you synthesize the analytics data, all existing tracking data will be removed!"
+  teaching-moment: "Teaching moment"
+  total-hits-on-path: "Total hits on learning path"
+  users-in-period: "Total users in period"
 
 annotations:
   add-placeholder: "Type your annotation..."
@@ -95,152 +95,152 @@ annotations:
     title: "Shared with"
 
 app:
-  dashboard: 'Dashboard'
-  delete-notice: 'If you create your private study area in this application, please note that these might be deleted after 6 months of inactivity.'
-  user-tracking-notice: 'By entering this website you agree that we use software to track user activity. This information is only available to the administrator and is only used to improve and develop the Living Textbook learning environment in general. Personal data will not be available for anyone to see or saved.'
-  welcome: 'Welcome to the Living Textbook learning environment'
+  dashboard: "Dashboard"
+  delete-notice: "If you create your private study area in this application, please note that these might be deleted after 6 months of inactivity."
+  user-tracking-notice: "By entering this website you agree that we use software to track user activity. This information is only available to the administrator and is only used to improve and develop the Living Textbook learning environment in general. Personal data will not be available for anyone to see or saved."
+  welcome: "Welcome to the Living Textbook learning environment"
   welcome-text: 'In this environment you can browse "bodies of knowledge" composed by experts or start creating one of your own (for registered users only).'
 
 auth:
-  create-account: 'Create account'
-  create-account-success: 'Your account has been created. You can now use it to login!'
-  create-account-text: 'Fill in the required information to create an account.'
-  create-account-title: 'Create account'
-  forgot-password: 'Forget password?'
-  password-changed: 'Your password has been changed successfully. You can now login using it.'
+  create-account: "Create account"
+  create-account-success: "Your account has been created. You can now use it to login!"
+  create-account-text: "Fill in the required information to create an account."
+  create-account-title: "Create account"
+  forgot-password: "Forget password?"
+  password-changed: "Your password has been changed successfully. You can now login using it."
   password-reset: >-
     In order to reset your password, please fill in your e-mail address.
     When matched, we'll sent you an e-mail with further instructions.
-  password-reset-title: 'Request password reset'
+  password-reset-title: "Request password reset"
   password-reset-sent: >-
     If the supplied e-mail address is known in our system, we've sent you an e-mail with further instructions.
     The information in the e-mail is valid for the coming 10 minutes. Make sure to check your spam folder!
-  password-reset-sent-title: 'Password reset'
-  request-reset: 'Request reset'
-  reset-expired: 'Your password reset request has expired.'
-  reset-password-text: 'Please enter a new, valid password.'
-  reset-password-title: 'Reset password'
+  password-reset-sent-title: "Password reset"
+  request-reset: "Request reset"
+  reset-expired: "Your password reset request has expired."
+  reset-password-text: "Please enter a new, valid password."
+  reset-password-title: "Reset password"
 
 browser:
-  actions: 'Actions'
-  close: 'Close concept map'
-  filter: 'Display filters'
+  actions: "Actions"
+  close: "Close concept map"
+  filter: "Display filters"
   filters:
-    and: 'AND'
-    or: 'OR'
-    hide-instances: 'Hide instances'
-    tag-color: 'Color on tag'
+    and: "AND"
+    or: "OR"
+    hide-instances: "Hide instances"
+    tag-color: "Color on tag"
     tag-color-help: >-
       When using the color filter, custom and empty node colors will be disabled.
       Note that only one color can be applied per node: the first matching tag in the list above will be used for the color.
-    tags: 'Filter on tags'
-  fullscreen-toggle: 'Toggle fullscreen'
-  open: 'Open map'
-  pause: 'Pause animation'
-  play: 'Start animation'
-  toggle: 'Toggle map'
-  toggle-learningpath: 'Toggle learning path'
-  readme: 'Open readme'
-  refresh: 'Refresh data'
-  search: 'Search'
-  zoom-in: 'Zoom in'
-  zoom-out: 'Zoom out'
+    tags: "Filter on tags"
+  fullscreen-toggle: "Toggle fullscreen"
+  open: "Open map"
+  pause: "Pause animation"
+  play: "Start animation"
+  toggle: "Toggle map"
+  toggle-learningpath: "Toggle learning path"
+  readme: "Open readme"
+  refresh: "Refresh data"
+  search: "Search"
+  zoom-in: "Zoom in"
+  zoom-out: "Zoom out"
 
 concept:
   _type: {}
-  _name: 'Concept'
-  add-title: 'Add new'
-  concept: 'Concept'
-  contributors: 'Contributors'
-  definition: 'Definition'
+  _name: "Concept"
+  add-title: "Add new"
+  concept: "Concept"
+  contributors: "Contributors"
+  definition: "Definition"
   edit-title: 'Edit "%item%"'
-  examples: 'Examples'
-  external-resources: 'External resources'
-  how-to: 'How to'
-  incoming-relations: 'Incoming relations'
-  indirect-relations: 'Indirect relations'
-  instance: 'Instance'
-  instance-list-title: 'Instance list'
-  instance-text: 'This is an instance of a concept.'
+  examples: "Examples"
+  external-resources: "External resources"
+  how-to: "How to"
+  incoming-relations: "Incoming relations"
+  indirect-relations: "Indirect relations"
+  instance: "Instance"
+  instance-list-title: "Instance list"
+  instance-text: "This is an instance of a concept."
   instantiate:
-    default-relation-name: 'is a'
-    instantiate: 'Instantiate'
+    default-relation-name: "is a"
+    instantiate: "Instantiate"
     instantiate-text: >-
       Choose the base concept to instantiate a new instance for.
       For all first level relations an instance will be created as well.
       Relevant relations will be added automatically.
       In order to see the changes in the concept map, you will need to refresh is after the instantiation process is done.
-    not-possible-review-enabled: 'It is not possible to instantiate an instance as review mode is enabled.'
-    success: 'The instances have been created! Refresh the browser to see them.'
-  introduction: 'Introduction'
-  list-title: 'Concept list'
-  name: 'Name'
-  new: 'New concept/instance'
+    not-possible-review-enabled: "It is not possible to instantiate an instance as review mode is enabled."
+    success: "The instances have been created! Refresh the browser to see them."
+  introduction: "Introduction"
+  list-title: "Concept list"
+  name: "Name"
+  new: "New concept/instance"
   no-relations-possible-concept: "There are no other concepts or instances available."
   no-relations-possible-linktype: "There are no link types defined."
-  online-source: 'Browse online'
-  outgoing-relations: 'Outgoing relations'
-  prior-knowledge: 'Prior knowledge'
-  relations: 'Relations'
+  online-source: "Browse online"
+  outgoing-relations: "Outgoing relations"
+  prior-knowledge: "Prior knowledge"
+  relations: "Relations"
   remove: 'Remove "%item%"'
-  remove-in-learning-path: '{1} Beware! This %type% is used in a learning path.|]1,Inf[ Beware! This %type% is used in %count% learning paths.'
-  remove-in-learning-path-warning: 'When removing this %type%, it will also be removed from any linked learning path.'
+  remove-in-learning-path: "{1} Beware! This %type% is used in a learning path.|]1,Inf[ Beware! This %type% is used in %count% learning paths."
+  remove-in-learning-path-warning: "When removing this %type%, it will also be removed from any linked learning path."
   remove-text: 'Are you sure you want to remove "%item%" and all of its relations?'
   removed: '"%item%" has been removed successfully'
   saved: '"%item%" has been saved successfully.'
-  self-assessment: 'Self assessment'
-  synonyms: 'Synonyms'
-  tags: 'Tags'
-  theory-explanation: 'Explanation'
+  self-assessment: "Self assessment"
+  synonyms: "Synonyms"
+  tags: "Tags"
+  theory-explanation: "Explanation"
   updated: '"%item%" has been successfully updated.'
 
 contributor:
-  _name: 'Contributor'
-  add-title: 'Add new contributor'
-  description: 'Description'
+  _name: "Contributor"
+  add-title: "Add new contributor"
+  description: "Description"
   edit-title: 'Edit contributor "%item%"'
-  email: 'E-mail'
-  list-title: 'Contributor list'
-  name: 'Name'
-  no-email: 'No email'
-  no-url: 'No url'
+  email: "E-mail"
+  list-title: "Contributor list"
+  name: "Name"
+  no-email: "No email"
+  no-url: "No url"
   saved: 'Contributor "%item%" has been saved successfully.'
   remove: 'Remove contributor "%item%"'
-  remove-concepts: 'Note that the contributor will also be removed from the following concepts/instances:'
+  remove-concepts: "Note that the contributor will also be removed from the following concepts/instances:"
   remove-text: 'Are you sure you want to remove the contributor "%item%"?'
   removed: 'Contributor "%item%" has been removed successfully.'
   updated: 'Contributor "%item%" has been successfully updated.'
-  url: 'Url'
+  url: "Url"
 
 data:
-  concepts: 'Concepts'
-  concepts-duplicated: 'The study area has been duplicated successfully. Start browsing it directly!'
-  concepts-to-duplicate: 'Concepts/instances to duplicate'
+  concepts: "Concepts"
+  concepts-duplicated: "The study area has been duplicated successfully. Start browsing it directly!"
+  concepts-to-duplicate: "Concepts/instances to duplicate"
   download:
-    text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
-    title: 'Export'
-    type: 'Export type'
+    text: "You can export the current study area in one of the types shown below. Select the one you will want to download."
+    title: "Export"
+    type: "Export type"
     provider:
-      concept-id-name: 'Concept/instance (with id)'
-      learning-path: 'Learning path'
-      linked-simple-node: 'Simple linked node'
-      rdf: 'RDF (as JSON-LD)'
-      relation: 'Relations'
-  duplicate: 'Duplicate'
+      concept-id-name: "Concept/instance (with id)"
+      learning-path: "Learning path"
+      linked-simple-node: "Simple linked node"
+      rdf: "RDF (as JSON-LD)"
+      relation: "Relations"
+  duplicate: "Duplicate"
   duplicate-text: >-
     Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
     In order to select an existing area, you need to have write right, and review mode must be disabled.
     You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
     Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
-  json-file: 'JSON data file'
-  json-incorrect: 'JSON data incorrect! %message%'
-  json-uploaded: 'JSON data successfully imported!'
-  select-all: 'Select all'
-  select-all-info: 'Note that when you do not select all concepts/instances to be copied, some data (such as learning paths) might be adjusted!'
-  study-area: 'Study area'
-  upload-json: 'Upload JSON file'
-  upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
-  upload-json-text: 'This upload form can be used to upload an JSON file. Note that this will not import wiki content!'
+  json-file: "JSON data file"
+  json-incorrect: "JSON data incorrect! %message%"
+  json-uploaded: "JSON data successfully imported!"
+  select-all: "Select all"
+  select-all-info: "Note that when you do not select all concepts/instances to be copied, some data (such as learning paths) might be adjusted!"
+  study-area: "Study area"
+  upload-json: "Upload JSON file"
+  upload-json-disabled-review-mode: "It is not possible to import data when review mode is enabled!"
+  upload-json-text: "This upload form can be used to upload an JSON file. Note that this will not import wiki content!"
 
 datatable:
   all: "All"
@@ -264,32 +264,32 @@ datatable:
     sSortDescending: ": activate to sort this column descending"
 
 dashboard:
-  abbreviation-count: '{0} No abbreviations|{1} One abbreviation|]1,Inf[ %count% abbreviations'
-  concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
-  contributor-count: '{0} No contributors|{1} One contributor|]1,Inf[ %count% contributors'
-  external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
-  instance-count: '{0} No instances|{1} One instance|]1,Inf[ %count% instances'
-  learning-outcome-count: '{0} No %plural%|{1} One %singular%|]1,Inf[ %count% %plural%'
-  learning-path-count: '{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths'
-  open: 'Open dashboard'
-  relation-count: '{0} No relations|{1} One relation|]1,Inf[ %count% relations'
-  search-concept: 'Search for concept or instance'
-  select-one: 'Select one...'
-  study-area-contains: 'This study area has:'
-  study-area-create: 'Create new study area'
-  study-area-empty: 'This study area is empty.'
-  study-area-frozen: 'The data in this study area has been locked since %since%.'
-  study-area-landing: 'Select a study area to start with'
-  study-area-open-access: 'Open access content'
+  abbreviation-count: "{0} No abbreviations|{1} One abbreviation|]1,Inf[ %count% abbreviations"
+  concept-count: "{0} No concepts|{1} One concept|]1,Inf[ %count% concepts"
+  contributor-count: "{0} No contributors|{1} One contributor|]1,Inf[ %count% contributors"
+  external-resource-count: "{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources"
+  instance-count: "{0} No instances|{1} One instance|]1,Inf[ %count% instances"
+  learning-outcome-count: "{0} No %plural%|{1} One %singular%|]1,Inf[ %count% %plural%"
+  learning-path-count: "{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths"
+  open: "Open dashboard"
+  relation-count: "{0} No relations|{1} One relation|]1,Inf[ %count% relations"
+  search-concept: "Search for concept or instance"
+  select-one: "Select one..."
+  study-area-contains: "This study area has:"
+  study-area-create: "Create new study area"
+  study-area-empty: "This study area is empty."
+  study-area-frozen: "The data in this study area has been locked since %since%."
+  study-area-landing: "Select a study area to start with"
+  study-area-open-access: "Open access content"
   study-area-open-access-single: 'You can browse the open access "%name%" area.'
-  study-area-open-access-multiple: 'You can select an open access area to browse below.'
+  study-area-open-access-multiple: "You can select an open access area to browse below."
   study-area-text: 'Welcome to the "%studyArea%" study area.'
-  study-area-switch: 'Search for another study area'
-  tag-count: '{0} No tags|{1} One tag|]1,Inf[ %count% tags'
-  url-count: '{0} No URLs|{1} One URL of which %brokenCount% broken|]1,Inf[ %count% URLs of which %brokenCount% broken'
-  url-count-broken-not-scanned: '{0} No URLs|{1} One URL, not yet scanned for broken URLs|]1,Inf[ %count% URLs, not yet scanned for broken URLs'
-  url-not-scanned: 'URLs not scanned yet, click to scan.'
-  url-scan-progress: 'URLs being scanned, please be patient. If it takes too long click here to rescan.'
+  study-area-switch: "Search for another study area"
+  tag-count: "{0} No tags|{1} One tag|]1,Inf[ %count% tags"
+  url-count: "{0} No URLs|{1} One URL of which %brokenCount% broken|]1,Inf[ %count% URLs of which %brokenCount% broken"
+  url-count-broken-not-scanned: "{0} No URLs|{1} One URL, not yet scanned for broken URLs|]1,Inf[ %count% URLs, not yet scanned for broken URLs"
+  url-not-scanned: "URLs not scanned yet, click to scan."
+  url-scan-progress: "URLs being scanned, please be patient. If it takes too long click here to rescan."
 
 excel:
   boolean:
@@ -297,7 +297,7 @@ excel:
     yes: "Yes"
   concept: "Concept"
   count: "Count"
-  description: "Excel status export for the study area \"%item%\"."
+  description: 'Excel status export for the study area "%item%".'
   incoming-relations: "Incoming relations"
   sheet:
     detailed-concept-overview:
@@ -336,7 +336,7 @@ excel:
       total-concepts: "Total concepts/instances"
     general-relationship-statistics:
       _tab: "(Statistics) Relations"
-      type: "Relationship \"%type%\""
+      type: 'Relationship "%type%"'
       number: "Number of relationships"
       number-per-type: "Number of relationships per type"
       types: "Relationship types"
@@ -344,59 +344,59 @@ excel:
       relationships: "Relationships statistics"
   outgoing-relations: "Outgoing relations"
   statistics-item: "Statistics item"
-  subject: "Excel export of study area \"%item%\"."
+  subject: 'Excel export of study area "%item%".'
 
 exception:
-  error-title: 'Oops, an error occurred!'
-  error-code: 'The server generated a %code% response.'
-  error-text: 'Something went wrong. Please notify us if the problem persists.'
-  error-text-403: 'You are not authorized for this page.'
-  error-text-404: 'The requested page could not be found.'
+  error-title: "Oops, an error occurred!"
+  error-code: "The server generated a %code% response."
+  error-text: "Something went wrong. Please notify us if the problem persists."
+  error-text-403: "You are not authorized for this page."
+  error-text-404: "The requested page could not be found."
   error-text-500: "Something went wrong. We've been notified automatically!"
-  error-title-403: 'Not authorized!'
-  error-title-404: 'Page not found!'
+  error-title-403: "Not authorized!"
+  error-title-404: "Page not found!"
 
 external-resource:
-  _name: 'External resource'
-  add-title: 'Add new external resource'
-  description: 'Description'
+  _name: "External resource"
+  add-title: "Add new external resource"
+  description: "Description"
   edit-title: 'Edit external resource "%item%"'
-  list-title: 'External resources list'
-  no-url: 'No url'
+  list-title: "External resources list"
+  no-url: "No url"
   saved: 'External resource "%item%" has been saved successfully.'
   remove: 'Remove external resource "%item%"'
-  remove-concepts: 'Note that the external resource will also be removed from the following concepts/instances:'
+  remove-concepts: "Note that the external resource will also be removed from the following concepts/instances:"
   remove-text: 'Are you sure you want to remove the external resource "%item%"?'
   removed: 'External resource "%item%" has been removed successfully.'
-  title: 'Title'
+  title: "Title"
   updated: 'External resource "%item%" has been successfully updated.'
-  url: 'Url'
+  url: "Url"
 
 field-configuration:
-  obj-name: 'Object name'
-  obj-help: 'Make sure to use a singular name here, we''ll automatically transform it into the plural form.'
+  obj-name: "Object name"
+  obj-help: "Make sure to use a singular name here, we'll automatically transform it into the plural form."
 
 form:
-  action-bar: 'Action bar'
-  actions: 'Actions'
-  add: 'Add'
-  cancel: 'Cancel'
-  confirm-freeze: 'Yes, I want to freeze this'
-  confirm-remove: 'Yes, I want to delete this'
-  confirm-unfreeze: 'Yes, I want to unfreeze this'
-  discard: 'Discard'
-  edit: 'Edit'
-  freeze: 'Freeze'
-  list: 'List'
-  move: 'Move'
-  remove: 'Remove'
-  revoke: 'Revoke'
-  revoke-all: 'Revoke all'
-  save: 'Save'
-  save-and-dashboard: 'Save and open dashboard'
-  save-and-list: 'Save and open list'
-  show: 'View'
-  unfreeze: 'Unfreeze'
+  action-bar: "Action bar"
+  actions: "Actions"
+  add: "Add"
+  cancel: "Cancel"
+  confirm-freeze: "Yes, I want to freeze this"
+  confirm-remove: "Yes, I want to delete this"
+  confirm-unfreeze: "Yes, I want to unfreeze this"
+  discard: "Discard"
+  edit: "Edit"
+  freeze: "Freeze"
+  list: "List"
+  move: "Move"
+  remove: "Remove"
+  revoke: "Revoke"
+  revoke-all: "Revoke all"
+  save: "Save"
+  save-and-dashboard: "Save and open dashboard"
+  save-and-list: "Save and open list"
+  show: "View"
+  unfreeze: "Unfreeze"
 
 general:
   close: "Close"
@@ -411,105 +411,107 @@ help:
   title: "Help"
 
 learning-outcome:
-  _name: 'Learning outcome'
-  add-title: 'Add new %singular%'
+  _name: "Learning outcome"
+  add-title: "Add new %singular%"
   edit-title: 'Edit %singular% "%item%"'
-  list-title: '%singular% list'
-  name: 'Name'
-  no-unused: 'There aren''t any unused %plural%.'
-  number: 'Number'
+  list-title: "%singular% list"
+  name: "Name"
+  no-unused: "There aren't any unused %plural%."
+  number: "Number"
   remove: 'Remove %singular% "%item%"'
-  remove-concepts: 'Note that the %singular% will also be removed from the following concepts/instances:'
+  remove-concepts: "Note that the %singular% will also be removed from the following concepts/instances:"
   remove-text: 'Are you sure you want to remove the %plural% "%item%"?'
-  remove-unused: 'Remove unused %plural%'
-  remove-unused-short: 'Remove unused'
-  remove-unused-text: 'Are you sure you want to remove all the unused %plural%? The following %plural% will be removed:'
+  remove-unused: "Remove unused %plural%"
+  remove-unused-short: "Remove unused"
+  remove-unused-text: "Are you sure you want to remove all the unused %plural%? The following %plural% will be removed:"
   removed: '%singular% "%item%" has been removed successfully.'
   saved: '%singular% "%item%" has been saved successfully.'
-  text: 'Content'
-  unused-removed: 'The unused %plural% have been removed successfully!'
+  text: "Content"
+  unused-removed: "The unused %plural% have been removed successfully!"
   updated: '%singular% "%item%" has been successfully updated.'
 
 learning-path:
-  _name: 'Learning path'
-  add-element: 'Add element'
-  add-title: 'Add new learning path'
-  close: 'Close learning path'
-  current-elements: 'Current elements'
+  _name: "Learning path"
+  add-element: "Add element"
+  add-title: "Add new learning path"
+  close: "Close learning path"
+  current-elements: "Current elements"
   edit-title: 'Edit learning path "%item%"'
-  element-concept: 'Concept/instance'
-  element-description: 'Description'
-  element-errors: 'One or more elements contain errors'
-  elements: 'Elements'
-  elements-info: 'Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements.'
-  introduction: 'Introduction'
-  list-title: 'Learning path list'
-  name: 'Name'
-  online-source: 'Visit online'
-  open: 'Follow path'
-  path: 'Path'
-  question: 'Question'
+  element-concept: "Concept/instance"
+  element-description: "Description"
+  element-errors: "One or more elements contain errors"
+  elements: "Elements"
+  elements-info: "Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements."
+  introduction: "Introduction"
+  list-title: "Learning path list"
+  name: "Name"
+  online-source: "Visit online"
+  open: "Follow path"
+  path: "Path"
+  question: "Question"
   remove: 'Remove learning path "%item%"'
   remove-text: 'Are you sure you want to remove the learning path "%item%"?'
   removed: 'Learning path "%item%" has been removed successfully.'
   saved: 'Learning path "%item%" has been saved successfully.'
-  scroll-left: 'Previous'
-  scroll-right: 'Next'
+  scroll-left: "Previous"
+  scroll-right: "Next"
   select: "Select..."
   updated: 'Learning path "%item%" has been successfully updated.'
 
 login:
-  account-disabled: 'Your account has been disabled.'
-  bad-credentials: 'Your credentials are invalid.'
-  custom-account: 'Local account'
-  general-error: 'Login failed due to an unknown error.'
-  login: 'Login'
-  login-text: 'In order to view more content (and create your own) in the living textbook, you will need to login.
-      You can either log in using your university credentials (SURFconext) or an account specifically created for you.'
-  login-text-no-open-access: 'Before you can continue and work with the living textbook, you will need to login.
-    You can either log in using your university credentials (SURFconext) or an account specifically created for you.'
-  logout: 'Logout'
-  password: 'Password'
-  privacy-policy: 'Privacy policy'
-  privacy-policy-text: 'By logging in, you accept our general '
-  surfconext: 'University login'
-  surfconext-login-text: 'Click on the image to login with your university credentials.'
-  surfconext-login: 'SURFconext login'
-  username: 'Username'
+  account-disabled: "Your account has been disabled."
+  bad-credentials: "Your credentials are invalid."
+  custom-account: "Local account"
+  general-error: "Login failed due to an unknown error."
+  login: "Login"
+  login-text:
+    "In order to view more content (and create your own) in the living textbook, you will need to login.
+    You can either log in using your university credentials (SURFconext) or an account specifically created for you."
+  login-text-no-open-access:
+    "Before you can continue and work with the living textbook, you will need to login.
+    You can either log in using your university credentials (SURFconext) or an account specifically created for you."
+  logout: "Logout"
+  password: "Password"
+  privacy-policy: "Privacy policy"
+  privacy-policy-text: "By logging in, you accept our general "
+  surfconext: "University login"
+  surfconext-login-text: "Click on the image to login with your university credentials."
+  surfconext-login: "SURFconext login"
+  username: "Username"
 
 menu:
-  abbreviations: 'Abbreviations'
-  admin: 'Administrators'
-  analytics-dashboard: 'Analytics dashboard'
-  change-password: 'Change password'
-  config: 'Configuration'
-  contributors: 'Contributors'
-  data: 'Data'
-  download: 'Export'
-  duplicate: 'Duplicate'
-  edit: 'Edit'
-  excel-status: 'Progress export'
+  abbreviations: "Abbreviations"
+  admin: "Administrators"
+  analytics-dashboard: "Analytics dashboard"
+  change-password: "Change password"
+  config: "Configuration"
+  contributors: "Contributors"
+  data: "Data"
+  download: "Export"
+  duplicate: "Duplicate"
+  edit: "Edit"
+  excel-status: "Progress export"
   external-resources: "External resources"
-  concept: 'Concepts'
-  case-study: 'Case studies'
-  fallback-users: 'Local accounts'
-  field-configration: 'Object & field naming'
-  import-data: 'Import'
-  instances: 'Instances'
-  learning-paths: 'Learning paths'
-  permissions: 'Permissions'
-  print: 'Print'
-  relation-type: 'Relation types'
-  review: 'Review'
-  review-publish: 'Publish'
-  review-submission: 'Submissions'
-  review-submit: 'Submit'
-  show: 'Show'
-  study-area: 'Study areas'
+  concept: "Concepts"
+  case-study: "Case studies"
+  fallback-users: "Local accounts"
+  field-configration: "Object & field naming"
+  import-data: "Import"
+  instances: "Instances"
+  learning-paths: "Learning paths"
+  permissions: "Permissions"
+  print: "Print"
+  relation-type: "Relation types"
+  review: "Review"
+  review-publish: "Publish"
+  review-submission: "Submissions"
+  review-submit: "Submit"
+  show: "Show"
+  study-area: "Study areas"
   study-area-groups: "Study area groups"
-  tags: 'Tags'
-  tracking-export: 'Tracking data'
-  urls: 'URLs'
+  tags: "Tags"
+  tracking-export: "Tracking data"
+  urls: "URLs"
 
 modal:
   failed:
@@ -517,76 +519,77 @@ modal:
     title: "Action failed"
 
 permissions:
-  admin: 'Administrator'
-  add-admin-title: 'Add new administrator'
-  add-permissions: 'Add permissions'
+  admin: "Administrator"
+  add-admin-title: "Add new administrator"
+  add-permissions: "Add permissions"
   add-permissions-text: >-
     You can add permissions based on based on e-mail addresses.
     When an account is found or created for any supplied e-mail address, it will be automatically converted to a full user.
     If you supply an already existing account, the rights selected here will be added to the user.
-  admin-added: '%user% has been promoted to administrator'
-  admin-list-title: 'Administrators'
-  admin-removed: '%user% is no longer an administrator'
-  cannot-edit-self: 'It is not possible to edit yourself'
-  cannot-remove-self: 'It is not possible to remove yourself from this study area, since you are the owner!'
-  change-now: 'Change now'
-  editor-count: '{0} No editors|{1} One editor|]1,Inf[ %count% editors'
-  emails: 'E-mail addresses'
-  emails-help: 'Make sure to enter only e-mail addresses here. If an e-mail address is already known, it will be converted to a full user automatically.'
-  emails-help-local: 'Make sure to enter only e-mail addresses here. If an e-mail address is already known in the system, it will be excluded automatically.'
+  admin-added: "%user% has been promoted to administrator"
+  admin-list-title: "Administrators"
+  admin-removed: "%user% is no longer an administrator"
+  cannot-edit-self: "It is not possible to edit yourself"
+  cannot-remove-self: "It is not possible to remove yourself from this study area, since you are the owner!"
+  change-now: "Change now"
+  editor-count: "{0} No editors|{1} One editor|]1,Inf[ %count% editors"
+  emails: "E-mail addresses"
+  emails-help: "Make sure to enter only e-mail addresses here. If an e-mail address is already known, it will be converted to a full user automatically."
+  emails-help-local: "Make sure to enter only e-mail addresses here. If an e-mail address is already known in the system, it will be excluded automatically."
   info-text: >-
     Here you can grant and remove permissions on a per user basis.
     Note that the available roles depend on the study area capabilities.
     You can toggle the permissions by clicking on it, except for the viewer permission,
     as all added users automatically inherit the viewer permission.
-  no-admin: '%user% is no admin user'
+  no-admin: "%user% is no admin user"
   no-users-available: 'There are no users that can be granted the "%type%" permission'
-  not-allowed-public-viewer: 'It is not possible to add viewer permissions to public study areas!'
-  permission: 'Permission'
-  permissions-added: 'The permissions have been added'
-  remove-admin: 'Remove %user% as administrator'
-  remove-admin-text: 'Are you sure you want to remove %user% as administrator?'
+  not-allowed-public-viewer: "It is not possible to add viewer permissions to public study areas!"
+  permission: "Permission"
+  permissions-added: "The permissions have been added"
+  remove-admin: "Remove %user% as administrator"
+  remove-admin-text: "Are you sure you want to remove %user% as administrator?"
   remove-all-not-necessary: 'The "%type%" permissions cannot be revoked, as they are not found.'
-  remove-all-permissions: 'Revoke all permissions'
+  remove-all-permissions: "Revoke all permissions"
   remove-all-permissions-text: 'Are you sure you want to revoke all permissions on the study area "%item%"?'
   remove-all-permissions-for-type: 'Revoke all "%type%" permissions'
   remove-all-permissions-text-for-type: 'Are you sure you want to revoke all "%type%" permissions on the study area "%item%"?'
   remove-not-necessary: 'The "%type%" permissions for %user% cannot be revoked, as they are not found'
-  remove-not-possible: 'The permissions of %user% cannot be revoked, as there are none'
+  remove-not-possible: "The permissions of %user% cannot be revoked, as there are none"
   remove-permission: 'Revoke "%type%" permission'
-  remove-permissions: 'Revoke permissions'
+  remove-permissions: "Revoke permissions"
   remove-permission-text: 'Are you sure you want to revoke all permissions from the user %user% in the study area "%item%"?'
   remove-permission-text-email: 'Are you sure you want to revoke all permissions from the email %email% in the study area "%item%"?'
-  remove-self: 'Remove yourself'
-  remove-self-confirm: 'Yes, I want to remove myself'
-  remove-self-text: 'Are you sure you want to remove yourself from the study area %studyArea%?'
+  remove-self: "Remove yourself"
+  remove-self-confirm: "Yes, I want to remove myself"
+  remove-self-text: "Are you sure you want to remove yourself from the study area %studyArea%?"
   remove-viewer-warning-text: 'You will only be removing the users which only have the "%type%" role assigned! Users which have other roles assigned, will keep the %type% role!'
   removed-self: "You're now removed from the study area %studyArea%"
-  removed-permissions: 'Revoked permissions from %user%'
-  removed-permissions-all: 'Revoked all permissions'
+  removed-permissions: "Revoked permissions from %user%"
+  removed-permissions-all: "Revoked all permissions"
   removed-permissions-type: 'Revoked all "%type%" permissions'
   removed-single-permission: 'Revoked "%type%" permission from %user%'
-  revoke-type: 'Revoke all'
-  revoke-user: 'Revoke user'
-  reviewer-count: '{0} No reviewers|{1} One reviewer|]1,Inf[ %count% reviewers'
-  study-area-not-group-or-public: 'The current study area (%item%) does not have group or public permissions, which is required for advanced permission settings.'
-  study-area-title: 'Study area permissions'
+  revoke-type: "Revoke all"
+  revoke-user: "Revoke user"
+  reviewer-count: "{0} No reviewers|{1} One reviewer|]1,Inf[ %count% reviewers"
+  study-area-not-group-or-public: "The current study area (%item%) does not have group or public permissions, which is required for advanced permission settings."
+  study-area-title: "Study area permissions"
   type:
-    viewer: 'Viewer'
-    editor: 'Editor'
-    reviewer: 'Reviewer'
-    analysis: 'Analysis'
+    viewer: "Viewer"
+    editor: "Editor"
+    reviewer: "Reviewer"
+    analysis: "Analysis"
   type-help:
-    viewer: 'This role allows users to browse all map content. This role is enabled by default, and cannot be disabled.'
-    editor: 'This role allows users to edit the map content.'
-    reviewer: 'This role allows the user to review submissions.'
-    analysis: 'This role allows the user to view the analytics dashboard.'
-  viewer-count: '{0} No viewers|{1} One viewer|]1,Inf[ %count% viewers'
-  users: 'Users'
+    viewer: "This role allows users to browse all map content. This role is enabled by default, and cannot be disabled."
+    editor: "This role allows users to edit the map content."
+    reviewer: "This role allows the user to review submissions."
+    analysis: "This role allows the user to view the analytics dashboard."
+  viewer-count: "{0} No viewers|{1} One viewer|]1,Inf[ %count% viewers"
+  users: "Users"
 
 print:
-  copyright: "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
-                  \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
+  copyright:
+    "This print is made available under the \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Creative Commons}\\\\
+    \\href{https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode}{Attribution-NonCommercial-NoDerivatives 4.0 International} license."
   error:
     log: "Log"
     log-not-found: "LaTeX log file not found"
@@ -614,22 +617,22 @@ print:
     concept: "Back to concept/instance"
 
 relation:
-  source: 'Source'
-  target: 'Target'
-  type: 'Relation type'
+  source: "Source"
+  target: "Target"
+  type: "Relation type"
   default-1: "is same as"
   default-2: "is a kind of"
   default-3: "is part of"
 
 search:
-  data: 'Data'
-  found-in: 'Found in'
-  invalid-short: 'Your search term is too short. It should have 3 characters or more.'
-  invalid-long: 'Your search term is too long. It should have 100 characters or less.'
-  no-results: 'No results found in %item%.'
-  no-results-anywhere: 'No results found.'
-  placeholder: 'Search for...'
-  preview: 'Preview'
+  data: "Data"
+  found-in: "Found in"
+  invalid-short: "Your search term is too short. It should have 3 characters or more."
+  invalid-long: "Your search term is too long. It should have 100 characters or less."
+  no-results: "No results found in %item%."
+  no-results-anywhere: "No results found."
+  placeholder: "Search for..."
+  preview: "Preview"
   result:
     abbreviations: "Abbreviations"
     all-annotations: "All annotations"
@@ -637,26 +640,27 @@ search:
     external-resources: "External resources"
     instances: "Instances"
     own-annotations: "Own annotations"
-  results: 'Search results'
+  results: "Search results"
   results-for: 'Search results for "%item%"'
-  search: 'Search'
+  search: "Search"
 
 study-area:
-  access-type: 'Access type'
-  access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!
-    Next to that, only system administrators can update a study area to be publicly available for all registered users.'
-  add-title: 'Add new study area'
-  analytics-dashboard: 'Analytics dashboard'
+  access-type: "Access type"
+  access-type-change-note:
+    "Note that if you change the access type, some of the permissions might be reset!
+    Next to that, only system administrators can update a study area to be publicly available for all registered users."
+  add-title: "Add new study area"
+  analytics-dashboard: "Analytics dashboard"
   analytics-dashboard-help: >-
     When user tracking is enabled, it is possible to enable the analytics dashboard which allows the study area
     owner to inspect the behavior of the users.
-  current: 'Current'
+  current: "Current"
   current-area: 'Now browsing "%item%"'
-  default-tag-filter: 'Default tag filter'
-  default-tag-filter-help: 'The selected tag will be used as default filter when the concept browser is loaded for the first time.'
-  description: 'Description'
+  default-tag-filter: "Default tag filter"
+  default-tag-filter-help: "The selected tag will be used as default filter when the concept browser is loaded for the first time."
+  description: "Description"
   edit-title: 'Edit study area "%item%"'
-  existing: 'Existing study area'
+  existing: "Existing study area"
   field-configuration:
     text: >-
       Here you can update the object and field naming for the current study area.
@@ -667,13 +671,13 @@ study-area:
   freeze: 'Freeze study area "%item%"'
   freeze-text: 'Are you sure you want to freeze the study area "%item%"? All editing will be prohibited after this action! This action cannot be undone without risking data loss.'
   freeze-succeeded: 'Study area "%item%" has been frozen successfully.'
-  frozen: 'This study area has been frozen, editing is prohibited.'
+  frozen: "This study area has been frozen, editing is prohibited."
   groups:
     add-title: "Add study area group"
     areas: "Study areas"
     created: 'Study area group "%item%" has been successfully created.'
     default-name: "Unsorted"
-    edit-title: "Edit study area group \"%item%\""
+    edit-title: 'Edit study area group "%item%"'
     count: "Number of areas"
     group: "Study area group"
     groups: "Study area groups"
@@ -686,38 +690,41 @@ study-area:
     removed: 'Study area group "%item%" has been successfully removed.'
     show-contents: "Show group contents"
     updated: 'Study area group "%item%" has been successfully updated.'
-  list-title: 'Study area list'
-  name: 'Name'
-  new: 'New study area'
-  new-owner: 'New owner e-mail address'
-  new-owner-help: 'Supply the e-mail address of the new owner, who is required to already have an account.'
-  new-owner-not-found: 'The supplied e-mail address is not of a known user.'
+    is_dorton: "GIMA Student"
+    is_dorton_help: "Check to create a study area group for GIMA students."
+  list-title: "Study area list"
+  name: "Name"
+  new: "New study area"
+  new-owner: "New owner e-mail address"
+  new-owner-help: "Supply the e-mail address of the new owner, who is required to already have an account."
+  new-owner-not-found: "The supplied e-mail address is not of a known user."
   open-access: "Open access"
-  open-access-help: "When open access is enabled, this study area will be available for unregistered users!
+  open-access-help:
+    "When open access is enabled, this study area will be available for unregistered users!
     This overwrites the view permissions set in the Access Type above, which is still used when group edit permissions are required.
     Note that enabling open access will disable the possibility to track users."
-  owner: 'Owner'
+  owner: "Owner"
   owner-transferred: 'The ownership for study area "%item%" has been transferred to "%owner%".'
   permissions-updated: 'The permissions for the study area "%item%" have been updated.'
   print-header: "Print header"
-  print-header-help: 'Value will be used as header in any printed content. Will always be combined with the system URL.'
+  print-header-help: "Value will be used as header in any printed content. Will always be combined with the system URL."
   print-introduction: "Print introduction"
   print-introduction-header: "Print introduction"
   print-introduction-help: "Value will be displayed as introduction page in any printed content. If empty, it will be skipped."
   remove: 'Remove study area "%item%"'
-  remove-impossible: 'It is impossible to remove this study area, because there are concepts/instances which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
+  remove-impossible: "It is impossible to remove this study area, because there are concepts/instances which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area."
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
-  review-mode: 'Review mode'
-  review-mode-help: 'When enabled, all content changes made to the content must be reviewed before it can be published.'
+  review-mode: "Review mode"
+  review-mode-help: "When enabled, all content changes made to the content must be reviewed before it can be published."
   review-mode-notice: >-
     Review mode has been enabled on this study area, which means that all content changes need to be approved before it
     can be published! When fields are disabled, there is already a change pending.
   required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study areas for you."
   saved: 'Study area "%item%" has been saved successfully.'
-  show: 'This study area is owned by %owner%. It contains the following concepts/instances:'
-  switch-to: 'Switch'
-  track-users: 'Track study area usage'
+  show: "This study area is owned by %owner%. It contains the following concepts/instances:"
+  switch-to: "Switch"
+  track-users: "Track study area usage"
   track-users-help: >-
     The usage of this study area will be tracked for users that opt-in for the tracking when this setting is enabled.
     When enabled, already existing settings will not be tracked until the complete browser has been reloaded.
@@ -731,128 +738,128 @@ study-area:
     original data. The data will in no way be accessible to your teachers or influence your assessment. You give your
     consent by clicking on agree. It is possible to change your mind on this later and then your data will no longer be
     collected.
-  tracking-consent-agree: 'I agree'
-  tracking-consent-dashboard: 'This study area is configured to track user interaction.'
+  tracking-consent-agree: "I agree"
+  tracking-consent-dashboard: "This study area is configured to track user interaction."
   tracking-consent-dashboard-agreed: "Your interaction is currently <b>being</b> tracked as you've agreed with the conditions."
   tracking-consent-dashboard-disagreed: "Your interaction will <b>not</b> be tracked, as you've disagreed with the conditions."
   tracking-consent-dashboard-toggle: "You can toggle your preference by clicking %url_start%here%url_end%."
   tracking-consent-dashboard-unknown: "Your tracking status is unknown. If this continues to be shown, please contact us."
-  tracking-consent-disagree: 'I disagree'
-  tracking-consent-title: 'Tracking consent'
-  tracking-disabled: 'Tracking disabled'
-  tracking-disabled-text: 'User tracking has been disabled for this study area. Click %url_start%here%url_end% to edit the tracking settings.'
-  tracking-remove-data: 'Are you sure? This will remove all existing tracking data, which cannot be undone!'
-  transfer-ownership: 'Transfer ownership'
-  unfreeze: 'Unfreeze study area'
+  tracking-consent-disagree: "I disagree"
+  tracking-consent-title: "Tracking consent"
+  tracking-disabled: "Tracking disabled"
+  tracking-disabled-text: "User tracking has been disabled for this study area. Click %url_start%here%url_end% to edit the tracking settings."
+  tracking-remove-data: "Are you sure? This will remove all existing tracking data, which cannot be undone!"
+  transfer-ownership: "Transfer ownership"
+  unfreeze: "Unfreeze study area"
   unfreeze-text: 'Are you sure you want to unfreeze the study area "%item%"? This could lead to data loss for users of this study area when data is edited, please use this feature responsibly!'
   unfreeze-succeeded: 'Study area "%item%" has been unfrozen successfully.'
   updated: 'Study area "%item%" has been successfully updated.'
 
 relation-type:
-  _name: 'Relation type'
-  add-title: 'Add new relation type'
-  description: 'Description'
+  _name: "Relation type"
+  add-title: "Add new relation type"
+  description: "Description"
   edit-title: 'Edit relation type "%item%"'
-  list-title: 'Relation type list'
-  name: 'Name'
+  list-title: "Relation type list"
+  name: "Name"
   remove: 'Remove relation type "%item%"'
   remove-text: 'Are you sure you want to remove the relation type "%item%"? Note that existing usages of the type will not be removed automatically!'
-  remove-relations: 'Note that the following relations still use this relation type:'
+  remove-relations: "Note that the following relations still use this relation type:"
   removed: 'Relation type "%item%" has been removed successfully'
   removed-already: 'The relation type "%item%" was already removed'
   saved: 'Relation type "%item%" has been saved successfully.'
   updated: 'Relation type "%item%" has been successfully updated.'
 
 review:
-  approve: 'Approve'
-  approved-at: 'Approved at'
-  approved-by: 'Approved by'
-  change-type: 'Change type'
+  approve: "Approve"
+  approved-at: "Approved at"
+  approved-by: "Approved by"
+  change-type: "Change type"
   change-types:
-    add: 'Object added'
-    edit: 'Object edited'
-    remove: 'Object removed'
-  clear-comments: 'Clear'
-  comments: 'Review comments'
-  comments-placeholder: 'Leave your comments here, if any'
-  current-change: 'Currently pending change (by %owner%)'
-  edit-not-possible: '%item% cannot be edited at this time, as it is pending for removal.'
-  edit-notice: 'It is not possible to edit the submitted changes from here.'
-  edit-pending: 'You''re editing your pending changes, which are applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point.'
-  edit-pending-review: 'You''re editing your submitted review, which is applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point.'
-  edit-successful: 'The review has been updated successfully!'
-  edit-title: 'Edit submission'
-  empty-content: 'No content'
-  empty-note: 'No note'
-  field: 'Changed field'
-  list-other: 'Submissions from other editors'
-  list-other-flash: 'The following submissions are pending review.'
-  list-other-pending-flash: 'The following submission have been reviewed already and are pending resubmit after rework.'
-  list-own: 'Your pending submissions'
-  list-own-flash: 'The following submissions are pending review.'
-  list-own-rework-flash: 'The following submissions have been reviewed and have received some comments. You will need to rework and resubmit them.'
-  new: 'New content'
-  no-pending-submissions: 'You have no pending reviews submissions at this point. Time to create some?'
-  notes: 'Notes'
-  notes-from-author: 'Note from author'
-  notes-help: 'You can leave a small description to help the reviewer if required.'
-  nothing-selected-for-submit: 'You did not select any changes that can be submitted!'
-  nothing-to-publish: 'There are no approved reviews which can be published at this time.'
-  nothing-to-submit: 'You have no changes to submit! Time to create some?'
-  object-removed: 'This object is marked for removal.'
-  object-type: 'Changed object'
-  original: 'Original content'
-  owner: 'Owner'
-  publish: 'Publish'
-  publish-single-text: 'Are you sure you want to publish this approved submission?'
-  publish-single-title: 'Publish approved submission'
-  publish-successful: 'The changes from the approved submission have been applied successfully!'
-  publish-text: 'The submissions below can be published as they have been accepted by a reviewer.'
-  publish-title: 'Publish approved submissions'
-  remove-not-possible: '%item% cannot be removed at this time as it has pending changes.'
-  remove-successful: 'The review has been removed successfully!'
-  remove-text: 'Are you sure you want to remove this review? If you remove the review, the associated changes will be lost!'
-  remove-title: 'Remove review'
-  resubmit-review: 'Resubmit'
-  resubmit-review-title: 'Resubmit review'
-  resubmit-review-text: 'Are you sure you want to resubmit the review?'
-  resubmitted: 'Your review has been resubmitted successfully!'
+    add: "Object added"
+    edit: "Object edited"
+    remove: "Object removed"
+  clear-comments: "Clear"
+  comments: "Review comments"
+  comments-placeholder: "Leave your comments here, if any"
+  current-change: "Currently pending change (by %owner%)"
+  edit-not-possible: "%item% cannot be edited at this time, as it is pending for removal."
+  edit-notice: "It is not possible to edit the submitted changes from here."
+  edit-pending: "You're editing your pending changes, which are applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point."
+  edit-pending-review: "You're editing your submitted review, which is applied here. Remaining disabled fields are changes from another source, and cannot be edited at this point."
+  edit-successful: "The review has been updated successfully!"
+  edit-title: "Edit submission"
+  empty-content: "No content"
+  empty-note: "No note"
+  field: "Changed field"
+  list-other: "Submissions from other editors"
+  list-other-flash: "The following submissions are pending review."
+  list-other-pending-flash: "The following submission have been reviewed already and are pending resubmit after rework."
+  list-own: "Your pending submissions"
+  list-own-flash: "The following submissions are pending review."
+  list-own-rework-flash: "The following submissions have been reviewed and have received some comments. You will need to rework and resubmit them."
+  new: "New content"
+  no-pending-submissions: "You have no pending reviews submissions at this point. Time to create some?"
+  notes: "Notes"
+  notes-from-author: "Note from author"
+  notes-help: "You can leave a small description to help the reviewer if required."
+  nothing-selected-for-submit: "You did not select any changes that can be submitted!"
+  nothing-to-publish: "There are no approved reviews which can be published at this time."
+  nothing-to-submit: "You have no changes to submit! Time to create some?"
+  object-removed: "This object is marked for removal."
+  object-type: "Changed object"
+  original: "Original content"
+  owner: "Owner"
+  publish: "Publish"
+  publish-single-text: "Are you sure you want to publish this approved submission?"
+  publish-single-title: "Publish approved submission"
+  publish-successful: "The changes from the approved submission have been applied successfully!"
+  publish-text: "The submissions below can be published as they have been accepted by a reviewer."
+  publish-title: "Publish approved submissions"
+  remove-not-possible: "%item% cannot be removed at this time as it has pending changes."
+  remove-successful: "The review has been removed successfully!"
+  remove-text: "Are you sure you want to remove this review? If you remove the review, the associated changes will be lost!"
+  remove-title: "Remove review"
+  resubmit-review: "Resubmit"
+  resubmit-review-title: "Resubmit review"
+  resubmit-review-text: "Are you sure you want to resubmit the review?"
+  resubmitted: "Your review has been resubmitted successfully!"
   resubmitted-note: >-
     This review has been resubmitted!
     Check whether the previous notes have been resolved and remove them if that is the case.
     You can remove all comments by clicking %a_start%here%a_end%.
-  review-approved: 'The submission has been approved. It is now waiting for publishing, which can only be done by the study area owner.'
-  review-comments: 'The submission has been reviewed and your comments have been stored. The author will need to resubmit the changes for review.'
-  review-submission: 'Review submission'
+  review-approved: "The submission has been approved. It is now waiting for publishing, which can only be done by the study area owner."
+  review-comments: "The submission has been reviewed and your comments have been stored. The author will need to resubmit the changes for review."
+  review-submission: "Review submission"
   review-submission-text: >-
     Below you can review the changes, and comment on them if required. If you leave comments, the author must resubmit
     the submission in order to resolve them. Note that it is currently not possible to review the changes in the concept
     map or learning path browser, only this page has the changes available!
-  reviewed-at: 'Reviewed at'
-  reviewed-by: 'Reviewed by'
-  reviewer: 'Reviewer'
-  reviewer-help: 'Select who should review these changes.'
-  requested-reviewer: 'Requested reviewer'
-  submissions-title: 'Pending reviews'
-  submissions-text: 'The submissions below are currently pending review.'
-  saved-for-review: 'Your change has been saved! You will need to submit it for review in order to get it published.'
-  show-submission: 'Show submission'
-  start-review: 'Start review'
-  submit-title: 'Submit your changes for review'
-  submit-text: 'Select the changes you want to submit for review.'
-  submit-text-toggle: 'Click here to toggle all changes.'
-  submitted: 'Your review has been submitted successfully!'
-  submitted-at: 'Submitted at'
-  toggle-preview: 'Toggle preview'
-  update: 'Updated content'
+  reviewed-at: "Reviewed at"
+  reviewed-by: "Reviewed by"
+  reviewer: "Reviewer"
+  reviewer-help: "Select who should review these changes."
+  requested-reviewer: "Requested reviewer"
+  submissions-title: "Pending reviews"
+  submissions-text: "The submissions below are currently pending review."
+  saved-for-review: "Your change has been saved! You will need to submit it for review in order to get it published."
+  show-submission: "Show submission"
+  start-review: "Start review"
+  submit-title: "Submit your changes for review"
+  submit-text: "Select the changes you want to submit for review."
+  submit-text-toggle: "Click here to toggle all changes."
+  submitted: "Your review has been submitted successfully!"
+  submitted-at: "Submitted at"
+  toggle-preview: "Toggle preview"
+  update: "Updated content"
 
 tag:
-  add-title: 'Add tag'
-  color: 'Colour'
+  add-title: "Add tag"
+  color: "Colour"
   edit-title: 'Edit tag "%tag%"'
-  list-title: 'Tag list'
-  name: 'Name'
-  remove-concepts: 'Note that the tag will also be removed from the following concepts/instances:'
+  list-title: "Tag list"
+  name: "Name"
+  remove-concepts: "Note that the tag will also be removed from the following concepts/instances:"
   remove-text: 'Are you sure you want to remove the tag "%item%"?'
   remove-title: 'Remove tag "%item%"'
   removed: 'Tag "%item%" has been removed successfully.'
@@ -861,86 +868,86 @@ tag:
 
 tracking:
   export:
-    concept: 'Concept/instance'
-    description: "Tracking detail export for the study area \"%item%\"."
+    concept: "Concept/instance"
+    description: 'Tracking detail export for the study area "%item%".'
     event: "Event"
-    learning-path: 'Learning path'
+    learning-path: "Learning path"
     link: "Link"
     link-blank: "Blank"
     origin: "Origin"
     path: "Path"
     route: "Internal route"
     session-id: "Session ID"
-    study-area: 'Study area'
-    subject: "Tracking export of study area \"%item%\"."
+    study-area: "Study area"
+    subject: 'Tracking export of study area "%item%".'
     timestamp: "Timestamp"
     user-id: "User ID"
 
 url:
-  bad: 'Broken'
-  bad-external: 'Broken external URLs'
-  bad-internal: 'Broken internal URLs'
-  bad-internal-wrong: 'Internal URLs linking to the wrong study area'
-  concept-path: 'Concept/instance: %name% - %path%'
-  contributor-path: 'Contributor: %name% - %path%'
-  external-resource-path: 'External resource: %title% - %path%'
-  good: 'Healthy'
-  good-external: 'Healthy external URLs'
-  good-internal: 'Healthy internal URLs'
-  internal-wrong: 'Internal URL, wrong study area'
-  last-scanned: 'Last scanned: %date%'
-  learning-outcome-path: '%singular%: %name% - %path%'
-  learning-path-path: 'Learning path: %name% - %path%'
-  rescan: 'Recheck'
-  rescan-study-area: 'Rescan complete study area'
-  rescanned: 'URL rescanned, result: %result%'
-  rescanned-study-area: 'Rescanned all URLs in study area'
-  scan-progress: 'Scan in progress, please be patient.'
-  status: 'Status'
-  study-area-path: 'Study area - %path%'
-  overview-title: 'Used URLs'
-  unknown: 'Unknown origin'
-  unscanned: 'Not scanned yet'
-  unscanned-external: 'External URLs - not scanned yet'
-  unscanned-internal: 'Internal URLs - not scanned yet'
-  url: 'URL'
-  urls-unscanned: 'URLs not scanned yet.'
+  bad: "Broken"
+  bad-external: "Broken external URLs"
+  bad-internal: "Broken internal URLs"
+  bad-internal-wrong: "Internal URLs linking to the wrong study area"
+  concept-path: "Concept/instance: %name% - %path%"
+  contributor-path: "Contributor: %name% - %path%"
+  external-resource-path: "External resource: %title% - %path%"
+  good: "Healthy"
+  good-external: "Healthy external URLs"
+  good-internal: "Healthy internal URLs"
+  internal-wrong: "Internal URL, wrong study area"
+  last-scanned: "Last scanned: %date%"
+  learning-outcome-path: "%singular%: %name% - %path%"
+  learning-path-path: "Learning path: %name% - %path%"
+  rescan: "Recheck"
+  rescan-study-area: "Rescan complete study area"
+  rescanned: "URL rescanned, result: %result%"
+  rescanned-study-area: "Rescanned all URLs in study area"
+  scan-progress: "Scan in progress, please be patient."
+  status: "Status"
+  study-area-path: "Study area - %path%"
+  overview-title: "Used URLs"
+  unknown: "Unknown origin"
+  unscanned: "Not scanned yet"
+  unscanned-external: "External URLs - not scanned yet"
+  unscanned-internal: "Internal URLs - not scanned yet"
+  url: "URL"
+  urls-unscanned: "URLs not scanned yet."
 
 user:
-  display-name: 'Name'
-  emailaddress: 'E-mail address'
+  display-name: "Name"
+  emailaddress: "E-mail address"
   fallback:
-    added: 'The new users have been invited.'
-    add-title: 'Add local users'
-    add-text: 'You can invite new local users here. Just supply their e-mail addresses and they will receive an e-mail to create an account.'
-    change-password: 'Change password'
-    current-password: 'Current password'
+    added: "The new users have been invited."
+    add-title: "Add local users"
+    add-text: "You can invite new local users here. Just supply their e-mail addresses and they will receive an e-mail to create an account."
+    change-password: "Change password"
+    current-password: "Current password"
     edit-title: 'Edit user "%user%"'
-    password-updated: 'Password for %user% updated.'
-    password-updated-own: 'Your password has been updated!'
-    remove: 'Remove local account'
+    password-updated: "Password for %user% updated."
+    password-updated-own: "Your password has been updated!"
+    remove: "Remove local account"
     remove-text: 'Are you sure you want to remove the user "%user%"?'
-    removed: 'The local account for %user% has been removed.'
-    reset-password: 'Reset password for %user%'
-    reset-password-short: 'Reset password'
-    reset-password-text: 'Here you can reset the password of a user directly.'
+    removed: "The local account for %user% has been removed."
+    reset-password: "Reset password for %user%"
+    reset-password-short: "Reset password"
+    reset-password-text: "Here you can reset the password of a user directly."
     reset-password-warning: 'Users can also reset their password themselves by using the "Forgot password" option at the login page.'
-    self-remove: 'You cannot remove your own account'
-    updated: 'Local account for %user% updated.'
-    user-list: 'Local account list'
-  family-name: 'Family name'
-  full-name: 'Full name'
-  given-name: 'Given name'
+    self-remove: "You cannot remove your own account"
+    updated: "Local account for %user% updated."
+    user-list: "Local account list"
+  family-name: "Family name"
+  full-name: "Full name"
+  given-name: "Given name"
   invite:
-    invited-at: 'Invited at'
-    not-found: 'Your invite was not found. Did you already create an account with this invite?'
-    remove: 'Remove local account invite'
+    invited-at: "Invited at"
+    not-found: "Your invite was not found. Did you already create an account with this invite?"
+    remove: "Remove local account invite"
     remove-text: 'Are you sure you want to remove the invite for "%user%"?'
     removed: 'The invite for "%email%" has been removed.'
   local:
-    active: 'Active accounts'
-    invite: 'Open invites'
-  password: 'Password'
-  remove-studyareas: 'Note that any owned study areas will also be removed automatically!'
-  remove-studyareas-list: 'Study areas to be removed:'
-  repeat-password: 'Repeat password'
+    active: "Active accounts"
+    invite: "Open invites"
+  password: "Password"
+  remove-studyareas: "Note that any owned study areas will also be removed automatically!"
+  remove-studyareas-list: "Study areas to be removed:"
+  repeat-password: "Repeat password"

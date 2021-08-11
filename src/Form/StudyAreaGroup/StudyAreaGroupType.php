@@ -9,6 +9,7 @@ use App\Repository\StudyAreaRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,35 +21,40 @@ class StudyAreaGroupType extends AbstractType
     assert($studyAreaGroup instanceof StudyAreaGroup);
 
     $builder
-        ->add('name', TextType::class)
-        ->add('studyAreas', EntityType::class, [
-            'label'         => 'study-area.groups.areas',
-            'class'         => StudyArea::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'by_reference'  => false,
-            'multiple'      => true,
-            'query_builder' => function (StudyAreaRepository $repo) use ($studyAreaGroup) {
-              $qb = $repo->createQueryBuilder('s');
-              $qb->where('s.group IS NULL');
+      ->add('name', TextType::class)
+      ->add('is_dorton', CheckboxType::class, [
+        'required' => false,
+        'label'    => 'study-area.groups.is_dorton',
+        'help'     => 'study-area.groups.is_dorton_help',
+      ])
+      ->add('studyAreas', EntityType::class, [
+        'label'         => 'study-area.groups.areas',
+        'class'         => StudyArea::class,
+        'choice_label'  => 'name',
+        'required'      => false,
+        'by_reference'  => false,
+        'multiple'      => true,
+        'query_builder' => function (StudyAreaRepository $repo) use ($studyAreaGroup) {
+          $qb = $repo->createQueryBuilder('s');
+          $qb->where('s.group IS NULL');
 
-              if ($studyAreaGroup->getId() !== NULL) {
-                $qb->orWhere('s.group = :group')
-                    ->setParameter('group', $studyAreaGroup);
-              }
+          if ($studyAreaGroup->getId() !== NULL) {
+            $qb->orWhere('s.group = :group')
+              ->setParameter('group', $studyAreaGroup);
+          }
 
-              $qb->orderBy('s.name', 'ASC');
+          $qb->orderBy('s.name', 'ASC');
 
-              return $qb;
-            },
-            'select2'       => true,
-        ])
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_studyarea_listgroups',
-        ]);
+          return $qb;
+        },
+        'select2'       => true,
+      ])
+      ->add('submit', SaveType::class, [
+        'enable_save_and_list' => false,
+        'enable_cancel'        => true,
+        'cancel_label'         => 'form.discard',
+        'cancel_route'         => 'app_studyarea_listgroups',
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)
@@ -57,6 +63,4 @@ class StudyAreaGroupType extends AbstractType
     $resolver->setDefault('data_class', StudyAreaGroup::class);
     $resolver->setAllowedTypes('study_area_group', StudyAreaGroup::class);
   }
-
-
 }
