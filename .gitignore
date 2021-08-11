@@ -43,3 +43,6 @@ assets/js/_fos_js_routes.js
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+## PHP version
+/.php-version
