@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ac5a63667e8d24af81d73ad433c44ce",
+    "content-hash": "5fd33b6ae83672c3bcebd3e4688d0442",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2768,20 +2768,20 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.13.0",
+            "version": "3.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "06909ae3766b0f0ff93f585c3fc407ab7c7942aa"
+                "reference": "bf371f55d8137fec4ff096bd45ff19e2db02ac4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/06909ae3766b0f0ff93f585c3fc407ab7c7942aa",
-                "reference": "06909ae3766b0f0ff93f585c3fc407ab7c7942aa",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/bf371f55d8137fec4ff096bd45ff19e2db02ac4c",
+                "reference": "bf371f55d8137fec4ff096bd45ff19e2db02ac4c",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.0",
+                "doctrine/annotations": "^1.10.4",
                 "doctrine/instantiator": "^1.0.3",
                 "doctrine/lexer": "^1.1",
                 "jms/metadata": "^2.0",
@@ -2816,7 +2816,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.12-dev"
+                    "dev-master": "3.14-dev"
                 }
             },
             "autoload": {
@@ -2849,7 +2849,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/3.13.0"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.14.0"
             },
             "funding": [
                 {
@@ -2857,20 +2857,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-07-05T11:46:58+00:00"
+            "time": "2021-08-06T12:10:02+00:00"
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "3.9.1",
+            "version": "3.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "2fbf2385668dd715d030567fd41e181bbf41fb42"
+                "reference": "1a030ecaf913b7a895eeaab04191cd7ff1810b46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/2fbf2385668dd715d030567fd41e181bbf41fb42",
-                "reference": "2fbf2385668dd715d030567fd41e181bbf41fb42",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/1a030ecaf913b7a895eeaab04191cd7ff1810b46",
+                "reference": "1a030ecaf913b7a895eeaab04191cd7ff1810b46",
                 "shasum": ""
             },
             "require": {
@@ -2935,7 +2935,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/JMSSerializerBundle/issues",
-                "source": "https://github.com/schmittjoh/JMSSerializerBundle/tree/3.9.1"
+                "source": "https://github.com/schmittjoh/JMSSerializerBundle/tree/3.10.0"
             },
             "funding": [
                 {
@@ -2943,7 +2943,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-23T12:21:23+00:00"
+            "time": "2021-08-06T12:12:38+00:00"
         },
         {
             "name": "kick-in/exception-handler-bundle",
