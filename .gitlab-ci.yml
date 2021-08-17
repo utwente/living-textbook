@@ -85,7 +85,7 @@ install-dependencies:
 js-analysis:
   stage: lint
   image:
-    name: hyzual/jshint:latest
+    name: eeacms/jshint:latest
     entrypoint: [ "" ]
   needs: [ ]
   before_script:
