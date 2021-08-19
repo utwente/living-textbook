@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Annotation\ApiProperty;
 
 use App\Controller\SearchController;
@@ -1220,7 +1219,7 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-   /**
+  /**
    * @return int
    *
    * @Groups({"concept:read"})
