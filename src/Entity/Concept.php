@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
@@ -34,16 +36,20 @@ use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\JsonValidator;
+use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
 
 /**
  * Class Concept
- * 
- * @ApiResource(
- *    attributes={},
- *    collectionOperations={"get", "post"},
- *    itemOperations={"get", "put", "delete"},
- *    normalizationContext={"groups"={"concept:read"}},
- *    denormalizationContext={"groups"={"concept:write"}},
+ *
+ *  @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"concept:read"}},
+ *     denormalizationContext={"groups"={"concept:write"}},
  * )
  * @ApiFilter(SearchFilter::class, properties={"studyArea": "exact"})
  *
@@ -158,13 +164,11 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $priorKnowledge;
 
   /**
-   * @var string
+   * @var mixed
    *
-   * @ORM\Column(name="modelCfg", type="string", nullable=true)
+   * @ORM\Column(name="modelCfg", type="json_document", nullable=true, options={"jsonb": true})
+   * @JMSA\Type("mixed")
    *
-   * @JMSA\Expose()
-   * @JMSA\Groups({"review_change"})
-   * @JMSA\Type("string")
    * @Groups({"concept:read", "concept:write"})
    */
   private $modelCfg;
@@ -302,6 +306,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    */
   private $selfAssessment;
 
+
   /**
    * @var ArrayCollection|ConceptRelation[]
    *
@@ -316,8 +321,9 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\SerializedName("relations")
    * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
    * @JMSA\MaxDepth(3)
-   * 
-   * @Groups({"concept:read", "concept:write"})
+   *
+   * @Groups({"concept:read"})
+   *
    */
   private $outgoingRelations;
 
@@ -334,7 +340,7 @@ class Concept implements SearchableInterface, ReviewableInterface
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
    * @JMSA\MaxDepth(3)
-   * @Groups({"concept:read", "concept:write"})
+   *
    */
   private $incomingRelations;
 
@@ -383,8 +389,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
     $this->selfAssessment    = new DataSelfAssessment();
-
-    $this->modelCfg = '';
   }
 
   /**
@@ -841,19 +845,19 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
-   * @return string|null
+   * @return mixed|null
    */
-  public function getModelCfg(): ?string
+  public function getModelCfg()
   {
     return $this->modelCfg;
   }
 
   /**
-   * @param string $modelCfg
+   * @param mixed $modelCfg
    *
    * @return Concept
    */
-  public function setModelCfg(string $modelCfg): Concept
+  public function setModelCfg($modelCfg): Concept
   {
     $this->modelCfg = $modelCfg;
 
@@ -1214,5 +1218,15 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->tags->removeElement($tag);
 
     return $this;
+  }
+
+   /**
+   * @return int
+   *
+   * @Groups({"concept:read"})
+   */
+  public function getId(): ?int
+  {
+    return $this->id;
   }
 }

@@ -106,6 +106,15 @@
     "drenso/symfony-oidc-bundle": {
         "version": "v1.0.1"
     },
+    "dunglas/doctrine-json-odm": {
+        "version": "0.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.1",
+            "ref": "c2ab78f625df0c89af5908d50a28602ff8c4919f"
+        }
+    },
     "easyrdf/easyrdf": {
         "version": "0.9.1"
     },

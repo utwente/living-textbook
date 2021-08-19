@@ -2,16 +2,27 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ConceptRelation
+ *
+ * @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"conceptrelation:read", "concept:read"}},
+ *     denormalizationContext={"groups"={"conceptrelation:write"}},
+ * )
  *
  * @author BobV
  *
@@ -40,6 +51,9 @@ class ConceptRelation
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type(Concept::class)
    * @JMSA\MaxDepth(2)
+   *
+   * @Groups({"conceptrelation:write"})
+   *
    */
   private $source;
 
@@ -55,13 +69,16 @@ class ConceptRelation
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type(Concept::class)
    * @JMSA\MaxDepth(2)
+   *
+   * * @Groups({"conceptrelation:write"})
    */
   private $target;
+
 
   /**
    * @var RelationType
    *
-   * @ORM\ManyToOne(targetEntity="RelationType")
+   * @ORM\ManyToOne(targetEntity="RelationType", cascade={"persist", "remove"})
    * @ORM\JoinColumn(name="relation_type", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -70,6 +87,8 @@ class ConceptRelation
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type(RelationType::class)
    * @JMSA\MaxDepth(2)
+   *
+   * @Groups({"conceptrelation:write"})
    */
   private $relationType;
 
@@ -100,11 +119,24 @@ class ConceptRelation
   private $incomingPosition = 0;
 
   /**
+   * @var mixed
+   *
+   * @ORM\Column(name="modelCfg", type="json_document", nullable=true, options={"jsonb": true})
+   * @JMSA\Type("mixed")
+   *
+   * @Groups({"concept:read", "conceptrelation:read", "conceptrelation:write"})
+   */
+  private $modelCfg;
+
+  /**
    * @return int|null
    *
    * @JMSA\VirtualProperty()
    * @JMSA\SerializedName("target")
    * @JMSA\Expose()
+   *
+   * @Groups({"concept:read", "conceptrelation:read"})
+   *
    */
   public function getTargetId(): ?int
   {
@@ -113,6 +145,12 @@ class ConceptRelation
 
   /**
    * @return int|null
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\SerializedName("target")
+   * @JMSA\Expose()
+   *
+   * @Groups({"concept:read", "conceptrelation:read"})
    */
   public function getSourceId(): ?int
   {
@@ -124,10 +162,27 @@ class ConceptRelation
    *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
+   *
+   * @Groups({"concept:read", "conceptrelation:read"})
+   *
    */
   public function getRelationName(): string
   {
     return $this->relationType ? $this->relationType->getName() : '';
+  }
+
+  /**
+   * @return string
+   *
+   * @JMSA\VirtualProperty()
+   * @JMSA\Expose()
+   *
+   * @Groups({"concept:read", "conceptrelation:read"})
+   *
+   */
+  public function getRelationDescription(): ?string
+  {
+    return $this->relationType ? $this->relationType->getDescription() : '';
   }
 
   /**
@@ -229,6 +284,36 @@ class ConceptRelation
   public function setIncomingPosition(int $incomingPosition): ConceptRelation
   {
     $this->incomingPosition = $incomingPosition;
+
+    return $this;
+  }
+
+  /**
+   * @return int
+   *
+   * @Groups({"concept:read", "conceptrelation:read"})
+   */
+  public function getId(): ?int
+  {
+    return $this->id;
+  }
+
+  /**
+   * @return mixed|null
+   */
+  public function getModelCfg()
+  {
+    return $this->modelCfg;
+  }
+
+  /**
+   * @param mixed $modelCfg
+   *
+   * @return ConceptRelation
+   */
+  public function setModelCfg($modelCfg): ConceptRelation
+  {
+    $this->modelCfg = $modelCfg;
 
     return $this;
   }

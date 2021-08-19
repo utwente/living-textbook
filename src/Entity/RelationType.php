@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
@@ -12,11 +13,20 @@ use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class RelationType
+ *
+ * @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get", "post"},
+ *      itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"conceptrelation:read"}},
+ *     denormalizationContext={"groups"={"conceptrelation:write"}},
+ * )
  *
  * @author BobV
  *
@@ -41,6 +51,8 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
+   *
+   * @Groups({"conceptrelation:write"})
    */
   private $studyArea;
 
@@ -54,6 +66,8 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
    *
    * @Serializer\Groups({"Default", "review_change", "name_only"})
    * @Serializer\Type("string")
+   *
+   * @Groups({"concept:read", "conceptrelation:read", "conceptrelation:write"})
    */
   private $name;
 
@@ -64,6 +78,8 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
    *
    * @Serializer\Groups({"Default", "review_change"})
    * @Serializer\Type("string")
+   *
+   * @Groups({"concept:read", "conceptrelation:read", "conceptrelation:write"})
    */
   private $description;
 
@@ -175,5 +191,15 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     $this->studyArea = $studyArea;
 
     return $this;
+  }
+
+  /**
+   * @return int
+   *
+   * @Groups({"concept:read", "conceptrelation:read"})
+   */
+  public function getId(): ?int
+  {
+    return $this->id;
   }
 }
