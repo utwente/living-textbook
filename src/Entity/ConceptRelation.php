@@ -147,7 +147,7 @@ class ConceptRelation
    * @return int|null
    *
    * @JMSA\VirtualProperty()
-   * @JMSA\SerializedName("target")
+   * @JMSA\SerializedName("source")
    * @JMSA\Expose()
    *
    * @Groups({"concept:read", "conceptrelation:read"})
