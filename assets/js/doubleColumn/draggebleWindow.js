@@ -209,7 +209,7 @@
    * @param e
    */
   dragButton.doDrag = function (e) {
-    if (animationCount > 0) return;
+    if (animationCount > 0 && !_isDotronStudyArea) return;
     if (fullScreen) return;
 
 

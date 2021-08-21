@@ -197,6 +197,9 @@ export default class ConceptBrowser {
 
     constructor(elementId: string) {
         this.canvas = document.getElementById(elementId) as HTMLCanvasElement;
+        if (!this.canvas) {
+          this.canvas = document.createElement("canvas");
+        }
         this.renderer = new ConceptBrowserRenderer(this, this.canvas, this.config, this.mapWidth, this.mapHeight);
         this.cbCanvas = d3.select(this.canvas);
         this.resizeCanvas();

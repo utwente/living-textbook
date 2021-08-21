@@ -61,7 +61,11 @@ Encore
       {from: './vendor/studio-42/elfinder/css', to: 'els/css/[path][name].[ext]'},
       {from: './vendor/studio-42/elfinder/img', to: 'els/img/[path][name].[ext]'},
       {from: './vendor/studio-42/elfinder/js', to: 'els/js/[path][name].[ext]'},
-      {from: './vendor/studio-42/elfinder/sounds', to: 'els/sounds/[path][name].[ext]'}
+      {from: './vendor/studio-42/elfinder/sounds', to: 'els/sounds/[path][name].[ext]'},
+      {
+        from: './assets/js/dotron-app/lib/',
+        to: '[name].[hash:8].[ext]',
+      }
     ])
 
     // will require an extra script tag for runtime.js

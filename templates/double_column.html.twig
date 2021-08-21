@@ -4,14 +4,35 @@
   <!--suppress JSUnusedLocalSymbols -->
   <script type="text/javascript">
     var _studyArea = {{ studyArea.id }};
+    var _isDotronStudyArea = {{ studyArea.group ? (studyArea.group.isDorton ? 'true' : 'false') : 'false'  }};
     var _openMapOnLoad = {{ openMap ? 'true' : 'false' }};
     var _trackUser = {{ studyArea.trackUsers ? 'true' : 'false' }};
   </script>
+
   {{ encore_entry_script_tags('double-column') }}
 {% endblock %}
 
+  {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDorton  %}
+
+    {% block javascripts_bottom %}
+      parent()
+
+      <script src="{{ asset('build/dotron-app.js') }}"></script>
+
+    {% endblock %}
+
+  {% endif %}
+
+
 {% block stylesheets %}
   {{ encore_entry_link_tags('double-column') }}
+
+  {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDorton  %}
+
+    <link rel="stylesheet" href="{{ asset('build/dotron-app.css') }}">
+
+  {% endif %}
+
 {% endblock %}
 
 {% block base_content %}
@@ -39,7 +60,14 @@
       </div>
     </div>
     <div id="right-container">
-      <div class="animation-opacity-container">
+
+      {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDorton  %}
+
+          <div id="dotron-app-root"></div>
+
+      {% else %}
+
+        <div class="animation-opacity-container">
         <div id="concept-browser-controls" class="container-fluid">
           <div class="row justify-content-between">
             <div class="search-container">
@@ -101,6 +129,7 @@
           </div>
         </div>
       </div>
+    {% endif %}
     </div>
   </div>
   <div id="bottom-row">

@@ -26,15 +26,21 @@ $(function () {
 
   global.cb = new ConceptBrowser('graph_container_canvas');
 
-  $.get({
-    url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
-    dataType: 'json'
-  }).done(function (data) {
-    conceptSearch.createSearch($('#search'), data);
-    cb.init(data);
-  }).fail(function (error) {
-    console.error(error);
-  });
+  // if the study area is flagged as isDotron (true), no need to init the concept browser data.
+  if (_isDotronStudyArea) {
+    console.debug("_isDotronStudyArea", _isDotronStudyArea);
+    console.debug("concept browser data not initialized");
+  } else {
+    $.get({
+      url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
+      dataType: 'json'
+    }).done(function (data) {
+      conceptSearch.createSearch($('#search'), data);
+      cb.init(data);
+    }).fail(function (error) {
+      console.error(error);
+    });
+  }
 
   // Load tooltips
   $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
