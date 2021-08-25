@@ -1215,7 +1215,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
-   * @return int
+   * @return int|null
    *
    * @Groups({"concept:read"})
    */
