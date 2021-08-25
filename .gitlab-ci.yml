@@ -102,6 +102,31 @@ action-security-check:
   script:
     - php bin/console ltb:check:action-security
 
+deploy-gima2021:
+  stage: deploy
+  image: kickin/ssh:1.2.0
+  resource_group: deploy-staging
+  dependencies: []
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "${STAGING_HOST_SSH} ${STAGING_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - echo "[${STAGING_HOST_SSH}]:${STAGING_HOST_SSH_PORT} ${STAGING_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "${GIMA2021_HOST_SSH_PRIVATE_KEY}")
+  script:
+    - ssh -tt ${STAGING_USER}@${STAGING_HOST_SSH} -p ${STAGING_HOST_SSH_PORT} ${CI_PIPELINE_ID}
+  environment:
+    name: GIMA-2021
+    url: https://living-textbook-gima2021.drenso.dev
+  tags:
+    - docker-deploy
+  only:
+    - gima2021
+  except:
+    - schedules
+
 deploy-production:
   before_script:
     - mkdir -p ~/.ssh
