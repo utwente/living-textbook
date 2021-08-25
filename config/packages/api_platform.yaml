@@ -2,7 +2,8 @@ api_platform:
   defaults:
     pagination_enabled: false
   mapping:
-    paths: ["%kernel.project_dir%/src/Entity"]
+    paths:
+      - "%kernel.project_dir%/src/Entity"
   formats:
     json:
       mime_types:

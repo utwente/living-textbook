@@ -172,7 +172,7 @@ class ConceptRelation
   }
 
   /**
-   * @return string
+   * @return string|null
    *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
@@ -289,7 +289,7 @@ class ConceptRelation
   }
 
   /**
-   * @return int
+   * @return int|null
    *
    * @Groups({"concept:read", "conceptrelation:read"})
    */

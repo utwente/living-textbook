@@ -690,8 +690,8 @@ study-area:
     removed: 'Study area group "%item%" has been successfully removed.'
     show-contents: "Show group contents"
     updated: 'Study area group "%item%" has been successfully updated.'
-    is_dorton: "GIMA Student"
-    is_dorton_help: "Check to create a study area group for GIMA students."
+    is_dotron: "GIMA Student"
+    is_dotron_help: "Check to create a study area group for GIMA students."
   list-title: "Study area list"
   name: "Name"
   new: "New study area"

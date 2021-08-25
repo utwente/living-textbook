@@ -22,10 +22,10 @@ class StudyAreaGroupType extends AbstractType
 
     $builder
       ->add('name', TextType::class)
-      ->add('is_dorton', CheckboxType::class, [
+      ->add('is_dotron', CheckboxType::class, [
         'required' => false,
-        'label'    => 'study-area.groups.is_dorton',
-        'help'     => 'study-area.groups.is_dorton_help',
+        'label'    => 'study-area.groups.is_dotron',
+        'help'     => 'study-area.groups.is_dotron_help',
       ])
       ->add('studyAreas', EntityType::class, [
         'label'         => 'study-area.groups.areas',

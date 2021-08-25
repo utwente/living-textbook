@@ -48,22 +48,22 @@ class StudyAreaGroup
   private $studyAreas;
 
   /**
-   * If set, GIMA students will be shown the Dorton Canvas
+   * If set, GIMA students will be shown the Dotron Canvas
    *
    * @var bool
    *
-   * @ORM\Column(name="is_dorton", type="boolean", nullable=false)
+   * @ORM\Column(name="is_dotron", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\Type("bool")
    * @Groups({"studyareagroup:read", "studyareagroup:write"})
    */
-  private $isDorton;
+  private $isDotron;
 
   public function __construct()
   {
     $this->studyAreas = new ArrayCollection();
-    $this->isDorton = false;
+    $this->isDotron = false;
   }
 
   /**
@@ -106,22 +106,22 @@ class StudyAreaGroup
 
 
   /**
-   * @return 0|bool
+   * @return bool|null
    */
-  public function getIsDorton(): ?bool
+  public function getIsDotron(): ?bool
   {
-    return $this->isDorton;
+    return $this->isDotron;
   }
 
 
   /**
-   * @param 0|bool $isDorton
+   * @param bool $isDotron
    *
-   * @return StudyArea
+   * @return StudyAreaGroup
    */
-  public function setIsDorton(bool $isDorton): self
+  public function setIsDotron(bool $isDotron): self
   {
-    $this->isDorton = $isDorton;
+    $this->isDotron = $isDotron;
 
     return $this;
   }

@@ -194,7 +194,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
   }
 
   /**
-   * @return int
+   * @return int|null
    *
    * @Groups({"concept:read", "conceptrelation:read"})
    */

@@ -4,7 +4,7 @@
   <!--suppress JSUnusedLocalSymbols -->
   <script type="text/javascript">
     var _studyArea = {{ studyArea.id }};
-    var _isDotronStudyArea = {{ studyArea.group ? (studyArea.group.isDorton ? 'true' : 'false') : 'false'  }};
+    var _isDotronStudyArea = {{ studyArea.group ? (studyArea.group.isDotron ? 'true' : 'false') : 'false'  }};
     var _openMapOnLoad = {{ openMap ? 'true' : 'false' }};
     var _trackUser = {{ studyArea.trackUsers ? 'true' : 'false' }};
   </script>
@@ -12,7 +12,7 @@
   {{ encore_entry_script_tags('double-column') }}
 {% endblock %}
 
-  {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDorton  %}
+  {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDotron  %}
 
     {% block javascripts_bottom %}
       parent()
@@ -27,7 +27,7 @@
 {% block stylesheets %}
   {{ encore_entry_link_tags('double-column') }}
 
-  {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDorton  %}
+  {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDotron  %}
 
     <link rel="stylesheet" href="{{ asset('build/dotron-app.css') }}">
 
@@ -61,7 +61,7 @@
     </div>
     <div id="right-container">
 
-      {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDorton  %}
+      {% if (_twigStudyArea is not empty) and  (_twigStudyArea.group is not empty) and _twigStudyArea.group.isDotron  %}
 
           <div id="dotron-app-root"></div>
 
