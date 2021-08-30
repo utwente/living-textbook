@@ -27,12 +27,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  *  @ApiResource(
  *     attributes={},
- *     collectionOperations={"get", "post"={"security"="is_granted('ROLE_USER')"}},
- *     itemOperations={"get", "put"={"security"="is_granted('ROLE_USER') or object.owner == user"}},
+ *     collectionOperations={"get"={"security"="is_granted('ROLE_USER')"}, "post"={"security"="is_granted('ROLE_USER')"}},
+ *     itemOperations={"get"={"security"="is_granted('ROLE_USER')"}, "put"={"security"="is_granted('ROLE_USER') or object.owner == user"}},
  *     normalizationContext={"groups"={"studyarea:read"}},
  *     denormalizationContext={"groups"={"studyarea:write"}},
  * )
- * 
+ *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
  *
@@ -59,7 +59,7 @@ class StudyArea
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
-   * 
+   *
    * @Groups({"studyarea:read", "studyarea:write"})
    */
   private $name;
