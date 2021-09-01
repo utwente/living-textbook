@@ -350,7 +350,8 @@ class StudyAreaDuplicator
           ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
           ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
           ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
-          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()));
+          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()))
+          ->setModelCfg($concept->getModelCfg());
 
       // Set learning outcomes
       foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
@@ -422,7 +423,8 @@ class StudyAreaDuplicator
           ->setTarget($this->newConcepts[$conceptRelation->getTarget()->getId()])
           ->setRelationType($newRelationTypes[$relationType->getId()])
           ->setIncomingPosition($conceptRelation->getIncomingPosition())
-          ->setOutgoingPosition($conceptRelation->getOutgoingPosition());
+          ->setOutgoingPosition($conceptRelation->getOutgoingPosition())
+          ->setModelCfg($conceptRelation->getModelCfg());
 
       $this->em->persist($newConceptRelation);
     }
