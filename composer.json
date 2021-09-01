@@ -32,7 +32,7 @@
         "league/html-to-markdown": "5.0.0",
         "ml/json-ld": "1.2.0",
         "phpoffice/phpspreadsheet": "1.18.0",
-        "rollerworks/password-strength-validator": "1.5.1",
+        "rollerworks/password-strength-validator": "1.6.0",
         "ryakad/pandoc-php": "1.0.0",
         "sensio/framework-extra-bundle": "6.1.5",
         "sentry/sentry-symfony": "4.2.1",
