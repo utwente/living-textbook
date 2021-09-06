@@ -36,8 +36,9 @@ class EditLearningPathType extends AbstractType
 
     $builder
         ->add('name', TextType::class, [
-            'label'    => 'learning-path.name',
-            'disabled' => in_array('name', $disabledFields),
+            'label'      => 'learning-path.name',
+            'disabled'   => in_array('name', $disabledFields),
+            'empty_data' => '',
         ])
         ->add('name_review', DisplayPendingChangeType::class, [
             'field'               => 'name',
@@ -54,8 +55,9 @@ class EditLearningPathType extends AbstractType
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
         ->add('question', TextareaType::class, [
-            'label'    => 'learning-path.question',
-            'disabled' => in_array('question', $disabledFields),
+            'label'      => 'learning-path.question',
+            'disabled'   => in_array('question', $disabledFields),
+            'empty_data' => '',
         ])
         ->add('question_review', DisplayPendingChangeType::class, [
             'field'               => 'question',
