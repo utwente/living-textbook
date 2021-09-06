@@ -118,10 +118,6 @@ class User implements UserInterface, Serializable
    * @var string
    *
    * @ORM\Column(name="password", type="string", length=255, nullable=true)
-   *
-   * Max length due to BCrypt, @see BCryptPasswordEncoder
-   *
-   * @Assert\Length(min=5, max=72, allowEmptyString="true")
    */
   protected $password;
 
