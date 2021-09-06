@@ -47,7 +47,7 @@ abstract class LtbSection extends Section
    */
   public function __construct(string $name, LtbRouter $router, string $projectDir)
   {
-    $this->pandoc     = new Pandoc();
+    $this->pandoc     = new Pandoc($_ENV['PANDOC_PATH']);
     $this->fileSystem = new Filesystem();
     $this->parser     = new Parser();
 
