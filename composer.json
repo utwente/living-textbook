@@ -14,7 +14,7 @@
         "doctrine/annotations": "1.13.2",
         "doctrine/collections": "1.6.8",
         "doctrine/common": "2.13.3",
-        "doctrine/dbal": "2.13.2",
+        "doctrine/dbal": "2.13.3",
         "doctrine/doctrine-bundle": "2.3.2",
         "doctrine/event-manager": "1.1.1",
         "doctrine/migrations": "2.3.4",
