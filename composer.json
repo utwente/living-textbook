@@ -77,7 +77,7 @@
         "symfony/yaml": "4.4.29",
         "twig/cssinliner-extra": "3.3.3",
         "twig/extra-bundle": "3.3.3",
-        "twig/inky-extra": "3.3.0",
+        "twig/inky-extra": "3.3.3",
         "twig/intl-extra": "3.3.0",
         "twig/twig": "2.14.6"
     },

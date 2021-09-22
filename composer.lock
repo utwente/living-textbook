@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ee8e933ed4744b9d54fb25dd500dc38",
+    "content-hash": "e9a2cbb34d1054ab48b99e60aa912749",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11136,16 +11136,16 @@
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.3.0",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
-                "reference": "36c77999814ac64617e03ce7b8092c3c4dab5e4d"
+                "reference": "436f71a341f7bb58d29f46c7c53e9b5e5e7498e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/36c77999814ac64617e03ce7b8092c3c4dab5e4d",
-                "reference": "36c77999814ac64617e03ce7b8092c3c4dab5e4d",
+                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/436f71a341f7bb58d29f46c7c53e9b5e5e7498e7",
+                "reference": "436f71a341f7bb58d29f46c7c53e9b5e5e7498e7",
                 "shasum": ""
             },
             "require": {
@@ -11154,7 +11154,7 @@
                 "twig/twig": "^2.4|^3.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^4.4.9|^5.0.9"
+                "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
             },
             "type": "library",
             "extra": {
@@ -11191,7 +11191,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/inky-extra/tree/v3.3.0"
+                "source": "https://github.com/twigphp/inky-extra/tree/v3.3.3"
             },
             "funding": [
                 {
@@ -11203,7 +11203,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-01T14:58:18+00:00"
+            "time": "2021-05-20T14:28:34+00:00"
         },
         {
             "name": "twig/intl-extra",
