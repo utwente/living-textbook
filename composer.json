@@ -29,7 +29,7 @@
         "jms/serializer": "3.14.0",
         "jms/serializer-bundle": "3.10.0",
         "kick-in/exception-handler-bundle": "3.0.1",
-        "league/html-to-markdown": "5.0.0",
+        "league/html-to-markdown": "5.0.1",
         "ml/json-ld": "1.2.0",
         "phpoffice/phpspreadsheet": "1.18.0",
         "rollerworks/password-strength-validator": "1.6.0",
