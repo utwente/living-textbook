@@ -11,11 +11,13 @@
         "ext-mbstring": "*",
         "bobv/latex-bundle": "2.7.2",
         "caxy/php-htmldiff": "0.1.12",
+        "composer/package-versions-deprecated": "1.11.99.3",
         "doctrine/annotations": "1.13.2",
         "doctrine/collections": "1.6.8",
         "doctrine/common": "2.13.3",
         "doctrine/dbal": "2.13.3",
         "doctrine/doctrine-bundle": "2.3.2",
+        "doctrine/doctrine-migrations-bundle": "^2",
         "doctrine/event-manager": "1.1.1",
         "doctrine/migrations": "2.3.4",
         "doctrine/orm": "2.7.5",
@@ -60,7 +62,6 @@
         "symfony/mime": "4.4.31",
         "symfony/monolog-bundle": "3.7.0",
         "symfony/options-resolver": "4.4.30",
-        "symfony/orm-pack": "1.2.0",
         "symfony/process": "4.4.30",
         "symfony/property-access": "4.4.30",
         "symfony/proxy-manager-bridge": "4.4.27",
@@ -84,7 +85,8 @@
     "require-dev": {
         "drenso/phan-extensions": "3.5.1",
         "symfony/phpunit-bridge": "4.4.31",
-        "symfony/profiler-pack": "1.0.6"
+        "symfony/stopwatch": "4.4.*",
+        "symfony/web-profiler-bundle": "4.4.*"
     },
     "config": {
         "preferred-install": {
