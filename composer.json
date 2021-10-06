@@ -1,4 +1,6 @@
 {
+    "name": "drenso/013-living-textbook",
+    "description": "013-living-textbook",
     "type": "project",
     "license": "proprietary",
     "require": {
