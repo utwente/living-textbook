@@ -152,6 +152,10 @@ class StudyAreaDuplicator
   {
     $this->em->getConnection()->beginTransaction();
     try {
+      // Allow for more memory and time usage
+      ini_set('memory_limit', '512M');
+      set_time_limit(300);
+
       // Persist the new study area, and flush to retrieve id
       $this->em->persist($this->newStudyArea);
       $this->em->flush();
