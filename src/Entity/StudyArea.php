@@ -752,7 +752,7 @@ class StudyArea
    *
    * @return StudyArea
    */
-  public function setModelCfg($modelCfg): Concept
+  public function setModelCfg($modelCfg): StudyArea
   {
     $this->modelCfg = $modelCfg;
 
