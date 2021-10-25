@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -16,6 +21,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
+ *
+ *  @ApiResource(
+ *     attributes={},
+ *     collectionOperations={"get", "post"},
+ *     itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"tag:read"}},
+ *     denormalizationContext={"groups"={"tag:write"}},
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"studyArea": "exact"})
+ *
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
@@ -52,6 +67,9 @@ class Tag implements StudyAreaFilteredInterface
    * @Assert\Length(max=25)
    *
    * @JMSA\Expose()
+   *
+   * @Groups({"studyarea:read", "studyarea:write", "tag:read", "tag:write"})
+   *
    */
   private $name;
 
@@ -64,6 +82,9 @@ class Tag implements StudyAreaFilteredInterface
    * @Assert\Length(max=10)
    *
    * @JMSA\Expose()
+   *
+   * @Groups({"studyarea:read", "studyarea:write", "tag:read", "tag:write"})
+   *
    */
   private $color;
 
@@ -141,5 +162,15 @@ class Tag implements StudyAreaFilteredInterface
     $this->color = $color;
 
     return $this;
+  }
+
+  /**
+   * @return int|null
+   *
+   * @Groups({"tag:read"})
+   */
+  public function getId(): ?int
+  {
+    return $this->id;
   }
 }

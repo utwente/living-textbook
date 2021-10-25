@@ -276,13 +276,15 @@ class Concept implements SearchableInterface, ReviewableInterface
   /**
    * @var Tag[]|Collection
    *
-   * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="concepts")
+   * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="concepts", cascade={"persist", "remove"})
    *
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
    * @JMSA\Type("ArrayCollection<App\Entity\Tag>")
    * @JMSA\MaxDepth(2)
+   *
+   * @Groups({"concept:read", "concept:write"})
    */
   private $tags;
 

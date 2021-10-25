@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -68,6 +69,7 @@ class StudyArea
    * @var string|null
    *
    * @ORM\Column(name="description", type="text", nullable=true)
+   *
    * @Groups({"studyarea:read", "studyarea:write"})
    */
   private $description;
@@ -157,6 +159,8 @@ class StudyArea
    * @var Collection|Tag[]
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   *
+   * @Groups({"studyarea:read"})
    */
   private $tags;
 
@@ -252,6 +256,16 @@ class StudyArea
    * @ORM\JoinColumn(nullable=true)
    */
   private $defaultTagFilter;
+
+  /**
+   * @var mixed
+   *
+   * @ORM\Column(name="modelCfg", type="json_document", nullable=true, options={"jsonb": true})
+   * @JMSA\Type("mixed")
+   *
+   * @Groups({"studyarea:read", "studyarea:write"})
+   */
+  private $modelCfg;
 
   /**
    * StudyArea constructor.
@@ -723,6 +737,26 @@ class StudyArea
   public function getConcepts()
   {
     return $this->concepts;
+  }
+
+  /**
+   * @return mixed|null
+   */
+  public function getModelCfg()
+  {
+    return $this->modelCfg;
+  }
+
+  /**
+   * @param mixed $modelCfg
+   *
+   * @return Concept
+   */
+  public function setModelCfg($modelCfg): Concept
+  {
+    $this->modelCfg = $modelCfg;
+
+    return $this;
   }
 
   /**
