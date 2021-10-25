@@ -90,8 +90,9 @@ export default class Analytics {
 
             this.showResults();
         } catch (e) {
-            if (400 === e.status && e.responseJSON) {
-                this.showError(e, JSON.stringify(e.responseJSON));
+            const axiosError = e as JQuery.jqXHR;
+            if (400 === axiosError.status && axiosError.responseJSON) {
+                this.showError(e, JSON.stringify(axiosError.responseJSON));
             } else {
                 this.showError(e);
             }

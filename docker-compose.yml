@@ -11,7 +11,7 @@ services:
     networks:
       - ltb
   nginx:
-    image: nginx:1.21.1-alpine
+    image: nginx:1.21.3-alpine
     volumes:
       - './public/:/var/www/ltb/:ro'
       - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro'

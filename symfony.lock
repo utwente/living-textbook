@@ -505,9 +505,6 @@
     "symfony/options-resolver": {
         "version": "v4.0.2"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.5"
-    },
     "symfony/phpunit-bridge": {
         "version": "4.1",
         "recipe": {
@@ -552,9 +549,6 @@
     },
     "symfony/process": {
         "version": "v3.4.4"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.3"
     },
     "symfony/property-access": {
         "version": "v4.0.2"

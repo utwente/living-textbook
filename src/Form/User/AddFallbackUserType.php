@@ -3,12 +3,11 @@
 namespace App\Form\User;
 
 use App\Entity\User;
+use App\Form\Type\NewPasswordType;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,12 +29,7 @@ class AddFallbackUserType extends AbstractType
         ->add('fullName', TextType::class, [
             'label' => 'user.full-name',
         ])
-        ->add('password', RepeatedType::class, [
-            'type'            => PasswordType::class,
-            'invalid_message' => 'user.password-no-match',
-            'first_options'   => array('label' => 'user.password'),
-            'second_options'  => array('label' => 'user.repeat-password'),
-        ])
+        ->add('password', NewPasswordType::class)
         ->add('submit', SaveType::class, [
             'save_label'           => 'auth.create-account',
             'enable_save_and_list' => false,
@@ -55,6 +49,5 @@ class AddFallbackUserType extends AbstractType
     $resolver
         ->setDefault('data_class', User::class);
   }
-
 
 }
