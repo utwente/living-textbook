@@ -750,7 +750,7 @@ class StudyArea
   /**
    * @param mixed $modelCfg
    *
-   * @return Concept
+   * @return StudyArea
    */
   public function setModelCfg($modelCfg): Concept
   {
