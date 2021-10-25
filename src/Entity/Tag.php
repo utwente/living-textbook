@@ -19,18 +19,19 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
+
  *
  *  @ApiResource(
  *     attributes={},
- *     collectionOperations={"get", "post"},
- *     itemOperations={"get", "put", "delete"},
+ *     collectionOperations={"get"={"security"="is_granted('ROLE_USER')"}, "post"={"security"="is_granted('ROLE_USER')"}},
+ *     itemOperations={"get"={"security"="is_granted('ROLE_USER')"}, "put"={"security"="is_granted('ROLE_USER')"}, "delete"={"security"="is_granted('ROLE_USER')"}},
  *     normalizationContext={"groups"={"tag:read"}},
  *     denormalizationContext={"groups"={"tag:write"}},
  * )
  * @ApiFilter(SearchFilter::class, properties={"studyArea": "exact"})
  *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
