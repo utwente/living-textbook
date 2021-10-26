@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Concept;
-use JMS\Serializer\SerializerInterface;
+use App\Annotation\DenyOnFrozenStudyArea;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\ConceptRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,31 +12,48 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Review\ReviewService;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use App\Request\Wrapper\RequestStudyArea;
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 
 /**
- * Class ConceptApiController
+ * Class ApiController
  *
  * @author Robert
- *
+ * @Route("/api/{_studyArea}/concepts", requirements={"_studyArea"="\d+"})
  */
 
-class ConceptApiController extends AbstractController
+class ApiController extends AbstractController
 {
-    public function __construct()
-    {
-    }
-
-    public function __invoke(
+    /**
+     * @Route("/updatemany", name="api_many_concepts_update", methods={"PATCH"}, options={"expose"=true}, defaults={"export"=true})
+     * @Template()
+     * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+     * @DenyOnFrozenStudyArea(route="app_concept_list", subject="requestStudyArea")
+     *
+     * @param Request             $request
+     * @param ConceptRepository   $conceptRepository
+     * @param ReviewService       $reviewService
+     * @param ValidatorInterface  $validator
+     * @param ManagerRegistry     $registry
+     * @param RequestStudyArea    $requestStudyArea
+     *
+     * @return JsonResponse
+     */
+    public function updateMany(
         Request $request,
         ConceptRepository $conceptRepository,
         ReviewService $reviewService,
         ValidatorInterface $validator,
         ManagerRegistry $registry,
-        SerializerInterface $serializer
+        RequestStudyArea    $requestStudyArea
     ) {
         $contents = $request->getContent();
+
         if (!empty($contents)) {
-            $concepts = $serializer->deserialize($contents, 'array', 'json');
+            $concepts = json_decode($contents, true);
             $success = true;
 
             if (sizeof($concepts) == 0) {
@@ -54,7 +71,7 @@ class ConceptApiController extends AbstractController
                     $success = false;
                     continue;
                 }
-                $studyArea = $concept->getStudyArea();
+                $studyArea = $requestStudyArea->getStudyArea();
 
                 if ($reviewService->canObjectBeEdited($studyArea, $concept)) {
                     $concept->setModelCfg($jsonConcept['modelCfg']);
@@ -76,6 +93,6 @@ class ConceptApiController extends AbstractController
             }
         }
 
-        return new JsonResponse($contents, Response::HTTP_NO_CONTENT, [], true);
+        return new JsonResponse($contents, Response::HTTP_OK, [], true);
     }
 }

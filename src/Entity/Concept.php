@@ -19,7 +19,6 @@ use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\Traits\ReviewableTrait;
-use App\Controller\ConceptApiController;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
@@ -44,39 +43,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *          "get"={"security"="is_granted('ROLE_USER') or object.owner == user"},
  *          "post"={"security"="is_granted('ROLE_USER') or object.owner == user"},
- *          "patch"={
- *              "controller"=ConceptApiController::class,
- *              "deserialize" = false,
- *              "method"="PATCH",
- *              "path"="/concepts/update",
- *              "openapi_context" = {
- *                    "requestBody" = {
- *                          "description" = "List of concepts to update",
- *                          "required" = true,
- *                          "content" = {
- *                              "application/json" = {
- *                                  "schema" = {
- *                                      "description"="list of concepts",
- *                                      "type" = "array",
- *                                      "items" = {
- *                                           "type" = "object",
- *                                           "properties" = {
- *                                                "id" = {
- *                                                    "description" = "The identifier of the concept",
- *                                                    "type" = "integer"
- *                                                  }, 
- *                                                  "modelCfg" = {
- *                                                     "description" = "The concept's model configuration",
- *                                                     "type" = "object"
- *                                                  },                                                  
- *                                           },
- *                                       },                                                                         
- *                                  },
- *                              },
- *                          },
- *                    },
- *              },
- *          }
  *     },
  *     itemOperations={
  *          "get"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, 
