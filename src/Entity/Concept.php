@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-
 use App\Controller\SearchController;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
@@ -20,6 +19,7 @@ use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\Traits\ReviewableTrait;
+use App\Controller\ConceptApiController;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
@@ -34,14 +34,59 @@ use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\JsonValidator;
+use Symfony\Component\Validator\Constraints\Json;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
+
 
 /**
  * Class Concept
  *
  *  @ApiResource(
  *     attributes={},
- *     collectionOperations={"get"={"security"="is_granted('ROLE_USER')"}, "post"={"security"="is_granted('ROLE_USER')"}},
- *     itemOperations={"get"={"security"="is_granted('ROLE_USER')"}, "put"={"security"="is_granted('ROLE_USER')"}, "delete"={"security"="is_granted('ROLE_USER')"}},
+ *     collectionOperations={
+ *          "get"={"security"="is_granted('ROLE_USER') or object.owner == user"},
+ *          "post"={"security"="is_granted('ROLE_USER') or object.owner == user"},
+ *          "patch"={
+ *              "controller"=ConceptApiController::class,
+ *              "deserialize" = false,
+ *              "method"="PATCH",
+ *              "path"="/concepts/update",
+ *              "openapi_context" = {
+ *                    "requestBody" = {
+ *                          "description" = "List of concepts to update",
+ *                          "required" = true,
+ *                          "content" = {
+ *                              "application/json" = {
+ *                                  "schema" = {
+ *                                      "description"="list of concepts",
+ *                                      "type" = "array",
+ *                                      "items" = {
+ *                                           "type" = "object",
+ *                                           "properties" = {
+ *                                                "id" = {
+ *                                                    "description" = "The identifier of the concept",
+ *                                                    "type" = "integer"
+ *                                                  }, 
+ *                                                  "modelCfg" = {
+ *                                                     "description" = "The concept's model configuration",
+ *                                                     "type" = "object"
+ *                                                  },                                                  
+ *                                           },
+ *                                       },                                                                         
+ *                                  },
+ *                              },
+ *                          },
+ *                    },
+ *              },
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, 
+ *          "put"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, 
+ *          "delete"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, *          
+ *     },
  *     normalizationContext={"groups"={"concept:read"}},
  *     denormalizationContext={"groups"={"concept:write"}},
  * )
