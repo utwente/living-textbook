@@ -317,5 +317,4 @@ class ConceptRelation
 
     return $this;
   }
-
 }

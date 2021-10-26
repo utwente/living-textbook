@@ -93,6 +93,6 @@ class ApiController extends AbstractController
             }
         }
 
-        return new JsonResponse($contents, Response::HTTP_OK, [], true);
+        return new JsonResponse($contents, Response::HTTP_NO_CONTENT, [], true);
     }
 }

@@ -18,7 +18,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
-
+ *  Class Tag
  *
  *  @ApiResource(
  *     attributes={},
@@ -35,6 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
+
 class Tag implements StudyAreaFilteredInterface
 {
   use IdTrait;
@@ -70,7 +71,7 @@ class Tag implements StudyAreaFilteredInterface
    *
    * @JMSA\Expose()
    *
-   * @Groups({"tag:read", "tag:write", "tag:read", "tag:write"})
+   * @Groups({"tag:read", "tag:write"})
    *
    */
   private $name;
@@ -85,7 +86,7 @@ class Tag implements StudyAreaFilteredInterface
    *
    * @JMSA\Expose()
    *
-   * @Groups({"tag:read", "tag:write", "tag:read", "tag:write"})
+   * @Groups({"tag:read", "tag:write"})
    *
    */
   private $color;
