@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Review\ReviewService;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\HttpKernel\Attribute\AsController;
-
-
 
 /**
  * Class ConceptApiController
@@ -23,7 +20,6 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
  *
  */
 
-#[AsController]
 class ConceptApiController extends AbstractController
 {
     public function __construct()
