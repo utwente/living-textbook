@@ -6,6 +6,7 @@ use App\Entity\Concept;
 use App\Annotation\DenyOnFrozenStudyArea;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\ConceptRepository;
+use App\Repository\TagRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,22 +17,24 @@ use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 
 
 /**
  * Class ApiController
  *
  * @author Robert
- * @Route("/api/{_studyArea}/concepts", requirements={"_studyArea"="\d+"})
+ * @Route("/api/{_studyArea}", requirements={"_studyArea"="\d+"})
  */
 
 class ApiController extends AbstractController
 {
     /**
-     * @Route("/updatemany", name="api_many_concepts_update", methods={"PATCH"}, options={"expose"=true}, defaults={"export"=true})
+     * @Route("/concepts/updatemany", name="api_many_concepts_update", methods={"PATCH"}, options={"expose"=true}, defaults={"export"=true})
      * @Template()
      * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-     * @DenyOnFrozenStudyArea(route="app_concept_list", subject="requestStudyArea")
+     * @DenyOnFrozenStudyArea(route="api_many_concepts_update", subject="requestStudyArea")
      *
      * @param Request             $request
      * @param ConceptRepository   $conceptRepository
@@ -94,5 +97,28 @@ class ApiController extends AbstractController
         }
 
         return new JsonResponse($contents, Response::HTTP_NO_CONTENT, [], true);
+    }
+
+    /**
+     * @Route("/tags", name="api_get_tags", methods={"GET"}, options={"expose"=true}, defaults={"export"=true})
+     * @Template()
+     * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+     *
+     * @param TagRepository   $tagRepository
+     * @param RequestStudyArea    $requestStudyArea
+     * @param SerializerInterface $serializer,
+     * @return JsonResponse
+     */
+    public function listTags(TagRepository $tagRepository, RequestStudyArea $requestStudyArea, SerializerInterface $serializer)
+    {
+        $studyArea = $requestStudyArea->getStudyArea();
+        $tags = $tagRepository->findForStudyArea($studyArea);
+
+        // Return as JSON
+        $groups = ["Default"];
+        $groups[] = "tags";
+        $json = $serializer->serialize($tags, 'json', SerializationContext::create()->setGroups($groups));
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 }

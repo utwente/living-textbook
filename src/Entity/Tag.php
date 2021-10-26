@@ -48,7 +48,6 @@ class Tag implements StudyAreaFilteredInterface
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="tags")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
-   * @JMSA\Expose()
    * @Groups({"tag:read", "tag:write"})
    * @Assert\NotNull()
    */
