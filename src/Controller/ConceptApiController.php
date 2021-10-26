@@ -7,6 +7,7 @@ use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\ConceptRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -16,25 +17,17 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 class ConceptApiController extends AbstractController
 {
     /**
-     * @var RequestStack
+     * @author Robert
      */
-    private $requestStack;
-    private $conceptRepository;
-    private $reviewService;
-    public function __construct(
-        RequestStack $requestStack,
+
+    public function __invoke(
+        Request $request,
         ConceptRepository $conceptRepository,
-        ReviewService $reviewService
-
+        ReviewService $reviewService,
+        ValidatorInterface $validator,
+        ManagerRegistry $registry,
+        SerializerInterface $serializer
     ) {
-        $this->requestStack = $requestStack;
-        $this->conceptRepository = $conceptRepository;
-        $this->reviewService = $reviewService;
-    }
-
-    public function __invoke(ValidatorInterface $validator, ManagerRegistry $registry, SerializerInterface $serializer)
-    {
-        $request = $this->requestStack->getCurrentRequest();
         $contents = $request->getContent();
         if (!empty($contents)) {
             $concepts = $serializer->deserialize($contents, 'array', 'json');
@@ -50,14 +43,14 @@ class ConceptApiController extends AbstractController
             }
             $em = $registry->getManagerForClass(Concept::class);
             foreach ($concepts as $jsonConcept) {
-                $concept = $this->conceptRepository->findOneBy(["id" => $jsonConcept['id']]);
+                $concept = $conceptRepository->findOneBy(["id" => $jsonConcept['id']]);
                 if (!$concept) {
                     $success = false;
                     continue;
                 }
                 $studyArea = $concept->getStudyArea();
 
-                if ($this->reviewService->canObjectBeEdited($studyArea, $concept)) {
+                if ($reviewService->canObjectBeEdited($studyArea, $concept)) {
                     $concept->setModelCfg($jsonConcept['modelCfg']);
                     if ($validator->validate($concept)->count() > 0) {
                         $success = false;
