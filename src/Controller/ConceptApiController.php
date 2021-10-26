@@ -13,11 +13,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Review\ReviewService;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+/**
+ * Class ConceptApiController
+ *
+ * @author Robert
+ *
+ */
+
 class ConceptApiController extends AbstractController
 {
-    /**
-     * @author Robert
-     */
+    public function __construct()
+    {
+    }
 
     public function __invoke(
         Request $request,
