@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
-
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -48,6 +47,8 @@ class Tag implements StudyAreaFilteredInterface
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="tags")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
+   * @JMSA\Expose()
+   * @Groups({"tag:read", "tag:write"})
    * @Assert\NotNull()
    */
   private $studyArea;
@@ -69,7 +70,7 @@ class Tag implements StudyAreaFilteredInterface
    *
    * @JMSA\Expose()
    *
-   * @Groups({"studyarea:read", "studyarea:write", "tag:read", "tag:write"})
+   * @Groups({"tag:read", "tag:write", "tag:read", "tag:write"})
    *
    */
   private $name;
@@ -84,7 +85,7 @@ class Tag implements StudyAreaFilteredInterface
    *
    * @JMSA\Expose()
    *
-   * @Groups({"studyarea:read", "studyarea:write", "tag:read", "tag:write"})
+   * @Groups({"tag:read", "tag:write", "tag:read", "tag:write"})
    *
    */
   private $color;
