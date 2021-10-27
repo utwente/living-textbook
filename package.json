@@ -35,7 +35,7 @@
     "build:email": "node-sass --importer=node_modules/node-sass-tilde-importer --output-style compressed ./assets/email/email.scss -o ./public/email"
   },
   "dependencies": {
-    "@ezzaouia/dotron-app": "1.0.23",
+    "@ezzaouia/dotron-app": "1.0.24",
     "@sentry/browser": "6.13.3",
     "bootstrap": "4.6.0",
     "bootstrap-3-typeahead": "4.0.2",
