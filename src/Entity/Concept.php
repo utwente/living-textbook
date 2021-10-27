@@ -41,13 +41,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  @ApiResource(
  *     attributes={},
  *     collectionOperations={
- *          "get"={"security"="is_granted('ROLE_USER') or object.owner == user"},
- *          "post"={"security"="is_granted('ROLE_USER') or object.owner == user"},
+ *          "get"={},
+ *          "post"={},
  *     },
  *     itemOperations={
- *          "get"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, 
- *          "put"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, 
- *          "delete"={"security"="is_granted('ROLE_ADMIN') or object.owner == user"}, *          
+ *          "get"={},
+ *          "put"={},
+ *          "delete"={}, *
  *     },
  *     normalizationContext={"groups"={"concept:read"}},
  *     denormalizationContext={"groups"={"concept:write"}},
