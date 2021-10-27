@@ -50,7 +50,7 @@ done
 # Pull the new data, initialize submodules as well
 git submodule init
 git submodule sync
-ssh-agent bash -c 'ssh-add .ssh-token; git pull; git submodule update --recursive'
+ssh-agent bash -c 'ssh-add .ssh-token && git pull && git submodule update --recursive'
 
 # Set the current git hash in the local env
 COMMIT_HASH=$(git rev-parse --short=8 HEAD)
