@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
@@ -26,14 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author BobV
  *
- *  @ApiResource(
- *     attributes={},
- *     collectionOperations={"get"={"security"="is_granted('ROLE_SUPER_ADMIN')"}},
- *     itemOperations={"get"={"security"="is_granted('ROLE_SUPER_ADMIN')"}},
- *     normalizationContext={"groups"={"user:read"}},
- *     denormalizationContext={"groups"={"user:write"}},
- * )
- * 
  * @ORM\Table(name="user__table", indexes={@ORM\Index(columns={"username"})})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\EntityListeners({"App\Entity\Listener\UserListener"})

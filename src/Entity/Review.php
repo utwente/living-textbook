@@ -372,5 +372,4 @@ class Review
 
     return $this;
   }
-
 }
