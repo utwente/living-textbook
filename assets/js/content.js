@@ -192,6 +192,13 @@ $(function () {
   // Auto focus first form field
   $loadedForms.find('input').first().focus();
 
+  // Select2 auto search select fix, caused by jQuery 3.6
+  // See https://github.com/select2/select2/issues/5993
+  $(document).on('select2:open', () => {
+    const allFound = document.querySelectorAll('.select2-container--open .select2-search__field');
+    allFound[allFound.length - 1].focus();
+  });
+
   // Page loaded event
   eDispatch.pageLoaded();
 
