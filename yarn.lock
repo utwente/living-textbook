@@ -984,10 +984,10 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@ezzaouia/dotron-app@1.0.34":
-  version "1.0.34"
-  resolved "https://registry.yarnpkg.com/@ezzaouia/dotron-app/-/dotron-app-1.0.34.tgz#2f38cc3e39a1471bf8ad4e70ad414968aac8e115"
-  integrity sha512-S1cR7PrMxFG4BC4fi04iOlvpMPt09qb0TwBZRnEBuuK0/P8vpqMDsNqCUrDKkfdxwCGZMGi8lyct1vSaiiXEfQ==
+"@ezzaouia/dotron-app@1.0.35":
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/@ezzaouia/dotron-app/-/dotron-app-1.0.35.tgz#2339e744c3a9f12c66836ef490368a1d0a88fc53"
+  integrity sha512-FTQY47QJi4kS6WPWMT1DDDjcnYdBiPtJ9QMTHssAr6LXOtfB31b/KjT9YNgZOTVNamZWHhui/AwljuXkI6Cijw==
 
 "@sentry/browser@6.13.3":
   version "6.13.3"
