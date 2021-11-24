@@ -23,7 +23,7 @@ include:
     ref: "3.11"
     file: '/php/composer-require-checker.yml'
   - project: 'intern/runner-templates'
-    ref: "3.11"
+    ref: "4.0"
     file: '/php/composer-unused.yml'
   - project: 'intern/runner-templates'
     ref: "3.11"
