@@ -1,3 +1,3 @@
 [submodule "python/data-visualisation"]
 	path = python/data-visualisation
-	url = ssh://git@gitlab.drenso.nl:22222/extern/013-living-textbook-data-visualisation.git
+	url = git@gitlab.utwente.nl:living-textbook/data-visualisation.git
