@@ -1,7 +1,7 @@
 #! /bin/bash -e
 
 DEPLOY_DIR=.deploy
-PROJECT_API_ENDPOINT="https://gitlab.drenso.dev/api/v4/projects/extern%2F013-living-textbook"
+PROJECT_API_ENDPOINT="https://gitlab.utwente.nl/api/v4/projects/living-textbook%2Fliving-textbook"
 
 # Retrieve token from file
 PRIVATE_TOKEN=$(cat .deploy-token)
