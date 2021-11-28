@@ -1,7 +1,85 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "local>intern/renovate-config"
-  ],
-  "npmrc": "registry=https://registry.yarnpkg.com"
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:base",
+        ":automergeDisabled",
+        ":disableDevDependencies",
+        ":labels(Maintenance,RenovateBot)"
+    ],
+    "dependencyDashboard": true,
+    "dependencyDashboardLabels": ["Maintenance", "RenovateBot"],
+    "commitMessagePrefix": "[RenovateBot]",
+    "composerIgnorePlatformReqs": [
+        "ext-apcu",
+        "ext-calendar",
+        "ext-decimal",
+        "ext-exif",
+        "ext-gd",
+        "ext-imagick",
+        "ext-intl",
+        "ext-ldap",
+        "ext-pdo",
+        "ext-sodium",
+        "ext-xsl",
+        "ext-zip"
+    ],
+    "internalChecksFilter": "strict",
+    "lockFileMaintenance": {
+      "enabled": true,
+      "rebaseWhen": "auto",
+      "schedule": "before 9am on monday"
+    },
+    "npmrc": "registry=https://registry.yarnpkg.com",
+    "platformAutomerge": true,
+    "prConcurrentLimit": 0,
+    "prHourlyLimit": 5,
+    "rangeStrategy": "pin",
+    "rebaseWhen": "never",
+    "stabilityDays": 7,
+    "timezone": "Europe/Amsterdam",
+    "packageRules": [
+        {
+            "matchPackagePrefixes": ["drenso/", "@drenso/"],
+            "rebaseWhen": "conflicted",
+            "stabilityDays": 0
+        },
+        {
+            "matchPackagePrefixes": ["symfony/"],
+            "rebaseWhen": "conflicted",
+            "stabilityDays": 0
+        },
+        {
+            "matchPackagePrefixes": ["@types/"],
+            "rebaseWhen": "auto",
+            "automerge": true,
+            "stabilityDays": 0
+        },
+        {
+            "matchPackageNames": ["jms/serializer"],
+            "groupName": "JMS serializer packages",
+            "groupSlug": "jms-serializer"
+        },
+        {
+            "matchPackagePrefixes": ["datatables.net"],
+            "groupName": "DataTables packages",
+            "groupSlug": "datatables"
+        }, 
+        {
+            "matchPackageNames": ["autoprefixer", "browserslist", "postcss"],
+            "groupName": "CSS processing dependencies",
+            "groupSlug": "css-dependencies"
+        },
+        {
+            "matchPackagePrefixes": ["Sentry"],
+            "matchManagers": ["nuget"],
+            "groupName": "Sentry packages",
+            "groupSlug": "sentry"
+        },
+        {
+            "matchDepTypes": [
+                "engines"
+            ],
+            "enabled": false
+        }
+    ]
 }
