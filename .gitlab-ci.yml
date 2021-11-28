@@ -6,69 +6,37 @@ stages:
   - sentry
   - deploy
 
-include:
-  # Prepare
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/symfony/install-dependencies.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/yarn/install-js-dependencies.yml'
+variables:
+  COMPOSER_REQUIRE_CHECKER_VERSION: 2.1.0
+  COMPOSER_UNUSED_VERSION: 0.7.7
+  DRENSO_PHP_VERSION: 7.3-d8
+  NODE_VERSION: 14
+  PHAN_VERSION: 2.7.2
+  PHPUNIT_VERSION: 8.4-d5
+  PHP_SEC_CHECK_VERSION: 1.0.0
+  SASSLINT_VERSION: 1.12.1-d1
+  SHELLCHECK_VERSION: v0.7.1
+  TSLINT_VERSION: 5.18.0
+  YAMLLINT_DIRECTORIES: config
+  YAMLLINT_VERSION: 1.0.0
+  YARN_AUDIT_EXCLUDE_LIST: ""
 
-  # Lint
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/php/cve-check.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/php/composer-require-checker.yml'
-  - project: 'intern/runner-templates'
-    ref: "4.0"
-    file: '/php/composer-unused.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/shell/shellcheck.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/php/phan.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/ts/tslint.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/yaml/yamllint.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/yarn/audit.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/sass/sasslint.yml'
-
-  # Build
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/yarn/build-prod.yml'
-
-  # Tests
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/php/phpunit.yml'
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/symfony/check-security.yml'
-
-  # Sentry
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/sentry/sentry.yml'
-
-  # Deploy
-  - project: 'intern/runner-templates'
-    ref: "3.11"
-    file: '/deploy/deploy.yml'
+# Prepare
 
 install-dependencies:
+  stage: prepare
+  image: "drenso/php:${DRENSO_PHP_VERSION}"
+  interruptible: true
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_composer
+    paths:
+      - vendor/
   artifacts:
+    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_php"
+    expire_in: 1 day
     paths:
       # Default paths from this stage. If you need more, make sure to copy these in your build step
       - assets/js/_fos_routes.json
@@ -81,6 +49,155 @@ install-dependencies:
       - vendor/studio-42/elfinder/img
       - vendor/studio-42/elfinder/js
       - vendor/studio-42/elfinder/sounds
+  before_script:
+    - cp .secrets.json.dist .secrets.json
+    - if [ "$CI_COMMIT_REF_NAME" = "master" ]; then export HTTP_HOST="${STAGING_HOST}:${STAGING_HOST_PORT}"; fi # Fix for http-host used in fos-js routing
+    - if [ -z ${COMPOSER_USER+x} ]; then echo "COMPOSER_USER not set, skipping composer auth configuration" ; else composer config http-basic.composer.drenso.dev ${COMPOSER_USER} ${COMPOSER_PASSWORD}; fi
+  script:
+    - composer validate --no-check-all
+    - composer install --no-interaction --no-progress
+  after_script:
+    - find vendor/ -name .git -type d -exec rm -rf {} \+
+  tags:
+    - docker
+  except:
+    - schedules
+
+install-js-dependencies:
+  stage: prepare
+  image: "node:${NODE_VERSION}"
+  interruptible: true
+  cache:
+    key:
+      files:
+        - yarn.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_yarn
+    paths:
+      - node_modules/
+  before_script:
+    # Set yarn login credentials
+    - echo "username=${NPM_USER}" >> .npmrc
+    - echo "_password=$(echo -n ${NPM_PASS} | base64)" >> .npmrc
+    - echo "email=${NPM_EMAIL}" >> .npmrc
+    - echo "always-auth=true" >> .npmrc
+  script:
+    # Install the dependencies
+    - yarn install
+  after_script:
+    - rm .npmrc
+  tags:
+    - docker
+  except:
+    - schedules
+
+# Lint
+
+php-cve-check:
+  stage: lint
+  image: alpine:latest
+  needs: []
+  interruptible: true
+  before_script:
+    - wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SEC_CHECK_VERSION}/local-php-security-checker_${PHP_SEC_CHECK_VERSION}_linux_386
+    - chmod +x local-php-security-checker
+  script:
+    - ./local-php-security-checker
+  tags:
+    - docker
+
+composer-require-checker:
+  stage: lint
+  image: "drenso/php:${DRENSO_PHP_VERSION}"
+  interruptible: true
+  needs:
+    - job: install-dependencies
+      artifacts: false
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_composer
+    paths:
+      - vendor/
+    policy: pull
+  before_script:
+    - curl -JOL https://github.com/maglnet/ComposerRequireChecker/releases/download/${COMPOSER_REQUIRE_CHECKER_VERSION}/composer-require-checker.phar
+  script:
+    - if [[ -f composer-require-checker.json ]]; then php composer-require-checker.phar --config-file=$(pwd)/composer-require-checker.json; else php composer-require-checker.phar; fi;
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+composer-unused:
+  stage: lint
+  image: "drenso/php:${DRENSO_PHP_VERSION}"
+  interruptible: true
+  needs:
+    - job: install-dependencies
+      artifacts: false
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_composer
+    paths:
+      - vendor/
+    policy: pull
+  before_script:
+    - curl -JOL https://github.com/composer-unused/composer-unused/releases/download/${COMPOSER_UNUSED_VERSION}/composer-unused.phar
+  script:
+    - php composer-unused.phar
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+shellcheck:
+  stage: lint
+  image: "koalaman/shellcheck-alpine:${SHELLCHECK_VERSION}"
+  needs: []
+  interruptible: true
+  before_script:
+    - shellcheck --version
+  script:
+    - find . -name "*.sh" -not -path "./vendor/*" -exec shellcheck {} +
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+php-analysis:
+  stage: lint
+  image:
+    name: "kickin/phan:${PHAN_VERSION}"
+    entrypoint: [""]
+  needs:
+    - job: install-dependencies
+      artifacts: false
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_composer
+    paths:
+      - vendor/
+    policy: pull
+  interruptible: true
+  script:
+    - php7 /opt/phan/phan -k tests/phan/config.php
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
 
 js-analysis:
   stage: lint
@@ -98,11 +215,211 @@ js-analysis:
     - master
     - production
 
+ts-analysis:
+  stage: lint
+  image: "drenso/tslint:${TSLINT_VERSION}"
+  needs: []
+  interruptible: true
+  script:
+    - tslint --project .
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+yaml-analysis:
+  stage: lint
+  image: "kickin/yamllint:${YAMLLINT_VERSION}"
+  needs: []
+  interruptible: true
+  script:
+    - yamllint -c tests/yamllint/config ${YAMLLINT_DIRECTORIES}
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+yarn-audit:
+  stage: lint
+  image: "node:${NODE_VERSION}"
+  interruptible: true
+  script:
+    - yarn global add improved-yarn-audit
+    - improved-yarn-audit --ignore-dev-deps --exclude ${YARN_AUDIT_EXCLUDE_LIST}
+  tags:
+    - docker
+
+sass-analysis:
+  stage: lint
+  image: "drenso/sasslint:${SASSLINT_VERSION}"
+  needs: []
+  interruptible: true
+  script:
+    - sass-lint -v -c tests/sass-lint/.sass-lint.yml
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+# Build
+
+build-assets:
+  stage: build
+  image: "node:${NODE_VERSION}"
+  interruptible: true
+  needs:
+    - install-dependencies
+    - install-js-dependencies
+  cache:
+    - key:
+        files:
+          - yarn.lock
+        prefix: ${CI_PROJECT_PATH_SLUG}_yarn
+      paths:
+        - node_modules/
+      policy: pull
+    - key:
+        files:
+          - yarn.lock
+          - webpack.config.js
+        prefix: ${CI_PROJECT_PATH_SLUG}_webpack_persistent_cache
+      paths:
+        - node_modules/.cache/webpack
+  artifacts:
+    name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_assets"
+    expire_in: 1 day
+    paths:
+      - public/build
+      - public/email
+  script:
+    - yarn build
+  tags:
+    - docker
+  except:
+    - schedules
+
+# Tests
+
+phpunit:
+  stage: tests
+  image:
+    name: "drenso/phpunit:${PHPUNIT_VERSION}"
+    entrypoint: [""]
+  interruptible: true
+  needs:
+    - install-dependencies
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_composer
+    paths:
+      - vendor/
+    policy: pull
+  before_script:
+    - cp phpunit.xml.dist phpunit.xml
+  script:
+    - if [[ -f vendor/bin/phpunit ]]; then vendor/bin/phpunit; else phpunit; fi;
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
 action-security-check:
+  stage: tests
+  image: "drenso/php:${DRENSO_PHP_VERSION}"
+  interruptible: true
+  needs:
+    - install-dependencies
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: ${CI_PROJECT_PATH_SLUG}_composer
+    paths:
+      - vendor/
+    policy: pull
   script:
     - php bin/console ltb:check:action-security
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+
+# Sentry
+
+sentry-release-staging:
+  stage: sentry
+  image: getsentry/sentry-cli
+  dependencies: []
+  script:
+    - sentry-cli releases new -p ${SENTRY_PROJECT} ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8}
+    - sentry-cli releases set-commits --commit "extern / ${SENTRY_PROJECT}@${CI_COMMIT_SHA}" ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8}
+  tags:
+    - docker
+  only:
+    - master
+  except:
+    - schedules
+
+sentry-release-production:
+  stage: sentry
+  image: getsentry/sentry-cli
+  dependencies: []
+  script:
+    - sentry-cli releases finalize ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8}
+    - sentry-cli releases deploys ${SENTRY_PROJECT}@${CI_COMMIT_SHA:0:8} new --env prod
+  tags:
+    - docker
+  only:
+    - production
+  except:
+    - schedules
+
+# Deploy
+
+deploy-staging:
+  stage: deploy
+  image: kickin/ssh:1.2.0
+  resource_group: deploy-staging
+  dependencies: []
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "${STAGING_HOST_SSH} ${STAGING_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - echo "[${STAGING_HOST_SSH}]:${STAGING_HOST_SSH_PORT} ${STAGING_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "${STAGING_HOST_SSH_PRIVATE_KEY}")
+  script:
+    - ssh -tt ${STAGING_USER}@${STAGING_HOST_SSH} -p ${STAGING_HOST_SSH_PORT} ${CI_PIPELINE_ID}
+  environment:
+    name: Staging
+    url: https://${STAGING_HOST}
+  tags:
+    - docker-deploy
+  only:
+    - master
+  except:
+    - schedules
 
 deploy-production:
+  stage: deploy
+  image: kickin/ssh:1.2.0
+  resource_group: deploy-production
+  dependencies: []
+  variables:
+    GIT_STRATEGY: none
   before_script:
     - mkdir -p ~/.ssh
     - echo "${JUMP_HOST} ${JUMP_HOST_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
@@ -113,3 +430,12 @@ deploy-production:
     - ssh-add <(echo "${JUMP_HOST_SSH_PRIVATE_KEY}")
   script:
     - ssh -tt -J ${JUMP_USER}@${JUMP_HOST} ${PRODUCTION_USER}@${PRODUCTION_HOST_SSH} -p ${PRODUCTION_HOST_SSH_PORT} ${CI_PIPELINE_ID}
+  environment:
+    name: Production
+    url: https://${PRODUCTION_HOST}
+  tags:
+    - docker-deploy
+  only:
+    - production
+  except:
+    - schedules
