@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2927c4a971bc1a7be5e9fe604b9691ce",
+    "content-hash": "67ec6341b4a6a47d077d3f40d974b0cc",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5016,22 +5016,22 @@
         },
         {
             "name": "rollerworks/password-strength-validator",
-            "version": "v1.7.1",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
-                "reference": "469108fab284348ed8601c837b1b10f3236ba63a"
+                "reference": "26e46654139f98b9f9fbb8bd4683122942de7cd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/469108fab284348ed8601c837b1b10f3236ba63a",
-                "reference": "469108fab284348ed8601c837b1b10f3236ba63a",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/26e46654139f98b9f9fbb8bd4683122942de7cd6",
+                "reference": "26e46654139f98b9f9fbb8bd4683122942de7cd6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.3",
                 "psr/container": "^1.0 || ^2.0",
-                "symfony/deprecation-contracts": "^2.4",
+                "symfony/deprecation-contracts": "^2.4 || ^3.0",
                 "symfony/polyfill-mbstring": "^1.5.0",
                 "symfony/translation": "^4.4 || ^5.0 || ^6.0",
                 "symfony/validator": "^4.4 || ^5.0 || ^6.0"
@@ -5083,9 +5083,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rollerworks/PasswordStrengthValidator/issues",
-                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v1.7.1"
+                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v1.7.2"
             },
-            "time": "2021-11-15T10:21:40+00:00"
+            "time": "2021-12-05T11:57:34+00:00"
         },
         {
             "name": "ryakad/pandoc-php",
