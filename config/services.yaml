@@ -68,6 +68,7 @@ services:
       $cacheDir: '%kernel.cache_dir%'
       $isDebug: '%kernel.debug%'
       $host: '%env(HTTP_HOST)%'
+      $pythonPath: '%env(PYTHON_PATH)%'
 
   App\Communication\SetFromSubscriber:
     arguments:

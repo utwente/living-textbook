@@ -75,6 +75,10 @@ class AnalyticsService
    */
   private $pageLoadRepository;
   /**
+   * @var string
+   */
+  private $pythonPath;
+  /**
    * @var RelationProvider
    */
   private $relationProvider;
@@ -104,7 +108,7 @@ class AnalyticsService
       SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir,
       TrackingEventRepository $trackingEventRepository, PageLoadRepository $pageLoadRepository,
       LearningPathRepository $learningPathRepository, RelationProvider $relationProvider,
-      EntityManagerInterface $entityManager, string $host, bool $isDebug)
+      EntityManagerInterface $entityManager, string $host, bool $isDebug, string $pythonPath)
   {
     $this->trackingExportBuilder   = $trackingExportBuilder;
     $this->conceptIdNameProvider   = $conceptIdNameProvider;
@@ -119,6 +123,7 @@ class AnalyticsService
     $this->entityManager           = $entityManager;
     $this->relationProvider        = $relationProvider;
     $this->isDebug                 = $isDebug;
+    $this->pythonPath              = $pythonPath;
   }
 
   /**
@@ -140,7 +145,7 @@ class AnalyticsService
     $progressBar->display();
 
     // Create the virtual environment directory
-    (new Process(['python3', '-m', 'venv', self::ENV_DIR], $this->analyticsDir))
+    (new Process([$this->pythonPath, '-m', 'venv', self::ENV_DIR], $this->analyticsDir))
         ->mustRun();
 
     $progressBar->clear();
@@ -307,7 +312,7 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; python3 SyntheticDataGeneration.py "%s"', self::ENV_DIR, $settingsFile),
+          sprintf('. %s/bin/activate; %s SyntheticDataGeneration.py "%s"', self::ENV_DIR, $this->pythonPath, $settingsFile),
           $this->analyticsDir, NULL, NULL, 120);
       $process->run();
 
@@ -453,7 +458,7 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; python3 Main.py "%s"', self::ENV_DIR, $settingsFile),
+          sprintf('. %s/bin/activate; %s Main.py "%s"', self::ENV_DIR, $this->pythonPath, $settingsFile),
           $this->analyticsDir, NULL, NULL, 120);
       $process->run();
 
