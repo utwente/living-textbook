@@ -107,11 +107,17 @@ class EditStudyAreaType extends AbstractType
           ]);
     }
 
-    $builder->add('reviewModeEnabled', CheckboxType::class, [
-        'label'    => 'study-area.review-mode',
-        'help'     => 'study-area.review-mode-help',
-        'required' => false,
-    ]);
+    $builder
+        ->add('reviewModeEnabled', CheckboxType::class, [
+            'label'    => 'study-area.review-mode',
+            'help'     => 'study-area.review-mode-help',
+            'required' => false,
+        ])
+        ->add('apiEnabled', CheckboxType::class, [
+            'label'    => 'study-area.api-enabled',
+            'help'     => 'study-area.api-enabled-help',
+            'required' => false,
+        ]);
 
     if ($studyArea->getId()) {
       $builder

@@ -22,6 +22,9 @@ emails:
 learning-outcome:
   number-already-used: 'This number is already used in this study area.'
 
+study-area:
+  api-and-review-mode-enabled: 'The API cannot be enabled when the review mode is enabled.'
+
 user:
   email-used: 'This e-mail address is already in use!'
   password-no-match: 'The supplied passwords do not match!'

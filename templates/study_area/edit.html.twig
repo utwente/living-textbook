@@ -77,6 +77,20 @@
               }, 100);
             });
         {% endif %}
+
+        $('#{{ form.reviewModeEnabled.vars.id }}')
+            .on('change', function () {
+              if ($(this).is(':checked')) {
+                $('#{{ form.apiEnabled.vars.id }}').prop('checked', false);
+              }
+            });
+
+        $('#{{ form.apiEnabled.vars.id }}')
+            .on('change', function () {
+              if ($(this).is(':checked')) {
+                $('#{{ form.reviewModeEnabled.vars.id }}').prop('checked', false);
+              }
+            });
       });
     </script>
   {% endif %}

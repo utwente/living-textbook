@@ -17,12 +17,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * Class StudyArea
- *
- * @author Tobias
- *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
  *
@@ -42,22 +39,18 @@ class StudyArea
   use SoftDeletable;
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    * @Assert\NotBlank()
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
    */
-  private $name;
+  private string $name = '';
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    */
-  private $description;
+  private ?string $description = NULL;
 
   /**
    * @var Collection|Concept[]
@@ -78,24 +71,20 @@ class StudyArea
   private $userGroups;
 
   /**
-   * @var User
-   *
    * @ORM\ManyToOne(targetEntity="User")
    * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $owner;
+  private ?User $owner = NULL;
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
    *
    * @Assert\NotNull()
    * @StudyAreaAccessType()
    */
-  private $accessType;
+  private string $accessType = self::ACCESS_PRIVATE;
 
   /**
    * @var Collection|RelationType[]
@@ -147,125 +136,118 @@ class StudyArea
   private $tags;
 
   /**
-   * @var DateTime
-   *
    * @ORM\Column(name="frozen_on", type="datetime", nullable=true)
    */
-  private $frozenOn;
+  private ?DateTime $frozenOn = NULL;
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="print_header", type="string", length=100, nullable=true)
    *
    * @Assert\Length(max=100)
    */
-  private $printHeader;
+  private ?string $printHeader = NULL;
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="print_introduction", type="text", nullable=true)
    */
-  private $printIntroduction;
+  private ?string $printIntroduction = NULL;
 
   /**
    * If set, user interaction will be tracked (with user opt-in)
-   *
-   * @var bool
    *
    * @ORM\Column(name="track_users", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\Type("bool")
    */
-  private $trackUsers;
+  private bool $trackUsers = false;
 
   /**
    * Group
    *
-   * @var StudyAreaGroup|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
    * @ORM\JoinColumn(nullable=true)
    */
-  private $group;
+  private ?StudyAreaGroup $group = NULL;
 
   /**
    * Open access
    *
-   * @var bool
-   *
-   * @ORM\Column(type="boolean", nullable=false)
+   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
-  private $openAccess;
+  private bool $openAccess = false;
 
   /**
    * Analytics dashboard enabled
    *
-   * @var bool
-   *
-   * @ORM\Column(type="boolean", nullable=false)
+   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
-  private $analyticsDashboardEnabled;
+  private bool $analyticsDashboardEnabled = false;
 
   /**
    * Whether the review mode has been enabled for this study area
    *
-   * @var bool
-   *
-   * @ORM\Column(type="boolean", nullable=false)
+   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
-  private $reviewModeEnabled;
+  private bool $reviewModeEnabled = false;
+
+  /**
+   * Whether the API is enabled for this study area
+   *
+   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
+   */
+  private bool $apiEnabled = false;
 
   /**
    * The study area field names object
    *
-   * @var StudyAreaFieldConfiguration|null
-   *
    * @ORM\OneToOne(targetEntity="App\Entity\StudyAreaFieldConfiguration", cascade={"all"})
    * @ORM\JoinColumn(nullable=true)
    */
-  private $fieldConfiguration;
+  private ?StudyAreaFieldConfiguration $fieldConfiguration = NULL;
 
   /**
    * A default tag filter for the browser
    *
-   * @var Tag|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
    * @ORM\JoinColumn(nullable=true)
    */
-  private $defaultTagFilter;
+  private ?Tag $defaultTagFilter = NULL;
 
   /**
    * StudyArea constructor.
    */
   public function __construct()
   {
-    $this->name                      = '';
-    $this->concepts                  = new ArrayCollection();
-    $this->userGroups                = new ArrayCollection();
-    $this->relationTypes             = new ArrayCollection();
-    $this->abbreviations             = new ArrayCollection();
-    $this->externalResources         = new ArrayCollection();
-    $this->contributors              = new ArrayCollection();
-    $this->learningOutcomes          = new ArrayCollection();
-    $this->learningPaths             = new ArrayCollection();
-    $this->tags                      = new ArrayCollection();
-    $this->accessType                = self::ACCESS_PRIVATE;
-    $this->trackUsers                = false;
-    $this->openAccess                = false;
-    $this->analyticsDashboardEnabled = false;
-    $this->reviewModeEnabled         = false;
+    $this->concepts          = new ArrayCollection();
+    $this->userGroups        = new ArrayCollection();
+    $this->relationTypes     = new ArrayCollection();
+    $this->abbreviations     = new ArrayCollection();
+    $this->externalResources = new ArrayCollection();
+    $this->contributors      = new ArrayCollection();
+    $this->learningOutcomes  = new ArrayCollection();
+    $this->learningPaths     = new ArrayCollection();
+    $this->tags              = new ArrayCollection();
+  }
+
+  /**
+   * @Assert\Callback()
+   */
+  public function validateObject(ExecutionContextInterface $context)
+  {
+    if ($this->reviewModeEnabled && $this->apiEnabled) {
+      $context->buildViolation('study-area.api-and-review-mode-enabled')
+          ->atPath('apiEnabled')
+          ->addViolation();
+    }
   }
 
   /**
    * Possible access types
    *
-   * @return array
+   * @return string[]
    */
-  public static function getAccessTypes()
+  public static function getAccessTypes(): array
   {
     return [self::ACCESS_PUBLIC, self::ACCESS_PRIVATE, self::ACCESS_GROUP];
   }
@@ -273,12 +255,10 @@ class StudyArea
   /**
    * Possible access types, depending on the access level
    *
-   * @param AuthorizationCheckerInterface $authorizationChecker
-   * @param EntityManagerInterface        $em
-   *
-   * @return array
+   * @return string[]
    */
-  public function getAvailableAccessTypes(AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em)
+  public function getAvailableAccessTypes(
+      AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em): array
   {
     // Get original field value
     $origObj   = $em->getUnitOfWork()->getOriginalEntityData($this);
@@ -297,13 +277,8 @@ class StudyArea
 
   /**
    * Check whether the user is in a certain or one of the groups
-   *
-   * @param User        $user
-   * @param string|NULL $groupType
-   *
-   * @return bool
    */
-  public function isUserInGroup(User $user, string $groupType = NULL)
+  public function isUserInGroup(User $user, string $groupType = NULL): bool
   {
     foreach ($this->getUserGroups($groupType) as $userGroup) {
       if ($userGroup->getUsers()->contains($user)) return true;
@@ -313,8 +288,6 @@ class StudyArea
   }
 
   /**
-   * @param string|NULL $groupType
-   *
    * @return UserGroup[]|Collection
    */
   public function getUserGroups(string $groupType = NULL)
@@ -326,9 +299,9 @@ class StudyArea
   /**
    * Retrieve the available user group types
    *
-   * @return array
+   * @return string[]
    */
-  public function getAvailableUserGroupTypes()
+  public function getAvailableUserGroupTypes(): array
   {
     if ($this->getAccessType() === StudyArea::ACCESS_PRIVATE) {
       return [];
@@ -388,7 +361,7 @@ class StudyArea
    *
    * @return User[]
    */
-  public function getEditors()
+  public function getEditors(): array
   {
     $editorGroup = $this->getUserGroups(UserGroup::GROUP_EDITOR);
     if ($editorGroup->isEmpty()) {
@@ -409,7 +382,7 @@ class StudyArea
    *
    * @return UserGroupEmail[]
    */
-  public function getEmailEditors()
+  public function getEmailEditors(): array
   {
     $editorGroup = $this->getUserGroups(UserGroup::GROUP_EDITOR);
     if ($editorGroup->isEmpty()) {
@@ -430,7 +403,7 @@ class StudyArea
    *
    * @return User[]
    */
-  public function getReviewers()
+  public function getReviewers(): array
   {
     $reviewGroup = $this->getUserGroups(UserGroup::GROUP_REVIEWER);
     if ($reviewGroup->isEmpty()) {
@@ -451,7 +424,7 @@ class StudyArea
    *
    * @return UserGroupEmail[]
    */
-  public function getEmailReviewers()
+  public function getEmailReviewers(): array
   {
     $reviewGroup = $this->getUserGroups(UserGroup::GROUP_REVIEWER);
     if ($reviewGroup->isEmpty()) {
@@ -472,7 +445,7 @@ class StudyArea
    *
    * @return User[]
    */
-  public function getViewers()
+  public function getViewers(): array
   {
     $viewerGroup = $this->getUserGroups(UserGroup::GROUP_VIEWER);
     if ($viewerGroup->isEmpty()) {
@@ -493,7 +466,7 @@ class StudyArea
    *
    * @return UserGroupEmail[]
    */
-  public function getEmailViewers()
+  public function getEmailViewers(): array
   {
     $viewerGroup = $this->getUserGroups(UserGroup::GROUP_VIEWER);
     if ($viewerGroup->isEmpty()) {
@@ -511,12 +484,8 @@ class StudyArea
 
   /**
    * Check whether the given user is the StudyArea owner
-   *
-   * @param User|null $user
-   *
-   * @return bool
    */
-  public function isOwner(?User $user)
+  public function isOwner(?User $user): bool
   {
     if (!$user) {
       return false;
@@ -527,12 +496,8 @@ class StudyArea
 
   /**
    * Check whether the StudyArea is visible for the user
-   *
-   * @param User|null $user
-   *
-   * @return bool
    */
-  public function isVisible(?User $user)
+  public function isVisible(?User $user): bool
   {
     if ($this->openAccess) {
       return true;
@@ -556,12 +521,8 @@ class StudyArea
 
   /**
    * Check whether the StudyArea is editable for the user
-   *
-   * @param User|null $user
-   *
-   * @return bool
    */
-  public function isEditable(?User $user)
+  public function isEditable(?User $user): bool
   {
     if (!$user) {
       return false;
@@ -572,12 +533,8 @@ class StudyArea
 
   /**
    * Check whether the StudyArea changes can be reviewed by the user
-   *
-   * @param User|null $user
-   *
-   * @return bool
    */
-  public function isReviewable(?User $user)
+  public function isReviewable(?User $user): bool
   {
     if (!$user || !$this->isReviewModeEnabled()) {
       return false;
@@ -588,12 +545,8 @@ class StudyArea
 
   /**
    * Check whether the user can view the analytics of this study area
-   *
-   * @param User|null $user
-   *
-   * @return bool
    */
-  public function canViewAnalytics(?User $user)
+  public function canViewAnalytics(?User $user): bool
   {
     if (!$this->isAnalyticsDashboardEnabled()) {
       return false;
@@ -609,7 +562,7 @@ class StudyArea
   /**
    * @return array Array with DateTime and username
    */
-  public function getLastEditInfo()
+  public function getLastEditInfo(): array
   {
     $lastUpdated   = $this->getLastUpdated();
     $lastUpdatedBy = $this->getLastUpdatedBy();
@@ -661,40 +614,24 @@ class StudyArea
     return [$lastUpdated, $lastUpdatedBy];
   }
 
-  /**
-   * @return string
-   */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return StudyArea
-   */
-  public function setName(string $name): StudyArea
+  public function setName(string $name): self
   {
     $this->name = $name;
 
     return $this;
   }
 
-  /**
-   * @return null|string
-   */
   public function getDescription(): ?string
   {
     return $this->description;
   }
 
-  /**
-   * @param null|string $description
-   *
-   * @return StudyArea
-   */
-  public function setDescription(?string $description): StudyArea
+  public function setDescription(?string $description): self
   {
     $this->description = $description;
 
@@ -709,12 +646,7 @@ class StudyArea
     return $this->concepts;
   }
 
-  /**
-   * @param Concept $concept
-   *
-   * @return StudyArea
-   */
-  public function addConcept(Concept $concept): StudyArea
+  public function addConcept(Concept $concept): self
   {
     // Check whether the study area is set, otherwise set it as this
     if (!$concept->getStudyArea()) {
@@ -725,24 +657,14 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @param Concept $concept
-   *
-   * @return StudyArea
-   */
-  public function removeConcept(Concept $concept): StudyArea
+  public function removeConcept(Concept $concept): self
   {
     $this->concepts->removeElement($concept);
 
     return $this;
   }
 
-  /**
-   * @param UserGroup $userGroup
-   *
-   * @return StudyArea
-   */
-  public function addUserGroup(UserGroup $userGroup): StudyArea
+  public function addUserGroup(UserGroup $userGroup): self
   {
     // Check whether the StudyArea is set, otherwise set it as this
     if (!$userGroup->getStudyArea()) {
@@ -753,60 +675,36 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @param UserGroup $userGroup
-   *
-   * @return StudyArea
-   */
-  public function removeUserGroup(UserGroup $userGroup): StudyArea
+  public function removeUserGroup(UserGroup $userGroup): self
   {
     $this->userGroups->removeElement($userGroup);
 
     return $this;
   }
 
-  /**
-   * @return string
-   */
   public function __toString(): string
   {
     return $this->getName();
   }
 
-  /**
-   * @return User|null
-   */
   public function getOwner(): ?User
   {
     return $this->owner;
   }
 
-  /**
-   * @param User $owner
-   *
-   * @return StudyArea
-   */
-  public function setOwner(User $owner): StudyArea
+  public function setOwner(User $owner): self
   {
     $this->owner = $owner;
 
     return $this;
   }
 
-  /**
-   * @return string
-   */
   public function getAccessType(): string
   {
     return $this->accessType;
   }
 
-  /**
-   * @param string $accessType
-   *
-   * @return StudyArea
-   */
-  public function setAccessType(string $accessType): StudyArea
+  public function setAccessType(string $accessType): self
   {
     $this->accessType = $accessType;
 
@@ -821,116 +719,70 @@ class StudyArea
     return $this->relationTypes;
   }
 
-  /**
-   * @param DateTime|null $frozenOn
-   *
-   * @return $this
-   */
-  public function setFrozenOn(?DateTime $frozenOn)
+  public function setFrozenOn(?DateTime $frozenOn): self
   {
     $this->frozenOn = $frozenOn;
 
     return $this;
   }
 
-  /**
-   * @return DateTime|null
-   */
   public function getFrozenOn(): ?DateTime
   {
     return $this->frozenOn;
   }
 
-  /**
-   * @return bool
-   */
   public function isFrozen(): bool
   {
     return $this->getFrozenOn() !== NULL;
   }
 
-  /**
-   * @return string|null
-   */
   public function getPrintHeader(): ?string
   {
     return $this->printHeader;
   }
 
-  /**
-   * @param string|null $printHeader
-   *
-   * @return StudyArea
-   */
-  public function setPrintHeader(?string $printHeader): StudyArea
+  public function setPrintHeader(?string $printHeader): self
   {
     $this->printHeader = $printHeader;
 
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
   public function getPrintIntroduction(): ?string
   {
     return $this->printIntroduction;
   }
 
-  /**
-   * @param string|null $printIntroduction
-   *
-   * @return StudyArea
-   */
-  public function setPrintIntroduction(?string $printIntroduction): StudyArea
+  public function setPrintIntroduction(?string $printIntroduction): self
   {
     $this->printIntroduction = $printIntroduction;
 
     return $this;
   }
 
-  /**
-   * @return bool
-   */
   public function isTrackUsers(): bool
   {
     // Never enable tracking when open access is set
     return !$this->openAccess && $this->trackUsers;
   }
 
-  /**
-   * @param bool $trackUsers
-   *
-   * @return StudyArea
-   */
-  public function setTrackUsers(bool $trackUsers): StudyArea
+  public function setTrackUsers(bool $trackUsers): self
   {
     $this->trackUsers = $trackUsers;
 
     return $this;
   }
 
-  /**
-   * @return StudyAreaGroup|null
-   */
   public function getGroup(): ?StudyAreaGroup
   {
     return $this->group;
   }
 
-  /**
-   * @return int|null
-   */
   public function getGroupId(): ?int
   {
     return $this->group ? $this->group->getId() : NULL;
   }
 
-  /**
-   * @param StudyAreaGroup|null $group
-   *
-   * @return StudyArea
-   */
   public function setGroup(?StudyAreaGroup $group): self
   {
     $this->group = $group;
@@ -938,19 +790,11 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return bool
-   */
   public function isOpenAccess(): bool
   {
     return $this->openAccess;
   }
 
-  /**
-   * @param bool $openAccess
-   *
-   * @return StudyArea
-   */
   public function setOpenAccess(bool $openAccess): self
   {
     $this->openAccess = $openAccess;
@@ -958,19 +802,11 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return bool
-   */
   public function isAnalyticsDashboardEnabled(): bool
   {
     return $this->analyticsDashboardEnabled;
   }
 
-  /**
-   * @param bool $analyticsDashboardEnabled
-   *
-   * @return StudyArea
-   */
   public function setAnalyticsDashboardEnabled(bool $analyticsDashboardEnabled): self
   {
     $this->analyticsDashboardEnabled = $analyticsDashboardEnabled;
@@ -978,19 +814,11 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return bool
-   */
   public function isReviewModeEnabled(): bool
   {
     return $this->reviewModeEnabled;
   }
 
-  /**
-   * @param bool $reviewModeEnabled
-   *
-   * @return StudyArea
-   */
   public function setReviewModeEnabled(bool $reviewModeEnabled): self
   {
     $this->reviewModeEnabled = $reviewModeEnabled;
@@ -998,19 +826,23 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return StudyAreaFieldConfiguration|null
-   */
+  public function isApiEnabled(): bool
+  {
+    return $this->apiEnabled;
+  }
+
+  public function setApiEnabled(bool $apiEnabled): self
+  {
+    $this->apiEnabled = $apiEnabled;
+
+    return $this;
+  }
+
   public function getFieldConfiguration(): ?StudyAreaFieldConfiguration
   {
     return $this->fieldConfiguration;
   }
 
-  /**
-   * @param StudyAreaFieldConfiguration|null $fieldConfiguration
-   *
-   * @return StudyArea
-   */
   public function setFieldConfiguration(?StudyAreaFieldConfiguration $fieldConfiguration): self
   {
     $this->fieldConfiguration = $fieldConfiguration;
@@ -1018,19 +850,11 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return Tag|null
-   */
   public function getDefaultTagFilter(): ?Tag
   {
     return $this->defaultTagFilter;
   }
 
-  /**
-   * @param Tag|null $defaultTagFilter
-   *
-   * @return StudyArea
-   */
   public function setDefaultTagFilter(?Tag $defaultTagFilter): self
   {
     $this->defaultTagFilter = $defaultTagFilter;

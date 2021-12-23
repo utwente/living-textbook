@@ -147,7 +147,7 @@ browser:
   zoom-out: 'Zoom out'
 
 concept:
-  _type: {}
+  _type: { }
   _name: 'Concept'
   add-title: 'Add new'
   concept: 'Concept'
@@ -650,6 +650,8 @@ study-area:
   analytics-dashboard-help: >-
     When user tracking is enabled, it is possible to enable the analytics dashboard which allows the study area
     owner to inspect the behavior of the users.
+  api-enabled: 'API enabled'
+  api-enabled-help: 'When enabled, API access for this study area is enabled. Enabling API access will disable review mode!'
   current: 'Current'
   current-area: 'Now browsing "%item%"'
   default-tag-filter: 'Default tag filter'
