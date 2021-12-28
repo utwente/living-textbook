@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\Request\Subscriber;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\StudyArea;
