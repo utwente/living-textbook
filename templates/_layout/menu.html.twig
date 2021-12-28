@@ -163,7 +163,7 @@
         </li>
       {% endif %}
 
-      {% if (app.user and not app.user.isOidc|default(false)) or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+      {% if app.user or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="config-dropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
@@ -192,6 +192,12 @@
                  href="{{ path('app_studyarea_listgroups') }}">{{ 'menu.study-area-groups'|trans }}</a>
               <a class="dropdown-item" href="{{ path('app_permissions_admins') }}">{{ 'menu.admin'|trans }}</a>
               <a class="dropdown-item" href="{{ path('app_user_fallbacklist') }}">{{ 'menu.fallback-users'|trans }}</a>
+            {% endif %}
+
+            {% if app.user %}
+              <a class="dropdown-item" href="{{ path('app_user_apitokens') }}">
+                {{ 'menu.api-tokens'|trans }}
+              </a>
             {% endif %}
 
             {% if app.user and not app.user.isOidc|default(false) %}

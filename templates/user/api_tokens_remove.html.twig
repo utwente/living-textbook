@@ -1,0 +1,13 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'user.api-tokens.remove'|trans() }}
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{ 'user.api-tokens.remove-text'|trans() }}
+  </p>
+
+  {{ form(form) }}
+{% endblock %}

@@ -481,6 +481,7 @@ menu:
   abbreviations: 'Abbreviations'
   admin: 'Administrators'
   analytics-dashboard: 'Analytics dashboard'
+  api-tokens: 'API tokens'
   change-password: 'Change password'
   config: 'Configuration'
   contributors: 'Contributors'
@@ -909,6 +910,20 @@ url:
   urls-unscanned: 'URLs not scanned yet.'
 
 user:
+  api-tokens:
+    description: 'Description'
+    generate: 'Generate'
+    generate-text: 'Here you can generate a new API token. You can supply a description and valid until date, but both are optional.'
+    generate-title: 'Generate API token'
+    generated-text: 'Below your new API token is displayed. Make sure to copy it now: it will not be shown again!'
+    generated-title: 'Generated API token'
+    id: 'Token ID'
+    last-used: 'Last used'
+    list: 'API tokens'
+    remove: 'Delete API token'
+    remove-text: 'Are you sure you want to delete this API token?'
+    removed: 'The API token has been removed successfully!'
+    valid-until: 'Valid until'
   display-name: 'Name'
   emailaddress: 'E-mail address'
   fallback:

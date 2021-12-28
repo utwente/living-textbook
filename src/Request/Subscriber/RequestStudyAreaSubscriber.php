@@ -2,6 +2,7 @@
 
 namespace App\Request\Subscriber;
 
+use App\Api\ApiErrorResponse;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use App\Naming\NamingService;
@@ -10,6 +11,7 @@ use App\Request\Wrapper\RequestStudyArea;
 use ReflectionException;
 use ReflectionMethod;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
+use function Symfony\Component\String\b;
 
 /**
  * Class RequestStudyAreaSubscriber
@@ -56,8 +59,11 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   private $studyAreaId;
 
   public function __construct(
-      RouterInterface $router, StudyAreaRepository $studyAreaRepository, TokenStorageInterface $tokenStorage,
-      Environment $twig, NamingService $namingService)
+      RouterInterface       $router,
+      StudyAreaRepository   $studyAreaRepository,
+      TokenStorageInterface $tokenStorage,
+      Environment           $twig,
+      NamingService         $namingService)
   {
     $this->router              = $router;
     $this->studyAreaRepository = $studyAreaRepository;
@@ -75,18 +81,17 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
    */
   public static function getSubscribedEvents()
   {
-    return array(
+    return [
         KernelEvents::CONTROLLER           => [
-            array('determineStudyArea', 100),
-            array('injectStudyAreaInNamingService', 99),
+            ['determineStudyArea', 100],
+            ['validateApiStudyArea', 99],
+            ['injectStudyAreaInNamingService', 98],
+            ['injectStudyAreaInView', 98],
         ],
         KernelEvents::CONTROLLER_ARGUMENTS => [
-            array('injectStudyAreaInControllerArguments', 100),
+            ['injectStudyAreaInControllerArguments', 100],
         ],
-        KernelEvents::VIEW                 => [
-            array('injectStudyAreaInView', 255),
-        ],
-    );
+    ];
   }
 
   /**
@@ -220,6 +225,27 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   {
     $this->testCache();
     $this->namingService->injectStudyArea($this->studyArea);
+  }
+
+  public function validateApiStudyArea(ControllerEvent $event): void
+  {
+    $this->testCache();
+
+    // API must be enabled for the selected study area
+    if (!$this->studyArea || $this->studyArea->isApiEnabled()) {
+      return;
+    }
+
+    // Validate it is actually an API request
+    $controllerName = b($event->getRequest()->attributes->get('_controller'));
+    if (!$controllerName->startsWith('App\\Api\\Controller\\')) {
+      return;
+    }
+
+    // Return an error response
+    $event->setController(function () {
+      return new ApiErrorResponse('API disabled', Response::HTTP_FORBIDDEN, 'API not enabled for this study area');
+    });
   }
 
   /**

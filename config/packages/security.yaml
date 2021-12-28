@@ -10,6 +10,8 @@ security:
   encoders:
     App\Entity\User:
       algorithm: auto
+    App\Entity\UserApiToken:
+      algorithm: auto
     App\Entity\UserProto:
       algorithm: auto
 
@@ -17,6 +19,13 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
+    api:
+      pattern: ^/api/(?!doc(\.json)?$)
+      anonymous: false
+      stateless: true
+      guard:
+        authenticators:
+          - App\Api\Security\ApiAuthenticator
     main:
       pattern: ^/
       anonymous: true

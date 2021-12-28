@@ -1,0 +1,19 @@
+{% extends 'single_column.html.twig' %}
+
+{% block before_title %}
+  {% import '_macro/_action_buttons.html.twig' as buttons %}
+  {{ buttons.add_row(path('app_user_apitokens')) }}
+{% endblock %}
+
+{% block title %}
+  {{ 'user.api-tokens.generate-title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>
+    {{ 'user.api-tokens.generate-text'|trans }}
+  </p>
+
+  {{ form(form) }}
+{% endblock %}
+
