@@ -920,6 +920,7 @@ user:
     id: 'Token ID'
     last-used: 'Last used'
     list: 'API tokens'
+    none: 'No API tokens generated (yet)'
     remove: 'Delete API token'
     remove-text: 'Are you sure you want to delete this API token?'
     removed: 'The API token has been removed successfully!'

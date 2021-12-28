@@ -52,11 +52,11 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
     // Split token into user id and token
     $token = $request->headers->get(self::API_TOKEN_HEADER);
 
-    [$tokenId, $authToken] = explode('_', $token);
+    $tokenData = explode('_', $token);
 
     return [
-        'token_id' => $tokenId,
-        'token'    => $authToken,
+        'token_id' => $tokenData[0] ?? NULL,
+        'token'    => $tokenData[1] ?? NULL,
     ];
   }
 
