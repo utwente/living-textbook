@@ -203,7 +203,7 @@ class User implements UserInterface, Serializable
     $this->registeredOn  = new DateTime();
     $this->isOidc        = false;
     $this->isAdmin       = false;
-    $this->securityRoles = array();
+    $this->securityRoles = [];
     $this->userGroups    = new ArrayCollection();
     $this->annotations   = new ArrayCollection();
   }
@@ -294,13 +294,18 @@ class User implements UserInterface, Serializable
    */
   public function serialize()
   {
-    return serialize(array(
+    return serialize($this->__serialize());
+  }
+
+  public function __serialize(): array
+  {
+    return [
         $this->id,
         $this->username,
         $this->password,
         true, // BC-compatibility with serialized sessions
         $this->isOidc,
-    ));
+    ];
   }
 
   /**
@@ -315,13 +320,18 @@ class User implements UserInterface, Serializable
    */
   public function unserialize($serialized)
   {
-    list (
+    $this->__unserialize(unserialize($serialized));
+  }
+
+  public function __unserialize(array $data): void
+  {
+    [
         $this->id,
         $this->username,
         $this->password,
-        , //  BC-compatibility with serialized sessions
+      , //  BC-compatibility with serialized sessions
         $this->isOidc,
-        ) = unserialize($serialized);
+    ] = $data;
   }
 
   /**

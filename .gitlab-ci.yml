@@ -11,7 +11,7 @@ variables:
   COMPOSER_UNUSED_VERSION: 0.7.7
   DRENSO_PHP_VERSION: 7.4-d1
   NODE_VERSION: 14
-  PHAN_VERSION: 2.7.2
+  PHAN_VERSION: 5.2-d2
   PHPUNIT_VERSION: 8.4-d7
   PHP_SEC_CHECK_VERSION: 1.0.0
   SASSLINT_VERSION: 1.12.1-d1
@@ -176,7 +176,7 @@ shellcheck:
 php-analysis:
   stage: lint
   image:
-    name: "kickin/phan:${PHAN_VERSION}"
+    name: "drenso/phan:${PHAN_VERSION}"
     entrypoint: [""]
   needs:
     - job: install-dependencies
@@ -191,7 +191,7 @@ php-analysis:
     policy: pull
   interruptible: true
   script:
-    - php7 /opt/phan/phan -k tests/phan/config.php
+    - phan -k tests/phan/config.php
   tags:
     - docker
   except:
