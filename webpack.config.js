@@ -40,6 +40,7 @@ Encore
     ])
 
     .addEntry('vendor', './assets/js/vendor.js')
+    .addEntry('openapi', './assets/js/openapi.js')
 
     // Elfinder dedicated assets
     .copyFiles([

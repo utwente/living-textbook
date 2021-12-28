@@ -179,6 +179,19 @@
     "myclabs/php-enum": {
         "version": "1.7.7"
     },
+    "nelmio/api-doc-bundle": {
+        "version": "4.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
+        },
+        "files": [
+            "config/packages/nelmio_api_doc.yaml",
+            "config/routes/nelmio_api_doc.yaml"
+        ]
+    },
     "ocramius/package-versions": {
         "version": "1.2.0"
     },
@@ -205,6 +218,15 @@
     },
     "php-http/promise": {
         "version": "v1.0.0"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.3.0"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.5.1"
     },
     "phpoffice/phpspreadsheet": {
         "version": "1.4.0"
@@ -479,6 +501,9 @@
     "symfony/property-access": {
         "version": "v4.0.2"
     },
+    "symfony/property-info": {
+        "version": "v4.4.31"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v4.1.6"
     },
@@ -608,6 +633,9 @@
     "twig/twig": {
         "version": "v2.4.4"
     },
+    "webmozart/assert": {
+        "version": "1.10.0"
+    },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
     },
@@ -616,5 +644,8 @@
     },
     "zendframework/zend-eventmanager": {
         "version": "3.2.0"
+    },
+    "zircote/swagger-php": {
+        "version": "4.0.5"
     }
 }

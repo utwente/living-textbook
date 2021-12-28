@@ -1,0 +1,24 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Living Textbook
+      description: >-
+        The Living Textbook (LTB) API can be used to integrate the LTB with external applications.
+        Authentication is based on personal access tokens, which can be generated from the LTB interface.
+      version: 0.1.0
+    components:
+      securitySchemes:
+        ApiKey:
+          type: apiKey
+          in: header
+          name: X-LTB-AUTH
+          description: 'This token was presented to you once when you generated it'
+    security:
+      - ApiKey: [ ]
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/api/(?!doc(\.json)?$) # Accepts routes under /api except /api/doc
+    name_patterns:
+      - ^(?!_api_catch_all)
+  models:
+    use_jms: true

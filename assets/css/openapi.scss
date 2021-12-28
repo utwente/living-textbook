@@ -1,0 +1,25 @@
+@import 'vars/vars';
+
+header {
+  img {
+    position: fixed;
+    top: 35px;
+    right: 50%;
+    z-index: 102;
+    transform: translateY(-50%) translateX(50%);
+  }
+
+  &::before {
+    background-color: $background-color;
+  }
+}
+
+#swagger-ui.api-platform {
+  .info .title {
+    color: inherit;
+  }
+
+  .response-col_links {
+    display: none;
+  }
+}

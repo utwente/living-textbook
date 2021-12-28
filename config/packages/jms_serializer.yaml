@@ -1,4 +1,7 @@
 jms_serializer:
+  default_context:
+    serialization:
+      serialize_null: true # Always serialize null to avoid typing issues
   property_naming:
     separator: ""
     lower_case: false

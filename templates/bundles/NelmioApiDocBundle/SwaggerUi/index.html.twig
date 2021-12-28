@@ -1,0 +1,15 @@
+{% extends '@!NelmioApiDoc/SwaggerUi/index.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  {{ encore_entry_link_tags('openapi') }}
+{% endblock stylesheets %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {{ encore_entry_script_tags('openapi') }}
+{% endblock javascripts %}
+
+{% block header %}
+  <img src="{{ asset('build/images/LTB_Logo_V4.svg') }}" height="55" alt="{{ '_brand.ltb'|trans({}, 'communication') }}">
+{% endblock %}
