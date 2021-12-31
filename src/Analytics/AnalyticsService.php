@@ -337,7 +337,7 @@ class AnalyticsService
     }
 
     // Load new data
-    $this->entityManager->transactional(function () use ($studyArea, &$settings) {
+    $this->entityManager->wrapInTransaction(function () use ($studyArea, &$settings) {
       // Purge existing tracking data
       $this->trackingEventRepository->purgeForStudyArea($studyArea);
       $this->pageLoadRepository->purgeForStudyArea($studyArea);
