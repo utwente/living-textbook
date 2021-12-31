@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\StudyAreaGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method StudyAreaGroup|null find($id, $lockMode = NULL, $lockVersion = NULL)

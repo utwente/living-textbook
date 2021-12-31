@@ -7,7 +7,7 @@ use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
 class LearningPathRepository extends ServiceEntityRepository

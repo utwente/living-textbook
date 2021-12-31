@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\Review;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ReviewRepository extends ServiceEntityRepository
 {

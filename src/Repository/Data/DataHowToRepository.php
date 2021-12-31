@@ -4,7 +4,7 @@ namespace App\Repository\Data;
 
 use App\Entity\Data\DataHowTo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class DataHowToRepository extends ServiceEntityRepository
 {
