@@ -167,7 +167,7 @@ class AnalyticsService
     // Install packages
     $process = Process::fromShellCommandline(
         sprintf('. %s/bin/activate; pip install -r requirements.txt --no-cache-dir', self::ENV_DIR),
-        $this->analyticsDir, NULL, NULL, 600);
+        $this->analyticsDir, NULL, NULL, null);
     $process->mustRun(function ($type, $buffer) use ($output, $progressBar) {
       $progressBar->clear();
       if (Process::ERR === $type) {
