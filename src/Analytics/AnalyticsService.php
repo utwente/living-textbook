@@ -42,88 +42,30 @@ class AnalyticsService
 {
   private const ENV_DIR = '.venv';
 
-  /**
-   * The directory where the python implementation lives
-   *
-   * @var string
-   */
-  private $analyticsDir;
-  /**
-   * @var ConceptIdNameProvider
-   */
-  private $conceptIdNameProvider;
-  /**
-   * @var EntityManagerInterface
-   */
-  private $entityManager;
-  /**
-   * @var Filesystem
-   */
-  private $fileSystem;
-  /**
-   * The output directory, located in the application cache
-   *
-   * @var string
-   */
-  private $baseOutputDir;
-  /**
-   * @var LearningPathRepository
-   */
-  private $learningPathRepository;
-  /**
-   * @var PageLoadRepository
-   */
-  private $pageLoadRepository;
-  /**
-   * @var string
-   */
-  private $pythonPath;
-  /**
-   * @var RelationProvider
-   */
-  private $relationProvider;
-  /**
-   * @var SpreadsheetHelper
-   */
-  private $spreadsheetHelper;
-  /**
-   * @var TrackingEventRepository
-   */
-  private $trackingEventRepository;
-  /**
-   * @var TrackingExportBuilder
-   */
-  private $trackingExportBuilder;
-  /**
-   * @var string
-   */
-  private $host;
-  /**
-   * @var bool
-   */
-  private $isDebug;
+  /** The directory where the python implementation lives   */
+  private string $analyticsDir;
+  private Filesystem $fileSystem;
+  /** The output directory, located in the application cache   */
+  private string $baseOutputDir;
 
   public function __construct(
-      TrackingExportBuilder $trackingExportBuilder, ConceptIdNameProvider $conceptIdNameProvider,
-      SpreadsheetHelper $spreadsheetHelper, string $projectDir, string $cacheDir,
-      TrackingEventRepository $trackingEventRepository, PageLoadRepository $pageLoadRepository,
-      LearningPathRepository $learningPathRepository, RelationProvider $relationProvider,
-      EntityManagerInterface $entityManager, string $host, bool $isDebug, string $pythonPath)
+      private TrackingExportBuilder   $trackingExportBuilder,
+      private ConceptIdNameProvider   $conceptIdNameProvider,
+      private SpreadsheetHelper       $spreadsheetHelper,
+      string                          $projectDir,
+      string                          $cacheDir,
+      private TrackingEventRepository $trackingEventRepository,
+      private PageLoadRepository      $pageLoadRepository,
+      private LearningPathRepository  $learningPathRepository,
+      private RelationProvider        $relationProvider,
+      private EntityManagerInterface  $entityManager,
+      private string                  $host,
+      private bool                    $isDebug,
+      private string                  $pythonPath)
   {
-    $this->trackingExportBuilder   = $trackingExportBuilder;
-    $this->conceptIdNameProvider   = $conceptIdNameProvider;
-    $this->spreadsheetHelper       = $spreadsheetHelper;
-    $this->analyticsDir            = $projectDir . '/python/data-visualisation';
-    $this->baseOutputDir           = $cacheDir . '/data-visualisation';
-    $this->fileSystem              = new Filesystem();
-    $this->trackingEventRepository = $trackingEventRepository;
-    $this->pageLoadRepository      = $pageLoadRepository;
-    $this->learningPathRepository  = $learningPathRepository;
-    $this->host                    = $host;
-    $this->entityManager           = $entityManager;
-    $this->relationProvider        = $relationProvider;
-    $this->isDebug                 = $isDebug;
-    $this->pythonPath              = $pythonPath;
+    $this->analyticsDir  = $projectDir . '/python/data-visualisation';
+    $this->baseOutputDir = $cacheDir . '/data-visualisation';
+    $this->fileSystem    = new Filesystem();
   }
 
   /**
@@ -167,7 +109,7 @@ class AnalyticsService
     // Install packages
     $process = Process::fromShellCommandline(
         sprintf('. %s/bin/activate; pip install -r requirements.txt --no-cache-dir', self::ENV_DIR),
-        $this->analyticsDir, NULL, NULL, null);
+        $this->analyticsDir, NULL, NULL, NULL);
     $process->mustRun(function ($type, $buffer) use ($output, $progressBar) {
       $progressBar->clear();
       if (Process::ERR === $type) {
@@ -185,13 +127,6 @@ class AnalyticsService
 
   /**
    * Builds the visualisation for the given learning path
-   *
-   * @param LearningPathVisualisationRequest $request
-   *
-   * @return LearningPathVisualisationResult
-   *
-   * @throws VisualisationBuildFailed
-   * @throws VisualisationDependenciesFailed
    */
   public function buildForLearningPath(LearningPathVisualisationRequest $request): LearningPathVisualisationResult
   {
@@ -235,11 +170,6 @@ class AnalyticsService
   /**
    * Synthesizes new analytics data for the supplied study area.
    * Any existing data will be purged!
-   *
-   * @param StudyArea $studyArea
-   *
-   * @throws SynthesizeBuildFailed
-   * @throws SynthesizeDependenciesFailed
    */
   public function synthesizeDataForStudyArea(StudyArea $studyArea, SynthesizeRequest $request): void
   {
@@ -312,7 +242,7 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; %s SyntheticDataGeneration.py "%s"', self::ENV_DIR, $this->pythonPath, $settingsFile),
+          sprintf('. %s/bin/activate; python SyntheticDataGeneration.py "%s"', self::ENV_DIR, $settingsFile),
           $this->analyticsDir, NULL, NULL, 120);
       $process->run();
 
@@ -375,20 +305,14 @@ class AnalyticsService
   /**
    * Builds the visualisation using the supplied parameter file
    *
-   * @param StudyAreaFilteredInterface $object
-   * @param DateTimeInterface          $start
-   * @param DateTimeInterface          $end
-   * @param array                      $settings
-   * @param bool                       $forceBuild
-   *
    * @return string The output directory, which can be used to load the files
-   *
-   * @throws VisualisationBuildFailed
-   * @throws VisualisationDependenciesFailed
    */
   private function build(
-      StudyAreaFilteredInterface $object, DateTimeInterface $start, DateTimeInterface $end,
-      array $settings = [], bool $forceBuild = false): string
+      StudyAreaFilteredInterface $object,
+      DateTimeInterface          $start,
+      DateTimeInterface          $end,
+      array                      $settings = [],
+      bool                       $forceBuild = false): string
   {
     // Clear the cache on every invocation
     $this->clearCache();
@@ -458,7 +382,7 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; %s Main.py "%s"', self::ENV_DIR, $this->pythonPath, $settingsFile),
+          sprintf('. %s/bin/activate; python Main.py "%s"', self::ENV_DIR, $settingsFile),
           $this->analyticsDir, NULL, NULL, 120);
       $process->run();
 
@@ -542,13 +466,8 @@ class AnalyticsService
 
   /**
    * Retrieve the output directory
-   *
-   * @param StudyArea|LearningPath|StudyAreaFilteredInterface $object
-   * @param string                                            $hash
-   *
-   * @return string
    */
-  private function outputDir($object, string $hash): string
+  private function outputDir(StudyArea|LearningPath|StudyAreaFilteredInterface $object, string $hash): string
   {
     if ($object instanceof StudyArea) {
       $prefix = 'sa';

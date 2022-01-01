@@ -16,15 +16,10 @@ class BuildPythonEnvironmentCommand extends Command
    * @var string
    */
   protected static $defaultName = 'ltb:python:build';
-  /**
-   * @var AnalyticsService
-   */
-  private $analyticsService;
 
-  public function __construct(AnalyticsService $analyticsService)
+  public function __construct(private AnalyticsService $analyticsService)
   {
-    parent::__construct(NULL);
-    $this->analyticsService = $analyticsService;
+    parent::__construct();
   }
 
   protected function execute(InputInterface $input, OutputInterface $output)
