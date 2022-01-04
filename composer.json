@@ -31,7 +31,7 @@
         "gedmo/doctrine-extensions": "3.4.0",
         "helios-ag/fm-elfinder-bundle": "11.0.0",
         "jms/serializer": "3.16.0",
-        "jms/serializer-bundle": "3.10.0",
+        "jms/serializer-bundle": "4.0.2",
         "kick-in/exception-handler-bundle": "3.0.1",
         "league/html-to-markdown": "5.0.2",
         "ml/json-ld": "1.2.0",
