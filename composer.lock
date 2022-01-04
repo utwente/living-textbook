@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4c7c94da306ade0c5efcdbb2fbe76eb",
+    "content-hash": "65587d6547f0ae265de9c3cb6d827352",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -12210,23 +12210,22 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.15.1",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3b7cedb2f736899a7dbd0ba3d6da335a015f5cc4"
+                "reference": "e939eae92386b69b49cfa4599dd9bead6bf4a342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3b7cedb2f736899a7dbd0ba3d6da335a015f5cc4",
-                "reference": "3b7cedb2f736899a7dbd0ba3d6da335a015f5cc4",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e939eae92386b69b49cfa4599dd9bead6bf4a342",
+                "reference": "e939eae92386b69b49cfa4599dd9bead6bf4a342",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
+                "php": ">=7.2.5",
                 "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-mbstring": "^1.3",
-                "symfony/polyfill-php72": "^1.8"
+                "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
                 "psr/container": "^1.0",
@@ -12235,13 +12234,10 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.15-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Twig_": "lib/"
-                },
                 "psr-4": {
                     "Twig\\": "src/"
                 }
@@ -12274,7 +12270,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v2.15.1"
+                "source": "https://github.com/twigphp/Twig/tree/v3.4.1"
             },
             "funding": [
                 {
@@ -12286,7 +12282,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-17T05:46:24+00:00"
+            "time": "2022-05-17T05:48:52+00:00"
         },
         {
             "name": "webmozart/assert",
