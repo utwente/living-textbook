@@ -1,4 +1,4 @@
-FROM php:7.3.31-fpm-alpine3.13
+FROM php:8.0.14-fpm-alpine3.15
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update image
