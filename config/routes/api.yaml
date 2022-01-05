@@ -12,6 +12,31 @@ api_controllers:
   requirements:
     _studyArea: \d+
 
+##############################################################################
+## From nelmio_api_doc.yaml
+##############################################################################
+# Expose your documentation as JSON swagger compliant
+app.swagger:
+  path: /api/doc.json
+  methods: GET
+  controller: nelmio_api_doc.controller.swagger
+
+# Requires the Asset component and the Twig bundle
+# $ composer require twig asset
+app.swagger_ui:
+  path: /api/doc
+  methods: GET
+  controller: nelmio_api_doc.controller.swagger_ui
+
+##############################################################################
+
+_api_doc_forward:
+  path: /api
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+  defaults:
+    path: /api/doc
+    permanent: false
+
 _api_catch_all:
   path: /api/{slug}
   controller: App\Api\Controller\DefaultController::notFound
