@@ -180,7 +180,7 @@
     {% set state = state|merge({tags: [studyArea.defaultTagFilter.id]}) %}
   {% endif %}
 
-  <div id="filter-content" {% if state is not null %}data-state="{{ state|serialize }}"{% endif %}>
+  <div id="filter-content" {% if state is not null %}data-state="{{ state|jms_serialize }}"{% endif %}>
     <form onsubmit="return false;">
       <div class="custom-control custom-checkbox">
         <input type="checkbox" class="custom-control-input" id="filter-hide-instances"
