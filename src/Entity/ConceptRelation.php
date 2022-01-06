@@ -108,7 +108,7 @@ class ConceptRelation
    */
   public function getTargetId(): ?int
   {
-    return $this->getTarget() ? $this->getTarget()->getId() : NULL;
+    return $this->getTarget()?->getId();
   }
 
   /**
@@ -116,7 +116,7 @@ class ConceptRelation
    */
   public function getSourceId(): ?int
   {
-    return $this->getSource() ? $this->getSource()->getId() : NULL;
+    return $this->getSource()?->getId();
   }
 
   /**

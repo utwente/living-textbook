@@ -23,3 +23,5 @@ nelmio_api_doc:
       - ^(?!_api_catch_all)
   models:
     use_jms: true
+    names:
+      - { alias: ConceptRelation.Detailed, type: App\Api\Model\Detailed\DetailedConceptRelation }

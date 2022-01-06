@@ -20,19 +20,17 @@ class StudyAreaController extends AbstractApiController
    * @IsGranted("ROLE_USER")
    */
   #[OA\Response(response: 200, description: 'The list of study areas available for the current token', attachables: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(ref: new Model(type: StudyArea::class))),
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: StudyArea::class))),
   ])]
   public function list(StudyAreaRepository $studyAreaRepository): JsonResponse
   {
-    return $this->createDataResponse(
-        array_map(
-            [StudyArea::class, 'fromEntity'],
-            $studyAreaRepository
-                ->getVisibleQueryBuilder($this->getUser())
-                ->andWhere('sa.apiEnabled = TRUE')
-                ->getQuery()->getResult()
-        )
-    );
+    return $this->createDataResponse(array_map(
+        [StudyArea::class, 'fromEntity'],
+        $studyAreaRepository
+            ->getVisibleQueryBuilder($this->getUser())
+            ->andWhere('sa.apiEnabled = TRUE')
+            ->getQuery()->getResult()
+    ));
   }
 
   /**

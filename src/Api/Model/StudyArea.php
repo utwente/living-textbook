@@ -6,19 +6,14 @@ use OpenApi\Attributes as OA;
 
 class StudyArea
 {
-  public int $id;
-  public string $name;
-  #[OA\Property(nullable: true)]
-  public ?string $description;
-  #[OA\Property(nullable: true)]
-  public ?string $group;
-
-  private function __construct(int $id, string $name, ?string $description, ?string $group)
+  protected function __construct(
+      public readonly int $id,
+      public readonly string $name,
+             #[OA\Property(nullable: true)]
+      public readonly ?string $description,
+             #[OA\Property(nullable: true)]
+      public readonly ?string $group)
   {
-    $this->id          = $id;
-    $this->name        = $name;
-    $this->description = $description;
-    $this->group       = $group;
   }
 
   public static function fromEntity(\App\Entity\StudyArea $studyArea): self
@@ -27,7 +22,7 @@ class StudyArea
         $studyArea->getId(),
         $studyArea->getName(),
         $studyArea->getDescription(),
-        $studyArea->getGroup() ? $studyArea->getGroup()->getName() : NULL,
+        $studyArea->getGroup()?->getName(),
     );
   }
 }
