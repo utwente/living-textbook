@@ -2,15 +2,15 @@
 
 namespace App\Api\Model;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
 class StudyArea
 {
   public int $id;
   public string $name;
-  /** @OA\Property(nullable=true) */
+  #[OA\Property(nullable: true)]
   public ?string $description;
-  /** @OA\Property(nullable=true) */
+  #[OA\Property(nullable: true)]
   public ?string $group;
 
   private function __construct(int $id, string $name, ?string $description, ?string $group)
