@@ -26,30 +26,36 @@
 
 /**
  * Runs glob recursivly on a specified directory, and returns all files that conform to the given glob.
- * @param string  $pattern
- * @param int     $flags
+ *
+ * @param string $pattern
+ * @param int    $flags
  *
  * @return array
  */
 
-function rglob($pattern, $flags = 0) {
+function rglob($pattern, $flags = 0)
+{
   $files = glob($pattern, $flags);
-  foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir) {
-    $files = array_merge($files, rglob($dir.'/'.basename($pattern), $flags));
+  foreach (glob(dirname($pattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
+    $files = array_merge($files, rglob($dir . '/' . basename($pattern), $flags));
   }
+
   return $files;
 }
+
 //Disables analysis on the cache, all vendor code, the code for HTMLDiff (non-composer dependency) and all Traits (done via rglob).
 $disabled_analysis = array_merge(
-  [
-    'var/cache',
-    'vendor',
-  ],
-  rglob('src/*Trait*')
+    [
+        'var/cache',
+        'vendor',
+    ],
+    rglob('src/*Trait*')
 );
 
 
 return [
+    "minimum_target_php_version"      => '8.1',
+
   // If true, missing properties will be created when they are first seen. If false, we'll report an error message.
     "allow_missing_properties"        => false,
 
