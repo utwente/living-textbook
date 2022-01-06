@@ -7,13 +7,13 @@ stages:
   - deploy
 
 variables:
-  COMPOSER_REQUIRE_CHECKER_VERSION: 3.8.0
-  COMPOSER_UNUSED_VERSION: 0.7.7
-  DRENSO_PHP_VERSION: 8.0-d3
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.0.0
+  COMPOSER_UNUSED_VERSION: 0.7.12
+  DRENSO_PHP_VERSION: 8.1-d1
   NODE_VERSION: 14
-  PHAN_VERSION: 5.2-d2
-  PHPUNIT_VERSION: 9.5-d2
-  PHP_SEC_CHECK_VERSION: 1.0.0
+  PHAN_VERSION: 5.3-d1
+  PHPUNIT_VERSION: 9.5-d3
+  PHP_SEC_CHECK_VERSION: 1.2.0
   SASSLINT_VERSION: 1.12.1-d1
   SHELLCHECK_VERSION: v0.7.1
   TSLINT_VERSION: 5.18.0
@@ -122,6 +122,8 @@ composer-require-checker:
     policy: pull
   before_script:
     - curl -JOL https://github.com/maglnet/ComposerRequireChecker/releases/download/${COMPOSER_REQUIRE_CHECKER_VERSION}/composer-require-checker.phar
+    # Remove files that are not used but break due to the usage of reserved keywords
+    - rm vendor/jms/serializer/src/Annotation/ReadOnly.php
   script:
     - if [[ -f composer-require-checker.json ]]; then php composer-require-checker.phar --config-file=$(pwd)/composer-require-checker.json; else php composer-require-checker.phar; fi;
   tags:
