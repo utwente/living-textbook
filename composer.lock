@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "789a241fa2236d685e890cf616c4afb9",
+    "content-hash": "62916bb686f151ff351d64524289977e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11099,16 +11099,16 @@
         },
         {
             "name": "twig/cssinliner-extra",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/cssinliner-extra.git",
-                "reference": "a6065b23645282e1c81d847cf0c7f0211d22b682"
+                "reference": "1fe012dcae6b04fc37715296c10a72f8d941bc65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/a6065b23645282e1c81d847cf0c7f0211d22b682",
-                "reference": "a6065b23645282e1c81d847cf0c7f0211d22b682",
+                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/1fe012dcae6b04fc37715296c10a72f8d941bc65",
+                "reference": "1fe012dcae6b04fc37715296c10a72f8d941bc65",
                 "shasum": ""
             },
             "require": {
@@ -11153,7 +11153,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/cssinliner-extra/tree/v3.3.4"
+                "source": "https://github.com/twigphp/cssinliner-extra/tree/v3.3.5"
             },
             "funding": [
                 {
@@ -11165,7 +11165,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-13T16:20:21+00:00"
+            "time": "2022-01-02T10:02:25+00:00"
         },
         {
             "name": "twig/extra-bundle",
@@ -11247,16 +11247,16 @@
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
-                "reference": "6f81ada491569cfeb04fb43070f3a8908fc0f9ce"
+                "reference": "b515e6f7c1fede76f9f507dbd1bb369f46aa726b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/6f81ada491569cfeb04fb43070f3a8908fc0f9ce",
-                "reference": "6f81ada491569cfeb04fb43070f3a8908fc0f9ce",
+                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/b515e6f7c1fede76f9f507dbd1bb369f46aa726b",
+                "reference": "b515e6f7c1fede76f9f507dbd1bb369f46aa726b",
                 "shasum": ""
             },
             "require": {
@@ -11302,7 +11302,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/inky-extra/tree/v3.3.4"
+                "source": "https://github.com/twigphp/inky-extra/tree/v3.3.5"
             },
             "funding": [
                 {
@@ -11314,20 +11314,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-13T16:20:21+00:00"
+            "time": "2022-01-02T10:02:25+00:00"
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
-                "reference": "a0bdab97a1cf5ccc944c70aee1d2f2602db64d16"
+                "reference": "8dca6f4c5a00cdd3c43b6bd080f50d32aca33a84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/a0bdab97a1cf5ccc944c70aee1d2f2602db64d16",
-                "reference": "a0bdab97a1cf5ccc944c70aee1d2f2602db64d16",
+                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/8dca6f4c5a00cdd3c43b6bd080f50d32aca33a84",
+                "reference": "8dca6f4c5a00cdd3c43b6bd080f50d32aca33a84",
                 "shasum": ""
             },
             "require": {
@@ -11371,7 +11371,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/intl-extra/tree/v3.3.4"
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.3.5"
             },
             "funding": [
                 {
@@ -11383,7 +11383,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-13T16:20:21+00:00"
+            "time": "2022-01-02T10:02:25+00:00"
         },
         {
             "name": "twig/twig",

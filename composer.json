@@ -79,10 +79,10 @@
         "symfony/validator": "4.4.36",
         "symfony/webpack-encore-bundle": "1.13.2",
         "symfony/yaml": "4.4.36",
-        "twig/cssinliner-extra": "3.3.4",
+        "twig/cssinliner-extra": "3.3.5",
         "twig/extra-bundle": "3.3.4",
-        "twig/inky-extra": "3.3.4",
-        "twig/intl-extra": "3.3.4",
+        "twig/inky-extra": "3.3.5",
+        "twig/intl-extra": "3.3.5",
         "twig/twig": "2.14.8"
     },
     "require-dev": {
