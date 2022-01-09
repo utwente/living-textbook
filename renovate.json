@@ -76,6 +76,11 @@
             "groupSlug": "sentry"
         },
         {
+            "matchPackagePatterns": "^twig/\\w+-extra$",
+            "groupName": "Twig extra packages",
+            "groupSlug": "twig-extra"
+        },
+        {
             "matchDepTypes": [
                 "engines"
             ],
