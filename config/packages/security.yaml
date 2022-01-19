@@ -20,7 +20,7 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
     api:
-      pattern: ^/api/(?!doc(\.json)?$)
+      request_matcher: App\Security\RequestMatcher\ApiSessionRequestMatcher
       anonymous: false
       stateless: true
       guard:

@@ -236,9 +236,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
       return;
     }
 
-    // Validate it is actually an API request
-    $controllerName = b($event->getRequest()->attributes->get('_controller'));
-    if (!$controllerName->startsWith('App\\Api\\Controller\\')) {
+    // Validate it is actually an API request, exclude study area list to allow checking which API enabled study areas are available to this token/user
+    $requestAttributes = $event->getRequest()->attributes;
+    if (!b($requestAttributes->get('_controller'))->startsWith('App\\Api\\Controller\\') || $requestAttributes->get('_route') === 'api_study_area_list') {
       return;
     }
 

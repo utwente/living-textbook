@@ -20,7 +20,7 @@ use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
 
 class ApiAuthenticator extends AbstractGuardAuthenticator
 {
-  private const API_TOKEN_HEADER = 'X-LTB-AUTH';
+  public const API_TOKEN_HEADER = 'X-LTB-AUTH';
   private UserApiTokenRepository $userApiTokenRepository;
   private UserPasswordEncoderInterface $userPasswordEncoder;
   private EntityManagerInterface $entityManager;
