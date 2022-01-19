@@ -4,6 +4,7 @@ namespace App\Entity\Listener;
 
 use App\Entity\User;
 use App\Entity\UserGroupEmail;
+use App\Repository\UserGroupEmailRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,7 +26,9 @@ class UserListener
     $em = $event->getEntityManager();
 
     // Find any UserGroupEmail to upgrade
-    $userGroupEmails = $em->getRepository(UserGroupEmail::class)->findByEmail($user->getUsername());
+    $repo = $em->getRepository(UserGroupEmail::class);
+    assert($repo instanceof UserGroupEmailRepository);
+    $userGroupEmails = $repo->findByEmail($user->getUsername());
     if (count($userGroupEmails) == 0) {
       return;
     }
