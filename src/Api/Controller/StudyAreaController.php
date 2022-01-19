@@ -9,7 +9,6 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 
 #[OA\Tag('Study area')]
 class StudyAreaController extends AbstractApiController
@@ -36,13 +35,12 @@ class StudyAreaController extends AbstractApiController
   /**
    * Retrieve information for a single study area
    *
-   * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'The study area information', attachables: [
       new Model(type: StudyArea::class),
   ])]
-  public function studyarea(RequestStudyArea $requestStudyArea): JsonResponse
+  public function single(RequestStudyArea $requestStudyArea): JsonResponse
   {
     return $this->createDataResponse(StudyArea::fromEntity($requestStudyArea->getStudyArea()));
   }

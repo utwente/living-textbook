@@ -4,6 +4,14 @@ api_study_area_list:
   schemes: [ https ]
   methods: GET
 
+api_study_area_single:
+  path: /api/studyarea/{_studyArea}
+  controller: App\Api\Controller\StudyAreaController::single
+  schemes: [ https ]
+  methods: GET
+  requirements:
+    _studyArea: \d+
+
 api_controllers:
   type: annotation
   resource: ../../src/Api/Controller/
