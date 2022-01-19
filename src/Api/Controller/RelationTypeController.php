@@ -16,10 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class RelationTypeController extends AbstractApiController
 {
   /**
+   * Retrieve all study area relation types
+   *
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
-  #[OA\Response(response: 200, description: 'Retrieve all study area relation types', attachables: [
+  #[OA\Response(response: 200, description: 'All study area relation types', attachables: [
       new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: RelationType::class))),
   ])]
   public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $relationTypeRepository): JsonResponse
@@ -28,5 +30,21 @@ class RelationTypeController extends AbstractApiController
         [RelationType::class, 'fromEntity'],
         $relationTypeRepository->findForStudyArea($requestStudyArea->getStudyArea())
     ));
+  }
+
+  /**
+   * Retrieve a single study area relation type
+   *
+   * @Route("/{relationType<\d+>}", methods={"GET"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   */
+  #[OA\Response(response: 200, description: 'A single study area relation type', attachables: [
+      new Model(type: RelationType::class),
+  ])]
+  public function single(RequestStudyArea $requestStudyArea, \App\Entity\RelationType $relationType): JsonResponse
+  {
+    $this->assertStudyAreaObject($requestStudyArea, $relationType);
+
+    return $this->createDataResponse(RelationType::fromEntity($relationType));
   }
 }

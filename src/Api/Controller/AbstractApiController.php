@@ -2,7 +2,10 @@
 
 namespace App\Api\Controller;
 
+use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Entity\StudyArea;
 use App\Entity\User;
+use App\Request\Wrapper\RequestStudyArea;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializerInterface;
 use RuntimeException;
@@ -22,14 +25,11 @@ abstract class AbstractApiController extends AbstractController
     $this->contextFactory = $contextFactory;
   }
 
-  /**
-   * @param mixed $data
-   */
   protected function createDataResponse(
-      $data,
+      mixed  $data,
       ?array $extraData = NULL,
       ?array $serializationGroups = NULL,
-      int $statusCode = Response::HTTP_OK
+      int    $statusCode = Response::HTTP_OK
   ): JsonResponse
   {
     $payload         = $extraData ?? [];
@@ -49,5 +49,18 @@ abstract class AbstractApiController extends AbstractController
     }
 
     return $user;
+  }
+
+  protected function assertStudyAreaObject(
+      StudyArea|RequestStudyArea $studyArea,
+      StudyAreaFilteredInterface $object): void
+  {
+    if ($studyArea instanceof RequestStudyArea) {
+      $studyArea = $studyArea->getStudyArea();
+    }
+
+    if ($studyArea->getId() !== $object->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
   }
 }

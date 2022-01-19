@@ -16,10 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractApiController
 {
   /**
+   * Retrieve all study area tags
+   *
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
-  #[OA\Response(response: 200, description: 'Retrieve all study area tags', attachables: [
+  #[OA\Response(response: 200, description: 'All study area tags', attachables: [
       new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: Tag::class))),
   ])]
   public function list(RequestStudyArea $requestStudyArea, TagRepository $tagRepository): JsonResponse
@@ -28,6 +30,22 @@ class TagController extends AbstractApiController
         [Tag::class, 'fromEntity'],
         $tagRepository->findForStudyArea($requestStudyArea->getStudyArea())
     ));
+  }
+
+  /**
+   * Retrieve single study area tag
+   *
+   * @Route("/{tag<\d+>}", methods={"GET"})
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   */
+  #[OA\Response(response: 200, description: 'All study area tags', attachables: [
+      new Model(type: Tag::class),
+  ])]
+  public function single(RequestStudyArea $requestStudyArea, \App\Entity\Tag $tag): JsonResponse
+  {
+    $this->assertStudyAreaObject($requestStudyArea, $tag);
+
+    return $this->createDataResponse(Tag::fromEntity($tag));
   }
 
   // todo: CRUD
