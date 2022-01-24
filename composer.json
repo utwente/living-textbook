@@ -26,7 +26,7 @@
         "doctrine/persistence": "2.3.0",
         "drenso/symfony-oidc-bundle": "1.12.0",
         "easyrdf/easyrdf": "1.1.1",
-        "friendsofsymfony/ckeditor-bundle": "2.3.0",
+        "friendsofsymfony/ckeditor-bundle": "2.4.0",
         "friendsofsymfony/jsrouting-bundle": "2.8.0",
         "gedmo/doctrine-extensions": "3.5.0",
         "helios-ag/fm-elfinder-bundle": "12.1",
