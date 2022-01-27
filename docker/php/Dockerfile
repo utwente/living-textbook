@@ -46,8 +46,8 @@ RUN apk add --no-cache libxslt libxslt-dev \
 # Imagick extension
 RUN apk add --no-cache --virtual .imagick-build-deps \
  autoconf automake make gcc g++ \
- && apk add --no-cache imagemagick-dev \
- && pecl install imagick-3.4.3 \
+ && apk add --no-cache imagemagick-dev libgomp \
+ && pecl install imagick \
  && docker-php-ext-enable imagick \
  && apk del .imagick-build-deps
 
