@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5402f017b312b49243fa5bb8ba389401",
+    "content-hash": "cac995fe59baa4d62b50eb8e369dabb7",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -7017,16 +7017,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v2.1.3",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "e0d37f94873d961b95f324f8af537ba8d478fa95"
+                "reference": "110e8928b6e719e9b9f146c8fd92c41a4b74a3ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/e0d37f94873d961b95f324f8af537ba8d478fa95",
-                "reference": "e0d37f94873d961b95f324f8af537ba8d478fa95",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/110e8928b6e719e9b9f146c8fd92c41a4b74a3ac",
+                "reference": "110e8928b6e719e9b9f146c8fd92c41a4b74a3ac",
                 "shasum": ""
             },
             "require": {
@@ -7062,7 +7062,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v2.1.3"
+                "source": "https://github.com/symfony/flex/tree/v2.1.4"
             },
             "funding": [
                 {
@@ -7078,7 +7078,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-27T09:45:14+00:00"
+            "time": "2022-01-27T10:25:12+00:00"
         },
         {
             "name": "symfony/form",
