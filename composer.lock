@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36768a5ba98814f6ce7009209441f6e0",
+    "content-hash": "30f58115eea1c4c8d59fc7f3c9370403",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2480,16 +2480,16 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "12.1",
+            "version": "12.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "d4d66dc6cbb405d0aa3e79e0f71ed1325c66329a"
+                "reference": "a83f0c7bbc76737e9a6e5e83d758dc25f0a9d4d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/d4d66dc6cbb405d0aa3e79e0f71ed1325c66329a",
-                "reference": "d4d66dc6cbb405d0aa3e79e0f71ed1325c66329a",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/a83f0c7bbc76737e9a6e5e83d758dc25f0a9d4d8",
+                "reference": "a83f0c7bbc76737e9a6e5e83d758dc25f0a9d4d8",
                 "shasum": ""
             },
             "require": {
@@ -2549,9 +2549,15 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.1"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.1.2"
             },
-            "time": "2022-01-09T07:42:25+00:00"
+            "funding": [
+                {
+                    "url": "https://paypal.me/heliosag",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-01-21T12:42:05+00:00"
         },
         {
             "name": "http-interop/http-factory-guzzle",
