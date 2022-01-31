@@ -88,7 +88,7 @@
     },
     "require-dev": {
         "drenso/phan-extensions": "3.5.1",
-        "phpunit/phpunit": "9.5.12",
+        "phpunit/phpunit": "9.5.13",
         "symfony/phpunit-bridge": "4.4.37",
         "symfony/stopwatch": "4.4.37",
         "symfony/web-profiler-bundle": "4.4.37"
