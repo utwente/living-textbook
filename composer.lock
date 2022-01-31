@@ -4507,16 +4507,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.12",
+            "version": "3.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb"
+                "reference": "1443ab79364eea48665fa8c09ac67f37d1025f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb",
-                "reference": "89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/1443ab79364eea48665fa8c09ac67f37d1025f7e",
+                "reference": "1443ab79364eea48665fa8c09ac67f37d1025f7e",
                 "shasum": ""
             },
             "require": {
@@ -4598,7 +4598,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.12"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.13"
             },
             "funding": [
                 {
@@ -4614,7 +4614,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-28T23:46:03+00:00"
+            "time": "2022-01-30T08:50:05+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -6138,16 +6138,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v4.4.27",
+            "version": "v4.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6"
+                "reference": "0628e6c6d7c92f1a7bae543959bdc17347be2436"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6",
-                "reference": "5194f18bd80d106f11efa8f7cd0fbdcc3af96ce6",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/0628e6c6d7c92f1a7bae543959bdc17347be2436",
+                "reference": "0628e6c6d7c92f1a7bae543959bdc17347be2436",
                 "shasum": ""
             },
             "require": {
@@ -6184,7 +6184,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v4.4.27"
+                "source": "https://github.com/symfony/css-selector/tree/v4.4.37"
             },
             "funding": [
                 {
@@ -6200,7 +6200,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:19:41+00:00"
+            "time": "2022-01-02T09:41:36+00:00"
         },
         {
             "name": "symfony/debug",
@@ -7332,16 +7332,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v4.4.36",
+            "version": "v4.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "35e2cd1862b9ec2b46ebf050fbb13e285944b6a3"
+                "reference": "8129ccd6233338e1d495b7734c003053766cb262"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/35e2cd1862b9ec2b46ebf050fbb13e285944b6a3",
-                "reference": "35e2cd1862b9ec2b46ebf050fbb13e285944b6a3",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/8129ccd6233338e1d495b7734c003053766cb262",
+                "reference": "8129ccd6233338e1d495b7734c003053766cb262",
                 "shasum": ""
             },
             "require": {
@@ -7393,7 +7393,7 @@
             "description": "Provides powerful methods to fetch HTTP resources synchronously or asynchronously",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v4.4.36"
+                "source": "https://github.com/symfony/http-client/tree/v4.4.37"
             },
             "funding": [
                 {
@@ -7409,7 +7409,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-29T09:28:53+00:00"
+            "time": "2022-01-19T13:29:07+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -8145,16 +8145,16 @@
         },
         {
             "name": "symfony/monolog-bridge",
-            "version": "v4.4.27",
+            "version": "v4.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bridge.git",
-                "reference": "9882c03d4c237d77ba5b2845639700653dcd9a84"
+                "reference": "152dcde5092b6fe034369f4a2dea05de38db9b79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bridge/zipball/9882c03d4c237d77ba5b2845639700653dcd9a84",
-                "reference": "9882c03d4c237d77ba5b2845639700653dcd9a84",
+                "url": "https://api.github.com/repos/symfony/monolog-bridge/zipball/152dcde5092b6fe034369f4a2dea05de38db9b79",
+                "reference": "152dcde5092b6fe034369f4a2dea05de38db9b79",
                 "shasum": ""
             },
             "require": {
@@ -8205,7 +8205,7 @@
             "description": "Provides integration for Monolog with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/monolog-bridge/tree/v4.4.27"
+                "source": "https://github.com/symfony/monolog-bridge/tree/v4.4.37"
             },
             "funding": [
                 {
@@ -8221,7 +8221,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:41:52+00:00"
+            "time": "2022-01-02T09:41:36+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -9418,16 +9418,16 @@
         },
         {
             "name": "symfony/property-info",
-            "version": "v4.4.31",
+            "version": "v4.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-info.git",
-                "reference": "b9955daf3605753c6054ef1dc3ddee993c7ccb5b"
+                "reference": "cd9a8c2e3d19d4d4b9475e9d448cb4fbaee0e495"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/b9955daf3605753c6054ef1dc3ddee993c7ccb5b",
-                "reference": "b9955daf3605753c6054ef1dc3ddee993c7ccb5b",
+                "url": "https://api.github.com/repos/symfony/property-info/zipball/cd9a8c2e3d19d4d4b9475e9d448cb4fbaee0e495",
+                "reference": "cd9a8c2e3d19d4d4b9475e9d448cb4fbaee0e495",
                 "shasum": ""
             },
             "require": {
@@ -9487,7 +9487,7 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/symfony/property-info/tree/v4.4.31"
+                "source": "https://github.com/symfony/property-info/tree/v4.4.37"
             },
             "funding": [
                 {
@@ -9503,7 +9503,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-26T13:43:47+00:00"
+            "time": "2022-01-02T09:41:36+00:00"
         },
         {
             "name": "symfony/proxy-manager-bridge",
@@ -9947,16 +9947,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v4.4.36",
+            "version": "v4.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "46809cc4694007c09b3134d6da76e508d8b72e46"
+                "reference": "91a221aa75f5e47aa3a49267587b189cc33fbe5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/46809cc4694007c09b3134d6da76e508d8b72e46",
-                "reference": "46809cc4694007c09b3134d6da76e508d8b72e46",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/91a221aa75f5e47aa3a49267587b189cc33fbe5c",
+                "reference": "91a221aa75f5e47aa3a49267587b189cc33fbe5c",
                 "shasum": ""
             },
             "require": {
@@ -10021,7 +10021,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v4.4.36"
+                "source": "https://github.com/symfony/serializer/tree/v4.4.37"
             },
             "funding": [
                 {
@@ -10037,7 +10037,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-28T13:57:19+00:00"
+            "time": "2022-01-02T09:41:36+00:00"
         },
         {
             "name": "symfony/service-contracts",
