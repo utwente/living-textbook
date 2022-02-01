@@ -35,43 +35,20 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
   /** @var string Study area twig key */
   public const TWIG_STUDY_AREA_KEY = '_twigStudyArea';
-  /**
-   * @var NamingService
-   */
-  private $namingService;
-
-  /** @var RouterInterface */
-  private $router;
-
-  /** @var StudyAreaRepository */
-  private $studyAreaRepository;
-
-  /** @var TokenStorageInterface */
-  private $tokenStorage;
-
-  /** @var \Twig_Environment */
-  private $twig;
 
   /** @var StudyArea|null */
-  private $studyArea;
+  private ?StudyArea $studyArea = NULL;
 
   /** @var int|null */
-  private $studyAreaId;
+  private ?int $studyAreaId = NULL;
 
   public function __construct(
-      RouterInterface       $router,
-      StudyAreaRepository   $studyAreaRepository,
-      TokenStorageInterface $tokenStorage,
-      Environment           $twig,
-      NamingService         $namingService)
+      private readonly RouterInterface $router,
+      private readonly StudyAreaRepository $studyAreaRepository,
+      private readonly TokenStorageInterface $tokenStorage,
+      private readonly Environment $twig,
+      private readonly NamingService $namingService)
   {
-    $this->router              = $router;
-    $this->studyAreaRepository = $studyAreaRepository;
-    $this->tokenStorage        = $tokenStorage;
-    $this->twig                = $twig;
-    $this->namingService       = $namingService;
-    $this->studyArea           = NULL;
-    $this->studyAreaId         = NULL;
   }
 
   /**
@@ -231,21 +208,38 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   {
     $this->testCache();
 
-    // API must be enabled for the selected study area
-    if (!$this->studyArea || $this->studyArea->isApiEnabled()) {
+    // If a study area has not been found, we cannot check anything here
+    if (!$this->studyArea) {
       return;
     }
 
     // Validate it is actually an API request, exclude study area list to allow checking which API enabled study areas are available to this token/user
     $requestAttributes = $event->getRequest()->attributes;
-    if (!b($requestAttributes->get('_controller'))->startsWith('App\\Api\\Controller\\') || $requestAttributes->get('_route') === 'api_study_area_list') {
+    if (!b($requestAttributes->get('_controller'))->startsWith('App\\Api\\Controller\\')
+        || $requestAttributes->get('_route') === 'api_study_area_list') {
+      return;
+    }
+
+    // API must be enabled for the selected study area
+    if ($this->studyArea->isApiEnabled()) {
+      // Validate whether the area is frozen
+      if ('GET' !== $event->getRequest()->getMethod() && $this->studyArea->isFrozen()) {
+        $event->setController(static fn() => new ApiErrorResponse(
+            'Study area frozen',
+            Response::HTTP_BAD_REQUEST,
+            'This study area has been frozen'
+        ));
+      }
+
       return;
     }
 
     // Return an error response
-    $event->setController(function () {
-      return new ApiErrorResponse('API disabled', Response::HTTP_FORBIDDEN, 'API not enabled for this study area');
-    });
+    $event->setController(static fn() => new ApiErrorResponse(
+        'API disabled',
+        Response::HTTP_FORBIDDEN,
+        'API not enabled for this study area'
+    ));
   }
 
   /**
