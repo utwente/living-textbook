@@ -1,0 +1,7 @@
+drenso_shared:
+  public_services: false # Set whether all services must be public
+  api:
+    convert_entity_validation_exception:
+      enabled: true
+      controller_prefix: App\Api\Controller
+      data_field: violations

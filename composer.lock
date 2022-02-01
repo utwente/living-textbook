@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1c79b5fa34d8f271641b0a3334be277",
+    "content-hash": "1c3c9dac64dadde7fbca1551010958fc",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1747,6 +1747,106 @@
                 "source": "https://github.com/Drenso/symfony-oidc/tree/v1.12.0"
             },
             "time": "2021-11-03T16:23:11+00:00"
+        },
+        {
+            "name": "drenso/symfony-shared",
+            "version": "1.27.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Drenso/symfony-shared.git",
+                "reference": "a505820a51529959fb14503b474f5de987c8aa30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/a505820a51529959fb14503b474f5de987c8aa30",
+                "reference": "a505820a51529959fb14503b474f5de987c8aa30",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": "^7.3 || ^8.0",
+                "symfony/config": "~3.4 || ~4.0 || ~5.0",
+                "symfony/dependency-injection": "~3.4 || ~4.0 || ~5.0",
+                "symfony/form": "~3.4 || ~4.0 || ~5.0",
+                "symfony/http-kernel": "~3.4 || ~4.0 || ~5.0",
+                "twig/twig": "~2.0 || ~3.0"
+            },
+            "conflict": {
+                "kigkonsult/icalcreator": "<2.39"
+            },
+            "require-dev": {
+                "bomo/ical-bundle": "^2.0.2",
+                "doctrine/orm": "^2.7",
+                "drenso/phan-extensions": "~2.5 || ~3.0",
+                "jms/serializer-bundle": "^3.3 || ^4.0",
+                "kigkonsult/icalcreator": "^2.39",
+                "php-decimal/php-decimal": "^1.1",
+                "phpoffice/phpspreadsheet": "^1.10",
+                "sebastian/comparator": "^3.0 || ^4.0",
+                "sensio/framework-extra-bundle": "^5.2 || ^6.0",
+                "stof/doctrine-extensions-bundle": "^1.3",
+                "symfony/console": "~3.4 || ~4.0 || ~5.0",
+                "symfony/doctrine-bridge": "~3.4 || ~4.0 || ~5.0",
+                "symfony/lock": "~3.4 || ~4.0 || ~5.0",
+                "symfony/mailer": "~4.4 || ~5.0",
+                "symfony/routing": "~3.4 || ~4.0 || ~5.0",
+                "symfony/security-core": "~3.4 || ~4.0 || ~5.0",
+                "symfony/translation-contracts": "~1.1 || ~2.0 || ~3.0",
+                "symfony/twig-bridge": "~3.4 || ~4.0 || ~5.0",
+                "symfony/validator": "~3.4 || ~4.0 || ~5.0"
+            },
+            "suggest": {
+                "bomo/ical-bundle": "Needed for the IcalProvider",
+                "doctrine/orm": "Needed to use the Database traits",
+                "jms/serializer-bundle": "Needed to use the Database traits and the Decimal serialization handler",
+                "php-decimal/php-decimal": "Needed to use the Decimal serialization handler and the form transformer",
+                "phpoffice/phpspreadsheet": "Needed to use the SpreadsheetHelper",
+                "stof/doctrine-extensions-bundle": "Needed to use the Blameable trait",
+                "symfony/console": "Needed to use the action security command",
+                "symfony/doctrine-bridge": "Needed to use the HiddenEntityType, the Database traits and the action security command",
+                "symfony/lock": "Needed to use the UseLock annotation",
+                "symfony/mailer": "Needed to use the MailService",
+                "symfony/security-core": "Needed to use the Blameable subscriber",
+                "symfony/translation": "Needed to use the SpreadsheetHelper",
+                "symfony/twig-bundle": "Needed to use the MailService",
+                "symfony/validator": "Use EntityValidationFailedException for nice exception messages when validation failed",
+                "twig/cssinliner-extra": "Needed to use the MailService when inlining CSS styles",
+                "twig/extra-bundle": "Needed to use the MailService when inlining CSS styles"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Drenso\\Shared\\": "src/",
+                    "Drenso\\Shared\\Tests\\": "phpunit/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob van de Vijver",
+                    "email": "bob@drenso.nl"
+                },
+                {
+                    "name": "Tobias Feijten",
+                    "email": "tobias@drenso.nl"
+                }
+            ],
+            "description": "This bundle contains commonly shared extensions between our projects.",
+            "keywords": [
+                "drenso",
+                "shared",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/Drenso/symfony-shared/issues",
+                "source": "https://github.com/Drenso/symfony-shared/tree/1.27.3"
+            },
+            "time": "2022-01-19T21:21:26+00:00"
         },
         {
             "name": "easyrdf/easyrdf",

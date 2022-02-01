@@ -86,6 +86,15 @@
     "drenso/symfony-oidc-bundle": {
         "version": "v1.0.1"
     },
+    "drenso/symfony-shared": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "0.8",
+            "ref": "cef2554f9f54ca6ad5c007f4e2bc6b8b0382dba5"
+        }
+    },
     "easyrdf/easyrdf": {
         "version": "0.9.1"
     },

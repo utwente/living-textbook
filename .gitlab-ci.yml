@@ -350,7 +350,7 @@ action-security-check:
       - vendor/
     policy: pull
   script:
-    - php bin/console ltb:check:action-security
+    - php bin/console drenso:check:action-security
   tags:
     - docker
   except:
