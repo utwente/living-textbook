@@ -2,12 +2,16 @@
 
 namespace App\Api\Model;
 
+use JMS\Serializer\Annotation\Groups;
+
 class Tag
 {
   protected function __construct(
-      public readonly int $id,
-      public readonly string $name,
-      public readonly string $color,
+      protected readonly int $id,
+      #[Groups(['Default', 'mutate'])]
+      protected readonly string $name,
+      #[Groups(['Default', 'mutate'])]
+      protected readonly string $color,
   )
   {
   }
@@ -19,5 +23,12 @@ class Tag
         $tag->getName(),
         $tag->getColor()
     );
+  }
+
+  public function mapToEntity(?\App\Entity\Tag $tag): \App\Entity\Tag
+  {
+    return ($tag ?? new \App\Entity\Tag())
+        ->setName($this->name ?? $tag?->getName() ?? '')
+        ->setColor($this->color ?? $tag?->getColor() ?? '');
   }
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\Tag;
+use App\EntityHandler\TagHandler;
 use App\Form\Tag\EditTagType;
 use App\Form\Type\RemoveType;
 use App\Repository\TagRepository;
@@ -18,30 +19,26 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class TagController
- *
- * @author BobV
- *
  * @Route("/{_studyArea}/tag", requirements={"_studyArea"="\d+"})
  */
 class TagController extends AbstractController
 {
+  public function __construct(
+      private readonly EntityManagerInterface $em
+  )
+  {
+  }
 
   /**
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
-   *
-   * @return array|Response
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+      Request             $request,
+      RequestStudyArea    $requestStudyArea,
+      TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -53,8 +50,7 @@ class TagController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->persist($tag);
-      $em->flush();
+      $this->getHandler()->add($tag);
 
       // Return to list
       $this->addFlash('success', $trans->trans('tag.saved', ['%item%' => $tag->getName()]));
@@ -74,18 +70,12 @@ class TagController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Tag                    $tag
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
-   *
-   * @return array|Response
    */
   public function edit(
-      Request $request, RequestStudyArea $requestStudyArea, Tag $tag,
-      EntityManagerInterface $em, TranslatorInterface $trans)
+      Request             $request,
+      RequestStudyArea    $requestStudyArea,
+      Tag                 $tag,
+      TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -102,7 +92,7 @@ class TagController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
-      $em->flush();
+      $this->getHandler()->update($tag);
 
       // Return to list
       $this->addFlash('success', $trans->trans('tag.updated', ['%item%' => $tag->getName()]));
@@ -121,13 +111,8 @@ class TagController extends AbstractController
    * @Route("/list")
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea $requestStudyArea
-   * @param TagRepository    $repo
-   *
-   * @return array
    */
-  public function list(RequestStudyArea $requestStudyArea, TagRepository $repo)
+  public function list(RequestStudyArea $requestStudyArea, TagRepository $repo): array
   {
     return [
         'studyArea' => $requestStudyArea->getStudyArea(),
@@ -140,18 +125,12 @@ class TagController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Tag                    $tag
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
-   *
-   * @return array|Response
    */
   public function remove(
-      Request $request, RequestStudyArea $requestStudyArea, Tag $tag,
-      EntityManagerInterface $em, TranslatorInterface $trans)
+      Request             $request,
+      RequestStudyArea    $requestStudyArea,
+      Tag                 $tag,
+      TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -166,14 +145,8 @@ class TagController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Remove tag from default if set
-      if ($studyArea->getDefaultTagFilter() && $studyArea->getDefaultTagFilter()->getId() === $tag->getId()) {
-        $studyArea->setDefaultTagFilter(NULL);
-      }
-
       // Save the data
-      $em->remove($tag);
-      $em->flush();
+      $this->getHandler()->delete($tag);
 
       $this->addFlash('success', $trans->trans('tag.removed', ['%item%' => $tag->getName()]));
 
@@ -186,4 +159,9 @@ class TagController extends AbstractController
     ];
   }
 
+  private function getHandler(): TagHandler
+  {
+    // Double validation is not needed as we rely on the form validation, review service does not hold for tags
+    return new TagHandler($this->em, NULL, NULL);
+  }
 }

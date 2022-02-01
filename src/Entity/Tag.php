@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Validator\Constraint\Color;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,7 +62,7 @@ class Tag implements StudyAreaFilteredInterface
    * @ORM\Column(length=10, nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(max=10)
+   * @Color()
    *
    * @JMSA\Expose()
    */
