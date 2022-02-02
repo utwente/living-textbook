@@ -14,23 +14,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class RequestStudyArea
 {
-
-  /** @var StudyArea|null */
-  private $studyArea;
-
-  /**
-   * RequestStudyArea constructor.
-   *
-   * @param StudyArea|null $studyArea
-   */
-  public function __construct(?StudyArea $studyArea)
+  public function __construct(private readonly ?StudyArea $studyArea)
   {
-    $this->studyArea = $studyArea;
   }
 
-  /**
-   * @return StudyArea
-   */
   public function getStudyArea(): StudyArea
   {
     if ($this->studyArea === NULL) {
@@ -40,9 +27,11 @@ class RequestStudyArea
     return $this->studyArea;
   }
 
-  /**
-   * @return bool
-   */
+  public function getStudyAreaId(): int
+  {
+    return $this->getStudyArea()->getId();
+  }
+
   public function hasValue(): bool
   {
     return $this->studyArea !== NULL;

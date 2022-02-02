@@ -8,8 +8,12 @@ use OpenApi\Attributes\Property;
 
 class ValidationFailedData
 {
-  #[Property(default: 'validation.failed')]
-  public readonly string $reason;
-  #[Property(type: 'array', items: new Items(new Model(type: ValidationError::class)))]
-  public readonly array $violations;
+  public function __construct(
+      #[Property(default: 'validation.failed')]
+      protected readonly string $reason,
+      #[Property(type: 'array', items: new Items(new Model(type: ValidationError::class)))]
+      protected readonly array $violations
+  )
+  {
+  }
 }

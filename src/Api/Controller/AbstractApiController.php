@@ -2,6 +2,7 @@
 
 namespace App\Api\Controller;
 
+use App\Api\Model\Validation\ValidationFailedData;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\StudyArea;
 use App\Entity\User;
@@ -55,6 +56,11 @@ abstract class AbstractApiController extends AbstractController
     $context->setGroups($serializationGroups ?? ['Default']);
 
     return JsonResponse::fromJsonString($this->serializer->serialize($payload, 'json', $context), $statusCode);
+  }
+
+  protected function createBadRequestResponse(ValidationFailedData $data): JsonResponse
+  {
+    return JsonResponse::fromJsonString($this->serializer->serialize($data, 'json'), Response::HTTP_BAD_REQUEST);
   }
 
   /**

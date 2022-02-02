@@ -11,9 +11,9 @@ class DetailedConceptRelation extends ConceptRelation
       int    $id,
       int    $sourceId,
       int    $targetId,
-      public readonly string $name,
-             #[OA\Property(nullable: true)]
-      public readonly ?string $description
+      protected readonly string $name,
+      #[OA\Property(nullable: true)]
+      protected readonly ?string $description
   )
   {
     parent::__construct($id, $sourceId, $targetId);

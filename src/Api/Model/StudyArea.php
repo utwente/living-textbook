@@ -7,12 +7,12 @@ use OpenApi\Attributes as OA;
 class StudyArea
 {
   protected function __construct(
-      public readonly int $id,
-      public readonly string $name,
-             #[OA\Property(nullable: true)]
-      public readonly ?string $description,
-             #[OA\Property(nullable: true)]
-      public readonly ?string $group)
+      protected readonly int $id,
+      protected readonly string $name,
+      #[OA\Property(nullable: true)]
+      protected readonly ?string $description,
+      #[OA\Property(nullable: true)]
+      protected readonly ?string $group)
   {
   }
 

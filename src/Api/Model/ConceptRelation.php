@@ -5,9 +5,9 @@ namespace App\Api\Model;
 class ConceptRelation
 {
   protected function __construct(
-      public readonly int $id,
-      public readonly int $sourceId,
-      public readonly int $targetId,
+      protected readonly int $id,
+      protected readonly int $sourceId,
+      protected readonly int $targetId,
   )
   {
   }
