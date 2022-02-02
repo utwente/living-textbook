@@ -4,9 +4,9 @@ namespace App\Entity;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
-use App\StringHelper;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
