@@ -120,6 +120,6 @@ class TagController extends AbstractApiController
 
   private function getHandler(): TagHandler
   {
-    return new TagHandler($this->em, $this->validator);
+    return new TagHandler($this->em, $this->validator, null);
   }
 }

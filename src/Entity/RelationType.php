@@ -12,6 +12,7 @@ use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -132,7 +133,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
    */
   public function setDescription(?string $description): RelationType
   {
-    $this->description = trim($description);
+    $this->description = StringHelper::emptyToNull($description);
 
     return $this;
   }
