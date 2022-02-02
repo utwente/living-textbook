@@ -22,7 +22,7 @@ class ConceptRelationController extends AbstractApiController
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
-  #[OA\Response(response: 200, description: 'All study area concept relations', attachables: [
+  #[OA\Response(response: 200, description: 'All study area concept relations', content: [
       new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelation::class))),
   ])]
   public function list(

@@ -18,7 +18,7 @@ class StudyAreaController extends AbstractApiController
    *
    * @IsGranted("ROLE_USER")
    */
-  #[OA\Response(response: 200, description: 'The list of study areas available for the current token', attachables: [
+  #[OA\Response(response: 200, description: 'The list of study areas available for the current token', content: [
       new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: StudyArea::class))),
   ])]
   public function list(StudyAreaRepository $studyAreaRepository): JsonResponse
@@ -37,7 +37,7 @@ class StudyAreaController extends AbstractApiController
    *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
-  #[OA\Response(response: 200, description: 'The study area information', attachables: [
+  #[OA\Response(response: 200, description: 'The study area information', content: [
       new Model(type: StudyArea::class),
   ])]
   public function single(RequestStudyArea $requestStudyArea): JsonResponse
