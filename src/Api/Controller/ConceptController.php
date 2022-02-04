@@ -7,6 +7,7 @@ use App\Api\Model\Validation\ValidationFailedData;
 use App\EntityHandler\ConceptEntityHandler;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
+use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -117,6 +118,90 @@ class ConceptController extends AbstractApiController
     $this->getHandler()->delete($concept, $learningPathRepository);
 
     return new JsonResponse(NULL, Response::HTTP_ACCEPTED);
+  }
+
+  /**
+   * Add a tag to an existing study area concept
+   *
+   * @Route("/{concept<\d+>}/tag", methods={"POST"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   */
+  #[OA\RequestBody(description: 'The new tag id', required: true, content: [new OA\JsonContent(type: 'number')])]
+  #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
+  #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  public function addTag(
+      Request             $request,
+      RequestStudyArea    $requestStudyArea,
+      \App\Entity\Concept $concept,
+      TagRepository       $tagRepository): JsonResponse
+  {
+    $this->assertStudyAreaObject($requestStudyArea, $concept);
+    /** @var int $requestTag */
+    $requestTag = $this->getUntypedFromBody($request, 'int');
+
+    $tag = $tagRepository->findOneBy(['id' => $requestTag, 'studyArea' => $requestStudyArea->getStudyArea()]);
+    if (!$tag) {
+      return $this->createBadRequestResponse(new ValidationFailedData('tag.not-found', []));
+    }
+
+    $this->getHandler()->update($concept->addTag($tag));
+
+    return $this->createDataResponse(Concept::fromEntity($concept));
+  }
+
+  /**
+   * Replace the tags for an existing study area concept
+   *
+   * @Route("/{concept<\d+>}/tag", methods={"PUT"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   */
+  #[OA\RequestBody(description: 'The tag ids', required: true, content: [new OA\JsonContent(type: 'array', items: new OA\Items(type: 'number'))])]
+  #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
+  #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  public function putTags(
+      Request             $request,
+      RequestStudyArea    $requestStudyArea,
+      \App\Entity\Concept $concept,
+      TagRepository       $tagRepository): JsonResponse
+  {
+    $this->assertStudyAreaObject($requestStudyArea, $concept);
+    /** @var int[] $requestTag */
+    $requestTags = $this->getUntypedFromBody($request, 'array<int>');
+
+    $tags = $tagRepository->findForStudyAreaQb($requestStudyArea->getStudyArea())
+        ->andWhere('t.id IN (:ids)')
+        ->setParameter('ids', $requestTags)
+        ->getQuery()->getResult();
+
+    $conceptTags = $concept->getTags();
+    $conceptTags->clear();
+    foreach ($tags as $tag) {
+      $conceptTags->add($tag);
+    }
+    $this->getHandler()->update($concept);
+
+    return $this->createDataResponse(Concept::fromEntity($concept));
+  }
+
+  /**
+   * Remove an existing study area concept tag
+   *
+   * @Route("/{concept<\d+>}/tag/{tag<\d+>}", methods={"DELETE"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   */
+  #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
+  #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  public function deleteTag(
+      RequestStudyArea    $requestStudyArea,
+      \App\Entity\Concept $concept,
+      \App\Entity\Tag     $tag): JsonResponse
+  {
+    $this->assertStudyAreaObject($requestStudyArea, $concept);
+    $this->assertStudyAreaObject($requestStudyArea, $tag);
+
+    $this->getHandler()->update($concept->removeTag($tag));
+
+    return $this->createDataResponse(Concept::fromEntity($concept));
   }
 
   private function getHandler(): ConceptEntityHandler

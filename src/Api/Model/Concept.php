@@ -32,10 +32,10 @@ class Concept
         $concept->getName(),
         $concept->getDefinition(),
         $concept->getSynonyms(),
-        $concept->getTags()->map(fn(Tag $tag) => $tag->getId())->toArray(),
+        $concept->getTags()->map(fn(Tag $tag) => $tag->getId())->getValues(),
         $concept->getOutgoingRelations()
             ->map(fn(\App\Entity\ConceptRelation $conceptRelation) => ConceptRelation::fromEntity($conceptRelation))
-            ->toArray()
+            ->getValues()
     );
   }
 

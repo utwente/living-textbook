@@ -1150,7 +1150,9 @@ class Concept implements SearchableInterface, ReviewableInterface
    */
   public function addTag(Tag $tag): Concept
   {
-    $this->tags->add($tag);
+    if (!$this->tags->contains($tag)) {
+      $this->tags->add($tag);
+    }
 
     return $this;
   }
