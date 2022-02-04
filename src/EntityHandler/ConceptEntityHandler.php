@@ -3,6 +3,7 @@
 namespace App\EntityHandler;
 
 use App\Entity\Concept;
+use App\Entity\ConceptRelation;
 use App\Entity\PendingChange;
 use App\Repository\LearningPathRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,6 +21,13 @@ class ConceptEntityHandler extends AbstractEntityHandler
       $this->em->persist($concept);
       $this->em->flush();
     }
+  }
+
+  public function addRelation(ConceptRelation $relation): void
+  {
+    $this->validate($relation);
+
+    $this->update($relation->getSource()->addOutgoingRelation($relation));
   }
 
   public function update(
@@ -68,5 +76,11 @@ class ConceptEntityHandler extends AbstractEntityHandler
       $this->em->remove($concept);
       $this->em->flush();
     }
+  }
+
+  public function deleteRelation(ConceptRelation $conceptRelation): void
+  {
+    $this->em->remove($conceptRelation);
+    $this->em->flush();
   }
 }

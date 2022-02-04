@@ -6,7 +6,6 @@ use App\Api\Model\Create\CreateConceptRelation;
 use App\Api\Model\Detailed\DetailedConceptRelation;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\EntityHandler\ConceptEntityHandler;
-use App\EntityHandler\ConceptRelationEntityHandler;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
@@ -71,22 +70,23 @@ class ConceptRelationController extends AbstractApiController
       ConceptRepository      $conceptRepository,
       RelationTypeRepository $relationTypeRepository): JsonResponse
   {
+    $studyArea       = $requestStudyArea->getStudyArea();
     $requestRelation = $this->getTypedFromBody($request, CreateConceptRelation::class);
 
     if (!$requestRelation->isValid()) {
       return $this->createBadRequestResponse(new ValidationFailedData('incomplete-object', []));
     }
 
-    $source = $conceptRepository->find($requestRelation->getSourceId());
-    if ($source?->getStudyArea()->getId() !== $requestStudyArea->getStudyAreaId()) {
+    $source = $conceptRepository->findOneBy(['id' => $requestRelation->getSourceId(), 'studyArea' => $studyArea]);
+    if (!$source) {
       return $this->createBadRequestResponse(new ValidationFailedData('source.not-found', []));
     }
-    $target = $conceptRepository->find($requestRelation->getTargetId());
-    if ($target?->getStudyArea()->getId() !== $requestStudyArea->getStudyAreaId()) {
+    $target = $conceptRepository->findOneBy(['id' => $requestRelation->getTargetId(), 'studyArea' => $studyArea]);
+    if (!$target) {
       return $this->createBadRequestResponse(new ValidationFailedData('target.not-found', []));
     }
-    $relationType = $relationTypeRepository->find($requestRelation->getRelationTypeId());
-    if ($relationType?->getStudyArea()->getId() !== $requestStudyArea->getStudyAreaId()) {
+    $relationType = $relationTypeRepository->findOneBy(['id' => $requestRelation->getRelationTypeId(), 'studyArea' => $studyArea]);
+    if (!$relationType) {
       return $this->createBadRequestResponse(new ValidationFailedData('relation-type.not-found', []));
     }
 
@@ -96,8 +96,7 @@ class ConceptRelationController extends AbstractApiController
         ->setTarget($target)
         ->setRelationType($relationType);
 
-    $source->addOutgoingRelation($relation);
-    $this->getConceptHandler()->update($source);
+    $this->getHandler()->addRelation($relation);
 
     $this->em->flush();
 
@@ -115,17 +114,12 @@ class ConceptRelationController extends AbstractApiController
   {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
 
-    $this->getHandler()->delete($conceptRelation);
+    $this->getHandler()->deleteRelation($conceptRelation);
 
     return new JsonResponse(NULL, Response::HTTP_ACCEPTED);
   }
 
-  private function getHandler(): ConceptRelationEntityHandler
-  {
-    return new ConceptRelationEntityHandler($this->em, $this->validator, NULL);
-  }
-
-  private function getConceptHandler(): ConceptEntityHandler
+  private function getHandler(): ConceptEntityHandler
   {
     return new ConceptEntityHandler($this->em, $this->validator, NULL);
   }
