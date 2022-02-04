@@ -61,7 +61,7 @@ class ConceptRelationController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(content: [new Model(type: CreateConceptRelation::class)])]
+  #[OA\RequestBody(description: 'The new concept relation', required: true, content: [new Model(type: CreateConceptRelation::class)])]
   #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelation::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(

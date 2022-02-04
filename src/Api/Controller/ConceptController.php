@@ -59,7 +59,7 @@ class ConceptController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(content: [new Model(type: Concept::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The new concept', required: true, content: [new Model(type: Concept::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The new concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
@@ -81,10 +81,9 @@ class ConceptController extends AbstractApiController
    * @Route("/{concept<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(content: [new Model(type: Concept::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [new Model(type: Concept::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
-
   public function update(
       RequestStudyArea    $requestStudyArea,
       \App\Entity\Concept $concept,

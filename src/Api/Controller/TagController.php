@@ -60,7 +60,7 @@ class TagController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(content: [new Model(type: Tag::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The new tag', required: true, content: [new Model(type: Tag::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The new tag', content: [new Model(type: Tag::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
@@ -82,7 +82,7 @@ class TagController extends AbstractApiController
    * @Route("/{tag<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(content: [new Model(type: Tag::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The tag properties to update', required: true, content: [new Model(type: Tag::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated tag', content: [new Model(type: Tag::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
