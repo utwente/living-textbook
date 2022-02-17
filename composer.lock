@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00e1223fc0fe8adbbf264a68a15f777c",
+    "content-hash": "a4768d2d999cd59998c7601ce0f72c70",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3023,16 +3023,16 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "9c1f43a7b829395ac169a16fffa978d12054ae0b"
+                "reference": "dcb0860067c85f62ad0f2c475d019f5bc6edea4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/9c1f43a7b829395ac169a16fffa978d12054ae0b",
-                "reference": "9c1f43a7b829395ac169a16fffa978d12054ae0b",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/dcb0860067c85f62ad0f2c475d019f5bc6edea4d",
+                "reference": "dcb0860067c85f62ad0f2c475d019f5bc6edea4d",
                 "shasum": ""
             },
             "require": {
@@ -3085,9 +3085,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kick-In/exception-handler-bundle/issues",
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.0.1"
+                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.0.2"
             },
-            "time": "2021-06-29T18:33:40+00:00"
+            "time": "2022-02-17T12:32:39+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -3833,6 +3833,67 @@
                 "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.8.2"
             },
             "time": "2022-01-10T16:10:58+00:00"
+        },
+        {
+            "name": "nelmio/cors-bundle",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/NelmioCorsBundle.git",
+                "reference": "0ee5ee30b0ee08ea122d431ae6e0ddeb87f035c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nelmio/NelmioCorsBundle/zipball/0ee5ee30b0ee08ea122d431ae6e0ddeb87f035c0",
+                "reference": "0ee5ee30b0ee08ea122d431ae6e0ddeb87f035c0",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "^4.3 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2",
+                "symfony/phpunit-bridge": "^4.3 || ^5.0 || ^6.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nelmio\\CorsBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nelmio",
+                    "homepage": "http://nelm.io"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/nelmio/NelmioCorsBundle/contributors"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain"
+            ],
+            "support": {
+                "issues": "https://github.com/nelmio/NelmioCorsBundle/issues",
+                "source": "https://github.com/nelmio/NelmioCorsBundle/tree/2.2.0"
+            },
+            "time": "2021-12-01T09:34:27+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

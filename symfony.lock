@@ -104,6 +104,9 @@
     "ezyang/htmlpurifier": {
         "version": "v4.13.0"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.5"
+    },
     "friendsofsymfony/ckeditor-bundle": {
         "version": "1.0.0"
     },
@@ -158,6 +161,9 @@
     "kick-in/exception-handler-bundle": {
         "version": "3.0.0"
     },
+    "laminas/laminas-code": {
+        "version": "4.5.1"
+    },
     "league/html-to-markdown": {
         "version": "4.10.0"
     },
@@ -201,23 +207,32 @@
             "config/routes/nelmio_api_doc.yaml"
         ]
     },
+    "nelmio/cors-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+        },
+        "files": [
+            "config/packages/nelmio_cors.yaml"
+        ]
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
-    "ocramius/package-versions": {
-        "version": "1.2.0"
+    "paragonie/constant_time_encoding": {
+        "version": "v2.5.0"
     },
-    "ocramius/proxy-manager": {
-        "version": "2.1.1"
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
     },
     "phar-io/manifest": {
         "version": "2.0.3"
     },
     "phar-io/version": {
         "version": "3.1.0"
-    },
-    "php": {
-        "version": "7.3"
     },
     "php-http/client-common": {
         "version": "2.1.0"
@@ -590,6 +605,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.17.0"
     },
+    "symfony/polyfill-php81": {
+        "version": "v1.24.0"
+    },
     "symfony/polyfill-uuid": {
         "version": "v1.13.1"
     },
@@ -739,12 +757,6 @@
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
-    },
-    "zendframework/zend-code": {
-        "version": "3.3.0"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.0"
     },
     "zircote/swagger-php": {
         "version": "4.0.5"
