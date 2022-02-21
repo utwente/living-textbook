@@ -61,7 +61,7 @@
     "regenerator-runtime": "0.13.9",
     "requirejs": "2.3.6",
     "select2": "4.0.13",
-    "select2-theme-bootstrap4": "1.0.0",
+    "select2-theme-bootstrap4": "1.0.1",
     "symfony-collection": "ninsuo/symfony-collection",
     "uuid": "8.3.2"
   },

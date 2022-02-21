@@ -7084,10 +7084,10 @@ select-hose@^2.0.0:
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
   integrity sha1-Yl2GWPhlr0Psliv8N2o3NZpJlMo=
 
-select2-theme-bootstrap4@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/select2-theme-bootstrap4/-/select2-theme-bootstrap4-1.0.0.tgz#dfed2b252d36089ba7145121f5134e8fe2842a73"
-  integrity sha512-WJH1GMnHir+/EnW7ANZq2VfmRGXWNEySPULQ+zCcVRyVs3B1qyLZ0XFflZNo1FlbxYxBsIQH6QsqnNEyNudU1g==
+select2-theme-bootstrap4@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/select2-theme-bootstrap4/-/select2-theme-bootstrap4-1.0.1.tgz#aa476930988cb61b05c77d1173a937688d2bb4be"
+  integrity sha512-gn9zN+ZppzsjRCQzHMfhDyizcCNlzbsB059qAXjyEaFYx7OA3677LYEIbYiGmliuF6y9Dbuae8X8Rk/Z4SBleQ==
 
 select2@4.0.13:
   version "4.0.13"
