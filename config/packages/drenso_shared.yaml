@@ -1,5 +1,9 @@
 drenso_shared:
   public_services: false # Set whether all services must be public
+  form_extensions:
+    generic: false
+    button: false
+    select2: false
   api:
     convert_entity_validation_exception:
       enabled: true
