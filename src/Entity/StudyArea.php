@@ -215,6 +215,11 @@ class StudyArea
   private ?Tag $defaultTagFilter = NULL;
 
   /**
+   * @ORM\Column(type="array", nullable=true)
+   */
+  private ?array $dotronConfig = null;
+
+  /**
    * StudyArea constructor.
    */
   public function __construct()
@@ -862,4 +867,20 @@ class StudyArea
     return $this;
   }
 
+  public function getDotronCfg(): ?array
+  {
+    return $this->dotronConfig;
+  }
+
+  public function setDotronCfg(?array $dotronConfig): self
+  {
+    $this->dotronConfig = $dotronConfig;
+
+    return $this;
+  }
+
+  public function isDotron(): bool
+  {
+    return $this->group?->isDotron() ?? false;
+  }
 }

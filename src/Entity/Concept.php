@@ -317,6 +317,11 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $studyArea;
 
   /**
+   * @ORM\Column(type="array", nullable=true)
+   */
+  private ?array $dotronConfig = null;
+
+  /**
    * Concept constructor.
    */
   public function __construct()
@@ -1165,6 +1170,18 @@ class Concept implements SearchableInterface, ReviewableInterface
   public function removeTag(Tag $tag): Concept
   {
     $this->tags->removeElement($tag);
+
+    return $this;
+  }
+
+  public function getDotronCfg(): ?array
+  {
+    return $this->dotronConfig;
+  }
+
+  public function setDotronCfg(?array $dotronConfig): self
+  {
+    $this->dotronConfig = $dotronConfig;
 
     return $this;
   }
