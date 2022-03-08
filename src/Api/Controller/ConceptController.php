@@ -32,15 +32,13 @@ class ConceptController extends AbstractApiController
   ])]
   public function list(RequestStudyArea $requestStudyArea, ConceptRepository $conceptRepository): JsonResponse
   {
-    $serializationGroups = ['Default'];
-    if ($requestStudyArea->getStudyArea()->isDotron()) {
-      $serializationGroups[] = 'dotron';
-    }
-
-    return $this->createDataResponse(array_map(
-        [Concept::class, 'fromEntity'],
-        $conceptRepository->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea(), conceptsOnly: true)
-    ), serializationGroups: $serializationGroups);
+    return $this->createDataResponse(
+        array_map(
+            [Concept::class, 'fromEntity'],
+            $conceptRepository->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea(), conceptsOnly: true)
+        ),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+    );
   }
 
   /**
@@ -56,12 +54,10 @@ class ConceptController extends AbstractApiController
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $serializationGroups = ['Default'];
-    if ($requestStudyArea->getStudyArea()->isDotron()) {
-      $serializationGroups[] = 'dotron';
-    }
-
-    return $this->createDataResponse(Concept::fromEntity($concept), serializationGroups: $serializationGroups);
+    return $this->createDataResponse(
+        Concept::fromEntity($concept),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+    );
   }
 
   /**

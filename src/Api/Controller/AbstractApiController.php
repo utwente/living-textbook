@@ -64,6 +64,21 @@ abstract class AbstractApiController extends AbstractController
   }
 
   /**
+   * Determines the default serialization groups for the API result
+   *
+   * @return string[]
+   */
+  protected function getDefaultSerializationGroup(RequestStudyArea $requestStudyArea): array
+  {
+    $serializationGroups = ['Default'];
+    if ($requestStudyArea->getStudyArea()->isDotron()) {
+      $serializationGroups[] = 'dotron';
+    }
+
+    return $serializationGroups;
+  }
+
+  /**
    * Retrieve the data from the request body.
    *
    * @template T
