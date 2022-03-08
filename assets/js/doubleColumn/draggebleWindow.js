@@ -126,8 +126,8 @@
   };
 
   // Bind the click handler to the button
-  closeButton.click(dw.closeWindow);
-  fullScreenButton.click(dw.fullScreenWindow);
+  closeButton.on('click', dw.closeWindow);
+  fullScreenButton.on('click', dw.fullScreenWindow);
 
   ////////////////////////////////
   // Drag button handlers
@@ -167,8 +167,10 @@
     let rightWidth = clientWidth - leftWidth - centerWidth;
 
     // Move the window (with or without animation)
+    const opacityContainers = rightFrame.find('.animation-opacity-container');
     if (animate) {
-      animationCount = 3;
+      // Do not use the opacity containers in the animation if they are not there
+      animationCount = opacityContainers.length === 0 ? 2 : 3;
       let animationDuration = 1000;
       let completeFunction = function () {
         animationCount--;
@@ -185,7 +187,7 @@
       rightFrame.animate({
         width: rightWidth
       }, {duration: animationDuration, complete: completeFunction});
-      rightFrame.find('.animation-opacity-container').animate({
+      opacityContainers.animate({
         opacity: rightWidth <= 0 ? 0 : 1
       }, {duration: animationDuration, complete: completeFunction});
 
@@ -196,7 +198,7 @@
     } else {
       leftFrame.width(leftWidth);
       rightFrame.width(rightWidth);
-      rightFrame.find('.animation-opacity-container').css('opacity', rightWidth <= 0 ? 0 : 1);
+      opacityContainers.css('opacity', rightWidth <= 0 ? 0 : 1);
       callback();
       cb?.requestResizeCanvas();
     }

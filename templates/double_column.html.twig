@@ -50,9 +50,7 @@
       </div>
     </div>
     <div id="right-container">
-      {% if _twigStudyArea.dotron %}
-        <div id="dotron-app-root"></div>
-      {% else %}
+      {% if not _twigStudyArea.dotron %}
         <div class="animation-opacity-container">
           <div id="concept-browser-controls" class="container-fluid">
             <div class="row justify-content-between">
@@ -82,13 +80,19 @@
             </div>
           </div>
         </div>
-        <div id="right-container-content">
-          {% block content_right %}
+      {% endif %}
+      <div id="right-container-content">
+        {% block content_right %}
+          {% if _twigStudyArea.dotron %}
+            <div id="dotron-app-root"></div>
+          {% else %}
             <div id="graph_container_div">
               <canvas id="graph_container_canvas"></canvas>
             </div>
-          {% endblock %}
-        </div>
+          {% endif %}
+        {% endblock %}
+      </div>
+      {% if not _twigStudyArea.dotron %}
         <div class="animation-opacity-container">
           <div id="concept-browser-controls-bottom" class="container-fluid">
             <div class="row justify-content-between">
