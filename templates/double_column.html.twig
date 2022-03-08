@@ -14,6 +14,11 @@
 {% block javascripts_bottom %}
   {{ parent() }}
   {% if studyArea.dotron %}
+    <script type="text/javascript">
+        var DOTRON_LTB_API_URL = '/api';
+        var DOTRON_LTB_API_TOKEN = 'session';
+        var DOTRON_ICON_FINDER_API_URL = 'https://icon-api.ezzaouia.repl.co';
+    </script>
     <script src="{{ asset('build/dotron/dotron-app.js') }}"></script>
   {% endif %}
 {% endblock %}
