@@ -42,8 +42,7 @@ class ConceptRelationController extends AbstractApiController
 
     return $this->createDataResponse(array_map(
         [DetailedConceptRelation::class, 'fromEntity'],
-        $conceptRelationRepository->getByStudyArea($requestStudyArea->getStudyArea(),
-        )
+        $conceptRelationRepository->getByStudyArea($requestStudyArea->getStudyArea())
     ), serializationGroups: $serializationGroups);
   }
 
@@ -62,6 +61,7 @@ class ConceptRelationController extends AbstractApiController
     if ($requestStudyArea->getStudyArea()->isDotron()) {
       $serializationGroups[] = 'dotron';
     }
+
     return $this->createDataResponse(DetailedConceptRelation::fromEntity($conceptRelation), serializationGroups: $serializationGroups);
   }
 

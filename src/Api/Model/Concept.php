@@ -22,9 +22,9 @@ class Concept
       protected readonly array $tags,
       #[OA\Property(type: 'array', items: new OA\Items(new Model(type: ConceptRelation::class)))]
       protected readonly array $outgoingRelations,
-      #[OA\Property(type: 'object', nullable: true, description: 'Specific dotron configuration for a concept')]
+      #[OA\Property(description: 'Specific Dotron configuration for a concept', type: 'object', nullable: true)]
+      #[Type('array')]
       #[Groups(['dotron'])]
-      #[Type("array")]
       protected readonly ?array $dotronConfig
   )
   {

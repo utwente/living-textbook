@@ -54,11 +54,12 @@ class ConceptController extends AbstractApiController
   ])]
   public function single(RequestStudyArea $requestStudyArea, \App\Entity\Concept $concept): JsonResponse
   {
+    $this->assertStudyAreaObject($requestStudyArea, $concept);
+
     $serializationGroups = ['Default'];
     if ($requestStudyArea->getStudyArea()->isDotron()) {
       $serializationGroups[] = 'dotron';
     }
-    $this->assertStudyAreaObject($requestStudyArea, $concept);
 
     return $this->createDataResponse(Concept::fromEntity($concept), serializationGroups: $serializationGroups);
   }
@@ -77,8 +78,7 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
-      Request          $request
-  ): JsonResponse
+      Request          $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, Concept::class)
         ->mapToEntity(NULL)
@@ -124,8 +124,7 @@ class ConceptController extends AbstractApiController
   public function delete(
       RequestStudyArea       $requestStudyArea,
       \App\Entity\Concept    $concept,
-      LearningPathRepository $learningPathRepository
-  ): JsonResponse
+      LearningPathRepository $learningPathRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
@@ -147,8 +146,7 @@ class ConceptController extends AbstractApiController
       Request             $request,
       RequestStudyArea    $requestStudyArea,
       \App\Entity\Concept $concept,
-      TagRepository       $tagRepository
-  ): JsonResponse
+      TagRepository       $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     /** @var int $requestTag */
@@ -177,8 +175,7 @@ class ConceptController extends AbstractApiController
       Request             $request,
       RequestStudyArea    $requestStudyArea,
       \App\Entity\Concept $concept,
-      TagRepository       $tagRepository
-  ): JsonResponse
+      TagRepository       $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     /** @var int[] $requestTag */
@@ -210,8 +207,7 @@ class ConceptController extends AbstractApiController
   public function deleteTag(
       RequestStudyArea    $requestStudyArea,
       \App\Entity\Concept $concept,
-      \App\Entity\Tag     $tag
-  ): JsonResponse
+      \App\Entity\Tag     $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     $this->assertStudyAreaObject($requestStudyArea, $tag);

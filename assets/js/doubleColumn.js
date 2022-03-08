@@ -31,14 +31,12 @@ $(function () {
     $.get({
       url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
       dataType: 'json',
-    })
-        .done(function (data) {
-          conceptSearch.createSearch($('#search'), data);
-          cb.init(data);
-        })
-        .fail(function (error) {
-          console.error(error);
-        });
+    }).done(function (data) {
+      conceptSearch.createSearch($('#search'), data);
+      cb.init(data);
+    }).fail(function (error) {
+      console.error(error);
+    });
   }
 
   // Load tooltips
@@ -68,18 +66,15 @@ $(function () {
       $.get({
         url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
         dataType: 'json',
-      })
-          .done(function (data) {
-            // conceptSearch.updateData($('#search'), data);
-            cb.update(data);
-          })
-          .fail(function (error) {
-            console.error(error);
-          })
-          .always(function () {
-            $icon.removeClass('fa-spin').removeClass('fa-circle-o-notch').addClass('fa-refresh');
-            $button.removeAttr('disabled');
-          });
+      }).done(function (data) {
+        // conceptSearch.updateData($('#search'), data);
+        cb.update(data);
+      }).fail(function (error) {
+        console.error(error);
+      }).always(function () {
+        $icon.removeClass('fa-spin').removeClass('fa-circle-o-notch').addClass('fa-refresh');
+        $button.removeAttr('disabled');
+      });
     });
   }
 });

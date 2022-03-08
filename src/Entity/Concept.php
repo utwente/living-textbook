@@ -319,7 +319,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   /**
    * @ORM\Column(type="array", nullable=true)
    */
-  private ?array $dotronConfig = null;
+  private ?array $dotronConfig = NULL;
 
   /**
    * Concept constructor.

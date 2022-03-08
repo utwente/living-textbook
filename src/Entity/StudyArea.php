@@ -224,7 +224,7 @@ class StudyArea
   /**
    * @ORM\Column(type="array", nullable=true)
    */
-  private ?array $dotronConfig = null;
+  private ?array $dotronConfig = NULL;
 
   /**
    * StudyArea constructor.
@@ -249,8 +249,8 @@ class StudyArea
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {
       $context->buildViolation('study-area.api-and-review-mode-enabled')
-        ->atPath('apiEnabled')
-        ->addViolation();
+          ->atPath('apiEnabled')
+          ->addViolation();
     }
   }
 
@@ -270,9 +270,9 @@ class StudyArea
    * @return string[]
    */
   public function getAvailableAccessTypes(
-    AuthorizationCheckerInterface $authorizationChecker,
-    EntityManagerInterface $em
-  ): array {
+      AuthorizationCheckerInterface $authorizationChecker,
+      EntityManagerInterface        $em): array
+  {
     // Get original field value
     $origObj   = $em->getUnitOfWork()->getOriginalEntityData($this);
     $prevValue = array_key_exists('accessType', $origObj) ? $origObj['accessType'] : NULL;
@@ -306,8 +306,7 @@ class StudyArea
   public function getUserGroups(string $groupType = NULL)
   {
     return $groupType === NULL ? $this->userGroups : $this->userGroups->matching(
-      Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType))
-    );
+        Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
   }
 
   /**
