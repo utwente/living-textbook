@@ -100,6 +100,11 @@ class ConceptRelation
   private $incomingPosition = 0;
 
   /**
+   * @ORM\Column(type="array", nullable=true)
+   */
+  private ?array $dotronConfig = NULL;
+
+  /**
    * @return int|null
    *
    * @JMSA\VirtualProperty()
@@ -233,4 +238,15 @@ class ConceptRelation
     return $this;
   }
 
+  public function getDotronConfig(): ?array
+  {
+    return $this->dotronConfig;
+  }
+
+  public function setDotronConfig(?array $dotronConfig): self
+  {
+    $this->dotronConfig = $dotronConfig;
+
+    return $this;
+  }
 }

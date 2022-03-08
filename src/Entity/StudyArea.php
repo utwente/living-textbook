@@ -215,6 +215,13 @@ class StudyArea
   private ?Tag $defaultTagFilter = NULL;
 
   /**
+   * If set the Dotron visualisation will be used
+   *
+   * @ORM\Column(type="boolean")
+   */
+  private bool $dotron = false;
+
+  /**
    * @ORM\Column(type="array", nullable=true)
    */
   private ?array $dotronConfig = null;
@@ -242,8 +249,8 @@ class StudyArea
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {
       $context->buildViolation('study-area.api-and-review-mode-enabled')
-          ->atPath('apiEnabled')
-          ->addViolation();
+        ->atPath('apiEnabled')
+        ->addViolation();
     }
   }
 
@@ -263,8 +270,9 @@ class StudyArea
    * @return string[]
    */
   public function getAvailableAccessTypes(
-      AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em): array
-  {
+    AuthorizationCheckerInterface $authorizationChecker,
+    EntityManagerInterface $em
+  ): array {
     // Get original field value
     $origObj   = $em->getUnitOfWork()->getOriginalEntityData($this);
     $prevValue = array_key_exists('accessType', $origObj) ? $origObj['accessType'] : NULL;
@@ -298,7 +306,8 @@ class StudyArea
   public function getUserGroups(string $groupType = NULL)
   {
     return $groupType === NULL ? $this->userGroups : $this->userGroups->matching(
-        Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
+      Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType))
+    );
   }
 
   /**
@@ -867,20 +876,27 @@ class StudyArea
     return $this;
   }
 
-  public function getDotronCfg(): ?array
+  public function isDotron(): bool
   {
-    return $this->dotronConfig;
+    return $this->dotron;
   }
 
-  public function setDotronCfg(?array $dotronConfig): self
+  public function setDotron(bool $dotron): self
   {
-    $this->dotronConfig = $dotronConfig;
+    $this->dotron = $dotron;
 
     return $this;
   }
 
-  public function isDotron(): bool
+  public function getDotronConfig(): ?array
   {
-    return $this->group?->isDotron() ?? false;
+    return $this->dotronConfig;
+  }
+
+  public function setDotronConfig(?array $dotronConfig): self
+  {
+    $this->dotronConfig = $dotronConfig;
+
+    return $this;
   }
 }

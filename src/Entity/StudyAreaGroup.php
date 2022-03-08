@@ -35,13 +35,6 @@ class StudyAreaGroup
    */
   private $studyAreas;
 
-  /**
-   * If set the Dotron visualisation will be used
-   *
-   * @ORM\Column(type="boolean")
-   */
-  private bool $dotron = false;
-
   public function __construct()
   {
     $this->studyAreas = new ArrayCollection();
@@ -110,18 +103,6 @@ class StudyAreaGroup
   {
     $this->studyAreas->removeElement($studyArea);
     $studyArea->setGroup(NULL);
-
-    return $this;
-  }
-
-  public function isDotron(): bool
-  {
-    return $this->dotron;
-  }
-
-  public function setDotron(bool $dotron): self
-  {
-    $this->dotron = $dotron;
 
     return $this;
   }

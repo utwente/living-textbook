@@ -156,7 +156,7 @@ import Routing from 'fos-routing';
       // Either open just the map, or directly focus on the selected node
       if (data.concept_id) {
         dw.openWindow(function () {
-          cb.moveToConceptById(data.concept_id);
+          cb?.moveToConceptById(data.concept_id);
         });
       } else {
         dw.openWindow(data.concept_id);
@@ -192,11 +192,11 @@ import Routing from 'fos-routing';
   function onShowConcept(data) {
     if (data.id === -1) {
       dw.openWindow(function () {
-        cb.centerView();
+        cb?.centerView();
       });
     } else {
       dw.openWindow(function () {
-        cb.moveToConceptById(data.id, data.nodeOnly);
+        cb?.moveToConceptById(data.id, data.nodeOnly);
       });
     }
   }

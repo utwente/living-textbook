@@ -26,7 +26,7 @@
    */
   function setOpened(value) {
     opened = value;
-    cb.setOpenedState(opened);
+    cb?.setOpenedState(opened);
   }
 
   /**
@@ -58,7 +58,7 @@
       if (!firstOpen) return;
 
       // When the map is opened for the first time, make sure to center the view
-      cb.centerView(500);
+      cb?.centerView(500);
     };
 
     // Check for full screen, and adjust resize accordingly
@@ -174,7 +174,7 @@
         animationCount--;
         if (animationCount === 0) {
           callback();
-          cb.resizeCanvas();
+          cb?.resizeCanvas();
           iframeLoaderUpdate();
         }
       };
@@ -191,14 +191,14 @@
 
       // Prerender the canvas
       if (rightWidth > 0) {
-        cb.requestResizeCanvasWithSizes(rightWidth);
+        cb?.requestResizeCanvasWithSizes(rightWidth);
       }
     } else {
       leftFrame.width(leftWidth);
       rightFrame.width(rightWidth);
       rightFrame.find('.animation-opacity-container').css('opacity', rightWidth <= 0 ? 0 : 1);
       callback();
-      cb.requestResizeCanvas();
+      cb?.requestResizeCanvas();
     }
 
     iframeLoaderUpdate();

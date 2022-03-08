@@ -658,6 +658,8 @@ study-area:
   default-tag-filter: 'Default tag filter'
   default-tag-filter-help: 'The selected tag will be used as default filter when the concept browser is loaded for the first time.'
   description: 'Description'
+  dotron: "Dotron enabled"
+  dotron-help: "When enabled, Dotron visualization will be used."
   edit-title: 'Edit study area "%item%"'
   existing: 'Existing study area'
   field-configuration:

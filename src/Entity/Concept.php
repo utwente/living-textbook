@@ -1174,12 +1174,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  public function getDotronCfg(): ?array
+  public function getDotronConfig(): ?array
   {
     return $this->dotronConfig;
   }
 
-  public function setDotronCfg(?array $dotronConfig): self
+  public function setDotronConfig(?array $dotronConfig): self
   {
     $this->dotronConfig = $dotronConfig;
 

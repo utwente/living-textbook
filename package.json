@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@sentry/browser": "6.18.1",
+    "@ezzaouia/dotron-app": "2.0.0",
     "bootstrap": "4.6.1",
     "bootstrap-3-typeahead": "4.0.2",
     "bootstrap4-toggle": "3.6.1",

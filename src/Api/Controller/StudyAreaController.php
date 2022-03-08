@@ -23,13 +23,15 @@ class StudyAreaController extends AbstractApiController
   ])]
   public function list(StudyAreaRepository $studyAreaRepository): JsonResponse
   {
+    $serializationGroups = ['Default', 'dotron'];
+
     return $this->createDataResponse(array_map(
         [StudyArea::class, 'fromEntity'],
         $studyAreaRepository
             ->getVisibleQueryBuilder($this->getUser())
             ->andWhere('sa.apiEnabled = TRUE')
             ->getQuery()->getResult()
-    ));
+    ), serializationGroups: $serializationGroups);
   }
 
   /**
@@ -42,6 +44,11 @@ class StudyAreaController extends AbstractApiController
   ])]
   public function single(RequestStudyArea $requestStudyArea): JsonResponse
   {
-    return $this->createDataResponse(StudyArea::fromEntity($requestStudyArea->getStudyArea()));
+    $serializationGroups = ['Default'];
+    if ($requestStudyArea->getStudyArea()->isDotron()) {
+      $serializationGroups[] = 'dotron';
+    }
+
+    return $this->createDataResponse(StudyArea::fromEntity($requestStudyArea->getStudyArea()), serializationGroups: $serializationGroups);
   }
 }

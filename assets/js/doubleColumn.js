@@ -24,17 +24,22 @@ $(function () {
   require('./search/conceptSearch');
   require('./learningPathBrowser/learningPathBrowser');
 
-  global.cb = new ConceptBrowser('graph_container_canvas');
+  global.cb = undefined;
 
-  $.get({
-    url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
-    dataType: 'json'
-  }).done(function (data) {
-    conceptSearch.createSearch($('#search'), data);
-    cb.init(data);
-  }).fail(function (error) {
-    console.error(error);
-  });
+  if (!_isDotronStudyArea) {
+    global.cb = new ConceptBrowser('graph_container_canvas');
+    $.get({
+      url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
+      dataType: 'json',
+    })
+        .done(function (data) {
+          conceptSearch.createSearch($('#search'), data);
+          cb.init(data);
+        })
+        .fail(function (error) {
+          console.error(error);
+        });
+  }
 
   // Load tooltips
   $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
@@ -51,25 +56,30 @@ $(function () {
     return false;
   });
 
-  // Load refresh behavior
-  $('#refresh-button').on('click', function () {
-    var $button = $(this);
-    var $icon = $button.find('i');
-    $icon.addClass('fa-spin').addClass('fa-circle-o-notch').removeClass('fa-refresh');
-    $button.attr('disabled', 'disabled');
-    $button.tooltip('hide');
+  if (!_isDotronStudyArea) {
+    // Load refresh behavior
+    $('#refresh-button').on('click', function () {
+      var $button = $(this);
+      var $icon = $button.find('i');
+      $icon.addClass('fa-spin').addClass('fa-circle-o-notch').removeClass('fa-refresh');
+      $button.attr('disabled', 'disabled');
+      $button.tooltip('hide');
 
-    $.get({
-      url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
-      dataType: 'json'
-    }).done(function (data) {
-      // conceptSearch.updateData($('#search'), data);
-      cb.update(data);
-    }).fail(function (error) {
-      console.error(error);
-    }).always(function () {
-      $icon.removeClass('fa-spin').removeClass('fa-circle-o-notch').addClass('fa-refresh');
-      $button.removeAttr('disabled');
+      $.get({
+        url: Routing.generate('app_data_export', {_studyArea: _studyArea}),
+        dataType: 'json',
+      })
+          .done(function (data) {
+            // conceptSearch.updateData($('#search'), data);
+            cb.update(data);
+          })
+          .fail(function (error) {
+            console.error(error);
+          })
+          .always(function () {
+            $icon.removeClass('fa-spin').removeClass('fa-circle-o-notch').addClass('fa-refresh');
+            $button.removeAttr('disabled');
+          });
     });
-  });
+  }
 });

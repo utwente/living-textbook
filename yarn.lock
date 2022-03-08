@@ -1033,6 +1033,11 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
+"@ezzaouia/dotron-app@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ezzaouia/dotron-app/-/dotron-app-2.0.0.tgz#e409b12f834fe3d5d395c1c61e15c7b54de665ac"
+  integrity sha512-txcBckHPmDtxfIaFqy372+zUe5k+XA+sipZiX3vbdjlw+yxTyLAmwBKKZf1zoYfVzTvc5QvqL2ifFWwpUhsEDw==
+
 "@jridgewell/resolve-uri@^3.0.3":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@jridgewell/resolve-uri/-/resolve-uri-3.0.5.tgz#68eb521368db76d040a6315cdb24bf2483037b9c"
@@ -7670,7 +7675,6 @@ svgo@^1.0.0:
 
 symfony-collection@ninsuo/symfony-collection:
   version "2.1.30"
-  uid "61e92c33a86676a812c8dfbcaab45dfdfb0c12ff"
   resolved "https://codeload.github.com/ninsuo/symfony-collection/tar.gz/61e92c33a86676a812c8dfbcaab45dfdfb0c12ff"
   dependencies:
     jquery ">=1.7"

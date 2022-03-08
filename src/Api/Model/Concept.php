@@ -4,6 +4,7 @@ namespace App\Api\Model;
 
 use App\Entity\Tag;
 use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Type;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
@@ -21,6 +22,10 @@ class Concept
       protected readonly array $tags,
       #[OA\Property(type: 'array', items: new OA\Items(new Model(type: ConceptRelation::class)))]
       protected readonly array $outgoingRelations,
+      #[OA\Property(type: 'object', nullable: true, description: 'Specific dotron configuration for a concept')]
+      #[Groups(['dotron'])]
+      #[Type("array")]
+      protected readonly ?array $dotronConfig
   )
   {
   }
@@ -35,7 +40,8 @@ class Concept
         $concept->getTags()->map(fn(Tag $tag) => $tag->getId())->getValues(),
         $concept->getOutgoingRelations()
             ->map(fn(\App\Entity\ConceptRelation $conceptRelation) => ConceptRelation::fromEntity($conceptRelation))
-            ->getValues()
+            ->getValues(),
+        $concept->getDotronConfig()
     );
   }
 
@@ -44,6 +50,7 @@ class Concept
     return ($concept ?? new \App\Entity\Concept())
         ->setName($this->name ?? $concept?->getName() ?? '')
         ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
-        ->setSynonyms($this->synonyms ?? $concept?->getSynonyms() ?? '');
+        ->setSynonyms($this->synonyms ?? $concept?->getSynonyms() ?? '')
+        ->setDotronConfig($this->dotronConfig ?? $concept?->getDotronConfig() ?? NULL);
   }
 }

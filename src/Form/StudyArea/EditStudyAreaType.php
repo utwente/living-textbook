@@ -117,6 +117,11 @@ class EditStudyAreaType extends AbstractType
             'label'    => 'study-area.api-enabled',
             'help'     => 'study-area.api-enabled-help',
             'required' => false,
+        ])
+        ->add('dotron', CheckboxType::class, [
+            'required' => false,
+            'label'    => 'study-area.dotron',
+            'help'     => 'study-area.dotron-help',
         ]);
 
     if ($studyArea->getId()) {

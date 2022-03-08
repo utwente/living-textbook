@@ -4,14 +4,25 @@
   <!--suppress JSUnusedLocalSymbols -->
   <script type="text/javascript">
     var _studyArea = {{ studyArea.id }};
+    var _isDotronStudyArea = {{ studyArea.dotron ? 'true' : 'false' }};
     var _openMapOnLoad = {{ openMap ? 'true' : 'false' }};
     var _trackUser = {{ studyArea.trackUsers ? 'true' : 'false' }};
   </script>
   {{ encore_entry_script_tags('double-column') }}
 {% endblock %}
 
+{% if studyArea.dotron %}
+  {% block javascripts_bottom %}
+    {{ parent() }}
+    <script src="{{ asset('build/dotron/dotron-app.js') }}"></script>
+  {% endblock %}
+{% endif %}
+
 {% block stylesheets %}
   {{ encore_entry_link_tags('double-column') }}
+  {% if studyArea.dotron %}
+    <link rel="stylesheet" href="{{ asset('build/dotron/dotron-app.css') }}">
+  {% endif %}
 {% endblock %}
 
 {% block base_content %}
@@ -39,68 +50,72 @@
       </div>
     </div>
     <div id="right-container">
-      <div class="animation-opacity-container">
-        <div id="concept-browser-controls" class="container-fluid">
-          <div class="row justify-content-between">
-            <div class="search-container">
-              <input id="search" title="Search" class="form-control form-control-sm" autocomplete="off"
-                     placeholder="{{ 'browser.search'|trans }}">
-            </div>
-            <div class="action-container">
-              <button id="close-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.close'|trans }}">
-                <i class="fa fa-fw fa-times"></i>
-              </button>
-              <button id="fullscreen-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.fullscreen-toggle'|trans }}">
-                <i class="fa fa-fw fa-arrows-alt"></i>
-              </button>
-              <button id="filter-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.filter'|trans }}">
-                <i class="fa fa-fw fa-filter"></i>
-              </button>
-              {{ block('filters') }}
-              <button id="refresh-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.refresh'|trans }}">
-                <i class="fa fa-fw fa-refresh"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="right-container-content">
-        {% block content_right %}
-          <div id="graph_container_div">
-            <canvas id="graph_container_canvas"></canvas>
-          </div>
-        {% endblock %}
-      </div>
-      <div class="animation-opacity-container">
-        <div id="concept-browser-controls-bottom" class="container-fluid">
-          <div class="row justify-content-between">
-            <div class="pause-container">
-              <button id="pause-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.pause'|trans }}">
-                <i class="fa fa-pause"></i>
-              </button>
-              <button id="play-button" class="btn btn-success btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.play'|trans }}">
-                <i class="fa fa-play"></i>
-              </button>
-            </div>
-            <div class="action-container">
-              <button id="zoom-in-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.zoom-in'|trans }}">
-                <i class="fa fa-fw fa-search-plus"></i>
-              </button>
-              <button id="zoom-out-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
-                      title="{{ 'browser.zoom-out'|trans }}">
-                <i class="fa fa-fw fa-search-minus"></i>
-              </button>
+      {% if _twigStudyArea.dotron %}
+        <div id="dotron-app-root"></div>
+      {% else %}
+        <div class="animation-opacity-container">
+          <div id="concept-browser-controls" class="container-fluid">
+            <div class="row justify-content-between">
+              <div class="search-container">
+                <input id="search" title="Search" class="form-control form-control-sm" autocomplete="off"
+                       placeholder="{{ 'browser.search'|trans }}">
+              </div>
+              <div class="action-container">
+                <button id="close-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.close'|trans }}">
+                  <i class="fa fa-fw fa-times"></i>
+                </button>
+                <button id="fullscreen-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.fullscreen-toggle'|trans }}">
+                  <i class="fa fa-fw fa-arrows-alt"></i>
+                </button>
+                <button id="filter-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.filter'|trans }}">
+                  <i class="fa fa-fw fa-filter"></i>
+                </button>
+                {{ block('filters') }}
+                <button id="refresh-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.refresh'|trans }}">
+                  <i class="fa fa-fw fa-refresh"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        <div id="right-container-content">
+          {% block content_right %}
+            <div id="graph_container_div">
+              <canvas id="graph_container_canvas"></canvas>
+            </div>
+          {% endblock %}
+        </div>
+        <div class="animation-opacity-container">
+          <div id="concept-browser-controls-bottom" class="container-fluid">
+            <div class="row justify-content-between">
+              <div class="pause-container">
+                <button id="pause-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.pause'|trans }}">
+                  <i class="fa fa-pause"></i>
+                </button>
+                <button id="play-button" class="btn btn-success btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.play'|trans }}">
+                  <i class="fa fa-play"></i>
+                </button>
+              </div>
+              <div class="action-container">
+                <button id="zoom-in-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.zoom-in'|trans }}">
+                  <i class="fa fa-fw fa-search-plus"></i>
+                </button>
+                <button id="zoom-out-button" class="btn btn-light btn-sm" type="button" data-toggle="tooltip"
+                        title="{{ 'browser.zoom-out'|trans }}">
+                  <i class="fa fa-fw fa-search-minus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
   <div id="bottom-row">
