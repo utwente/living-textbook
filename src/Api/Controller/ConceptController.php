@@ -66,10 +66,7 @@ class ConceptController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(description: 'The new concept', required: true, content: [new Model(
-      type: Concept::class,
-      groups: ['mutate', 'dotron']
-  )])]
+  #[OA\RequestBody(description: 'The new concept', required: true, content: [new Model(type: Concept::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The new concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(

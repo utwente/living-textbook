@@ -16,7 +16,7 @@ class DetailedConceptRelation extends ConceptRelation
       protected readonly string $name,
       #[OA\Property(nullable: true)]
       protected readonly ?string $description,
-      #[OA\Property(description: 'Specific Dotron configuration for a concept relation', type: 'object', nullable: true)]
+      #[OA\Property(description: 'Specific Dotron configuration for a concept relation, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Type('array')]
       #[Groups(['dotron'])]
       protected readonly ?array $dotronConfig

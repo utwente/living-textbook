@@ -17,7 +17,7 @@ class StudyArea
       #[OA\Property(nullable: true)]
       protected readonly ?string $group,
       public readonly bool $dotron,
-      #[OA\Property(description: 'Specific Dotron configuration for a study area', type: 'object', nullable: true)]
+      #[OA\Property(description: 'Specific Dotron configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Type('array')]
       #[Groups(['dotron'])]
       #[Exclude(if: 'object.dotron == false')]
