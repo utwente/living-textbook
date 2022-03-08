@@ -11,12 +11,12 @@
   {{ encore_entry_script_tags('double-column') }}
 {% endblock %}
 
-{% if studyArea.dotron %}
-  {% block javascripts_bottom %}
-    {{ parent() }}
+{% block javascripts_bottom %}
+  {{ parent() }}
+  {% if studyArea.dotron %}
     <script src="{{ asset('build/dotron/dotron-app.js') }}"></script>
-  {% endblock %}
-{% endif %}
+  {% endif %}
+{% endblock %}
 
 {% block stylesheets %}
   {{ encore_entry_link_tags('double-column') }}
