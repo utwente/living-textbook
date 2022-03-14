@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3641881d98657f41fcb8d91dcc1c148b",
+    "content-hash": "5c98fc7128a41e2bdaef029bd1a693b0",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11741,16 +11741,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.2.10",
+            "version": "4.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "7263e95f5fff5524a697e2a75ceb6f9902453d01"
+                "reference": "1c7a04e381b07e14aae080a61e02f2fe9cdea424"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/7263e95f5fff5524a697e2a75ceb6f9902453d01",
-                "reference": "7263e95f5fff5524a697e2a75ceb6f9902453d01",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/1c7a04e381b07e14aae080a61e02f2fe9cdea424",
+                "reference": "1c7a04e381b07e14aae080a61e02f2fe9cdea424",
                 "shasum": ""
             },
             "require": {
@@ -11810,9 +11810,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.2.10"
+                "source": "https://github.com/zircote/swagger-php/tree/4.2.11"
             },
-            "time": "2022-03-04T01:21:38+00:00"
+            "time": "2022-03-06T19:16:21+00:00"
         }
     ],
     "packages-dev": [
