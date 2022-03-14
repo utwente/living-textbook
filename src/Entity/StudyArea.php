@@ -252,6 +252,12 @@ class StudyArea
           ->atPath('apiEnabled')
           ->addViolation();
     }
+
+    if ($this->dotron && !$this->apiEnabled) {
+      $context->buildViolation('study-area.api-disabled-and-dotron-enabled')
+          ->atPath('dotron')
+          ->addViolation();
+    }
   }
 
   /**

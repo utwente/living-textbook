@@ -27,6 +27,7 @@ learning-outcome:
 
 study-area:
   api-and-review-mode-enabled: 'The API cannot be enabled when the review mode is enabled.'
+  api-disabled-and-dotron-enabled: 'The API must be enabled when Dotron is enabled.'
 
 user:
   email-used: 'This e-mail address is already in use!'

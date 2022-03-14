@@ -82,12 +82,23 @@
             .on('change', function () {
               if ($(this).is(':checked')) {
                 $('#{{ form.apiEnabled.vars.id }}').prop('checked', false);
+                $('#{{ form.dotron.vars.id }}').prop('checked', false);
               }
             });
 
         $('#{{ form.apiEnabled.vars.id }}')
             .on('change', function () {
               if ($(this).is(':checked')) {
+                $('#{{ form.reviewModeEnabled.vars.id }}').prop('checked', false);
+              } else {
+                $('#{{ form.dotron.vars.id }}').prop('checked', false);
+              }
+            });
+
+        $('#{{ form.dotron.vars.id }}')
+            .on('change', function () {
+              if ($(this).is(':checked')) {
+                $('#{{ form.apiEnabled.vars.id }}').prop('checked', true);
                 $('#{{ form.reviewModeEnabled.vars.id }}').prop('checked', false);
               }
             });
