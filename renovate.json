@@ -85,6 +85,11 @@
                 "engines"
             ],
             "enabled": false
+        },
+        {
+            "matchPackageNames": ["@utwente/dotron-app"],
+            "rebaseWhen": "conflicted",
+            "stabilityDays": 0
         }
     ]
 }

@@ -1051,11 +1051,6 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@rohuru/dotron-app@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@rohuru/dotron-app/-/dotron-app-2.0.4.tgz#42af7ad161b7a22d6e8ab1d048cc250c655ce3f5"
-  integrity sha512-2xb4IpK4oeGhdfN0MjrtbtBS35I/sIQYkM2zeRwPYkcUYvauINudqQZ90KWDsommlN8FyyvwA3+Gbq9wZVUicQ==
-
 "@sentry/browser@6.18.2":
   version "6.18.2"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-6.18.2.tgz#f980add635c242420a7f0c4dd3ed5668f1f39513"
@@ -1494,6 +1489,11 @@
     "@types/webpack-sources" "*"
     anymatch "^3.0.0"
     source-map "^0.6.0"
+
+"@utwente/dotron-app@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@utwente/dotron-app/-/dotron-app-1.0.0.tgz#5beca154aa566ce359632986336734f2862becf0"
+  integrity sha512-Lqs9IMztN4qe8jAngLmqP13yvhKpdpoKbUP1C7yTwZzvpWA912KChWU7gyGFPX8YQn6oI4nhy7/DRo7+HJpYnQ==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
