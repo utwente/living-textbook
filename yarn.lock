@@ -1490,10 +1490,10 @@
     anymatch "^3.0.0"
     source-map "^0.6.0"
 
-"@utwente/dotron-app@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@utwente/dotron-app/-/dotron-app-1.0.0.tgz#5beca154aa566ce359632986336734f2862becf0"
-  integrity sha512-Lqs9IMztN4qe8jAngLmqP13yvhKpdpoKbUP1C7yTwZzvpWA912KChWU7gyGFPX8YQn6oI4nhy7/DRo7+HJpYnQ==
+"@utwente/dotron-app@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@utwente/dotron-app/-/dotron-app-1.0.1.tgz#62ae51f8318b39a9b4256b9ca56257c4656d9a5d"
+  integrity sha512-4LEJd1sTpSM8DcTOLlCZYohX249C40tyOnq3jpKr8EdvjUv9eAT3/r+TdsFYWhOGZyA/5iVWJjeeRMtjXrkcVQ==
 
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"

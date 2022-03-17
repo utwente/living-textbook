@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@sentry/browser": "6.18.2",
-    "@utwente/dotron-app": "1.0.0",
+    "@utwente/dotron-app": "1.0.1",
     "bootstrap": "4.6.1",
     "bootstrap-3-typeahead": "4.0.2",
     "bootstrap4-toggle": "3.6.1",
