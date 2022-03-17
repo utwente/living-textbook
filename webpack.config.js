@@ -64,7 +64,7 @@ Encore
       {from: './vendor/studio-42/elfinder/js', to: 'els/js/[path][name].[ext]'},
       {from: './vendor/studio-42/elfinder/sounds', to: 'els/sounds/[path][name].[ext]'},
       {
-        from: './node_modules/@rohuru/dotron-app/lib/',
+        from: './node_modules/@utwente/dotron-app/lib/',
         to: 'dotron/[name].[hash:8].[ext]'
       }
     ])
