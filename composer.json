@@ -23,7 +23,7 @@
         "doctrine/event-manager": "1.1.1",
         "doctrine/migrations": "3.4.1",
         "doctrine/orm": "2.11.2",
-        "doctrine/persistence": "2.3.0",
+        "doctrine/persistence": "2.4.0",
         "drenso/symfony-oidc-bundle": "1.12.0",
         "drenso/symfony-shared": "1.28.1",
         "easyrdf/easyrdf": "1.1.1",
