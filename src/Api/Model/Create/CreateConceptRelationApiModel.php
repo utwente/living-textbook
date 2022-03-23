@@ -5,7 +5,7 @@ namespace App\Api\Model\Create;
 use OpenApi\Attributes\Schema;
 
 #[Schema(required: ['sourceId', 'targetId', 'relationTypeId'])]
-class CreateConceptRelation
+class CreateConceptRelationApiModel
 {
   protected function __construct(
       protected readonly int $sourceId,

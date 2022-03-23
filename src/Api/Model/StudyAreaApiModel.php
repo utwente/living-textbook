@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
 
-class StudyArea
+class StudyAreaApiModel
 {
   protected function __construct(
       protected readonly int $id,

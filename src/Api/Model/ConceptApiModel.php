@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation\Type;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
-class Concept
+class ConceptApiModel
 {
   protected function __construct(
       protected readonly int $id,
@@ -20,7 +20,7 @@ class Concept
       protected readonly string $synonyms,
       #[OA\Property(description: 'Tag id list', type: 'array', items: new OA\Items(type: 'number'))]
       protected readonly array $tags,
-      #[OA\Property(type: 'array', items: new OA\Items(new Model(type: ConceptRelation::class)))]
+      #[OA\Property(type: 'array', items: new OA\Items(new Model(type: ConceptRelationApiModel::class)))]
       protected readonly array $outgoingRelations,
       #[OA\Property(description: 'Specific Dotron configuration for a concept, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Type('array')]
@@ -38,7 +38,7 @@ class Concept
         $concept->getSynonyms(),
         $concept->getTags()->map(fn (Tag $tag) => $tag->getId())->getValues(),
         $concept->getOutgoingRelations()
-            ->map(fn (\App\Entity\ConceptRelation $conceptRelation) => ConceptRelation::fromEntity($conceptRelation))
+            ->map(fn (\App\Entity\ConceptRelation $conceptRelation) => ConceptRelationApiModel::fromEntity($conceptRelation))
             ->getValues(),
         $concept->getDotronConfig()
     );

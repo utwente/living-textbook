@@ -4,7 +4,7 @@ namespace App\Api\Model;
 
 use JMS\Serializer\Annotation\Groups;
 
-class Tag
+class TagApiModel
 {
   protected function __construct(
       protected readonly int $id,

@@ -2,7 +2,7 @@
 
 namespace App\Api\Model;
 
-class ConceptRelation
+class ConceptRelationApiModel
 {
   protected function __construct(
       protected readonly int $id,

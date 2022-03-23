@@ -2,7 +2,7 @@
 
 namespace App\Api\Controller;
 
-use App\Api\Model\StudyArea;
+use App\Api\Model\StudyAreaApiModel;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -19,13 +19,13 @@ class StudyAreaController extends AbstractApiController
    * @IsGranted("ROLE_USER")
    */
   #[OA\Response(response: 200, description: 'The list of study areas available for the current token', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: StudyArea::class))),
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: StudyAreaApiModel::class))),
   ])]
   public function list(StudyAreaRepository $studyAreaRepository): JsonResponse
   {
     return $this->createDataResponse(
         array_map(
-            [StudyArea::class, 'fromEntity'],
+            [StudyAreaApiModel::class, 'fromEntity'],
             $studyAreaRepository
                 ->getVisibleQueryBuilder($this->getUser())
                 ->andWhere('sa.apiEnabled = TRUE')
@@ -41,12 +41,12 @@ class StudyAreaController extends AbstractApiController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'The study area information', content: [
-      new Model(type: StudyArea::class),
+      new Model(type: StudyAreaApiModel::class),
   ])]
   public function single(RequestStudyArea $requestStudyArea): JsonResponse
   {
     return $this->createDataResponse(
-        StudyArea::fromEntity($requestStudyArea->getStudyArea()),
+        StudyAreaApiModel::fromEntity($requestStudyArea->getStudyArea()),
         serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }

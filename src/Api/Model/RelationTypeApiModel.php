@@ -5,7 +5,7 @@ namespace App\Api\Model;
 use JMS\Serializer\Annotation\Groups;
 use OpenApi\Attributes as OA;
 
-class RelationType
+class RelationTypeApiModel
 {
   protected function __construct(
       protected readonly int $id,

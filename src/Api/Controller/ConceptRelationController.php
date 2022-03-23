@@ -2,8 +2,8 @@
 
 namespace App\Api\Controller;
 
-use App\Api\Model\Create\CreateConceptRelation;
-use App\Api\Model\Detailed\DetailedConceptRelation;
+use App\Api\Model\Create\CreateConceptRelationApiModel;
+use App\Api\Model\Detailed\DetailedConceptRelationApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\EntityHandler\ConceptEntityHandler;
 use App\Repository\ConceptRelationRepository;
@@ -29,7 +29,7 @@ class ConceptRelationController extends AbstractApiController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area concept relations', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelation::class))),
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
   ])]
   public function list(
       RequestStudyArea $requestStudyArea,
@@ -37,7 +37,7 @@ class ConceptRelationController extends AbstractApiController
   {
     return $this->createDataResponse(
         array_map(
-            [DetailedConceptRelation::class, 'fromEntity'],
+            [DetailedConceptRelationApiModel::class, 'fromEntity'],
             $conceptRelationRepository->getByStudyArea($requestStudyArea->getStudyArea())
         ),
         serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
@@ -56,7 +56,7 @@ class ConceptRelationController extends AbstractApiController
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource() ?? $conceptRelation->getTarget());
 
     return $this->createDataResponse(
-        DetailedConceptRelation::fromEntity($conceptRelation),
+        DetailedConceptRelationApiModel::fromEntity($conceptRelation),
         serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
@@ -67,8 +67,8 @@ class ConceptRelationController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(description: 'The new concept relation', required: true, content: [new Model(type: CreateConceptRelation::class)])]
-  #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelation::class)])]
+  #[OA\RequestBody(description: 'The new concept relation', required: true, content: [new Model(type: CreateConceptRelationApiModel::class)])]
+  #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
@@ -77,7 +77,7 @@ class ConceptRelationController extends AbstractApiController
       RelationTypeRepository $relationTypeRepository): JsonResponse
   {
     $studyArea       = $requestStudyArea->getStudyArea();
-    $requestRelation = $this->getTypedFromBody($request, CreateConceptRelation::class);
+    $requestRelation = $this->getTypedFromBody($request, CreateConceptRelationApiModel::class);
 
     if (!$requestRelation->isValid()) {
       return $this->createBadRequestResponse(new ValidationFailedData('incomplete-object', []));
@@ -106,7 +106,7 @@ class ConceptRelationController extends AbstractApiController
 
     $this->em->flush();
 
-    return $this->createDataResponse(DetailedConceptRelation::fromEntity($relation));
+    return $this->createDataResponse(DetailedConceptRelationApiModel::fromEntity($relation));
   }
 
   /**

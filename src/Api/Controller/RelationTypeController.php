@@ -2,7 +2,7 @@
 
 namespace App\Api\Controller;
 
-use App\Api\Model\RelationType;
+use App\Api\Model\RelationTypeApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\EntityHandler\RelationTypeHandler;
 use App\Repository\RelationTypeRepository;
@@ -26,12 +26,12 @@ class RelationTypeController extends AbstractApiController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area relation types', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: RelationType::class))),
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: RelationTypeApiModel::class))),
   ])]
   public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $relationTypeRepository): JsonResponse
   {
     return $this->createDataResponse(array_map(
-        [RelationType::class, 'fromEntity'],
+        [RelationTypeApiModel::class, 'fromEntity'],
         $relationTypeRepository->findForStudyArea($requestStudyArea->getStudyArea())
     ));
   }
@@ -43,13 +43,13 @@ class RelationTypeController extends AbstractApiController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'A single study area relation type', content: [
-      new Model(type: RelationType::class),
+      new Model(type: RelationTypeApiModel::class),
   ])]
   public function single(RequestStudyArea $requestStudyArea, \App\Entity\RelationType $relationType): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
 
-    return $this->createDataResponse(RelationType::fromEntity($relationType));
+    return $this->createDataResponse(RelationTypeApiModel::fromEntity($relationType));
   }
 
   /**
@@ -58,20 +58,20 @@ class RelationTypeController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(description: 'The new relation type', required: true, content: [new Model(type: RelationType::class, groups: ['mutate'])])]
-  #[OA\Response(response: 200, description: 'The new relation type', content: [new Model(type: RelationType::class)])]
+  #[OA\RequestBody(description: 'The new relation type', required: true, content: [new Model(type: RelationTypeApiModel::class, groups: ['mutate'])])]
+  #[OA\Response(response: 200, description: 'The new relation type', content: [new Model(type: RelationTypeApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
       Request $request): JsonResponse
   {
-    $relationType = $this->getTypedFromBody($request, RelationType::class)
+    $relationType = $this->getTypedFromBody($request, RelationTypeApiModel::class)
         ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
 
-    return $this->createDataResponse(RelationType::fromEntity($relationType));
+    return $this->createDataResponse(RelationTypeApiModel::fromEntity($relationType));
   }
 
   /**
@@ -80,8 +80,8 @@ class RelationTypeController extends AbstractApiController
    * @Route("/{relationType<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(description: 'The relation type properties to update', required: true, content: [new Model(type: RelationType::class, groups: ['mutate'])])]
-  #[OA\Response(response: 200, description: 'The updated relation type', content: [new Model(type: RelationType::class)])]
+  #[OA\RequestBody(description: 'The relation type properties to update', required: true, content: [new Model(type: RelationTypeApiModel::class, groups: ['mutate'])])]
+  #[OA\Response(response: 200, description: 'The updated relation type', content: [new Model(type: RelationTypeApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
 
   public function update(
@@ -95,12 +95,12 @@ class RelationTypeController extends AbstractApiController
       throw $this->createNotFoundException();
     }
 
-    $relationType = $this->getTypedFromBody($request, RelationType::class)
+    $relationType = $this->getTypedFromBody($request, RelationTypeApiModel::class)
         ->mapToEntity($relationType);
 
     $this->getHandler()->update($relationType);
 
-    return $this->createDataResponse(RelationType::fromEntity($relationType));
+    return $this->createDataResponse(RelationTypeApiModel::fromEntity($relationType));
   }
 
   /**

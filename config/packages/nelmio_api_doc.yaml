@@ -24,4 +24,10 @@ nelmio_api_doc:
   models:
     use_jms: true
     names:
-      - { alias: ConceptRelation.Detailed, type: App\Api\Model\Detailed\DetailedConceptRelation }
+      - { alias: ConceptRelation.Create, type: App\Api\Model\Create\CreateConceptRelationApiModel }
+      - { alias: ConceptRelation.Detailed, type: App\Api\Model\Detailed\DetailedConceptRelationApiModel }
+      - { alias: Concept, type: App\Api\Model\ConceptApiModel }
+      - { alias: ConceptRelation, type: App\Api\Model\ConceptRelationApiModel }
+      - { alias: RelationType, type: App\Api\Model\RelationTypeApiModel }
+      - { alias: StudyArea, type: App\Api\Model\StudyAreaApiModel }
+      - { alias: Tag, type: App\Api\Model\TagApiModel }

@@ -2,7 +2,7 @@
 
 namespace App\Api\Controller;
 
-use App\Api\Model\Tag;
+use App\Api\Model\TagApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\EntityHandler\TagHandler;
 use App\Repository\TagRepository;
@@ -26,14 +26,14 @@ class TagController extends AbstractApiController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area tags', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: Tag::class))),
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: TagApiModel::class))),
   ])]
   public function list(
       RequestStudyArea $requestStudyArea,
       TagRepository $tagRepository): JsonResponse
   {
     return $this->createDataResponse(array_map(
-        [Tag::class, 'fromEntity'],
+        [TagApiModel::class, 'fromEntity'],
         $tagRepository->findForStudyArea($requestStudyArea->getStudyArea())
     ));
   }
@@ -44,14 +44,14 @@ class TagController extends AbstractApiController
    * @Route("/{tag<\d+>}", methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
-  #[OA\Response(response: 200, description: 'All study area tags', content: [new Model(type: Tag::class)])]
+  #[OA\Response(response: 200, description: 'All study area tags', content: [new Model(type: TagApiModel::class)])]
   public function single(
       RequestStudyArea $requestStudyArea,
       \App\Entity\Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
-    return $this->createDataResponse(Tag::fromEntity($tag));
+    return $this->createDataResponse(TagApiModel::fromEntity($tag));
   }
 
   /**
@@ -60,20 +60,20 @@ class TagController extends AbstractApiController
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(description: 'The new tag', required: true, content: [new Model(type: Tag::class, groups: ['mutate'])])]
-  #[OA\Response(response: 200, description: 'The new tag', content: [new Model(type: Tag::class)])]
+  #[OA\RequestBody(description: 'The new tag', required: true, content: [new Model(type: TagApiModel::class, groups: ['mutate'])])]
+  #[OA\Response(response: 200, description: 'The new tag', content: [new Model(type: TagApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
       Request $request): JsonResponse
   {
-    $tag = $this->getTypedFromBody($request, Tag::class)
+    $tag = $this->getTypedFromBody($request, TagApiModel::class)
         ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($tag);
 
-    return $this->createDataResponse(Tag::fromEntity($tag));
+    return $this->createDataResponse(TagApiModel::fromEntity($tag));
   }
 
   /**
@@ -82,8 +82,8 @@ class TagController extends AbstractApiController
    * @Route("/{tag<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\RequestBody(description: 'The tag properties to update', required: true, content: [new Model(type: Tag::class, groups: ['mutate'])])]
-  #[OA\Response(response: 200, description: 'The updated tag', content: [new Model(type: Tag::class)])]
+  #[OA\RequestBody(description: 'The tag properties to update', required: true, content: [new Model(type: TagApiModel::class, groups: ['mutate'])])]
+  #[OA\Response(response: 200, description: 'The updated tag', content: [new Model(type: TagApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
       RequestStudyArea $requestStudyArea,
@@ -92,12 +92,12 @@ class TagController extends AbstractApiController
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
-    $tag = $this->getTypedFromBody($request, Tag::class)
+    $tag = $this->getTypedFromBody($request, TagApiModel::class)
         ->mapToEntity($tag);
 
     $this->getHandler()->update($tag);
 
-    return $this->createDataResponse(Tag::fromEntity($tag));
+    return $this->createDataResponse(TagApiModel::fromEntity($tag));
   }
 
   /**

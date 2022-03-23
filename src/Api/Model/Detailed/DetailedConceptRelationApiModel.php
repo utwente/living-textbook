@@ -2,12 +2,12 @@
 
 namespace App\Api\Model\Detailed;
 
-use App\Api\Model\ConceptRelation;
+use App\Api\Model\ConceptRelationApiModel;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
 
-class DetailedConceptRelation extends ConceptRelation
+class DetailedConceptRelationApiModel extends ConceptRelationApiModel
 {
   protected function __construct(
       int $id,
