@@ -1,5 +1,6 @@
 stages:
   - prepare
+  - cs-fix
   - lint
   - build
   - tests
@@ -89,6 +90,55 @@ install-js-dependencies:
     - docker
   except:
     - schedules
+
+# Code style fixer
+
+code-style-fixer:
+  stage: cs-fix
+  image: "drenso/php:${DRENSO_PHP_VERSION}"
+  needs:
+    - job: install-dependencies
+      artifacts: false
+  cache:
+    - key:
+        files:
+          - composer.lock
+        prefix: ${CI_PROJECT_PATH_SLUG}_composer
+      paths:
+        - vendor/
+      policy: pull
+    - key:
+        files:
+          - composer.lock
+        prefix: ${CI_PROJECT_PATH_SLUG}_code_style
+      paths:
+        - cs_tools/vendor/
+  script:
+    - composer install --working-dir cs_tools --no-interaction --no-progress
+    #- cs_tools/vendor/bin/rector --no-progress-bar --no-diffs --autoload-file=vendor/autoload.php
+    - cs_tools/vendor/bin/php-cs-fixer fix
+    - if [[ $(git status --porcelain | wc -l) -eq "0" ]]; then echo "All looks good 👍🏻"; exit 0; fi
+    - echo "Changes required 👎🏻"
+    - git config gc.auto 0 # Disable automatic GC
+    - git config user.name "CS Fixer" # Set commit use
+    - git config user.email "cs-fixer@drenso.nl"
+    - export CS_FIX_BRANCH="cs-fixer-${CI_PIPELINE_IID}-${RANDOM}" # Generate a branch name
+    - git checkout -b ${CS_FIX_BRANCH}
+    - git commit -a -m "Automated CS fixes" # Make the commit
+    - git remote set-url origin git@gitlab.utwente.nl:${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git # Setup remote
+    - mkdir -p ~/.ssh
+    - echo "${GITLAB_SSH_FINGERPRINT}" >> ~/.ssh/known_hosts
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "${CS_FIXER_KEY}")
+    - git push -u origin ${CS_FIX_BRANCH}:${CI_COMMIT_REF_NAME}
+  tags:
+    - docker
+  except:
+    - schedules
+    - master
+    - production
+    - tags
+    - /^renovate\/.*$/
 
 # Lint
 
