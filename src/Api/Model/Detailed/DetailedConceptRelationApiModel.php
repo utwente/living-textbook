@@ -3,6 +3,7 @@
 namespace App\Api\Model\Detailed;
 
 use App\Api\Model\ConceptRelationApiModel;
+use App\Entity\ConceptRelation;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
@@ -24,7 +25,7 @@ class DetailedConceptRelationApiModel extends ConceptRelationApiModel
     parent::__construct($id, $sourceId, $targetId);
   }
 
-  public static function fromEntity(\App\Entity\ConceptRelation $conceptRelation): self
+  public static function fromEntity(ConceptRelation $conceptRelation): self
   {
     return new self(
         $conceptRelation->getId(),

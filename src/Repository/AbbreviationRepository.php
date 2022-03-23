@@ -6,6 +6,7 @@ use App\Entity\Abbreviation;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class AbbreviationRepository extends ServiceEntityRepository
@@ -22,7 +23,7 @@ class AbbreviationRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
+  public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('a')
         ->where('a.studyArea = :studyArea')

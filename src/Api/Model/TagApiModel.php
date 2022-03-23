@@ -2,6 +2,7 @@
 
 namespace App\Api\Model;
 
+use App\Entity\Tag;
 use JMS\Serializer\Annotation\Groups;
 
 class TagApiModel
@@ -15,7 +16,7 @@ class TagApiModel
   ) {
   }
 
-  public static function fromEntity(\App\Entity\Tag $tag): self
+  public static function fromEntity(Tag $tag): self
   {
     return new self(
         $tag->getId(),
@@ -24,9 +25,9 @@ class TagApiModel
     );
   }
 
-  public function mapToEntity(?\App\Entity\Tag $tag): \App\Entity\Tag
+  public function mapToEntity(?Tag $tag): Tag
   {
-    return ($tag ?? new \App\Entity\Tag())
+    return ($tag ?? new Tag())
         ->setName($this->name ?? $tag?->getName() ?? '')
         ->setColor($this->color ?? $tag?->getColor() ?? '');
   }

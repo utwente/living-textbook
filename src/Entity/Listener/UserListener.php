@@ -7,6 +7,7 @@ use App\Entity\UserGroupEmail;
 use App\Repository\UserGroupEmailRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\ORMException;
 
 class UserListener
 {
@@ -16,7 +17,7 @@ class UserListener
    *
    * @ORM\PostPersist()
    *
-   * @throws \Doctrine\ORM\ORMException
+   * @throws ORMException
    */
   public function updateStudyAreaRights(User $user, LifecycleEventArgs $event)
   {

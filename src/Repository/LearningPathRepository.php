@@ -7,6 +7,8 @@ use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -26,7 +28,7 @@ class LearningPathRepository extends ServiceEntityRepository
   }
 
   /**
-   * @throws \Doctrine\ORM\NonUniqueResultException
+   * @throws NonUniqueResultException
    *
    * @return mixed
    */
@@ -63,7 +65,7 @@ class LearningPathRepository extends ServiceEntityRepository
   /**
    * Remove elements based on the concept.
    *
-   * @throws \Doctrine\ORM\ORMException
+   * @throws ORMException
    */
   public function removeElementBasedOnConcept(Concept $concept)
   {

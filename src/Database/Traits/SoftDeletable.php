@@ -2,12 +2,13 @@
 
 namespace App\Database\Traits;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeletable
 {
   /**
-   * @var \DateTime
+   * @var DateTime
    * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
    */
   protected $deletedAt;
@@ -23,7 +24,7 @@ trait SoftDeletable
    *
    * @return $this
    */
-  public function setDeletedAt(\DateTime $deletedAt = null)
+  public function setDeletedAt(DateTime $deletedAt = null)
   {
     $this->deletedAt = $deletedAt;
 
@@ -33,7 +34,7 @@ trait SoftDeletable
   /**
    * Returns deletedAt.
    *
-   * @return \DateTime
+   * @return DateTime
    */
   public function getDeletedAt()
   {

@@ -6,6 +6,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class LearningOutcomeRepository extends ServiceEntityRepository
@@ -30,7 +31,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
+  public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('lo')
         ->where('lo.studyArea = :studyArea')

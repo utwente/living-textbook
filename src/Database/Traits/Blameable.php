@@ -2,13 +2,14 @@
 
 namespace App\Database\Traits;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 trait Blameable
 {
   /**
-   * @var \DateTime
+   * @var DateTime
    *
    * @Gedmo\Timestampable(on="create")
    * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -24,7 +25,7 @@ trait Blameable
   private $createdBy;
 
   /**
-   * @var \DateTime
+   * @var DateTime
    *
    * @Gedmo\Timestampable(on="update")
    * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -54,7 +55,7 @@ trait Blameable
   /**
    * Set createdAt.
    *
-   * @param \DateTime $createdAt
+   * @param DateTime $createdAt
    *
    * @return $this
    */
@@ -68,7 +69,7 @@ trait Blameable
   /**
    * Get createdAt.
    *
-   * @return \DateTime
+   * @return DateTime
    */
   public function getCreatedAt()
   {
@@ -102,7 +103,7 @@ trait Blameable
   /**
    * Set updatedAt.
    *
-   * @param \DateTime $updatedAt
+   * @param DateTime $updatedAt
    *
    * @return $this
    */
@@ -116,7 +117,7 @@ trait Blameable
   /**
    * Get updatedAt.
    *
-   * @return \DateTime
+   * @return DateTime
    */
   public function getUpdatedAt()
   {

@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
@@ -44,7 +45,7 @@ class UserProvider implements OidcUserProviderInterface
     }
 
     // Update last used
-    $user->setLastUsed(new \DateTime());
+    $user->setLastUsed(new DateTime());
     $this->em->flush();
 
     return $user;

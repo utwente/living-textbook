@@ -3,6 +3,7 @@
 namespace App\Security\Http\Authentication;
 
 use App\Router\LtbRouter;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -43,7 +44,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     // Determine whether to wrap this url or not
     try {
       $matchedRoute = $this->router->match($targetPath);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       // On exception, use the original forward
       return $this->httpUtils->createRedirectResponse($request, $targetUrl);
     }

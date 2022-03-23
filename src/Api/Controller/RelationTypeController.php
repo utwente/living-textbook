@@ -4,6 +4,7 @@ namespace App\Api\Controller;
 
 use App\Api\Model\RelationTypeApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
+use App\Entity\RelationType;
 use App\EntityHandler\RelationTypeHandler;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -45,7 +46,7 @@ class RelationTypeController extends AbstractApiController
   #[OA\Response(response: 200, description: 'A single study area relation type', content: [
       new Model(type: RelationTypeApiModel::class),
   ])]
-  public function single(RequestStudyArea $requestStudyArea, \App\Entity\RelationType $relationType): JsonResponse
+  public function single(RequestStudyArea $requestStudyArea, RelationType $relationType): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
 
@@ -86,7 +87,7 @@ class RelationTypeController extends AbstractApiController
 
   public function update(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\RelationType $relationType,
+      RelationType $relationType,
       Request $request
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
@@ -112,7 +113,7 @@ class RelationTypeController extends AbstractApiController
   #[OA\Response(response: 202, description: 'The relation type has been deleted')]
   public function delete(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\RelationType $relationType): JsonResponse
+      RelationType $relationType): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
 

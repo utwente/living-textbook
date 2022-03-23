@@ -20,7 +20,9 @@ use App\Repository\TrackingEventRepository;
 use App\Repository\UserGroupRepository;
 use App\Repository\UserRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -273,7 +275,7 @@ class StudyAreaController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
    *
-   * @throws \Exception
+   * @throws Exception
    *
    * @return array|Response
    */
@@ -287,7 +289,7 @@ class StudyAreaController extends AbstractController
     $form->handleRequest($request);
 
     if (RemoveType::isRemoveClicked($form)) {
-      $studyArea->setFrozenOn(new \DateTime());
+      $studyArea->setFrozenOn(new DateTime());
       $em->flush();
 
       $this->addFlash('success', $translator->trans('study-area.freeze-succeeded', ['%item%' => $studyArea->getName()]));

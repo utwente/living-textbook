@@ -4,10 +4,14 @@ namespace App;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Drenso\OidcBundle\Security\Factory\OidcFactory;
+use Exception;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
+use Symfony\Component\Config\Exception\FileLoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
@@ -35,7 +39,7 @@ class Kernel extends BaseKernel
     return $this->getProjectDir() . '/var/log';
   }
 
-  /** @return \Generator|\Symfony\Component\HttpKernel\Bundle\BundleInterface[] */
+  /** @return Generator|BundleInterface[] */
   public function registerBundles()
   {
     /** @noinspection PhpIncludeInspection */
@@ -47,7 +51,7 @@ class Kernel extends BaseKernel
     }
   }
 
-  /** @throws \Exception */
+  /** @throws Exception */
   protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
   {
     $container->setParameter('container.autowiring.strict_mode', true);
@@ -61,7 +65,7 @@ class Kernel extends BaseKernel
     $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
   }
 
-  /** @throws \Symfony\Component\Config\Exception\FileLoaderLoadException */
+  /** @throws FileLoaderLoadException */
   protected function configureRoutes(RouteCollectionBuilder $routes)
   {
     $confDir = $this->getProjectDir() . '/config';

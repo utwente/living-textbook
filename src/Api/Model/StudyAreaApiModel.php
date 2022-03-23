@@ -2,6 +2,7 @@
 
 namespace App\Api\Model;
 
+use App\Entity\StudyArea;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
@@ -25,7 +26,7 @@ class StudyAreaApiModel
   ) {
   }
 
-  public static function fromEntity(\App\Entity\StudyArea $studyArea): self
+  public static function fromEntity(StudyArea $studyArea): self
   {
     return new self(
         $studyArea->getId(),

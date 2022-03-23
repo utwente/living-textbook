@@ -2,6 +2,8 @@
 
 namespace App\Api\Model;
 
+use App\Entity\ConceptRelation;
+
 class ConceptRelationApiModel
 {
   protected function __construct(
@@ -11,7 +13,7 @@ class ConceptRelationApiModel
   ) {
   }
 
-  public static function fromEntity(\App\Entity\ConceptRelation $conceptRelation): self
+  public static function fromEntity(ConceptRelation $conceptRelation): self
   {
     return new self(
         $conceptRelation->getId(),

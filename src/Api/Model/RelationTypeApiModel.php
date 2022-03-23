@@ -2,6 +2,7 @@
 
 namespace App\Api\Model;
 
+use App\Entity\RelationType;
 use JMS\Serializer\Annotation\Groups;
 use OpenApi\Attributes as OA;
 
@@ -17,7 +18,7 @@ class RelationTypeApiModel
   ) {
   }
 
-  public static function fromEntity(\App\Entity\RelationType $relationType): self
+  public static function fromEntity(RelationType $relationType): self
   {
     return new self(
         $relationType->getId(),
@@ -26,9 +27,9 @@ class RelationTypeApiModel
     );
   }
 
-  public function mapToEntity(?\App\Entity\RelationType $relationType): \App\Entity\RelationType
+  public function mapToEntity(?RelationType $relationType): RelationType
   {
-    return ($relationType ?? new \App\Entity\RelationType())
+    return ($relationType ?? new RelationType())
         ->setName($this->name ?? $relationType?->getName() ?? '')
         ->setDescription($this->description ?? $relationType?->getDescription() ?? null);
   }

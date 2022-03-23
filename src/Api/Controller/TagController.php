@@ -4,6 +4,7 @@ namespace App\Api\Controller;
 
 use App\Api\Model\TagApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
+use App\Entity\Tag;
 use App\EntityHandler\TagHandler;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
@@ -47,7 +48,7 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 200, description: 'All study area tags', content: [new Model(type: TagApiModel::class)])]
   public function single(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Tag $tag): JsonResponse
+      Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
@@ -87,7 +88,7 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Tag $tag,
+      Tag $tag,
       Request $request): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
@@ -109,7 +110,7 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 202, description: 'The tag has been deleted')]
   public function delete(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Tag $tag): JsonResponse
+      Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 

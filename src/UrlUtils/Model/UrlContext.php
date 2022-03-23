@@ -2,6 +2,8 @@
 
 namespace App\UrlUtils\Model;
 
+use InvalidArgumentException;
+
 class UrlContext
 {
   /** @var string Class name */
@@ -19,7 +21,7 @@ class UrlContext
   public function __construct(string $class, int $id = -1, string $path = '')
   {
     if ($class === null) {
-      throw new \InvalidArgumentException('Class cannot be null');
+      throw new InvalidArgumentException('Class cannot be null');
     }
 
     $this->class  = $class;

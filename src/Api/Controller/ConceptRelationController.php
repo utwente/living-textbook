@@ -5,6 +5,7 @@ namespace App\Api\Controller;
 use App\Api\Model\Create\CreateConceptRelationApiModel;
 use App\Api\Model\Detailed\DetailedConceptRelationApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
+use App\Entity\ConceptRelation;
 use App\EntityHandler\ConceptEntityHandler;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
@@ -51,7 +52,7 @@ class ConceptRelationController extends AbstractApiController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'Single study area concept relation')]
-  public function single(RequestStudyArea $requestStudyArea, \App\Entity\ConceptRelation $conceptRelation): JsonResponse
+  public function single(RequestStudyArea $requestStudyArea, ConceptRelation $conceptRelation): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource() ?? $conceptRelation->getTarget());
 
@@ -97,7 +98,7 @@ class ConceptRelationController extends AbstractApiController
     }
 
     // Create the new relation
-    $relation = (new \App\Entity\ConceptRelation())
+    $relation = (new ConceptRelation())
         ->setSource($source)
         ->setTarget($target)
         ->setRelationType($relationType);
@@ -116,7 +117,7 @@ class ConceptRelationController extends AbstractApiController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The concept relation has been deleted')]
-  public function delete(RequestStudyArea $requestStudyArea, \App\Entity\ConceptRelation $conceptRelation): JsonResponse
+  public function delete(RequestStudyArea $requestStudyArea, ConceptRelation $conceptRelation): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
 

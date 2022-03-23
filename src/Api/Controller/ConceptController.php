@@ -4,6 +4,8 @@ namespace App\Api\Controller;
 
 use App\Api\Model\ConceptApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
+use App\Entity\Concept;
+use App\Entity\Tag;
 use App\EntityHandler\ConceptEntityHandler;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
@@ -50,7 +52,7 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 200, description: 'A single study area concept', content: [
       new Model(type: ConceptApiModel::class),
   ])]
-  public function single(RequestStudyArea $requestStudyArea, \App\Entity\Concept $concept): JsonResponse
+  public function single(RequestStudyArea $requestStudyArea, Concept $concept): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
@@ -93,7 +95,7 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Concept $concept,
+      Concept $concept,
       Request $request
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -115,7 +117,7 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 202, description: 'The concept has been deleted')]
   public function delete(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Concept $concept,
+      Concept $concept,
       LearningPathRepository $learningPathRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -137,7 +139,7 @@ class ConceptController extends AbstractApiController
   public function addTag(
       Request $request,
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Concept $concept,
+      Concept $concept,
       TagRepository $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -166,7 +168,7 @@ class ConceptController extends AbstractApiController
   public function putTags(
       Request $request,
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Concept $concept,
+      Concept $concept,
       TagRepository $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -198,8 +200,8 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function deleteTag(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Concept $concept,
-      \App\Entity\Tag $tag): JsonResponse
+      Concept $concept,
+      Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     $this->assertStudyAreaObject($requestStudyArea, $tag);

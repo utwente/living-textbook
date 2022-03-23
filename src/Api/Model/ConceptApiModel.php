@@ -2,6 +2,8 @@
 
 namespace App\Api\Model;
 
+use App\Entity\Concept;
+use App\Entity\ConceptRelation;
 use App\Entity\Tag;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
@@ -29,7 +31,7 @@ class ConceptApiModel
   ) {
   }
 
-  public static function fromEntity(\App\Entity\Concept $concept): self
+  public static function fromEntity(Concept $concept): self
   {
     return new self(
         $concept->getId(),
@@ -38,15 +40,15 @@ class ConceptApiModel
         $concept->getSynonyms(),
         $concept->getTags()->map(fn (Tag $tag) => $tag->getId())->getValues(),
         $concept->getOutgoingRelations()
-            ->map(fn (\App\Entity\ConceptRelation $conceptRelation) => ConceptRelationApiModel::fromEntity($conceptRelation))
+            ->map(fn (ConceptRelation $conceptRelation) => ConceptRelationApiModel::fromEntity($conceptRelation))
             ->getValues(),
         $concept->getDotronConfig()
     );
   }
 
-  public function mapToEntity(?\App\Entity\Concept $concept): \App\Entity\Concept
+  public function mapToEntity(?Concept $concept): Concept
   {
-    return ($concept ?? new \App\Entity\Concept())
+    return ($concept ?? new Concept())
         ->setName($this->name ?? $concept?->getName() ?? '')
         ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
         ->setSynonyms($this->synonyms ?? $concept?->getSynonyms() ?? '')
