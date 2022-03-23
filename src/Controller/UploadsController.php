@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class UploadsController
+ * Class UploadsController.
  *
  * @author BobV
  *
@@ -28,17 +28,13 @@ class UploadsController extends AbstractController
    *                                          options={"no_login_wrap"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Request          $request
-   * @param RequestStudyArea $requestStudyArea
-   * @param string           $path
-   *
    * @return Response
    */
   public function load(Request $request, RequestStudyArea $requestStudyArea, string $path)
   {
     // Create path from request
     $requestedFile = sprintf('%s/public/uploads/studyarea/%s/%s',
-        $this->getParameter("kernel.project_dir"),
+        $this->getParameter('kernel.project_dir'),
         $requestStudyArea->getStudyArea()->getId(),
         $path);
 
@@ -49,27 +45,18 @@ class UploadsController extends AbstractController
    * @Route("/global/{path}", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request $request
-   * @param string  $path
-   *
    * @return Response
    */
   public function loadGlobal(Request $request, string $path)
   {
     // Create path from request
     $requestedFile = sprintf('%s/public/uploads/global/%s',
-        $this->getParameter("kernel.project_dir"),
+        $this->getParameter('kernel.project_dir'),
         $path);
 
     return $this->getFile($request, $requestedFile);
   }
 
-  /**
-   * @param Request $request
-   * @param string  $requestedFile
-   *
-   * @return BinaryFileResponse
-   */
   private function getFile(Request $request, string $requestedFile): BinaryFileResponse
   {
     // Check if path exists
@@ -80,7 +67,7 @@ class UploadsController extends AbstractController
 
     // Create base response
     $download = $request->query->has('download');
-    $response = $this->file($requestedFile, NULL, $download
+    $response = $this->file($requestedFile, null, $download
         ? ResponseHeaderBag::DISPOSITION_ATTACHMENT
         : ResponseHeaderBag::DISPOSITION_INLINE);
 

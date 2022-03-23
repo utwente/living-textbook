@@ -36,13 +36,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EditConceptType extends AbstractType
 {
-  /**
-   * @var NamingService
-   */
+  /** @var NamingService */
   private $namingService;
-  /**
-   * @var TranslatorInterface
-   */
+  /** @var TranslatorInterface */
   private $translator;
 
   public function __construct(TranslatorInterface $translator, NamingService $namingService)
@@ -63,7 +59,7 @@ class EditConceptType extends AbstractType
     /** @var Concept $concept */
     $concept   = $options['concept'];
     $studyArea = $concept->getStudyArea();
-    $editing   = $concept->getId() !== NULL;
+    $editing   = $concept->getId() !== null;
     $builder
         ->add('name', TextType::class, [
             'label'      => 'concept.name',
@@ -83,8 +79,8 @@ class EditConceptType extends AbstractType
             'query_builder' => function (TagRepository $tagRepository) use ($concept) {
               return $tagRepository->findForStudyAreaQb($concept->getStudyArea());
             },
-            'select2'       => true,
-            'disabled'      => in_array('tags', $disabledFields),
+            'select2'  => true,
+            'disabled' => in_array('tags', $disabledFields),
         ])
         ->add('tags_review', DisplayPendingChangeType::class, [
             'field'               => 'tags',
@@ -178,8 +174,8 @@ class EditConceptType extends AbstractType
             'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($studyArea) {
               return $externalResourceRepository->findForStudyAreaQb($studyArea);
             },
-            'select2'       => true,
-            'disabled'      => in_array('externalResources', $disabledFields),
+            'select2'  => true,
+            'disabled' => in_array('externalResources', $disabledFields),
         ])
         ->add('externalResources_review', DisplayPendingChangeType::class, [
             'field'               => 'externalResources',
@@ -195,8 +191,8 @@ class EditConceptType extends AbstractType
             'query_builder'      => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
               return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
             },
-            'select2'            => true,
-            'disabled'           => in_array('learningOutcomes', $disabledFields),
+            'select2'  => true,
+            'disabled' => in_array('learningOutcomes', $disabledFields),
         ])
         ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
             'field'               => 'learningOutcomes',
@@ -225,11 +221,11 @@ class EditConceptType extends AbstractType
 
               return $qb;
             },
-            'select2'            => true,
-            'attr'               => [
+            'select2' => true,
+            'attr'    => [
                 'data-ckeditor-selector' => 'concepts', // Register for ckeditor
             ],
-            'disabled'           => in_array('priorKnowledge', $disabledFields),
+            'disabled' => in_array('priorKnowledge', $disabledFields),
         ])
         ->add('priorKnowledge_review', DisplayPendingChangeType::class, [
             'field'               => 'priorKnowledge',
@@ -276,7 +272,7 @@ class EditConceptType extends AbstractType
           'disabled' => true,
           'mapped'   => false,
           'required' => false,
-          'data'     => $this->translator->trans('concept.no-relations-possible-' . ($otherConceptsAvailable ? "linktype" : "concept")),
+          'data'     => $this->translator->trans('concept.no-relations-possible-' . ($otherConceptsAvailable ? 'linktype' : 'concept')),
       ]);
     }
 
@@ -290,8 +286,8 @@ class EditConceptType extends AbstractType
             'query_builder' => function (ContributorRepository $contributorRepository) use ($concept) {
               return $contributorRepository->findForStudyAreaQb($concept->getStudyArea());
             },
-            'select2'       => true,
-            'disabled'      => in_array('contributors', $disabledFields),
+            'select2'  => true,
+            'disabled' => in_array('contributors', $disabledFields),
         ])
         ->add('contributors_review', DisplayPendingChangeType::class, [
             'field'               => 'contributors',
@@ -322,7 +318,7 @@ class EditConceptType extends AbstractType
                   ->setParameter('studyArea', $concept->getStudyArea())
                   ->orderBy('a.abbreviation');
             },
-            'attr'          => [
+            'attr' => [
                 'data-ckeditor-selector' => 'abbreviations', // Register for ckeditor
             ],
         ]);
@@ -335,8 +331,8 @@ class EditConceptType extends AbstractType
         'data_class'           => Concept::class,
         'pending_change_info'  => new PendingChangeObjectInfo(),
         'enable_save_and_list' => true,
-        'cancel_route'         => NULL,
-        'cancel_route_params'  => NULL,
+        'cancel_route'         => null,
+        'cancel_route_params'  => null,
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);

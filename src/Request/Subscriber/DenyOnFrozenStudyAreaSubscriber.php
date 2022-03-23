@@ -17,7 +17,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 {
-
   /** @var ArgumentNameConverter */
   private $argumentNameConverter;
 
@@ -27,13 +26,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
   /** @var RouterInterface */
   private $router;
 
-  /**
-   * FreezeSubscriber constructor.
-   *
-   * @param ArgumentNameConverter $argumentNameConverter
-   * @param TranslatorInterface   $translator
-   * @param RouterInterface       $router
-   */
+  /** FreezeSubscriber constructor. */
   public function __construct(ArgumentNameConverter $argumentNameConverter, TranslatorInterface $translator, RouterInterface $router)
   {
     $this->argumentNameConverter = $argumentNameConverter;
@@ -41,9 +34,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     $this->router                = $router;
   }
 
-  /**
-   * @return array
-   */
+  /** @return array */
   public static function getSubscribedEvents()
   {
     return [
@@ -54,11 +45,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     ];
   }
 
-  /**
-   * Check if a study area is frozen, and if so, prevent editing
-   *
-   * @param ControllerArgumentsEvent $event
-   */
+  /** Check if a study area is frozen, and if so, prevent editing. */
   public function checkFrozenStudyArea(ControllerArgumentsEvent $event)
   {
     $request = $event->getRequest();
@@ -81,13 +68,13 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     }
 
     // An study area is required
-    if ($studyArea === NULL || !$studyArea instanceof StudyArea) {
+    if ($studyArea === null || !$studyArea instanceof StudyArea) {
       throw new InvalidArgumentException(sprintf('Subject "%s" does not contain the expected study area, but a "%s"',
-          $configuration->getSubject(), $studyArea === NULL ? 'null' : get_class($studyArea)));
+          $configuration->getSubject(), $studyArea === null ? 'null' : get_class($studyArea)));
     }
 
     // Check for frozen
-    if ($studyArea->getFrozenOn() !== NULL) {
+    if ($studyArea->getFrozenOn() !== null) {
       // Verify forwarding url
       if ($arguments['_route'] === $configuration->getRoute()) {
         throw new \InvalidArgumentException(sprintf('Forwarding route is the same as the route triggering it ("%s")', $configuration->getRoute()));

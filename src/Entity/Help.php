@@ -7,7 +7,7 @@ use App\Database\Traits\IdTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Help
+ * Class Help.
  *
  * Each update will be saved as a new iteration of the help entity
  *
@@ -20,7 +20,7 @@ class Help
   use Blameable;
 
   /**
-   * The help content
+   * The help content.
    *
    * @var string
    *
@@ -28,24 +28,17 @@ class Help
    */
   private $content;
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getContent(): string
   {
     return $this->content;
   }
 
-  /**
-   * @param string $content
-   *
-   * @return Help
-   */
+  /** @return Help */
   public function setContent(string $content): self
   {
     $this->content = $content;
 
     return $this;
   }
-
 }

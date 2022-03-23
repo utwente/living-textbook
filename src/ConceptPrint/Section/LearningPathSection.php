@@ -17,15 +17,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LearningPathSection extends LtbSection
 {
-
   /**
    * LearningPathSection constructor.
-   *
-   * @param LearningPath        $learningPath
-   * @param LtbRouter           $router
-   * @param TranslatorInterface $translator
-   * @param NamingService       $namingService
-   * @param string              $projectDir
    *
    * @throws LatexException
    * @throws PandocException

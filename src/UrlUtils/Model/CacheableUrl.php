@@ -7,14 +7,11 @@ use Exception;
 
 class CacheableUrl extends AbstractUrl
 {
-
   /** @var DateTime */
   private $timestamp;
 
   /**
    * CacheableUrl constructor.
-   *
-   * @param string $url
    *
    * @throws Exception
    */
@@ -24,34 +21,21 @@ class CacheableUrl extends AbstractUrl
     parent::__construct($url);
   }
 
-  /**
-   * Timestamp when this URL was found, for checking purposes
-   *
-   * @return DateTime
-   */
+  /** Timestamp when this URL was found, for checking purposes. */
   public function getTimestamp(): DateTime
   {
     return $this->timestamp;
   }
 
-  /**
-   * Cache key for storing the object in a filesystem cache
-   *
-   * @return string
-   */
+  /** Cache key for storing the object in a filesystem cache. */
   public function getCachekey(): string
   {
     return md5($this->getUrl());
   }
 
-  /**
-   * @param Url $url
-   *
-   * @return CacheableUrl
-   */
+  /** @return CacheableUrl */
   public static function fromUrl(Url $url)
   {
     return new self($url->getUrl());
   }
-
 }

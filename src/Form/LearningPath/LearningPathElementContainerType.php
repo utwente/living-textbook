@@ -52,5 +52,4 @@ class LearningPathElementContainerType extends AbstractType
       return bin2hex(random_bytes(16));
     });
   }
-
 }

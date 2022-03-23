@@ -31,7 +31,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Concept
+ * Class Concept.
  *
  * @author BobV
  *
@@ -46,7 +46,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Concept implements SearchableInterface, ReviewableInterface
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
@@ -67,7 +66,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $name;
 
   /**
-   * Whether this concept should be seen as an instance
+   * Whether this concept should be seen as an instance.
    *
    * @var bool
    *
@@ -316,14 +315,10 @@ class Concept implements SearchableInterface, ReviewableInterface
    */
   private $studyArea;
 
-  /**
-   * @ORM\Column(type="array", nullable=true)
-   */
-  private ?array $dotronConfig = NULL;
+  /** @ORM\Column(type="array", nullable=true) */
+  private ?array $dotronConfig = null;
 
-  /**
-   * Concept constructor.
-   */
+  /** Concept constructor. */
   public function __construct()
   {
     $this->name              = '';
@@ -358,7 +353,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
-   * Check whether the relations have the correct owning data
+   * Check whether the relations have the correct owning data.
    *
    * @ORM\PreFlush()
    */
@@ -366,19 +361,19 @@ class Concept implements SearchableInterface, ReviewableInterface
   {
     // Check relations
     foreach ($this->getOutgoingRelations() as $relation) {
-      if ($relation->getSource() === NULL) {
+      if ($relation->getSource() === null) {
         $relation->setSource($this);
       }
     }
     foreach ($this->getIncomingRelations() as $indirectRelation) {
-      if ($indirectRelation->getTarget() === NULL) {
+      if ($indirectRelation->getTarget() === null) {
         $indirectRelation->setTarget($this);
       }
     }
   }
 
   /**
-   * This method wil order the concept relations on flush
+   * This method wil order the concept relations on flush.
    *
    * @ORM\PreFlush()
    * @noinspection PhpUnused
@@ -391,13 +386,7 @@ class Concept implements SearchableInterface, ReviewableInterface
     $this->doFixConceptRelationOrder($this->getIncomingRelations(), 'getSource', 'setIncomingPosition');
   }
 
-  /**
-   * @param Collection $values
-   * @param string     $conceptRetriever
-   * @param string     $positionSetter
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
   private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter)
   {
     $iterator = $values->getIterator();
@@ -420,8 +409,6 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
-   * @return int
-   *
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
    * @JMSA\Groups({"relations"})
@@ -443,9 +430,7 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this->getDefinition() == '' && !$this->getIntroduction()->hasData();
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function hasTextData()
   {
     return $this->getDefinition() != ''
@@ -456,9 +441,7 @@ class Concept implements SearchableInterface, ReviewableInterface
         || $this->theoryExplanation->hasData();
   }
 
-  /**
-   * @return array Array with DateTime and username
-   */
+  /** @return array Array with DateTime and username */
   public function getLastEditInfo()
   {
     $lastUpdated   = $this->getLastUpdated();
@@ -504,13 +487,7 @@ class Concept implements SearchableInterface, ReviewableInterface
     return [$lastUpdated, $lastUpdatedBy];
   }
 
-  /**
-   * Searches in the concept on the given search, returns an array with search result metadata
-   *
-   * @param string $search
-   *
-   * @return array
-   */
+  /** Searches in the concept on the given search, returns an array with search result metadata. */
   public function searchIn(string $search): array
   {
     // Create result array
@@ -551,10 +528,6 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    * @throws ORMException
@@ -582,7 +555,6 @@ class Concept implements SearchableInterface, ReviewableInterface
           $this->setSynonyms($changeObj->getSynonyms());
           break;
         case 'priorKnowledge':
-        {
           $this->getPriorKnowledge()->clear();
 
           foreach ($changeObj->getPriorKnowledge() as $newPriorKnowledge) {
@@ -591,9 +563,8 @@ class Concept implements SearchableInterface, ReviewableInterface
             $this->addPriorKnowledge($newPriorKnowledgeRef);
           }
           break;
-        }
+
         case 'learningOutcomes':
-        {
           $this->getLearningOutcomes()->clear();
 
           foreach ($changeObj->getLearningOutcomes() as $newLearningOutcome) {
@@ -602,7 +573,7 @@ class Concept implements SearchableInterface, ReviewableInterface
             $this->addLearningOutcome($newLearningOutcomeRef);
           }
           break;
-        }
+
         case 'theoryExplanation':
           $this->getTheoryExplanation()->setText($changeObj->getTheoryExplanation()->getText());
           break;
@@ -613,7 +584,6 @@ class Concept implements SearchableInterface, ReviewableInterface
           $this->getExamples()->setText($changeObj->getExamples()->getText());
           break;
         case 'externalResources':
-        {
           $this->getExternalResources()->clear();
 
           foreach ($changeObj->getExternalResources() as $newExternalResource) {
@@ -622,9 +592,8 @@ class Concept implements SearchableInterface, ReviewableInterface
             $this->addExternalResource($newExternalResourceRef);
           }
           break;
-        }
+
         case 'contributors':
-        {
           $this->getContributors()->clear();
 
           foreach ($changeObj->getContributors() as $newContributor) {
@@ -633,9 +602,8 @@ class Concept implements SearchableInterface, ReviewableInterface
             $this->addContributor($newContributorRef);
           }
           break;
-        }
+
         case 'tags':
-        {
           $this->getTags()->clear();
 
           foreach ($changeObj->getTags() as $newTag) {
@@ -644,12 +612,11 @@ class Concept implements SearchableInterface, ReviewableInterface
             $this->addTag($newTagRef);
           }
           break;
-        }
+
         case 'selfAssessment':
           $this->getSelfAssessment()->setText($changeObj->getSelfAssessment()->getText());
           break;
         case 'relations': // This would be outgoingRelations, but the serialized name is relations
-        {
           // This construct is required for Doctrine to work correctly. Why? No clue.
           $toRemove = [];
           foreach ($this->getOutgoingRelations() as $outgoingRelation) {
@@ -672,9 +639,8 @@ class Concept implements SearchableInterface, ReviewableInterface
           }
 
           break;
-        }
+
         case 'incomingRelations':
-        {
           // This construct is required for Doctrine to work correctly. Why? No clue.
           $toRemove = [];
           foreach ($this->getIncomingRelations() as $incomingRelation) {
@@ -697,7 +663,7 @@ class Concept implements SearchableInterface, ReviewableInterface
           }
 
           break;
-        }
+
         default:
           throw new IncompatibleFieldChangedException($this, $changedField);
       }
@@ -705,10 +671,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   }
 
   /**
-   * Fixes the relations for use
-   *
-   * @param ConceptRelation        $conceptRelation
-   * @param EntityManagerInterface $em
+   * Fixes the relations for use.
    *
    * @throws ORMException
    */
@@ -736,27 +699,19 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isInstance(): bool
   {
     return $this->instance;
   }
 
-  /**
-   * @param bool $instance
-   *
-   * @return Concept
-   */
+  /** @return Concept */
   public function setInstance(bool $instance): self
   {
     $this->instance = $instance;
@@ -764,11 +719,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return Concept
-   */
   public function setName(string $name): Concept
   {
     $this->name = $name;
@@ -776,19 +726,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getDefinition(): string
   {
     return $this->definition;
   }
 
-  /**
-   * @param string $definition
-   *
-   * @return Concept
-   */
   public function setDefinition(string $definition): Concept
   {
     $this->definition = $definition;
@@ -796,19 +739,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getSynonyms(): string
   {
     return $this->synonyms;
   }
 
-  /**
-   * @param string $synonyms
-   *
-   * @return Concept
-   */
   public function setSynonyms(string $synonyms): Concept
   {
     $this->synonyms = $synonyms;
@@ -821,19 +757,13 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this->getOutgoingRelations();
   }
 
-  /**
-   * @return ArrayCollection|ConceptRelation[]
-   */
+  /** @return ArrayCollection|ConceptRelation[] */
   public function getOutgoingRelations()
   {
     return $this->outgoingRelations;
   }
 
-  /**
-   * @param ConceptRelation $conceptRelation
-   *
-   * @return $this
-   */
+  /** @return $this */
   public function addOutgoingRelation(ConceptRelation $conceptRelation): Concept
   {
     // Check whether the source is set, otherwise set it as this
@@ -846,11 +776,7 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param ConceptRelation $conceptRelation
-   *
-   * @return $this
-   */
+  /** @return $this */
   public function removeOutgoingRelation(ConceptRelation $conceptRelation): Concept
   {
     $this->outgoingRelations->removeElement($conceptRelation);
@@ -858,20 +784,13 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return ArrayCollection|ConceptRelation[]
-   */
+  /** @return ArrayCollection|ConceptRelation[] */
   public function getIncomingRelations()
   {
     return $this->incomingRelations;
   }
 
-
-  /**
-   * @param ConceptRelation $conceptRelation
-   *
-   * @return $this
-   */
+  /** @return $this */
   public function addIncomingRelation(ConceptRelation $conceptRelation): Concept
   {
     // Check whether the source is set, otherwise set it as this
@@ -884,19 +803,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Concept
-   */
   public function setStudyArea(StudyArea $studyArea): Concept
   {
     $this->studyArea = $studyArea;
@@ -904,19 +816,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return DataIntroduction
-   */
+  /** @return DataIntroduction */
   public function getIntroduction(): DataIntroduction
   {
     return $this->introduction;
   }
 
-  /**
-   * @param DataIntroduction $introduction
-   *
-   * @return Concept
-   */
   public function setIntroduction(DataIntroduction $introduction): Concept
   {
     $this->introduction = $introduction;
@@ -924,19 +829,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return DataTheoryExplanation
-   */
+  /** @return DataTheoryExplanation */
   public function getTheoryExplanation(): DataTheoryExplanation
   {
     return $this->theoryExplanation;
   }
 
-  /**
-   * @param DataTheoryExplanation $theoryExplanation
-   *
-   * @return Concept
-   */
   public function setTheoryExplanation(DataTheoryExplanation $theoryExplanation): Concept
   {
     $this->theoryExplanation = $theoryExplanation;
@@ -944,19 +842,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return DataHowTo
-   */
+  /** @return DataHowTo */
   public function getHowTo(): DataHowTo
   {
     return $this->howTo;
   }
 
-  /**
-   * @param DataHowTo $howTo
-   *
-   * @return Concept
-   */
   public function setHowTo(DataHowTo $howTo): Concept
   {
     $this->howTo = $howTo;
@@ -964,19 +855,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return DataExamples
-   */
+  /** @return DataExamples */
   public function getExamples(): DataExamples
   {
     return $this->examples;
   }
 
-  /**
-   * @param DataExamples $examples
-   *
-   * @return Concept
-   */
   public function setExamples(DataExamples $examples): Concept
   {
     $this->examples = $examples;
@@ -984,19 +868,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return DataSelfAssessment
-   */
+  /** @return DataSelfAssessment */
   public function getSelfAssessment(): DataSelfAssessment
   {
     return $this->selfAssessment;
   }
 
-  /**
-   * @param DataSelfAssessment $selfAssessment
-   *
-   * @return Concept
-   */
   public function setSelfAssessment(DataSelfAssessment $selfAssessment): Concept
   {
     $this->selfAssessment = $selfAssessment;
@@ -1004,19 +881,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return ExternalResource[]|Collection
-   */
+  /** @return ExternalResource[]|Collection */
   public function getExternalResources()
   {
     return $this->externalResources;
   }
 
-  /**
-   * @param ExternalResource $externalResource
-   *
-   * @return Concept
-   */
   public function addExternalResource(ExternalResource $externalResource): Concept
   {
     $this->externalResources->add($externalResource);
@@ -1024,11 +894,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param ExternalResource $externalResource
-   *
-   * @return Concept
-   */
   public function removeExternalResource(ExternalResource $externalResource): Concept
   {
     $this->externalResources->removeElement($externalResource);
@@ -1036,19 +901,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return Contributor[]|Collection
-   */
+  /** @return Contributor[]|Collection */
   public function getContributors()
   {
     return $this->contributors;
   }
 
-  /**
-   * @param Contributor $contributor
-   *
-   * @return Concept
-   */
   public function addContributor(Contributor $contributor): Concept
   {
     $this->contributors->add($contributor);
@@ -1056,11 +914,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param Contributor $contributor
-   *
-   * @return Concept
-   */
   public function removeContributor(Contributor $contributor): Concept
   {
     $this->contributors->removeElement($contributor);
@@ -1068,19 +921,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getPriorKnowledge()
   {
     return $this->priorKnowledge;
   }
 
-  /**
-   * @param Concept $concept
-   *
-   * @return Concept
-   */
   public function addPriorKnowledge(Concept $concept): Concept
   {
     $this->priorKnowledge->add($concept);
@@ -1088,11 +934,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param Concept $concept
-   *
-   * @return Concept
-   */
   public function removePriorKnowledge(Concept $concept): Concept
   {
     $this->priorKnowledge->removeElement($concept);
@@ -1100,27 +941,18 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getPriorKnowledgeOf()
   {
     return $this->priorKnowledgeOf;
   }
 
-  /**
-   * @return LearningOutcome[]|Collection
-   */
+  /** @return LearningOutcome[]|Collection */
   public function getLearningOutcomes()
   {
     return $this->learningOutcomes;
   }
 
-  /**
-   * @param LearningOutcome $learningOutcome
-   *
-   * @return Concept
-   */
   public function addLearningOutcome(LearningOutcome $learningOutcome): Concept
   {
     $this->learningOutcomes->add($learningOutcome);
@@ -1128,11 +960,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param LearningOutcome $learningOutcome
-   *
-   * @return Concept
-   */
   public function removeLearningOutcome(LearningOutcome $learningOutcome): Concept
   {
     $this->learningOutcomes->removeElement($learningOutcome);
@@ -1140,19 +967,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return Tag[]|Collection
-   */
+  /** @return Tag[]|Collection */
   public function getTags()
   {
     return $this->tags;
   }
 
-  /**
-   * @param Tag $tag
-   *
-   * @return Concept
-   */
   public function addTag(Tag $tag): Concept
   {
     if (!$this->tags->contains($tag)) {
@@ -1162,11 +982,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param Tag $tag
-   *
-   * @return Concept
-   */
   public function removeTag(Tag $tag): Concept
   {
     $this->tags->removeElement($tag);

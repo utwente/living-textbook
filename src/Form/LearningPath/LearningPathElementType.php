@@ -23,13 +23,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class LearningPathElementType extends AbstractType
 {
-
   /** @var ConceptRepository */
   private $conceptRepository;
 
   /** @var LearningPathElementRepository */
   private $learningPathElementRepository;
-
 
   public function __construct(ConceptRepository $conceptRepository, LearningPathElementRepository $learningPathElementRepository)
   {
@@ -45,7 +43,7 @@ class LearningPathElementType extends AbstractType
             'constraints' => new Callback(function ($value, ExecutionContextInterface $context) use ($options) {
               // Verify whether the supplied id actually exists
               if (!$this->getConcept($value, $options['studyArea'])) {
-                $context->buildViolation("Error")
+                $context->buildViolation('Error')
                     ->addViolation();
               }
             }),
@@ -63,13 +61,13 @@ class LearningPathElementType extends AbstractType
 
     $builder->addModelTransformer(new CallbackTransformer(
         function (?LearningPathElement $modelData): array {
-          $concept = $modelData == NULL ? NULL : $modelData->getConcept();
+          $concept = $modelData == null ? null : $modelData->getConcept();
 
           return [
-              'id'          => $modelData == NULL ? NULL : $modelData->getId(),
-              'conceptId'   => $concept == NULL ? NULL : $concept->getId(),
-              'concept'     => $concept == NULL ? NULL : $concept->getName(),
-              'description' => $modelData == NULL ? NULL : $modelData->getDescription(),
+              'id'          => $modelData == null ? null : $modelData->getId(),
+              'conceptId'   => $concept == null ? null : $concept->getId(),
+              'concept'     => $concept == null ? null : $concept->getName(),
+              'description' => $modelData == null ? null : $modelData->getDescription(),
           ];
         },
         function (array $viewData) use ($options): ?LearningPathElement {
@@ -105,14 +103,13 @@ class LearningPathElementType extends AbstractType
 
   private function getConcept(?int $id, StudyArea $studyArea): ?Concept
   {
-    if ($id == NULL) {
-      return NULL;
+    if ($id == null) {
+      return null;
     }
 
     $concept = $this->conceptRepository->findOneBy(['id' => $id, 'studyArea' => $studyArea]);
-    assert($concept == NULL || $concept instanceof Concept);
+    assert($concept == null || $concept instanceof Concept);
 
     return $concept;
   }
-
 }

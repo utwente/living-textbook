@@ -13,15 +13,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptSection extends LtbSection
 {
-
   /**
    * Concept constructor.
-   *
-   * @param Concept             $concept
-   * @param LtbRouter           $router
-   * @param TranslatorInterface $translator
-   * @param NamingService       $namingService
-   * @param string              $projectDir
    *
    * @throws LatexException
    * @throws PandocException

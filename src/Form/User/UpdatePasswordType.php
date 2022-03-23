@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class UpdatePasswordType extends AbstractType
 {
-
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -22,5 +21,4 @@ class UpdatePasswordType extends AbstractType
             'cancel_route_params'  => [],
         ]);
   }
-
 }

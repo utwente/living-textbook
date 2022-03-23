@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class ExternalResourceController
+ * Class ExternalResourceController.
  *
  * @author BobV
  *
@@ -27,17 +27,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ExternalResourceController extends AbstractController
 {
-
   /**
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -75,12 +69,6 @@ class ExternalResourceController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ExternalResource    $externalResource
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -136,9 +124,6 @@ class ExternalResourceController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea           $requestStudyArea
-   * @param ExternalResourceRepository $repo
-   *
    * @return array
    */
   public function list(RequestStudyArea $requestStudyArea, ExternalResourceRepository $repo)
@@ -154,12 +139,6 @@ class ExternalResourceController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ExternalResource    $externalResource
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -183,7 +162,7 @@ class ExternalResourceController extends AbstractController
       return $this->redirectToRoute('app_externalresource_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_externalresource_list',
     ]);
     $form->handleRequest($request);
@@ -202,5 +181,4 @@ class ExternalResourceController extends AbstractController
         'form'             => $form->createView(),
     ];
   }
-
 }

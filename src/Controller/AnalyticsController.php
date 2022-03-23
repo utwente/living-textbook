@@ -22,21 +22,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class AnalyticsController
+ * Class AnalyticsController.
  *
  * @Route("/{_studyArea}/analytics", requirements={"_studyArea"="\d+"})
  */
 class AnalyticsController extends AbstractController
 {
-
   /**
-   * The analytics dashboard
+   * The analytics dashboard.
    *
    * @Route("/")
    * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
    * @Template()
-   *
-   * @param RequestStudyArea $requestStudyArea
    *
    * @return array
    */
@@ -52,17 +49,10 @@ class AnalyticsController extends AbstractController
   }
 
   /**
-   * Generate the analytics
+   * Generate the analytics.
    *
    * @Route("/generate", methods={"POST"}, options={"expose"=true})
    * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param AnalyticsService    $analyticsService
-   * @param SerializerInterface $serializer
-   *
-   * @return JsonResponse
    *
    * @throws VisualisationBuildFailed
    * @throws VisualisationDependenciesFailed

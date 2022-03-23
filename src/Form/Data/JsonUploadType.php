@@ -20,7 +20,8 @@ class JsonUploadType extends AbstractType
                 new NotNull(),
                 new File([
                     'mimeTypes' => ['application/json', 'text/plain'],
-                ])],
+                ]),
+            ],
         ])
         ->add('submit', SubmitType::class);
   }

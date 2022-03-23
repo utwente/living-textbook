@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class PageRequest
+ * Class PageRequest.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\PageLoadRepository")
@@ -95,19 +95,12 @@ class PageLoad implements StudyAreaFilteredInterface
    */
   private $originContext;
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getUserId(): string
   {
     return $this->userId;
   }
 
-  /**
-   * @param string $userId
-   *
-   * @return PageLoad
-   */
   public function setUserId(string $userId): PageLoad
   {
     $this->userId = $userId;
@@ -115,19 +108,12 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return DateTime
-   */
+  /** @return DateTime */
   public function getTimestamp(): DateTime
   {
     return $this->timestamp;
   }
 
-  /**
-   * @param DateTime $timestamp
-   *
-   * @return PageLoad
-   */
   public function setTimestamp(DateTime $timestamp): PageLoad
   {
     $this->timestamp = $timestamp;
@@ -135,19 +121,12 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getSessionId(): string
   {
     return $this->sessionId;
   }
 
-  /**
-   * @param string $sessionId
-   *
-   * @return PageLoad
-   */
   public function setSessionId(string $sessionId): PageLoad
   {
     $this->sessionId = $sessionId;
@@ -155,19 +134,12 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return StudyArea
-   */
+  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return PageLoad
-   */
   public function setStudyArea(StudyArea $studyArea): PageLoad
   {
     $this->studyArea = $studyArea;
@@ -175,19 +147,12 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getPath(): string
   {
     return $this->path;
   }
 
-  /**
-   * @param string $path
-   *
-   * @return PageLoad
-   */
   public function setPath(string $path): PageLoad
   {
     $this->path = $path;
@@ -195,19 +160,12 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return array|null
-   */
+  /** @return array|null */
   public function getPathContext(): ?array
   {
     return $this->pathContext;
   }
 
-  /**
-   * @param array|null $pathContext
-   *
-   * @return PageLoad
-   */
   public function setPathContext(?array $pathContext): PageLoad
   {
     $this->pathContext = $pathContext;
@@ -215,19 +173,12 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getOrigin(): ?string
   {
     return $this->origin;
   }
 
-  /**
-   * @param string|null $origin
-   *
-   * @return PageLoad
-   */
   public function setOrigin(?string $origin): PageLoad
   {
     $this->origin = $origin;
@@ -235,24 +186,16 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return array|null
-   */
+  /** @return array|null */
   public function getOriginContext(): ?array
   {
     return $this->originContext;
   }
 
-  /**
-   * @param array|null $originContext
-   *
-   * @return PageLoad
-   */
   public function setOriginContext(?array $originContext): PageLoad
   {
     $this->originContext = $originContext;
 
     return $this;
   }
-
 }

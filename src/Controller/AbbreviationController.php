@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class AbbreviationController
+ * Class AbbreviationController.
  *
  * @author BobV
  *
@@ -29,17 +29,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AbbreviationController extends AbstractController
 {
-
   /**
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -76,11 +70,6 @@ class AbbreviationController extends AbstractController
    * @Route("/data", options={"expose"="true"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param AbbreviationRepository $abbreviationRepo
-   * @param SerializerInterface    $serializer
-   *
    * @return JsonResponse
    */
   public function data(Request $request, RequestStudyArea $requestStudyArea, AbbreviationRepository $abbreviationRepo, SerializerInterface $serializer)
@@ -102,12 +91,6 @@ class AbbreviationController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param Abbreviation        $abbreviation
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -163,9 +146,6 @@ class AbbreviationController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea       $requestStudyArea
-   * @param AbbreviationRepository $repo
-   *
    * @return array
    */
   public function list(RequestStudyArea $requestStudyArea, AbbreviationRepository $repo)
@@ -181,12 +161,6 @@ class AbbreviationController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param Abbreviation        $abbreviation
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -210,7 +184,7 @@ class AbbreviationController extends AbstractController
       return $this->redirectToRoute('app_abbreviation_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_abbreviation_list',
     ]);
     $form->handleRequest($request);
@@ -228,5 +202,4 @@ class AbbreviationController extends AbstractController
         'form'         => $form->createView(),
     ];
   }
-
 }

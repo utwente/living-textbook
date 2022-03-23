@@ -13,7 +13,6 @@ class IncompatibleChangeException extends Exception
    * IncompatibleChangeException constructor.
    *
    * @param ReviewableTrait|ReviewableInterface $reviewable
-   * @param PendingChange                       $pendingChange
    */
   public function __construct($reviewable, PendingChange $pendingChange)
   {

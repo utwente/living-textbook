@@ -10,21 +10,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class LoginType extends AbstractType
 {
-
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-
     $builder
-        ->add('_username', TextType::class, array(
+        ->add('_username', TextType::class, [
             'label' => 'login.username',
-        ))
-        ->add('_password', PasswordType::class, array(
+        ])
+        ->add('_password', PasswordType::class, [
             'label' => 'login.password',
             'attr'  => [
                 'autocomplete' => false,
             ],
-        ))
-        ->add('submit', SaveType::class, array(
+        ])
+        ->add('submit', SaveType::class, [
             'save_label'           => 'login.login',
             'cancel_label'         => 'auth.forgot-password',
             'enable_save_and_list' => false,
@@ -32,6 +30,6 @@ class LoginType extends AbstractType
             'cancel_route'         => 'app_authentication_resetpassword',
             'cancel_icon'          => 'fa-question',
             'cancel_btn_class'     => 'btn btn-outline-secondary',
-        ));
+        ]);
   }
 }

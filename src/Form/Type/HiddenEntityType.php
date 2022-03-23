@@ -11,5 +11,4 @@ class HiddenEntityType extends AbstractType
   {
     return EntityType::class;
   }
-
 }

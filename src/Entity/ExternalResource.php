@@ -21,7 +21,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class ExternalResource
+ * Class ExternalResource.
  *
  * @author BobV
  *
@@ -96,9 +96,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    */
   private $broken;
 
-  /**
-   * ExternalResource constructor.
-   */
+  /** ExternalResource constructor. */
   public function __construct()
   {
     $this->title  = '';
@@ -107,13 +105,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     $this->concepts = new ArrayCollection();
   }
 
-  /**
-   * Searches in the external resource on the given search, returns an array with search result metadata
-   *
-   * @param string $search
-   *
-   * @return array
-   */
+  /** Searches in the external resource on the given search, returns an array with search result metadata. */
   public function searchIn(string $search): array
   {
     // Create result array
@@ -138,10 +130,6 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
@@ -172,27 +160,18 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->getTitle();
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getConcepts()
   {
     return $this->concepts;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getTitle(): string
   {
     return $this->title;
   }
 
-  /**
-   * @param string $title
-   *
-   * @return ExternalResource
-   */
   public function setTitle(string $title): ExternalResource
   {
     $this->title = trim($title);
@@ -200,19 +179,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
   }
 
-  /**
-   * @param string|null $description
-   *
-   * @return ExternalResource
-   */
   public function setDescription(?string $description): ExternalResource
   {
     $this->description = trim($description);
@@ -220,19 +192,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getUrl(): ?string
   {
     return $this->url;
   }
 
-  /**
-   * @param string|null $url
-   *
-   * @return ExternalResource
-   */
   public function setUrl(?string $url): ExternalResource
   {
     $this->url = trim($url);
@@ -240,19 +205,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isBroken(): bool
   {
     return $this->broken;
   }
 
-  /**
-   * @param bool $broken
-   *
-   * @return ExternalResource
-   */
   public function setBroken(bool $broken): ExternalResource
   {
     $this->broken = $broken;
@@ -260,19 +218,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return ExternalResource
-   */
   public function setStudyArea(StudyArea $studyArea): ExternalResource
   {
     $this->studyArea = $studyArea;

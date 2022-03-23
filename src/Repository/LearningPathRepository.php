@@ -7,8 +7,8 @@ use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class LearningPathRepository extends ServiceEntityRepository
 {
@@ -17,11 +17,7 @@ class LearningPathRepository extends ServiceEntityRepository
     parent::__construct($registry, LearningPath::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return LearningPath[]
-   */
+  /** @return LearningPath[] */
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
@@ -30,10 +26,9 @@ class LearningPathRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
+   * @throws \Doctrine\ORM\NonUniqueResultException
    *
    * @return mixed
-   * @throws \Doctrine\ORM\NonUniqueResultException
    */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
@@ -42,11 +37,6 @@ class LearningPathRepository extends ServiceEntityRepository
         ->getQuery()->getSingleScalarResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('lp')
@@ -55,9 +45,7 @@ class LearningPathRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find learning path that use the given concept
-   *
-   * @param Concept $concept
+   * Find learning path that use the given concept.
    *
    * @return LearningPath[]
    */
@@ -73,9 +61,7 @@ class LearningPathRepository extends ServiceEntityRepository
   }
 
   /**
-   * Remove elements based on the concept
-   *
-   * @param Concept $concept
+   * Remove elements based on the concept.
    *
    * @throws \Doctrine\ORM\ORMException
    */
@@ -95,7 +81,7 @@ class LearningPathRepository extends ServiceEntityRepository
 
           // Update previous element' description
           if ($index != 0) {
-            $elements[$index - 1]->setDescription(NULL);
+            $elements[$index - 1]->setDescription(null);
           }
 
           $removed[] = $index;
@@ -103,7 +89,7 @@ class LearningPathRepository extends ServiceEntityRepository
       }
 
       // Loop again (but other way around) to set next references correctly, by skipped removed elements
-      $previousElement = NULL;
+      $previousElement = null;
       for ($index = $elementCount - 1; $index >= 0; $index--) {
         // Skip removed items
         if (in_array($index, $removed)) {

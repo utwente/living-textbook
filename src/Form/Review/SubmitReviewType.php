@@ -11,12 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SubmitReviewType extends AbstractReviewType
 {
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -62,5 +57,4 @@ class SubmitReviewType extends AbstractReviewType
         ->setRequired('review')
         ->setAllowedTypes('review', Review::class);
   }
-
 }

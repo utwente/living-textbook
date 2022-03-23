@@ -34,9 +34,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class StudyAreaDuplicator
 {
-  /**
-   * @var TagRepository
-   */
+  /** @var TagRepository */
   private $tagRepository;
   /** @var UrlContext */
   private $urlContext;
@@ -104,20 +102,9 @@ class StudyAreaDuplicator
   /**
    * StudyAreaDuplicator constructor.
    *
-   * @param string                     $projectDir
-   * @param EntityManagerInterface     $em
-   * @param UrlScanner                 $urlScanner
-   * @param LtbRouter                  $router
-   * @param AbbreviationRepository     $abbreviationRepo
-   * @param ConceptRelationRepository  $conceptRelationRepo
-   * @param ContributorRepository      $contributorRepository
-   * @param ExternalResourceRepository $externalResourceRepo
-   * @param LearningOutcomeRepository  $learningOutcomeRepo
-   * @param LearningPathRepository     $learningPathRepository
-   * @param TagRepository              $tagRepository
-   * @param StudyArea                  $studyAreaToDuplicate Study area to duplicate
-   * @param StudyArea                  $newStudyArea         New study area
-   * @param Concept[]                  $concepts             Concepts to copy
+   * @param StudyArea $studyAreaToDuplicate Study area to duplicate
+   * @param StudyArea $newStudyArea         New study area
+   * @param Concept[] $concepts             Concepts to copy
    */
   public function __construct(
       string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
@@ -144,7 +131,7 @@ class StudyAreaDuplicator
   }
 
   /**
-   * Duplicates the given study area into the new study area
+   * Duplicates the given study area into the new study area.
    *
    * @throws Exception
    */
@@ -204,9 +191,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the learning outcomes
-   */
+  /** Duplicate the learning outcomes */
   private function duplicateLearningOutcomes(): void
   {
     $learningOutcomes = $this->learningOutcomeRepo->findForStudyArea($this->studyAreaToDuplicate);
@@ -222,9 +207,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the learning paths
-   */
+  /** Duplicate the learning paths */
   private function duplicateLearningPaths(): void
   {
     $learningPaths = $this->learningPathRepo->findForStudyArea($this->studyAreaToDuplicate);
@@ -236,7 +219,7 @@ class StudyAreaDuplicator
           ->setQuestion($learningPath->getQuestion());
 
       /** @var LearningPathElement $previousElement */
-      $previousElement = NULL;
+      $previousElement = null;
       $setNextNull     = false;
       /** @var LearningPathElement[] $currentElements */
       $currentElements = $learningPath->getElementsOrdered()->toArray();
@@ -253,7 +236,7 @@ class StudyAreaDuplicator
         $newElement = (new LearningPathElement())
             ->setNext($previousElement)
             ->setConcept($this->newConcepts[$element->getConcept()->getId()])
-            ->setDescription($setNextNull ? NULL : $element->getDescription());
+            ->setDescription($setNextNull ? null : $element->getDescription());
         $newLearningPath->addElement($newElement);
         $setNextNull     = false;
         $previousElement = $newElement;
@@ -267,9 +250,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the external resources
-   */
+  /** Duplicate the external resources */
   private function duplicateExternalResources(): void
   {
     $externalResources = $this->externalResourceRepo->findForStudyArea($this->studyAreaToDuplicate);
@@ -286,9 +267,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the contributors
-   */
+  /** Duplicate the contributors */
   private function duplicateContributors(): void
   {
     $contributors = $this->contributorRepo->findForStudyArea($this->studyAreaToDuplicate);
@@ -305,9 +284,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the abbreviations
-   */
+  /** Duplicate the abbreviations */
   private function duplicateAbbreviations(): void
   {
     $abbreviations = $this->abbreviationRepo->findForStudyArea($this->studyAreaToDuplicate);
@@ -336,9 +313,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the concepts
-   */
+  /** Duplicate the concepts */
   private function duplicateConcepts(): void
   {
     $priorKnowledges = [];
@@ -394,9 +369,7 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Duplicate the relations
-   */
+  /** Duplicate the relations */
   private function duplicateRelations(): void
   {
     $conceptRelations = $this->conceptRelationRepo->getByStudyArea($this->studyAreaToDuplicate);
@@ -404,7 +377,7 @@ class StudyAreaDuplicator
     foreach ($conceptRelations as $conceptRelation) {
       // Duplicate relation type, if not done yet
       $relationType = $conceptRelation->getRelationType();
-      /** @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
+      /* @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
       if (!array_key_exists($relationType->getId(), $newRelationTypes)) {
         $newRelationType = (new RelationType())
             ->setStudyArea($this->newStudyArea)
@@ -432,13 +405,11 @@ class StudyAreaDuplicator
     }
   }
 
-  /**
-   * Scan for links in the newly duplicated data
-   */
+  /** Scan for links in the newly duplicated data */
   private function scanLinks(): void
   {
     // Check for null
-    if ($this->newStudyArea->getId() === NULL) {
+    if ($this->newStudyArea->getId() === null) {
       throw new InvalidArgumentException('New study area id is NULL!');
     }
 
@@ -479,12 +450,9 @@ class StudyAreaDuplicator
       $newConcept->getSelfAssessment()->setText(
           $this->updateUrls($newConcept->getSelfAssessment()->getText()));
     }
-
   }
 
-  /**
-   * Duplicates the uploads directory, if any
-   */
+  /** Duplicates the uploads directory, if any */
   private function duplicateUploads(): void
   {
     $fileSystem = new Filesystem();
@@ -498,12 +466,10 @@ class StudyAreaDuplicator
     $fileSystem->mirror($source, $this->getStudyAreaDirectory($this->newStudyArea));
   }
 
-  /**
-   * Removes the uploads directory, if any
-   */
+  /** Removes the uploads directory, if any */
   private function removeUploads(): void
   {
-    if (NULL == $this->newStudyArea->getId()) {
+    if (null == $this->newStudyArea->getId()) {
       // Nothing to remove, as the study area id is not yet set
       return;
     }
@@ -519,33 +485,25 @@ class StudyAreaDuplicator
   }
 
   /**
-   * Retrieve the study area uploads path
-   *
-   * @param StudyArea $studyArea
+   * Retrieve the study area uploads path.
    *
    * @return string
    */
   private function getStudyAreaDirectory(StudyArea $studyArea)
   {
     // Check for null
-    if ($studyArea->getId() === NULL) {
+    if ($studyArea->getId() === null) {
       throw new InvalidArgumentException('Study area id is NULL!');
     }
 
     return sprintf('%s/%d', $this->uploadsPath, $studyArea->getId());
   }
 
-  /**
-   * Replaces study area urls with the id of the area to duplicate with the id of the new study area
-   *
-   * @param string|null $text
-   *
-   * @return string|null
-   */
+  /** Replaces study area urls with the id of the area to duplicate with the id of the new study area. */
   private function updateUrls(?string $text): ?string
   {
-    if ($text === NULL) {
-      return NULL;
+    if ($text === null) {
+      return null;
     }
 
     // Scan for urls
@@ -598,7 +556,7 @@ class StudyAreaDuplicator
           // Revert to old study area id to not break link completely
           $revertStudyArea = true;
         }
-      } else if ($routeName === 'app_learningoutcome_show') {
+      } elseif ($routeName === 'app_learningoutcome_show') {
         // Check whether the new learning outcome is available
         if (array_key_exists(intval($matchedRouteData['learningOutcome']), $this->newLearningOutcomes)) {
           $matchedRouteData['learningOutcome'] = $this->newLearningOutcomes[intval($matchedRouteData['learningOutcome'])]->getId();
@@ -606,7 +564,7 @@ class StudyAreaDuplicator
           // Revert to old study area id to not break link completely
           $revertStudyArea = true;
         }
-      } else if ($routeName === 'app_learningpath_show') {
+      } elseif ($routeName === 'app_learningpath_show') {
         // Check whether the new learning path is available
         if (array_key_exists(intval($matchedRouteData['learningPath']), $this->newLearningPaths)) {
           $matchedRouteData['learningPath'] = $this->newLearningPaths[intval($matchedRouteData['learningPath'])]->getId();
@@ -628,7 +586,6 @@ class StudyAreaDuplicator
           true, $this->urlContext
       );
 
-
       // Regenerate route again if _home route was detected
       if ($homePath) {
         $newUrl = new Url(
@@ -647,15 +604,7 @@ class StudyAreaDuplicator
     return $text;
   }
 
-  /**
-   * Replace data-*-id attributes with the new ids in the new study area
-   *
-   * @param string $text
-   * @param string $attribute
-   * @param array  $source
-   *
-   * @return string
-   */
+  /** Replace data-*-id attributes with the new ids in the new study area. */
   private function updateDataAttributes(string $text, string $attribute, array $source): string
   {
     $pattern = '/(?i)data-' . preg_quote($attribute) . '-id\s*=\s*["\']\s*(\d+)\s*["\']/';
@@ -676,9 +625,7 @@ class StudyAreaDuplicator
   }
 
   /**
-   * Try to match the given path with the internal routing
-   *
-   * @param string $path
+   * Try to match the given path with the internal routing.
    *
    * @return bool|array
    */

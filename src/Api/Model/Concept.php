@@ -26,8 +26,7 @@ class Concept
       #[Type('array')]
       #[Groups(['dotron'])]
       protected readonly ?array $dotronConfig
-  )
-  {
+  ) {
   }
 
   public static function fromEntity(\App\Entity\Concept $concept): self
@@ -37,9 +36,9 @@ class Concept
         $concept->getName(),
         $concept->getDefinition(),
         $concept->getSynonyms(),
-        $concept->getTags()->map(fn(Tag $tag) => $tag->getId())->getValues(),
+        $concept->getTags()->map(fn (Tag $tag) => $tag->getId())->getValues(),
         $concept->getOutgoingRelations()
-            ->map(fn(\App\Entity\ConceptRelation $conceptRelation) => ConceptRelation::fromEntity($conceptRelation))
+            ->map(fn (\App\Entity\ConceptRelation $conceptRelation) => ConceptRelation::fromEntity($conceptRelation))
             ->getValues(),
         $concept->getDotronConfig()
     );
@@ -51,6 +50,6 @@ class Concept
         ->setName($this->name ?? $concept?->getName() ?? '')
         ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
         ->setSynonyms($this->synonyms ?? $concept?->getSynonyms() ?? '')
-        ->setDotronConfig($this->dotronConfig ?? $concept?->getDotronConfig() ?? NULL);
+        ->setDotronConfig($this->dotronConfig ?? $concept?->getDotronConfig() ?? null);
   }
 }

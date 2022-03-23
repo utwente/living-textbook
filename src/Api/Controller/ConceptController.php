@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConceptController extends AbstractApiController
 {
   /**
-   * Retrieve all study area concepts
+   * Retrieve all study area concepts.
    *
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -42,7 +42,7 @@ class ConceptController extends AbstractApiController
   }
 
   /**
-   * Retrieve a single study area concept
+   * Retrieve a single study area concept.
    *
    * @Route("/{concept<\d+>}", methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -61,7 +61,7 @@ class ConceptController extends AbstractApiController
   }
 
   /**
-   * Add a new study area concept
+   * Add a new study area concept.
    *
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -71,10 +71,10 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
-      Request          $request): JsonResponse
+      Request $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, Concept::class)
-        ->mapToEntity(NULL)
+        ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
@@ -83,7 +83,7 @@ class ConceptController extends AbstractApiController
   }
 
   /**
-   * Update an existing study area concept
+   * Update an existing study area concept.
    *
    * @Route("/{concept<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -92,11 +92,10 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
-      RequestStudyArea    $requestStudyArea,
+      RequestStudyArea $requestStudyArea,
       \App\Entity\Concept $concept,
-      Request             $request
-  ): JsonResponse
-  {
+      Request $request
+  ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
     $concept = $this->getTypedFromBody($request, Concept::class)
@@ -108,26 +107,26 @@ class ConceptController extends AbstractApiController
   }
 
   /**
-   * Delete an existing study area concept
+   * Delete an existing study area concept.
    *
    * @Route("/{concept<\d+>}", methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The concept has been deleted')]
   public function delete(
-      RequestStudyArea       $requestStudyArea,
-      \App\Entity\Concept    $concept,
+      RequestStudyArea $requestStudyArea,
+      \App\Entity\Concept $concept,
       LearningPathRepository $learningPathRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
     $this->getHandler()->delete($concept, $learningPathRepository);
 
-    return new JsonResponse(NULL, Response::HTTP_ACCEPTED);
+    return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
   /**
-   * Add a tag to an existing study area concept
+   * Add a tag to an existing study area concept.
    *
    * @Route("/{concept<\d+>}/tag", methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -136,10 +135,10 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function addTag(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
       \App\Entity\Concept $concept,
-      TagRepository       $tagRepository): JsonResponse
+      TagRepository $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     /** @var int $requestTag */
@@ -156,7 +155,7 @@ class ConceptController extends AbstractApiController
   }
 
   /**
-   * Replace the tags for an existing study area concept
+   * Replace the tags for an existing study area concept.
    *
    * @Route("/{concept<\d+>}/tag", methods={"PUT"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -165,10 +164,10 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function putTags(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
       \App\Entity\Concept $concept,
-      TagRepository       $tagRepository): JsonResponse
+      TagRepository $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     /** @var int[] $requestTag */
@@ -190,7 +189,7 @@ class ConceptController extends AbstractApiController
   }
 
   /**
-   * Remove an existing study area concept tag
+   * Remove an existing study area concept tag.
    *
    * @Route("/{concept<\d+>}/tag/{tag<\d+>}", methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -198,9 +197,9 @@ class ConceptController extends AbstractApiController
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: Concept::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function deleteTag(
-      RequestStudyArea    $requestStudyArea,
+      RequestStudyArea $requestStudyArea,
       \App\Entity\Concept $concept,
-      \App\Entity\Tag     $tag): JsonResponse
+      \App\Entity\Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     $this->assertStudyAreaObject($requestStudyArea, $tag);
@@ -212,6 +211,6 @@ class ConceptController extends AbstractApiController
 
   private function getHandler(): ConceptEntityHandler
   {
-    return new ConceptEntityHandler($this->em, $this->validator, NULL);
+    return new ConceptEntityHandler($this->em, $this->validator, null);
   }
 }

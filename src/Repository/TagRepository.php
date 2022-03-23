@@ -15,11 +15,7 @@ class TagRepository extends ServiceEntityRepository
     parent::__construct($registry, Tag::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Tag[]
-   */
+  /** @return Tag[] */
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
@@ -27,8 +23,6 @@ class TagRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
-   *
    * @return mixed
    *
    * @noinspection PhpDocMissingThrowsInspection
@@ -41,11 +35,6 @@ class TagRepository extends ServiceEntityRepository
         ->getQuery()->getSingleScalarResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('t')
@@ -53,5 +42,4 @@ class TagRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea)
         ->orderBy('t.name', 'ASC');
   }
-
 }

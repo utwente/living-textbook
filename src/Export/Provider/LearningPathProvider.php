@@ -25,17 +25,13 @@ class LearningPathProvider implements ProviderInterface
     $this->serializer             = $serializer;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getName(): string
   {
     return 'learning-path';
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -61,16 +57,14 @@ class LearningPathProvider implements ProviderInterface
 EOT;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function export(StudyArea $studyArea): Response
   {
     $learningPaths = $this->learningPathRepository->findForStudyArea($studyArea);
 
     // Create JSON data
     $json = $this->serializer->serialize($learningPaths, 'json',
-        /** @phan-suppress-next-line PhanTypeMismatchArgument */
+        /* @phan-suppress-next-line PhanTypeMismatchArgument */
         SerializationContext::create()->setGroups(['Default', 'lp_export']));
 
     $response = new JsonResponse($json, Response::HTTP_OK, [], true);

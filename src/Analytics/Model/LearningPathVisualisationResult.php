@@ -6,7 +6,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class LearningPathVisualisationResult
+ * Class LearningPathVisualisationResult.
  *
  * Serialization of this class is managed in the LearningPathVisualisationResultHandler
  *
@@ -14,38 +14,24 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class LearningPathVisualisationResult
 {
-  /**
-   * @var SplFileInfo
-   */
+  /** @var SplFileInfo */
   public $heatMapImage;
 
-  /**
-   * @var SplFileInfo
-   */
+  /** @var SplFileInfo */
   public $pathVisitsImage;
 
-  /**
-   * @var SplFileInfo
-   */
+  /** @var SplFileInfo */
   public $pathUsersImage;
 
-  /**
-   * @var SplFileInfo
-   */
+  /** @var SplFileInfo */
   public $flowThroughFile;
 
-  /**
-   * @var SplFileInfo
-   */
+  /** @var SplFileInfo */
   public $metaDataFile;
 
-  /**
-   * @return string
-   *
-   */
+  /** @return string */
   public function getFlowThroughFileJson(): string
   {
     return $this->flowThroughFile->getContents();
   }
-
 }

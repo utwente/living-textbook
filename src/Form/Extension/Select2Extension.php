@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Select2Extension
+ * Class Select2Extension.
  *
  * This class provides a Select2 form extension, to be able to easily set
  * select 2 options on the form
@@ -38,8 +38,8 @@ class Select2Extension extends AbstractTypeExtension
   {
     $resolver->setDefaults([
         'select2'             => false,
-        'select2_allow_clear' => NULL,
-        'select2_placeholder' => NULL,
+        'select2_allow_clear' => null,
+        'select2_placeholder' => null,
     ]);
 
     $resolver->setAllowedTypes('select2', ['bool']);
@@ -47,7 +47,7 @@ class Select2Extension extends AbstractTypeExtension
     $resolver->setAllowedTypes('select2_placeholder', ['null', 'string']);
 
     $resolver->setNormalizer('select2_allow_clear', function (Options $options, $value) {
-      if ($value !== NULL) {
+      if ($value !== null) {
         return $value;
       }
 

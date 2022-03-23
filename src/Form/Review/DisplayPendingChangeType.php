@@ -17,13 +17,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DisplayPendingChangeType extends AbstractType
 {
-  /**
-   * @var EntityManagerInterface
-   */
+  /** @var EntityManagerInterface */
   private $entityManager;
-  /**
-   * @var ReviewService
-   */
+  /** @var ReviewService */
   private $reviewService;
 
   public function __construct(EntityManagerInterface $entityManager, ReviewService $reviewService)
@@ -33,9 +29,6 @@ class DisplayPendingChangeType extends AbstractType
   }
 
   /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   *
    * @throws EntityNotFoundException
    * @throws InvalidChangeException
    */
@@ -45,11 +38,11 @@ class DisplayPendingChangeType extends AbstractType
     $pendingChange = $options['pending_change'];
     $field         = $options['field'];
 
-    if (NULL === $pendingChange) {
+    if (null === $pendingChange) {
       return;
     }
 
-    $changeType = $pendingChange->getChangeType();
+    $changeType                   = $pendingChange->getChangeType();
     list($formType, $formOptions) = ReviewSubmissionType::getFormTypeForField($pendingChange, $field);
 
     $builder->add('preview', $formType, array_merge([
@@ -57,14 +50,14 @@ class DisplayPendingChangeType extends AbstractType
         'mapped'          => false,
         'original_object' => $changeType !== PendingChange::CHANGE_TYPE_ADD
             ? $this->reviewService->getOriginalObject($pendingChange)
-            : NULL,
-        'pending_change'  => $pendingChange,
-        'field'           => $field,
-        'review'          => false,
-        'show_comments'   => false,
-        'show_original'   => false,
-        'checkbox'        => false,
-        'diff_only'       => true,
+            : null,
+        'pending_change' => $pendingChange,
+        'field'          => $field,
+        'review'         => false,
+        'show_comments'  => false,
+        'show_original'  => false,
+        'checkbox'       => false,
+        'diff_only'      => true,
     ], $formOptions));
   }
 
@@ -89,7 +82,7 @@ class DisplayPendingChangeType extends AbstractType
         ->setRequired('field')
         ->setRequired('pending_change_info')
         ->setAllowedTypes('pending_change_info', PendingChangeObjectInfo::class)
-        ->setDefault('pending_change', NULL)
+        ->setDefault('pending_change', null)
         ->setNormalizer('pending_change', function (Options $options) {
           /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
           $pendingChangeObjectInfo = $options->offsetGet('pending_change_info');
@@ -99,8 +92,7 @@ class DisplayPendingChangeType extends AbstractType
             return $pendingChangeObjectInfo->getPendingChangeForField($field);
           }
 
-          return NULL;
+          return null;
         });
   }
-
 }

@@ -10,10 +10,7 @@ use Twig\TwigFunction;
 
 class ReviewExtension extends AbstractExtension
 {
-
-  /**
-   * @var ReviewService
-   */
+  /** @var ReviewService */
   private $reviewService;
 
   public function __construct(ReviewService $reviewService)
@@ -32,5 +29,4 @@ class ReviewExtension extends AbstractExtension
   {
     return $this->reviewService->isReviewModeEnabledForObject($studyArea, $reviewable);
   }
-
 }

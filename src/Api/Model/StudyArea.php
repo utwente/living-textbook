@@ -22,8 +22,7 @@ class StudyArea
       #[Groups(['dotron'])]
       #[Exclude(if: 'object.dotron == false')]
       protected readonly ?array $dotronConfig,
-  )
-  {
+  ) {
   }
 
   public static function fromEntity(\App\Entity\StudyArea $studyArea): self

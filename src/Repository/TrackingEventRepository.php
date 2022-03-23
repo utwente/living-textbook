@@ -15,11 +15,7 @@ class TrackingEventRepository extends ServiceEntityRepository
     parent::__construct($registry, TrackingEvent::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return TrackingEvent[]|Collection
-   */
+  /** @return TrackingEvent[]|Collection */
   public function getByStudyAreaOrderedOnIds(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('te')
@@ -31,11 +27,7 @@ class TrackingEventRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  /**
-   * Remove all tracking events for a certain study area
-   *
-   * @param StudyArea $studyArea
-   */
+  /** Remove all tracking events for a certain study area. */
   public function purgeForStudyArea(StudyArea $studyArea)
   {
     $this->createQueryBuilder('te')
@@ -44,5 +36,4 @@ class TrackingEventRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea)
         ->getQuery()->execute();
   }
-
 }

@@ -16,10 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditLearningOutcomeType extends AbstractType
 {
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
@@ -27,7 +23,7 @@ class EditLearningOutcomeType extends AbstractType
     $disabledFields          = $pendingChangeObjectInfo->getDisabledFields();
 
     $learningOutcome = $options['learningOutcome'];
-    $editing         = $learningOutcome->getId() !== NULL;
+    $editing         = $learningOutcome->getId() !== null;
 
     $builder
         ->add('number', NumberType::class, [
@@ -67,9 +63,7 @@ class EditLearningOutcomeType extends AbstractType
         ]);
   }
 
-  /**
-   * @param OptionsResolver $resolver
-   */
+  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -25,8 +25,7 @@ class TagController extends AbstractController
 {
   public function __construct(
       private readonly EntityManagerInterface $em
-  )
-  {
+  ) {
   }
 
   /**
@@ -36,8 +35,8 @@ class TagController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
    */
   public function add(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -72,9 +71,9 @@ class TagController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
    */
   public function edit(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
-      Tag                 $tag,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      Tag $tag,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -127,9 +126,9 @@ class TagController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
    */
   public function remove(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
-      Tag                 $tag,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      Tag $tag,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -139,7 +138,7 @@ class TagController extends AbstractController
       throw $this->createNotFoundException();
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_tag_list',
     ]);
     $form->handleRequest($request);
@@ -162,6 +161,6 @@ class TagController extends AbstractController
   private function getHandler(): TagHandler
   {
     // Double validation is not needed as we rely on the form validation, review service does not hold for tags
-    return new TagHandler($this->em, NULL, NULL);
+    return new TagHandler($this->em, null, null);
   }
 }

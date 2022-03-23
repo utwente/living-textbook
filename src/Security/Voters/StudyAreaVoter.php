@@ -12,17 +12,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class StudyAreaVoter extends Voter
 {
-
   // Role constants
-  const OWNER = 'STUDYAREA_OWNER';
-  const SHOW = 'STUDYAREA_SHOW';
-  const EDIT = 'STUDYAREA_EDIT';
-  const REVIEW = 'STUDYAREA_REVIEW';
-  const ANNOTATE = 'STUDYAREA_ANNOTATE';
-  const PRINTER = 'STUDYAREA_PRINT';
-  const ANALYTICS = 'STUDYAREA_ANALYTICS';
-
-  const SUPPORTED_ATTRIBUTES = [
+  public const OWNER                = 'STUDYAREA_OWNER';
+  public const SHOW                 = 'STUDYAREA_SHOW';
+  public const EDIT                 = 'STUDYAREA_EDIT';
+  public const REVIEW               = 'STUDYAREA_REVIEW';
+  public const ANNOTATE             = 'STUDYAREA_ANNOTATE';
+  public const PRINTER              = 'STUDYAREA_PRINT';
+  public const ANALYTICS            = 'STUDYAREA_ANALYTICS';
+  public const SUPPORTED_ATTRIBUTES = [
       self::OWNER,
       self::SHOW,
       self::EDIT,
@@ -35,11 +33,7 @@ class StudyAreaVoter extends Voter
   /** @var AccessDecisionManagerInterface */
   private $decisionManager;
 
-  /**
-   * StudyAreaVoter constructor.
-   *
-   * @param AccessDecisionManagerInterface $decisionManager
-   */
+  /** StudyAreaVoter constructor. */
   public function __construct(AccessDecisionManagerInterface $decisionManager)
   {
     $this->decisionManager = $decisionManager;
@@ -59,7 +53,7 @@ class StudyAreaVoter extends Voter
       return false;
     }
 
-    if ($subject !== NULL && !$subject instanceof StudyArea && !$subject instanceof RequestStudyArea) {
+    if ($subject !== null && !$subject instanceof StudyArea && !$subject instanceof RequestStudyArea) {
       return false;
     }
 
@@ -70,9 +64,8 @@ class StudyAreaVoter extends Voter
    * Perform a single access check operation on a given attribute, subject and token.
    * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
    *
-   * @param string         $attribute
-   * @param mixed          $subject
-   * @param TokenInterface $token
+   * @param string $attribute
+   * @param mixed  $subject
    *
    * @return bool
    */
@@ -82,10 +75,10 @@ class StudyAreaVoter extends Voter
 
     // Convert anonymous token users
     if (!is_object($user)) {
-      $user = NULL;
+      $user = null;
     }
 
-    if ($user !== NULL && !$user instanceof User) {
+    if ($user !== null && !$user instanceof User) {
       // Require null or system user
       return false;
     }
@@ -104,11 +97,11 @@ class StudyAreaVoter extends Voter
       $subject = $subject->getStudyArea();
     }
 
-    /** @var StudyArea $subject */
+    /* @var StudyArea $subject */
     assert($subject instanceof StudyArea);
 
     // Always return false for null values
-    if ($subject === NULL) {
+    if ($subject === null) {
       return false;
     }
 
@@ -134,5 +127,4 @@ class StudyAreaVoter extends Voter
 
     throw new LogicException('This code should not be reached!');
   }
-
 }

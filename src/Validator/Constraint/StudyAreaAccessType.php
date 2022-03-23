@@ -5,15 +5,14 @@ namespace App\Validator\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class StudyAreaAccessType
+ * Class StudyAreaAccessType.
  *
  * @Annotation
  */
 class StudyAreaAccessType extends Constraint
 {
-
   /**
-   * Sets this validator as class validator
+   * Sets this validator as class validator.
    *
    * @return array|string
    */

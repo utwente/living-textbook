@@ -17,13 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class StudyAreaStatusBuilder
+ * Class StudyAreaStatusBuilder.
  *
  * This class is used to build a Excel sheet with the current study area status
  */
 class StudyAreaStatusBuilder
 {
-  /**  @var NamingService */
+  /** @var NamingService */
   private $namingService;
 
   /** @var TranslatorInterface */
@@ -53,16 +53,7 @@ class StudyAreaStatusBuilder
   /** @var Concept[]|Collection */
   private $concepts;
 
-  /**
-   * StudyAreaStatusBuilder constructor.
-   *
-   * @param TranslatorInterface       $translator
-   * @param ConceptRepository         $conceptRepo
-   * @param ConceptRelationRepository $conceptRelationRepo
-   * @param RelationTypeRepository    $relationTypeRepo
-   * @param SpreadsheetHelper         $spreadsheetHelper
-   * @param NamingService             $namingService
-   */
+  /** StudyAreaStatusBuilder constructor. */
   public function __construct(TranslatorInterface $translator, ConceptRepository $conceptRepo,
                               ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo,
                               SpreadsheetHelper $spreadsheetHelper, NamingService $namingService)
@@ -76,11 +67,7 @@ class StudyAreaStatusBuilder
   }
 
   /**
-   * Create the excel response
-   *
-   * @param StudyArea $studyArea
-   *
-   * @return Response
+   * Create the excel response.
    *
    * @throws Exception
    */
@@ -120,9 +107,7 @@ class StudyAreaStatusBuilder
         sprintf('%s_status.xlsx', $studyArea->getName()));
   }
 
-  /**
-   * @throws Exception
-   */
+  /** @throws Exception */
   private function addGeneralInfoSheet()
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-info._tab');
@@ -159,9 +144,7 @@ class StudyAreaStatusBuilder
         ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 
-  /**
-   * @throws Exception
-   */
+  /** @throws Exception */
   private function addGeneralConceptStatisticsSheet()
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-concept-statistics._tab');
@@ -218,9 +201,7 @@ class StudyAreaStatusBuilder
     }
   }
 
-  /**
-   * @throws Exception
-   */
+  /** @throws Exception */
   private function addGeneralRelationshipStatisticsSheet()
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-relationship-statistics._tab');
@@ -261,9 +242,7 @@ class StudyAreaStatusBuilder
     $sheet->getStyleByColumnAndRow(2, 1)->getBorders()->getLeft()->setBorderStyle(Border::BORDER_NONE);
   }
 
-  /**
-   * @throws Exception
-   */
+  /** @throws Exception */
   private function addDetailedRelationshipsOverviewSheet()
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.detailed-relationships-overview._tab');
@@ -291,7 +270,9 @@ class StudyAreaStatusBuilder
         $column++;
         $this->spreadsheetHelper->setCellValue($sheet, $column, $row,
             sprintf('* %s %s', $conceptRelation->getRelationName(), $conceptRelation->getTarget()->getName()));
-        if ($column > $maxCol) $maxCol = $column;
+        if ($column > $maxCol) {
+          $maxCol = $column;
+        }
       }
 
       $column = 1;
@@ -299,7 +280,9 @@ class StudyAreaStatusBuilder
         $column++;
         $this->spreadsheetHelper->setCellValue($sheet, $column, $row + $conceptCount,
             sprintf('%s %s *', $conceptRelation->getSource()->getName(), $conceptRelation->getRelationName()));
-        if ($column > $maxCol) $maxCol = $column;
+        if ($column > $maxCol) {
+          $maxCol = $column;
+        }
       }
     }
 
@@ -318,9 +301,7 @@ class StudyAreaStatusBuilder
         ->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
   }
 
-  /**
-   * @throws Exception
-   */
+  /** @throws Exception */
   private function addDetailedConceptOverviewSheet()
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.detailed-concept-overview._tab');

@@ -31,15 +31,7 @@ class TrackingExportBuilder
   /** @var TrackingEventRepository */
   private $trackingEventRepository;
 
-  /**
-   * TrackingExportBuilder constructor.
-   *
-   * @param TranslatorInterface     $translator
-   * @param SpreadsheetHelper       $spreadsheetHelper
-   * @param PageLoadRepository      $pageLoadRepository
-   * @param TrackingEventRepository $trackingEventRepository
-   * @param NamingService           $namingService
-   */
+  /** TrackingExportBuilder constructor. */
   public function __construct(
       TranslatorInterface $translator, SpreadsheetHelper $spreadsheetHelper, PageLoadRepository $pageLoadRepository,
       TrackingEventRepository $trackingEventRepository, NamingService $namingService)
@@ -51,13 +43,9 @@ class TrackingExportBuilder
     $this->namingService           = $namingService;
   }
 
-
   /**
-   * Create the excel object
+   * Create the excel object.
    *
-   * @param StudyArea $studyArea
-   *
-   * @return Spreadsheet
    * @throws Exception
    */
   public function buildSpreadsheet(StudyArea $studyArea): Spreadsheet
@@ -79,11 +67,8 @@ class TrackingExportBuilder
   }
 
   /**
-   * Create the excel response
+   * Create the excel response.
    *
-   * @param StudyArea $studyArea
-   *
-   * @return Response
    * @throws Exception
    */
   public function buildResponse(StudyArea $studyArea): Response
@@ -93,10 +78,6 @@ class TrackingExportBuilder
         sprintf('%s_tracking_export.xlsx', $studyArea->getName()));
   }
 
-  /**
-   * @param StudyArea $studyArea
-   * @param Worksheet $sheet
-   */
   private function exportPageLoads(StudyArea $studyArea, Worksheet $sheet): void
   {
     // Location
@@ -114,7 +95,7 @@ class TrackingExportBuilder
 
     // Controller argument map, predefine commonly used values
     $contextMap = [
-        '_controller' => NULL, // Do not include this item in the export
+        '_controller' => null, // Do not include this item in the export
     ];
 
     $sheet->getColumnDimensionByColumn(++$column)->setAutoSize(true);
@@ -157,11 +138,6 @@ class TrackingExportBuilder
     }
   }
 
-
-  /**
-   * @param StudyArea $studyArea
-   * @param Worksheet $sheet
-   */
   private function exportEvents(StudyArea $studyArea, Worksheet $sheet): void
   {
     // Location
@@ -212,13 +188,7 @@ class TrackingExportBuilder
     }
   }
 
-  /**
-   * @param Worksheet            $sheet
-   * @param iterable|null        $context
-   * @param array                $contextMap
-   * @param int                  $row
-   * @param                      $column
-   */
+  /** @param $column */
   private function mapContextElements(Worksheet &$sheet, int &$column, int $row, ?iterable $context, array $contextMap): void
   {
     foreach ($context ?? [] as $cKey => $cItem) {
@@ -240,12 +210,6 @@ class TrackingExportBuilder
     }
   }
 
-  /**
-   * @param Worksheet $sheet
-   * @param int       $column
-   * @param int       $row
-   * @param string    $title
-   */
   private function setCommonHeader(Worksheet &$sheet, int &$column, int $row, string $title): void
   {
     $sheet->setTitle($title);
@@ -258,12 +222,7 @@ class TrackingExportBuilder
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'tracking.export.timestamp', true);
   }
 
-  /**
-   * @param Worksheet $sheet
-   * @param int       $column
-   * @param int       $row
-   * @param object    $object
-   */
+  /** @param object $object */
   private function setCommonHeaderValues(Worksheet &$sheet, int &$column, int $row, $object): void
   {
     assert($object instanceof PageLoad || $object instanceof TrackingEvent);
@@ -272,5 +231,4 @@ class TrackingExportBuilder
     $this->spreadsheetHelper->setCellValue($sheet, ++$column, $row, $object->getSessionId());
     $this->spreadsheetHelper->setCellDateTime($sheet, ++$column, $row, $object->getTimestamp(), true);
   }
-
 }

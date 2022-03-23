@@ -27,5 +27,4 @@ class ReviewSubmissionObjectHeaderType extends AbstractType
         ->setAllowedTypes('full_change_only', 'bool')
         ->setAllowedTypes('pending_change', PendingChange::class);
   }
-
 }

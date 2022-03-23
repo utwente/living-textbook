@@ -16,7 +16,7 @@ class ReviewSimpleListDiffType extends AbstractReviewDiffType
     $propertyAccessor       = PropertyAccess::createPropertyAccessor();
     $view->vars['new_list'] = $propertyAccessor->getValue($this->getPendingChange($options)->getObject(), $options['field']);
 
-    if (NULL !== $options['original_object']) {
+    if (null !== $options['original_object']) {
       $view->vars['orig_list'] = $propertyAccessor->getValue($options['original_object'], $options['field']);
     }
   }

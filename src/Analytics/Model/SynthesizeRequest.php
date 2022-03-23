@@ -9,15 +9,13 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SynthesizeRequest
 {
-  /**
-   * @var StudyArea
-   */
+  /** @var StudyArea */
   private $studyArea;
 
   /**
-   * Number of users to skip
+   * Number of users to skip.
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -25,9 +23,9 @@ class SynthesizeRequest
   public $usersIgnore = 10;
 
   /**
-   * Number of perfect followers
+   * Number of perfect followers.
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -35,9 +33,9 @@ class SynthesizeRequest
   public $usersPerfect = 20;
 
   /**
-   * Number of flawed path followers
+   * Number of flawed path followers.
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -45,9 +43,9 @@ class SynthesizeRequest
   public $usersFlawed = 150;
 
   /**
-   * Number of test followers of the flawed path followers
+   * Number of test followers of the flawed path followers.
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -56,9 +54,9 @@ class SynthesizeRequest
   public $usersFlawedTest = 100;
 
   /**
-   * Number of concept browsers followers
+   * Number of concept browsers followers.
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -66,9 +64,9 @@ class SynthesizeRequest
   public $usersConceptBrowsers = 30;
 
   /**
-   * Number of test followers of the concept browsers followers
+   * Number of test followers of the concept browsers followers.
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -77,9 +75,9 @@ class SynthesizeRequest
   public $usersConceptBrowsersTest = 20;
 
   /**
-   * Number of test followers (not including the flawed and conceptBrowsers)
+   * Number of test followers (not including the flawed and conceptBrowsers).
    *
-   * @var integer
+   * @var int
    *
    * @Assert\NotNull()
    * @Assert\Range(min=0, max=200)
@@ -94,7 +92,7 @@ class SynthesizeRequest
   public $testMoment;
 
   /**
-   * Probability that a flawed path follower stops after each concept
+   * Probability that a flawed path follower stops after each concept.
    *
    * @var float
    *
@@ -104,7 +102,7 @@ class SynthesizeRequest
   public $flawedDropOffChance = 0.04;
 
   /**
-   * Probability that a concept browser follower stops after each concept
+   * Probability that a concept browser follower stops after each concept.
    *
    * @var float
    *
@@ -114,7 +112,7 @@ class SynthesizeRequest
   public $conceptBrowserDropOffChance = 0.08;
 
   /**
-   * The amount of days between the teaching moment of each learning path
+   * The amount of days between the teaching moment of each learning path.
    *
    * @var int
    *
@@ -124,7 +122,7 @@ class SynthesizeRequest
   public $daysBetweenLearningPaths = 7;
 
   /**
-   * The amount of days between the last learning path and the test moment
+   * The amount of days between the last learning path and the test moment.
    *
    * @var int
    *
@@ -139,9 +137,7 @@ class SynthesizeRequest
     $this->studyArea  = $studyArea;
   }
 
-  /**
-   * @Assert\Callback()
-   */
+  /** @Assert\Callback() */
   public function validate(ExecutionContextInterface $context)
   {
     if ($this->testMoment >= new DateTimeImmutable()) {
@@ -154,8 +150,8 @@ class SynthesizeRequest
   public function getSettings(bool $debug, string $host): array
   {
     return [
-        'debug'                               => $debug,
-        'userGenerationSettings'              => [
+        'debug'                  => $debug,
+        'userGenerationSettings' => [
             'debug'           => $debug,
             'ignore'          => $this->usersIgnore,
             'perfect'         => $this->usersPerfect,
@@ -164,8 +160,8 @@ class SynthesizeRequest
             'test'            => $this->usersTest,
             'basis'           => ['synthetic-data+', '@' . $host],
         ],
-        'studyArea'                           => $this->studyArea->getId(),
-        'pathFollowerPath'                    => [
+        'studyArea'        => $this->studyArea->getId(),
+        'pathFollowerPath' => [
             'dropOffChance' => $this->flawedDropOffChance,
         ],
         'conceptbrowserFollowerdropOffChance' => $this->conceptBrowserDropOffChance,

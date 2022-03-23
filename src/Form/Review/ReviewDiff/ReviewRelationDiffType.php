@@ -19,7 +19,7 @@ class ReviewRelationDiffType extends AbstractReviewDiffType
     $view->vars['concept']       = $pendingChange->getObject();
     $view->vars['new_relations'] = $propertyAccessor->getValue($this->getPendingChange($options)->getObject(), $options['field']);
 
-    if (NULL !== $options['original_object']) {
+    if (null !== $options['original_object']) {
       $view->vars['orig_relations'] = $propertyAccessor->getValue($options['original_object'], $options['field']);
     }
   }

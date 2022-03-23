@@ -8,19 +8,19 @@ use Twig\TwigFilter;
 class TranslationStringExtension extends AbstractExtension
 {
   /**
-   * Register filters
+   * Register filters.
    *
    * @return array|TwigFilter[]
    */
   public function getFilters()
   {
-    return array(
-        new TwigFilter('trString', array($this, 'trString'), array('is_safe' => array('html'))),
-    );
+    return [
+        new TwigFilter('trString', [$this, 'trString'], ['is_safe' => ['html']]),
+    ];
   }
 
   /**
-   * Filter implementation
+   * Filter implementation.
    *
    * @param $text
    *

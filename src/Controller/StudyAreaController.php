@@ -31,7 +31,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class StudyAreaController
+ * Class StudyAreaController.
  *
  * @author TobiasF
  *
@@ -45,10 +45,7 @@ class StudyAreaController extends AbstractController
    * @Template()
    * @IsGranted("ROLE_USER")
    *
-   * @param Request                $request
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
-   * @param bool                   $first
+   * @param bool $first
    *
    * @return array|Response
    */
@@ -56,7 +53,9 @@ class StudyAreaController extends AbstractController
   {
     // Create new StudyArea
     $studyArea = (new StudyArea())->setOwner($this->getUser());
-    if ($first) $studyArea->setAccessType(StudyArea::ACCESS_PRIVATE);
+    if ($first) {
+      $studyArea->setAccessType(StudyArea::ACCESS_PRIVATE);
+    }
 
     $form = $this->createForm(EditStudyAreaType::class, $studyArea, [
         'studyArea'    => $studyArea,
@@ -67,7 +66,6 @@ class StudyAreaController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-
       // Save the data
       $em->persist($studyArea);
       $em->flush();
@@ -119,10 +117,6 @@ class StudyAreaController extends AbstractController
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
-   * @param Request                $request
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
-   *
    * @return array|Response
    */
   public function addGroup(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
@@ -157,21 +151,12 @@ class StudyAreaController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
    *
-   * @param Request                 $request
-   * @param StudyArea               $studyArea
-   * @param EntityManagerInterface  $em
-   * @param UserGroupRepository     $userGroupRepo
-   * @param PageLoadRepository      $pageLoadRepository
-   * @param TrackingEventRepository $trackingEventRepository
-   * @param TranslatorInterface     $trans
-   *
    * @return Response|array
    */
   public function edit(
       Request $request, StudyArea $studyArea, EntityManagerInterface $em, UserGroupRepository $userGroupRepo,
       PageLoadRepository $pageLoadRepository, TrackingEventRepository $trackingEventRepository, TranslatorInterface $trans)
   {
-
     // Check whether permissions flag is set
     $permissions = $request->query->get('permissions', false);
 
@@ -185,7 +170,6 @@ class StudyAreaController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-
       // Check if permissions must be reset
       $userGroupRepo->removeObsoleteGroups($studyArea);
 
@@ -228,11 +212,6 @@ class StudyAreaController extends AbstractController
    * @Template
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
-   * @param Request                $request
-   * @param StudyAreaGroup         $group
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
-   *
    * @return array|Response
    */
   public function editGroup(Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator)
@@ -262,12 +241,6 @@ class StudyAreaController extends AbstractController
    * @Route("/fields")
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @Template
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $entityManager
-   * @param TranslatorInterface    $translator
-   * @param NamingService          $namingService
    *
    * @return array|RedirectResponse
    */
@@ -300,17 +273,13 @@ class StudyAreaController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
    *
-   * @param Request                $request
-   * @param StudyArea              $studyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
+   * @throws \Exception
    *
    * @return array|Response
-   * @throws \Exception
    */
   public function freeze(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $translator)
   {
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'        => 'app_default_dashboard',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
         'remove_label'        => 'form.confirm-freeze',
@@ -333,13 +302,11 @@ class StudyAreaController extends AbstractController
   }
 
   /**
-   * List the study area groups
+   * List the study area groups.
    *
    * @Route("/group/list")
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @param StudyAreaGroupRepository $repository
    *
    * @return array
    */
@@ -355,18 +322,12 @@ class StudyAreaController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param StudyArea              $studyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
-   *
    * @return array|Response
    */
   public function remove(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea,
                          EntityManagerInterface $em, TranslatorInterface $trans)
   {
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'        => 'app_default_dashboard',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
     ]);
@@ -398,11 +359,6 @@ class StudyAreaController extends AbstractController
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
-   * @param Request                $request
-   * @param StudyAreaGroup         $group
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
-   *
    * @return array|Response
    */
   public function removeGroup(
@@ -417,7 +373,7 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_studyarea_listgroups');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_studyarea_listgroups',
     ]);
     $form->handleRequest($request);
@@ -441,13 +397,6 @@ class StudyAreaController extends AbstractController
    * @Route("/transfer/{studyArea}", requirements={"studyArea"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param StudyArea              $studyArea
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
-   * @param UserRepository         $userRepository
    *
    * @return array|Response
    */
@@ -496,16 +445,11 @@ class StudyAreaController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
    *
-   * @param StudyArea              $studyArea
-   * @param Request                $request
-   * @param TranslatorInterface    $translator
-   * @param EntityManagerInterface $em
-   *
    * @return array|Response
    */
   public function unfreeze(StudyArea $studyArea, Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
   {
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'        => 'app_default_dashboard',
         'cancel_route_params' => ['studyArea' => $studyArea->getId()],
         'remove_label'        => 'form.confirm-unfreeze',
@@ -513,7 +457,7 @@ class StudyAreaController extends AbstractController
     $form->handleRequest($request);
 
     if (RemoveType::isRemoveClicked($form)) {
-      $studyArea->setFrozenOn(NULL);
+      $studyArea->setFrozenOn(null);
       $em->flush();
 
       $this->addFlash('success', $translator->trans('study-area.unfreeze-succeeded', ['%item%' => $studyArea->getName()]));
@@ -526,5 +470,4 @@ class StudyAreaController extends AbstractController
         'studyArea' => $studyArea,
     ];
   }
-
 }

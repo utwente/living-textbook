@@ -7,7 +7,7 @@ use Symfony\Component\Console\Style\OutputStyle;
 
 /**
  * Class NullStyle
- * Can be used to disable output when the OutputStyle is not provided
+ * Can be used to disable output when the OutputStyle is not provided.
  */
 class NullStyle extends OutputStyle
 {
@@ -51,12 +51,12 @@ class NullStyle extends OutputStyle
   {
   }
 
-  public function ask($question, $default = NULL, $validator = NULL)
+  public function ask($question, $default = null, $validator = null)
   {
     throw new RuntimeException(sprintf('"ask" not supported with %s', self::class));
   }
 
-  public function askHidden($question, $validator = NULL)
+  public function askHidden($question, $validator = null)
   {
     throw new RuntimeException(sprintf('"askHidden" not supported with %s', self::class));
   }
@@ -66,7 +66,7 @@ class NullStyle extends OutputStyle
     throw new RuntimeException(sprintf('"confirm" not supported with %s', self::class));
   }
 
-  public function choice($question, array $choices, $default = NULL)
+  public function choice($question, array $choices, $default = null)
   {
     throw new RuntimeException(sprintf('"choice" not supported with %s', self::class));
   }

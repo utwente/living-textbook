@@ -14,7 +14,6 @@ class PermissionsTypes extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     foreach ($options['group_types'] as $groupType) {
-
       $groupOptions = [
           'label'      => 'permissions.type.' . $groupType,
           'help'       => 'permissions.type-help.' . $groupType,

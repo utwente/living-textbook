@@ -10,12 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditReviewType extends AbstractReviewType
 {
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $this
@@ -31,9 +26,7 @@ class EditReviewType extends AbstractReviewType
         ]);
   }
 
-  /**
-   * @param OptionsResolver $resolver
-   */
+  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     parent::configureOptions($resolver);

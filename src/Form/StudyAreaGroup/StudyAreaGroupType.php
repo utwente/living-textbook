@@ -32,7 +32,7 @@ class StudyAreaGroupType extends AbstractType
               $qb = $repo->createQueryBuilder('s');
               $qb->where('s.group IS NULL');
 
-              if ($studyAreaGroup->getId() !== NULL) {
+              if ($studyAreaGroup->getId() !== null) {
                 $qb->orWhere('s.group = :group')
                     ->setParameter('group', $studyAreaGroup);
               }
@@ -41,7 +41,7 @@ class StudyAreaGroupType extends AbstractType
 
               return $qb;
             },
-            'select2'       => true,
+            'select2' => true,
         ])
         ->add('submit', SaveType::class, [
             'enable_save_and_list' => false,
@@ -57,6 +57,4 @@ class StudyAreaGroupType extends AbstractType
     $resolver->setDefault('data_class', StudyAreaGroup::class);
     $resolver->setAllowedTypes('study_area_group', StudyAreaGroup::class);
   }
-
-
 }

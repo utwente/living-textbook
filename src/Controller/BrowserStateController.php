@@ -21,23 +21,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class BrowserStateController extends AbstractController
 {
   /**
-   * Retrieve the current filter state
+   * Retrieve the current filter state.
    *
    * @Route("/filter", methods={"GET"}, options={"expose"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea           $requestStudyArea
-   * @param UserBrowserStateRepository $repository
-   * @param SerializerInterface        $serializer
-   *
-   * @return Response
    */
   public function filterState(
       RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
       SerializerInterface $serializer): Response
   {
     if (!$user = $this->getUser()) {
-      return new Response(NULL, Response::HTTP_FORBIDDEN);
+      return new Response(null, Response::HTTP_FORBIDDEN);
     }
     assert($user instanceof User);
 
@@ -49,25 +43,17 @@ class BrowserStateController extends AbstractController
   }
 
   /**
-   * Stores the current filter state
+   * Stores the current filter state.
    *
    * @Route("/filter", methods={"POST"}, options={"expose"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param Request                    $request
-   * @param RequestStudyArea           $requestStudyArea
-   * @param UserBrowserStateRepository $repository
-   * @param SerializerInterface        $serializer
-   * @param EntityManagerInterface     $em
-   *
-   * @return Response
    */
   public function storeFilterState(
       Request $request, RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
       SerializerInterface $serializer, EntityManagerInterface $em): Response
   {
     if (!$user = $this->getUser()) {
-      return new Response(NULL, Response::HTTP_FORBIDDEN);
+      return new Response(null, Response::HTTP_FORBIDDEN);
     }
     assert($user instanceof User);
 

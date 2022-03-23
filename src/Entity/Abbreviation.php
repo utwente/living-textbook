@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Abbreviation
+ * Class Abbreviation.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\AbbreviationRepository")
@@ -28,7 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
@@ -71,22 +70,14 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
    */
   private $meaning;
 
-  /**
-   * Abbreviation constructor.
-   */
+  /** Abbreviation constructor. */
   public function __construct()
   {
     $this->abbreviation = '';
     $this->meaning      = '';
   }
 
-  /**
-   * Searches in the abbreviation on the given search, returns an array with search result metadata
-   *
-   * @param string $search
-   *
-   * @return array
-   */
+  /** Searches in the abbreviation on the given search, returns an array with search result metadata. */
   public function searchIn(string $search): array
   {
     // Create result array
@@ -109,10 +100,6 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
@@ -123,7 +110,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
 
     foreach ($change->getChangedFields() as $changedField) {
       switch ($changedField) {
-        case 'abbreviation';
+        case 'abbreviation':
           $this->setAbbreviation($changeObj->getAbbreviation());
           break;
         case 'meaning':
@@ -140,19 +127,12 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this->getAbbreviation();
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Abbreviation
-   */
   public function setStudyArea(StudyArea $studyArea): Abbreviation
   {
     $this->studyArea = $studyArea;
@@ -160,19 +140,12 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getAbbreviation(): string
   {
     return $this->abbreviation;
   }
 
-  /**
-   * @param string $abbreviation
-   *
-   * @return Abbreviation
-   */
   public function setAbbreviation(string $abbreviation): Abbreviation
   {
     $this->abbreviation = trim($abbreviation);
@@ -180,19 +153,12 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getMeaning(): string
   {
     return $this->meaning;
   }
 
-  /**
-   * @param string $meaning
-   *
-   * @return Abbreviation
-   */
   public function setMeaning(string $meaning): Abbreviation
   {
     $this->meaning = trim($meaning);

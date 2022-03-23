@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ConceptIdNameProvider implements ProviderInterface
 {
-
   /** @var ConceptRepository */
   private $conceptRepository;
 
@@ -26,17 +25,13 @@ class ConceptIdNameProvider implements ProviderInterface
     $this->spreadsheetHelper = $spreadsheetHelper;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getName(): string
   {
     return 'concept-id-name';
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -47,11 +42,8 @@ EOT;
   }
 
   /**
-   * Get the export spreadsheet
+   * Get the export spreadsheet.
    *
-   * @param StudyArea $studyArea
-   *
-   * @return Spreadsheet
    * @throws Exception
    */
   public function getSpreadSheet(StudyArea $studyArea): Spreadsheet
@@ -75,7 +67,8 @@ EOT;
   }
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
+   *
    * @throws Exception
    */
   public function export(StudyArea $studyArea): Response

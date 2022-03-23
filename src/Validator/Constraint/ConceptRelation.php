@@ -5,7 +5,7 @@ namespace App\Validator\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class ConceptRelation
+ * Class ConceptRelation.
  *
  * @author BobV
  *
@@ -13,9 +13,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class ConceptRelation extends Constraint
 {
-
   /**
-   * Error when a relation is made twice
+   * Error when a relation is made twice.
    *
    * @var string
    */
@@ -24,14 +23,14 @@ class ConceptRelation extends Constraint
   /**
    * Error when a relation is mirrored
    *   a -> b
-   *   b <- a
+   *   b <- a.
    *
    * @var string
    */
   public $inversedRelation = 'concept.inversed-relation';
 
   /**
-   * Sets this validator as class validator
+   * Sets this validator as class validator.
    *
    * @return array|string
    */
@@ -39,5 +38,4 @@ class ConceptRelation extends Constraint
   {
     return self::CLASS_CONSTRAINT;
   }
-
 }

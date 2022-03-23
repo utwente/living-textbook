@@ -16,10 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditContributorType extends AbstractType
 {
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
@@ -71,9 +67,7 @@ class EditContributorType extends AbstractType
         ]);
   }
 
-  /**
-   * @param OptionsResolver $resolver
-   */
+  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

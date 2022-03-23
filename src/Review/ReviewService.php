@@ -36,39 +36,24 @@ use Throwable;
 
 class ReviewService
 {
-
-  /**
-   * @var EntityManager
-   */
+  /** @var EntityManager */
   private $entityManager;
-  /**
-   * @var PendingChangeRepository
-   */
+  /** @var PendingChangeRepository */
   private $pendingChangeRepository;
-  /**
-   * @var ReviewNotificationService
-   */
+  /** @var ReviewNotificationService */
   private $reviewNotificationService;
-  /**
-   * @var Security
-   */
+  /** @var Security */
   private $security;
-  /**
-   * @var Session
-   */
+  /** @var Session */
   private $session;
-  /**
-   * @var TranslatorInterface
-   */
+  /** @var TranslatorInterface */
   private $translator;
-  /**
-   * @var ValidatorInterface
-   */
+  /** @var ValidatorInterface */
   private $validator;
 
   // Serializer details
   /** @var SerializerInterface|null */
-  private static $serializer = NULL;
+  private static $serializer      = null;
   private const SERIALIZER_FORMAT = 'json';
 
   public function __construct(
@@ -86,10 +71,7 @@ class ReviewService
   }
 
   /**
-   * Return whether review mode is enable for this object type
-   *
-   * @param StudyArea           $studyArea
-   * @param ReviewableInterface $object
+   * Return whether review mode is enable for this object type.
    *
    * @return bool
    */
@@ -104,16 +86,13 @@ class ReviewService
   }
 
   /**
-   * Retrieve the original object linked to the pending change
+   * Retrieve the original object linked to the pending change.
    *
-   * @param PendingChange $pendingChange
-   *
-   * @return ReviewableInterface
    * @throws EntityNotFoundException|InvalidChangeException
    */
   public function getOriginalObject(PendingChange $pendingChange): ReviewableInterface
   {
-    if (NULL === $pendingChange->getObjectId()) {
+    if (null === $pendingChange->getObjectId()) {
       throw new InvalidChangeException($pendingChange);
     }
 
@@ -134,11 +113,8 @@ class ReviewService
    *
    * Note that after calling this method, the entity manager will be cleared!
    *
-   * @param StudyArea           $studyArea
-   * @param ReviewableInterface $object
-   * @param string              $changeType
-   * @param string|null         $originalDataSnapshot Can be null in case of remove
-   * @param callable|null       $directCallback
+   * @param string|null   $originalDataSnapshot Can be null in case of remove
+   * @param callable|null $directCallback
    *
    * The exceptions can be thrown, but are unlikely. We do not want these
    * exceptions to propagate to every controller.
@@ -147,11 +123,11 @@ class ReviewService
    * @noinspection PhpUnhandledExceptionInspection
    */
   public function storeChange(
-      StudyArea $studyArea, ReviewableInterface $object, string $changeType, ?string $originalDataSnapshot = NULL,
-      ?callable $directCallback = NULL)
+      StudyArea $studyArea, ReviewableInterface $object, string $changeType, ?string $originalDataSnapshot = null,
+      ?callable $directCallback = null)
   {
     if (!in_array($changeType, PendingChange::CHANGE_TYPES)) {
-      throw new InvalidArgumentException(sprintf("Supplied change type %s is not valid", $changeType));
+      throw new InvalidArgumentException(sprintf('Supplied change type %s is not valid', $changeType));
     }
 
     // Check for review mode: when not enabled, do the direct save
@@ -216,17 +192,12 @@ class ReviewService
   }
 
   /**
-   * @param StudyArea           $studyArea
-   * @param ReviewableInterface $object
-   * @param PendingChange       $pendingChange
-   * @param string|null         $originalDataSnapshot
-   *
    * @throws ORMException
    * @throws OptimisticLockException
    * @throws MappingException
    */
   public function updateChange(
-      StudyArea $studyArea, ReviewableInterface $object, PendingChange $pendingChange, ?string $originalDataSnapshot = NULL)
+      StudyArea $studyArea, ReviewableInterface $object, PendingChange $pendingChange, ?string $originalDataSnapshot = null)
   {
     if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_REMOVE) {
       throw new InvalidArgumentException('Remove changes cannot be updated!');
@@ -267,8 +238,8 @@ class ReviewService
     $review = $pendingChange->getReview();
     if ($review) {
       $review
-          ->setApprovedAt(NULL)
-          ->setApprovedBy(NULL);
+          ->setApprovedAt(null)
+          ->setApprovedBy(null);
     }
 
     // Store the updated pending change
@@ -279,13 +250,7 @@ class ReviewService
     $this->addFlash('notice', $this->translator->trans('review.saved-for-review'));
   }
 
-  /**
-   * Retrieve the data snapshot used for change detection
-   *
-   * @param ReviewableInterface $object
-   *
-   * @return string
-   */
+  /** Retrieve the data snapshot used for change detection. */
   public function getSnapshot(ReviewableInterface $object): string
   {
     return self::getDataSnapshot($object);
@@ -293,16 +258,12 @@ class ReviewService
 
   /**
    * Retrieve the fields which can not be edited by this user
-   * Currently, we ignore the user
+   * Currently, we ignore the user.
    *
-   * @param StudyArea           $studyArea
-   * @param ReviewableInterface $object
-   * @param PendingChange|null  $exclude Exclude this pending change from the object information
-   *
-   * @return PendingChangeObjectInfo
+   * @param PendingChange|null $exclude Exclude this pending change from the object information
    */
   public function getPendingChangeObjectInformation(
-      StudyArea $studyArea, ReviewableInterface $object, ?PendingChange $exclude = NULL): PendingChangeObjectInfo
+      StudyArea $studyArea, ReviewableInterface $object, ?PendingChange $exclude = null): PendingChangeObjectInfo
   {
     if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return new PendingChangeObjectInfo();
@@ -311,14 +272,7 @@ class ReviewService
     return new PendingChangeObjectInfo($this->pendingChangeRepository->getForObject($object, $exclude));
   }
 
-  /**
-   * Retrieve whether the object can be edited
-   *
-   * @param StudyArea           $studyArea
-   * @param ReviewableInterface $object
-   *
-   * @return bool
-   */
+  /** Retrieve whether the object can be edited. */
   public function canObjectBeEdited(StudyArea $studyArea, ReviewableInterface $object): bool
   {
     if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
@@ -331,14 +285,7 @@ class ReviewService
             }));
   }
 
-  /**
-   * Retrieve whether the object can be removed
-   *
-   * @param StudyArea           $studyArea
-   * @param ReviewableInterface $object
-   *
-   * @return bool
-   */
+  /** Retrieve whether the object can be removed. */
   public function canObjectBeRemoved(StudyArea $studyArea, ReviewableInterface $object): bool
   {
     if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
@@ -352,9 +299,6 @@ class ReviewService
    * Create a review from the supplied pending change context.
    * If requested, it will split existing pending changes into multiple ones.
    *
-   * @param StudyArea   $studyArea
-   * @param array       $markedChanges
-   * @param User        $reviewer
    * @param string|null $notes
    *
    * The exceptions can be thrown, but are unlikely. We do not want these
@@ -420,9 +364,7 @@ class ReviewService
   }
 
   /**
-   * Publish the review
-   *
-   * @param Review $review
+   * Publish the review.
    *
    * @throws ORMException
    * @throws Throwable
@@ -445,26 +387,13 @@ class ReviewService
     $this->reviewNotificationService->submissionPublished($review);
   }
 
-  /**
-   * Retrieve the data snapshot used for change detection
-   *
-   * @param ReviewableInterface $object
-   *
-   * @return string
-   */
+  /** Retrieve the data snapshot used for change detection. */
   public static function getDataSnapshot(ReviewableInterface $object): string
   {
     return self::getSerializer()->serialize($object, self::SERIALIZER_FORMAT, self::getSerializationContext());
   }
 
-  /**
-   * Retrieve the data object from a change snapshot
-   *
-   * @param string $snapshot
-   * @param string $objectType
-   *
-   * @return ReviewableInterface
-   */
+  /** Retrieve the data object from a change snapshot. */
   public static function getObjectFromSnapshot(string $snapshot, string $objectType): ReviewableInterface
   {
     $object = self::getSerializer()->deserialize($snapshot, $objectType, self::SERIALIZER_FORMAT);
@@ -473,11 +402,7 @@ class ReviewService
     return $object;
   }
 
-  /**
-   * Retrieve the serializer used for the change serialization
-   *
-   * @return SerializerInterface
-   */
+  /** Retrieve the serializer used for the change serialization. */
   public static function getSerializer(): SerializerInterface
   {
     if (!self::$serializer) {
@@ -489,11 +414,7 @@ class ReviewService
     return self::$serializer;
   }
 
-  /**
-   * Retrieve the serialization context for the change serialization
-   *
-   * @return SerializationContext
-   */
+  /** Retrieve the serialization context for the change serialization. */
   public static function getSerializationContext(): SerializationContext
   {
     return SerializationContext::create()
@@ -501,7 +422,7 @@ class ReviewService
         ->enableMaxDepthChecks()
         ->setGroups([
             'review_change',
-            'elements'          => [
+            'elements' => [
                 'review_change',
                 'concept' => ['id_only', 'name_only'],
                 'next'    => ['id_only'],
@@ -522,9 +443,7 @@ class ReviewService
   }
 
   /**
-   * Applies the pending change
-   *
-   * @param PendingChange $pendingChange
+   * Applies the pending change.
    *
    * @throws EntityNotFoundException
    * @throws ORMException
@@ -538,7 +457,7 @@ class ReviewService
     if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       // Create a new instance of the object
       assert(is_string($objectType) && strlen($objectType) > 0);
-      $object = new $objectType;
+      $object = new $objectType();
       assert($object instanceof ReviewableInterface);
       $object->setStudyArea($pendingChange->getStudyArea());
 
@@ -547,13 +466,13 @@ class ReviewService
 
       // Persist it
       $this->entityManager->persist($object);
-    } else if ($changeType === PendingChange::CHANGE_TYPE_EDIT || $pendingChange === PendingChange::CHANGE_TYPE_REMOVE) {
+    } elseif ($changeType === PendingChange::CHANGE_TYPE_EDIT || $pendingChange === PendingChange::CHANGE_TYPE_REMOVE) {
       $object = $this->getOriginalObject($pendingChange);
 
       if ($changeType === PendingChange::CHANGE_TYPE_EDIT) {
         // Apply the changes
         $object->applyChanges($pendingChange, $this->entityManager);
-      } else if ($changeType === PendingChange::CHANGE_TYPE_REMOVE) {
+      } elseif ($changeType === PendingChange::CHANGE_TYPE_REMOVE) {
         // Remove the object
         $this->entityManager->remove($object);
 
@@ -571,18 +490,11 @@ class ReviewService
     }
   }
 
-  /**
-   * Determines the changed fields based on the snapshot
-   *
-   * @param ReviewableInterface $object
-   * @param string              $originalSnapshot
-   *
-   * @return array
-   */
+  /** Determines the changed fields based on the snapshot. */
   private function determineChangedFieldsFromSnapshot(ReviewableInterface $object, string $originalSnapshot): array
   {
-    if (NULL === $originalSnapshot) {
-      throw new InvalidArgumentException("Snapshot must be given!");
+    if (null === $originalSnapshot) {
+      throw new InvalidArgumentException('Snapshot must be given!');
     }
 
     $changedFields = [];
@@ -596,7 +508,7 @@ class ReviewService
 
     // Compare the data
     foreach ($newSnapshotArray as $key => $data) {
-      $origData = array_key_exists($key, $originalSnapshotArray) ? $originalSnapshotArray[$key] : NULL;
+      $origData = array_key_exists($key, $originalSnapshotArray) ? $originalSnapshotArray[$key] : null;
 
       // The relation field are rebuild every time, so we need to exclude the id property from this test
       if ($object->getReviewName() === Concept::class && ($key === 'relations' || $key === 'incomingRelations')) {
@@ -617,7 +529,7 @@ class ReviewService
   }
 
   /**
-   * Convert value to simple type which can be compared by simple if statements
+   * Convert value to simple type which can be compared by simple if statements.
    *
    * @param $value
    *
@@ -625,8 +537,8 @@ class ReviewService
    */
   private function asSimpleType(&$value)
   {
-    if ($value === NULL) {
-      return NULL;
+    if ($value === null) {
+      return null;
     }
 
     if (is_string($value) || is_numeric($value)) {
@@ -636,28 +548,19 @@ class ReviewService
     return json_encode($value);
   }
 
-  /**
-   * Adds a flash message to the current session for type.
-   *
-   * @param string $type
-   * @param string $message
-   */
+  /** Adds a flash message to the current session for type. */
   private function addFlash(string $type, string $message)
   {
     $this->session->getFlashBag()->add($type, $message);
   }
 
   /**
-   * Used when the requested change does not require review
-   *
-   * @param ReviewableInterface $object
-   * @param string              $changeType
-   * @param callable|NULL       $directCallback
+   * Used when the requested change does not require review.
    *
    * @throws ORMException
    * @throws OptimisticLockException
    */
-  private function directSave(ReviewableInterface $object, string $changeType, callable $directCallback = NULL)
+  private function directSave(ReviewableInterface $object, string $changeType, callable $directCallback = null)
   {
     if ($directCallback) {
       $directCallback($object);
@@ -665,18 +568,14 @@ class ReviewService
 
     if ($changeType === PendingChange::CHANGE_TYPE_REMOVE && !$object instanceof RelationType) {
       $this->entityManager->remove($object);
-    } else if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
+    } elseif ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       $this->entityManager->persist($object);
     }
 
     $this->entityManager->flush();
   }
 
-  /**
-   * Get the current user
-   *
-   * @return User
-   */
+  /** Get the current user. */
   private function getUser(): User
   {
     $user = $this->security->getUser();

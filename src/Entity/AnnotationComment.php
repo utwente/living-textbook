@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TextAnnotation
+ * Class TextAnnotation.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\AnnotationCommentRepository")
@@ -28,7 +28,7 @@ class AnnotationComment
   use SoftDeletable;
 
   /**
-   * The user
+   * The user.
    *
    * @var User|null
    *
@@ -60,16 +60,12 @@ class AnnotationComment
    */
   private $text;
 
-  /**
-   * AnnotationComment constructor.
-   */
+  /** AnnotationComment constructor. */
   public function __construct()
   {
   }
 
   /**
-   * @return DateTime
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -78,17 +74,13 @@ class AnnotationComment
     return $this->createdAt;
   }
 
-  /**
-   * @return User|null
-   */
+  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
   }
 
   /**
-   * @return int
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -98,8 +90,6 @@ class AnnotationComment
   }
 
   /**
-   * @return string
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -108,11 +98,6 @@ class AnnotationComment
     return $this->user->getDisplayName();
   }
 
-  /**
-   * @param User|null $user
-   *
-   * @return AnnotationComment
-   */
   public function setUser(?User $user): AnnotationComment
   {
     $this->user = $user;
@@ -120,19 +105,12 @@ class AnnotationComment
     return $this;
   }
 
-  /**
-   * @return Annotation|null
-   */
+  /** @return Annotation|null */
   public function getAnnotation(): ?Annotation
   {
     return $this->annotation;
   }
 
-  /**
-   * @param Annotation|null $annotation
-   *
-   * @return AnnotationComment
-   */
   public function setAnnotation(?Annotation $annotation): AnnotationComment
   {
     $this->annotation = $annotation;
@@ -140,25 +118,16 @@ class AnnotationComment
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getText(): ?string
   {
     return $this->text;
   }
 
-  /**
-   * @param string|null $text
-   *
-   * @return AnnotationComment
-   */
   public function setText(?string $text): AnnotationComment
   {
     $this->text = $text;
 
     return $this;
   }
-
-
 }

@@ -33,13 +33,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AuthenticationController extends AbstractController
 {
-
-  private const RESET_PASSWORD_USER = '_ltb_rpu';
+  private const RESET_PASSWORD_USER  = '_ltb_rpu';
   private const RESET_PASSWORD_VALID = '_ltb_rpv';
 
   /**
    * This route handles every login request
-   * Only this route is listened to by the security services, so another route is not possible
+   * Only this route is listened to by the security services, so another route is not possible.
    *
    * This route is defined in the routes.yml in order to remove the _locale requirement
    *
@@ -64,9 +63,6 @@ class AuthenticationController extends AbstractController
    * @Route("/login", name="login", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request             $request
-   * @param TranslatorInterface $trans
-   *
    * @return array|RedirectResponse
    */
   public function login(Request $request, TranslatorInterface $trans)
@@ -84,22 +80,15 @@ class AuthenticationController extends AbstractController
    * 5. Forward to create password page
    * -- Next controller - create password
    * 5. New password can be entered
-   * 6. Forward to login
+   * 6. Forward to login.
    *
    * @Route("/password/reset", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request                 $request
-   * @param EntityManagerInterface  $em
-   * @param EncoderFactoryInterface $passwordEncoderFactory
-   * @param UserRepository          $userRepository
-   * @param MailerInterface         $mailer
-   *
-   * @param TranslatorInterface     $translator
+   * @throws TransportExceptionInterface
    *
    * @return Response
    *
-   * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function resetPassword(
@@ -112,7 +101,6 @@ class AuthenticationController extends AbstractController
 
     // Check whether the reset code is available in the request
     if (!$request->query->has('u') || !$request->query->has('e') || !$request->query->has('r')) {
-
       // Present user with email form
       $form = $this->createFormBuilder()
           ->add('email', EmailType::class, [
@@ -146,7 +134,7 @@ class AuthenticationController extends AbstractController
           $passwordEncoder = $passwordEncoderFactory->getEncoder($user);
 
           $user
-              ->setResetCode($passwordEncoder->encodePassword($resetCode, NULL))
+              ->setResetCode($passwordEncoder->encodePassword($resetCode, null))
               ->setResetCodeValid((new DateTime())->modify('+10 minutes'));
 
           // Save and send mail
@@ -168,7 +156,6 @@ class AuthenticationController extends AbstractController
         return $this->render('authentication/reset_email_sent.html.twig', [
             'email' => $email,
         ]);
-
       }
 
       return $this->render('authentication/reset_email.html.twig', [
@@ -191,12 +178,12 @@ class AuthenticationController extends AbstractController
 
     // Verify reset code
     $passwordEncoder = $passwordEncoderFactory->getEncoder($user);
-    if ($user->getResetCode() === NULL || !$passwordEncoder->isPasswordValid($user->getResetCode(), $resetCode, NULL)) {
+    if ($user->getResetCode() === null || !$passwordEncoder->isPasswordValid($user->getResetCode(), $resetCode, null)) {
       return $this->redirectToRoute('login');
     }
 
     // Verify reset code valid
-    if ($user->getResetCodeValid() === NULL || $user->getResetCodeValid() < new DateTime()) {
+    if ($user->getResetCodeValid() === null || $user->getResetCodeValid() < new DateTime()) {
       $this->addFlash('error', $translator->trans('auth.reset-expired'));
 
       return $this->redirectToRoute('login');
@@ -204,7 +191,7 @@ class AuthenticationController extends AbstractController
 
     // Remove the one-time reset code valid time from the user object
     // This allows for feedback when the code is valid, but this page has already been called once
-    $user->setResetCodeValid(NULL);
+    $user->setResetCodeValid(null);
     $em->flush();
 
     // Set information in the session
@@ -217,20 +204,14 @@ class AuthenticationController extends AbstractController
   }
 
   /**
-   * Create a password for a user
+   * Create a password for a user.
    *
    * @Route("/password/create", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request                      $request
-   * @param EntityManagerInterface       $em
-   * @param UserRepository               $userRepository
-   * @param MailerInterface              $mailer
-   * @param UserPasswordEncoderInterface $userPasswordEncoder
-   * @param TranslatorInterface          $translator
+   * @throws TransportExceptionInterface
    *
    * @return Response
-   * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function createPassword(
@@ -277,7 +258,7 @@ class AuthenticationController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       // Store the new password
       $user
-          ->setResetCode(NULL)
+          ->setResetCode(null)
           ->setPassword($userPasswordEncoder->encodePassword($user, $form->getData()['password']));
       $em->flush();
 
@@ -304,21 +285,14 @@ class AuthenticationController extends AbstractController
     return $this->render('authentication/reset_password.html.twig', [
         'form' => $form->createView(),
     ]);
-
   }
 
   /**
-   * Create a new local account. This can only be done based on invite, and the supplied password must match
+   * Create a new local account. This can only be done based on invite, and the supplied password must match.
    *
    * @Route("/account/create", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    * @Template()
-   *
-   * @param Request                      $request
-   * @param EntityManagerInterface       $em
-   * @param UserProtoRepository          $userProtoRepository
-   * @param UserPasswordEncoderInterface $userPasswordEncoder
-   * @param TranslatorInterface          $translator
    *
    * @return array|RedirectResponse
    */
@@ -378,18 +352,15 @@ class AuthenticationController extends AbstractController
   }
 
   /**
-   * This controller forward the user to the SURFconext login
+   * This controller forward the user to the SURFconext login.
    *
    * @Route("/login_surf", name="login_surf", options={"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param SessionInterface $session
-   * @param OidcClient       $oidc
-   *
-   * @return RedirectResponse
-   *
    * @throws OidcConfigurationException
    * @throws OidcConfigurationResolveException
+   *
+   * @return RedirectResponse
    */
   public function surfconext(SessionInterface $session, OidcClient $oidc)
   {

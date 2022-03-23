@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends AbstractApiController
 {
   /**
-   * Catch all (configured in routes.yaml) to display a 404 page with user context
+   * Catch all (configured in routes.yaml) to display a 404 page with user context.
    *
    * No IsGranted annotation as this should also work for the dev firewall which has no token
    */

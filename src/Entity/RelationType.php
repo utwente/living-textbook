@@ -17,7 +17,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class RelationType
+ * Class RelationType.
  *
  * @author BobV
  *
@@ -68,19 +68,13 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
    */
   private $description;
 
-  /**
-   * RelationType constructor.
-   */
+  /** RelationType constructor. */
   public function __construct()
   {
     $this->name = '';
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
@@ -108,29 +102,18 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /**
-   * Get camelized name, for usage in RDF export
-   *
-   * @return string
-   */
+  /** Get camelized name, for usage in RDF export. */
   public function getCamelizedName(): string
   {
     return lcfirst(str_replace(' ', '', ucwords($this->getName())));
   }
 
-  /**
-   * @return null|string
-   */
+  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
   }
 
-  /**
-   * @param null|string $description
-   *
-   * @return RelationType
-   */
   public function setDescription(?string $description): RelationType
   {
     $this->description = StringHelper::emptyToNull($description);
@@ -138,19 +121,12 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return RelationType
-   */
   public function setName(string $name): RelationType
   {
     $this->name = trim($name);
@@ -158,19 +134,12 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea|null $studyArea
-   *
-   * @return RelationType
-   */
   public function setStudyArea(?StudyArea $studyArea): RelationType
   {
     $this->studyArea = $studyArea;

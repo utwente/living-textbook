@@ -49,30 +49,26 @@ class AnalyticsService
   private string $baseOutputDir;
 
   public function __construct(
-      private TrackingExportBuilder   $trackingExportBuilder,
-      private ConceptIdNameProvider   $conceptIdNameProvider,
-      private SpreadsheetHelper       $spreadsheetHelper,
-      string                          $projectDir,
-      string                          $cacheDir,
+      private TrackingExportBuilder $trackingExportBuilder,
+      private ConceptIdNameProvider $conceptIdNameProvider,
+      private SpreadsheetHelper $spreadsheetHelper,
+      string $projectDir,
+      string $cacheDir,
       private TrackingEventRepository $trackingEventRepository,
-      private PageLoadRepository      $pageLoadRepository,
-      private LearningPathRepository  $learningPathRepository,
-      private RelationProvider        $relationProvider,
-      private EntityManagerInterface  $entityManager,
-      private string                  $host,
-      private bool                    $isDebug,
-      private string                  $pythonPath)
+      private PageLoadRepository $pageLoadRepository,
+      private LearningPathRepository $learningPathRepository,
+      private RelationProvider $relationProvider,
+      private EntityManagerInterface $entityManager,
+      private string $host,
+      private bool $isDebug,
+      private string $pythonPath)
   {
     $this->analyticsDir  = $projectDir . '/python/data-visualisation';
     $this->baseOutputDir = $cacheDir . '/data-visualisation';
     $this->fileSystem    = new Filesystem();
   }
 
-  /**
-   * This function ensures that the python environment is functional
-   *
-   * @param OutputStyle|null $output
-   */
+  /** This function ensures that the python environment is functional. */
   public function ensurePythonEnvironment(?OutputStyle $output)
   {
     $output = $output ?: new NullStyle(new NullOutput());
@@ -98,7 +94,7 @@ class AnalyticsService
     // Upgrade the pip version in the venv
     Process::fromShellCommandline(
         sprintf('. %s/bin/activate; pip install --upgrade pip', self::ENV_DIR),
-        $this->analyticsDir, NULL, NULL, 600)
+        $this->analyticsDir, null, null, 600)
         ->mustRun();
 
     $progressBar->clear();
@@ -109,7 +105,7 @@ class AnalyticsService
     // Install packages
     $process = Process::fromShellCommandline(
         sprintf('. %s/bin/activate; pip install -r requirements.txt --no-cache-dir', self::ENV_DIR),
-        $this->analyticsDir, NULL, NULL, NULL);
+        $this->analyticsDir, null, null, null);
     $process->mustRun(function ($type, $buffer) use ($output, $progressBar) {
       $progressBar->clear();
       if (Process::ERR === $type) {
@@ -125,9 +121,7 @@ class AnalyticsService
     $output->writeln('');
   }
 
-  /**
-   * Builds the visualisation for the given learning path
-   */
+  /** Builds the visualisation for the given learning path */
   public function buildForLearningPath(LearningPathVisualisationRequest $request): LearningPathVisualisationResult
   {
     // Create the settings
@@ -139,10 +133,10 @@ class AnalyticsService
                 'list'          => $learningPath->getElementsOrdered()->map(function (LearningPathElement $element) {
                   return $element->getConcept()->getId();
                 })->toArray(),
-                'id'            => $learningPath->getId(),
+                'id' => $learningPath->getId(),
             ],
         ],
-        'functions'     => ['usersPerDayPerLearningPath'], // This single function delivers the required output here
+        'functions' => ['usersPerDayPerLearningPath'], // This single function delivers the required output here
     ];
 
     // Build the visualisation
@@ -205,11 +199,11 @@ class AnalyticsService
       foreach (array_reverse($this->learningPathRepository->findForStudyArea($studyArea)) as $key => $lp) {
         array_unshift($learningPaths['order'], (string)$lp->getId());
         $learningPaths[(string)$lp->getId()] = [
-            'lectureMoment'    => $request->testMoment
+            'lectureMoment' => $request->testMoment
                 ->modify(sprintf('-%d days', $request->daysBeforeTest))
                 ->modify(sprintf('-%d days', $key * $request->daysBetweenLearningPaths))
                 ->format('Y-m-d H:i:s'),
-            'concepts'         => array_values(array_map(function (LearningPathElement $el) {
+            'concepts' => array_values(array_map(function (LearningPathElement $el) {
               return (string)$el->getConcept()->getId();
             }, $lp->getElementsOrdered()->toArray())),
             'learningpathName' => $lp->getName(),
@@ -243,7 +237,7 @@ class AnalyticsService
       // Run the actual build
       $process = Process::fromShellCommandline(
           sprintf('. %s/bin/activate; python SyntheticDataGeneration.py "%s"', self::ENV_DIR, $settingsFile),
-          $this->analyticsDir, NULL, NULL, 120);
+          $this->analyticsDir, null, null, 120);
       $process->run();
 
       if (!$process->isSuccessful()) {
@@ -299,20 +293,19 @@ class AnalyticsService
 
       $this->entityManager->flush();
     });
-
   }
 
   /**
-   * Builds the visualisation using the supplied parameter file
+   * Builds the visualisation using the supplied parameter file.
    *
    * @return string The output directory, which can be used to load the files
    */
   private function build(
       StudyAreaFilteredInterface $object,
-      DateTimeInterface          $start,
-      DateTimeInterface          $end,
-      array                      $settings = [],
-      bool                       $forceBuild = false): string
+      DateTimeInterface $start,
+      DateTimeInterface $end,
+      array $settings = [],
+      bool $forceBuild = false): string
   {
     // Clear the cache on every invocation
     $this->clearCache();
@@ -383,7 +376,7 @@ class AnalyticsService
       // Run the actual build
       $process = Process::fromShellCommandline(
           sprintf('. %s/bin/activate; python Main.py "%s"', self::ENV_DIR, $settingsFile),
-          $this->analyticsDir, NULL, NULL, 120);
+          $this->analyticsDir, null, null, 120);
       $process->run();
 
       if (!$process->isSuccessful()) {
@@ -413,12 +406,7 @@ class AnalyticsService
   }
 
   /**
-   * Retrieves the tracking data export, and writes it to disk
-   *
-   * @param StudyArea $studyArea
-   * @param string    $outputDir
-   *
-   * @return string
+   * Retrieves the tracking data export, and writes it to disk.
    *
    * @throws \PhpOffice\PhpSpreadsheet\Exception
    * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
@@ -434,12 +422,7 @@ class AnalyticsService
   }
 
   /**
-   * Retrieves the concept name export, and writes it to disk
-   *
-   * @param StudyArea $studyArea
-   * @param string    $outputDir
-   *
-   * @return string
+   * Retrieves the concept name export, and writes it to disk.
    *
    * @throws \PhpOffice\PhpSpreadsheet\Exception
    * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
@@ -464,9 +447,7 @@ class AnalyticsService
     return $filename;
   }
 
-  /**
-   * Retrieve the output directory
-   */
+  /** Retrieve the output directory */
   private function outputDir(StudyArea|LearningPath|StudyAreaFilteredInterface $object, string $hash): string
   {
     if ($object instanceof StudyArea) {
@@ -481,9 +462,7 @@ class AnalyticsService
     return $this->baseOutputDir . '/' . $prefix . '_' . $object->getId() . '_' . $hash;
   }
 
-  /**
-   * Cleans the existing cache. All directories older than 1 day are removed
-   */
+  /** Cleans the existing cache. All directories older than 1 day are removed */
   private function clearCache(): void
   {
     if (!$this->fileSystem->exists($this->baseOutputDir)) {

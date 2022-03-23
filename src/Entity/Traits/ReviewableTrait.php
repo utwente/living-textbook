@@ -8,27 +8,18 @@ use App\Review\Exception\IncompatibleChangeException;
 
 /**
  * Trait ReviewableTrait
- * Some default function for reviewable entities
+ * Some default function for reviewable entities.
  */
 trait ReviewableTrait
 {
-
-  /**
-   * Returns the review name
-   *
-   * @return string
-   */
+  /** Returns the review name. */
   public function getReviewName(): string
   {
     return self::class;
   }
 
   /**
-   * Test whether the supplied change belongs to this entity
-   *
-   * @param PendingChange $change
-   *
-   * @return ReviewableInterface
+   * Test whether the supplied change belongs to this entity.
    *
    * @throws IncompatibleChangeException
    */

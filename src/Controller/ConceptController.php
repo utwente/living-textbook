@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class ConceptController
+ * Class ConceptController.
  *
  * @author BobV
  *
@@ -42,8 +42,7 @@ class ConceptController extends AbstractController
   public function __construct(
       private readonly EntityManagerInterface $em,
       private readonly ReviewService $reviewService
-  )
-  {
+  ) {
   }
 
   /**
@@ -53,8 +52,8 @@ class ConceptController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_concept_list", subject="requestStudyArea")
    */
   public function add(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -101,9 +100,9 @@ class ConceptController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea")
    */
   public function edit(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
-      Concept             $concept,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      Concept $concept,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -173,9 +172,9 @@ class ConceptController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_review_submit", subject="requestStudyArea")
    */
   public function editPending(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
-      PendingChange       $pendingChange,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      PendingChange $pendingChange,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -184,7 +183,7 @@ class ConceptController extends AbstractController
     if ($pendingChange->getStudyArea()->getId() != $studyArea->getId()
         || $pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_REMOVE) {
       throw $this->createNotFoundException();
-    };
+    }
 
     // We can either edit new concepts, or re-edit an existing concept
     if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_ADD) {
@@ -247,7 +246,7 @@ class ConceptController extends AbstractController
   }
 
   /**
-   * Instantiate an instance from a selected base concept
+   * Instantiate an instance from a selected base concept.
    *
    * @Route("/instantiate/{concept<\d+>?null}", options={"expose"=true})
    * @Template()
@@ -255,11 +254,11 @@ class ConceptController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_concept_listinstances", subject="requestStudyArea")
    */
   public function instantiate(
-      Request                $request,
-      RequestStudyArea       $requestStudyArea,
-      ?Concept               $concept,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      ?Concept $concept,
       RelationTypeRepository $relationRepository,
-      TranslatorInterface    $translator): Response|array
+      TranslatorInterface $translator): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -287,7 +286,7 @@ class ConceptController extends AbstractController
             'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
               return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea, true);
             },
-            'constraints'   => [
+            'constraints' => [
                 new NotNull(),
             ],
         ])
@@ -375,8 +374,8 @@ class ConceptController extends AbstractController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function list(
-      ConceptRepository    $repo,
-      RequestStudyArea     $requestStudyArea,
+      ConceptRepository $repo,
+      RequestStudyArea $requestStudyArea,
       AnnotationRepository $annotationRepository): array
   {
     /** @var User $user */
@@ -386,7 +385,7 @@ class ConceptController extends AbstractController
     $concepts         = $repo->findForStudyAreaOrderedByName($studyArea, false, true);
     $annotationCounts = $user
         ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
-        : NULL;
+        : null;
 
     return [
         'annotationCounts' => $annotationCounts,
@@ -401,8 +400,8 @@ class ConceptController extends AbstractController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function listInstances(
-      ConceptRepository    $repo,
-      RequestStudyArea     $requestStudyArea,
+      ConceptRepository $repo,
+      RequestStudyArea $requestStudyArea,
       AnnotationRepository $annotationRepository): array
   {
     /** @var User $user */
@@ -412,7 +411,7 @@ class ConceptController extends AbstractController
     $concepts         = $repo->findForStudyAreaOrderedByName($studyArea, false, false, true);
     $annotationCounts = $user
         ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
-        : NULL;
+        : null;
 
     return [
         'instances'        => true,
@@ -429,11 +428,11 @@ class ConceptController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea")
    */
   public function remove(
-      Request                $request,
-      RequestStudyArea       $requestStudyArea,
-      Concept                $concept,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      Concept $concept,
       LearningPathRepository $learningPathRepository,
-      TranslatorInterface    $trans): Response|array
+      TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -451,7 +450,7 @@ class ConceptController extends AbstractController
       return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'        => 'app_concept_show',
         'cancel_route_params' => ['concept' => $concept->getId()],
     ]);
@@ -478,8 +477,8 @@ class ConceptController extends AbstractController
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function show(
-      Concept                $concept,
-      RequestStudyArea       $requestStudyArea,
+      Concept $concept,
+      RequestStudyArea $requestStudyArea,
       LearningPathRepository $learningPathRepository): array
   {
     // Check study area
@@ -496,6 +495,6 @@ class ConceptController extends AbstractController
   private function getHandler(): ConceptEntityHandler
   {
     // Double validation is not needed as we rely on the form validation
-    return new ConceptEntityHandler($this->em, NULL, $this->reviewService);
+    return new ConceptEntityHandler($this->em, null, $this->reviewService);
   }
 }

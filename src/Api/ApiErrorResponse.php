@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiErrorResponse extends JsonResponse
 {
-  public function __construct(string $reason, int $status, ?string $description = NULL)
+  public function __construct(string $reason, int $status, ?string $description = null)
   {
     $data = ['reason' => $reason];
     if ($description) {

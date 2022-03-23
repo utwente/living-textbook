@@ -19,88 +19,49 @@ use Symfony\Component\Routing\RouterInterface;
 
 class UrlChecker
 {
-
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $bad0UrlCache;
 
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $bad1UrlCache;
 
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $bad2UrlCache;
 
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $bad4UrlCache;
 
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $bad7UrlCache;
 
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $goodUrlsCache;
 
-  /**
-   * @var FilesystemAdapter
-   */
+  /** @var FilesystemAdapter */
   private $studyAreaCache;
 
-  /**
-   * @var ContributorRepository
-   */
+  /** @var ContributorRepository */
   private $contributorRepository;
 
-  /**
-   * @var ExternalResourceRepository
-   */
+  /** @var ExternalResourceRepository */
   private $externalResourceRepository;
 
-  /**
-   * @var LearningOutcomeRepository
-   */
+  /** @var LearningOutcomeRepository */
   private $learningOutcomeRepository;
 
-  /**
-   * @var LearningPathRepository
-   */
+  /** @var LearningPathRepository */
   private $learningPathRepository;
 
-  /**
-   * @var StudyAreaRepository
-   */
+  /** @var StudyAreaRepository */
   private $studyAreaRepository;
 
-  /**
-   * @var UrlScanner
-   */
+  /** @var UrlScanner */
   private $urlScanner;
 
-  /**
-   * @var RouterInterface
-   */
+  /** @var RouterInterface */
   private $router;
 
-  /**
-   * UrlChecker constructor.
-   *
-   * @param ExternalResourceRepository $externalResourceRepository
-   * @param LearningOutcomeRepository  $learningOutcomeRepository
-   * @param StudyAreaRepository        $studyAreaRepository
-   * @param LearningPathRepository     $learningPathRepository
-   * @param ContributorRepository      $contributorRepository
-   * @param UrlScanner                 $urlScanner
-   * @param RouterInterface            $router
-   */
+  /** UrlChecker constructor. */
   public function __construct(
       ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
       StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository,
@@ -123,14 +84,11 @@ class UrlChecker
   }
 
   /**
-   * Check all the URLs in the whole application
+   * Check all the URLs in the whole application.
    *
-   * @param bool $force
-   * @param bool $fromCache
-   *
-   * @return array
-   * Returns an array with structure [studyarea_id]['bad'|'unscanned'][url]
    * @throws InvalidArgumentException
+   *
+   * @return array Returns an array with structure [studyarea_id]['bad'|'unscanned'][url]
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
@@ -147,13 +105,8 @@ class UrlChecker
   }
 
   /**
-   * Check the URLs used within one study area
+   * Check the URLs used within one study area.
    *
-   * @param StudyArea $studyArea
-   * @param bool      $force
-   * @param bool      $fromCache
-   *
-   * @return array|null
    * @throws InvalidArgumentException
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
@@ -161,22 +114,21 @@ class UrlChecker
   public function checkStudyArea(StudyArea $studyArea, bool $force = false, bool $fromCache = true): ?array
   {
     $cacheItem = $this->getUrlsForStudyArea($studyArea, $fromCache);
-    if ($cacheItem === NULL || $cacheItem['urls'] === NULL) return NULL;
+    if ($cacheItem === null || $cacheItem['urls'] === null) {
+      return null;
+    }
     $badUrls = $this->findBadUrls($cacheItem['urls'], $studyArea, $force, $fromCache);
 
     return $badUrls;
   }
 
   /**
-   * Get all urls for a given study area, from cache if wanted
+   * Get all urls for a given study area, from cache if wanted.
    *
-   * @param StudyArea $studyArea
-   * @param bool      $fromCache
-   *
-   * @return array|null
-   * Returns array with urls and last scanned time if it is cached or not retrieved from cache,
-   * null if cache doesn't contain urls for this study area
    * @throws InvalidArgumentException
+   *
+   * @return array|null Returns array with urls and last scanned time if it is cached or not retrieved from cache,
+   *                    null if cache doesn't contain urls for this study area
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
@@ -188,10 +140,10 @@ class UrlChecker
       if ($this->studyAreaCache->hasItem($studyAreaId)) {
         $cacheItem = $this->studyAreaCache->getItem($studyAreaId)->get();
       } else {
-        return NULL;
+        return null;
       }
     } else {
-      $cacheItem = ['urls' => NULL, 'lastScanned' => new DateTime()];
+      $cacheItem = ['urls' => null, 'lastScanned' => new DateTime()];
       // Early commit to cache, so it is clear scanning has commenced
       $this->studyAreaCache->save($this->studyAreaCache->getItem($studyAreaId)->set($cacheItem));
       $urls              = $this->scanStudyArea($studyArea);
@@ -203,16 +155,15 @@ class UrlChecker
   }
 
   /**
-   * Find bad urls within an array of urls
+   * Find bad urls within an array of urls.
    *
-   * @param Url[]     $urls
-   * @param StudyArea $studyArea
-   * @param bool      $force     Rescan all urls
-   * @param bool      $fromCache Only show results that have been cached
+   * @param Url[] $urls
+   * @param bool  $force     Rescan all urls
+   * @param bool  $fromCache Only show results that have been cached
    *
-   * @return array
-   * Returns two arrays, one with unscanned urls and one with bad urls
    * @throws InvalidArgumentException
+   *
+   * @return array Returns two arrays, one with unscanned urls and one with bad urls
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
@@ -225,12 +176,18 @@ class UrlChecker
       assert($url instanceof Url);
       if ($url->isInternal()) {
         $urlStatus = $this->checkInternalUrl($url, $studyArea);
-        if ($urlStatus === false) $wrongStudyAreaUrls[] = $url;
-        else if ($urlStatus === NULL) $badUrls[] = $url;
+        if ($urlStatus === false) {
+          $wrongStudyAreaUrls[] = $url;
+        } elseif ($urlStatus === null) {
+          $badUrls[] = $url;
+        }
       } else {
         $urlStatus = $this->checkUrl($url, $force, $fromCache);
-        if ($urlStatus === false) $badUrls[] = $url;
-        else if ($urlStatus === NULL) $unscannedUrls[] = $url;
+        if ($urlStatus === false) {
+          $badUrls[] = $url;
+        } elseif ($urlStatus === null) {
+          $unscannedUrls[] = $url;
+        }
       }
     }
 
@@ -238,12 +195,9 @@ class UrlChecker
   }
 
   /**
-   * Find the used URLs within one study area
+   * Find the used URLs within one study area.
    *
-   * @param StudyArea $studyArea
-   *
-   * @return Url[]|array
-   * Returns a flat array of URLs without origin
+   * @return Url[]|array Returns a flat array of URLs without origin
    */
   private function scanStudyArea(StudyArea $studyArea)
   {
@@ -267,7 +221,9 @@ class UrlChecker
     $router = $this->router;
     // Exclude latex URLs
     $urls = array_filter($urls, function (Url $entry) use ($router) {
-      if (!$entry->isInternal()) return true;
+      if (!$entry->isInternal()) {
+        return true;
+      }
       $cleanPath = strstr($entry->getPath(), '?', true) ?: $entry->getPath();
       try {
         $urlInfo = $router->match($cleanPath);
@@ -283,11 +239,7 @@ class UrlChecker
 
   /**
    * Check if a given Url gives a correct response, based on
-   * https://stackoverflow.com/questions/15770903/check-if-links-are-broken-in-php
-   *
-   * @param Url $url
-   *
-   * @return bool
+   * https://stackoverflow.com/questions/15770903/check-if-links-are-broken-in-php.
    */
   private function _checkUrl(Url $url): bool
   {
@@ -312,11 +264,9 @@ class UrlChecker
   }
 
   /**
-   * Cache a URL in the given cache
+   * Cache a URL in the given cache.
    *
-   * @param CacheableUrl     $cacheableUrl
-   * @param AdapterInterface $cache
-   * @param                  $expiry
+   * @param $expiry
    *
    * @throws InvalidArgumentException
    *
@@ -332,25 +282,17 @@ class UrlChecker
   }
 
   /**
-   * Check a URL and cache it
-   *
-   * @param Url                   $url
-   * @param AdapterInterface      $newCache
-   * @param bool                  $fromCache
-   * @param string                $modifyTime
-   * @param AdapterInterface|null $oldCache
-   *
-   * @return bool
+   * Check a URL and cache it.
    *
    * @throws InvalidArgumentException
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
-  private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, bool $fromCache = false, string $modifyTime = '', ?AdapterInterface $oldCache = NULL): bool
+  private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, bool $fromCache = false, string $modifyTime = '', ?AdapterInterface $oldCache = null): bool
   {
     $cacheableUrl = CacheableUrl::fromUrl($url);
     $cachekey     = $cacheableUrl->getCachekey();
-    if ($oldCache !== NULL) {
+    if ($oldCache !== null) {
       // Check if cache still valid
       $cachedUrl = $oldCache->getItem($cachekey)->get();
       assert($cachedUrl instanceof CacheableUrl);
@@ -376,12 +318,6 @@ class UrlChecker
     }
   }
 
-  /**
-   * @param Url       $url
-   * @param StudyArea $studyArea
-   *
-   * @return null|bool
-   */
   private function checkInternalUrl(Url $url, StudyArea $studyArea): ?bool
   {
     $cleanPath = strstr($url->getPath(), '?', true) ?: $url->getPath();
@@ -392,30 +328,25 @@ class UrlChecker
       if ($urlInfo['_route'] === '_home') {
         $urlInfo = $this->router->match(str_replace('/page', '', $cleanPath));
       }
-
     } catch (ResourceNotFoundException $e) {
-      return NULL;
+      return null;
     }
     // Check if the URL is in the right study area
-    if (array_key_exists('_studyArea', $urlInfo)) return $urlInfo['_studyArea'] == $studyArea->getId();
+    if (array_key_exists('_studyArea', $urlInfo)) {
+      return $urlInfo['_studyArea'] == $studyArea->getId();
+    }
 
     // Not in a study area
     return true;
   }
 
   /**
-   * @param Url  $url
-   * @param bool $force
-   * @param bool $fromCache
-   *
-   * @return bool|null
    * @throws InvalidArgumentException
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function checkUrl(Url $url, bool $force, bool $fromCache = true): ?bool
   {
-
     // Force recheck, don't use the cache
     if ($force) {
       return $this->checkAndCacheUrl($url, $this->bad0UrlCache);
@@ -443,7 +374,6 @@ class UrlChecker
     }
 
     // Not cached, check now. return null if forced from cache
-    return $fromCache ? NULL : $this->checkAndCacheUrl($url, $this->bad0UrlCache);
-
+    return $fromCache ? null : $this->checkAndCacheUrl($url, $this->bad0UrlCache);
   }
 }

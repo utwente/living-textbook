@@ -10,13 +10,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReviewNotificationService
 {
-  /**
-   * @var MailerInterface
-   */
+  /** @var MailerInterface */
   private $mailer;
-  /**
-   * @var TranslatorInterface
-   */
+  /** @var TranslatorInterface */
   private $translator;
 
   public function __construct(MailerInterface $mailer, TranslatorInterface $translator)
@@ -26,10 +22,7 @@ class ReviewNotificationService
   }
 
   /**
-   *
-   *Notify the requested reviewer there is a new review waiting
-   *
-   * @param Review $review
+   *Notify the requested reviewer there is a new review waiting.
    *
    * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
@@ -59,9 +52,7 @@ class ReviewNotificationService
   }
 
   /**
-   * Notify the editor that his/her submission has been denied
-   *
-   * @param Review $review
+   * Notify the editor that his/her submission has been denied.
    *
    * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
@@ -85,9 +76,7 @@ class ReviewNotificationService
 
   /**
    * Notify the editor that his/her submission has been approved and is pending for publish
-   * Notify the study area owner that there is a submission that needs to be published
-   *
-   * @param Review $review
+   * Notify the study area owner that there is a submission that needs to be published.
    *
    * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
@@ -123,8 +112,6 @@ class ReviewNotificationService
   }
 
   /**
-   * @param Review $review
-   *
    * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
    */

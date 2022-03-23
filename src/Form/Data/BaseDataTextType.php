@@ -19,7 +19,7 @@ class BaseDataTextType extends AbstractBaseDataType
         'required' => $options['required'],
     ];
     if ($options['ckeditor']) {
-      $formOptions['studyArea'] = $options['studyArea'];
+      $formOptions['studyArea']   = $options['studyArea'];
       $formOptions['config_name'] = 'ltb_concept_config';
     }
 
@@ -34,17 +34,16 @@ class BaseDataTextType extends AbstractBaseDataType
     $resolver
         ->setDefaults([
             'ckeditor'  => true,
-            'studyArea' => NULL,
+            'studyArea' => null,
         ])
         ->setAllowedTypes('ckeditor', ['bool'])
         ->setAllowedTypes('studyArea', ['null', StudyArea::class])
         ->setNormalizer('studyArea', function (Options $options, $value) {
-          if ($options['ckeditor'] && NULL === $value) {
+          if ($options['ckeditor'] && null === $value) {
             throw new MissingOptionsException('The required option "studyArea" is missing (as the form is a ckeditor type).');
           }
 
           return $value;
         });
   }
-
 }

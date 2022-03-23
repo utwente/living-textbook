@@ -3,7 +3,7 @@
 namespace App\UrlUtils\Model;
 
 /**
- * Class Url
+ * Class Url.
  *
  * Contains found URL metadata
  */
@@ -34,18 +34,14 @@ class Url extends AbstractUrl
 
   /**
    * Implementation to determine duplicates correctly
-   * https://stackoverflow.com/questions/2426557/array-unique-for-objects
+   * https://stackoverflow.com/questions/2426557/array-unique-for-objects.
    */
   public function __toString()
   {
     return $this->url . '.' . ($this->internal ? '1' : '0') . '.' . $this->context->__toString();
   }
 
-  /**
-   * Get parts of an URL, see http://www.ietf.org/rfc/rfc3986.txt
-   *
-   * @return array
-   */
+  /** Get parts of an URL, see http://www.ietf.org/rfc/rfc3986.txt. */
   protected function getUrlParts(): array
   {
     $pattern = '/(?i)^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/';
@@ -55,21 +51,13 @@ class Url extends AbstractUrl
     return $matches;
   }
 
-  /**
-   * Get whether it is a path url (starts with /, and internal)
-   *
-   * @return bool
-   */
+  /** Get whether it is a path url (starts with /, and internal). */
   public function isPath(): bool
   {
     return $this->isPath;
   }
 
-  /**
-   * Get path part of the url
-   *
-   * @return string
-   */
+  /** Get path part of the url. */
   public function getPath(): string
   {
     if ($this->isPath()) {
@@ -79,11 +67,7 @@ class Url extends AbstractUrl
     return $this->getUrlParts()[5];
   }
 
-  /**
-   * Get host part of the url
-   *
-   * @return string
-   */
+  /** Get host part of the url. */
   public function getHost(): string
   {
     if ($this->isPath()) {
@@ -93,17 +77,13 @@ class Url extends AbstractUrl
     return $this->getUrlParts()[4];
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isInternal(): bool
   {
     return $this->internal;
   }
 
-  /**
-   * @return UrlContext
-   */
+  /** @return UrlContext */
   public function getContext(): UrlContext
   {
     return $this->context;

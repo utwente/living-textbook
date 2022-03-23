@@ -9,17 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TrackingEvent
+ * Class TrackingEvent.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\TrackingEventRepository")
  */
 class TrackingEvent implements StudyAreaFilteredInterface
 {
+  use IdTrait;
 
-  /**
-   * The supported events
-   */
+  /** The supported events */
   public const SUPPORTED_EVENTS = [
       'concept_browser_open',
       'concept_browser_open_concept',
@@ -29,8 +28,6 @@ class TrackingEvent implements StudyAreaFilteredInterface
       'learning_path_browser_close',
       'general_link_click',
   ];
-
-  use IdTrait;
 
   /**
    * @var string
@@ -91,19 +88,13 @@ class TrackingEvent implements StudyAreaFilteredInterface
    */
   private $context;
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getUserId(): string
   {
     return $this->userId;
   }
 
-  /**
-   * @param string $userId
-   *
-   * @return TrackingEvent
-   */
+  /** @return TrackingEvent */
   public function setUserId(string $userId): self
   {
     $this->userId = $userId;
@@ -111,19 +102,13 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return DateTime
-   */
+  /** @return DateTime */
   public function getTimestamp(): DateTime
   {
     return $this->timestamp;
   }
 
-  /**
-   * @param DateTime $timestamp
-   *
-   * @return TrackingEvent
-   */
+  /** @return TrackingEvent */
   public function setTimestamp(DateTime $timestamp): self
   {
     $this->timestamp = $timestamp;
@@ -131,19 +116,13 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getSessionId(): string
   {
     return $this->sessionId;
   }
 
-  /**
-   * @param string $sessionId
-   *
-   * @return TrackingEvent
-   */
+  /** @return TrackingEvent */
   public function setSessionId(string $sessionId): self
   {
     $this->sessionId = $sessionId;
@@ -151,19 +130,13 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return StudyArea
-   */
+  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return TrackingEvent
-   */
+  /** @return TrackingEvent */
   public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
@@ -171,19 +144,13 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getEvent(): string
   {
     return $this->event;
   }
 
-  /**
-   * @param string $event
-   *
-   * @return TrackingEvent
-   */
+  /** @return TrackingEvent */
   public function setEvent(string $event): self
   {
     $this->event = $event;
@@ -191,25 +158,17 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return array|null
-   */
+  /** @return array|null */
   public function getContext(): ?array
   {
     return $this->context;
   }
 
-  /**
-   * @param array|null $context
-   *
-   * @return TrackingEvent
-   */
+  /** @return TrackingEvent */
   public function setContext(?array $context): self
   {
     $this->context = $context;
 
     return $this;
   }
-
-
 }

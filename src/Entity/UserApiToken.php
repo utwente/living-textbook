@@ -23,7 +23,7 @@ class UserApiToken implements UserInterface
   use Blameable;
 
   /**
-   * The user linked with this token
+   * The user linked with this token.
    *
    * @ORM\ManyToOne(targetEntity="User")
    * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
@@ -31,14 +31,14 @@ class UserApiToken implements UserInterface
   private User $user; // Default in constructor
 
   /**
-   * The token id
+   * The token id.
    *
    * @ORM\Column(type="string", length=255, unique=true)
    */
   private string $tokenId; // Default in constructor
 
   /**
-   * The encoded token
+   * The encoded token.
    *
    * @ORM\Column(type="string", length=255)
    */
@@ -49,17 +49,13 @@ class UserApiToken implements UserInterface
    *
    * @Assert\Length(max=255)
    */
-  private ?string $description = NULL;
+  private ?string $description = null;
 
-  /**
-   * @ORM\Column(type="datetime_immutable", nullable=true)
-   */
-  private ?DateTimeImmutable $validUntil = NULL;
+  /** @ORM\Column(type="datetime_immutable", nullable=true) */
+  private ?DateTimeImmutable $validUntil = null;
 
-  /**
-   * @ORM\Column(type="datetime_immutable", nullable=true)
-   */
-  private ?DateTimeImmutable $lastUsed = NULL;
+  /** @ORM\Column(type="datetime_immutable", nullable=true) */
+  private ?DateTimeImmutable $lastUsed = null;
 
   public function __construct(User $user, string $token)
   {
@@ -126,7 +122,7 @@ class UserApiToken implements UserInterface
 
   public function getSalt()
   {
-    return NULL;
+    return null;
   }
 
   public function getUsername()

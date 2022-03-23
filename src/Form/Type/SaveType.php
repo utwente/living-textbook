@@ -14,70 +14,57 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class SaveType
+ * Class SaveType.
  *
  * @author BobV
  */
 class SaveType extends AbstractType
 {
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-
     // Add the save button if required
     if ($options['enable_save']) {
-      $builder->add('_save', SubmitType::class, array(
+      $builder->add('_save', SubmitType::class, [
           'label' => $options['save_label'],
           'icon'  => $options['save_icon'],
-          'attr'  => array(
+          'attr'  => [
               'class' => 'btn btn-outline-success',
-          ),
-      ));
+          ],
+      ]);
     }
 
     // Add the save and list button if required
     if ($options['enable_save_and_list']) {
-      $builder->add('_save_and_list', SubmitType::class, array(
+      $builder->add('_save_and_list', SubmitType::class, [
           'label' => $options['save_and_list_label'],
           'icon'  => $options['save_and_list_icon'],
-          'attr'  => array(
+          'attr'  => [
               'class' => 'btn btn-outline-info',
-          ),
-      ));
+          ],
+      ]);
     }
 
     if ($options['enable_cancel']) {
-      $builder->add('_cancel', ButtonUrlType::class, array(
+      $builder->add('_cancel', ButtonUrlType::class, [
           'label'        => $options['cancel_label'],
           'route'        => $options['cancel_route'],
           'route_params' => $options['cancel_route_params'],
           'icon'         => $options['cancel_icon'],
-          'attr'         => array(
+          'attr'         => [
               'class' => $options['cancel_btn_class'],
-          ),
-      ));
+          ],
+      ]);
     }
   }
 
-  /**
-   * Build view
-   *
-   * @param FormView      $view
-   * @param FormInterface $form
-   * @param array         $options
-   */
+  /** Build view. */
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['locate_static'] = $options['locate_static'];
   }
 
   /**
-   * Check whether the "save and list" button is clicked
-   *
-   * @param FormInterface $form
+   * Check whether the "save and list" button is clicked.
    *
    * @return bool
    */
@@ -95,13 +82,10 @@ class SaveType extends AbstractType
     return false;
   }
 
-  /**
-   * @param OptionsResolver $resolver
-   */
+  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
-
-    $resolver->setDefaults(array(
+    $resolver->setDefaults([
         'mapped'               => false,
         'save_label'           => 'form.save',
         'save_icon'            => 'fa-check',
@@ -115,10 +99,10 @@ class SaveType extends AbstractType
         'enable_save'          => true,
         'enable_save_and_list' => true,
         'enable_cancel'        => false,
-        'cancel_route'         => NULL,
-        'cancel_route_params'  => array(),
+        'cancel_route'         => null,
+        'cancel_route_params'  => [],
         'locate_static'        => false,
-    ));
+    ]);
 
     $resolver->setAllowedTypes('save_label', 'string');
     $resolver->setAllowedTypes('save_and_list_label', 'string');
@@ -126,17 +110,16 @@ class SaveType extends AbstractType
     $resolver->setAllowedTypes('enable_save', 'bool');
     $resolver->setAllowedTypes('enable_save_and_list', 'bool');
     $resolver->setAllowedTypes('enable_cancel', 'bool');
-    $resolver->setAllowedTypes('cancel_route', array('null', 'string'));
+    $resolver->setAllowedTypes('cancel_route', ['null', 'string']);
     $resolver->setAllowedTypes('cancel_route_params', 'array');
     $resolver->setAllowedTypes('locate_static', 'bool');
 
     $resolver->setNormalizer('cancel_route', function (Options $options, $value) {
-      if ($options['enable_cancel'] === true && $value === NULL) {
+      if ($options['enable_cancel'] === true && $value === null) {
         throw new MissingOptionsException('The option "cancel_route" is not set, while the cancel button is enabled.');
       }
 
       return $value;
     });
   }
-
 }

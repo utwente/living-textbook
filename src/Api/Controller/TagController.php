@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractApiController
 {
   /**
-   * Retrieve all study area tags
+   * Retrieve all study area tags.
    *
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -30,7 +30,7 @@ class TagController extends AbstractApiController
   ])]
   public function list(
       RequestStudyArea $requestStudyArea,
-      TagRepository    $tagRepository): JsonResponse
+      TagRepository $tagRepository): JsonResponse
   {
     return $this->createDataResponse(array_map(
         [Tag::class, 'fromEntity'],
@@ -39,7 +39,7 @@ class TagController extends AbstractApiController
   }
 
   /**
-   * Retrieve single study area tag
+   * Retrieve single study area tag.
    *
    * @Route("/{tag<\d+>}", methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -47,7 +47,7 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 200, description: 'All study area tags', content: [new Model(type: Tag::class)])]
   public function single(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Tag  $tag): JsonResponse
+      \App\Entity\Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
@@ -55,7 +55,7 @@ class TagController extends AbstractApiController
   }
 
   /**
-   * Add a new study area tag
+   * Add a new study area tag.
    *
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -65,10 +65,10 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
-      Request          $request): JsonResponse
+      Request $request): JsonResponse
   {
     $tag = $this->getTypedFromBody($request, Tag::class)
-        ->mapToEntity(NULL)
+        ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($tag);
@@ -77,7 +77,7 @@ class TagController extends AbstractApiController
   }
 
   /**
-   * Update an existing study area tag
+   * Update an existing study area tag.
    *
    * @Route("/{tag<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -87,8 +87,8 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Tag  $tag,
-      Request          $request): JsonResponse
+      \App\Entity\Tag $tag,
+      Request $request): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
@@ -101,7 +101,7 @@ class TagController extends AbstractApiController
   }
 
   /**
-   * Delete an existing study area tag
+   * Delete an existing study area tag.
    *
    * @Route("/{tag<\d+>}", methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -109,13 +109,13 @@ class TagController extends AbstractApiController
   #[OA\Response(response: 202, description: 'The tag has been deleted')]
   public function delete(
       RequestStudyArea $requestStudyArea,
-      \App\Entity\Tag  $tag): JsonResponse
+      \App\Entity\Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
     $this->getHandler()->delete($tag);
 
-    return new JsonResponse(NULL, Response::HTTP_ACCEPTED);
+    return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
   private function getHandler(): TagHandler

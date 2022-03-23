@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ElFinderController
- * Study area id 0 is used to indicate the global storage space
+ * Study area id 0 is used to indicate the global storage space.
  *
  * @author BobV
  *
@@ -21,21 +21,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ElFinderController extends AbstractController
 {
-
   /**
    * @Route("/load/{instance}", defaults={"instance"="default"}, name="ef_connect", options={"no_login_wrap"=true})
    * @IsGranted("ROLE_USER")
-   *
-   * @param Request             $request
-   * @param string              $instance
-   * @param StudyAreaRepository $studyAreaRepository
    *
    * @return Response
    */
   public function load(Request $request, string $instance, StudyAreaRepository $studyAreaRepository)
   {
     // Parse study area from the home folder
-    if (NULL === ($homeFolderString = $request->query->get('homeFolder', NULL))) {
+    if (null === ($homeFolderString = $request->query->get('homeFolder', null))) {
       // Home folder query parameter not found
       throw $this->createNotFoundException();
     }
@@ -50,7 +45,7 @@ class ElFinderController extends AbstractController
       assert($studyArea instanceof StudyArea);
 
       $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
-    } else if (1 === preg_match("/^global/", $homeFolderString, $result)) {
+    } elseif (1 === preg_match('/^global/', $homeFolderString, $result)) {
       $studyAreaId = 0;
       $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
     } else {
@@ -65,16 +60,11 @@ class ElFinderController extends AbstractController
    *   defaults={"instance"="default"}, name="elfinder", options={"no_login_wrap"=true})
    * @IsGranted("ROLE_USER")
    *
-   * @param Request             $request
-   * @param string              $instance
-   * @param int                 $studyAreaId
-   * @param StudyAreaRepository $studyAreaRepository
-   *
    * @return Response
    */
   public function show(Request $request, string $instance, int $studyAreaId, StudyAreaRepository $studyAreaRepository)
   {
-    $studyArea = NULL;
+    $studyArea = null;
 
     if ($studyAreaId !== 0) {
       // Check for edit permissions of the referenced study area
@@ -92,12 +82,7 @@ class ElFinderController extends AbstractController
   }
 
   /**
-   * Forward the request to the correct elfinder controller
-   *
-   * @param string $action
-   * @param string $instance
-   * @param int    $studyAreaId
-   * @param array  $query
+   * Forward the request to the correct elfinder controller.
    *
    * @return Response
    */
@@ -107,7 +92,7 @@ class ElFinderController extends AbstractController
     $folder     = $studyAreaId === 0
         ? 'global'
         : sprintf('studyarea/%d', $studyAreaId);
-    $folderPath = sprintf('%s/public/uploads/%s', $this->getParameter("kernel.project_dir"), $folder);
+    $folderPath = sprintf('%s/public/uploads/%s', $this->getParameter('kernel.project_dir'), $folder);
     $filesystem = new Filesystem();
     if (!$filesystem->exists($folderPath)) {
       $filesystem->mkdir($folderPath);

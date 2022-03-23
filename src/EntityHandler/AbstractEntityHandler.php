@@ -12,10 +12,9 @@ abstract class AbstractEntityHandler
 {
   public function __construct(
       protected EntityManagerInterface $em,
-      protected ?ValidatorInterface    $validator,
-      protected ?ReviewService         $reviewService
-  )
-  {
+      protected ?ValidatorInterface $validator,
+      protected ?ReviewService $reviewService
+  ) {
   }
 
   protected function validate(mixed $value): void
@@ -29,17 +28,17 @@ abstract class AbstractEntityHandler
       return;
     }
 
-    /** @noinspection PhpUnhandledExceptionInspection */
+    /* @noinspection PhpUnhandledExceptionInspection */
     throw new EntityValidationFailedException($violations);
   }
 
   protected function useReviewService(?string $snapshot): bool
   {
-    if ($this->reviewService === NULL) {
+    if ($this->reviewService === null) {
       return false;
     }
 
-    if ($snapshot === NULL) {
+    if ($snapshot === null) {
       throw new RuntimeException('Snapshot must be provided when using the review service');
     }
 

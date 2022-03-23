@@ -7,13 +7,12 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class WordCountValidator
+ * Class WordCountValidator.
  *
  * @author BobV
  */
 class WordCountValidator extends ConstraintValidator
 {
-
   /**
    * Checks if the passed value is valid.
    *
@@ -34,12 +33,14 @@ class WordCountValidator extends ConstraintValidator
     $message = false;
     if ($count < $constraint->min) {
       $message = $constraint->minMessage;
-    } else if ($count > $constraint->max) {
+    } elseif ($count > $constraint->max) {
       $message = $constraint->maxMessage;
     }
 
     // Check whether violation is detected
-    if (!$message) return;
+    if (!$message) {
+      return;
+    }
 
     // Build violation
     $this->context->buildViolation($message, [

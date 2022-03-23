@@ -9,10 +9,7 @@ use Symfony\Component\Mime\Email;
 
 class SetFromSubscriber implements EventSubscriberInterface
 {
-
-  /**
-   * @var string
-   */
+  /** @var string */
   private $from;
 
   public function __construct(string $from)

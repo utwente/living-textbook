@@ -11,7 +11,7 @@ use Twig\TwigFunction;
 class HtmlDiffExtension extends AbstractExtension
 {
   /**
-   * Register functions
+   * Register functions.
    *
    * @return array|TwigFilter[]
    */

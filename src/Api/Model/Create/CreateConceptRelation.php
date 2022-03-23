@@ -11,29 +11,28 @@ class CreateConceptRelation
       protected readonly int $sourceId,
       protected readonly int $targetId,
       protected readonly int $relationTypeId,
-  )
-  {
+  ) {
   }
 
   public function isValid(): bool
   {
-    return $this->getSourceId() !== NULL
-        && $this->getTargetId() !== NULL
-        && $this->getRelationTypeId() !== NULL;
+    return $this->getSourceId() !== null
+        && $this->getTargetId() !== null
+        && $this->getRelationTypeId() !== null;
   }
 
   public function getSourceId(): ?int
   {
-    return $this->sourceId ?? NULL;
+    return $this->sourceId ?? null;
   }
 
   public function getTargetId(): ?int
   {
-    return $this->targetId ?? NULL;
+    return $this->targetId ?? null;
   }
 
   public function getRelationTypeId(): ?int
   {
-    return $this->relationTypeId ?? NULL;
+    return $this->relationTypeId ?? null;
   }
 }

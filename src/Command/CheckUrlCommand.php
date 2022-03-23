@@ -10,30 +10,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckUrlCommand extends Command
 {
-
   /**
-   * Makes the command lazy loaded
+   * Makes the command lazy loaded.
    *
    * @var string
    */
   protected static $defaultName = 'ltb:check:urls';
 
-  /**
-   * @var UrlChecker
-   */
+  /** @var UrlChecker */
   private $urlChecker;
 
-  /**
-   * @var StudyAreaRepository
-   */
+  /** @var StudyAreaRepository */
   private $studyAreaRepository;
 
-  /**
-   * CheckUrlCommand constructor.
-   *
-   * @param UrlChecker          $urlChecker
-   * @param StudyAreaRepository $studyAreaRepository
-   */
+  /** CheckUrlCommand constructor. */
   public function __construct(UrlChecker $urlChecker, StudyAreaRepository $studyAreaRepository)
   {
     $this->urlChecker          = $urlChecker;
@@ -41,17 +31,13 @@ class CheckUrlCommand extends Command
     parent::__construct();
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  /** {@inheritdoc} */
   protected function configure()
   {
     $this->setDescription('Checks all the URLs in the living textbook to see if there are no dead links.');
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  /** {@inheritdoc} */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $this->urlChecker->checkAllUrls(false, false);

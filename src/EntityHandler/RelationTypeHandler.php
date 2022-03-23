@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class RelationTypeHandler extends AbstractEntityHandler
 {
-  public function add(RelationType $relationType, string $snapshot = NULL): void
+  public function add(RelationType $relationType, string $snapshot = null): void
   {
     $this->validate($relationType);
 
@@ -23,9 +23,9 @@ class RelationTypeHandler extends AbstractEntityHandler
     }
   }
 
-  public function update(RelationType $relationType, string $snapshot = NULL): void
+  public function update(RelationType $relationType, string $snapshot = null): void
   {
-    if ($relationType->getDeletedAt() !== NULL) {
+    if ($relationType->getDeletedAt() !== null) {
       throw new InvalidArgumentException('Cannot update deleted relation type!');
     }
 
@@ -41,19 +41,19 @@ class RelationTypeHandler extends AbstractEntityHandler
 
   public function delete(RelationType $relationType, mixed $user): void
   {
-    if ($relationType->getDeletedAt() !== NULL) {
+    if ($relationType->getDeletedAt() !== null) {
       return;
     }
 
     // Remove the relation type by setting the deletedAt/By manually
-    $removeFunction = fn() => $relationType
+    $removeFunction = fn () => $relationType
         ->setDeletedAt(new DateTime())
         ->setDeletedBy($user instanceof UserInterface ? $user->getUsername() : 'anon.');
 
-    if ($this->reviewService !== NULL) {
+    if ($this->reviewService !== null) {
       // This must be registered as remove change, but it must be handled differently when actually removed
       $this->reviewService->storeChange(
-          $relationType->getStudyArea(), $relationType, PendingChange::CHANGE_TYPE_REMOVE, NULL, $removeFunction);
+          $relationType->getStudyArea(), $relationType, PendingChange::CHANGE_TYPE_REMOVE, null, $removeFunction);
     } else {
       $removeFunction();
       $this->em->flush();

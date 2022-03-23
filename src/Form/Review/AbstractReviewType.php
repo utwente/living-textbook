@@ -17,32 +17,18 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class AbstractReviewType extends AbstractType
 {
-  /**
-   * @var Security
-   */
+  /** @var Security */
   private $security;
-  /**
-   * @var UserGroupRepository
-   */
+  /** @var UserGroupRepository */
   private $userGroupRepository;
 
-  /**
-   * AbstractReviewType constructor.
-   *
-   * @param UserGroupRepository $userGroupRepository
-   * @param Security            $security
-   */
+  /** AbstractReviewType constructor. */
   public function __construct(UserGroupRepository $userGroupRepository, Security $security)
   {
     $this->userGroupRepository = $userGroupRepository;
     $this->security            = $security;
   }
 
-  /**
-   * @param FormBuilderInterface $builder
-   *
-   * @return AbstractReviewType
-   */
   protected function addNotes(FormBuilderInterface $builder): AbstractReviewType
   {
     $builder
@@ -55,13 +41,7 @@ class AbstractReviewType extends AbstractType
     return $this;
   }
 
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   *
-   * @return AbstractReviewType
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
   protected function addReviewer(FormBuilderInterface $builder, array $options): AbstractReviewType
   {
     $self = $this->security->getUser();
@@ -101,5 +81,4 @@ class AbstractReviewType extends AbstractType
         ->setRequired('study_area')
         ->setAllowedTypes('study_area', [StudyArea::class]);
   }
-
 }

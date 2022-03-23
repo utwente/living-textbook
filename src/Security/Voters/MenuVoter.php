@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Class MenuVoter
+ * Class MenuVoter.
  *
  * This voter will decide whether the menu item is visible for you.
  * An item is visible when:
@@ -26,15 +26,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class MenuVoter extends Voter
 {
-
-  const CONCEPTS = 'MENU_CONCEPTS';
-  const LEARNING_PATHS = 'MENU_LEARNING_PATHS';
-  const ABBREVIATIONS = 'MENU_ABBREVIATIONS';
-  const CONTRIBUTORS = 'MENU_CONTRIBUTORS';
-  const EXTERNAL_RESOURCES = 'MENU_EXTERNAL_RESOURCES';
-  const LEARNING_OUTCOMES = 'MENU_LEARNING_OUTCOMES';
-
-  const SUPPORTED_ATTRIBUTES = [
+  public const CONCEPTS             = 'MENU_CONCEPTS';
+  public const LEARNING_PATHS       = 'MENU_LEARNING_PATHS';
+  public const ABBREVIATIONS        = 'MENU_ABBREVIATIONS';
+  public const CONTRIBUTORS         = 'MENU_CONTRIBUTORS';
+  public const EXTERNAL_RESOURCES   = 'MENU_EXTERNAL_RESOURCES';
+  public const LEARNING_OUTCOMES    = 'MENU_LEARNING_OUTCOMES';
+  public const SUPPORTED_ATTRIBUTES = [
       self::CONCEPTS,
       self::LEARNING_PATHS,
       self::ABBREVIATIONS,
@@ -42,33 +40,19 @@ class MenuVoter extends Voter
       self::EXTERNAL_RESOURCES,
       self::LEARNING_OUTCOMES,
   ];
-  /**
-   * @var AbbreviationRepository
-   */
+  /** @var AbbreviationRepository */
   private $abbreviationRepository;
-  /**
-   * @var ConceptRepository
-   */
+  /** @var ConceptRepository */
   private $conceptRepository;
-  /**
-   * @var ContributorRepository
-   */
+  /** @var ContributorRepository */
   private $contributorRepository;
-  /**
-   * @var AccessDecisionManagerInterface
-   */
+  /** @var AccessDecisionManagerInterface */
   private $decisionManager;
-  /**
-   * @var ExternalResourceRepository
-   */
+  /** @var ExternalResourceRepository */
   private $externalResourceRepository;
-  /**
-   * @var LearningOutcomeRepository
-   */
+  /** @var LearningOutcomeRepository */
   private $learningOutcomeRepository;
-  /**
-   * @var LearningPathRepository
-   */
+  /** @var LearningPathRepository */
   private $learningPathRepository;
 
   public function __construct(
@@ -86,16 +70,14 @@ class MenuVoter extends Voter
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
   }
 
-  /**
-   * @inheritDoc
-   */
+  /** {@inheritDoc} */
   protected function supports($attribute, $subject)
   {
     if (!in_array($attribute, self::SUPPORTED_ATTRIBUTES)) {
       return false;
     }
 
-    if ($subject !== NULL && !$subject instanceof StudyArea && !$subject instanceof RequestStudyArea) {
+    if ($subject !== null && !$subject instanceof StudyArea && !$subject instanceof RequestStudyArea) {
       return false;
     }
 
@@ -103,7 +85,7 @@ class MenuVoter extends Voter
   }
 
   /**
-   * @inheritDoc
+   * {@inheritDoc}
    *
    * @throws NonUniqueResultException
    */
@@ -130,11 +112,11 @@ class MenuVoter extends Voter
     }
 
     // Always return false for null values
-    if ($subject === NULL) {
+    if ($subject === null) {
       return false;
     }
 
-    /** @var StudyArea $subject */
+    /* @var StudyArea $subject */
     assert($subject instanceof StudyArea);
 
     switch ($attribute) {
@@ -154,5 +136,4 @@ class MenuVoter extends Voter
 
     throw new RuntimeException('This code should not be reached!');
   }
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ResourceController
+ * Class ResourceController.
  *
  * @Route("/resource/{_studyArea}", requirements={"_studyArea"="\d+"})
  */
@@ -27,16 +26,13 @@ class ResourceController extends AbstractController
    * @Route("/concept/{concept}", requirements={"concept"="\d+"}, options={"no_login_wrap"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param Concept          $concept
-   * @param RdfProvider      $provider
-   *
-   * @return JsonResponse
    * @throws Exception
    */
   public function concept(RequestStudyArea $requestStudyArea, Concept $concept, RdfProvider $provider): JsonResponse
   {
-    if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
+    if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
     $graph = new Graph($provider->generateConceptResourceUrl($concept));
     $provider->addConceptResource($concept, $graph);
 
@@ -47,16 +43,13 @@ class ResourceController extends AbstractController
    * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"}, options={"no_login_wrap"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param LearningPath     $learningPath
-   * @param RdfProvider      $provider
-   *
-   * @return JsonResponse
    * @throws Exception
    */
   public function learningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, RdfProvider $provider): JsonResponse
   {
-    if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
+    if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
     $graph = new Graph($provider->generateLearningPathResourceUrl($learningPath));
     $provider->addLearningPathResource($learningPath, $graph);
 
@@ -68,16 +61,13 @@ class ResourceController extends AbstractController
    *                                              options={"no_login_wrap"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param LearningOutcome  $learningOutcome
-   * @param RdfProvider      $provider
-   *
-   * @return JsonResponse
    * @throws Exception
    */
   public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
   {
-    if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) throw $this->createNotFoundException();
+    if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
     $graph = new Graph($provider->generateLearningOutcomeResourceUrl($learningOutcome));
     $provider->addLearningOutcomeResource($learningOutcome, $graph);
 
@@ -88,10 +78,6 @@ class ResourceController extends AbstractController
    * @Route("/studyarea", options={"no_login_wrap"=true})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param RdfProvider      $provider
-   *
-   * @return Response
    * @throws Exception
    */
   public function studyArea(RequestStudyArea $requestStudyArea, RdfProvider $provider): Response

@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\ExternalResource;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ExternalResourceRepository extends ServiceEntityRepository
 {
@@ -15,22 +15,14 @@ class ExternalResourceRepository extends ServiceEntityRepository
     parent::__construct($registry, ExternalResource::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return ExternalResource[]
-   */
+  /** @return ExternalResource[] */
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
         ->getQuery()->getResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return ExternalResource[]
-   */
+  /** @return ExternalResource[] */
   public function findForStudyAreaOrderedByTitle(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
@@ -38,11 +30,6 @@ class ExternalResourceRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return \Doctrine\ORM\QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
   {
     return $this->createQueryBuilder('er')
@@ -52,9 +39,7 @@ class ExternalResourceRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find external resources for a set of concepts
-   *
-   * @param array $concepts
+   * Find external resources for a set of concepts.
    *
    * @return ExternalResource[]
    */
@@ -69,10 +54,9 @@ class ExternalResourceRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function getCountForStudyArea(StudyArea $studyArea)
   {

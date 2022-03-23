@@ -76,27 +76,18 @@ class Tag implements StudyAreaFilteredInterface
     $this->concepts = new ArrayCollection();
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getConcepts()
   {
     return $this->concepts;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return self
-   */
   public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
@@ -104,19 +95,13 @@ class Tag implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return Tag
-   */
+  /** @return Tag */
   public function setName(string $name): self
   {
     $this->name = $name;
@@ -124,19 +109,13 @@ class Tag implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getColor(): string
   {
     return $this->color;
   }
 
-  /**
-   * @param string $color
-   *
-   * @return Tag
-   */
+  /** @return Tag */
   public function setColor(string $color): self
   {
     $this->color = $color;

@@ -24,16 +24,16 @@ class LearningPathElementsType extends AbstractType
         function (Collection $modelData): array {
           return LearningPath::OrderElements($modelData)->toArray();
         },
-        function (array $formData) use ($options) : ArrayCollection {
+        function (array $formData): ArrayCollection {
           /** @var LearningPathElement[] $formData */
-          $previousElement = NULL;
+          $previousElement = null;
           $formData        = array_values($formData);
           for ($i = count($formData) - 1; $i >= 0; $i--) {
             // Update the next element
             $formData[$i]->setNext($previousElement);
-            if ($previousElement == NULL) {
+            if ($previousElement == null) {
               // Clear description for last element, as it is not possible to have it there
-              $formData[$i]->setDescription(NULL);
+              $formData[$i]->setDescription(null);
             }
             $previousElement = $formData[$i];
           }
@@ -77,5 +77,4 @@ class LearningPathElementsType extends AbstractType
   {
     return CollectionType::class;
   }
-
 }

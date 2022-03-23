@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class LearningOutcomeController
+ * Class LearningOutcomeController.
  *
  * @author BobV
  *
@@ -29,18 +29,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class LearningOutcomeController extends AbstractController
 {
-
   /**
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
-   * @param NamingService       $namingService
    *
    * @return array|Response
    */
@@ -89,13 +82,6 @@ class LearningOutcomeController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
    *                                                          subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param LearningOutcome     $learningOutcome
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
-   * @param NamingService       $namingService
    *
    * @return array|Response
    */
@@ -157,9 +143,6 @@ class LearningOutcomeController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea          $requestStudyArea
-   * @param LearningOutcomeRepository $repo
-   *
    * @return array
    */
   public function list(RequestStudyArea $requestStudyArea, LearningOutcomeRepository $repo)
@@ -176,13 +159,6 @@ class LearningOutcomeController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_show",
    *   routeParams={"learningOutcome"="{learningOutcome}"}, subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param LearningOutcome     $learningOutcome
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
-   * @param NamingService       $namingService
    *
    * @return array|Response
    */
@@ -206,7 +182,7 @@ class LearningOutcomeController extends AbstractController
       return $this->redirectToRoute('app_learningoutcome_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'        => 'app_learningoutcome_show',
         'cancel_route_params' => ['learningOutcome' => $learningOutcome->getId()],
     ]);
@@ -236,13 +212,6 @@ class LearningOutcomeController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
    *
-   * @param Request                   $request
-   * @param RequestStudyArea          $requestStudyArea
-   * @param LearningOutcomeRepository $learningOutcomeRepository
-   * @param ReviewService             $reviewService
-   * @param TranslatorInterface       $trans
-   * @param NamingService             $namingService
-   *
    * @return array|Response
    */
   public function removeUnused(
@@ -260,7 +229,7 @@ class LearningOutcomeController extends AbstractController
       return $this->redirectToRoute('app_learningoutcome_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_learningoutcome_list',
     ]);
     $form->handleRequest($request);
@@ -300,9 +269,6 @@ class LearningOutcomeController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea $requestStudyArea
-   * @param LearningOutcome  $learningOutcome
-   *
    * @return array
    */
   public function show(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome)
@@ -316,5 +282,4 @@ class LearningOutcomeController extends AbstractController
         'learningOutcome' => $learningOutcome,
     ];
   }
-
 }

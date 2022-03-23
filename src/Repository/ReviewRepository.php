@@ -9,16 +9,13 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ReviewRepository extends ServiceEntityRepository
 {
-
   public function __construct(ManagerRegistry $registry)
   {
     parent::__construct($registry, Review::class);
   }
 
   /**
-   * Retrieve the submissions for the current area
-   *
-   * @param StudyArea $studyArea
+   * Retrieve the submissions for the current area.
    *
    * @return Review[]
    */
@@ -33,9 +30,7 @@ class ReviewRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the approved review, order by approval date
-   *
-   * @param StudyArea $studyArea
+   * Retrieve the approved review, order by approval date.
    *
    * @return Review[]
    */
@@ -48,5 +43,4 @@ class ReviewRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea)
         ->getQuery()->getResult();
   }
-
 }

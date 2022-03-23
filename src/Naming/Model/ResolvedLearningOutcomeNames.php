@@ -21,17 +21,13 @@ class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
     $this->objs = $inflector->pluralize($this->obj)[0];
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function obj(): string
   {
     return $this->obj;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function objs(): string
   {
     return $this->objs;

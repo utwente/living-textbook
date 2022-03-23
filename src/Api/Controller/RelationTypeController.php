@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RelationTypeController extends AbstractApiController
 {
   /**
-   * Retrieve all study area relation types
+   * Retrieve all study area relation types.
    *
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -37,7 +37,7 @@ class RelationTypeController extends AbstractApiController
   }
 
   /**
-   * Retrieve a single study area relation type
+   * Retrieve a single study area relation type.
    *
    * @Route("/{relationType<\d+>}", methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -53,7 +53,7 @@ class RelationTypeController extends AbstractApiController
   }
 
   /**
-   * Add a new study area relation type
+   * Add a new study area relation type.
    *
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -63,10 +63,10 @@ class RelationTypeController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
       RequestStudyArea $requestStudyArea,
-      Request          $request): JsonResponse
+      Request $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, RelationType::class)
-        ->mapToEntity(NULL)
+        ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
@@ -75,7 +75,7 @@ class RelationTypeController extends AbstractApiController
   }
 
   /**
-   * Update an existing study area relation type
+   * Update an existing study area relation type.
    *
    * @Route("/{relationType<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -85,11 +85,10 @@ class RelationTypeController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
 
   public function update(
-      RequestStudyArea         $requestStudyArea,
+      RequestStudyArea $requestStudyArea,
       \App\Entity\RelationType $relationType,
-      Request                  $request
-  ): JsonResponse
-  {
+      Request $request
+  ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
 
     if ($relationType->isDeleted()) {
@@ -105,25 +104,25 @@ class RelationTypeController extends AbstractApiController
   }
 
   /**
-   * Delete an existing study area relation type
+   * Delete an existing study area relation type.
    *
    * @Route("/{relationType<\d+>}", methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The relation type has been deleted')]
   public function delete(
-      RequestStudyArea         $requestStudyArea,
+      RequestStudyArea $requestStudyArea,
       \App\Entity\RelationType $relationType): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
 
     $this->getHandler()->delete($relationType, $this->getUser());
 
-    return new JsonResponse(NULL, Response::HTTP_ACCEPTED);
+    return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
   private function getHandler(): RelationTypeHandler
   {
-    return new RelationTypeHandler($this->em, $this->validator, NULL);
+    return new RelationTypeHandler($this->em, $this->validator, null);
   }
 }

@@ -23,24 +23,21 @@ use function Symfony\Component\String\b;
 
 /**
  * Class RequestStudyAreaSubscriber
- * Subscriber for KernelEvents related to controllers
+ * Subscriber for KernelEvents related to controllers.
  *
  * @author BobV
  */
 class RequestStudyAreaSubscriber implements EventSubscriberInterface
 {
-
   /** @var string Study area session/request key */
   public const STUDY_AREA_KEY = '_studyArea';
 
   /** @var string Study area twig key */
   public const TWIG_STUDY_AREA_KEY = '_twigStudyArea';
 
-  /** @var StudyArea|null */
-  private ?StudyArea $studyArea = NULL;
+  private ?StudyArea $studyArea = null;
 
-  /** @var int|null */
-  private ?int $studyAreaId = NULL;
+  private ?int $studyAreaId = null;
 
   public function __construct(
       private readonly RouterInterface $router,
@@ -52,14 +49,14 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /**
-   * Determine the events to subscribe to
+   * Determine the events to subscribe to.
    *
    * @return array
    */
   public static function getSubscribedEvents()
   {
     return [
-        KernelEvents::CONTROLLER           => [
+        KernelEvents::CONTROLLER => [
             ['determineStudyArea', 100],
             ['validateApiStudyArea', 99],
             ['injectStudyAreaInNamingService', 98],
@@ -71,29 +68,24 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     ];
   }
 
-  /**
-   * Determine the study area for this request
-   *
-   * @param ControllerEvent $event
-   */
+  /** Determine the study area for this request. */
   public function determineStudyArea(ControllerEvent $event)
   {
     $request = $event->getRequest();
     $session = $request->getSession();
 
     // Retrieve study area id from route
-    $studyAreaId = $request->attributes->get(self::STUDY_AREA_KEY, NULL);
+    $studyAreaId = $request->attributes->get(self::STUDY_AREA_KEY, null);
 
     // Check whether it actually exists, throw not found otherwise
     if ($studyAreaId && !$this->studyAreaRepository->find($studyAreaId)) {
-      throw new NotFoundHttpException("Study area not found");
+      throw new NotFoundHttpException('Study area not found');
     }
 
     // Check the study area
     if (!$studyAreaId) {
-
       // Set to NULL to force empty study area
-      $studyAreaId = NULL;
+      $studyAreaId = null;
 
       // Try to retrieve it from the session
       if ($session && $session->has(self::STUDY_AREA_KEY)) {
@@ -102,20 +94,20 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         // Check whether it actually still exists, remove from session otherwise
         if (!$studyAreaId || !$this->studyAreaRepository->find($studyAreaId)) {
           $session->remove(self::STUDY_AREA_KEY);
-          $studyAreaId = NULL;
+          $studyAreaId = null;
         }
       }
 
       // Invalid or no result from session
-      if ($studyAreaId === NULL) {
+      if ($studyAreaId === null) {
         // Resolve the user
         $token = $this->tokenStorage->getToken();
-        $user  = $token !== NULL ? $token->getUser() : NULL;
-        $user  = is_object($user) ? $user : NULL;
-        assert($user === NULL || $user instanceof User);
+        $user  = $token !== null ? $token->getUser() : null;
+        $user  = is_object($user) ? $user : null;
+        assert($user === null || $user instanceof User);
 
         // Try to find a visible study area
-        if (NULL !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
+        if (null !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
           assert($studyArea instanceof StudyArea);
           $studyAreaId     = $studyArea->getId();
           $this->studyArea = $studyArea;
@@ -125,7 +117,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
     // Save in memory for usage and in session as backup
     if ($this->studyAreaId !== $studyAreaId) {
-      $this->studyArea   = NULL;
+      $this->studyArea   = null;
       $this->studyAreaId = $studyAreaId;
       if ($session) {
         $session->set(self::STUDY_AREA_KEY, $studyAreaId);
@@ -136,17 +128,15 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     $this->router->getContext()->setParameter(self::STUDY_AREA_KEY, $studyAreaId);
   }
 
-  /**
-   * Inject the StudyArea in the controller arguments when required
-   *
-   * @param ControllerArgumentsEvent $event
-   */
+  /** Inject the StudyArea in the controller arguments when required. */
   public function injectStudyAreaInControllerArguments(ControllerArgumentsEvent $event)
   {
-    if ($this->studyAreaId === NULL) {
+    if ($this->studyAreaId === null) {
       // Check for session value
       $session = $event->getRequest()->getSession();
-      if (!$session->has(self::STUDY_AREA_KEY)) return;
+      if (!$session->has(self::STUDY_AREA_KEY)) {
+        return;
+      }
 
       $this->studyAreaId = $session->get(self::STUDY_AREA_KEY);
     }
@@ -155,22 +145,30 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     $arguments  = $event->getArguments();
 
     try {
-      if (!is_array($controller) || count($controller) != 2) return;
+      if (!is_array($controller) || count($controller) != 2) {
+        return;
+      }
       $reflFunction = new ReflectionMethod($controller[0], $controller[1]);
       $reflParams   = $reflFunction->getParameters();
       foreach ($reflParams as $key => $reflParam) {
         // Check for correct method argument
-        if (!$reflParam->hasType()) continue;
+        if (!$reflParam->hasType()) {
+          continue;
+        }
         /* @phan-suppress-next-line PhanUndeclaredMethod */
-        if ($reflParam->getType()->getName() != RequestStudyArea::class) continue;
+        if ($reflParam->getType()->getName() != RequestStudyArea::class) {
+          continue;
+        }
 
         // Check whether it is already set
         /** @var RequestStudyArea|null $argument */
         $argument = $arguments[$key];
-        if ($argument !== NULL && $argument->hasValue()) continue;
+        if ($argument !== null && $argument->hasValue()) {
+          continue;
+        }
 
         // Cache study area during request
-        if ($this->studyArea == NULL && $this->studyAreaId !== -1) {
+        if ($this->studyArea == null && $this->studyAreaId !== -1) {
           $this->studyArea = $this->studyAreaRepository->find($this->studyAreaId);
         }
 
@@ -186,18 +184,14 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     }
   }
 
-  /**
-   * Inject the StudyArea in the twig variables for the view
-   */
+  /** Inject the StudyArea in the twig variables for the view */
   public function injectStudyAreaInView()
   {
     $this->testCache();
     $this->twig->addGlobal(self::TWIG_STUDY_AREA_KEY, $this->studyArea);
   }
 
-  /**
-   * Inject the StudyArea in the naming service
-   */
+  /** Inject the StudyArea in the naming service */
   public function injectStudyAreaInNamingService()
   {
     $this->testCache();
@@ -224,7 +218,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     if ($this->studyArea->isApiEnabled()) {
       // Validate whether the area is frozen
       if (!$event->getRequest()->isMethod('GET') && $this->studyArea->isFrozen()) {
-        $event->setController(static fn() => new ApiErrorResponse(
+        $event->setController(static fn () => new ApiErrorResponse(
             'Study area frozen',
             Response::HTTP_BAD_REQUEST,
             'This study area has been frozen'
@@ -235,20 +229,18 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     }
 
     // Return an error response
-    $event->setController(static fn() => new ApiErrorResponse(
+    $event->setController(static fn () => new ApiErrorResponse(
         'API disabled',
         Response::HTTP_FORBIDDEN,
         'API not enabled for this study area'
     ));
   }
 
-  /**
-   * Test the internal study area cache
-   */
+  /** Test the internal study area cache */
   private function testCache(): void
   {
     // Cache study area during request
-    if ($this->studyArea == NULL && $this->studyAreaId !== NULL && $this->studyAreaId !== -1) {
+    if ($this->studyArea == null && $this->studyAreaId !== null && $this->studyAreaId !== -1) {
       $this->studyArea = $this->studyAreaRepository->find($this->studyAreaId);
     }
   }

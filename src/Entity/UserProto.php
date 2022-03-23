@@ -26,7 +26,7 @@ class UserProto implements UserInterface
   use Blameable;
 
   /**
-   * The email address that has been invited
+   * The email address that has been invited.
    *
    * @var string
    *
@@ -38,7 +38,7 @@ class UserProto implements UserInterface
   private $email = '';
 
   /**
-   * The invited at timestamp
+   * The invited at timestamp.
    *
    * @var DateTime
    *
@@ -49,7 +49,7 @@ class UserProto implements UserInterface
   private $invitedAt;
 
   /**
-   * Hashed temporary password
+   * Hashed temporary password.
    *
    * @var string;
    *
@@ -71,7 +71,7 @@ class UserProto implements UserInterface
 
   public function getSalt()
   {
-    return NULL;
+    return null;
   }
 
   public function getUsername()
@@ -84,19 +84,13 @@ class UserProto implements UserInterface
     // Nothing to do
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getEmail(): string
   {
     return $this->email;
   }
 
-  /**
-   * @param string $email
-   *
-   * @return UserProto
-   */
+  /** @return UserProto */
   public function setEmail(string $email): self
   {
     $this->email = $email;
@@ -104,19 +98,13 @@ class UserProto implements UserInterface
     return $this;
   }
 
-  /**
-   * @return DateTime
-   */
+  /** @return DateTime */
   public function getInvitedAt(): DateTime
   {
     return $this->invitedAt;
   }
 
-  /**
-   * @param DateTime $invitedAt
-   *
-   * @return UserProto
-   */
+  /** @return UserProto */
   public function setInvitedAt(DateTime $invitedAt): self
   {
     $this->invitedAt = $invitedAt;
@@ -124,11 +112,7 @@ class UserProto implements UserInterface
     return $this;
   }
 
-  /**
-   * @param string $password
-   *
-   * @return UserProto
-   */
+  /** @return UserProto */
   public function setPassword(string $password): self
   {
     $this->password = $password;
@@ -136,12 +120,9 @@ class UserProto implements UserInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getPassword(): string
   {
     return $this->password;
   }
-
 }

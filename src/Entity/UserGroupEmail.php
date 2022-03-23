@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserGroupEmail
+ * Class UserGroupEmail.
  *
  * @author BobV
  *
@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UserGroupEmail
 {
-
   /**
    * @var UserGroup
    *
@@ -45,32 +44,18 @@ class UserGroupEmail
     $this->email = '';
   }
 
-  /**
-   * Custom sorter, based on email
-   *
-   * @param UserGroupEmail $a
-   * @param UserGroupEmail $b
-   *
-   * @return int
-   */
+  /** Custom sorter, based on email. */
   public static function sortOnEmail(UserGroupEmail $a, UserGroupEmail $b): int
   {
     return strcmp($a->getEmail(), $b->getEmail());
   }
 
-  /**
-   * @return UserGroup
-   */
+  /** @return UserGroup */
   public function getUserGroup(): UserGroup
   {
     return $this->userGroup;
   }
 
-  /**
-   * @param UserGroup $userGroup
-   *
-   * @return UserGroupEmail
-   */
   public function setUserGroup(UserGroup $userGroup): UserGroupEmail
   {
     $this->userGroup = $userGroup;
@@ -78,24 +63,16 @@ class UserGroupEmail
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getEmail(): string
   {
     return $this->email;
   }
 
-  /**
-   * @param string $email
-   *
-   * @return UserGroupEmail
-   */
   public function setEmail(string $email): UserGroupEmail
   {
     $this->email = $email;
 
     return $this;
   }
-
 }

@@ -18,8 +18,8 @@ class UrlContext
 
   public function __construct(string $class, int $id = -1, string $path = '')
   {
-    if ($class === NULL) {
-      throw new \InvalidArgumentException("Class cannot be null");
+    if ($class === null) {
+      throw new \InvalidArgumentException('Class cannot be null');
     }
 
     $this->class  = $class;
@@ -30,7 +30,7 @@ class UrlContext
 
   /**
    * Implementation to determine duplicates correctly
-   * https://stackoverflow.com/questions/2426557/array-unique-for-objects
+   * https://stackoverflow.com/questions/2426557/array-unique-for-objects.
    */
   public function __toString()
   {
@@ -38,7 +38,7 @@ class UrlContext
   }
 
   /**
-   * Set context as inline
+   * Set context as inline.
    *
    * @return UrlContext New context instance
    */
@@ -50,46 +50,33 @@ class UrlContext
     return $new;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getClass(): string
   {
     return $this->class;
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getId(): int
   {
     return $this->id;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getPath(): string
   {
     return $this->path;
   }
 
-  /**
-   * Change the camelCase of the property path to snake-case, as that is used in the translations
-   *
-   * @return string
-   */
+  /** Change the camelCase of the property path to snake-case, as that is used in the translations. */
   public function getPathAsTransKey(): string
   {
     return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $this->getPath()));
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isInline(): bool
   {
     return $this->inline;
   }
-
 }

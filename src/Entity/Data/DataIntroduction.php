@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Class DataIntroduction
+ * Class DataIntroduction.
  *
  * @author BobV
  *

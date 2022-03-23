@@ -23,22 +23,19 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class TrackingController
+ * Class TrackingController.
  *
  * @Route("/{_studyArea}/track", requirements={"_studyArea"="\d+"})
  */
 class TrackingController extends AbstractController
 {
-
   /**
    * @Route("/export")
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
-   * @param RequestStudyArea      $requestStudyArea
-   * @param TrackingExportBuilder $builder
+   * @throws Exception
    *
    * @return Response
-   * @throws Exception
    */
   public function export(RequestStudyArea $requestStudyArea, TrackingExportBuilder $builder)
   {
@@ -55,13 +52,6 @@ class TrackingController extends AbstractController
    * @Route("/pageload", methods={"POST"}, options={"expose"="true"})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
-   * @param ValidatorInterface     $validator
-   * @param RouterInterface        $router
-   *
    * @return Response
    */
   public function pageload(
@@ -71,14 +61,14 @@ class TrackingController extends AbstractController
     return $this->processTrackingItem(
         Pageload::class,
         function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
-          $pathContext = NULL;
+          $pathContext = null;
           try {
             $pathContext = $router->match($pageLoad->getPath());
           } catch (ResourceNotFoundException $e) {
             // Try to resolve the path context, set empty context when route not found
           }
 
-          $originContext = NULL;
+          $originContext = null;
           if ($pageLoad->getOrigin()) {
             try {
               $originContext = $router->match($pageLoad->getOrigin());
@@ -101,12 +91,6 @@ class TrackingController extends AbstractController
    * @Route("/event", methods={"POST"}, options={"expose"="true"})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
-   * @param ValidatorInterface     $validator
-   *
    * @return Response
    */
   public function event(
@@ -124,15 +108,7 @@ class TrackingController extends AbstractController
   }
 
   /**
-   * Process a tracking item request
-   *
-   * @param string                 $clazz
-   * @param Closure                $callback
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
-   * @param ValidatorInterface     $validator
+   * Process a tracking item request.
    *
    * @return Response
    */

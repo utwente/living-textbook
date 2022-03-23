@@ -10,15 +10,13 @@ use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessH
 use Symfony\Component\Security\Http\HttpUtils;
 
 /**
- * Class AuthenticationSuccessHandler
+ * Class AuthenticationSuccessHandler.
  *
  * Verifies the original target url, and insert the map if required
  */
 class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
-  /**
-   * @var LtbRouter
-   */
+  /** @var LtbRouter */
   private $router;
 
   public function __construct(LtbRouter $router, HttpUtils $httpUtils, array $options = [])
@@ -32,9 +30,6 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
    * This is called when an interactive authentication attempt succeeds. This
    * is called by authentication listeners inheriting from
    * AbstractAuthenticationListener.
-   *
-   * @param Request        $request
-   * @param TokenInterface $token
    *
    * @return Response never null
    */

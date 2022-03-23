@@ -4,9 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Help;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class HelpRepository extends ServiceEntityRepository
 {
@@ -16,9 +16,7 @@ class HelpRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieves the latest help page
-   *
-   * @return Help
+   * Retrieves the latest help page.
    *
    * @throws NoResultException
    * @throws NonUniqueResultException

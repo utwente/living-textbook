@@ -11,5 +11,4 @@ class SingleSubmitType extends AbstractType
   {
     return ButtonType::class;
   }
-
 }

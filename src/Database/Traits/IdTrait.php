@@ -19,9 +19,7 @@ trait IdTrait
    */
   private $id;
 
-  /**
-   * @return int|null
-   */
+  /** @return int|null */
   public function getId(): ?int
   {
     return $this->id;

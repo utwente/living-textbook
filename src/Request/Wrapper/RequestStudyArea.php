@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Class RequestStudyArea
  * A wrapper class to enable automatic study area injection into controllers,
- * without messing with the Doctrine injector
+ * without messing with the Doctrine injector.
  *
  * @author BobV
  */
@@ -20,8 +20,8 @@ class RequestStudyArea
 
   public function getStudyArea(): StudyArea
   {
-    if ($this->studyArea === NULL) {
-      throw new NotFoundHttpException("Study area is not correctly set!");
+    if ($this->studyArea === null) {
+      throw new NotFoundHttpException('Study area is not correctly set!');
     }
 
     return $this->studyArea;
@@ -34,7 +34,6 @@ class RequestStudyArea
 
   public function hasValue(): bool
   {
-    return $this->studyArea !== NULL;
+    return $this->studyArea !== null;
   }
-
 }

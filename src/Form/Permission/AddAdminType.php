@@ -23,7 +23,7 @@ class AddAdminType extends AbstractType
                   ->where('u.isAdmin = false')
                   ->orderBy('u.displayName', 'ASC');
             },
-            'select2'       => true,
+            'select2' => true,
         ])
         ->add('submit', SaveType::class, [
             'enable_save_and_list' => false,

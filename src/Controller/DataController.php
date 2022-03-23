@@ -46,7 +46,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class DataController
+ * Class DataController.
  *
  * @author BobV
  *
@@ -54,19 +54,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class DataController extends AbstractController
 {
-
   /**
    * Export for concept browser and search. Search part currently isn't used, but it kept for now.
    *
    * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
    * @Route("/search", name="app_data_search", options={"expose"=true}, defaults={"export"=false})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param bool                   $export
-   * @param RelationTypeRepository $relationTypeRepo
-   * @param ConceptRepository      $conceptRepo
-   * @param SerializerInterface    $serializer
-   * @param RequestStudyArea       $requestStudyArea
    *
    * @return JsonResponse
    */
@@ -80,8 +73,10 @@ class DataController extends AbstractController
     $concepts = $conceptRepo->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea());
 
     // Return as JSON
-    $groups = ["Default"];
-    if ($export) $groups[] = "relations";
+    $groups = ['Default'];
+    if ($export) {
+      $groups[] = 'relations';
+    }
     /** @phan-suppress-next-line PhanTypeMismatchArgument */
     $json = $serializer->serialize($concepts, 'json', SerializationContext::create()->setGroups($groups));
 
@@ -92,12 +87,9 @@ class DataController extends AbstractController
    * @Route("/excel")
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
-   * @param RequestStudyArea       $requestStudyArea
-   * @param StudyAreaStatusBuilder $builder
+   * @throws Exception
    *
    * @return Response
-   *
-   * @throws Exception
    */
   public function excelStatus(RequestStudyArea $requestStudyArea, StudyAreaStatusBuilder $builder)
   {
@@ -110,17 +102,9 @@ class DataController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
    *
-   * @param Request                   $request
-   * @param RequestStudyArea          $requestStudyArea
-   * @param SerializerInterface       $serializer
-   * @param TranslatorInterface       $translator
-   * @param EntityManagerInterface    $em
-   * @param RelationTypeRepository    $relationTypeRepo
-   * @param ValidatorInterface        $validator
-   * @param LearningOutcomeRepository $learningOutcomeRepository
+   * @throws NonUniqueResultException
    *
    * @return array|Response
-   * @throws NonUniqueResultException
    */
   public function upload(
       Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
@@ -146,7 +130,6 @@ class DataController extends AbstractController
       // Check file format, then load json data
       if ($data['json'] instanceof UploadedFile) {
         try {
-
           // Expand default time limit for large imports
           set_time_limit(600); // 10 minutes
 
@@ -165,9 +148,8 @@ class DataController extends AbstractController
           }
 
           // Resolve the link types
-          $linkTypes = array();
+          $linkTypes = [];
           foreach ($jsonData['links'] as $jsonLink) {
-
             if (!array_key_exists('relationName', $jsonLink)) {
               throw new DataImportException(
                   sprintf('Missing required "relationName" property on link: %s', json_encode($jsonLink)));
@@ -176,7 +158,6 @@ class DataController extends AbstractController
             // Check whether already cached
             $linkName = $jsonLink['relationName'];
             if (!array_key_exists($linkName, $linkTypes)) {
-
               // Retrieve from database
               $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $studyArea]);
               if ($linkType) {
@@ -196,15 +177,15 @@ class DataController extends AbstractController
 
           // Create a new concept for every entry
           /** @var Concept[] $concepts */
-          $concepts = array();
+          $concepts = [];
           foreach ($jsonData['nodes'] as $key => $jsonNode) {
-            if (!array_key_exists('label', $jsonNode) || $jsonNode['label'] === NULL) {
+            if (!array_key_exists('label', $jsonNode) || $jsonNode['label'] === null) {
               throw new DataImportException(
                   sprintf('Missing required "label" property on node: %s', json_encode($jsonNode)));
             }
 
             $concepts[$key] = (new Concept())->setName($jsonNode['label']);
-            if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== NULL) {
+            if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== null) {
               $concepts[$key]->setDefinition($jsonNode['definition']);
             }
             $concepts[$key]->setStudyArea($studyArea);
@@ -263,9 +244,9 @@ class DataController extends AbstractController
               }
 
               $learningOutcome = new LearningOutcome();
-              /** @phan-suppress-next-line PhanTypeMismatchArgument */
+              /* @phan-suppress-next-line PhanTypeMismatchArgument */
               $learningOutcome->setName($jsonLearningOutcome['label']);
-              /** @phan-suppress-next-line PhanTypeMismatchArgument */
+              /* @phan-suppress-next-line PhanTypeMismatchArgument */
               $learningOutcome->setText($jsonLearningOutcome['definition']);
               $learningOutcome->setNumber($learningOutcomeNumber);
               $learningOutcome->setStudyArea($studyArea);
@@ -280,7 +261,7 @@ class DataController extends AbstractController
               if ($validator->validate($learningOutcome)->count() > 0) {
                 throw new DataImportException(
                     sprintf('Could not create the concept learning outcome: %s', json_encode($jsonLearningOutcome)));
-              };
+              }
               $em->persist($learningOutcome);
               $learningOutcomeNumber++;
             }
@@ -305,7 +286,7 @@ class DataController extends AbstractController
 
               // Create the external resource
               $externalResource = (new ExternalResource())
-                  /** @phan-suppress-next-line PhanTypeMismatchArgument */
+                  /* @phan-suppress-next-line PhanTypeMismatchArgument */
                   ->setTitle($jsonExternalResource['name'])
                   ->setStudyArea($studyArea);
               if (array_key_exists('description', $jsonExternalResource)) {
@@ -329,7 +310,7 @@ class DataController extends AbstractController
               if ($validator->validate($externalResource)->count() > 0) {
                 throw new DataImportException(
                     sprintf('Could not create the external resource: %s', json_encode($jsonExternalResource)));
-              };
+              }
               $em->persist($externalResource);
             }
           }
@@ -338,7 +319,6 @@ class DataController extends AbstractController
           $em->flush();
           $this->addFlash('success', $translator->trans('data.json-uploaded'));
           $this->redirectToRoute('app_data_upload');
-
         } catch (DataImportException $e) {
           $this->addFlash('error', $translator->trans('data.json-incorrect', ['%message%' => $e->getMessage()]));
         }
@@ -354,10 +334,6 @@ class DataController extends AbstractController
    * @Route("/download")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @param Request          $request
-   * @param RequestStudyArea $requestStudyArea
-   * @param ExportService    $exportService
    *
    * @return array|Response
    */
@@ -382,22 +358,9 @@ class DataController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
-   * @param Request                    $request
-   * @param RequestStudyArea           $requestStudyArea
-   * @param TranslatorInterface        $trans
-   * @param EntityManagerInterface     $em
-   * @param UrlScanner                 $urlScanner
-   * @param LtbRouter                  $router
-   * @param AbbreviationRepository     $abbreviationRepo
-   * @param ConceptRelationRepository  $conceptRelationRepo
-   * @param ContributorRepository      $contributorRepository
-   * @param ExternalResourceRepository $externalResourceRepo
-   * @param LearningOutcomeRepository  $learningOutcomeRepo
-   * @param LearningPathRepository     $learningPathRepo
-   * @param TagRepository              $tagRepository
+   * @throws \Exception
    *
    * @return array|Response
-   * @throws \Exception
    */
   public function duplicate(
       Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
@@ -428,7 +391,6 @@ class DataController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-
       $data      = $form->getData();
       $selectAll = $data[DuplicateType::SELECT_ALL];
       if ($selectAll) {
@@ -463,5 +425,4 @@ class DataController extends AbstractController
         'studyArea' => $studyAreaToDuplicate,
     ];
   }
-
 }

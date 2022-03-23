@@ -12,10 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProvider implements OidcUserProviderInterface
 {
-
-  /**
-   * @var EntityManagerInterface
-   */
+  /** @var EntityManagerInterface */
   protected $em;
 
   public function __construct(EntityManagerInterface $em)
@@ -28,10 +25,9 @@ class UserProvider implements OidcUserProviderInterface
    * but only if the user does not exists yet.
    * If it does exist, return that user.
    *
-   * @param OidcToken $token
+   * @throws OidcException
    *
    * @return User
-   * @throws OidcException
    */
   public function loadUserByToken(OidcToken $token)
   {
@@ -64,7 +60,6 @@ class UserProvider implements OidcUserProviderInterface
    * @param bool   $isOidc   If set, find Oidc users
    *
    * @return User
-   *
    */
   public function loadUserByUsername($username, $isOidc = false)
   {
@@ -85,8 +80,6 @@ class UserProvider implements OidcUserProviderInterface
    * totally reloaded (e.g. from the database), or if the UserInterface
    * object can just be merged into some internal array of users / identity
    * map.
-   *
-   * @param UserInterface $user
    *
    * @return UserInterface
    */

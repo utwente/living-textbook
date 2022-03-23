@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class User
+ * Class User.
  *
  * @author BobV
  *
@@ -34,13 +34,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface, Serializable
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
   /**
-   * Given name
+   * Given name.
    *
    * @var string
    *
@@ -52,7 +51,7 @@ class User implements UserInterface, Serializable
   protected $givenName;
 
   /**
-   * Family name
+   * Family name.
    *
    * @var string
    *
@@ -64,7 +63,7 @@ class User implements UserInterface, Serializable
   protected $familyName;
 
   /**
-   * Full name
+   * Full name.
    *
    * @var string
    *
@@ -76,7 +75,7 @@ class User implements UserInterface, Serializable
   protected $fullName;
 
   /**
-   * Display name
+   * Display name.
    *
    * @var string
    *
@@ -88,7 +87,7 @@ class User implements UserInterface, Serializable
   protected $displayName;
 
   /**
-   * Authentication name (username), equal to email address
+   * Authentication name (username), equal to email address.
    *
    * @var string
    *
@@ -101,9 +100,9 @@ class User implements UserInterface, Serializable
   protected $username;
 
   /**
-   * If set, the account was created using OIDC
+   * If set, the account was created using OIDC.
    *
-   * @var boolean
+   * @var bool
    *
    * @ORM\Column(name="is_oidc", type="boolean", nullable=false)
    *
@@ -113,7 +112,7 @@ class User implements UserInterface, Serializable
 
   /**
    * Password, stored encrypted, if any.
-   * No password is stored for OIDC authentication
+   * No password is stored for OIDC authentication.
    *
    * @var string
    *
@@ -122,7 +121,7 @@ class User implements UserInterface, Serializable
   protected $password;
 
   /**
-   * Datetime on which the user registered
+   * Datetime on which the user registered.
    *
    * @var DateTime
    *
@@ -133,7 +132,7 @@ class User implements UserInterface, Serializable
   protected $registeredOn;
 
   /**
-   * DateTime on which the user has lastly logged on
+   * DateTime on which the user has lastly logged on.
    *
    * @var DateTime|null
    *
@@ -151,7 +150,7 @@ class User implements UserInterface, Serializable
   private $securityRoles;
 
   /**
-   * @var boolean
+   * @var bool
    *
    * @ORM\Column(name="is_admin", type="boolean", nullable=false)
    *
@@ -161,7 +160,7 @@ class User implements UserInterface, Serializable
   private $isAdmin;
 
   /**
-   * Hashed reset code, used for resetting the password
+   * Hashed reset code, used for resetting the password.
    *
    * @var string|null
    *
@@ -170,7 +169,7 @@ class User implements UserInterface, Serializable
   private $resetCode;
 
   /**
-   * Datetime till when the reset code is still valid
+   * Datetime till when the reset code is still valid.
    *
    * @var DateTime|null
    *
@@ -192,9 +191,7 @@ class User implements UserInterface, Serializable
    */
   private $annotations;
 
-  /**
-   * User constructor.
-   */
+  /** User constructor. */
   public function __construct()
   {
     $this->givenName     = '';
@@ -208,11 +205,7 @@ class User implements UserInterface, Serializable
     $this->annotations   = new ArrayCollection();
   }
 
-  /**
-   * String representation to be used in selection list
-   *
-   * @return string
-   */
+  /** String representation to be used in selection list. */
   public function selectionName(): string
   {
     if ($this->isOidc()) {
@@ -223,11 +216,8 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Create a user from a token object
+   * Create a user from a token object.
    *
-   * @param OidcToken $token
-   *
-   * @return User
    * @throws OidcException
    */
   public static function createFromToken(OidcToken $token): User
@@ -245,14 +235,7 @@ class User implements UserInterface, Serializable
         ->update($token);
   }
 
-  /**
-   * Custom sorter, based on display name
-   *
-   * @param User $a
-   * @param User $b
-   *
-   * @return int
-   */
+  /** Custom sorter, based on display name. */
   public static function sortOnDisplayName(User $a, User $b): int
   {
     return strcmp($a->getDisplayName(), $b->getDisplayName());
@@ -260,11 +243,7 @@ class User implements UserInterface, Serializable
 
   /**
    * Update the user with the latest information from the token
-   * Do not update the username, this should be the same anyways
-   *
-   * @param OidcToken $token
-   *
-   * @return User
+   * Do not update the username, this should be the same anyways.
    */
   public function update(OidcToken $token): User
   {
@@ -276,7 +255,7 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Get the mailer Address for this User
+   * Get the mailer Address for this User.
    *
    * @return Address
    */
@@ -286,10 +265,12 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * String representation of object
+   * String representation of object.
    *
-   * @link  http://php.net/manual/en/serializable.serialize.php
+   * @see  http://php.net/manual/en/serializable.serialize.php
+   *
    * @return string the string representation of the object or null
+   *
    * @since 5.1.0
    */
   public function serialize()
@@ -309,13 +290,14 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Constructs the object
+   * Constructs the object.
    *
-   * @link  http://php.net/manual/en/serializable.unserialize.php
+   * @see  http://php.net/manual/en/serializable.unserialize.php
    *
-   * @param string $serialized The string representation of the object.
+   * @param string $serialized the string representation of the object
    *
    * @return void
+   *
    * @since 5.1.0
    */
   public function unserialize($serialized)
@@ -371,7 +353,7 @@ class User implements UserInterface, Serializable
    */
   public function getSalt()
   {
-    return NULL;
+    return null;
   }
 
   /**
@@ -384,9 +366,7 @@ class User implements UserInterface, Serializable
   {
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getUsername()
   {
     return $this->username;
@@ -404,19 +384,12 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isOidc(): bool
   {
     return $this->isOidc;
   }
 
-  /**
-   * @param bool $isOidc
-   *
-   * @return User
-   */
   public function setIsOidc(bool $isOidc): User
   {
     $this->isOidc = $isOidc;
@@ -424,9 +397,7 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getPassword()
   {
     return $this->password;
@@ -445,7 +416,7 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Get registeredOn
+   * Get registeredOn.
    *
    * @return DateTime
    */
@@ -454,19 +425,12 @@ class User implements UserInterface, Serializable
     return $this->registeredOn;
   }
 
-  /**
-   * @return DateTime|null
-   */
+  /** @return DateTime|null */
   public function getLastUsed(): ?DateTime
   {
     return $this->lastUsed;
   }
 
-  /**
-   * @param DateTime $lastUsed
-   *
-   * @return User
-   */
   public function setLastUsed(DateTime $lastUsed): User
   {
     $this->lastUsed = $lastUsed;
@@ -475,7 +439,7 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Set securityRoles
+   * Set securityRoles.
    *
    * @param array $securityRoles
    *
@@ -490,7 +454,7 @@ class User implements UserInterface, Serializable
   }
 
   /**
-   * Get securityRoles
+   * Get securityRoles.
    *
    * @return array
    */
@@ -499,19 +463,12 @@ class User implements UserInterface, Serializable
     return $this->securityRoles;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getGivenName(): string
   {
     return $this->givenName;
   }
 
-  /**
-   * @param string $givenName
-   *
-   * @return User
-   */
   public function setGivenName(string $givenName): User
   {
     $this->givenName = $givenName;
@@ -519,19 +476,12 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getFamilyName(): string
   {
     return $this->familyName;
   }
 
-  /**
-   * @param string $familyName
-   *
-   * @return User
-   */
   public function setFamilyName(string $familyName): User
   {
     $this->familyName = $familyName;
@@ -539,19 +489,12 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getFullName(): string
   {
     return $this->fullName;
   }
 
-  /**
-   * @param string $fullName
-   *
-   * @return User
-   */
   public function setFullName(string $fullName): User
   {
     $this->fullName = $fullName;
@@ -559,19 +502,12 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getDisplayName(): string
   {
     return $this->displayName;
   }
 
-  /**
-   * @param string $displayName
-   *
-   * @return User
-   */
   public function setDisplayName(string $displayName): User
   {
     $this->displayName = $displayName;
@@ -579,19 +515,12 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isAdmin(): bool
   {
     return $this->isAdmin;
   }
 
-  /**
-   * @param bool $isAdmin
-   *
-   * @return User
-   */
   public function setIsAdmin(bool $isAdmin): User
   {
     $this->isAdmin = $isAdmin;
@@ -599,19 +528,13 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getResetCode(): ?string
   {
     return $this->resetCode;
   }
 
-  /**
-   * @param string|null $resetCode
-   *
-   * @return User
-   */
+  /** @return User */
   public function setResetCode(?string $resetCode): self
   {
     $this->resetCode = $resetCode;
@@ -619,19 +542,13 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return DateTime|null
-   */
+  /** @return DateTime|null */
   public function getResetCodeValid(): ?DateTime
   {
     return $this->resetCodeValid;
   }
 
-  /**
-   * @param DateTime|null $resetCodeValid
-   *
-   * @return User
-   */
+  /** @return User */
   public function setResetCodeValid(?DateTime $resetCodeValid): self
   {
     $this->resetCodeValid = $resetCodeValid;
@@ -639,20 +556,15 @@ class User implements UserInterface, Serializable
     return $this;
   }
 
-  /**
-   * @return UserGroup[]|Collection
-   */
+  /** @return UserGroup[]|Collection */
   public function getUserGroups()
   {
     return $this->userGroups;
   }
 
-  /**
-   * @return Annotation[]|Collection
-   */
+  /** @return Annotation[]|Collection */
   public function getAnnotations()
   {
     return $this->annotations;
   }
-
 }

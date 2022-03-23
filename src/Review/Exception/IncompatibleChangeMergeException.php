@@ -7,12 +7,7 @@ use Exception;
 
 class IncompatibleChangeMergeException extends Exception
 {
-  /**
-   * IncompatibleChangeMergeException constructor.
-   *
-   * @param PendingChange $original
-   * @param PendingChange $merge
-   */
+  /** IncompatibleChangeMergeException constructor. */
   public function __construct(PendingChange $original, PendingChange $merge)
   {
     parent::__construct(sprintf('The pending change (id: %d, type: %s, objectId: %d) is cannot be merged with this one (id: %d, type: %s, objectId: %d)',

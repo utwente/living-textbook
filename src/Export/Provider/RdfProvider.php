@@ -43,12 +43,7 @@ class RdfProvider implements ProviderInterface
     $this->serializer             = $serializer;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return JsonResponse
-   * @throws Exception
-   */
+  /** @throws Exception */
   public function exportStudyArea(StudyArea $studyArea): JsonResponse
   {
     $graph = new Graph();
@@ -150,12 +145,7 @@ class RdfProvider implements ProviderInterface
 EOT;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Response
-   * @throws Exception
-   */
+  /** @throws Exception */
   public function export(StudyArea $studyArea): Response
   {
     $response = $this->exportStudyArea($studyArea);
@@ -164,10 +154,6 @@ EOT;
     return $response;
   }
 
-  /**
-   * @param RelationType $relationType
-   * @param Graph        $graph
-   */
   public function addRelationTypeResource(RelationType $relationType, Graph $graph): void
   {
     $relationTypeResource = $graph->resource('https://ltb.itc.utwente.nl/relationType/' . $relationType->getCamelizedName());
@@ -180,10 +166,6 @@ EOT;
     $relationTypeResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl()]);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   * @param Graph     $graph
-   */
   public function addStudyAreaResource(StudyArea $studyArea, Graph $graph): void
   {
     $studyAreaResource = $graph->resource($this->generateStudyAreaResourceUrl());
@@ -193,10 +175,6 @@ EOT;
     $studyAreaResource->addLiteral('rdfs:label', $studyArea->getName(), 'en');
   }
 
-  /**
-   * @param Concept $concept
-   * @param Graph   $graph
-   */
   public function addConceptResource(Concept $concept, Graph $graph): void
   {
     $conceptResource = $graph->resource($this->generateConceptResourceUrl($concept));
@@ -215,39 +193,30 @@ EOT;
       $conceptResource->add('https://ltb.itc.utwente.nl/resource/priorknowledge', ['type' => 'uri', 'value' => $this->generateConceptResourceUrl($priorKnowledge)]);
     }
     foreach ([$concept->getName(), $concept->getSynonyms()] as $label) {
-      if ($label !== '') $conceptResource->addLiteral('rdfs:label', $label, 'en');
+      if ($label !== '') {
+        $conceptResource->addLiteral('rdfs:label', $label, 'en');
+      }
     }
-    if ($concept->getSynonyms() !== '') $conceptResource->addLiteral('skos:altLabel', $concept->getSynonyms(), 'en');
+    if ($concept->getSynonyms() !== '') {
+      $conceptResource->addLiteral('skos:altLabel', $concept->getSynonyms(), 'en');
+    }
     $conceptResource->add('skos:inScheme', ['type' => 'uri', 'value' => $this->generateStudyAreaResourceUrl()]);
     $conceptResource->addLiteral('skos:prefLabel', $concept->getName(), 'en');
   }
 
-  /**
-   * @param LearningOutcome $learningOutcome
-   * @param Graph           $graph
-   */
   public function addLearningOutcomeResource(LearningOutcome $learningOutcome, Graph $graph): void
   {
     $learningOutcomeResource = $graph->resource($this->generateLearningOutcomeResourceUrl($learningOutcome));
     $learningOutcomeResource->addType('https://ltb.itc.utwente.nl/resource/learningoutcome');
   }
 
-  /**
-   * @param LearningPath $learningPath
-   * @param Graph        $graph
-   */
   public function addLearningPathResource(LearningPath $learningPath, Graph $graph): void
   {
     $learningPathResource = $graph->resource($this->generateLearningPathResourceUrl($learningPath));
     $learningPathResource->addType('https://ltb.itc.utwente.nl/resource/learningpath');
   }
 
-  /**
-   * @param Graph $graph
-   *
-   * @return JsonResponse
-   * @throws Exception
-   */
+  /** @throws Exception */
   public function exportGraph(Graph $graph): JsonResponse
   {
     $jsonLd = (new JsonLd())->serialise($graph, 'jsonld');
@@ -258,39 +227,22 @@ EOT;
     return new JsonResponse($jsonLd, Response::HTTP_OK, [], true);
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function generateStudyAreaResourceUrl(): string
   {
     return $this->router->generate('app_resource_studyarea', [], UrlGeneratorInterface::ABSOLUTE_URL);
   }
 
-  /**
-   * @param Concept $concept
-   *
-   * @return string
-   */
   public function generateConceptResourceUrl(Concept $concept): string
   {
     return $this->router->generate('app_resource_concept', ['concept' => $concept->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
   }
 
-  /**
-   * @param LearningOutcome $learningOutcome
-   *
-   * @return string
-   */
   public function generateLearningOutcomeResourceUrl(LearningOutcome $learningOutcome): string
   {
     return $this->router->generate('app_resource_learningoutcome', ['learningOutcome' => $learningOutcome->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
   }
 
-  /**
-   * @param LearningPath $learningPath
-   *
-   * @return string
-   */
   public function generateLearningPathResourceUrl(LearningPath $learningPath): string
   {
     return $this->router->generate('app_resource_learningpath', ['learningPath' => $learningPath->getId()], UrlGeneratorInterface::ABSOLUTE_URL);

@@ -7,15 +7,10 @@ use InvalidArgumentException;
 
 class PendingChangeObjectInfo
 {
-
-  /**
-   * @var PendingChange[]
-   */
+  /** @var PendingChange[] */
   private $pendingChanges;
 
-  /**
-   * @var string[]
-   */
+  /** @var string[] */
   private $disabledFields = [];
 
   /**
@@ -55,29 +50,17 @@ class PendingChangeObjectInfo
     }
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function hasChanges(): bool
   {
     return count($this->pendingChanges) > 0;
   }
 
-  /**
-   * @param string $field
-   *
-   * @return bool
-   */
   public function hasChangesForField(string $field): bool
   {
     return in_array($field, $this->disabledFields);
   }
 
-  /**
-   * @param string $field
-   *
-   * @return PendingChange
-   */
   public function getPendingChangeForField(string $field): PendingChange
   {
     if (!$this->hasChangesForField($field)) {
@@ -91,29 +74,23 @@ class PendingChangeObjectInfo
     return $pendingChange[0];
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getObjectType(): ?string
   {
     if (!$this->hasChanges()) {
-      return NULL;
+      return null;
     }
 
     return $this->pendingChanges[0]->getObjectType();
   }
 
-  /**
-   * @return PendingChange[]
-   */
+  /** @return PendingChange[] */
   public function getPendingChanges(): array
   {
     return $this->pendingChanges;
   }
 
-  /**
-   * @return string[]
-   */
+  /** @return string[] */
   public function getDisabledFields(): array
   {
     return $this->disabledFields;

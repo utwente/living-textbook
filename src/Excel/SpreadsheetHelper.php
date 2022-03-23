@@ -17,37 +17,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SpreadsheetHelper
 {
-
   /** @var TranslatorInterface */
   private $translator;
 
-  /**
-   * SpreadsheetHelper constructor.
-   *
-   * @param TranslatorInterface $translator
-   */
+  /** SpreadsheetHelper constructor. */
   public function __construct(TranslatorInterface $translator)
   {
     $this->translator = $translator;
   }
 
-  /**
-   * Creates an Excel writer
-   *
-   * @param Spreadsheet $spreadsheet
-   *
-   * @return Xlsx
-   */
+  /** Creates an Excel writer. */
   public function createExcelWriter(Spreadsheet $spreadsheet): Xlsx
   {
     return new Xlsx($spreadsheet);
   }
 
   /**
-   * Create an Excel response from a spreadsheet
-   *
-   * @param Spreadsheet $spreadsheet
-   * @param string      $filename
+   * Create an Excel response from a spreadsheet.
    *
    * @return StreamedResponse
    */
@@ -66,13 +52,7 @@ class SpreadsheetHelper
     return $response;
   }
 
-  /**
-   * Creates a CSV writer
-   *
-   * @param Spreadsheet $spreadsheet
-   *
-   * @return Csv
-   */
+  /** Creates a CSV writer. */
   public function createCsvWriter(Spreadsheet $spreadsheet): Csv
   {
     return (new Csv($spreadsheet))
@@ -82,10 +62,7 @@ class SpreadsheetHelper
   }
 
   /**
-   * Create a CSV response from a spreadsheet
-   *
-   * @param Spreadsheet $spreadsheet
-   * @param string      $filename
+   * Create a CSV response from a spreadsheet.
    *
    * @return StreamedResponse
    */
@@ -103,12 +80,7 @@ class SpreadsheetHelper
   }
 
   /**
-   * Creates a new sheet with the specified name
-   *
-   * @param Spreadsheet $spreadsheet
-   * @param string      $name
-   *
-   * @return Worksheet
+   * Creates a new sheet with the specified name.
    *
    * @throws Exception
    */
@@ -120,36 +92,17 @@ class SpreadsheetHelper
     return $sheet;
   }
 
-  /**
-   * @param Worksheet $sheet
-   * @param int       $column
-   * @param int       $row
-   * @param bool      $value
-   */
   public function setCellBooleanValue(Worksheet &$sheet, int $column, int $row, bool $value)
   {
     $this->setCellTranslatedValue($sheet, $column, $row, $value ? 'excel.boolean.yes' : 'excel.boolean.no');
   }
 
-  /**
-   * @param Worksheet $sheet
-   * @param int       $column
-   * @param int       $row
-   * @param string    $value
-   * @param bool      $bold
-   */
   public function setCellTranslatedValue(Worksheet &$sheet, int $column, int $row, string $value, bool $bold = false)
   {
     $this->setCellValue($sheet, $column, $row, $this->translator->trans($value), $bold);
   }
 
-  /**
-   * @param Worksheet $sheet
-   * @param int       $column
-   * @param int       $row
-   * @param mixed     $value
-   * @param bool      $bold
-   */
+  /** @param mixed $value */
   public function setCellValue(Worksheet &$sheet, int $column, int $row, $value, bool $bold = false)
   {
     $sheet->setCellValueByColumnAndRow($column, $row, $value);
@@ -159,14 +112,6 @@ class SpreadsheetHelper
     }
   }
 
-  /**
-   * @param Worksheet $sheet
-   * @param int       $column
-   * @param int       $row
-   * @param DateTime  $dateTime
-   * @param bool      $leftAligned
-   * @param bool      $bold
-   */
   public function setCellDateTime(Worksheet &$sheet, int $column, int $row, DateTime $dateTime, bool $leftAligned = false, bool $bold = false)
   {
     $this->setCellValue($sheet, $column, $row, Date::PHPToExcel($dateTime), $bold);

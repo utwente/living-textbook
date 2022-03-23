@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class ContributorController
+ * Class ContributorController.
  *
  * @author BobV
  *
@@ -27,17 +27,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ContributorController extends AbstractController
 {
-
   /**
    * @Route("/add")
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -75,12 +69,6 @@ class ContributorController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param Contributor         $contributor
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -136,9 +124,6 @@ class ContributorController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea      $requestStudyArea
-   * @param ContributorRepository $repo
-   *
    * @return array
    */
   public function list(RequestStudyArea $requestStudyArea, ContributorRepository $repo)
@@ -154,12 +139,6 @@ class ContributorController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param Contributor         $contributor
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -183,7 +162,7 @@ class ContributorController extends AbstractController
       return $this->redirectToRoute('app_contributor_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_contributor_list',
     ]);
     $form->handleRequest($request);
@@ -202,5 +181,4 @@ class ContributorController extends AbstractController
         'form'        => $form->createView(),
     ];
   }
-
 }

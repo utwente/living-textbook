@@ -8,7 +8,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class UserProtoRepository
+ * Class UserProtoRepository.
  *
  * @method UserProto|null find($id, $lockMode = NULL, $lockVersion = NULL)
  * @method UserProto|null findOneBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
@@ -20,13 +20,10 @@ class UserProtoRepository extends ServiceEntityRepository
     parent::__construct($registry, UserProto::class);
   }
 
-
   /**
-   * Find a user proto for the given email address
+   * Find a user proto for the given email address.
    *
    * @param $email
-   *
-   * @return UserProto|null
    */
   public function getForEmail($email): ?UserProto
   {
@@ -38,7 +35,7 @@ class UserProtoRepository extends ServiceEntityRepository
           ->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException $e) {
       // Cannot happen
-      return NULL;
+      return null;
     }
   }
 }

@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class AbbreviationController
+ * Class AbbreviationController.
  *
  * @author BobV
  *
@@ -29,15 +29,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AnnotationController extends AbstractController
 {
-
   /**
    * @Route("/{concept}/all", requirements={"concept"="\d+"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea     $requestStudyArea
-   * @param Concept              $concept
-   * @param AnnotationRepository $annotationRepository
-   * @param SerializerInterface  $serializer
    *
    * @return JsonResponse
    */
@@ -63,15 +57,9 @@ class AnnotationController extends AbstractController
    * @Route("/{concept}/add", requirements={"concept"="\d+"}, methods={"POST"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Concept                $concept
-   * @param ValidatorInterface     $validator
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
+   * @throws Exception
    *
    * @return JsonResponse
-   * @throws Exception
    */
   public function add(Request $request, RequestStudyArea $requestStudyArea, Concept $concept,
                       ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
@@ -83,8 +71,8 @@ class AnnotationController extends AbstractController
     }
 
     // Parse version from request, must be either a DateTime or null
-    $version = $request->request->get('version', NULL);
-    if ($version !== NULL) {
+    $version = $request->request->get('version', null);
+    if ($version !== null) {
       $version = new DateTime($version);
     }
 
@@ -92,16 +80,16 @@ class AnnotationController extends AbstractController
     $annotation = (new Annotation())
         ->setUser($this->getUser())
         ->setConcept($concept)
-        ->setText($request->request->get('text', NULL))
+        ->setText($request->request->get('text', null))
         ->setContext($request->request->get('context', ''))
         ->setStart($request->request->getInt('start', 0))
         ->setEnd($request->request->getInt('end', 0))
-        ->setSelectedText($request->request->get('selectedText', NULL))
+        ->setSelectedText($request->request->get('selectedText', null))
         ->setVersion($version)
         ->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
 
     // Validate data
-    if (NULL !== $result = $this->validate($annotation, $validator, $serializer)) {
+    if (null !== $result = $this->validate($annotation, $validator, $serializer)) {
       return $result;
     }
 
@@ -116,14 +104,6 @@ class AnnotationController extends AbstractController
    * @Route("/{concept}/annotation/{annotation}/comment", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"POST"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Concept                $concept
-   * @param Annotation             $annotation
-   * @param ValidatorInterface     $validator
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
    *
    * @return JsonResponse
    */
@@ -157,13 +137,13 @@ class AnnotationController extends AbstractController
     // everybody visibility is implied by method security
 
     // Create the comment
-    $comment = (new  AnnotationComment())
+    $comment = (new AnnotationComment())
         ->setUser($user)
         ->setAnnotation($annotation)
-        ->setText($request->request->get('text', NULL));
+        ->setText($request->request->get('text', null));
 
     // Validate data
-    if (NULL !== $result = $this->validate($comment, $validator, $serializer)) {
+    if (null !== $result = $this->validate($comment, $validator, $serializer)) {
       return $result;
     }
 
@@ -184,14 +164,6 @@ class AnnotationController extends AbstractController
    * @Route("/{concept}/annotation/{annotation}/edit", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"POST"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Concept                $concept
-   * @param Annotation             $annotation
-   * @param ValidatorInterface     $validator
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
    *
    * @return JsonResponse
    */
@@ -221,7 +193,7 @@ class AnnotationController extends AbstractController
     $annotation->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
 
     // Validate data
-    if (NULL !== $result = $this->validate($annotation, $validator, $serializer)) {
+    if (null !== $result = $this->validate($annotation, $validator, $serializer)) {
       return $result;
     }
 
@@ -237,13 +209,9 @@ class AnnotationController extends AbstractController
    *   methods={"DELETE"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Concept                $concept
-   * @param Annotation             $annotation
-   * @param EntityManagerInterface $em
+   * @throws Exception
    *
    * @return JsonResponse
-   * @throws Exception
    */
   public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em)
   {
@@ -272,13 +240,6 @@ class AnnotationController extends AbstractController
    *   requirements={"concept"="\d+", "annotation"="\d+", "comment"="\d+"},
    *   methods={"DELETE"}, options={"expose"="true"})
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Concept                $concept
-   * @param Annotation             $annotation
-   * @param AnnotationComment      $comment
-   * @param EntityManagerInterface $em
-   * @param SerializerInterface    $serializer
    *
    * @return JsonResponse
    */
@@ -314,9 +275,7 @@ class AnnotationController extends AbstractController
   }
 
   /**
-   * @param                     $object
-   * @param ValidatorInterface  $validator
-   * @param SerializerInterface $serializer
+   * @param $object
    *
    * @return JsonResponse|null
    */
@@ -336,6 +295,6 @@ class AnnotationController extends AbstractController
       return new JsonResponse($serializer->serialize($errors, 'json'), 400, [], true);
     }
 
-    return NULL;
+    return null;
   }
 }

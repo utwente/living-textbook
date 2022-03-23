@@ -18,7 +18,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TextAnnotation
+ * Class TextAnnotation.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\AnnotationRepository")
@@ -29,13 +29,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Annotation implements SearchableInterface
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
   /**
-   * The user
+   * The user.
    *
    * @var User|null
    *
@@ -47,7 +46,7 @@ class Annotation implements SearchableInterface
   private $user;
 
   /**
-   * The concept
+   * The concept.
    *
    * @var Concept|null
    *
@@ -59,7 +58,7 @@ class Annotation implements SearchableInterface
   private $concept;
 
   /**
-   * Annotation text. If null, it is only a highlight
+   * Annotation text. If null, it is only a highlight.
    *
    * @var string|null
    *
@@ -70,7 +69,7 @@ class Annotation implements SearchableInterface
   private $text;
 
   /**
-   * Annotation context (section of concept)
+   * Annotation context (section of concept).
    *
    * @var string
    *
@@ -85,7 +84,7 @@ class Annotation implements SearchableInterface
 
   /**
    * Annotation start. This is without any HTML tags!
-   * If -1, the complete section is annotated
+   * If -1, the complete section is annotated.
    *
    * @var int
    *
@@ -100,7 +99,7 @@ class Annotation implements SearchableInterface
 
   /**
    * Annotation end. This is without any HTML tags!
-   * If there is no selection, it means the header/complete context is annotated
+   * If there is no selection, it means the header/complete context is annotated.
    *
    * @var int
    *
@@ -118,7 +117,7 @@ class Annotation implements SearchableInterface
 
   /**
    * The selected text at time of creation.
-   * Should be null when the header is selected
+   * Should be null when the header is selected.
    *
    * @var string|null
    *
@@ -145,7 +144,7 @@ class Annotation implements SearchableInterface
   private $version;
 
   /**
-   * Visibility for the annotation
+   * Visibility for the annotation.
    *
    * @var string
    *
@@ -184,13 +183,7 @@ class Annotation implements SearchableInterface
     $this->comments   = new ArrayCollection();
   }
 
-  /**
-   * Searches in the annotation on the given search, returns an array with search result metadata
-   *
-   * @param string $search
-   *
-   * @return array
-   */
+  /** Searches in the annotation on the given search, returns an array with search result metadata. */
   public function searchIn(string $search): array
   {
     // Create result array
@@ -217,21 +210,13 @@ class Annotation implements SearchableInterface
     ];
   }
 
-  /**
-   * Public visibility level. Only the annotation owner will see the annotation.
-   *
-   * @return string
-   */
+  /** Public visibility level. Only the annotation owner will see the annotation. */
   public static function privateVisibility(): string
   {
     return 'private';
   }
 
-  /**
-   * Teacher visibility level. Teachers are allowed to see the annotation.
-   *
-   * @return string
-   */
+  /** Teacher visibility level. Teachers are allowed to see the annotation. */
   public static function teacherVisibility(): string
   {
     return 'teacher';
@@ -239,18 +224,14 @@ class Annotation implements SearchableInterface
 
   /**
    * Everybody visibility level. Everybody is not public, as
-   * it should only be visible for everybody with rights in the specific study area
-   *
-   * @return string
+   * it should only be visible for everybody with rights in the specific study area.
    */
   public static function everybodyVisibility(): string
   {
     return 'everybody';
   }
 
-  /**
-   * Visibility levels for an annotation.
-   */
+  /** Visibility levels for an annotation. */
   public static function visibilityOptions(): array
   {
     return [
@@ -260,17 +241,13 @@ class Annotation implements SearchableInterface
     ];
   }
 
-  /**
-   * @return User|null
-   */
+  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
   }
 
   /**
-   * @return int
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -280,8 +257,6 @@ class Annotation implements SearchableInterface
   }
 
   /**
-   * @return string
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -291,8 +266,6 @@ class Annotation implements SearchableInterface
   }
 
   /**
-   * @return DateTime
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -301,11 +274,6 @@ class Annotation implements SearchableInterface
     return $this->createdAt;
   }
 
-  /**
-   * @param User|null $user
-   *
-   * @return Annotation
-   */
   public function setUser(?User $user): Annotation
   {
     $this->user = $user;
@@ -313,17 +281,13 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return Concept|null
-   */
+  /** @return Concept|null */
   public function getConcept(): ?Concept
   {
     return $this->concept;
   }
 
   /**
-   * @return int
-   *
    * @JMSA\VirtualProperty("concept")
    * @JMSA\Expose()
    */
@@ -332,11 +296,6 @@ class Annotation implements SearchableInterface
     return $this->concept->getId();
   }
 
-  /**
-   * @param Concept|null $concept
-   *
-   * @return Annotation
-   */
   public function setConcept(?Concept $concept): Annotation
   {
     $this->concept = $concept;
@@ -344,39 +303,25 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getText(): ?string
   {
     return $this->text;
   }
 
-  /**
-   * @param string|null $text
-   *
-   * @return Annotation
-   */
   public function setText(?string $text): Annotation
   {
-    $this->text = strlen($text) > 0 ? $text : NULL;
+    $this->text = strlen($text) > 0 ? $text : null;
 
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getContext(): string
   {
     return $this->context;
   }
 
-  /**
-   * @param string $context
-   *
-   * @return Annotation
-   */
   public function setContext(string $context): Annotation
   {
     $this->context = $context;
@@ -384,19 +329,12 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getStart(): int
   {
     return $this->start;
   }
 
-  /**
-   * @param int $start
-   *
-   * @return Annotation
-   */
   public function setStart(int $start): Annotation
   {
     $this->start = $start;
@@ -404,19 +342,12 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getEnd(): int
   {
     return $this->end;
   }
 
-  /**
-   * @param int $end
-   *
-   * @return Annotation
-   */
   public function setEnd(int $end): Annotation
   {
     $this->end = $end;
@@ -424,39 +355,25 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getSelectedText(): ?string
   {
     return $this->selectedText;
   }
 
-  /**
-   * @param string|null $selectedText
-   *
-   * @return Annotation
-   */
   public function setSelectedText(?string $selectedText): Annotation
   {
-    $this->selectedText = strlen($selectedText) > 0 ? $selectedText : NULL;
+    $this->selectedText = strlen($selectedText) > 0 ? $selectedText : null;
 
     return $this;
   }
 
-  /**
-   * @return DateTime|null
-   */
+  /** @return DateTime|null */
   public function getVersion(): ?DateTime
   {
     return $this->version;
   }
 
-  /**
-   * @param DateTime|null $version
-   *
-   * @return Annotation
-   */
   public function setVersion(?DateTime $version): Annotation
   {
     $this->version = $version;
@@ -464,19 +381,12 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getVisibility(): string
   {
     return $this->visibility;
   }
 
-  /**
-   * @param string $visibility
-   *
-   * @return Annotation
-   */
   public function setVisibility(string $visibility): Annotation
   {
     if (!in_array($visibility, self::visibilityOptions())) {
@@ -488,25 +398,19 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /**
-   * @return AnnotationComment[]|Collection
-   */
+  /** @return AnnotationComment[]|Collection */
   public function getComments()
   {
     return $this->comments;
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getCommentCount(): int
   {
     return $this->comments->count();
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getCommentsFromOthersCount(): int
   {
     $annotation = $this;
@@ -515,5 +419,4 @@ class Annotation implements SearchableInterface
       return $annotationComment->getUser()->getId() !== $annotation->getUserId();
     })->count();
   }
-
 }

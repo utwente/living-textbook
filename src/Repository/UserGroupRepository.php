@@ -5,9 +5,9 @@ namespace App\Repository;
 use App\Entity\StudyArea;
 use App\Entity\UserGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 
 class UserGroupRepository extends ServiceEntityRepository
@@ -18,12 +18,7 @@ class UserGroupRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the user group for a study area by type
-   *
-   * @param StudyArea $studyArea
-   * @param string    $groupType
-   *
-   * @return UserGroup|null
+   * Retrieve the user group for a study area by type.
    *
    * @throws InvalidArgumentException
    * @throws NonUniqueResultException
@@ -42,15 +37,13 @@ class UserGroupRepository extends ServiceEntityRepository
           ->setParameter('type', $groupType)
           ->getQuery()->getSingleResult();
     } catch (NoResultException $e) {
-      return NULL;
+      return null;
     }
   }
 
   /**
    * Remove obsolete user groups based on the new study area access type
    * Note that flush is required after this function call!
-   *
-   * @param StudyArea $studyArea
    */
   public function removeObsoleteGroups(StudyArea $studyArea)
   {

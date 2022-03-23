@@ -24,26 +24,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DuplicateType extends AbstractType
 {
-  const CHOICE = 'type';
-  const CHOICE_EXISTING = 'existing';
-  const CHOICE_NEW = 'new';
-
-  const EXISTING_STUDY_AREA = 'existing_study_area';
-  const NEW_STUDY_AREA = 'new_study_area';
-  const CONCEPTS = 'concepts';
-  const SELECT_ALL = 'select_all';
-  /**
-   * @var Security
-   */
+  public const CHOICE              = 'type';
+  public const CHOICE_EXISTING     = 'existing';
+  public const CHOICE_NEW          = 'new';
+  public const EXISTING_STUDY_AREA = 'existing_study_area';
+  public const NEW_STUDY_AREA      = 'new_study_area';
+  public const CONCEPTS            = 'concepts';
+  public const SELECT_ALL          = 'select_all';
+  /** @var Security */
   private $security;
-  /**
-   * @var StudyAreaRepository
-   */
+  /** @var StudyAreaRepository */
   private $studyAreaRepository;
 
-  /**
-   * @var TranslatorInterface
-   */
+  /** @var TranslatorInterface */
   private $translator;
 
   public function __construct(
@@ -63,7 +56,7 @@ class DuplicateType extends AbstractType
 
     $builder
         ->add(self::CHOICE, ChoiceType::class, [
-            'choices'  => [
+            'choices' => [
                 'study-area.new'      => self::CHOICE_NEW,
                 'study-area.existing' => self::CHOICE_EXISTING,
             ],
@@ -71,11 +64,11 @@ class DuplicateType extends AbstractType
             'expanded' => true,
         ])
         ->add(self::EXISTING_STUDY_AREA, ChoiceType::class, [
-            'required'      => true,
-            'form_header'   => 'study-area.existing',
-            'placeholder'   => 'dashboard.select-one',
-            'select2'       => true,
-            'group_by'      => function (StudyArea $studyArea) use ($defaultGroupName) {
+            'required'    => true,
+            'form_header' => 'study-area.existing',
+            'placeholder' => 'dashboard.select-one',
+            'select2'     => true,
+            'group_by'    => function (StudyArea $studyArea) use ($defaultGroupName) {
               if (!$studyArea->getGroup()) {
                 return $defaultGroupName;
               }
@@ -83,14 +76,14 @@ class DuplicateType extends AbstractType
               return $studyArea->getGroup()->getName();
             },
             'choice_loader' => new CallbackChoiceLoader(function () use ($currentStudyArea) {
-              $studyAreas = $this->studyAreaRepository->findBy(['reviewModeEnabled' => false, 'frozenOn' => NULL]);
+              $studyAreas = $this->studyAreaRepository->findBy(['reviewModeEnabled' => false, 'frozenOn' => null]);
 
               return array_filter($studyAreas, function (StudyArea $studyArea) use ($currentStudyArea) {
                 return $studyArea->getId() !== $currentStudyArea->getId() && $this->security->isGranted('STUDYAREA_EDIT', $studyArea);
               });
             }),
-            'choice_label'  => 'name',
-            'constraints'   => [
+            'choice_label' => 'name',
+            'constraints'  => [
                 new NotNull(['groups' => [self::CHOICE_EXISTING]]),
             ],
         ])
@@ -136,7 +129,7 @@ class DuplicateType extends AbstractType
   {
     $resolver
         ->setDefaults([
-            'constraints'       => [
+            'constraints' => [
                 new Callback(['callback' => [$this, 'checkConcepts'], 'groups' => [self::CHOICE_NEW, self::CHOICE_EXISTING]]),
                 new Callback(['callback' => [$this, 'checkNewStudyArea'], 'groups' => [self::CHOICE_NEW, self::CHOICE_EXISTING]]),
             ],
@@ -151,10 +144,9 @@ class DuplicateType extends AbstractType
   }
 
   /**
-   * Check if there is at least 1 concept selected to duplicate
+   * Check if there is at least 1 concept selected to duplicate.
    *
-   * @param                           $data
-   * @param ExecutionContextInterface $context
+   * @param $data
    */
   public function checkConcepts($data, ExecutionContextInterface $context)
   {
@@ -166,10 +158,9 @@ class DuplicateType extends AbstractType
   }
 
   /**
-   * Check if the new study area is valid
+   * Check if the new study area is valid.
    *
-   * @param                           $data
-   * @param ExecutionContextInterface $context
+   * @param $data
    */
   public function checkNewStudyArea($data, ExecutionContextInterface $context)
   {
@@ -178,8 +169,7 @@ class DuplicateType extends AbstractType
           ->getValidator()
           ->inContext($context)
           ->atPath('[' . self::NEW_STUDY_AREA . ']')
-          ->validate($data[self::NEW_STUDY_AREA], NULL, ['Default']);
+          ->validate($data[self::NEW_STUDY_AREA], null, ['Default']);
     }
   }
-
 }

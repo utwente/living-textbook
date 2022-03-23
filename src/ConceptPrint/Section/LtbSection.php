@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class LtbSection extends Section
 {
-
   /** @var Pandoc */
   protected $pandoc;
 
@@ -38,10 +37,6 @@ abstract class LtbSection extends Section
 
   /**
    * LtbSection constructor.
-   *
-   * @param string    $name
-   * @param LtbRouter $router
-   * @param string    $projectDir
    *
    * @throws LatexException
    */
@@ -64,9 +59,6 @@ abstract class LtbSection extends Section
   }
 
   /**
-   * @param string $title
-   * @param string $html
-   *
    * @throws LatexException
    * @throws PandocException
    */
@@ -78,10 +70,9 @@ abstract class LtbSection extends Section
   }
 
   /**
-   * @param string $html
+   * @throws PandocException
    *
    * @return string
-   * @throws PandocException
    */
   protected function convertHtmlToLatex(string $html)
   {
@@ -103,7 +94,9 @@ abstract class LtbSection extends Section
       }
       foreach ($dom->getElementsByTagName('span') as $inlineFigure) {
         /** @var DOMElement $inlineFigure */
-        if (!$inlineFigure->hasAttribute('class')) continue;
+        if (!$inlineFigure->hasAttribute('class')) {
+          continue;
+        }
         $classes = explode(' ', $inlineFigure->getAttribute('class'));
         if (in_array('latex-figure-inline', $classes)) {
           $extractedFigures[] = $inlineFigure;
@@ -113,24 +106,34 @@ abstract class LtbSection extends Section
       // Loop the extracted figures
       foreach ($extractedFigures as $figure) {
         /** @var DOMElement $figure */
-        if (!$figure->hasAttribute('class')) continue;
+        if (!$figure->hasAttribute('class')) {
+          continue;
+        }
 
         // Check for class
         $classes       = explode(' ', $figure->getAttribute('class'));
         $isInlineLatex = in_array('latex-figure-inline', $classes);
         $isLatex       = in_array('latex-figure', $classes);
         $isImage       = in_array('image', $classes);
-        if (!$isInlineLatex && !$isLatex && !$isImage) continue;
+        if (!$isInlineLatex && !$isLatex && !$isImage) {
+          continue;
+        }
 
         // Retrieve inner tags
         $img     = $figure->getElementsByTagName('img');
         $caption = $figure->getElementsByTagName('figcaption');
 
         // Check tag attributes
-        if ($img->length < 1) continue;
+        if ($img->length < 1) {
+          continue;
+        }
         if (!$isInlineLatex) {
-          if ($caption->length < 1) continue;
-          if ($caption->item(0)->childNodes->length < 1) continue;
+          if ($caption->length < 1) {
+            continue;
+          }
+          if ($caption->item(0)->childNodes->length < 1) {
+            continue;
+          }
         }
 
         // Retrieve nodes
@@ -147,7 +150,9 @@ abstract class LtbSection extends Section
         }
 
         if ($isInlineLatex) {
-          if (!$imgElement->hasAttribute('alt')) continue;
+          if (!$imgElement->hasAttribute('alt')) {
+            continue;
+          }
 
           // Retrieve relevant information
           $latex                  = $imgElement->getAttribute('alt');
@@ -155,8 +160,10 @@ abstract class LtbSection extends Section
               'replace' => urldecode($latex),
               'caption' => '',
           ];
-        } else if ($isLatex) {
-          if (!$imgElement->hasAttribute('alt')) continue;
+        } elseif ($isLatex) {
+          if (!$imgElement->hasAttribute('alt')) {
+            continue;
+          }
 
           // Retrieve relevant information
           $latex            = $imgElement->getAttribute('alt');
@@ -164,8 +171,10 @@ abstract class LtbSection extends Section
               'replace' => urldecode($latex),
               'caption' => $caption,
           ];
-        } else if ($isImage) {
-          if (!$imgElement->hasAttribute('src')) continue;
+        } elseif ($isImage) {
+          if (!$imgElement->hasAttribute('src')) {
+            continue;
+          }
 
           // Retrieve relevant information
           $image             = $imgElement->getAttribute('src');
@@ -185,7 +194,7 @@ abstract class LtbSection extends Section
         $remainingImages[] = $image;
       }
       foreach ($remainingImages as $image) {
-        /** @var DOMElement $image */
+        /* @var DOMElement $image */
         $image->parentNode->removeChild($image);
       }
 
@@ -196,7 +205,7 @@ abstract class LtbSection extends Section
 
     // Restore errors
     libxml_clear_errors();
-    /** @phan-suppress-next-line PhanDeprecatedFunctionInternal */
+    /* @phan-suppress-next-line PhanDeprecatedFunctionInternal */
     libxml_disable_entity_loader(false);
 
     $latex = $this->pandoc->convert($html, 'html', 'latex');
@@ -207,7 +216,7 @@ abstract class LtbSection extends Section
     $latex = $this->replacePlaceholder($latex, $normalImages, '\\begin{figure}[!htb]\\includegraphics[frame]{%s}\\caption*{%s}\\end{figure}');
 
     // Replace unsupported graphics with an unavailable image
-    $matches = array();
+    $matches = [];
     preg_match_all('/\\\\includegraphics(\[.+\])?\{([^}]+)\}/u', $latex, $matches);
     foreach ($matches[2] as $imageLocation) {
       if ($this->fileSystem->exists($imageLocation)) {
@@ -227,7 +236,6 @@ abstract class LtbSection extends Section
     return $latex;
   }
 
-
   private function replacePlaceholder(string $latex, array $replaceInfo, $replacement)
   {
     foreach ($replaceInfo as $id => $toReplace) {
@@ -237,5 +245,4 @@ abstract class LtbSection extends Section
 
     return $latex;
   }
-
 }

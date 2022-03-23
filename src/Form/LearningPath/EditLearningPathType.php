@@ -21,10 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditLearningPathType extends AbstractType
 {
-  /**
-   * @param FormBuilderInterface $builder
-   * @param array                $options
-   */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
@@ -32,7 +28,7 @@ class EditLearningPathType extends AbstractType
     $disabledFields          = $pendingChangeObjectInfo->getDisabledFields();
 
     $learningPath = $options['learningPath'];
-    $editing      = $learningPath->getId() !== NULL;
+    $editing      = $learningPath->getId() !== null;
 
     $builder
         ->add('name', TextType::class, [
@@ -92,7 +88,7 @@ class EditLearningPathType extends AbstractType
             'query_builder' => function (AbbreviationRepository $abbreviationRepository) use ($options) {
               return $abbreviationRepository->findForStudyAreaQb($options['studyArea']);
             },
-            'attr'          => [
+            'attr' => [
                 'data-ckeditor-selector' => 'abbreviations', // Register for ckeditor
             ],
         ])
@@ -105,15 +101,13 @@ class EditLearningPathType extends AbstractType
             'query_builder' => function (ConceptRepository $conceptRepository) use ($options) {
               return $conceptRepository->findForStudyAreaOrderByNameQb($options['studyArea']);
             },
-            'attr'          => [
+            'attr' => [
                 'data-ckeditor-selector' => 'concepts', // Register for ckeditor
             ],
         ]);
   }
 
-  /**
-   * @param OptionsResolver $resolver
-   */
+  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

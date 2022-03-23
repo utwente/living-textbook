@@ -7,9 +7,9 @@ use App\Entity\Concept;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AnnotationRepository extends ServiceEntityRepository
 {
@@ -18,12 +18,7 @@ class AnnotationRepository extends ServiceEntityRepository
     parent::__construct($registry, Annotation::class);
   }
 
-  /**
-   * @param User      $user
-   * @param StudyArea $studyArea
-   *
-   * @return mixed
-   */
+  /** @return mixed */
   public function getForUserAndStudyArea(User $user, StudyArea $studyArea)
   {
     // Default query part
@@ -41,10 +36,7 @@ class AnnotationRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find by user and concept
-   *
-   * @param User    $user
-   * @param Concept $concept
+   * Find by user and concept.
    *
    * @return Annotation[]
    */
@@ -62,14 +54,7 @@ class AnnotationRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  /**
-   * Get visibility annotation count for a user in a study area
-   *
-   * @param User      $user
-   * @param StudyArea $studyArea
-   *
-   * @return array
-   */
+  /** Get visibility annotation count for a user in a study area. */
   public function getCountsForUserInStudyArea(User $user, StudyArea $studyArea): array
   {
     // Concepts query part
@@ -99,13 +84,6 @@ class AnnotationRepository extends ServiceEntityRepository
     return $result;
   }
 
-  /**
-   * @param QueryBuilder $qb
-   * @param User         $user
-   * @param StudyArea    $studyArea
-   *
-   * @return Orx
-   */
   private function getVisibilityWhere(QueryBuilder $qb, User $user, StudyArea $studyArea): Orx
   {
     $qb->setParameter('everybody', Annotation::everybodyVisibility())
@@ -122,5 +100,4 @@ class AnnotationRepository extends ServiceEntityRepository
         $qb->expr()->eq('a.user', ':user')
     );
   }
-
 }

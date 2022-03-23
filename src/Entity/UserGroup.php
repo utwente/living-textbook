@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserGroup
+ * Class UserGroup.
  *
  * @author BobV
  *
@@ -24,15 +24,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UserGroup
 {
-
-  const GROUP_REVIEWER = 'reviewer';
-  const GROUP_EDITOR = 'editor';
-  const GROUP_VIEWER = 'viewer';
-  const GROUP_ANALYSIS = 'analysis';
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  public const GROUP_REVIEWER = 'reviewer';
+  public const GROUP_EDITOR   = 'editor';
+  public const GROUP_VIEWER   = 'viewer';
+  public const GROUP_ANALYSIS = 'analysis';
 
   /**
    * @var StudyArea
@@ -77,9 +75,7 @@ class UserGroup
    */
   private $emails;
 
-  /**
-   * UserGroup constructor.
-   */
+  /** UserGroup constructor. */
   public function __construct()
   {
     $this->groupType = self::GROUP_VIEWER;
@@ -88,7 +84,7 @@ class UserGroup
   }
 
   /**
-   * Possible group types
+   * Possible group types.
    *
    * @return array
    */
@@ -97,19 +93,12 @@ class UserGroup
     return [self::GROUP_VIEWER, self::GROUP_EDITOR, self::GROUP_REVIEWER, self::GROUP_ANALYSIS];
   }
 
-  /**
-   * @return StudyArea
-   */
+  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return UserGroup
-   */
   public function setStudyArea(StudyArea $studyArea): UserGroup
   {
     $this->studyArea = $studyArea;
@@ -117,19 +106,12 @@ class UserGroup
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getGroupType(): string
   {
     return $this->groupType;
   }
 
-  /**
-   * @param string $groupType
-   *
-   * @return UserGroup
-   */
   public function setGroupType(string $groupType): UserGroup
   {
     $this->groupType = $groupType;
@@ -137,19 +119,12 @@ class UserGroup
     return $this;
   }
 
-  /**
-   * @return User[]|Collection
-   */
+  /** @return User[]|Collection */
   public function getUsers()
   {
     return $this->users;
   }
 
-  /**
-   * @param User $user
-   *
-   * @return UserGroup
-   */
   public function addUser(User $user): UserGroup
   {
     if ($this->users->contains($user)) {
@@ -161,11 +136,6 @@ class UserGroup
     return $this;
   }
 
-  /**
-   * @param User $user
-   *
-   * @return UserGroup
-   */
   public function removeUser(User $user): UserGroup
   {
     $this->users->removeElement($user);
@@ -173,19 +143,12 @@ class UserGroup
     return $this;
   }
 
-  /**
-   * @return Collection|UserGroupEmail[]
-   */
+  /** @return Collection|UserGroupEmail[] */
   public function getEmails()
   {
     return $this->emails;
   }
 
-  /**
-   * @param string $email
-   *
-   * @return UserGroup
-   */
   public function addEmail(string $email): UserGroup
   {
     // Check whether this is not a duplicate
@@ -195,16 +158,11 @@ class UserGroup
       }
     }
 
-    $this->emails->add((new UserGroupEmail)->setEmail($email)->setUserGroup($this));
+    $this->emails->add((new UserGroupEmail())->setEmail($email)->setUserGroup($this));
 
     return $this;
   }
 
-  /**
-   * @param UserGroupEmail $email
-   *
-   * @return UserGroup
-   */
   public function removeEmail(UserGroupEmail $email): UserGroup
   {
     $this->emails->removeElement($email);

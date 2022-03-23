@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Abbreviation;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class AbbreviationRepository extends ServiceEntityRepository
 {
@@ -15,22 +15,13 @@ class AbbreviationRepository extends ServiceEntityRepository
     parent::__construct($registry, Abbreviation::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Abbreviation[]
-   */
+  /** @return Abbreviation[] */
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
         ->getQuery()->getResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return \Doctrine\ORM\QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
   {
     return $this->createQueryBuilder('a')
@@ -40,10 +31,9 @@ class AbbreviationRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function getCountForStudyArea(StudyArea $studyArea)
   {

@@ -29,13 +29,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class UserController
+ * Class UserController.
  *
  * @Route("/{_studyArea}/users", requirements={"_studyArea"="\d+"})
  */
 class UserController extends AbstractController
 {
-
   /**
    * @Route("/api-tokens")
    * @IsGranted("ROLE_USER")
@@ -52,8 +51,8 @@ class UserController extends AbstractController
    * @IsGranted("ROLE_USER")
    */
   public function apiTokensGenerate(
-      Request                      $request,
-      EntityManagerInterface       $em,
+      Request $request,
+      EntityManagerInterface $em,
       UserPasswordEncoderInterface $passwordEncoder): Response
   {
     $user = $this->getUser();
@@ -105,10 +104,10 @@ class UserController extends AbstractController
    * @IsGranted("ROLE_USER")
    */
   public function apiTokensRemove(
-      Request                $request,
-      UserApiToken           $userApiToken,
+      Request $request,
+      UserApiToken $userApiToken,
       EntityManagerInterface $em,
-      TranslatorInterface    $trans): Response
+      TranslatorInterface $trans): Response
   {
     $currentUser = $this->getUser();
     assert($currentUser instanceof User);
@@ -116,7 +115,7 @@ class UserController extends AbstractController
       throw $this->createNotFoundException();
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_user_apitokens',
     ]);
     $form->handleRequest($request);
@@ -140,17 +139,18 @@ class UserController extends AbstractController
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
-   * @return array|Response
    * @throws TransportExceptionInterface
+   *
+   * @return array|Response
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function fallbackAdd(
-      Request                      $request,
-      EntityManagerInterface       $em,
-      TranslatorInterface          $trans,
-      MailerInterface              $mailer,
-      UserRepository               $userRepository,
-      UserProtoRepository          $userProtoRepository,
+      Request $request,
+      EntityManagerInterface $em,
+      TranslatorInterface $trans,
+      MailerInterface $mailer,
+      UserRepository $userRepository,
+      UserProtoRepository $userProtoRepository,
       UserPasswordEncoderInterface $userPasswordEncoder)
   {
     $form = $this->createForm(AddFallbackUsersType::class);
@@ -215,10 +215,10 @@ class UserController extends AbstractController
    * @return array|Response
    */
   public function fallbackChangeOwnPassword(
-      Request                      $request,
-      EntityManagerInterface       $em,
+      Request $request,
+      EntityManagerInterface $em,
       UserPasswordEncoderInterface $encoder,
-      TranslatorInterface          $trans)
+      TranslatorInterface $trans)
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -298,11 +298,11 @@ class UserController extends AbstractController
    * @return array|Response
    */
   public function fallbackResetPassword(
-      Request                      $request,
-      User                         $user,
-      EntityManagerInterface       $em,
+      Request $request,
+      User $user,
+      EntityManagerInterface $em,
       UserPasswordEncoderInterface $encoder,
-      TranslatorInterface          $trans)
+      TranslatorInterface $trans)
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -339,11 +339,11 @@ class UserController extends AbstractController
    * @return array|Response
    */
   public function fallbackRemove(
-      Request                $request,
-      User                   $user,
+      Request $request,
+      User $user,
       EntityManagerInterface $em,
-      TranslatorInterface    $trans,
-      StudyAreaRepository    $studyAreaRepository)
+      TranslatorInterface $trans,
+      StudyAreaRepository $studyAreaRepository)
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -362,7 +362,7 @@ class UserController extends AbstractController
     // Get owned study areas
     $studyAreas = $studyAreaRepository->findBy(['owner' => $user], ['name' => 'ASC']);
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_user_fallbacklist',
     ]);
     $form->handleRequest($request);
@@ -396,12 +396,12 @@ class UserController extends AbstractController
    * @return array|Response
    */
   public function fallbackInviteRemove(
-      Request                $request,
-      UserProto              $user,
+      Request $request,
+      UserProto $user,
       EntityManagerInterface $em,
-      TranslatorInterface    $trans)
+      TranslatorInterface $trans)
   {
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_user_fallbacklist',
     ]);
     $form->handleRequest($request);
@@ -422,5 +422,4 @@ class UserController extends AbstractController
         'form'      => $form->createView(),
     ];
   }
-
 }

@@ -7,8 +7,8 @@ use App\Entity\PendingChange;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PendingChangeRepository extends ServiceEntityRepository
 {
@@ -18,14 +18,11 @@ class PendingChangeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Get all pending changes for an object
-   *
-   * @param ReviewableInterface $object
-   * @param PendingChange|null  $exclude
+   * Get all pending changes for an object.
    *
    * @return PendingChange[]
    */
-  public function getForObject(ReviewableInterface $object, ?PendingChange $exclude = NULL): array
+  public function getForObject(ReviewableInterface $object, ?PendingChange $exclude = null): array
   {
     $qb = $this->createQueryBuilder('pc')
         ->where('pc.objectType = :objectType')
@@ -33,7 +30,7 @@ class PendingChangeRepository extends ServiceEntityRepository
         ->setParameter('objectType', $object->getReviewName())
         ->setParameter('objectId', $object->getId());
 
-    if (NULL !== $exclude) {
+    if (null !== $exclude) {
       $qb
           ->andWhere('pc.id != :exclude')
           ->setParameter('exclude', $exclude->getId());
@@ -43,13 +40,7 @@ class PendingChangeRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  /**
-   * Retrieve a mergeable pending change for the given one
-   *
-   * @param PendingChange $pendingChange
-   *
-   * @return PendingChange|null
-   */
+  /** Retrieve a mergeable pending change for the given one. */
   public function getMergeable(PendingChange $pendingChange): ?PendingChange
   {
     try {
@@ -75,15 +66,12 @@ class PendingChangeRepository extends ServiceEntityRepository
       return $qb
           ->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException $e) {
-      return NULL;
+      return null;
     }
   }
 
   /**
-   * Get all pending changes for the given study area and user
-   *
-   * @param StudyArea $studyArea
-   * @param User      $user
+   * Get all pending changes for the given study area and user.
    *
    * @return PendingChange[]
    */
@@ -96,10 +84,7 @@ class PendingChangeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the pending changes which can be submitted for review for the given study area and user
-   *
-   * @param StudyArea $studyArea
-   * @param User      $user
+   * Retrieve the pending changes which can be submitted for review for the given study area and user.
    *
    * @return PendingChange[]
    */
@@ -117,9 +102,7 @@ class PendingChangeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve multiple pending changes at once
-   *
-   * @param array $ids
+   * Retrieve multiple pending changes at once.
    *
    * @return PendingChange[]
    */

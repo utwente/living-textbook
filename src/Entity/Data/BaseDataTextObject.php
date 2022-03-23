@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class BaseDataTextObject
+ * Class BaseDataTextObject.
  *
  * @author BobV
  *
@@ -23,7 +23,7 @@ trait BaseDataTextObject
   use SoftDeletable;
 
   /**
-   * Learning outcomes
+   * Learning outcomes.
    *
    * @var string|null
    *
@@ -34,29 +34,19 @@ trait BaseDataTextObject
    */
   private $text;
 
-  /**
-   * Determine whether this block has data
-   *
-   * @return bool
-   */
+  /** Determine whether this block has data. */
   public function hasData(): bool
   {
-    return $this->text !== NULL && $this->text != '';
+    return $this->text !== null && $this->text != '';
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getText(): ?string
   {
     return $this->text;
   }
 
-  /**
-   * @param string|null $text
-   *
-   * @return $this
-   */
+  /** @return $this */
   public function setText(?string $text)
   {
     $this->text = $text;

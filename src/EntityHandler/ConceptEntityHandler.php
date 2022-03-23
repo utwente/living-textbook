@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ConceptEntityHandler extends AbstractEntityHandler
 {
-  public function add(Concept $concept, string $snapshot = NULL): void
+  public function add(Concept $concept, string $snapshot = null): void
   {
     $this->validate($concept);
 
@@ -31,22 +31,22 @@ class ConceptEntityHandler extends AbstractEntityHandler
   }
 
   public function update(
-      Concept         $concept,
-      string          $snapshot = NULL,
-      ArrayCollection $originalOutgoingRelations = NULL,
-      ArrayCollection $originalIncomingRelations = NULL): void
+      Concept $concept,
+      string $snapshot = null,
+      ArrayCollection $originalOutgoingRelations = null,
+      ArrayCollection $originalIncomingRelations = null): void
   {
     $this->validate($concept);
 
     $updateFunction = function () use (&$originalIncomingRelations, &$originalOutgoingRelations) {
       // Remove outdated relations
-      if ($originalOutgoingRelations !== NULL) {
+      if ($originalOutgoingRelations !== null) {
         foreach ($originalOutgoingRelations as $originalOutgoingRelation) {
           // Remove all original relations, because we just make new ones
           $this->em->remove($originalOutgoingRelation);
         }
       }
-      if ($originalIncomingRelations !== NULL) {
+      if ($originalIncomingRelations !== null) {
         foreach ($originalIncomingRelations as $originalIncomingRelation) {
           // Remove all original relations, because we just make new ones
           $this->em->remove($originalIncomingRelation);
@@ -66,11 +66,11 @@ class ConceptEntityHandler extends AbstractEntityHandler
   /** @noinspection PhpUnhandledExceptionInspection */
   public function delete(Concept $concept, LearningPathRepository $learningPathRepository): void
   {
-    $deleteFunction = fn() => $learningPathRepository->removeElementBasedOnConcept($concept);
+    $deleteFunction = fn () => $learningPathRepository->removeElementBasedOnConcept($concept);
 
-    if ($this->reviewService !== NULL) {
+    if ($this->reviewService !== null) {
       $this->reviewService->storeChange(
-          $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_REMOVE, NULL, $deleteFunction);
+          $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_REMOVE, null, $deleteFunction);
     } else {
       $deleteFunction();
       $this->em->remove($concept);

@@ -10,9 +10,9 @@ use OpenApi\Attributes as OA;
 class DetailedConceptRelation extends ConceptRelation
 {
   protected function __construct(
-      int    $id,
-      int    $sourceId,
-      int    $targetId,
+      int $id,
+      int $sourceId,
+      int $targetId,
       protected readonly string $name,
       #[OA\Property(nullable: true)]
       protected readonly ?string $description,
@@ -20,8 +20,7 @@ class DetailedConceptRelation extends ConceptRelation
       #[Type('array')]
       #[Groups(['dotron'])]
       protected readonly ?array $dotronConfig
-  )
-  {
+  ) {
     parent::__construct($id, $sourceId, $targetId);
   }
 

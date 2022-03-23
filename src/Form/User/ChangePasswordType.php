@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 /**
- * Class ChangePasswordType
+ * Class ChangePasswordType.
  */
 class ChangePasswordType extends AbstractType
 {

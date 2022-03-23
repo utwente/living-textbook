@@ -8,8 +8,7 @@ class ConceptRelation
       protected readonly int $id,
       protected readonly int $sourceId,
       protected readonly int $targetId,
-  )
-  {
+  ) {
   }
 
   public static function fromEntity(\App\Entity\ConceptRelation $conceptRelation): self

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class BuildPythonEnvironmentCommand extends Command
 {
   /**
-   * Makes the command lazy loaded
+   * Makes the command lazy loaded.
    *
    * @var string
    */

@@ -24,13 +24,13 @@ class AbstractReviewDiffType extends AbstractType
     if ($options['review']) {
       $builder
           ->add('comments', TextareaType::class, [
-              'empty_data' => NULL,
+              'empty_data' => null,
               'required'   => false,
               'attr'       => [
                   'placeholder' => 'review.comments-placeholder',
               ],
           ]);
-    } else if ($options['show_comments']) {
+    } elseif ($options['show_comments']) {
       $builder
           ->add('comments', PrintedTextType::class, [
               'text_only' => true,
@@ -43,7 +43,7 @@ class AbstractReviewDiffType extends AbstractType
           assert($pendingChange instanceof PendingChange);
 
           $existingComments = $pendingChange->getReviewComments() ?? [];
-          $data             = NULL;
+          $data             = null;
 
           if (array_key_exists($options['field'], $existingComments)) {
             $data = $existingComments[$options['field']];
@@ -60,7 +60,7 @@ class AbstractReviewDiffType extends AbstractType
 
           $reviewComments = $pendingChange->getReviewComments() ?? [];
           $formComments   = $formData['comments'];
-          if ($formComments === NULL) {
+          if ($formComments === null) {
             // Only unset the field if it already existed
             // But never allow to set null in the comments field
             if (array_key_exists($field, $reviewComments)) {
@@ -71,7 +71,7 @@ class AbstractReviewDiffType extends AbstractType
           }
           $pendingChange->setReviewComments($reviewComments);
 
-          return NULL;
+          return null;
         }
     ));
   }
@@ -98,7 +98,7 @@ class AbstractReviewDiffType extends AbstractType
         ->setDefault('show_original', true)
         ->setDefault('show_updated', true)
         ->setDefault('show_comments', false)
-        ->setDefault('original_object', NULL)
+        ->setDefault('original_object', null)
         ->setDefault('diff_only', false)
         ->setRequired([
             'pending_change',
@@ -123,5 +123,4 @@ class AbstractReviewDiffType extends AbstractType
 
     return $pendingChange;
   }
-
 }

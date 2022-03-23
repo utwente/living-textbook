@@ -5,9 +5,9 @@ namespace App\Repository;
 use App\Entity\Contributor;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ContributorRepository extends ServiceEntityRepository
 {
@@ -16,22 +16,13 @@ class ContributorRepository extends ServiceEntityRepository
     parent::__construct($registry, Contributor::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Contributor[]
-   */
+  /** @return Contributor[] */
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
         ->getQuery()->getResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('c')
@@ -41,9 +32,7 @@ class ContributorRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find external resources for a set of concepts
-   *
-   * @param array $concepts
+   * Find external resources for a set of concepts.
    *
    * @return Contributor[]
    */
@@ -58,10 +47,9 @@ class ContributorRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function getCountForStudyArea(StudyArea $studyArea)
   {

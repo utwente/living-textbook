@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LearningPathConcept
+ * Class LearningPathConcept.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathElementRepository")
@@ -21,13 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class LearningPathElement
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
   /**
-   * Belongs to a certain learning path
+   * Belongs to a certain learning path.
    *
    * @var LearningPath|null
    *
@@ -39,7 +38,7 @@ class LearningPathElement
   private $learningPath;
 
   /**
-   * Linked concept
+   * Linked concept.
    *
    * @var Concept|null
    *
@@ -56,7 +55,7 @@ class LearningPathElement
   private $concept;
 
   /**
-   * Transition to the next element, if any
+   * Transition to the next element, if any.
    *
    * @var LearningPathElement|null
    *
@@ -71,7 +70,7 @@ class LearningPathElement
   private $next;
 
   /**
-   * Optional description of the transition to the next element
+   * Optional description of the transition to the next element.
    *
    * @var string|null
    *
@@ -84,19 +83,12 @@ class LearningPathElement
    */
   private $description;
 
-  /**
-   * @return LearningPath|null
-   */
+  /** @return LearningPath|null */
   public function getLearningPath(): ?LearningPath
   {
     return $this->learningPath;
   }
 
-  /**
-   * @param LearningPath|null $learningPath
-   *
-   * @return LearningPathElement
-   */
   public function setLearningPath(?LearningPath $learningPath): LearningPathElement
   {
     $this->learningPath = $learningPath;
@@ -104,19 +96,12 @@ class LearningPathElement
     return $this;
   }
 
-  /**
-   * @return Concept|null
-   */
+  /** @return Concept|null */
   public function getConcept(): ?Concept
   {
     return $this->concept;
   }
 
-  /**
-   * @param Concept|null $concept
-   *
-   * @return LearningPathElement
-   */
   public function setConcept(?Concept $concept): LearningPathElement
   {
     $this->concept = $concept;
@@ -124,17 +109,13 @@ class LearningPathElement
     return $this;
   }
 
-  /**
-   * @return LearningPathElement|null
-   */
+  /** @return LearningPathElement|null */
   public function getNext(): ?LearningPathElement
   {
     return $this->next;
   }
 
   /**
-   * @return int|null
-   *
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
    * @JMSA\SerializedName("next")
@@ -142,14 +123,9 @@ class LearningPathElement
    */
   public function getNextId(): ?int
   {
-    return $this->next ? $this->next->getId() : NULL;
+    return $this->next ? $this->next->getId() : null;
   }
 
-  /**
-   * @param LearningPathElement|null $next
-   *
-   * @return LearningPathElement
-   */
   public function setNext(?LearningPathElement $next): LearningPathElement
   {
     $this->next = $next;
@@ -157,24 +133,16 @@ class LearningPathElement
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
   }
 
-  /**
-   * @param string|null $description
-   *
-   * @return LearningPathElement
-   */
   public function setDescription(?string $description): LearningPathElement
   {
     $this->description = $description;
 
     return $this;
   }
-
 }

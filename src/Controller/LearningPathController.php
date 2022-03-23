@@ -26,23 +26,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class LearningPathController
+ * Class LearningPathController.
  *
  * @Route("/{_studyArea}/learningpath", requirements={"_studyArea"="\d+"})
  */
 class LearningPathController extends AbstractController
 {
-
   /**
    * @Route("/add")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_list", subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|Response
    */
@@ -87,13 +81,6 @@ class LearningPathController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_show",
    *   routeParams={"learningPath"="{learningPath}"}, subject="requestStudyArea")
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param LearningPath           $learningPath
-   * @param ReviewService          $reviewService
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $trans
    *
    * @return array|Response
    */
@@ -162,14 +149,10 @@ class LearningPathController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea    $requestStudyArea
-   * @param LearningPath        $learningPath
-   * @param SerializerInterface $serializer
-   *
    * @return JsonResponse
    */
   public function data(
-    /** @noinspection PhpUnusedParameterInspection Used for auth */
+    /* @noinspection PhpUnusedParameterInspection Used for auth */
       RequestStudyArea $requestStudyArea,
       LearningPath $learningPath, SerializerInterface $serializer)
   {
@@ -183,9 +166,6 @@ class LearningPathController extends AbstractController
    * @Route("/list")
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea       $requestStudyArea
-   * @param LearningPathRepository $repository
    *
    * @return array
    */
@@ -203,12 +183,6 @@ class LearningPathController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
    *                                                       subject="requestStudyArea")
-   *
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param LearningPath        $learningPath
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $trans
    *
    * @return array|RedirectResponse
    */
@@ -228,7 +202,7 @@ class LearningPathController extends AbstractController
       return $this->redirectToRoute('app_learningpath_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'        => 'app_learningpath_show',
         'cancel_route_params' => ['learningPath' => $learningPath->getId()],
     ]);
@@ -252,9 +226,6 @@ class LearningPathController extends AbstractController
    * @Route("/show/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea $requestStudyArea
-   * @param LearningPath     $learningPath
    *
    * @return array
    */

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class ExportService
 {
   /**
-   * Available export types, and their providers
+   * Available export types, and their providers.
    *
    * @var ProviderInterface[]
    */
@@ -26,13 +26,13 @@ class ExportService
   {
     $key = 0;
     foreach (func_get_args() as $provider) {
-      /** @var ProviderInterface $provider */
+      /* @var ProviderInterface $provider */
       $this->providers['p' . ++$key] = $provider;
     }
   }
 
   /**
-   * Get the available choices, to be used in a ChoiceType
+   * Get the available choices, to be used in a ChoiceType.
    *
    * @return array
    */
@@ -43,7 +43,7 @@ class ExportService
       $providerName = strtolower($provider->getName());
       $choiceName   = 'data.download.provider.' . $providerName;
       if (array_key_exists($choiceName, $data)) {
-        throw new InvalidArgumentException("Non-unique download providers registered");
+        throw new InvalidArgumentException('Non-unique download providers registered');
       }
       $data[$choiceName] = $key;
     }
@@ -53,11 +53,7 @@ class ExportService
     return $data;
   }
 
-  /**
-   * Retrieve the previews from the providers
-   *
-   * @return array
-   */
+  /** Retrieve the previews from the providers. */
   public function getPreviews(): array
   {
     $data = [];
@@ -68,29 +64,17 @@ class ExportService
     return $data;
   }
 
-  /**
-   * Retrieve the export data
-   *
-   * @param StudyArea $studyArea
-   * @param string    $exportProvider
-   *
-   * @return Response
-   */
+  /** Retrieve the export data. */
   public function export(StudyArea $studyArea, string $exportProvider): Response
   {
     if (!array_key_exists($exportProvider, $this->providers)) {
-      throw new InvalidArgumentException(sprintf("Requested provider %s is not registered!", $exportProvider));
+      throw new InvalidArgumentException(sprintf('Requested provider %s is not registered!', $exportProvider));
     }
 
     return $this->providers[$exportProvider]->export($studyArea);
   }
 
-  /**
-   * Create a correct content disposition
-   *
-   * @param Response $response
-   * @param string   $filename
-   */
+  /** Create a correct content disposition. */
   public static function contentDisposition(Response $response, string $filename): void
   {
     // Set locale required for the iconv conversion to work correctly

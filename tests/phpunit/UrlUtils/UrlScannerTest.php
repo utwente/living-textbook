@@ -11,13 +11,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class UrlScannerTest extends TestCase
 {
-  /**
-   * @dataProvider scanTextProvider
-   *
-   * @param string $val
-   * @param array  $expected
-   */
-  public function test_scanText(string $val, array $expected)
+  /** @dataProvider scanTextProvider */
+  public function testScanText(string $val, array $expected)
   {
     // Arrange
     $contextMock = new RequestContext();

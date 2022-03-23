@@ -11,11 +11,10 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 
 /**
- * Class StudyAreaAccessTypeValidator
+ * Class StudyAreaAccessTypeValidator.
  */
 class StudyAreaAccessTypeValidator extends ChoiceValidator
 {
-
   /** @var AuthorizationCheckerInterface */
   private $authorizationChecker;
 
@@ -42,7 +41,7 @@ class StudyAreaAccessTypeValidator extends ChoiceValidator
     }
 
     // Do not validate null values
-    if ($value === NULL) {
+    if ($value === null) {
       return;
     }
 

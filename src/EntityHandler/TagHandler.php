@@ -31,7 +31,7 @@ class TagHandler extends AbstractEntityHandler
 
     // Remove tag from default if set
     if ($studyArea->getDefaultTagFilter() && $studyArea->getDefaultTagFilter()->getId() === $tag->getId()) {
-      $studyArea->setDefaultTagFilter(NULL);
+      $studyArea->setDefaultTagFilter(null);
     }
 
     // Save the data

@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\Concept;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 
 class ConceptRepository extends ServiceEntityRepository
@@ -16,13 +16,6 @@ class ConceptRepository extends ServiceEntityRepository
     parent::__construct($registry, Concept::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   * @param bool      $conceptsOnly
-   * @param bool      $instancesOnly
-   *
-   * @return QueryBuilder
-   */
   public function findForStudyAreaOrderByNameQb(
       StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): QueryBuilder
   {
@@ -45,14 +38,7 @@ class ConceptRepository extends ServiceEntityRepository
     return $qb;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   * @param bool      $preLoadData
-   * @param bool      $conceptsOnly
-   * @param bool      $instancesOnly
-   *
-   * @return Concept[]
-   */
+  /** @return Concept[] */
   public function findForStudyAreaOrderedByName(
       StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false)
   {
@@ -68,12 +54,6 @@ class ConceptRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
-   * @param bool      $conceptsOnly
-   * @param bool      $instancesOnly
-   *
-   * @return int
-   *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
@@ -89,7 +69,6 @@ class ConceptRepository extends ServiceEntityRepository
         ->where('c.studyArea = :studyArea')
         ->setParameter('studyArea', $studyArea);
 
-
     if ($conceptsOnly) {
       $qb->andWhere('c.instance = false');
     }
@@ -100,12 +79,7 @@ class ConceptRepository extends ServiceEntityRepository
     return $qb->getQuery()->getSingleScalarResult();
   }
 
-  /**
-   * Eagerly load the concept relations, while applying the soft deletable filter
-   *
-   * @param QueryBuilder $qb
-   * @param string       $alias
-   */
+  /** Eagerly load the concept relations, while applying the soft deletable filter. */
   private function loadRelations(QueryBuilder &$qb, string $alias)
   {
     $qb
@@ -115,12 +89,7 @@ class ConceptRepository extends ServiceEntityRepository
         ->addSelect('ir');
   }
 
-  /**
-   * Eagerly load the text data
-   *
-   * @param QueryBuilder $qb
-   * @param string       $alias
-   */
+  /** Eagerly load the text data. */
   private function preLoadData(QueryBuilder &$qb, string $alias)
   {
     $qb

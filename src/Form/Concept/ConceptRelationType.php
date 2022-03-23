@@ -22,11 +22,7 @@ class ConceptRelationType extends AbstractType
   /** @var TranslatorInterface */
   private $translator;
 
-  /**
-   * ConceptRelationType constructor.
-   *
-   * @param TranslatorInterface $translator
-   */
+  /** ConceptRelationType constructor. */
   public function __construct(TranslatorInterface $translator)
   {
     $this->translator = $translator;
@@ -53,23 +49,23 @@ class ConceptRelationType extends AbstractType
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($concept) {
       /** @var ConceptRelation|null $relation */
       $relation       = $event->getData();
-      $relationTypeId = $relation === NULL ? NULL : $relation->getRelationType()->getId();
+      $relationTypeId = $relation === null ? null : $relation->getRelationType()->getId();
       $form           = $event->getForm();
 
       $form->add('relationType', EntityType::class, [
-          'label'         => 'relation.type',
-          'class'         => RelationType::class,
-          'select2'       => true,
-          'choice_label'  => 'name',
-          'choice_attr'   => function ($val, $key, $index) {
-            /** @var RelationType $val */
-            return $val->getDeletedAt() === NULL ? [] : ['disabled' => 'disabled'];
+          'label'        => 'relation.type',
+          'class'        => RelationType::class,
+          'select2'      => true,
+          'choice_label' => 'name',
+          'choice_attr'  => function ($val, $key, $index) {
+            /* @var RelationType $val */
+            return $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'];
           },
           'query_builder' => function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
             $qb = $repo->createQueryBuilder('rt');
 
             // Update result based on current data
-            if ($relationTypeId === NULL) {
+            if ($relationTypeId === null) {
               $qb->where('rt.deletedAt IS NULL');
             } else {
               $qb->where($qb->expr()->orX(
@@ -85,7 +81,6 @@ class ConceptRelationType extends AbstractType
             return $qb;
           },
       ]);
-
     });
 
     // Add a transformer to create new relations on every edit
@@ -99,12 +94,11 @@ class ConceptRelationType extends AbstractType
       }
 
       return [
-          'source'       => NULL,
-          'target'       => NULL,
-          'relationType' => NULL,
+          'source'       => null,
+          'target'       => null,
+          'relationType' => null,
       ];
     }, function ($data) use ($concept, $incoming) {
-
       $conceptRelation = (new ConceptRelation())
           ->setRelationType($data['relationType']);
 
@@ -162,7 +156,5 @@ class ConceptRelationType extends AbstractType
 
     $resolver->setAllowedTypes('concept', [Concept::class]);
     $resolver->setAllowedTypes('incoming', ['bool']);
-
   }
-
 }

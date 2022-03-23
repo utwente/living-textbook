@@ -9,38 +9,21 @@ use InvalidArgumentException;
 
 class UserPermissions
 {
-  /**
-   * @var User|null
-   */
+  /** @var User|null */
   private $user;
-  /**
-   * @var UserGroupEmail|null
-   */
+  /** @var UserGroupEmail|null */
   private $userGroupEmail;
 
-  /**
-   * @var bool
-   */
+  /** @var bool */
   private $viewer = false;
-  /**
-   * @var bool
-   */
+  /** @var bool */
   private $editor = false;
-  /**
-   * @var bool
-   */
+  /** @var bool */
   private $reviewer = false;
-  /**
-   * @var bool
-   */
+  /** @var bool */
   private $analysis = false;
 
-  /**
-   * UserPermissions constructor.
-   *
-   * @param User|null           $user
-   * @param UserGroupEmail|null $userGroupEmail
-   */
+  /** UserPermissions constructor. */
   public function __construct(?User $user, ?UserGroupEmail $userGroupEmail)
   {
     if (!$user && !$userGroupEmail) {
@@ -54,11 +37,7 @@ class UserPermissions
     $this->userGroupEmail = $userGroupEmail;
   }
 
-  /**
-   * Add a permission based on the group
-   *
-   * @param UserGroup $userGroup
-   */
+  /** Add a permission based on the group. */
   public function addPermissionFromGroup(UserGroup $userGroup)
   {
     switch ($userGroup->getGroupType()) {
@@ -85,7 +64,7 @@ class UserPermissions
 
   public function isUser(): bool
   {
-    return NULL !== $this->user;
+    return null !== $this->user;
   }
 
   public function isEmail(): bool
@@ -111,61 +90,45 @@ class UserPermissions
     return $this->userGroupEmail->getEmail();
   }
 
-  /**
-   * @return User|null
-   */
+  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
   }
 
-  /**
-   * @return UserGroupEmail|null
-   */
+  /** @return UserGroupEmail|null */
   public function getEmail(): ?UserGroupEmail
   {
     return $this->userGroupEmail;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isViewer(): bool
   {
     return $this->viewer;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isViewerOnly(): bool
   {
     return $this->isViewer() && !$this->isEditor() && !$this->isReviewer() && !$this->isAnalysis();
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isEditor(): bool
   {
     return $this->editor;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isReviewer(): bool
   {
     return $this->reviewer;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isAnalysis(): bool
   {
     return $this->analysis;
   }
-
-
 }

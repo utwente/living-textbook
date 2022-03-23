@@ -12,8 +12,7 @@ class Tag
       protected readonly string $name,
       #[Groups(['Default', 'mutate'])]
       protected readonly string $color,
-  )
-  {
+  ) {
   }
 
   public static function fromEntity(\App\Entity\Tag $tag): self

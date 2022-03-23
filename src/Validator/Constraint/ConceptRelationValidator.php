@@ -9,9 +9,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class ConceptRelationValidator extends ConstraintValidator
 {
-
   /**
-   * Violation state variable
+   * Violation state variable.
    *
    * @var array
    */
@@ -51,14 +50,20 @@ class ConceptRelationValidator extends ConstraintValidator
       $target = $relation->getTarget();
 
       // Skip invalid relations
-      if (!$source || !$target) continue;
+      if (!$source || !$target) {
+        continue;
+      }
 
       $sourceId = $source->getId();
       $targetId = $target->getId();
 
       // Update map to contain a key for every concept
-      if (!array_key_exists($sourceId, $map)) $map[$sourceId] = [];
-      if (!array_key_exists($targetId, $map)) $map[$targetId] = [];
+      if (!array_key_exists($sourceId, $map)) {
+        $map[$sourceId] = [];
+      }
+      if (!array_key_exists($targetId, $map)) {
+        $map[$targetId] = [];
+      }
 
       // Check for duplicated relation
       if (in_array($targetId, $map[$sourceId])) {
@@ -75,14 +80,7 @@ class ConceptRelationValidator extends ConstraintValidator
     }
   }
 
-  /**
-   * Builds the violation and places it at the correct path
-   *
-   * @param string  $message
-   * @param Concept $value
-   * @param Concept $source
-   * @param Concept $target
-   */
+  /** Builds the violation and places it at the correct path. */
   private function addViolation(string $message, Concept $value, Concept $source, Concept $target)
   {
     // Calculate direction
@@ -90,7 +88,9 @@ class ConceptRelationValidator extends ConstraintValidator
 
     // Check for previous notices
     $key = sprintf('%s-%d-%d', $direction ? 'out' : 'in', $source->getId(), $target->getId());
-    if (in_array($key, $this->violations)) return;
+    if (in_array($key, $this->violations)) {
+      return;
+    }
     $this->violations[] = $key;
 
     // Build violation

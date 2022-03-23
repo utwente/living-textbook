@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterface
 {
-
   /** @var bool */
   private $productionServer;
 
@@ -32,56 +31,43 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
     $this->exceptionSender   = $parameterBag->get('exception_sender');
     $this->exceptionReceiver = $parameterBag->get('exception_receiver');
     $this->appVersion        = sprintf('%s+%s', $parameterBag->get('app_version'), $parameterBag->get('commit_hash'));
-
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function isProductionEnvironment(): bool
   {
     return $this->productionServer;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getBacktraceFolder(): string
   {
     return $this->cacheDir . '/exception_handler';
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getSender()
   {
     return new Address($this->exceptionSender, 'Living Textbook');
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getReceiver()
   {
     return new Address($this->exceptionReceiver, 'Living Textbook');
   }
 
-  /**
-   * @inheritdoc
-   */
-  public function getUserInformation(TokenInterface $token = NULL): string
+  /** {@inheritdoc} */
+  public function getUserInformation(TokenInterface $token = null): string
   {
-    if ($token !== NULL) {
+    if ($token !== null) {
       return $token->getUsername();
     }
 
     return 'No user (not authenticated)';
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getSystemVersion(): string
   {
     return $this->appVersion;

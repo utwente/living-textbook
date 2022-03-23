@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CkEditorType
- * Extended CkEditorType to control default configuration
+ * Extended CkEditorType to control default configuration.
  *
  * @author BobV
  */
@@ -18,10 +18,10 @@ class CkEditorType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefault('studyArea', NULL)
+        ->setDefault('studyArea', null)
         ->setAllowedTypes('studyArea', ['null', StudyArea::class])
         ->setDefault('config', function (Options $options) {
-          if ($options['studyArea'] === NULL) {
+          if ($options['studyArea'] === null) {
             return [];
           }
 
@@ -33,7 +33,7 @@ class CkEditorType extends AbstractType
           ];
         })
         ->setNormalizer('config_name', function (Options $options, $value) {
-          if ($value === 'ltb_config' && ($options['studyArea'] !== NULL && $options['studyArea']->getId() === NULL)) {
+          if ($value === 'ltb_config' && ($options['studyArea'] !== null && $options['studyArea']->getId() === null)) {
             return 'ltb_no_image';
           }
 

@@ -5,8 +5,8 @@ namespace App\Repository;
 use App\Entity\LearningOutcome;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 class LearningOutcomeRepository extends ServiceEntityRepository
 {
@@ -15,22 +15,14 @@ class LearningOutcomeRepository extends ServiceEntityRepository
     parent::__construct($registry, LearningOutcome::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return LearningOutcome[]
-   */
+  /** @return LearningOutcome[] */
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
         ->getQuery()->getResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return LearningOutcome[]
-   */
+  /** @return LearningOutcome[] */
   public function findForStudyAreaOrderedByName(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
@@ -38,12 +30,6 @@ class LearningOutcomeRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return \Doctrine\ORM\QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): \Doctrine\ORM\QueryBuilder
   {
     return $this->createQueryBuilder('lo')
@@ -53,9 +39,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find learning outcomes for a set of concepts
-   *
-   * @param array $concepts
+   * Find learning outcomes for a set of concepts.
    *
    * @return LearningOutcome[]
    */
@@ -70,10 +54,9 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
@@ -85,9 +68,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find the concepts ids used in every learning outcome in the given study area
-   *
-   * @param StudyArea $studyArea
+   * Find the concepts ids used in every learning outcome in the given study area.
    *
    * @return mixed
    */
@@ -100,7 +81,9 @@ class LearningOutcomeRepository extends ServiceEntityRepository
 
     $return = [];
     array_walk($result, function ($item) use (&$return) {
-      if (!isset($return[$item['id']])) $return[$item['id']] = [];
+      if (!isset($return[$item['id']])) {
+        $return[$item['id']] = [];
+      }
       $return[$item['id']][] = $item['cid'];
     });
 
@@ -108,12 +91,11 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find the next unused learning outcome number in a study area
+   * Find the next unused learning outcome number in a study area.
    *
-   * @param StudyArea $studyArea
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function findUnusedNumberInStudyArea(StudyArea $studyArea)
   {
@@ -125,9 +107,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find all learning outcomes in a study area which are currenlty not in use
-   *
-   * @param StudyArea $studyArea
+   * Find all learning outcomes in a study area which are currenlty not in use.
    *
    * @return LearningOutcome[]
    */

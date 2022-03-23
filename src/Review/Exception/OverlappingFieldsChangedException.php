@@ -6,7 +6,7 @@ use App\Entity\PendingChange;
 use Exception;
 
 /**
- * Class OverlappingFieldsChangedException
+ * Class OverlappingFieldsChangedException.
  *
  * Thrown when the pending changes can not be merged due to overlapping field changes
  */

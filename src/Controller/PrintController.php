@@ -24,27 +24,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class PrintController
+ * Class PrintController.
  *
  * @Route("/{_studyArea}/print", requirements={"_studyArea"="\d+"})
  */
 class PrintController extends AbstractController
 {
-
   /**
    * @Route("/concept/{concept}", requirements={"concept"="\d+"})
    *
    * @IsGranted("STUDYAREA_PRINT", subject="requestStudyArea")
    *
-   * @param RequestStudyArea        $requestStudyArea
-   * @param Concept                 $concept
-   * @param LatexGeneratorInterface $generator
-   * @param TranslatorInterface     $translator
-   * @param LtbRouter               $router
-   * @param NamingService           $namingService
+   * @throws Exception
    *
    * @return Response
-   * @throws Exception
    */
   public function printSingleConcept(
       RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
@@ -78,15 +71,9 @@ class PrintController extends AbstractController
    *
    * @IsGranted("STUDYAREA_PRINT", subject="requestStudyArea")
    *
-   * @param RequestStudyArea        $requestStudyArea
-   * @param LearningPath            $learningPath
-   * @param LatexGeneratorInterface $generator
-   * @param TranslatorInterface     $translator
-   * @param LtbRouter               $router
-   * @param NamingService           $namingService
+   * @throws Exception
    *
    * @return Response
-   * @throws Exception
    */
   public function printLearningPath(
       RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
@@ -111,9 +98,8 @@ class PrintController extends AbstractController
     try {
       return $generator->createPdfResponse($document, false);
     } catch (Exception $e) {
-      return $this->parsePrintException($e, NULL, $learningPath);
+      return $this->parsePrintException($e, null, $learningPath);
     }
-
   }
 
   private function filename(string $name)
@@ -124,19 +110,15 @@ class PrintController extends AbstractController
   /**
    * Tries to parse the thrown exception into something that might be usable for the user.
    *
-   * @param Exception         $e
-   *
-   * @param Concept|null      $concept
-   * @param LearningPath|null $learningPath
+   * @throws Exception
    *
    * @return Response
-   * @throws Exception
    */
-  private function parsePrintException(Exception $e, Concept $concept = NULL, LearningPath $learningPath = NULL)
+  private function parsePrintException(Exception $e, Concept $concept = null, LearningPath $learningPath = null)
   {
     // Retrieve study area from one of the given objects
-    $studyArea = $concept ? $concept->getStudyArea() : NULL;
-    $studyArea = $studyArea ?? ($learningPath ? $learningPath->getStudyArea() : NULL);
+    $studyArea = $concept ? $concept->getStudyArea() : null;
+    $studyArea = $studyArea ?? ($learningPath ? $learningPath->getStudyArea() : null);
 
     switch (true) {
       case $e instanceof ImageNotFoundException:
@@ -146,8 +128,8 @@ class PrintController extends AbstractController
 
         return $this->render('print/image_not_found.html.twig', [
             'isUrl'        => $isUrl,
-            'path'         => $isUrl ? $imageLocation : NULL,
-            'basename'     => $isUrl ? NULL : $this->getProjectPath($imageLocation, $studyArea),
+            'path'         => $isUrl ? $imageLocation : null,
+            'basename'     => $isUrl ? null : $this->getProjectPath($imageLocation, $studyArea),
             'concept'      => $concept,
             'learningPath' => $learningPath,
             'studyArea'    => $studyArea,

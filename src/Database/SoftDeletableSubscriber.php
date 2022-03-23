@@ -9,22 +9,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class SoftDeletableSubscriber implements EventSubscriber
 {
+  /** Field name for deleted by */
+  public const FIELD_NAME = 'deletedBy';
 
-  /**
-   * Field name for deleted by
-   */
-  const FIELD_NAME = 'deletedBy';
-
-  /**
-   * @var TokenStorageInterface
-   */
+  /** @var TokenStorageInterface */
   private $tokenStorage;
 
-  /**
-   * SoftDeletableSubscriber constructor.
-   *
-   * @param TokenStorageInterface $tokenStorage
-   */
+  /** SoftDeletableSubscriber constructor. */
   public function __construct(TokenStorageInterface $tokenStorage)
   {
     $this->tokenStorage = $tokenStorage;
@@ -37,14 +28,10 @@ class SoftDeletableSubscriber implements EventSubscriber
    */
   public function getSubscribedEvents()
   {
-    return array(SoftDeleteableListener::PRE_SOFT_DELETE);
+    return [SoftDeleteableListener::PRE_SOFT_DELETE];
   }
 
-  /**
-   * Sets the deletedBy field
-   *
-   * @param LifecycleEventArgs $args
-   */
+  /** Sets the deletedBy field. */
   public function preSoftDelete(LifecycleEventArgs $args)
   {
     // Get needed objects
@@ -63,8 +50,8 @@ class SoftDeletableSubscriber implements EventSubscriber
 
     // Make sure the unit of works knows about this
     $uow->propertyChanged($object, self::FIELD_NAME, $oldValue, $user);
-    $uow->scheduleExtraUpdate($object, array(
-        self::FIELD_NAME => array($oldValue, $user),
-    ));
+    $uow->scheduleExtraUpdate($object, [
+        self::FIELD_NAME => [$oldValue, $user],
+    ]);
   }
 }

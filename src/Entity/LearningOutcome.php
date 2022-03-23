@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LearningOutcome
+ * Class LearningOutcome.
  *
  * @author BobV
  *
@@ -57,7 +57,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   private $studyArea;
 
   /**
-   * Learning outcome number
+   * Learning outcome number.
    *
    * @var int
    *
@@ -71,7 +71,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   private $number;
 
   /**
-   * Learning outcome name
+   * Learning outcome name.
    *
    * @var string
    *
@@ -85,7 +85,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   private $name;
 
   /**
-   * Learning outcome text
+   * Learning outcome text.
    *
    * @var string
    *
@@ -112,13 +112,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return sprintf('%d - %s', $this->number, $this->name);
   }
 
-  /**
-   * Searches in the external resource on the given search, returns an array with search result metadata
-   *
-   * @param string $search
-   *
-   * @return array
-   */
+  /** Searches in the external resource on the given search, returns an array with search result metadata. */
   public function searchIn(string $search): array
   {
     // Create result array
@@ -140,10 +134,6 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
@@ -174,19 +164,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this->getName();
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getNumber(): int
   {
     return $this->number;
   }
 
-  /**
-   * @param int $number
-   *
-   * @return LearningOutcome
-   */
   public function setNumber(int $number): LearningOutcome
   {
     $this->number = $number;
@@ -194,19 +177,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return LearningOutcome
-   */
   public function setName(string $name): LearningOutcome
   {
     $this->name = trim($name);
@@ -214,19 +190,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getText(): string
   {
     return $this->text;
   }
 
-  /**
-   * @param string $text
-   *
-   * @return LearningOutcome
-   */
   public function setText(string $text): LearningOutcome
   {
     $this->text = trim($text);
@@ -234,27 +203,18 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getConcepts()
   {
     return $this->concepts;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return LearningOutcome
-   */
   public function setStudyArea(StudyArea $studyArea): LearningOutcome
   {
     $this->studyArea = $studyArea;

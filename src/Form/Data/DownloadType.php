@@ -33,9 +33,9 @@ class DownloadType extends AbstractType
         ->add('submit', SingleSubmitType::class, [
             'label' => 'data.download.title',
             'icon'  => 'fa-download',
-            'attr'  => array(
+            'attr'  => [
                 'class' => 'btn btn-outline-success',
-            ),
+            ],
         ]);
   }
 
@@ -47,6 +47,4 @@ class DownloadType extends AbstractType
         ],
     ]);
   }
-
-
 }

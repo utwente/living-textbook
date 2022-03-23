@@ -37,7 +37,7 @@ class GenerateApiTokenType extends AbstractType
             'cancel_label'         => 'form.discard',
             'cancel_route'         => 'app_user_apitokens',
             'cancel_route_params'  => [],
-        ]);;
+        ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)

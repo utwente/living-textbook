@@ -8,10 +8,7 @@ use Twig\TwigFunction;
 
 class LtbRouterExtension extends AbstractExtension
 {
-
-  /**
-   * @var LtbRouter
-   */
+  /** @var LtbRouter */
   private $router;
 
   public function __construct(LtbRouter $router)
@@ -30,5 +27,4 @@ class LtbRouterExtension extends AbstractExtension
   {
     return $this->router->generateBrowserUrl($name, $parameters);
   }
-
 }

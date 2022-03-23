@@ -25,13 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReviewSubmissionType extends AbstractType
 {
-  /**
-   * @var EntityManagerInterface
-   */
+  /** @var EntityManagerInterface */
   private $entityManager;
-  /**
-   * @var ReviewService
-   */
+  /** @var ReviewService */
   private $reviewService;
 
   public function __construct(EntityManagerInterface $entityManager, ReviewService $reviewService)
@@ -50,12 +46,12 @@ class ReviewSubmissionType extends AbstractType
       case Concept::class:
         if (in_array($field, ['instance'])) {
           $formType = ReviewCheckboxDiffType::class;
-        } else if (in_array($field, ['relations', 'incomingRelations'])) {
+        } elseif (in_array($field, ['relations', 'incomingRelations'])) {
           $formType                = ReviewRelationDiffType::class;
           $formOptions['incoming'] = $field !== 'relations';
-        } else if (in_array($field, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
+        } elseif (in_array($field, ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors'])) {
           $formType = ReviewSimpleListDiffType::class;
-        } else if (in_array($field, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
+        } elseif (in_array($field, ['introduction', 'theoryExplanation', 'howTo', 'examples', 'selfAssessment'])) {
           $formOptions['has_data_object'] = true;
           $formOptions['ckeditor']        = true;
         }
@@ -69,7 +65,7 @@ class ReviewSubmissionType extends AbstractType
       case LearningPath::class:
         if ('introduction' === $field) {
           $formOptions['ckeditor'] = true;
-        } else if ('elements' === $field) {
+        } elseif ('elements' === $field) {
           $formType = ReviewLearningPathElementsDiffType::class;
         }
         break;
@@ -97,11 +93,7 @@ class ReviewSubmissionType extends AbstractType
         ->setAllowedTypes('show_comments', 'bool');
   }
 
-  /**
-   * @param FormEvent $formEvent
-   *
-   * @throws EntityNotFoundException
-   */
+  /** @throws EntityNotFoundException */
   private function buildFields(FormEvent $formEvent): void
   {
     $form    = $formEvent->getForm();
@@ -132,13 +124,13 @@ class ReviewSubmissionType extends AbstractType
                 'mapped'          => false,
                 'original_object' => $changeType !== PendingChange::CHANGE_TYPE_ADD
                     ? $this->reviewService->getOriginalObject($pendingChange)
-                    : NULL,
-                'pending_change'  => $pendingChange,
-                'field'           => $changedField,
-                'review'          => $options['review'],
-                'show_comments'   => $options['show_comments'],
-                'show_original'   => $changeType !== PendingChange::CHANGE_TYPE_ADD,
-                'checkbox'        => $changeType === PendingChange::CHANGE_TYPE_EDIT && $options['checkboxes'],
+                    : null,
+                'pending_change' => $pendingChange,
+                'field'          => $changedField,
+                'review'         => $options['review'],
+                'show_comments'  => $options['show_comments'],
+                'show_original'  => $changeType !== PendingChange::CHANGE_TYPE_ADD,
+                'checkbox'       => $changeType === PendingChange::CHANGE_TYPE_EDIT && $options['checkboxes'],
             ], $formOptions));
       }
 

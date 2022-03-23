@@ -6,20 +6,17 @@ use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class StudyAreaRepository extends ServiceEntityRepository
 {
-
   /** @var AuthorizationCheckerInterface */
   private $auth;
-  /**
-   * @var TokenStorageInterface
-   */
+  /** @var TokenStorageInterface */
   private $tokenStorage;
 
   public function __construct(
@@ -33,10 +30,9 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param User $owner
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function getOwnerAmount(User $owner)
   {
@@ -48,9 +44,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the visible study area's
-   *
-   * @param User|null $user
+   * Retrieve the visible study area's.
    *
    * @return StudyArea[]|Collection
    */
@@ -60,9 +54,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the first visible study area for the user
-   *
-   * @param User|null $user
+   * Retrieve the first visible study area for the user.
    *
    * @return mixed|null
    */
@@ -72,17 +64,16 @@ class StudyAreaRepository extends ServiceEntityRepository
       return $this->getVisibleQueryBuilder($user)->setMaxResults(1)->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException $e) {
       // Impossible due to max results
-      return NULL;
+      return null;
     }
   }
 
   /**
-   * Retrieve the amount of visible study area's
+   * Retrieve the amount of visible study area's.
    *
-   * @param User $user
+   * @throws NonUniqueResultException
    *
    * @return mixed
-   * @throws NonUniqueResultException
    */
   public function getVisibleCount(User $user)
   {
@@ -90,9 +81,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve QueryBuilder for the visible study area's
-   *
-   * @param User|null $user
+   * Retrieve QueryBuilder for the visible study area's.
    *
    * @return QueryBuilder
    */

@@ -18,12 +18,9 @@ class StudyAreaGroupRepository extends ServiceEntityRepository
     parent::__construct($registry, StudyAreaGroup::class);
   }
 
-  /**
-   * @return StudyAreaGroup[]
-   */
+  /** @return StudyAreaGroup[] */
   public function findAll()
   {
     return $this->findBy([], ['name' => 'ASC']);
   }
-
 }

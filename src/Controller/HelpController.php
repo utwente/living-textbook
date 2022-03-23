@@ -16,29 +16,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-
 /**
  * Class HelpController
- * Scoped per study area to prevent reload issues
+ * Scoped per study area to prevent reload issues.
  *
  * @Route("/{_studyArea}/help", requirements={"_studyArea"="\d+"})
  */
 class HelpController extends AbstractController
 {
-
   /**
-   * Displays the available help documents
+   * Displays the available help documents.
    *
    * @Route()
    * @Template()
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param HelpRepository $helpRepository
-   *
-   * @return array
-   *
    * @throws NoResultException
    * @throws NonUniqueResultException
+   *
+   * @return array
    */
   public function index(HelpRepository $helpRepository)
   {
@@ -48,21 +44,16 @@ class HelpController extends AbstractController
   }
 
   /**
-   * Edit the help page
+   * Edit the help page.
    *
    * @Route("/edit")
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
-   * @param Request                $request
-   * @param HelpRepository         $helpRepository
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
-   *
-   * @return array|Response
-   *
    * @throws NoResultException
    * @throws NonUniqueResultException
+   *
+   * @return array|Response
    */
   public function edit(
       Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator)

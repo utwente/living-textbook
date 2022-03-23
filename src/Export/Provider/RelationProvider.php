@@ -32,17 +32,13 @@ class RelationProvider implements ProviderInterface
     $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getName(): string
   {
-    return "relation";
+    return 'relation';
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -75,11 +71,11 @@ EOT;
     $column      = 1;
     $spreadSheet = new Spreadsheet();
     $sheet       = $spreadSheet->getSheet(0);
-    $sheet->setCellValueByColumnAndRow($column++, $row, "From");
-    $sheet->setCellValueByColumnAndRow($column++, $row, "From name");
-    $sheet->setCellValueByColumnAndRow($column++, $row, "To");
-    $sheet->setCellValueByColumnAndRow($column++, $row, "To name");
-    $sheet->setCellValueByColumnAndRow($column, $row++, "Relation");
+    $sheet->setCellValueByColumnAndRow($column++, $row, 'From');
+    $sheet->setCellValueByColumnAndRow($column++, $row, 'From name');
+    $sheet->setCellValueByColumnAndRow($column++, $row, 'To');
+    $sheet->setCellValueByColumnAndRow($column++, $row, 'To name');
+    $sheet->setCellValueByColumnAndRow($column, $row++, 'Relation');
     foreach ($links as $link) {
       $column = 1;
       $sheet->setCellValueByColumnAndRow($column++, $row, $link->getSourceId());
@@ -92,9 +88,7 @@ EOT;
     return $spreadSheet;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function export(StudyArea $studyArea): Response
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadsheet($studyArea),

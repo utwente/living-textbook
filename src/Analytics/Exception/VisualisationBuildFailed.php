@@ -7,7 +7,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 use Symfony\Component\Process\Process;
 
 /**
- * Class VisualisationBuildFailed
+ * Class VisualisationBuildFailed.
  *
  * Does not extend the ProcessFailedException, as this should not be a RuntimeException
  */

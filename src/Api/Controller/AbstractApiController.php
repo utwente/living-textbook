@@ -43,12 +43,11 @@ abstract class AbstractApiController extends AbstractController
   }
 
   protected function createDataResponse(
-      mixed  $data,
-      ?array $extraData = NULL,
-      ?array $serializationGroups = NULL,
-      int    $statusCode = Response::HTTP_OK
-  ): JsonResponse
-  {
+      mixed $data,
+      ?array $extraData = null,
+      ?array $serializationGroups = null,
+      int $statusCode = Response::HTTP_OK
+  ): JsonResponse {
     $payload         = $extraData ?? [];
     $payload['data'] = $data;
 
@@ -64,7 +63,7 @@ abstract class AbstractApiController extends AbstractController
   }
 
   /**
-   * Determines the default serialization groups for the API result
+   * Determines the default serialization groups for the API result.
    *
    * @return string[]
    */
@@ -92,9 +91,7 @@ abstract class AbstractApiController extends AbstractController
     return $this->getUntypedFromBody($request, $class);
   }
 
-  /**
-   * Retrieve the untyped data from the request body.
-   */
+  /** Retrieve the untyped data from the request body. */
   protected function getUntypedFromBody(Request $request, string $type): mixed
   {
     try {

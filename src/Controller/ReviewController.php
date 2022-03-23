@@ -30,25 +30,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 /**
- * Class ReviewController
+ * Class ReviewController.
  *
  * @Route("/{_studyArea}/review", requirements={"_studyArea"="\d+"})
  */
 class ReviewController extends AbstractController
 {
-
   /**
-   * Edit the pending review. It is only possible to edit the notes and requested reviewer
+   * Edit the pending review. It is only possible to edit the notes and requested reviewer.
    *
    * @Route("/{review}/edit", requirements={"review"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Review                 $review
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
    *
    * @return array|Response
    */
@@ -76,7 +69,7 @@ class ReviewController extends AbstractController
     // Create form, although this is only show. This way, we can reuse the show logic from the review process
     $changesForm = $this->createForm(ReviewSubmissionType::class, $review, [
         'review'        => false,
-        'show_comments' => $review->getReviewedAt() !== NULL,
+        'show_comments' => $review->getReviewedAt() !== null,
     ]);
 
     return [
@@ -87,15 +80,12 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Publish reviews after review approval
+   * Publish reviews after review approval.
    *
    * @Route("/publish")
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea $requestStudyArea
-   * @param ReviewRepository $reviewRepository
    *
    * @return array
    */
@@ -107,20 +97,16 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Publish the clicked review
+   * Publish the clicked review.
    *
    * @Route("/{review}/publish", requirements={"review"="\d+"})
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @Template()
-   * @param Request             $request
-   * @param RequestStudyArea    $requestStudyArea
-   * @param Review              $review
-   * @param ReviewService       $reviewService
-   * @param TranslatorInterface $translator
    *
-   * @return array|Response
    * @throws ORMException
    * @throws Throwable
+   *
+   * @return array|Response
    */
   public function publishReview(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, ReviewService $reviewService,
@@ -129,7 +115,7 @@ class ReviewController extends AbstractController
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
     // Create the form
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route'       => 'app_review_publish',
         'remove_label'       => 'review.publish',
         'remove_btn_variant' => 'outline-success',
@@ -157,17 +143,11 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Remove the pending review
+   * Remove the pending review.
    *
    * @Route("/{review}/remove", requirements={"review"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
-   *
-   * @param Request                $request
-   * @param RequestStudyArea       $requestStudyArea
-   * @param Review                 $review
-   * @param EntityManagerInterface $em
-   * @param TranslatorInterface    $translator
    *
    * @return array|Response
    */
@@ -179,7 +159,7 @@ class ReviewController extends AbstractController
     $this->checkAccess($studyArea, $review);
 
     // Create the form
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_review_submissions',
     ]);
     $form->handleRequest($request);
@@ -200,21 +180,15 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Resubmits the review
+   * Resubmits the review.
    *
    * @Route("/{review}/resubmit", requirements={"review"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
    *
-   * @param Request                   $request
-   * @param RequestStudyArea          $requestStudyArea
-   * @param Review                    $review
-   * @param EntityManagerInterface    $em
-   * @param ReviewNotificationService $reviewNotificationService
-   * @param TranslatorInterface       $translator
+   * @throws TransportExceptionInterface
    *
    * @return array|Response
-   * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function resubmitSubmission(
@@ -239,8 +213,8 @@ class ReviewController extends AbstractController
       // Reset review state
       $review
           ->setRequestedReviewAt(new DateTime())
-          ->setReviewedAt(NULL)
-          ->setReviewedBy(NULL);
+          ->setReviewedAt(null)
+          ->setReviewedBy(null);
 
       // Store the data
       $em->flush();
@@ -258,21 +232,15 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Review a submission
+   * Review a submission.
    *
    * @Route("/{review}", requirements={"review"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
    *
-   * @param Request                   $request
-   * @param RequestStudyArea          $requestStudyArea
-   * @param Review                    $review
-   * @param EntityManagerInterface    $em
-   * @param TranslatorInterface       $translator
-   * @param ReviewNotificationService $reviewNotificationService
+   * @throws TransportExceptionInterface
    *
    * @return array|Response
-   * @throws TransportExceptionInterface
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function reviewSubmission(
@@ -282,13 +250,13 @@ class ReviewController extends AbstractController
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
     // Check if not yet reviewed
-    if ($review->getReviewedAt() !== NULL) {
-      throw new NotFoundHttpException("Requested review has already been reviewed");
+    if ($review->getReviewedAt() !== null) {
+      throw new NotFoundHttpException('Requested review has already been reviewed');
     }
 
     // Check if not yet approved
-    if ($review->getApprovedAt() !== NULL) {
-      throw new NotFoundHttpException("Requested review has already been approved");
+    if ($review->getApprovedAt() !== null) {
+      throw new NotFoundHttpException('Requested review has already been approved');
     }
 
     // Create form
@@ -336,14 +304,11 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Show a submission
+   * Show a submission.
    *
    * @Route("/{review}/show", requirements={"review"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
-   *
-   * @param RequestStudyArea $requestStudyArea
-   * @param Review           $review
    *
    * @return array|Response
    */
@@ -355,7 +320,7 @@ class ReviewController extends AbstractController
     // Create form, although this is only show. This way, we can reuse the show logic from the review process
     $form = $this->createForm(ReviewSubmissionType::class, $review, [
         'review'        => false,
-        'show_comments' => $review->getReviewedAt() !== NULL,
+        'show_comments' => $review->getReviewedAt() !== null,
     ]);
 
     return [
@@ -365,14 +330,11 @@ class ReviewController extends AbstractController
   }
 
   /**
-   * Show the pending reviews for the current user
+   * Show the pending reviews for the current user.
    *
    * @Route("/submissions")
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template
-   *
-   * @param RequestStudyArea $requestStudyArea
-   * @param ReviewRepository $reviewRepository
    *
    * @return array|Response
    */
@@ -391,12 +353,6 @@ class ReviewController extends AbstractController
    * @Route("/submit")
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
-   *
-   * @param Request                 $request
-   * @param RequestStudyArea        $requestStudyArea
-   * @param PendingChangeRepository $pendingChangeRepository
-   * @param ReviewService           $reviewService
-   * @param TranslatorInterface     $translator
    *
    * @return array|Response
    */
@@ -418,7 +374,7 @@ class ReviewController extends AbstractController
       $review->addPendingChange($pendingChange);
     }
 
-    $form = $this->createForm(SubmitReviewType::class, NULL, [
+    $form = $this->createForm(SubmitReviewType::class, null, [
         'study_area' => $studyArea,
         'review'     => $review,
     ]);
@@ -429,7 +385,7 @@ class ReviewController extends AbstractController
 
       // Clear review object from the pending change
       foreach ($pendingChanges as $pendingChange) {
-        $pendingChange->setReview(NULL);
+        $pendingChange->setReview(null);
       }
 
       // Retrieve the marked changes, and parse the data so that it can be handled by the service
@@ -484,18 +440,12 @@ class ReviewController extends AbstractController
     }
   }
 
-  /**
-   * Checks access for the supplied review
-   *
-   * @param StudyArea $studyArea
-   * @param Review    $review
-   * @param bool      $checkOwner
-   */
+  /** Checks access for the supplied review. */
   private function checkAccess(StudyArea $studyArea, Review $review, bool $checkOwner = true)
   {
     // Check study area
     if ($studyArea->getId() !== $review->getStudyArea()->getId()) {
-      throw new NotFoundHttpException("Study area does not match");
+      throw new NotFoundHttpException('Study area does not match');
     }
 
     // Check for owner enabled?
@@ -508,7 +458,7 @@ class ReviewController extends AbstractController
     assert($user instanceof User);
     if ($review->getOwner()->getId() !== $user->getId()
         && !$this->isGranted('STUDYAREA_OWNER', $studyArea)) {
-      throw new NotFoundHttpException("Access denied");
+      throw new NotFoundHttpException('Access denied');
     }
   }
 }

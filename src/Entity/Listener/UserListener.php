@@ -12,12 +12,9 @@ class UserListener
 {
   /**
    * This handler ensures that any e-mail addresses that have been granted, will receive the new and functional account
-   * that can actually be used for rights
+   * that can actually be used for rights.
    *
    * @ORM\PostPersist()
-   *
-   * @param User               $user
-   * @param LifecycleEventArgs $event
    *
    * @throws \Doctrine\ORM\ORMException
    */
@@ -42,5 +39,4 @@ class UserListener
     // Save changes
     $em->flush();
   }
-
 }

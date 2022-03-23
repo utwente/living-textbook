@@ -26,16 +26,16 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
   private EntityManagerInterface $entityManager;
 
   public function __construct(
-      UserApiTokenRepository       $userApiTokenRepository,
+      UserApiTokenRepository $userApiTokenRepository,
       UserPasswordEncoderInterface $userPasswordEncoder,
-      EntityManagerInterface       $entityManager)
+      EntityManagerInterface $entityManager)
   {
     $this->userApiTokenRepository = $userApiTokenRepository;
     $this->userPasswordEncoder    = $userPasswordEncoder;
     $this->entityManager          = $entityManager;
   }
 
-  public function start(Request $request, AuthenticationException $authException = NULL)
+  public function start(Request $request, AuthenticationException $authException = null)
   {
     return $this->createUnauthorizedResponse(
         sprintf('Make sure to provide the %s header', self::API_TOKEN_HEADER)
@@ -55,8 +55,8 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
     $tokenData = explode('_', $token);
 
     return [
-        'token_id' => $tokenData[0] ?? NULL,
-        'token'    => $tokenData[1] ?? NULL,
+        'token_id' => $tokenData[0] ?? null,
+        'token'    => $tokenData[1] ?? null,
     ];
   }
 
@@ -85,7 +85,7 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
 
   public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
   {
-    return NULL;
+    return null;
   }
 
   public function supportsRememberMe(): bool

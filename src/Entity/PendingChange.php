@@ -14,28 +14,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * Class PendingChange
+ * Class PendingChange.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\PendingChangeRepository")
  */
 class PendingChange
 {
+  use IdTrait;
+  use Blameable;
+
   /**
    * Change types
-   * Number are added to force time dependant ordering
+   * Number are added to force time dependant ordering.
    */
-  public const CHANGE_TYPE_ADD = '10_add';
-  public const CHANGE_TYPE_EDIT = '20_edit';
+  public const CHANGE_TYPE_ADD    = '10_add';
+  public const CHANGE_TYPE_EDIT   = '20_edit';
   public const CHANGE_TYPE_REMOVE = '30_remove';
-  public const CHANGE_TYPES = [
+  public const CHANGE_TYPES       = [
       self::CHANGE_TYPE_ADD,
       self::CHANGE_TYPE_EDIT,
       self::CHANGE_TYPE_REMOVE,
   ];
-
-  use IdTrait;
-  use Blameable;
 
   /**
    * @var StudyArea
@@ -48,7 +48,7 @@ class PendingChange
   private $studyArea;
 
   /**
-   * The change type of the pending change
+   * The change type of the pending change.
    *
    * @var string|null
    * @ORM\Column(type="string", length=10)
@@ -59,7 +59,7 @@ class PendingChange
   private $changeType;
 
   /**
-   * The object type of the pending change
+   * The object type of the pending change.
    *
    * @var string|null
    * @ORM\Column(type="string", length=255)
@@ -69,7 +69,7 @@ class PendingChange
   private $objectType;
 
   /**
-   * The object id of the pending change
+   * The object id of the pending change.
    *
    * @var int|null
    *
@@ -78,7 +78,7 @@ class PendingChange
   private $objectId;
 
   /**
-   * JSON encoded object
+   * JSON encoded object.
    *
    * @var string|null
    * @ORM\Column(type="text")
@@ -88,7 +88,7 @@ class PendingChange
   private $payload;
 
   /**
-   * Changed fields in the object
+   * Changed fields in the object.
    *
    * @var array|null
    *
@@ -99,7 +99,7 @@ class PendingChange
   private $changedFields;
 
   /**
-   * The owner of the pending change (aka, the user who created it)
+   * The owner of the pending change (aka, the user who created it).
    *
    * @var User|null
    *
@@ -111,7 +111,7 @@ class PendingChange
   private $owner;
 
   /**
-   * The review this pending change belongs to, if any
+   * The review this pending change belongs to, if any.
    *
    * @var Review|null
    *
@@ -121,7 +121,7 @@ class PendingChange
   private $review;
 
   /**
-   * If any, review comments on particular changes (per field) are stores here
+   * If any, review comments on particular changes (per field) are stores here.
    *
    * @var array|null
    *
@@ -132,19 +132,13 @@ class PendingChange
   private $reviewComments;
 
   /**
-   * Cached deserialized object
+   * Cached deserialized object.
    *
    * @var ReviewableInterface|null
    */
-  private $cachedObject = NULL;
+  private $cachedObject = null;
 
-  /**
-   * Duplicated the pending change, while setting the new marked fields as supplied
-   *
-   * @param array $changedFields
-   *
-   * @return PendingChange
-   */
+  /** Duplicated the pending change, while setting the new marked fields as supplied. */
   public function duplicate(array $changedFields): PendingChange
   {
     $new = (new PendingChange())
@@ -164,12 +158,10 @@ class PendingChange
    * Merge the supplied pending changes. The second will be merged into the first one.
    * This action should on merge the difference when the properties do not overlap!
    *
-   * @param PendingChange $merge
-   *
-   * @return PendingChange
-   *
    * @throws IncompatibleChangeMergeException
    * @throws OverlappingFieldsChangedException
+   *
+   * @return PendingChange
    */
   public function merge(PendingChange $merge): self
   {
@@ -188,7 +180,7 @@ class PendingChange
     $origData  = json_decode($this->payload, true);
     $mergeData = json_decode($merge->payload, true);
     foreach ($merge->getChangedFields() as $changedField) {
-      /** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
+      /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
       $origData[$changedField] = $mergeData[$changedField];
       $this->changedFields[]   = $changedField;
     }
@@ -202,9 +194,7 @@ class PendingChange
     return $this;
   }
 
-  /**
-   * Order the changes fields
-   */
+  /** Order the changes fields */
   public function orderChangedFields()
   {
     switch ($this->objectType) {
@@ -281,19 +271,13 @@ class PendingChange
     });
   }
 
-  /**
-   * @return StudyArea
-   */
+  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
@@ -301,19 +285,13 @@ class PendingChange
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getChangeType(): ?string
   {
     return $this->changeType;
   }
 
-  /**
-   * @param string|null $changeType
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setChangeType(?string $changeType): self
   {
     $this->changeType = $changeType;
@@ -321,9 +299,7 @@ class PendingChange
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getObjectType(): ?string
   {
     return $this->objectType;
@@ -339,32 +315,22 @@ class PendingChange
     return substr($this->objectType, $pos + 1);
   }
 
-  /**
-   * @param string|null $objectType
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setObjectType(?string $objectType): self
   {
-    $this->cachedObject = NULL;
+    $this->cachedObject = null;
     $this->objectType   = $objectType;
 
     return $this;
   }
 
-  /**
-   * @return int|null
-   */
+  /** @return int|null */
   public function getObjectId(): ?int
   {
     return $this->objectId;
   }
 
-  /**
-   * @param int|null $objectId
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setObjectId(?int $objectId): self
   {
     $this->objectId = $objectId;
@@ -373,22 +339,21 @@ class PendingChange
   }
 
   /**
-   * Validates the object id field, which must be empty for new objects, but filled for existing objects
+   * Validates the object id field, which must be empty for new objects, but filled for existing objects.
    *
    * @Assert\Callback()
    *
-   * @param ExecutionContextInterface $context
-   * @param                           $payload
+   * @param $payload
    */
   public function validateObjectId(ExecutionContextInterface $context, $payload)
   {
-    $violation = NULL;
+    $violation = null;
     if ($this->changeType == self::CHANGE_TYPE_ADD) {
-      if ($this->objectId !== NULL) {
+      if ($this->objectId !== null) {
         $violation = $context->buildViolation('Object ID cannot be set!');
       }
     } else {
-      if ($this->objectId === NULL) {
+      if ($this->objectId === null) {
         $violation = $context->buildViolation('Object ID must be set!');
       }
     }
@@ -400,57 +365,45 @@ class PendingChange
   }
 
   /**
-   * Set the object version that must be stored. Will be serialized
-   *
-   * @param ReviewableInterface $object
+   * Set the object version that must be stored. Will be serialized.
    *
    * @return $this
    */
   public function setObject(ReviewableInterface $object): self
   {
-    $this->cachedObject = NULL;
+    $this->cachedObject = null;
     $this->payload      = $object
         ? ReviewService::getDataSnapshot($object)
-        : NULL;
+        : null;
 
     return $this;
   }
 
-  /**
-   * Retrieve the change object, which is deserialized in the stored type
-   *
-   * @return ReviewableInterface|null
-   */
+  /** Retrieve the change object, which is deserialized in the stored type. */
   public function getObject(): ?ReviewableInterface
   {
     if (!$this->objectType) {
-      throw new RuntimeException("Object type is not set, so data object cannot be retrieved!");
+      throw new RuntimeException('Object type is not set, so data object cannot be retrieved!');
     }
 
     if (!$this->payload) {
-      return NULL;
+      return null;
     }
 
-    if ($this->cachedObject === NULL) {
+    if ($this->cachedObject === null) {
       $this->cachedObject = ReviewService::getObjectFromSnapshot($this->payload, $this->objectType);
     }
 
     return $this->cachedObject;
   }
 
-  /**
-   * @return array|null
-   */
+  /** @return array|null */
   public function getChangedFields(): ?array
   {
     return $this->changedFields;
   }
 
-  /**
-   * @param array|null $changedFields
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setChangedFields(?array $changedFields): self
   {
     $this->changedFields = $changedFields;
@@ -459,19 +412,13 @@ class PendingChange
     return $this;
   }
 
-  /**
-   * @return User|null
-   */
+  /** @return User|null */
   public function getOwner(): ?User
   {
     return $this->owner;
   }
 
-  /**
-   * @param User|null $owner
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setOwner(?User $owner): self
   {
     $this->owner = $owner;
@@ -479,19 +426,13 @@ class PendingChange
     return $this;
   }
 
-  /**
-   * @return Review|null
-   */
+  /** @return Review|null */
   public function getReview(): ?Review
   {
     return $this->review;
   }
 
-  /**
-   * @param Review|null $review
-   *
-   * @return PendingChange
-   */
+  /** @return PendingChange */
   public function setReview(?Review $review): self
   {
     $this->review = $review;
@@ -499,24 +440,16 @@ class PendingChange
     return $this;
   }
 
-  /**
-   * @return array|null
-   */
+  /** @return array|null */
   public function getReviewComments(): ?array
   {
     return $this->reviewComments;
   }
 
-  /**
-   * @param array|null $reviewComments
-   *
-   * @return self
-   */
   public function setReviewComments(?array $reviewComments): self
   {
     $this->reviewComments = $reviewComments;
 
     return $this;
   }
-
 }

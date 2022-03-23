@@ -5,9 +5,9 @@ namespace App\Repository;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class RelationTypeRepository extends ServiceEntityRepository
 {
@@ -16,21 +16,12 @@ class RelationTypeRepository extends ServiceEntityRepository
     parent::__construct($registry, RelationType::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return RelationType[]
-   */
+  /** @return RelationType[] */
   public function findForStudyArea(StudyArea $studyArea): array
   {
     return $this->findForStudyAreaQb($studyArea)->getQuery()->getResult();
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return QueryBuilder
-   */
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('rt')
@@ -41,12 +32,7 @@ class RelationTypeRepository extends ServiceEntityRepository
   }
 
   /**
-   * Get or create the relation type with the given name in the specified study area
-   *
-   * @param StudyArea $studyArea
-   * @param string    $name
-   *
-   * @return RelationType
+   * Get or create the relation type with the given name in the specified study area.
    *
    * @noinspection PhpUnhandledExceptionInspection
    * @noinspection PhpDocMissingThrowsInspection

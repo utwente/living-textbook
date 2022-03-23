@@ -18,26 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class SearchController
+ * Class SearchController.
  *
  * @Route("/{_studyArea}/search", requirements={"_studyArea"="\d+"})
  */
 class SearchController extends AbstractController
 {
-
   /**
    * @Route("/{s}", name="search", requirements={"s"=".*"}, defaults={"s"=null})
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @param string|null                $s
-   * @param RequestStudyArea           $requestStudyArea
-   * @param TranslatorInterface        $translator
-   * @param AbbreviationRepository     $abbreviationRepository
-   * @param ConceptRepository          $conceptRepository
-   * @param ExternalResourceRepository $externalResourceRepository
-   * @param LearningOutcomeRepository  $learningOutcomeRepository
-   * @param AnnotationRepository       $annotationRepository
    *
    * @return array
    */
@@ -49,7 +39,7 @@ class SearchController extends AbstractController
   {
     $result = [];
 
-    if (NULL === $s) {
+    if (null === $s) {
       return $result;
     }
 
@@ -92,12 +82,7 @@ class SearchController extends AbstractController
     return $result;
   }
 
-  /**
-   * @param SearchableInterface[] $data
-   * @param string                $search
-   *
-   * @return array
-   */
+  /** @param SearchableInterface[] $data */
   private function searchData(array $data, string $search): array
   {
     $data = array_map(function (SearchableInterface $element) use ($search) {
@@ -108,18 +93,12 @@ class SearchController extends AbstractController
       return $this->filterSortData($element);
     });
 
-    usort($data, array(SearchController::class, "sortSearchData"));
+    usort($data, [SearchController::class, 'sortSearchData']);
 
     return $data;
   }
 
-  /**
-   * Group the result by the concept in the object
-   *
-   * @param array $data
-   *
-   * @return array
-   */
+  /** Group the result by the concept in the object. */
   private function groupAnnotationsByConcept(array $data): array
   {
     $result = [];
@@ -165,14 +144,12 @@ class SearchController extends AbstractController
   }
 
   /**
-   * Create a search result
+   * Create a search result.
    *
-   * @param int          $prio      Result priority
-   * @param string       $property  The result property
-   * @param string|array $data      Result data. Should be a string in the common cases, but can be a data array when
-   *                                more data is required
-   *
-   * @return array
+   * @param int          $prio     Result priority
+   * @param string       $property The result property
+   * @param string|array $data     Result data. Should be a string in the common cases, but can be a data array when
+   *                               more data is required
    */
   public static function createResult(int $prio, string $property, $data): array
   {
@@ -182,5 +159,4 @@ class SearchController extends AbstractController
         'data'     => $data,
     ];
   }
-
 }

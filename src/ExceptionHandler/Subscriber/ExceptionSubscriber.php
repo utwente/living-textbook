@@ -10,13 +10,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
-
-  /**
-   * @return array
-   */
+  /** @return array */
   public static function getSubscribedEvents()
   {
-    return [KernelEvents::EXCEPTION => array(array('onKernelException', 0))];
+    return [KernelEvents::EXCEPTION => [['onKernelException', 0]]];
   }
 
   public function onKernelException(ExceptionEvent $event)

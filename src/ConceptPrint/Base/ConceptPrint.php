@@ -16,7 +16,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptPrint extends LatexBase
 {
-
   /** @var Parser */
   private $parser;
 
@@ -24,7 +23,7 @@ class ConceptPrint extends LatexBase
   private $baseUrl;
 
   /**
-   * Article constructor, sets defaults
+   * Article constructor, sets defaults.
    *
    * @param string $filename
    *
@@ -37,8 +36,8 @@ class ConceptPrint extends LatexBase
     $dateTime       = new DateTime();
     $this->template = 'concept_print/base/concept_print.tex.twig';
 
-    $this->params = array(
-        'options' => NULL,
+    $this->params = [
+        'options' => null,
 
         'licenseimage' => false,
 
@@ -62,19 +61,18 @@ class ConceptPrint extends LatexBase
 
         'parindent' => '0pt', // Remove parindentation
 
-        'extra_commands' => array(), // Define extra commands if needed
-        'packages'       => array(), // Define extra packages to use
-    );
+        'extra_commands' => [], // Define extra commands if needed
+        'packages'       => [], // Define extra packages to use
+    ];
 
     // Call parent constructor
     parent::__construct($filename);
   }
 
   /**
-   * @param string $projectDir
+   * @throws LatexException
    *
    * @return ConceptPrint
-   * @throws LatexException
    */
   public function useLicenseImage(string $projectDir)
   {
@@ -84,9 +82,7 @@ class ConceptPrint extends LatexBase
   }
 
   /**
-   * Set the base url for the header
-   *
-   * @param string $baseUrl
+   * Set the base url for the header.
    *
    * @return ConceptPrint
    */
@@ -98,18 +94,15 @@ class ConceptPrint extends LatexBase
   }
 
   /**
-   * Set the header for a print
+   * Set the header for a print.
    *
-   * @param StudyArea           $studyArea
-   * @param TranslatorInterface $translator
+   * @throws LatexException
    *
    * @return ConceptPrint
-   * @throws LatexException
    */
   public function setHeader(StudyArea $studyArea, TranslatorInterface $translator)
   {
-
-    if ($this->baseUrl == NULL) {
+    if ($this->baseUrl == null) {
       throw new InvalidArgumentException('Missing base url, make sure to set it before calling this method!');
     }
 
@@ -124,13 +117,11 @@ class ConceptPrint extends LatexBase
   }
 
   /**
-   * Add the introduction text for a print
+   * Add the introduction text for a print.
    *
-   * @param StudyArea           $studyArea
-   * @param TranslatorInterface $translator
+   * @throws LatexException
    *
    * @return ConceptPrint
-   * @throws LatexException
    */
   public function addIntroduction(StudyArea $studyArea, TranslatorInterface $translator)
   {

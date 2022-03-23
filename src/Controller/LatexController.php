@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\ItemInterface;
 
 /**
- * Class LatexController
+ * Class LatexController.
  *
  * @author BobV
  *
@@ -29,31 +29,27 @@ use Symfony\Contracts\Cache\ItemInterface;
  */
 class LatexController extends AbstractController
 {
-
   /**
    * @Route("/render", methods={"GET"}, options={"expose"=true,"no_login_wrap"=true})
    * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
    *
-   * @param Request                 $request
-   * @param LatexGeneratorInterface $generator
+   * @throws InvalidArgumentException
    *
    * @return Response
-   *
-   * @throws InvalidArgumentException
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function renderLatex(Request $request, LatexGeneratorInterface $generator)
   {
     // Retrieve and check content
-    $content = $request->query->get('content', NULL);
+    $content = $request->query->get('content', null);
     if (!$content) {
       throw $this->createNotFoundException();
     }
     $cacheKey = urlencode($content);
 
     // Check cache (and whether cached file exists)
-    $imageLocation = NULL;
+    $imageLocation = null;
     $cache         = new FilesystemAdapter('latex.equations', 86400);
     $cached        = true;
 
@@ -62,7 +58,7 @@ class LatexController extends AbstractController
       $imageLocation = $cache->getItem($cacheKey)->get();
       if (!(new Filesystem())->exists($imageLocation)) {
         $cache->delete($cacheKey);
-        $imageLocation = NULL;
+        $imageLocation = null;
       }
     }
 
@@ -100,7 +96,7 @@ class LatexController extends AbstractController
     });
 
     // Return image
-    $response = $this->file($imageLocation, NULL, ResponseHeaderBag::DISPOSITION_INLINE);
+    $response = $this->file($imageLocation, null, ResponseHeaderBag::DISPOSITION_INLINE);
     if ($cached) {
       // Disable symfony's automatic cache control header
       /* @phan-suppress-next-line PhanAccessClassConstantInternal */

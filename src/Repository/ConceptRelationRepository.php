@@ -7,9 +7,9 @@ use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ConceptRelationRepository extends ServiceEntityRepository
 {
@@ -18,11 +18,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
     parent::__construct($registry, ConceptRelation::class);
   }
 
-  /**
-   * @param RelationType $relationType
-   *
-   * @return ConceptRelation[]|Collection
-   */
+  /** @return ConceptRelation[]|Collection */
   public function getByRelationType(RelationType $relationType)
   {
     return $this->getByRelationTypeQb($relationType)
@@ -30,8 +26,6 @@ class ConceptRelationRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param RelationType $relationType
-   *
    * @return int
    *
    * @noinspection PhpDocMissingThrowsInspection
@@ -49,9 +43,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve all links related to the given concepts
-   *
-   * @param array $concepts
+   * Retrieve all links related to the given concepts.
    *
    * @return ConceptRelation[]|Collection
    */
@@ -65,11 +57,6 @@ class ConceptRelationRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  /**
-   * @param RelationType $relationType
-   *
-   * @return QueryBuilder
-   */
   public function getByRelationTypeQb(RelationType $relationType): QueryBuilder
   {
     return $this->createQueryBuilder('cr')
@@ -79,11 +66,6 @@ class ConceptRelationRepository extends ServiceEntityRepository
         ->setParameter('relationType', $relationType);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return QueryBuilder
-   */
   public function getByStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('cr')
@@ -94,11 +76,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return ConceptRelation[]|Collection
-   */
+  /** @return ConceptRelation[]|Collection */
   public function getByStudyArea(StudyArea $studyArea)
   {
     return $this->getByStudyAreaQb($studyArea)
@@ -106,9 +84,6 @@ class ConceptRelationRepository extends ServiceEntityRepository
   }
 
   /**
-   * @param StudyArea $studyArea
-   *
-   * @return integer
    * @throws NonUniqueResultException
    *
    * @noinspection PhpDocMissingThrowsInspection

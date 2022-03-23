@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class StudyAreaController extends AbstractApiController
 {
   /**
-   * Retrieve all API enabled study areas available for the current token
+   * Retrieve all API enabled study areas available for the current token.
    *
    * @IsGranted("ROLE_USER")
    */
@@ -36,7 +36,7 @@ class StudyAreaController extends AbstractApiController
   }
 
   /**
-   * Retrieve information for a single study area
+   * Retrieve information for a single study area.
    *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */

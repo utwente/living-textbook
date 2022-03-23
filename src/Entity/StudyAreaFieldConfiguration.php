@@ -10,8 +10,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * This entity is
- *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaFieldConfigurationRepository")
  *
@@ -86,19 +84,13 @@ class StudyAreaFieldConfiguration
    */
   private $learningOutcomeObjName;
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptDefinitionName(): ?string
   {
     return $this->conceptDefinitionName;
   }
 
-  /**
-   * @param string|null $conceptDefinitionName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptDefinitionName(?string $conceptDefinitionName): self
   {
     $this->conceptDefinitionName = $conceptDefinitionName;
@@ -106,19 +98,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptIntroductionName(): ?string
   {
     return $this->conceptIntroductionName;
   }
 
-  /**
-   * @param string|null $conceptIntroductionName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptIntroductionName(?string $conceptIntroductionName): self
   {
     $this->conceptIntroductionName = $conceptIntroductionName;
@@ -126,19 +112,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptSynonymsName(): ?string
   {
     return $this->conceptSynonymsName;
   }
 
-  /**
-   * @param string|null $conceptSynonymsName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptSynonymsName(?string $conceptSynonymsName): self
   {
     $this->conceptSynonymsName = $conceptSynonymsName;
@@ -146,19 +126,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptPriorKnowledgeName(): ?string
   {
     return $this->conceptPriorKnowledgeName;
   }
 
-  /**
-   * @param string|null $conceptPriorKnowledgeName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptPriorKnowledgeName(?string $conceptPriorKnowledgeName): self
   {
     $this->conceptPriorKnowledgeName = $conceptPriorKnowledgeName;
@@ -166,19 +140,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptTheoryExplanationName(): ?string
   {
     return $this->conceptTheoryExplanationName;
   }
 
-  /**
-   * @param string|null $conceptTheoryExplanationName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptTheoryExplanationName(?string $conceptTheoryExplanationName): self
   {
     $this->conceptTheoryExplanationName = $conceptTheoryExplanationName;
@@ -186,19 +154,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptHowtoName(): ?string
   {
     return $this->conceptHowtoName;
   }
 
-  /**
-   * @param string|null $conceptHowtoName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptHowtoName(?string $conceptHowtoName): self
   {
     $this->conceptHowtoName = $conceptHowtoName;
@@ -206,19 +168,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptExamplesName(): ?string
   {
     return $this->conceptExamplesName;
   }
 
-  /**
-   * @param string|null $conceptExamplesName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptExamplesName(?string $conceptExamplesName): self
   {
     $this->conceptExamplesName = $conceptExamplesName;
@@ -226,19 +182,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getConceptSelfAssessmentName(): ?string
   {
     return $this->conceptSelfAssessmentName;
   }
 
-  /**
-   * @param string|null $conceptSelfAssessmentName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setConceptSelfAssessmentName(?string $conceptSelfAssessmentName): self
   {
     $this->conceptSelfAssessmentName = $conceptSelfAssessmentName;
@@ -246,19 +196,13 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getLearningOutcomeObjName(): ?string
   {
     return $this->learningOutcomeObjName;
   }
 
-  /**
-   * @param string|null $learningOutcomeObjName
-   *
-   * @return StudyAreaFieldConfiguration
-   */
+  /** @return StudyAreaFieldConfiguration */
   public function setLearningOutcomeObjName(?string $learningOutcomeObjName): self
   {
     $this->learningOutcomeObjName = $learningOutcomeObjName;

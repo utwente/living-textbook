@@ -14,13 +14,9 @@ use Symfony\Component\Security\Core\Security;
 
 class ReviewSubmissionObjectFooterType extends AbstractType
 {
-  /**
-   * @var RouterInterface
-   */
+  /** @var RouterInterface */
   private $router;
-  /**
-   * @var Security
-   */
+  /** @var Security */
   private $security;
 
   public function __construct(RouterInterface $router, Security $security)

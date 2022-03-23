@@ -14,8 +14,7 @@ class RelationType
       #[Groups(['Default', 'mutate'])]
       #[OA\Property(nullable: true)]
       protected readonly ?string $description,
-  )
-  {
+  ) {
   }
 
   public static function fromEntity(\App\Entity\RelationType $relationType): self

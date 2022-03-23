@@ -20,7 +20,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LearningPath
+ * Class LearningPath.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathRepository")
@@ -46,7 +46,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   private $studyArea;
 
   /**
-   * Learning path name
+   * Learning path name.
    *
    * @var string
    *
@@ -62,7 +62,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   private $name;
 
   /**
-   * Learning path introduction
+   * Learning path introduction.
    *
    * @var string|null
    *
@@ -77,7 +77,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   private $introduction;
 
   /**
-   * Learning path question
+   * Learning path question.
    *
    * @var string
    *
@@ -114,10 +114,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    * @throws ORMException
@@ -139,7 +135,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
           $this->setQuestion($changeObj->getQuestion());
           break;
         case 'elements':
-        {
           // This construct is required for Doctrine to work correctly. Why? No clue.
           $toRemove = [];
           foreach ($this->getElements() as $element) {
@@ -164,7 +159,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
             }
           }
           break;
-        }
+
         default:
           throw new IncompatibleFieldChangedException($this, $changedField);
       }
@@ -176,19 +171,12 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return LearningPath
-   */
   public function setStudyArea(StudyArea $studyArea): LearningPath
   {
     $this->studyArea = $studyArea;
@@ -196,19 +184,12 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return LearningPath
-   */
   public function setName(string $name): LearningPath
   {
     $this->name = $name;
@@ -216,19 +197,12 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getQuestion(): string
   {
     return $this->question;
   }
 
-  /**
-   * @param string $question
-   *
-   * @return LearningPath
-   */
   public function setQuestion(string $question): LearningPath
   {
     $this->question = $question;
@@ -236,19 +210,12 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getIntroduction(): ?string
   {
     return $this->introduction;
   }
 
-  /**
-   * @param string|null $introduction
-   *
-   * @return LearningPath
-   */
   public function setIntroduction(?string $introduction): LearningPath
   {
     $this->introduction = $introduction;
@@ -257,7 +224,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   }
 
   /**
-   * Retrieve the ordered element list
+   * Retrieve the ordered element list.
    *
    * @return LearningPathElement[]|Collection
    */
@@ -267,7 +234,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   }
 
   /**
-   * Get the elements ordered
+   * Get the elements ordered.
    *
    * @return LearningPathElement[]|Collection
    *
@@ -281,9 +248,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   }
 
   /**
-   * Get the elements ordered
-   *
-   * @param Collection $elements
+   * Get the elements ordered.
    *
    * @return LearningPathElement[]|Collection
    */
@@ -309,11 +274,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return new ArrayCollection(array_reverse($result));
   }
 
-  /**
-   * @param LearningPathElement $element
-   *
-   * @return LearningPath
-   */
   public function addElement(LearningPathElement $element): LearningPath
   {
     if (!$element->getLearningPath()) {
@@ -325,16 +285,10 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @param LearningPathElement $element
-   *
-   * @return LearningPath
-   */
   public function removeElement(LearningPathElement $element): LearningPath
   {
     $this->elements->removeElement($element);
 
     return $this;
   }
-
 }

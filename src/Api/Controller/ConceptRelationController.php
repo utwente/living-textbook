@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ConceptRelationController extends AbstractApiController
 {
   /**
-   * Retrieve all study area concept relations
+   * Retrieve all study area concept relations.
    *
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -32,7 +32,7 @@ class ConceptRelationController extends AbstractApiController
       new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelation::class))),
   ])]
   public function list(
-      RequestStudyArea          $requestStudyArea,
+      RequestStudyArea $requestStudyArea,
       ConceptRelationRepository $conceptRelationRepository): JsonResponse
   {
     return $this->createDataResponse(
@@ -45,7 +45,7 @@ class ConceptRelationController extends AbstractApiController
   }
 
   /**
-   * Retrieve a single study area concept relation
+   * Retrieve a single study area concept relation.
    *
    * @Route("/{conceptRelation<\d+>}", methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -62,7 +62,7 @@ class ConceptRelationController extends AbstractApiController
   }
 
   /**
-   * Add a new study area concept relation
+   * Add a new study area concept relation.
    *
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -71,9 +71,9 @@ class ConceptRelationController extends AbstractApiController
   #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelation::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
-      RequestStudyArea       $requestStudyArea,
-      Request                $request,
-      ConceptRepository      $conceptRepository,
+      RequestStudyArea $requestStudyArea,
+      Request $request,
+      ConceptRepository $conceptRepository,
       RelationTypeRepository $relationTypeRepository): JsonResponse
   {
     $studyArea       = $requestStudyArea->getStudyArea();
@@ -110,7 +110,7 @@ class ConceptRelationController extends AbstractApiController
   }
 
   /**
-   * Delete an existing study area concept relation
+   * Delete an existing study area concept relation.
    *
    * @Route("/{conceptRelation<\d+>}", methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -122,11 +122,11 @@ class ConceptRelationController extends AbstractApiController
 
     $this->getHandler()->deleteRelation($conceptRelation);
 
-    return new JsonResponse(NULL, Response::HTTP_ACCEPTED);
+    return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
   private function getHandler(): ConceptEntityHandler
   {
-    return new ConceptEntityHandler($this->em, $this->validator, NULL);
+    return new ConceptEntityHandler($this->em, $this->validator, null);
   }
 }

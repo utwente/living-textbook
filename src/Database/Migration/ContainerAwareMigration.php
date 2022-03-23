@@ -6,14 +6,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait ContainerAwareMigration
 {
-
   /** @var ContainerInterface */
   protected $container;
 
-  /**
-   * @param ContainerInterface|NULL $container
-   */
-  public function setContainer(ContainerInterface $container = NULL)
+  /** @param ContainerInterface|null $container */
+  public function setContainer(ContainerInterface $container = null)
   {
     $this->container = $container;
   }

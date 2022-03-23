@@ -23,11 +23,11 @@ class LearningPathAnalyticsType extends AbstractType
 
     $builder
         ->add('learningPath', EntityType::class, [
-            'label'            => 'learning-path._name',
-            'class'            => LearningPath::class,
-            'select2'          => true,
-            'choice_label'     => 'name',
-            'query_builder'    => function (LearningPathRepository $repo) use ($studyArea) {
+            'label'         => 'learning-path._name',
+            'class'         => LearningPath::class,
+            'select2'       => true,
+            'choice_label'  => 'name',
+            'query_builder' => function (LearningPathRepository $repo) use ($studyArea) {
               return $repo->findForStudyAreaQb($studyArea)
                   ->orderBy('lp.name');
             },
@@ -64,5 +64,4 @@ class LearningPathAnalyticsType extends AbstractType
         ->setAllowedTypes('study_area', StudyArea::class)
         ->setDefault('data_class', LearningPathVisualisationRequest::class);
   }
-
 }

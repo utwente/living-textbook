@@ -22,9 +22,7 @@ class LearningPathElementSelectorType extends AbstractType
 {
   /** @var LearningOutcomeRepository */
   private $learningOutcomeRepository;
-  /**
-   * @var NamingService
-   */
+  /** @var NamingService */
   private $namingService;
   /** @var SerializerInterface */
   private $serializer;
@@ -43,24 +41,24 @@ class LearningPathElementSelectorType extends AbstractType
 
     $builder
         ->add('concepts', EntityType::class, [
-            'label'               => 'menu.concept',
-            'class'               => Concept::class,
-            'choice_label'        => 'name',
-            'required'            => false,
-            'multiple'            => true,
-            'query_builder'       => function (ConceptRepository $conceptRepository) use ($studyArea) {
+            'label'         => 'menu.concept',
+            'class'         => Concept::class,
+            'choice_label'  => 'name',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
               return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea);
             },
             'select2'             => true,
             'select2_placeholder' => 'learning-path.select',
         ])
         ->add('learningOutcomes', EntityType::class, [
-            'label'               => ucfirst($this->namingService->get()->learningOutcome()->objs()),
-            'class'               => LearningOutcome::class,
-            'choice_label'        => 'name',
-            'required'            => false,
-            'multiple'            => true,
-            'query_builder'       => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
+            'label'         => ucfirst($this->namingService->get()->learningOutcome()->objs()),
+            'class'         => LearningOutcome::class,
+            'choice_label'  => 'name',
+            'required'      => false,
+            'multiple'      => true,
+            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
               return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
             },
             'select2'             => true,
@@ -93,5 +91,4 @@ class LearningPathElementSelectorType extends AbstractType
         ->setRequired('sortable_id')
         ->setAllowedTypes('sortable_id', 'string');
   }
-
 }

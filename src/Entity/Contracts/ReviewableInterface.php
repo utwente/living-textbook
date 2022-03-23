@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Entity\Contracts;
 
 use App\Entity\PendingChange;
@@ -9,39 +8,24 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Interface IReviewable
- * Marks the entity as reviewable
+ * Marks the entity as reviewable.
  */
 interface ReviewableInterface extends StudyAreaFilteredInterface
 {
-
-  /**
-   * Apply the changes as specified
-   *
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   */
+  /** Apply the changes as specified. */
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void;
 
   /**
    * The name used in the pending change table to store the change
-   * Must be unique per entity
-   *
-   * @return string
+   * Must be unique per entity.
    */
   public function getReviewName(): string;
 
-  /**
-   * The title of the object, used to identify the object
-   *
-   * @return string
-   */
+  /** The title of the object, used to identify the object. */
   public function getReviewTitle(): string;
 
   /**
-   * Set the study area
-   *
-   * @param StudyArea $studyArea
+   * Set the study area.
    *
    * @return mixed
    */

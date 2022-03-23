@@ -20,7 +20,7 @@ class ReviewTextDiffType extends AbstractReviewDiffType
       $view->vars['new_text'] = $propertyAccessor->getValue($view->vars['new_text'], 'text');
     }
 
-    if (NULL !== $options['original_object']) {
+    if (null !== $options['original_object']) {
       $view->vars['orig_text'] = $propertyAccessor->getValue($options['original_object'], $options['field']);
       if ($options['has_data_object']) {
         $view->vars['orig_text'] = $propertyAccessor->getValue($view->vars['orig_text'], 'text');

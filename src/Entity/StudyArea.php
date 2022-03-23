@@ -28,15 +28,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class StudyArea
 {
-
-  // Access types, used to determine if a user can access the study area
-  const ACCESS_PUBLIC = 'public';
-  const ACCESS_PRIVATE = 'private';
-  const ACCESS_GROUP = 'group';
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+
+  // Access types, used to determine if a user can access the study area
+  public const ACCESS_PUBLIC  = 'public';
+  public const ACCESS_PRIVATE = 'private';
+  public const ACCESS_GROUP   = 'group';
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
@@ -47,10 +46,8 @@ class StudyArea
    */
   private string $name = '';
 
-  /**
-   * @ORM\Column(name="description", type="text", nullable=true)
-   */
-  private ?string $description = NULL;
+  /** @ORM\Column(name="description", type="text", nullable=true) */
+  private ?string $description = null;
 
   /**
    * @var Collection|Concept[]
@@ -76,7 +73,7 @@ class StudyArea
    *
    * @Assert\NotNull()
    */
-  private ?User $owner = NULL;
+  private ?User $owner = null;
 
   /**
    * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
@@ -135,25 +132,21 @@ class StudyArea
    */
   private $tags;
 
-  /**
-   * @ORM\Column(name="frozen_on", type="datetime", nullable=true)
-   */
-  private ?DateTime $frozenOn = NULL;
+  /** @ORM\Column(name="frozen_on", type="datetime", nullable=true) */
+  private ?DateTime $frozenOn = null;
 
   /**
    * @ORM\Column(name="print_header", type="string", length=100, nullable=true)
    *
    * @Assert\Length(max=100)
    */
-  private ?string $printHeader = NULL;
+  private ?string $printHeader = null;
+
+  /** @ORM\Column(name="print_introduction", type="text", nullable=true) */
+  private ?string $printIntroduction = null;
 
   /**
-   * @ORM\Column(name="print_introduction", type="text", nullable=true)
-   */
-  private ?string $printIntroduction = NULL;
-
-  /**
-   * If set, user interaction will be tracked (with user opt-in)
+   * If set, user interaction will be tracked (with user opt-in).
    *
    * @ORM\Column(name="track_users", type="boolean", nullable=false)
    *
@@ -163,72 +156,68 @@ class StudyArea
   private bool $trackUsers = false;
 
   /**
-   * Group
+   * Group.
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
    * @ORM\JoinColumn(nullable=true)
    */
-  private ?StudyAreaGroup $group = NULL;
+  private ?StudyAreaGroup $group = null;
 
   /**
-   * Open access
+   * Open access.
    *
    * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
   private bool $openAccess = false;
 
   /**
-   * Analytics dashboard enabled
+   * Analytics dashboard enabled.
    *
    * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
   private bool $analyticsDashboardEnabled = false;
 
   /**
-   * Whether the review mode has been enabled for this study area
+   * Whether the review mode has been enabled for this study area.
    *
    * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
   private bool $reviewModeEnabled = false;
 
   /**
-   * Whether the API is enabled for this study area
+   * Whether the API is enabled for this study area.
    *
    * @ORM\Column(type="boolean", nullable=false, options={"default": false})
    */
   private bool $apiEnabled = false;
 
   /**
-   * The study area field names object
+   * The study area field names object.
    *
    * @ORM\OneToOne(targetEntity="App\Entity\StudyAreaFieldConfiguration", cascade={"all"})
    * @ORM\JoinColumn(nullable=true)
    */
-  private ?StudyAreaFieldConfiguration $fieldConfiguration = NULL;
+  private ?StudyAreaFieldConfiguration $fieldConfiguration = null;
 
   /**
-   * A default tag filter for the browser
+   * A default tag filter for the browser.
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
    * @ORM\JoinColumn(nullable=true)
    */
-  private ?Tag $defaultTagFilter = NULL;
+  private ?Tag $defaultTagFilter = null;
 
   /**
-   * If set the Dotron visualisation will be used
+   * If set the Dotron visualisation will be used.
    *
    * @ORM\Column(type="boolean")
    */
   private bool $dotron = false;
 
-  /**
-   * @ORM\Column(type="array", nullable=true)
-   */
-  private ?array $dotronConfig = NULL;
+  /** @ORM\Column(type="array", nullable=true) */
+  private ?array $dotronConfig = null;
 
-  /**
-   * StudyArea constructor.
-   */
+  /** StudyArea constructor. */
   public function __construct()
   {
     $this->concepts          = new ArrayCollection();
@@ -242,9 +231,7 @@ class StudyArea
     $this->tags              = new ArrayCollection();
   }
 
-  /**
-   * @Assert\Callback()
-   */
+  /** @Assert\Callback() */
   public function validateObject(ExecutionContextInterface $context)
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {
@@ -261,7 +248,7 @@ class StudyArea
   }
 
   /**
-   * Possible access types
+   * Possible access types.
    *
    * @return string[]
    */
@@ -271,21 +258,21 @@ class StudyArea
   }
 
   /**
-   * Possible access types, depending on the access level
+   * Possible access types, depending on the access level.
    *
    * @return string[]
    */
   public function getAvailableAccessTypes(
       AuthorizationCheckerInterface $authorizationChecker,
-      EntityManagerInterface        $em): array
+      EntityManagerInterface $em): array
   {
     // Get original field value
     $origObj   = $em->getUnitOfWork()->getOriginalEntityData($this);
-    $prevValue = array_key_exists('accessType', $origObj) ? $origObj['accessType'] : NULL;
+    $prevValue = array_key_exists('accessType', $origObj) ? $origObj['accessType'] : null;
 
     // Get choices, remove public type when not administrator, and field has changed
     $choices = StudyArea::getAccessTypes();
-    if (!$authorizationChecker->isGranted("ROLE_SUPER_ADMIN") && $prevValue !== self::ACCESS_PUBLIC) {
+    if (!$authorizationChecker->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
       $choices = array_filter($choices, function ($item) {
         return $item !== StudyArea::ACCESS_PUBLIC;
       });
@@ -294,29 +281,27 @@ class StudyArea
     return $choices;
   }
 
-  /**
-   * Check whether the user is in a certain or one of the groups
-   */
-  public function isUserInGroup(User $user, string $groupType = NULL): bool
+  /** Check whether the user is in a certain or one of the groups */
+  public function isUserInGroup(User $user, string $groupType = null): bool
   {
     foreach ($this->getUserGroups($groupType) as $userGroup) {
-      if ($userGroup->getUsers()->contains($user)) return true;
+      if ($userGroup->getUsers()->contains($user)) {
+        return true;
+      }
     }
 
     return false;
   }
 
-  /**
-   * @return UserGroup[]|Collection
-   */
-  public function getUserGroups(string $groupType = NULL)
+  /** @return UserGroup[]|Collection */
+  public function getUserGroups(string $groupType = null)
   {
-    return $groupType === NULL ? $this->userGroups : $this->userGroups->matching(
+    return $groupType === null ? $this->userGroups : $this->userGroups->matching(
         Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
   }
 
   /**
-   * Retrieve the available user group types
+   * Retrieve the available user group types.
    *
    * @return string[]
    */
@@ -357,16 +342,16 @@ class StudyArea
     $result = [];
     foreach ($this->userGroups as $userGroup) {
       foreach ($userGroup->getUsers() as $user) {
-        /** @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
+        /* @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
         if (!array_key_exists($user->getId(), $result)) {
-          $result[$user->getId()] = new UserPermissions($user, NULL);
+          $result[$user->getId()] = new UserPermissions($user, null);
         }
         $result[$user->getId()]->addPermissionFromGroup($userGroup);
       }
       foreach ($userGroup->getEmails() as $email) {
-        /** @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
+        /* @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
         if (!array_key_exists($email->getEmail(), $result)) {
-          $result[$email->getEmail()] = new UserPermissions(NULL, $email);
+          $result[$email->getEmail()] = new UserPermissions(null, $email);
         }
         $result[$email->getEmail()]->addPermissionFromGroup($userGroup);
       }
@@ -376,7 +361,7 @@ class StudyArea
   }
 
   /**
-   * Get the editors
+   * Get the editors.
    *
    * @return User[]
    */
@@ -397,7 +382,7 @@ class StudyArea
   }
 
   /**
-   * Get the editors which do not have an account (yet)
+   * Get the editors which do not have an account (yet).
    *
    * @return UserGroupEmail[]
    */
@@ -418,7 +403,7 @@ class StudyArea
   }
 
   /**
-   * Get the editors
+   * Get the editors.
    *
    * @return User[]
    */
@@ -439,7 +424,7 @@ class StudyArea
   }
 
   /**
-   * Get the reviewers which do not have an account (yet)
+   * Get the reviewers which do not have an account (yet).
    *
    * @return UserGroupEmail[]
    */
@@ -460,7 +445,7 @@ class StudyArea
   }
 
   /**
-   * Get the viewers
+   * Get the viewers.
    *
    * @return User[]
    */
@@ -481,7 +466,7 @@ class StudyArea
   }
 
   /**
-   * Get the viewers which do not have an account (yet)
+   * Get the viewers which do not have an account (yet).
    *
    * @return UserGroupEmail[]
    */
@@ -501,9 +486,7 @@ class StudyArea
     return $userGroupEmails;
   }
 
-  /**
-   * Check whether the given user is the StudyArea owner
-   */
+  /** Check whether the given user is the StudyArea owner */
   public function isOwner(?User $user): bool
   {
     if (!$user) {
@@ -513,9 +496,7 @@ class StudyArea
     return $user->getId() === $this->owner->getId();
   }
 
-  /**
-   * Check whether the StudyArea is visible for the user
-   */
+  /** Check whether the StudyArea is visible for the user */
   public function isVisible(?User $user): bool
   {
     if ($this->openAccess) {
@@ -538,9 +519,7 @@ class StudyArea
     return false;
   }
 
-  /**
-   * Check whether the StudyArea is editable for the user
-   */
+  /** Check whether the StudyArea is editable for the user */
   public function isEditable(?User $user): bool
   {
     if (!$user) {
@@ -550,9 +529,7 @@ class StudyArea
     return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_EDITOR);
   }
 
-  /**
-   * Check whether the StudyArea changes can be reviewed by the user
-   */
+  /** Check whether the StudyArea changes can be reviewed by the user */
   public function isReviewable(?User $user): bool
   {
     if (!$user || !$this->isReviewModeEnabled()) {
@@ -562,9 +539,7 @@ class StudyArea
     return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_REVIEWER);
   }
 
-  /**
-   * Check whether the user can view the analytics of this study area
-   */
+  /** Check whether the user can view the analytics of this study area */
   public function canViewAnalytics(?User $user): bool
   {
     if (!$this->isAnalyticsDashboardEnabled()) {
@@ -578,9 +553,7 @@ class StudyArea
     return $this->isOwner($user) || $this->isUserInGroup($user, UserGroup::GROUP_ANALYSIS);
   }
 
-  /**
-   * @return array Array with DateTime and username
-   */
+  /** @return array Array with DateTime and username */
   public function getLastEditInfo(): array
   {
     $lastUpdated   = $this->getLastUpdated();
@@ -657,9 +630,7 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getConcepts()
   {
     return $this->concepts;
@@ -730,9 +701,7 @@ class StudyArea
     return $this;
   }
 
-  /**
-   * @return RelationType[]|Collection
-   */
+  /** @return RelationType[]|Collection */
   public function getRelationTypes()
   {
     return $this->relationTypes;
@@ -752,7 +721,7 @@ class StudyArea
 
   public function isFrozen(): bool
   {
-    return $this->getFrozenOn() !== NULL;
+    return $this->getFrozenOn() !== null;
   }
 
   public function getPrintHeader(): ?string
@@ -799,7 +768,7 @@ class StudyArea
 
   public function getGroupId(): ?int
   {
-    return $this->group ? $this->group->getId() : NULL;
+    return $this->group ? $this->group->getId() : null;
   }
 
   public function setGroup(?StudyAreaGroup $group): self

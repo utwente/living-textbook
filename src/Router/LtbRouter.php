@@ -8,10 +8,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class LtbRouter
 {
-
-  /**
-   * @var RouterInterface
-   */
+  /** @var RouterInterface */
   private $router;
 
   public function __construct(RouterInterface $router)
@@ -24,26 +21,13 @@ class LtbRouter
     return $this->router->generate($name, $parameters, $referenceType);
   }
 
-  /**
-   * Generates an absolute url for a page, encapsulated by the browser page
-   *
-   * @param string $name
-   * @param array  $parameters
-   *
-   * @return string
-   */
+  /** Generates an absolute url for a page, encapsulated by the browser page. */
   public function generateBrowserUrl(string $name, array $parameters = []): string
   {
     return $this->generateBrowserUrlForPath($this->router->generate($name, $parameters));
   }
 
-  /**
-   * Generates an absolute url for a path, encapsulated by the browser page
-   *
-   * @param string $path
-   *
-   * @return string
-   */
+  /** Generates an absolute url for a path, encapsulated by the browser page. */
   public function generateBrowserUrlForPath(string $path): string
   {
     return $this->router->generate('_home_simple', [

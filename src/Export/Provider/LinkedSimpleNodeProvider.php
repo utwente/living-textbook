@@ -23,45 +23,25 @@ use function Symfony\Component\String\u;
 
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
-  /**
-   * @var ConceptRepository
-   */
+  /** @var ConceptRepository */
   private $conceptRepository;
-  /**
-   * @var ConceptRelationRepository
-   */
+  /** @var ConceptRelationRepository */
   private $conceptRelationRepository;
-  /**
-   * @var ContributorRepository
-   */
+  /** @var ContributorRepository */
   private $contributorRepository;
-  /**
-   * @var ExternalResourceRepository
-   */
+  /** @var ExternalResourceRepository */
   private $externalResourceRepository;
-  /**
-   * @var LearningOutcomeRepository
-   */
+  /** @var LearningOutcomeRepository */
   private $learningOutcomeRepository;
-  /**
-   * @var NamingService
-   */
+  /** @var NamingService */
   private $namingService;
-  /**
-   * @var RelationTypeRepository
-   */
+  /** @var RelationTypeRepository */
   private $relationTypeRepository;
-  /**
-   * @var LtbRouter
-   */
+  /** @var LtbRouter */
   private $router;
-  /**
-   * @var SerializerInterface
-   */
+  /** @var SerializerInterface */
   private $serializer;
-  /**
-   * @var AsciiSlugger
-   */
+  /** @var AsciiSlugger */
   private $slugger;
 
   public function __construct(
@@ -82,17 +62,13 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->slugger                    = new AsciiSlugger();
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getName(): string
   {
     return 'linked-simple-node';
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function getPreview(): string
   {
     $names      = $this->namingService->get();
@@ -153,9 +129,7 @@ EOT,
     );
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** {@inheritdoc} */
   public function export(StudyArea $studyArea): Response
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
@@ -188,7 +162,7 @@ EOT,
     $mappedContributors = [];
     foreach ($contributors as $contributor) {
       $mappedContributors[] = [
-          'nodes'       => $contributor->getConcepts()->map(function (Concept $concept) use ($idMap) {
+          'nodes' => $contributor->getConcepts()->map(function (Concept $concept) use ($idMap) {
             return $idMap[$concept->getId()];
           }),
           'name'        => $contributor->getName(),
@@ -202,7 +176,7 @@ EOT,
     $mappedExternalResources = [];
     foreach ($externalResources as $externalResource) {
       $mappedExternalResources[] = [
-          'nodes'       => $externalResource->getConcepts()->map(function (Concept $concept) use ($idMap) {
+          'nodes' => $externalResource->getConcepts()->map(function (Concept $concept) use ($idMap) {
             return $idMap[$concept->getId()];
           }),
           'title'       => $externalResource->getTitle(),
@@ -215,7 +189,7 @@ EOT,
     $mappedLearningOutcomes = [];
     foreach ($learningOutcomes as $learningOutcome) {
       $mappedLearningOutcomes[] = [
-          'nodes'   => $learningOutcome->getConcepts()->map(function (Concept $concept) use ($idMap) {
+          'nodes' => $learningOutcome->getConcepts()->map(function (Concept $concept) use ($idMap) {
             return $idMap[$concept->getId()];
           }),
           'number'  => $learningOutcome->getNumber(),
@@ -225,19 +199,19 @@ EOT,
     }
 
     // Create JSON data
-    {
-      $names                = $this->namingService->get();
-      $fieldNames           = $names->concept();
-      $definitionName       = $this->fieldName($fieldNames->definition());
-      $selfAssessmentName   = $this->fieldName($fieldNames->selfAssessment());
-      $learningOutcomeField = $this->fieldName($names->learningOutcome()->objs());
 
-      // Return as JSON
-      $serializationContext = SerializationContext::create();
-      $serializationContext->setSerializeNull(true);
-      $json = $this->serializer->serialize(
+    $names                = $this->namingService->get();
+    $fieldNames           = $names->concept();
+    $definitionName       = $this->fieldName($fieldNames->definition());
+    $selfAssessmentName   = $this->fieldName($fieldNames->selfAssessment());
+    $learningOutcomeField = $this->fieldName($names->learningOutcome()->objs());
+
+    // Return as JSON
+    $serializationContext = SerializationContext::create();
+    $serializationContext->setSerializeNull(true);
+    $json = $this->serializer->serialize(
           [
-              'nodes'               => array_map(function (Concept $concept) use ($definitionName, $selfAssessmentName) {
+              'nodes' => array_map(function (Concept $concept) use ($definitionName, $selfAssessmentName) {
                 return [
                     'instance'          => $concept->isInstance(),
                     'label'             => $concept->getName(),
@@ -254,11 +228,10 @@ EOT,
           ],
           'json', $serializationContext);
 
-      $response = new JsonResponse($json, Response::HTTP_OK, [], true);
-      ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));
+    $response = new JsonResponse($json, Response::HTTP_OK, [], true);
+    ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));
 
-      return $response;
-    }
+    return $response;
   }
 
   private function fieldName(string $fieldName): string

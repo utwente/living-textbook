@@ -3,16 +3,10 @@
 namespace App\Entity\Data;
 
 /**
- * Interface DataInterface
- *
- * @package App\Entity\Data
+ * Interface DataInterface.
  */
 interface DataInterface
 {
-  /**
-   * Determine whether this block has data
-   *
-   * @return boolean
-   */
-  function hasData(): bool;
+  /** Determine whether this block has data. */
+  public function hasData(): bool;
 }

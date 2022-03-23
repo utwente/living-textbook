@@ -13,11 +13,7 @@ class UserGroupEmailRepository extends ServiceEntityRepository
     parent::__construct($registry, UserGroupEmail::class);
   }
 
-  /**
-   * @param string $email
-   *
-   * @return UserGroupEmail[]
-   */
+  /** @return UserGroupEmail[] */
   public function findByEmail(string $email)
   {
     return $this->createQueryBuilder('uge')
@@ -27,5 +23,4 @@ class UserGroupEmailRepository extends ServiceEntityRepository
         ->setParameter('email', $email)
         ->getQuery()->getResult();
   }
-
 }

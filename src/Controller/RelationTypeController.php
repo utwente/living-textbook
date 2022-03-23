@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class RelationTypeController
+ * Class RelationTypeController.
  *
  * @Route("/{_studyArea}/relationtype", requirements={"_studyArea"="\d+"})
  */
@@ -30,8 +30,7 @@ class RelationTypeController extends AbstractController
   public function __construct(
       private readonly EntityManagerInterface $em,
       private readonly ReviewService $reviewService,
-  )
-  {
+  ) {
   }
 
   /**
@@ -41,8 +40,8 @@ class RelationTypeController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    */
   public function add(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -77,9 +76,9 @@ class RelationTypeController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    */
   public function edit(
-      Request             $request,
-      RequestStudyArea    $requestStudyArea,
-      RelationType        $relationType,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      RelationType $relationType,
       TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
@@ -90,7 +89,7 @@ class RelationTypeController extends AbstractController
     }
 
     // Check if not removed
-    if ($relationType->getDeletedAt() !== NULL) {
+    if ($relationType->getDeletedAt() !== null) {
       throw $this->createNotFoundException();
     }
 
@@ -133,9 +132,6 @@ class RelationTypeController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
-   * @param RequestStudyArea       $requestStudyArea
-   * @param RelationTypeRepository $repo
-   *
    * @return array
    */
   public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $repo)
@@ -153,11 +149,11 @@ class RelationTypeController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    */
   public function remove(
-      Request                   $request,
-      RequestStudyArea          $requestStudyArea,
-      RelationType              $relationType,
+      Request $request,
+      RequestStudyArea $requestStudyArea,
+      RelationType $relationType,
       ConceptRelationRepository $conceptRelationRepository,
-      TranslatorInterface       $trans)
+      TranslatorInterface $trans)
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -167,7 +163,7 @@ class RelationTypeController extends AbstractController
     }
 
     // Check if not already deleted
-    if ($relationType->getDeletedAt() !== NULL) {
+    if ($relationType->getDeletedAt() !== null) {
       $this->addFlash('warning', $trans->trans('relation-type.removed-already', ['%item%' => $relationType->getName()]));
 
       return $this->redirectToRoute('app_relationtype_list');
@@ -182,7 +178,7 @@ class RelationTypeController extends AbstractController
       return $this->redirectToRoute('app_relationtype_list');
     }
 
-    $form = $this->createForm(RemoveType::class, NULL, [
+    $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_relationtype_list',
     ]);
     $form->handleRequest($request);
@@ -206,6 +202,6 @@ class RelationTypeController extends AbstractController
   private function getHandler(): RelationTypeHandler
   {
     // Double validation is not needed as we rely on the form validation
-    return new RelationTypeHandler($this->em, NULL, $this->reviewService);
+    return new RelationTypeHandler($this->em, null, $this->reviewService);
   }
 }

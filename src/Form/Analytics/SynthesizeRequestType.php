@@ -42,7 +42,6 @@ class SynthesizeRequestType extends AbstractType
         ]);
   }
 
-
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
@@ -98,5 +97,4 @@ class SynthesizeRequestType extends AbstractType
         ],
     ]);
   }
-
 }

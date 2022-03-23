@@ -4,11 +4,11 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class UserRepository
+ * Class UserRepository.
  *
  * @method User|null find($id, $lockMode = NULL, $lockVersion = NULL)
  * @method User|null findOneBy(array $criteria, array $orderBy = NULL)
@@ -21,7 +21,7 @@ class UserRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve fallback users
+   * Retrieve fallback users.
    *
    * @return array
    */
@@ -31,7 +31,7 @@ class UserRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the super admins
+   * Retrieve the super admins.
    *
    * @return User[]
    */
@@ -44,7 +44,7 @@ class UserRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find users for the given email addresses
+   * Find users for the given email addresses.
    *
    * @param array $emails Email addresses to search on
    *
@@ -60,11 +60,9 @@ class UserRepository extends ServiceEntityRepository
   }
 
   /**
-   * Find a user for the given email address
+   * Find a user for the given email address.
    *
    * @param $email
-   *
-   * @return User|null
    */
   public function getUserForEmail($email): ?User
   {
@@ -76,7 +74,7 @@ class UserRepository extends ServiceEntityRepository
           ->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException $e) {
       // Cannot happen
-      return NULL;
+      return null;
     }
   }
 }

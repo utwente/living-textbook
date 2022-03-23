@@ -15,11 +15,7 @@ class PageLoadRepository extends ServiceEntityRepository
     parent::__construct($registry, PageLoad::class);
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return PageLoad[]|Collection
-   */
+  /** @return PageLoad[]|Collection */
   public function getByStudyAreaOrderedOnIds(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('pl')
@@ -31,11 +27,7 @@ class PageLoadRepository extends ServiceEntityRepository
         ->getQuery()->getResult();
   }
 
-  /**
-   * Remove all page loads for a certain study area
-   *
-   * @param StudyArea $studyArea
-   */
+  /** Remove all page loads for a certain study area. */
   public function purgeForStudyArea(StudyArea $studyArea)
   {
     $this->createQueryBuilder('pl')
@@ -44,5 +36,4 @@ class PageLoadRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea)
         ->getQuery()->execute();
   }
-
 }

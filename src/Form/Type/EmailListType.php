@@ -18,12 +18,16 @@ class EmailListType extends AbstractType
     $builder
         ->addModelTransformer(new CallbackTransformer(
             function (?array $transform) {
-              if ($transform === NULL) return '';
+              if ($transform === null) {
+                return '';
+              }
 
               return implode(PHP_EOL, $transform);
             },
             function (?string $reverseTransform) {
-              if ($reverseTransform === NULL) return [];
+              if ($reverseTransform === null) {
+                return [];
+              }
 
               $emails = array_map(function ($email) {
                 return mb_strtolower(trim($email));
@@ -53,11 +57,9 @@ class EmailListType extends AbstractType
                 new Email(['message' => 'emails.invalid-email']),
             ]),
         ],
-        'attr'        => [
+        'attr' => [
             'rows' => 10,
         ],
     ]);
   }
-
-
 }

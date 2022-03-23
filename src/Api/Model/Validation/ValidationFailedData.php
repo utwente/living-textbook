@@ -13,7 +13,6 @@ class ValidationFailedData
       protected readonly string $reason,
       #[Property(type: 'array', items: new Items(new Model(type: ValidationError::class)))]
       protected readonly array $violations
-  )
-  {
+  ) {
   }
 }

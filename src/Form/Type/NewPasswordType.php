@@ -14,8 +14,8 @@ class NewPasswordType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'type'            => PasswordType::class,
-        'constraints'     => [
+        'type'        => PasswordType::class,
+        'constraints' => [
           // Max length due to BCrypt, @see BCryptPasswordEncoder
             new Length(['max' => 72]),
             new PasswordStrength([
@@ -25,8 +25,8 @@ class NewPasswordType extends AbstractType
             ]),
         ],
         'invalid_message' => 'user.password-no-match',
-        'first_options'   => array('label' => 'user.password'),
-        'second_options'  => array('label' => 'user.repeat-password'),
+        'first_options'   => ['label' => 'user.password'],
+        'second_options'  => ['label' => 'user.repeat-password'],
     ]);
   }
 

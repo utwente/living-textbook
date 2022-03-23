@@ -11,7 +11,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class ConceptRelation
+ * Class ConceptRelation.
  *
  * @author BobV
  *
@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ConceptRelation
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
@@ -75,7 +74,7 @@ class ConceptRelation
 
   /**
    * The position field will be filled automatically by a callback in the concept,
-   * in order to force the desired positioning
+   * in order to force the desired positioning.
    *
    * @var int
    *
@@ -88,7 +87,7 @@ class ConceptRelation
 
   /**
    * The position field will be filled automatically by a callback in the concept,
-   * in order to force the desired positioning
+   * in order to force the desired positioning.
    *
    * @var int
    *
@@ -99,14 +98,10 @@ class ConceptRelation
    */
   private $incomingPosition = 0;
 
-  /**
-   * @ORM\Column(type="array", nullable=true)
-   */
-  private ?array $dotronConfig = NULL;
+  /** @ORM\Column(type="array", nullable=true) */
+  private ?array $dotronConfig = null;
 
   /**
-   * @return int|null
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\SerializedName("target")
    * @JMSA\Expose()
@@ -116,17 +111,13 @@ class ConceptRelation
     return $this->getTarget()?->getId();
   }
 
-  /**
-   * @return int|null
-   */
+  /** @return int|null */
   public function getSourceId(): ?int
   {
     return $this->getSource()?->getId();
   }
 
   /**
-   * @return string
-   *
    * @JMSA\VirtualProperty()
    * @JMSA\Expose()
    */
@@ -135,19 +126,12 @@ class ConceptRelation
     return $this->relationType ? $this->relationType->getName() : '';
   }
 
-  /**
-   * @return Concept|null
-   */
+  /** @return Concept|null */
   public function getSource(): ?Concept
   {
     return $this->source;
   }
 
-  /**
-   * @param Concept $source
-   *
-   * @return ConceptRelation
-   */
   public function setSource(Concept $source): ConceptRelation
   {
     $this->source = $source;
@@ -155,19 +139,12 @@ class ConceptRelation
     return $this;
   }
 
-  /**
-   * @return Concept|null
-   */
+  /** @return Concept|null */
   public function getTarget(): ?Concept
   {
     return $this->target;
   }
 
-  /**
-   * @param Concept $target
-   *
-   * @return ConceptRelation
-   */
   public function setTarget(Concept $target): ConceptRelation
   {
     $this->target = $target;
@@ -175,42 +152,30 @@ class ConceptRelation
     return $this;
   }
 
-  /**
-   * @return RelationType|null
-   */
+  /** @return RelationType|null */
   public function getRelationType(): ?RelationType
   {
     return $this->relationType;
   }
 
-  /**
-   * @param RelationType|null $relationType
-   *
-   * @return ConceptRelation
-   */
   public function setRelationType(?RelationType $relationType): ConceptRelation
   {
     // Return on null, as the type might be deleted
-    if ($relationType === NULL) return $this;
+    if ($relationType === null) {
+      return $this;
+    }
 
     $this->relationType = $relationType;
 
     return $this;
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getOutgoingPosition(): int
   {
     return $this->outgoingPosition;
   }
 
-  /**
-   * @param int $outgoingPosition
-   *
-   * @return ConceptRelation
-   */
   public function setOutgoingPosition(int $outgoingPosition): ConceptRelation
   {
     $this->outgoingPosition = $outgoingPosition;
@@ -218,19 +183,12 @@ class ConceptRelation
     return $this;
   }
 
-  /**
-   * @return int
-   */
+  /** @return int */
   public function getIncomingPosition(): int
   {
     return $this->incomingPosition;
   }
 
-  /**
-   * @param int $incomingPosition
-   *
-   * @return ConceptRelation
-   */
   public function setIncomingPosition(int $incomingPosition): ConceptRelation
   {
     $this->incomingPosition = $incomingPosition;

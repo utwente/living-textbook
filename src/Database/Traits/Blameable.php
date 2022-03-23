@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 trait Blameable
 {
   /**
-   * @var \DateTime $created
+   * @var \DateTime
    *
    * @Gedmo\Timestampable(on="create")
    * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -16,7 +16,7 @@ trait Blameable
   private $createdAt;
 
   /**
-   * @var string $createdBy
+   * @var string
    *
    * @Gedmo\Blameable(on="create")
    * @ORM\Column(name="created_by", type="string", length=255, nullable=true)
@@ -24,7 +24,7 @@ trait Blameable
   private $createdBy;
 
   /**
-   * @var \DateTime $updatedAt
+   * @var \DateTime
    *
    * @Gedmo\Timestampable(on="update")
    * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -32,31 +32,27 @@ trait Blameable
   private $updatedAt;
 
   /**
-   * @var string $updatedBy
+   * @var string
    *
    * @Gedmo\Blameable(on="update")
    * @ORM\Column(name="updated_by", type="string", length=255, nullable=true)
    */
   private $updatedBy;
 
-  /**
-   * Get the last update time, which is either creation time or update time
-   */
+  /** Get the last update time, which is either creation time or update time */
   public function getLastUpdated()
   {
-    return $this->getUpdatedAt() !== NULL ? $this->getUpdatedAt() : $this->getCreatedAt();
+    return $this->getUpdatedAt() !== null ? $this->getUpdatedAt() : $this->getCreatedAt();
   }
 
-  /**
-   * Get the last updated by, which is either creation by or update by
-   */
+  /** Get the last updated by, which is either creation by or update by */
   public function getLastUpdatedBy()
   {
-    return $this->getUpdatedBy() !== NULL ? $this->getUpdatedBy() : $this->getCreatedBy();
+    return $this->getUpdatedBy() !== null ? $this->getUpdatedBy() : $this->getCreatedBy();
   }
 
   /**
-   * Set createdAt
+   * Set createdAt.
    *
    * @param \DateTime $createdAt
    *
@@ -70,7 +66,7 @@ trait Blameable
   }
 
   /**
-   * Get createdAt
+   * Get createdAt.
    *
    * @return \DateTime
    */
@@ -80,7 +76,7 @@ trait Blameable
   }
 
   /**
-   * Set createdBy
+   * Set createdBy.
    *
    * @param string $createdBy
    *
@@ -94,7 +90,7 @@ trait Blameable
   }
 
   /**
-   * Get createdBy
+   * Get createdBy.
    *
    * @return string
    */
@@ -104,7 +100,7 @@ trait Blameable
   }
 
   /**
-   * Set updatedAt
+   * Set updatedAt.
    *
    * @param \DateTime $updatedAt
    *
@@ -118,7 +114,7 @@ trait Blameable
   }
 
   /**
-   * Get updatedAt
+   * Get updatedAt.
    *
    * @return \DateTime
    */
@@ -128,7 +124,7 @@ trait Blameable
   }
 
   /**
-   * Set updatedBy
+   * Set updatedBy.
    *
    * @param string $updatedBy
    *
@@ -142,7 +138,7 @@ trait Blameable
   }
 
   /**
-   * Get updatedBy
+   * Get updatedBy.
    *
    * @return string
    */

@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * Class UserBrowserState
  * Holds information about the current browser state for the user, per study area.
@@ -47,7 +46,7 @@ class UserBrowserState implements StudyAreaFilteredInterface
   private $studyArea;
 
   /**
-   * The current filter state
+   * The current filter state.
    *
    * @var array
    *
@@ -55,19 +54,13 @@ class UserBrowserState implements StudyAreaFilteredInterface
    */
   private $filterState;
 
-  /**
-   * @return User|null
-   */
+  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
   }
 
-  /**
-   * @param User|null $user
-   *
-   * @return UserBrowserState
-   */
+  /** @return UserBrowserState */
   public function setUser(?User $user): self
   {
     $this->user = $user;
@@ -75,19 +68,12 @@ class UserBrowserState implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return UserBrowserState
-   */
   public function setStudyArea(StudyArea $studyArea): UserBrowserState
   {
     $this->studyArea = $studyArea;
@@ -95,24 +81,17 @@ class UserBrowserState implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return array|null
-   */
+  /** @return array|null */
   public function getFilterState(): ?array
   {
     return $this->filterState;
   }
 
-  /**
-   * @param array|null $filterState
-   *
-   * @return UserBrowserState
-   */
+  /** @return UserBrowserState */
   public function setFilterState(?array $filterState): self
   {
     $this->filterState = $filterState;
 
     return $this;
   }
-
 }

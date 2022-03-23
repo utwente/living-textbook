@@ -14,9 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
  */
 class DenyOnFrozenStudyArea implements ConfigurationInterface
 {
-
   /**
-   * Key which is used in the request attributes array
+   * Key which is used in the request attributes array.
    *
    * @var string
    */
@@ -24,56 +23,46 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
 
   /**
    * @Required
+   *
    * @var string
    */
   public $route;
 
-  /**
-   * @var array
-   */
+  /** @var array */
   public $routeParams = [];
 
   /**
    * @Required
+   *
    * @var string
    */
   public $subject;
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getRoute(): string
   {
     return $this->route;
   }
 
-  /**
-   * @return array
-   */
+  /** @return array */
   public function getRouteParams(): array
   {
     return $this->routeParams;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getSubject(): string
   {
     return $this->subject;
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  /** {@inheritdoc} */
   public function getAliasName()
   {
     return self::KEY;
   }
 
-  /**
-   * {@inheritdoc}
-   */
+  /** {@inheritdoc} */
   public function allowArray()
   {
     return false;

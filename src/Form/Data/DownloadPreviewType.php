@@ -21,6 +21,4 @@ class DownloadPreviewType extends AbstractType
   {
     $view->vars['preview_data'] = $this->exportService->getPreviews();
   }
-
-
 }

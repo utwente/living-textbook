@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class StudyAreaGroup
 {
-
   use IdTrait;
   use Blameable;
   use SoftDeletable;
@@ -40,29 +39,19 @@ class StudyAreaGroup
     $this->studyAreas = new ArrayCollection();
   }
 
-  /**
-   * Explicit count function for faster queries
-   *
-   * @return int
-   */
+  /** Explicit count function for faster queries. */
   public function studyAreaCount(): int
   {
     return $this->studyAreas->count();
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getName(): ?string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return StudyAreaGroup
-   */
+  /** @return StudyAreaGroup */
   public function setName(string $name): self
   {
     $this->name = $name;
@@ -70,19 +59,12 @@ class StudyAreaGroup
     return $this;
   }
 
-  /**
-   * @return StudyArea[]|Collection
-   */
+  /** @return StudyArea[]|Collection */
   public function getStudyAreas()
   {
     return $this->studyAreas;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return self
-   */
   public function addStudyArea(StudyArea $studyArea): self
   {
     // Check whether the group is set, otherwise set it as this
@@ -94,15 +76,10 @@ class StudyAreaGroup
     return $this;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return self
-   */
   public function removeStudyArea(StudyArea $studyArea): self
   {
     $this->studyAreas->removeElement($studyArea);
-    $studyArea->setGroup(NULL);
+    $studyArea->setGroup(null);
 
     return $this;
   }

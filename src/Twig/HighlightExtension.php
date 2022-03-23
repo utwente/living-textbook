@@ -6,27 +6,26 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
- * Class HighlightExtension
+ * Class HighlightExtension.
  *
  * Register a filter in Twig to highlight parts of text, useful for search
  */
 class HighlightExtension extends AbstractExtension
 {
-
   /**
-   * Register filters
+   * Register filters.
    *
    * @return array|TwigFilter[]
    */
   public function getFilters()
   {
-    return array(
-        new TwigFilter('highlight', array($this, 'hilightFilter'), array('is_safe' => array('html'))),
-    );
+    return [
+        new TwigFilter('highlight', [$this, 'hilightFilter'], ['is_safe' => ['html']]),
+    ];
   }
 
   /**
-   * Filter implementation
+   * Filter implementation.
    *
    * @param $text
    * @param $search

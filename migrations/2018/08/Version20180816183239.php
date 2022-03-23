@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
@@ -38,7 +40,6 @@ final class Version20180816183239 extends AbstractMigration
   public function down(Schema $schema): void
   {
     // this down() migration is auto-generated, please modify it to your needs
-
   }
 
   public function isTransactional(): bool

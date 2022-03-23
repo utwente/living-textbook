@@ -19,7 +19,7 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Contributor
+ * Class Contributor.
  *
  * @ORM\Entity(repositoryClass="App\Repository\ContributorRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -103,9 +103,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
    */
   private $broken;
 
-  /**
-   * Contributor constructor.
-   */
+  /** Contributor constructor. */
   public function __construct()
   {
     $this->name   = '';
@@ -115,10 +113,6 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
   }
 
   /**
-   * @param PendingChange          $change
-   * @param EntityManagerInterface $em
-   * @param bool                   $ignoreEm
-   *
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
@@ -149,27 +143,19 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /**
-   * @return Concept[]|Collection
-   */
+  /** @return Concept[]|Collection */
   public function getConcepts()
   {
     return $this->concepts;
   }
 
-  /**
-   * @return string
-   */
+  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /**
-   * @param string $name
-   *
-   * @return Contributor
-   */
+  /** @return Contributor */
   public function setName(string $name): self
   {
     $this->name = trim($name);
@@ -177,19 +163,12 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
   }
 
-  /**
-   * @param string|null $description
-   *
-   * @return Contributor
-   */
   public function setDescription(?string $description): Contributor
   {
     $this->description = trim($description);
@@ -197,19 +176,12 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getUrl(): ?string
   {
     return $this->url;
   }
 
-  /**
-   * @param string|null $url
-   *
-   * @return Contributor
-   */
   public function setUrl(?string $url): Contributor
   {
     $this->url = trim($url);
@@ -217,19 +189,12 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return bool
-   */
+  /** @return bool */
   public function isBroken(): bool
   {
     return $this->broken;
   }
 
-  /**
-   * @param bool $broken
-   *
-   * @return Contributor
-   */
   public function setBroken(bool $broken): Contributor
   {
     $this->broken = $broken;
@@ -237,19 +202,12 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return string|null
-   */
+  /** @return string|null */
   public function getEmail(): ?string
   {
     return $this->email;
   }
 
-  /**
-   * @param string|null $email
-   *
-   * @return Contributor
-   */
   public function setEmail(?string $email): Contributor
   {
     $this->email = $email;
@@ -257,19 +215,12 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /**
-   * @return StudyArea|null
-   */
+  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
-  /**
-   * @param StudyArea $studyArea
-   *
-   * @return Contributor
-   */
   public function setStudyArea(StudyArea $studyArea): Contributor
   {
     $this->studyArea = $studyArea;

@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class EditStudyAreaType extends AbstractType
 {
-
   /** @var AuthorizationCheckerInterface */
   private $authorizationChecker;
 
@@ -39,24 +38,24 @@ class EditStudyAreaType extends AbstractType
   {
     $studyArea = $options['studyArea'];
     assert($studyArea instanceof StudyArea);
-    $editing = $studyArea->getId() !== NULL;
+    $editing = $studyArea->getId() !== null;
     $builder
         ->add('name', TextType::class, [
             'label'      => 'study-area.name',
             'empty_data' => '',
         ])
         ->add('accessType', ChoiceType::class, [
-            'label'                     => 'study-area.access-type',
-            'help'                      => 'study-area.access-type-change-note',
-            'choices'                   => $studyArea->getAvailableAccessTypes($this->authorizationChecker, $this->em),
-            'choice_label'              => function ($value) {
+            'label'        => 'study-area.access-type',
+            'help'         => 'study-area.access-type-change-note',
+            'choices'      => $studyArea->getAvailableAccessTypes($this->authorizationChecker, $this->em),
+            'choice_label' => function ($value) {
               return ucfirst($value);
             },
             'choice_translation_domain' => false,
             'select2'                   => true,
         ]);
 
-    if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
+    if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
       $builder
           ->add('group', EntityType::class, [
               'required'      => false,
@@ -88,7 +87,7 @@ class EditStudyAreaType extends AbstractType
             'required' => false,
         ]);
 
-    if ($this->authorizationChecker->isGranted("ROLE_SUPER_ADMIN")) {
+    if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
       $builder
           ->add('openAccess', CheckboxType::class, [
               'required' => false,
@@ -173,5 +172,4 @@ class EditStudyAreaType extends AbstractType
         ->setAllowedTypes('select_owner', 'bool')
         ->setAllowedTypes('hide_submit', 'bool');
   }
-
 }

@@ -8,7 +8,7 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
- * Class DataTableExtension
+ * Class DataTableExtension.
  *
  * This extension ensures that the correct options are loaded for
  * the DataTable extension
@@ -17,24 +17,16 @@ use Twig\TwigFunction;
  */
 class DataTableExtension extends AbstractExtension
 {
-  /**
-   * @var TranslatorInterface
-   */
+  /** @var TranslatorInterface */
   private $translator;
 
-  /**
-   * DataTableExtension constructor.
-   *
-   * @param TranslatorInterface $translator
-   */
+  /** DataTableExtension constructor. */
   public function __construct(TranslatorInterface $translator)
   {
     $this->translator = $translator;
   }
 
-  /**
-   * @return array|TwigFilter[]
-   */
+  /** @return array|TwigFilter[] */
   public function getFunctions()
   {
     return [
@@ -88,7 +80,7 @@ class DataTableExtension extends AbstractExtension
             'sInfo'           => '_START_ tot _END_ van _TOTAL_ resultaten',
             'sInfoEmpty'      => 'Geen resultaten om weer te geven',
             'sInfoFiltered'   => ' (gefilterd uit _MAX_ resultaten)',
-            'sInfoPostFix'    => NULL,
+            'sInfoPostFix'    => null,
             'sSearch'         => 'Zoeken:',
             'sEmptyTable'     => 'Geen resultaten aanwezig in de tabel',
             'sInfoThousands'  => '.',
@@ -99,7 +91,7 @@ class DataTableExtension extends AbstractExtension
                 'sNext'     => 'Volgende',
                 'sPrevious' => 'Vorige',
             ],
-            'oAria'           => [
+            'oAria' => [
                 'sSortAscending'  => ': activeer om kolom oplopend te sorteren',
                 'sSortDescending' => ': activeer om kolom aflopend te sorteren',
             ],
@@ -109,12 +101,12 @@ class DataTableExtension extends AbstractExtension
     foreach ($translations['language'] as $key => $value) {
       if (is_array($translations['language'][$key])) {
         foreach ($translations['language'][$key] as $key2 => $value2) {
-          $translations['language'][$key][$key2] = $value2 !== NULL
+          $translations['language'][$key][$key2] = $value2 !== null
               ? $this->translator->trans('datatable.' . $key . '.' . $key2)
               : '';
         }
       } else {
-        $translations['language'][$key] = $value !== NULL
+        $translations['language'][$key] = $value !== null
             ? $this->translator->trans('datatable.' . $key)
             : '';
       }

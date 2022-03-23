@@ -33,50 +33,50 @@ class FieldConfigurationType extends AbstractType
   private function conceptFields(FormBuilderInterface $builder): self
   {
     $builder
-        ->add('concept_definition_name', NULL, [
+        ->add('concept_definition_name', null, [
             'form_header' => 'concept._name',
             'label'       => 'concept.definition',
             'attr'        => [
                 'placeholder' => 'concept.definition',
             ],
         ])
-        ->add('concept_introduction_name', NULL, [
+        ->add('concept_introduction_name', null, [
             'label' => 'concept.introduction',
             'attr'  => [
                 'placeholder' => 'concept.introduction',
             ],
         ])
-        ->add('concept_synonyms_name', NULL, [
+        ->add('concept_synonyms_name', null, [
             'label' => 'concept.synonyms',
             'attr'  => [
                 'placeholder' => 'concept.synonyms',
             ],
         ])
-        ->add('concept_prior_knowledge_name', NULL, [
+        ->add('concept_prior_knowledge_name', null, [
             'label' => 'concept.prior-knowledge',
             'attr'  => [
                 'placeholder' => 'concept.prior-knowledge',
             ],
         ])
-        ->add('concept_theory_explanation_name', NULL, [
+        ->add('concept_theory_explanation_name', null, [
             'label' => 'concept.theory-explanation',
             'attr'  => [
                 'placeholder' => 'concept.theory-explanation',
             ],
         ])
-        ->add('concept_how_to_name', NULL, [
+        ->add('concept_how_to_name', null, [
             'label' => 'concept.how-to',
             'attr'  => [
                 'placeholder' => 'concept.how-to',
             ],
         ])
-        ->add('concept_examples_name', NULL, [
+        ->add('concept_examples_name', null, [
             'label' => 'concept.examples',
             'attr'  => [
                 'placeholder' => 'concept.examples',
             ],
         ])
-        ->add('concept_self_assessment_name', NULL, [
+        ->add('concept_self_assessment_name', null, [
             'label' => 'concept.self-assessment',
             'attr'  => [
                 'placeholder' => 'concept.self-assessment',
@@ -89,7 +89,7 @@ class FieldConfigurationType extends AbstractType
   private function learningOutcomeFields(FormBuilderInterface $builder): self
   {
     $builder
-        ->add('learningOutcomeObjName', NULL, [
+        ->add('learningOutcomeObjName', null, [
             'form_header' => 'learning-outcome._name',
             'label'       => 'field-configuration.obj-name',
             'help'        => 'field-configuration.obj-help',

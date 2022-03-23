@@ -17,7 +17,7 @@ class PrintedTextType extends AbstractType
     $accessMethod = $options['access_method'];
 
     $builder->addViewTransformer(new CallbackTransformer(function ($dataValue) use ($accessMethod) {
-      if ($dataValue != NULL && $accessMethod) {
+      if ($dataValue != null && $accessMethod) {
         $dataValue = $dataValue->$accessMethod();
       }
 
@@ -36,7 +36,7 @@ class PrintedTextType extends AbstractType
   {
     $resolver
         ->setDefaults([
-            'access_method' => NULL,
+            'access_method' => null,
             'disabled'      => true,
             'required'      => false,
             'text_only'     => false,
@@ -48,5 +48,4 @@ class PrintedTextType extends AbstractType
   {
     return TextType::class;
   }
-
 }
