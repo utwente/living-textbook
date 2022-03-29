@@ -41,12 +41,12 @@ In your normal console, now run:
 
 - `yarn build`
 
-Execute the following queries in the console of the db container (in `db`)
+Execute the following queries in the console of the db container (in `docker exec -it 013-living-textbook_db_1 /bin.sh` -> `mysql`)
 
-```
+```sql
 use 013-living-textbook;
 INSERT INTO user__table (given_name, last_name, full_name, display_name, username, is_oidc, is_admin, roles, password, registered_on, created_at, created_by) VALUES ('Dev', 'Loper', 'Developer', 'Developer', 'developer@localhost.nl', 0, 1, 'a:0:{}', '$argon2id$v=19$m=65536,t=4,p=1$0HoR4yJvi6fb5xFtXXH66w$yXO7fsj/I1X7/jFb0NuNuN/AkRBsiJOLmAnezAFWwCM', NOW(), NOW(), 'developer');
-INSERT INTO study_area (owner_user_id, name, created_at, access_type, track_users, open_access, analytics_dashboard_enabled, review_mode_enabled) VALUES (1, 'Development Area', NOW(), 'public', 0, 0, 0, 0);
+INSERT INTO study_area (owner_user_id, name, created_at, access_type, track_users, open_access, analytics_dashboard_enabled, review_mode_enabled, dotron) VALUES (1, 'Development Area', NOW(), 'public', 0, 0, 0, 0, 0);
 ```
 
 Open the ltb on `https://localhost:10443/` (and ignore the certificate error). You can login with a local account
