@@ -42,7 +42,7 @@
         "rollerworks/password-strength-validator": "1.7.2",
         "ryakad/pandoc-php": "1.0.0",
         "sensio/framework-extra-bundle": "6.2.6",
-        "sentry/sentry-symfony": "4.2.7",
+        "sentry/sentry-symfony": "4.2.8",
         "spatie/pdf-to-image": "2.2.0",
         "stof/doctrine-extensions-bundle": "1.7.0",
         "symfony/asset": "4.4.40",
