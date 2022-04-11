@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4961e10d97db0e1e9c8a072c53c4dd4f",
+    "content-hash": "b26798244a208b19e3363bab33c65baf",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1545,16 +1545,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "092a52b71410ac1795287bb5135704ef07d18dd0"
+                "reference": "b07e347a24e7a19a2b6462e00a6dff899e4c2dd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/092a52b71410ac1795287bb5135704ef07d18dd0",
-                "reference": "092a52b71410ac1795287bb5135704ef07d18dd0",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/b07e347a24e7a19a2b6462e00a6dff899e4c2dd2",
+                "reference": "b07e347a24e7a19a2b6462e00a6dff899e4c2dd2",
                 "shasum": ""
             },
             "require": {
@@ -1574,10 +1574,10 @@
                 "doctrine/annotations": "^1.0",
                 "doctrine/coding-standard": "^9.0",
                 "doctrine/common": "^3.0",
-                "phpstan/phpstan": "1.4.6",
+                "phpstan/phpstan": "~1.4.10 || 1.5.0",
                 "phpunit/phpunit": "^7.5.20 || ^8.5 || ^9.5",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
-                "vimeo/psalm": "4.21.0"
+                "vimeo/psalm": "4.22.0"
             },
             "type": "library",
             "autoload": {
@@ -1627,9 +1627,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/2.4.1"
+                "source": "https://github.com/doctrine/persistence/tree/2.4.2"
             },
-            "time": "2022-03-22T06:44:40+00:00"
+            "time": "2022-03-28T11:48:21+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
