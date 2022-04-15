@@ -56,7 +56,7 @@
         "symfony/expression-language": "4.4.40",
         "symfony/filesystem": "4.4.39",
         "symfony/finder": "4.4.37",
-        "symfony/flex": "2.1.6",
+        "symfony/flex": "2.1.7",
         "symfony/form": "4.4.40",
         "symfony/framework-bundle": "4.4.40",
         "symfony/http-foundation": "4.4.39",
