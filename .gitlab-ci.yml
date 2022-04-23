@@ -75,12 +75,6 @@ install-js-dependencies:
       prefix: ${CI_PROJECT_PATH_SLUG}_yarn
     paths:
       - node_modules/
-  before_script:
-    # Set yarn login credentials
-    - echo "username=${NPM_USER}" >> .npmrc
-    - echo "_password=$(echo -n ${NPM_PASS} | base64)" >> .npmrc
-    - echo "email=${NPM_EMAIL}" >> .npmrc
-    - echo "always-auth=true" >> .npmrc
   script:
     # Install the dependencies
     - yarn install
