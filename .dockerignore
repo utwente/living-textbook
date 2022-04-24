@@ -1,0 +1,24 @@
+# Files
+.editorconfig
+.gitattributes
+.gitignore
+.gitlab-ci.yml
+.gitmodules
+.gtt.yml
+.php-cs-fixer.dist.php
+.env.local
+composer.phar
+rector.php
+tslint.json
+
+# Folders
+.idea
+icinga
+node_modules
+public/build
+public/bundles
+systemd
+tests
+update
+var
+vendor

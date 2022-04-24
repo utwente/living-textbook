@@ -47,3 +47,10 @@ yarn-error.log
 
 # PHP-CS-Fixer cache
 .php-cs-fixer.cache
+
+# Docker environment
+docker-compose.prod.yml
+docker/db.env
+docker/ltb_prod.env
+docker/nginx/server.key
+docker/nginx/server.cert
