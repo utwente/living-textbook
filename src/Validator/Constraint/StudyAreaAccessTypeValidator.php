@@ -5,7 +5,7 @@ namespace App\Validator\Constraint;
 use App\Entity\StudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
@@ -15,16 +15,10 @@ use Symfony\Component\Validator\Constraints\ChoiceValidator;
  */
 class StudyAreaAccessTypeValidator extends ChoiceValidator
 {
-  /** @var AuthorizationCheckerInterface */
-  private $authorizationChecker;
-
-  /** @var EntityManagerInterface */
-  private $em;
-
-  public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em)
+  public function __construct(
+      private readonly Security $security,
+      private readonly EntityManagerInterface $em)
   {
-    $this->authorizationChecker = $authorizationChecker;
-    $this->em                   = $em;
   }
 
   /**
@@ -51,9 +45,14 @@ class StudyAreaAccessTypeValidator extends ChoiceValidator
       throw new UnexpectedTypeException($object, StudyArea::class);
     }
 
+    if ($object->getAccessType() === StudyArea::ACCESS_PRIVATE && $this->security->getToken() === null) {
+      // No token, but private is always allowed
+      return;
+    }
+
     // Forward the call to the Symfony Choice constraint validator, with the allowed values
     parent::validate($value, new Choice([
-        'choices' => $object->getAvailableAccessTypes($this->authorizationChecker, $this->em),
+        'choices' => $object->getAvailableAccessTypes($this->security, $this->em),
     ]));
   }
 }

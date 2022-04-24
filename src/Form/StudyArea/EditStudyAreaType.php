@@ -18,20 +18,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Security;
 
 class EditStudyAreaType extends AbstractType
 {
-  /** @var AuthorizationCheckerInterface */
-  private $authorizationChecker;
-
-  /** @var EntityManagerInterface */
-  private $em;
-
-  public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em)
-  {
-    $this->authorizationChecker = $authorizationChecker;
-    $this->em                   = $em;
+  public function __construct(
+      private readonly Security $security,
+      private readonly EntityManagerInterface $em
+  ) {
   }
 
   public function buildForm(FormBuilderInterface $builder, array $options)
@@ -47,7 +41,7 @@ class EditStudyAreaType extends AbstractType
         ->add('accessType', ChoiceType::class, [
             'label'        => 'study-area.access-type',
             'help'         => 'study-area.access-type-change-note',
-            'choices'      => $studyArea->getAvailableAccessTypes($this->authorizationChecker, $this->em),
+            'choices'      => $studyArea->getAvailableAccessTypes($this->security, $this->em),
             'choice_label' => function ($value) {
               return ucfirst($value);
             },
@@ -55,7 +49,7 @@ class EditStudyAreaType extends AbstractType
             'select2'                   => true,
         ]);
 
-    if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
+    if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
       $builder
           ->add('group', EntityType::class, [
               'required'      => false,
@@ -87,7 +81,7 @@ class EditStudyAreaType extends AbstractType
             'required' => false,
         ]);
 
-    if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
+    if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
       $builder
           ->add('openAccess', CheckboxType::class, [
               'required' => false,

@@ -127,17 +127,11 @@ docker-compose exec ltb bin/console cache:clear
 
 ## First account
 
-In order to authenticate yourself within the LTB, you must have created a local account. You can do so by running the
-following:
+In order to authenticate yourself within the LTB, you must have created a local account combined with an initial study
+area. You can do so by running the following:
 
 ```
-docker-compose exec ltb bin/console app:add-account
-```
-
-Secondly, there must be at least one study area available. You can create a new area with the following command:
-
-```
-docker-compose exec ltb bin/console app:add-study-area
+docker-compose exec ltb bin/console ltb:add:account --with-area
 ```
 
 Note that for both the ltb container must be up and running!

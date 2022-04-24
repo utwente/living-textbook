@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -262,9 +262,7 @@ class StudyArea
    *
    * @return string[]
    */
-  public function getAvailableAccessTypes(
-      AuthorizationCheckerInterface $authorizationChecker,
-      EntityManagerInterface $em): array
+  public function getAvailableAccessTypes(Security $security, EntityManagerInterface $em): array
   {
     // Get original field value
     $origObj   = $em->getUnitOfWork()->getOriginalEntityData($this);
@@ -272,7 +270,7 @@ class StudyArea
 
     // Get choices, remove public type when not administrator, and field has changed
     $choices = StudyArea::getAccessTypes();
-    if (!$authorizationChecker->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
+    if (!$security->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
       $choices = array_filter($choices, function ($item) {
         return $item !== StudyArea::ACCESS_PUBLIC;
       });
