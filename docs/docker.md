@@ -15,14 +15,15 @@ You will need to have a current `docker` engine installed, combined with the `do
 The LTB enforces the use of HTTPS. Therefor, you will need to have a valid key and certificate for your domain which you
 can place in `docker/nginx/server.key` and `docker/nginx/server.cert`.
 
-As alternative, you can generate a self-signed certificate:
+As alternative, you can generate a self-signed certificate by running the following command in the project root folder.
+You can just hit enter for all the fields it asks you to fill.
 
 ```
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout docker/nginx/server.key -out docker/nginx/server.cert
 ```
 
-Next, prepare the `.env` files in the docker folder. Simply copy the examples which already contain some sensible
-defaults to files without the `.dist` suffix and make sure the variables are filled. Make sure to configure the
+Next, prepare the `.env` files in the docker folder. Simply copy the example `.dist` files which already contain some sensible
+defaults to files. Remove the `.dist` suffix from the copies and make sure their variables are filled. Make sure to configure the
 following environment variables depending on your environment.
 
 #### DB env
@@ -36,17 +37,17 @@ following environment variables depending on your environment.
 
 | Env              | Description                                                     |
 |------------------|-----------------------------------------------------------------|
-| `HTTP_HOST`      | Set this to the host your will be serving the application under |
+| `HTTP_HOST`      | Set this to the host you will be serving the application under, such as `ltb.itc.utwente.nl` |
 
 #### Secrets
 
-You will need to configure the secrets accordingly. Copy the `.secrets.json.dist` to `.secrets.json` and fill in the
+You will need to configure the secrets accordingly. Make a copy of `.secrets.json.dist` called `.secrets.json` and fill in the
 values accordingly.
 
 ```json
 {
   "app": "<random generated long value used to secure the session and others>",
-  "database": "<database password as configured in db.env>",
+  "database": "<the MYSQL_PASSWORD password as configured in db.env>",
   "oidc": "OIDC client secret, if configured"
 }
 ```
@@ -54,8 +55,8 @@ values accordingly.
 ## Development
 
 The development image is a base image which does not contain the code and dependencies, making it suitable for local
-development. It will mount you local installation folder directly into the containers, so any changes made in the
-sources will directly be reflected in the container.
+development. It will mount your local installation folder directly into the containers, so any changes made in the
+sources will directly be reflected in the container, without having to build again.
 
 > Note: When using Windows as OS, make sure to clone the sources on the WSL disk you're also using docker with. If you
 > do not do this, the volume bind will be slow and most probably unworkable!
@@ -73,12 +74,12 @@ the [environment description](environment.md) to learn more.
 
 ### Development start-up
 
-1. Copy the `docker-compose.dev.yml` to `docker-compose.yml`
+1. Make a copy of `docker-compose.dev.yml` called `docker-compose.yml`
 2. Make sure the environment is configured accordingly
-3. Start the containers with `docker-compose up` and wait till it is up and running (you will see `NOTICE: ready to handle connections`)
-4. Start a new console to be able to check the logs from the docker run
+3. Start the containers by running the command `docker-compose up` in the project root folder and wait until it is up and running (you will see `NOTICE: ready to handle connections`)
+4. Start a new console if you want to use other commands on the containers, like checking the logs from the docker run. Stopping the command in the original console will shut down the containers.
 5. Setup the frontend assets: choose a method from the [frontend development docs](frontend-development.md)
-6. Open the ltb on `https://localhost:10443/` (and ignore the certificate error).
+6. Visit the ltb on `https://localhost:10443/` in your browser (and ignore the certificate error).
 
 > Note: Before you can login, you must create a local account and a study area. Check [the instructions](#first-account)
 > at the bottom of this document.
@@ -109,10 +110,10 @@ the [environment description](environment.md) to learn more.
 
 ### Production how-to
 
-1. Copy the `docker-compose.prod.yml` to `docker-compose.yml`
+1. Make a copy of `docker-compose.prod.yml` called `docker-compose.yml`
 2. Make sure the environment is configured accordingly
 3. Start with `docker-compose up -d`
-4. Open the ltb on your configured host.
+4. Visit the ltb in your browser by going to the host configured in `ltb_prod.env`.
 
 > Note: Before you can login, you must create a local account and a study area. Check [the instructions](#first-account)
 > at the bottom of this document.
@@ -128,7 +129,7 @@ docker-compose exec ltb bin/console cache:clear
 ## First account
 
 In order to authenticate yourself within the LTB, you must have created a local account combined with an initial study
-area. You can do so by running the following:
+area. You can do so by running the following in a new console in the project root folder. The default values between square brackets will be used if you hit enter without filling anything in.
 
 ```
 docker-compose exec ltb bin/console ltb:add:account --with-area

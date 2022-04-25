@@ -3,7 +3,7 @@ the [frontend development docs](frontend-development.md) for more information.
 
 ## Install dependencies
 
-Make sure to install the Node dependencies first.
+Make sure to install the Node dependencies first by running the following command in the project root folder.
 
 ```
 yarn install
@@ -18,4 +18,4 @@ We offer a couple of build methods:
 - Hot module reloading (HMR): `yarn encore dev-server --host localhost --hot --https --cert docker/nginx/server.cert --key docker/nginx/server.key`
 - Production build: `yarn build`
 
-All these will work with the docker development image.
+All these will work with the docker development image. If you are not sure use `yarn dev` for development or `yarn build` for production.
