@@ -12,6 +12,14 @@ api_study_area_single:
   requirements:
     _studyArea: \d+
 
+api_study_area_update:
+  path: /api/studyarea/{_studyArea}
+  controller: App\Api\Controller\StudyAreaController::update
+  schemes: [ https ]
+  methods: PATCH
+  requirements:
+    _studyArea: \d+
+
 api_controllers:
   type: annotation
   resource: ../../src/Api/Controller/

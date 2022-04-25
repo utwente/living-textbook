@@ -81,7 +81,10 @@ class ConceptController extends AbstractApiController
 
     $this->getHandler()->add($relationType);
 
-    return $this->createDataResponse(ConceptApiModel::fromEntity($relationType));
+    return $this->createDataResponse(
+        ConceptApiModel::fromEntity($relationType),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+    );
   }
 
   /**
@@ -105,7 +108,10 @@ class ConceptController extends AbstractApiController
 
     $this->getHandler()->update($concept);
 
-    return $this->createDataResponse(ConceptApiModel::fromEntity($concept));
+    return $this->createDataResponse(
+        ConceptApiModel::fromEntity($concept),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+    );
   }
 
   /**

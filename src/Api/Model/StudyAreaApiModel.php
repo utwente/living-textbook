@@ -12,8 +12,10 @@ class StudyAreaApiModel
 {
   protected function __construct(
       protected readonly int $id,
+      #[Groups(['Default', 'mutate'])]
       protected readonly string $name,
       #[OA\Property(nullable: true)]
+      #[Groups(['Default', 'mutate'])]
       protected readonly ?string $description,
       #[OA\Property(nullable: true)]
       protected readonly ?string $group,
@@ -21,7 +23,7 @@ class StudyAreaApiModel
       #[OA\Property(description: 'Specific Dotron configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Type('array')]
       #[Groups(['dotron'])]
-      #[Exclude(if: 'object.dotron == false')]
+      #[Exclude(if: 'object !== null && object.dotron === false')]
       protected readonly ?array $dotronConfig,
   ) {
   }
@@ -36,5 +38,13 @@ class StudyAreaApiModel
         $studyArea->isDotron(),
         $studyArea->getDotronConfig()
     );
+  }
+
+  public function mapToEntity(?StudyArea $studyArea): StudyArea
+  {
+    return ($studyArea ?? new StudyArea())
+        ->setName($this->name ?? $studyArea?->getName() ?? '')
+        ->setDescription($this->description ?? $studyArea?->getDescription() ?? '')
+        ->setDotronConfig($this->dotronConfig ?? $studyArea?->getDotronConfig());
   }
 }
