@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a757c25cdaa861bf6814daab98aaf75",
+    "content-hash": "dffcb35434dde248c740672781c2246c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1447,16 +1447,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.11.2",
+            "version": "2.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "9c351e044478135aec1755e2c0c0493a4b6309db"
+                "reference": "4af1aa317713d5f3dbc57b22237d1acb8477079c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/9c351e044478135aec1755e2c0c0493a4b6309db",
-                "reference": "9c351e044478135aec1755e2c0c0493a4b6309db",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/4af1aa317713d5f3dbc57b22237d1acb8477079c",
+                "reference": "4af1aa317713d5f3dbc57b22237d1acb8477079c",
                 "shasum": ""
             },
             "require": {
@@ -1485,7 +1485,7 @@
                 "doctrine/annotations": "^1.13",
                 "doctrine/coding-standard": "^9.0",
                 "phpbench/phpbench": "^0.16.10 || ^1.0",
-                "phpstan/phpstan": "1.4.6",
+                "phpstan/phpstan": "~1.4.10 || 1.5.0",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.4",
                 "squizlabs/php_codesniffer": "3.6.2",
                 "symfony/cache": "^4.4 || ^5.4 || ^6.0",
@@ -1539,9 +1539,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.11.2"
+                "source": "https://github.com/doctrine/orm/tree/2.11.3"
             },
-            "time": "2022-03-09T15:23:58+00:00"
+            "time": "2022-04-19T09:01:33+00:00"
         },
         {
             "name": "doctrine/persistence",
