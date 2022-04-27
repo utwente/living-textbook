@@ -1,6 +1,6 @@
 # Docker instructions
 
-We offer two docker-compose configurations: one for local development and one for production. Both images are build on
+We offer two docker-compose configurations: one for local development and one for production. Both images are built on
 the same base images which contains all required dependencies to run the whole application.
 
 ## Storage
@@ -37,7 +37,7 @@ following environment variables depending on your environment.
 
 | Env              | Description                                                     |
 |------------------|-----------------------------------------------------------------|
-| `HTTP_HOST`      | Set this to the host you will be serving the application under, such as `ltb.itc.utwente.nl` |
+| `HTTP_HOST`      | Set this to the host you will be serving the application from, such as `ltb.itc.utwente.nl` |
 
 #### Secrets
 
