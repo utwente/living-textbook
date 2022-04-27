@@ -93,7 +93,7 @@ class AddAccountCommand extends Command
           ->setFullName($user->getDisplayName());
 
       if (!$this->validateObject($user, $style)) {
-        return 2;
+        return 1; // Command::FAILURE (Symfony 5.1+)
       }
 
       $this->entityManager->persist($user);
@@ -109,7 +109,7 @@ class AddAccountCommand extends Command
             ));
 
         if (!$this->validateObject($area, $style)) {
-          return 3;
+          return 1; // Command::FAILURE (Symfony 5.1+)
         }
 
         $this->entityManager->persist($area);
@@ -125,7 +125,7 @@ class AddAccountCommand extends Command
       throw $e;
     }
 
-    return 0;
+    return 0; // Command::SUCCESS (Symfony 5.1+)
   }
 
   private function buildQuestion(string $question, string $default): Question
