@@ -29,6 +29,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       netcat \
     # Supervisor
       supervisor \
+    # rsync
+      rsync\
     # Cleanup apt
     && apt-get clean \
     && rm -rf /var/lib/apt/lists
@@ -93,6 +95,7 @@ COPY docker docker
 
 # Setup container configuration
 RUN mv docker/ltb/docker-entry.sh /opt/docker-entry.sh \
+    && chmod +x /opt/docker-entry.sh \
     && mv docker/ltb/supervisor/* /etc/supervisor/conf.d/ \
     && rm -rf docker
 
@@ -153,12 +156,6 @@ RUN mkdir -p var \
 
 # Mark as production environment
 RUN echo "APP_ENV=prod" > .env.local
-
-# Setup container configuration and clean stuff up
-RUN mv docker/ltb/docker-entry.sh /opt/docker-entry.sh \
-    && chmod +x /opt/docker-entry.sh \
-    && mv docker/ltb/supervisor/* /etc/supervisor/conf.d/ \
-    && rm -rf docker
 
 # Set entry point
 ENTRYPOINT ["/opt/docker-entry.sh"]
