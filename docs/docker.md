@@ -3,10 +3,14 @@
 We offer two docker-compose configurations: one for local development and one for production. Both images are built on
 the same base images which contains all required dependencies to run the whole application.
 
+We recommend the usage of a Linux based OS or MacOS when using docker due to volume binding limitations with Windows,
+but it is also possible to use the Windows Subsystem for Linux (WSL) if you clone the source on the WSL disk you are
+using with Docker.
+
 ## Storage
 
-The images are configured such that all state storage is permanently stored in a docker volume. This holds for both
-environment and the data is shared.
+The images are configured such that all state storage is permanently stored in a docker volume. When switching from the
+development to the production configuration (and vice-versa) the data in those volumes is being kept.
 
 ## Setup
 
@@ -22,8 +26,10 @@ You can just hit enter for all the fields it asks you to fill.
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout docker/nginx/server.key -out docker/nginx/server.cert
 ```
 
-Next, prepare the `.env` files in the docker folder. Simply copy the example `.dist` files which already contain some sensible
-defaults to files. Remove the `.dist` suffix from the copies and make sure their variables are filled. Make sure to configure the
+Next, prepare the `.env` files in the docker folder. Simply copy the example `.dist` files which already contain some
+sensible
+defaults to files. Remove the `.dist` suffix from the copies and make sure their variables are filled. Make sure to
+configure the
 following environment variables depending on your environment.
 
 #### DB env
@@ -35,13 +41,14 @@ following environment variables depending on your environment.
 
 #### LTB env (prod only)
 
-| Env              | Description                                                     |
-|------------------|-----------------------------------------------------------------|
-| `HTTP_HOST`      | Set this to the host you will be serving the application from, such as `ltb.itc.utwente.nl` |
+| Env         | Description                                                                                 |
+|-------------|---------------------------------------------------------------------------------------------|
+| `HTTP_HOST` | Set this to the host you will be serving the application from, such as `ltb.itc.utwente.nl` |
 
 #### Secrets
 
-You will need to configure the secrets accordingly. Make a copy of `.secrets.json.dist` called `.secrets.json` and fill in the
+You will need to configure the secrets accordingly. Make a copy of `.secrets.json.dist` called `.secrets.json` and fill
+in the
 values accordingly.
 
 ```json
@@ -51,6 +58,12 @@ values accordingly.
   "oidc": "OIDC client secret, if configured"
 }
 ```
+
+### Switching environments
+
+When you switch environments (development to production, or vice-versa) you should make sure to pass the `---build`
+argument the first time you build the docker image. This ensures that the image for the environment will be build
+correctly!
 
 ## Development
 
@@ -76,8 +89,10 @@ the [environment description](environment.md) to learn more.
 
 1. Make a copy of `docker-compose.dev.yml` called `docker-compose.yml`
 2. Make sure the environment is configured accordingly
-3. Start the containers by running the command `docker-compose up` in the project root folder and wait until it is up and running (you will see `NOTICE: ready to handle connections`)
-4. Start a new console if you want to use other commands on the containers, like checking the logs from the docker run. Stopping the command in the original console will shut down the containers.
+3. Start the containers by running the command `docker-compose up` in the project root folder and wait until it is up
+   and running (you will see `NOTICE: ready to handle connections`)
+4. Start a new console if you want to use other commands on the containers, like checking the logs from the docker run.
+   Stopping the command in the original console will shut down the containers.
 5. Setup the frontend assets: choose a method from the [frontend development docs](frontend-development.md)
 6. Visit the ltb on `https://localhost:10443/` in your browser (and ignore the certificate error).
 
@@ -129,7 +144,8 @@ docker-compose exec ltb bin/console cache:clear
 ## First account
 
 In order to authenticate yourself within the LTB, you must have created a local account combined with an initial study
-area. You can do so by running the following in a new console in the project root folder. The default values between square brackets will be used if you hit enter without filling anything in.
+area. You can do so by running the following in a new console in the project root folder. The default values between
+square brackets will be used if you hit enter without filling anything in.
 
 ```
 docker-compose exec ltb bin/console ltb:add:account --with-area
