@@ -62,7 +62,7 @@ values accordingly.
 ### Switching environments
 
 When you switch environments (development to production, or vice-versa) you should make sure to pass the `---build`
-argument the first time you build the docker image. This ensures that the image for the environment will be build
+argument the first time you build the docker image. This ensures that the image for the environment will be built
 correctly!
 
 ## Development
