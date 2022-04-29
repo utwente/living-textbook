@@ -52,7 +52,7 @@ install-dependencies:
       - vendor/studio-42/elfinder/sounds
   before_script:
     - cp .secrets.json.dist .secrets.json
-    - if [ "$CI_COMMIT_REF_NAME" = "master" ]; then export HTTP_HOST="${STAGING_HOST}:${STAGING_HOST_PORT}"; fi # Fix for http-host used in fos-js routing
+    - if [ "$CI_COMMIT_REF_NAME" = "master" ]; then export HTTP_HOST="${STAGING_HOST}:${STAGING_HOST_PORT}"; else export HTTP_HOST="${PRODUCTION_HOST}"; fi # Fix for http-host used in fos-js routing
     - if [ -z ${COMPOSER_USER+x} ]; then echo "COMPOSER_USER not set, skipping composer auth configuration" ; else composer config http-basic.composer.drenso.dev ${COMPOSER_USER} ${COMPOSER_PASSWORD}; fi
   script:
     - composer validate --no-check-all
