@@ -124,8 +124,8 @@ class ConceptRelationController extends AbstractApiController
       RequestStudyArea $requestStudyArea,
       Request $request,
       ConceptRelation $conceptRelation,
-      RelationTypeRepository $relationTypeRepository
-  ): JsonResponse {
+      RelationTypeRepository $relationTypeRepository): JsonResponse
+  {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
 
     $requestRelation = $this->getTypedFromBody($request, UpdateConceptRelationApiModel::class);

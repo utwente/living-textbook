@@ -217,18 +217,26 @@ class StudyArea
   /** @ORM\Column(type="array", nullable=true) */
   private ?array $dotronConfig = null;
 
+  /**
+   * @var Collection<int, StylingConfiguration>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfiguration", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private Collection $stylingConfigurations;
+
   /** StudyArea constructor. */
   public function __construct()
   {
-    $this->concepts          = new ArrayCollection();
-    $this->userGroups        = new ArrayCollection();
-    $this->relationTypes     = new ArrayCollection();
-    $this->abbreviations     = new ArrayCollection();
-    $this->externalResources = new ArrayCollection();
-    $this->contributors      = new ArrayCollection();
-    $this->learningOutcomes  = new ArrayCollection();
-    $this->learningPaths     = new ArrayCollection();
-    $this->tags              = new ArrayCollection();
+    $this->concepts              = new ArrayCollection();
+    $this->userGroups            = new ArrayCollection();
+    $this->relationTypes         = new ArrayCollection();
+    $this->abbreviations         = new ArrayCollection();
+    $this->externalResources     = new ArrayCollection();
+    $this->contributors          = new ArrayCollection();
+    $this->learningOutcomes      = new ArrayCollection();
+    $this->learningPaths         = new ArrayCollection();
+    $this->tags                  = new ArrayCollection();
+    $this->stylingConfigurations = new ArrayCollection();
   }
 
   /** @Assert\Callback() */
@@ -599,6 +607,9 @@ class StudyArea
     foreach ($this->tags as $tag) {
       $check($tag);
     }
+    foreach ($this->stylingConfigurations as $stylingConfiguration) {
+      $check($stylingConfiguration);
+    }
 
     // Return result
     return [$lastUpdated, $lastUpdatedBy];
@@ -870,5 +881,11 @@ class StudyArea
     $this->dotronConfig = $dotronConfig;
 
     return $this;
+  }
+
+  /** @return Collection<int, StylingConfiguration> */
+  public function getStylingConfigurations(): Collection
+  {
+    return $this->stylingConfigurations;
   }
 }
