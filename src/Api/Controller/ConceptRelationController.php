@@ -4,6 +4,7 @@ namespace App\Api\Controller;
 
 use App\Api\Model\Create\CreateConceptRelationApiModel;
 use App\Api\Model\Detailed\DetailedConceptRelationApiModel;
+use App\Api\Model\Update\UpdateConceptRelationApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\Entity\ConceptRelation;
 use App\EntityHandler\ConceptEntityHandler;
@@ -108,6 +109,36 @@ class ConceptRelationController extends AbstractApiController
     $this->em->flush();
 
     return $this->createDataResponse(DetailedConceptRelationApiModel::fromEntity($relation));
+  }
+
+  /**
+   * Update an existing study area concept relation.
+   *
+   * @Route("/{conceptRelation<\d+>}", methods={"PATCH"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   */
+  #[OA\RequestBody(description: 'The concept relation to update', required: true, content: [new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron'])])]
+  #[OA\Response(response: 200, description: 'The updated concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
+  #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  public function update(
+      RequestStudyArea $requestStudyArea,
+      Request $request,
+      ConceptRelation $conceptRelation,
+      RelationTypeRepository $relationTypeRepository
+  ): JsonResponse {
+    $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
+
+    $requestRelation = $this->getTypedFromBody($request, UpdateConceptRelationApiModel::class);
+
+    $relationType = $requestRelation->getRelationTypeId() ? $relationTypeRepository->findOneBy(['id' => $requestRelation->getRelationTypeId(), 'studyArea' => $requestStudyArea->getStudyArea()]) : null;
+
+    $conceptRelation = $requestRelation->mapToEntity($conceptRelation, $relationType);
+
+    $this->getHandler()->updateRelation($conceptRelation);
+
+    return $this->createDataResponse(
+        DetailedConceptRelationApiModel::fromEntity($conceptRelation),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 
   /**

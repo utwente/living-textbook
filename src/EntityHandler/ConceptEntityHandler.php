@@ -63,6 +63,12 @@ class ConceptEntityHandler extends AbstractEntityHandler
     }
   }
 
+  public function updateRelation(ConceptRelation $relation, string $snapshot = null): void
+  {
+    $this->validate($relation);
+    $this->em->flush();
+  }
+
   /** @noinspection PhpUnhandledExceptionInspection */
   public function delete(Concept $concept, LearningPathRepository $learningPathRepository): void
   {
