@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27d9e6aaccf86ea09ed2e7f6b47037f1",
+    "content-hash": "d6419187554cde1a6a55af40152b2651",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3729,16 +3729,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v4.8.2",
+            "version": "v4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "1885d25cd95810b376b670e7f5f23a33c0dda068"
+                "reference": "da02f3ad339437b939a6d309e9c98b62afe53c6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/1885d25cd95810b376b670e7f5f23a33c0dda068",
-                "reference": "1885d25cd95810b376b670e7f5f23a33c0dda068",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/da02f3ad339437b939a6d309e9c98b62afe53c6c",
+                "reference": "da02f3ad339437b939a6d309e9c98b62afe53c6c",
                 "shasum": ""
             },
             "require": {
@@ -3764,7 +3764,7 @@
                 "symfony/framework-bundle": "4.2.7"
             },
             "require-dev": {
-                "api-platform/core": "^2.4",
+                "api-platform/core": "^2.6.8",
                 "composer/package-versions-deprecated": "1.11.99.1",
                 "friendsofsymfony/rest-bundle": "^2.8|^3.0",
                 "jms/serializer": "^1.14|^3.0",
@@ -3834,9 +3834,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.8.2"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.9.0"
             },
-            "time": "2022-01-10T16:10:58+00:00"
+            "time": "2022-04-30T18:28:05+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
