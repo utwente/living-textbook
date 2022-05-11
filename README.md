@@ -1,5 +1,5 @@
 The Living Textbook project is developed and maintained by the [ITC faculty](https://www.itc.nl/) of
-the [University of Twente](https://utwente.nl). This software is published under the [GPL3](LICENSE) license.
+the [University of Twente](https://utwente.nl). This software is published under [version 3 or any later version of the GPL](LICENSE).
 
 > The documentation is currently a work in progress. More to come soon!
 
