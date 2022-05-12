@@ -19,6 +19,8 @@ services:
       HTTP_HOST: localhost
     depends_on:
       - db
+    ports:
+      - '13306:3306'
     networks:
       - ltb-network
 

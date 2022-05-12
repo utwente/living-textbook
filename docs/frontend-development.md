@@ -11,7 +11,7 @@ yarn install
 
 ## Builds
 
-We offer a couple of build methods:
+We offer a couple of build methods. You may need to run the back end at least once if you get a compile error.
 
 - Development build: `yarn dev`
 - Automatic watch (requires refresh on changes): `yarn watch`
