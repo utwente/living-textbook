@@ -19,8 +19,6 @@ services:
       HTTP_HOST: localhost
     depends_on:
       - db
-    ports:
-      - '13306:3306'
     networks:
       - ltb-network
 
@@ -50,6 +48,8 @@ services:
       - docker/db.env
     volumes:
       - 'ltb-database:/var/lib/mysql'
+    ports:
+      - '13306:3306'
     networks:
       - ltb-network
 
