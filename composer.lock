@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b455e115fee96251b3b38a321441452",
+    "content-hash": "fe0f57dbd85095445ff3b485ab8d3974",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11751,16 +11751,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.3.0",
+            "version": "4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "24b23371ee962ac201fac33292034ae099c8d4a0"
+                "reference": "1653b53eb3973a9a6dac87ef8f2676801b14469f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/24b23371ee962ac201fac33292034ae099c8d4a0",
-                "reference": "24b23371ee962ac201fac33292034ae099c8d4a0",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/1653b53eb3973a9a6dac87ef8f2676801b14469f",
+                "reference": "1653b53eb3973a9a6dac87ef8f2676801b14469f",
                 "shasum": ""
             },
             "require": {
@@ -11774,7 +11774,9 @@
             "require-dev": {
                 "composer/package-versions-deprecated": "^1.11",
                 "friendsofphp/php-cs-fixer": "^2.17 || ^3.0",
-                "phpunit/phpunit": ">=8"
+                "phpstan/phpstan": "^1.6",
+                "phpunit/phpunit": ">=8",
+                "vimeo/psalm": "^4.23"
             },
             "bin": [
                 "bin/openapi"
@@ -11820,9 +11822,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.3.0"
+                "source": "https://github.com/zircote/swagger-php/tree/4.4.2"
             },
-            "time": "2022-04-17T01:42:30+00:00"
+            "time": "2022-05-13T23:51:07+00:00"
         }
     ],
     "packages-dev": [
