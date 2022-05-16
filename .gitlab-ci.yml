@@ -293,6 +293,7 @@ yaml-analysis:
 yarn-audit:
   stage: lint
   image: "node:${NODE_VERSION}"
+  needs: []
   interruptible: true
   script:
     - yarn global add improved-yarn-audit
