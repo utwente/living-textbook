@@ -38,7 +38,7 @@ services:
       - ltb-network
 
   db:
-    image: mariadb:10.8.2
+    image: mariadb:10.8.3
     command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
     restart: always
     environment:
