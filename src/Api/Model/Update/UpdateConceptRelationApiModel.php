@@ -25,6 +25,11 @@ class UpdateConceptRelationApiModel extends ConceptRelationApiModel
     parent::__construct($id, $sourceId, $targetId);
   }
 
+  public function getId(): int
+  {
+    return $this->id;
+  }
+
   public function getRelationTypeId(): ?int
   {
     return $this->relationTypeId ?? null;

@@ -12,6 +12,7 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -138,6 +139,57 @@ class ConceptRelationController extends AbstractApiController
 
     return $this->createDataResponse(
         DetailedConceptRelationApiModel::fromEntity($conceptRelation),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
+  }
+
+  /**
+   * Update a batch of existing study area concept relations.
+   *
+   * @Route("/batch", methods={"PATCH"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   */
+  #[OA\RequestBody(description: 'The concept relations to update', required: true, content: [
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron']))),
+    ])]
+  #[OA\Response(response: 200, description: 'The updated concept relations', content: [
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
+    ])]
+  #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  public function batchUpdate(
+      RequestStudyArea $requestStudyArea,
+      Request $request,
+      ConceptRelationRepository $relationRepository,
+      RelationTypeRepository $relationTypeRepository
+  ): JsonResponse {
+    $requestRelations = $this->getArrayFromBody($request, UpdateConceptRelationApiModel::class);
+
+    $conceptRelations = [];
+
+    $this->em->beginTransaction();
+
+    try {
+      foreach ($requestRelations as $requestRelation) {
+        $conceptRelation = $relationRepository->find($requestRelation->getId());
+
+        $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
+
+        $relationType = $requestRelation->getRelationTypeId() ? $relationTypeRepository->findOneBy(['id' => $requestRelation->getRelationTypeId(), 'studyArea' => $requestStudyArea->getStudyArea()]) : null;
+
+        $conceptRelation = $requestRelation->mapToEntity($conceptRelation, $relationType);
+
+        $this->getHandler()->updateRelation($conceptRelation);
+
+        $conceptRelations[] = $conceptRelation;
+      }
+
+      $this->em->commit();
+    } catch (Exception $e) {
+      $this->em->rollback();
+      throw $e;
+    }
+
+    return $this->createDataResponse(
+        array_map(fn ($conceptRelation) => DetailedConceptRelationApiModel::fromEntity($conceptRelation), $conceptRelations),
         serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 
