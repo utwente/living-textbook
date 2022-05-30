@@ -91,6 +91,19 @@ abstract class AbstractApiController extends AbstractController
     return $this->getUntypedFromBody($request, $class);
   }
 
+  /*
+  * Retrieve the array data from the request body.
+  *
+  * @template T
+  * @param class-string<T> $type
+  *
+  * @return T[] The requested type
+  */
+  protected function getArrayFromBody(Request $request, string $type): array
+  {
+    return $this->getUntypedFromBody($request, 'array<' . $type . '>');
+  }
+
   /** Retrieve the untyped data from the request body. */
   protected function getUntypedFromBody(Request $request, string $type): mixed
   {

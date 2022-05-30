@@ -11,6 +11,7 @@ use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -110,6 +111,55 @@ class ConceptController extends AbstractApiController
 
     return $this->createDataResponse(
         ConceptApiModel::fromEntity($concept),
+        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+    );
+  }
+
+  /**
+   * Update a batch of existing study area concepts.
+   *
+   * @Route("/batch", methods={"PATCH"})
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   */
+  #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron']))),
+    ])]
+  #[OA\Response(response: 200, description: 'The updated concepts', content: [
+      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
+    ])]
+  #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  public function batchUpdate(
+      RequestStudyArea $requestStudyArea,
+      Request $request,
+      ConceptRepository $conceptRepository
+  ): JsonResponse {
+    $requestConcepts = $this->getArrayFromBody($request, ConceptApiModel::class);
+
+    $concepts = [];
+
+    $this->em->beginTransaction();
+
+    try {
+      foreach ($requestConcepts as $requestConcept) {
+        $concept = $conceptRepository->find($requestConcept->getId());
+
+        $this->assertStudyAreaObject($requestStudyArea, $concept);
+
+        $concept = $requestConcept->mapToEntity($concept);
+
+        $this->getHandler()->update($concept);
+
+        $concepts[] = $concept;
+      }
+
+      $this->em->commit();
+    } catch (Exception $e) {
+      $this->em->rollback();
+      throw $e;
+    }
+
+    return $this->createDataResponse(
+        array_map(fn ($concept) => ConceptApiModel::fromEntity($concept), $concepts),
         serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }

@@ -31,6 +31,11 @@ class ConceptApiModel
   ) {
   }
 
+  public function getId(): int
+  {
+    return $this->id;
+  }
+
   public static function fromEntity(Concept $concept): self
   {
     return new self(
