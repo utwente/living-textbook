@@ -127,15 +127,14 @@ class ConceptRelationController extends AbstractApiController
       ConceptRelation $conceptRelation,
       RelationTypeRepository $relationTypeRepository): JsonResponse
   {
-    $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
-
     $requestRelation = $this->getTypedFromBody($request, UpdateConceptRelationApiModel::class);
 
-    $relationType = $requestRelation->getRelationTypeId() ? $relationTypeRepository->findOneBy(['id' => $requestRelation->getRelationTypeId(), 'studyArea' => $requestStudyArea->getStudyArea()]) : null;
-
-    $conceptRelation = $requestRelation->mapToEntity($conceptRelation, $relationType);
-
-    $this->getHandler()->updateRelation($conceptRelation);
+    $conceptRelation = $this->updateRelation(
+        $requestStudyArea,
+        $conceptRelation,
+        $requestRelation,
+        $relationTypeRepository
+    );
 
     return $this->createDataResponse(
         DetailedConceptRelationApiModel::fromEntity($conceptRelation),
@@ -163,24 +162,15 @@ class ConceptRelationController extends AbstractApiController
   ): JsonResponse {
     $requestRelations = $this->getArrayFromBody($request, UpdateConceptRelationApiModel::class);
 
-    $conceptRelations = [];
-
     $this->em->beginTransaction();
 
     try {
-      foreach ($requestRelations as $requestRelation) {
-        $conceptRelation = $relationRepository->find($requestRelation->getId());
-
-        $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
-
-        $relationType = $requestRelation->getRelationTypeId() ? $relationTypeRepository->findOneBy(['id' => $requestRelation->getRelationTypeId(), 'studyArea' => $requestStudyArea->getStudyArea()]) : null;
-
-        $conceptRelation = $requestRelation->mapToEntity($conceptRelation, $relationType);
-
-        $this->getHandler()->updateRelation($conceptRelation);
-
-        $conceptRelations[] = $conceptRelation;
-      }
+      $conceptRelations = array_map(fn ($requestRelation) => $this->updateRelation(
+          $requestStudyArea,
+          $relationRepository->find($requestRelation->getId()),
+          $requestRelation,
+          $relationTypeRepository
+      ), $requestRelations);
 
       $this->em->commit();
     } catch (Exception $e) {
@@ -212,5 +202,22 @@ class ConceptRelationController extends AbstractApiController
   private function getHandler(): ConceptEntityHandler
   {
     return new ConceptEntityHandler($this->em, $this->validator, null);
+  }
+
+  private function updateRelation(
+      RequestStudyArea $requestStudyArea,
+      ConceptRelation $conceptRelation,
+      UpdateConceptRelationApiModel $requestRelation,
+      RelationTypeRepository $relationTypeRepository
+  ): ConceptRelation {
+    $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
+
+    $relationType = $requestRelation->getRelationTypeId() ? $relationTypeRepository->findOneBy(['id' => $requestRelation->getRelationTypeId(), 'studyArea' => $requestStudyArea->getStudyArea()]) : null;
+
+    $conceptRelation = $requestRelation->mapToEntity($conceptRelation, $relationType);
+
+    $this->getHandler()->updateRelation($conceptRelation);
+
+    return $conceptRelation;
   }
 }

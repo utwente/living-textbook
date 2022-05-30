@@ -102,12 +102,13 @@ class ConceptController extends AbstractApiController
       Concept $concept,
       Request $request
   ): JsonResponse {
-    $this->assertStudyAreaObject($requestStudyArea, $concept);
+    $requestConcept = $this->getTypedFromBody($request, ConceptApiModel::class);
 
-    $concept = $this->getTypedFromBody($request, ConceptApiModel::class)
-        ->mapToEntity($concept);
-
-    $this->getHandler()->update($concept);
+    $concept = $this->updateConcept(
+        $requestStudyArea,
+        $concept,
+        $requestConcept
+    );
 
     return $this->createDataResponse(
         ConceptApiModel::fromEntity($concept),
@@ -135,22 +136,14 @@ class ConceptController extends AbstractApiController
   ): JsonResponse {
     $requestConcepts = $this->getArrayFromBody($request, ConceptApiModel::class);
 
-    $concepts = [];
-
     $this->em->beginTransaction();
 
     try {
-      foreach ($requestConcepts as $requestConcept) {
-        $concept = $conceptRepository->find($requestConcept->getId());
-
-        $this->assertStudyAreaObject($requestStudyArea, $concept);
-
-        $concept = $requestConcept->mapToEntity($concept);
-
-        $this->getHandler()->update($concept);
-
-        $concepts[] = $concept;
-      }
+      $concepts = array_map(fn ($requestConcept) => $this->updateConcept(
+          $requestStudyArea,
+          $conceptRepository->find($requestConcept->getId()),
+          $requestConcept
+      ), $requestConcepts);
 
       $this->em->commit();
     } catch (Exception $e) {
@@ -270,5 +263,16 @@ class ConceptController extends AbstractApiController
   private function getHandler(): ConceptEntityHandler
   {
     return new ConceptEntityHandler($this->em, $this->validator, null);
+  }
+
+  private function updateConcept(RequestStudyArea $requestStudyArea, Concept $concept, ConceptApiModel $requestConcept): Concept
+  {
+    $this->assertStudyAreaObject($requestStudyArea, $concept);
+
+    $concept = $requestConcept->mapToEntity($concept);
+
+    $this->getHandler()->update($concept);
+
+    return $concept;
   }
 }
