@@ -19,7 +19,8 @@ class JsonUploadType extends AbstractType
             'constraints' => [
                 new NotNull(),
                 new File([
-                    'mimeTypes' => ['application/json', 'text/plain'],
+                    // Allow text/html as the imported file can be detected wrongly
+                    'mimeTypes' => ['application/json', 'text/plain', 'text/html'],
                 ]),
             ],
         ])

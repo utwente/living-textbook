@@ -124,205 +124,214 @@ class DataController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      // Handle new upload
-      $data = $form->getData();
+      try {
+        // Handle new upload
+        $json = $form->getData()['json'];
 
-      // Check file format, then load json data
-      if ($data['json'] instanceof UploadedFile) {
-        try {
-          // Expand default time limit for large imports
-          set_time_limit(600); // 10 minutes
-
-          try {
-            $contents = mb_convert_encoding(file_get_contents($data['json']->getPathname()), 'UTF-8', 'UTF-8');
-            $jsonData = $serializer->deserialize($contents, 'array', 'json');
-          } catch (\Exception $e) {
-            throw new DataImportException('Deserialization error, did you upload a valid JSON file?', 0, $e);
-          }
-
-          // Check fields
-          if (!array_key_exists('nodes', $jsonData) || !is_array($jsonData['nodes']) ||
-              !array_key_exists('links', $jsonData) || !is_array($jsonData['links'])
-          ) {
-            throw new DataImportException('Expected "nodes" and "links" properties to be an array!');
-          }
-
-          // Resolve the link types
-          $linkTypes = [];
-          foreach ($jsonData['links'] as $jsonLink) {
-            if (!array_key_exists('relationName', $jsonLink)) {
-              throw new DataImportException(
-                  sprintf('Missing required "relationName" property on link: %s', json_encode($jsonLink)));
-            }
-
-            // Check whether already cached
-            $linkName = $jsonLink['relationName'];
-            if (!array_key_exists($linkName, $linkTypes)) {
-              // Retrieve from database
-              $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $studyArea]);
-              if ($linkType) {
-                $linkTypes[$linkName] = $linkType;
-              } else {
-                // Create new link type
-                $linkTypes[$linkName] = (new RelationType())->setStudyArea($studyArea)->setName($linkName);
-                if ($validator->validate($linkTypes[$linkName])->count() > 0) {
-                  throw new DataImportException(
-                      sprintf('Could not create the relation type: %s', json_encode($jsonLink)));
-                }
-                $em->persist($linkTypes[$linkName]);
-              }
-            }
-          }
-          $em->flush();
-
-          // Create a new concept for every entry
-          /** @var Concept[] $concepts */
-          $concepts = [];
-          foreach ($jsonData['nodes'] as $key => $jsonNode) {
-            if (!array_key_exists('label', $jsonNode) || $jsonNode['label'] === null) {
-              throw new DataImportException(
-                  sprintf('Missing required "label" property on node: %s', json_encode($jsonNode)));
-            }
-
-            $concepts[$key] = (new Concept())->setName($jsonNode['label']);
-            if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== null) {
-              $concepts[$key]->setDefinition($jsonNode['definition']);
-            }
-            $concepts[$key]->setStudyArea($studyArea);
-            if ($validator->validate($concepts[$key])->count() > 0) {
-              throw new DataImportException(
-                  sprintf('Could not create the concept: %s', json_encode($jsonNode)));
-            }
-            $em->persist($concepts[$key]);
-          }
-
-          // Create the links
-          foreach ($jsonData['links'] as $jsonLink) {
-            if (!array_key_exists('target', $jsonLink) ||
-                !array_key_exists('relationName', $jsonLink) ||
-                !array_key_exists('source', $jsonLink)) {
-              throw new DataImportException(
-                  sprintf('Missing one ore more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
-            }
-
-            if (!array_key_exists($jsonLink['source'], $concepts)) {
-              throw new DataImportException(
-                  sprintf('Link references non-existing source node: %s', json_encode($jsonLink)));
-            }
-            if (!array_key_exists($jsonLink['target'], $concepts)) {
-              throw new DataImportException(
-                  sprintf('Link references non-existing target node: %s', json_encode($jsonLink)));
-            }
-
-            $relation = new ConceptRelation();
-            $relation->setTarget($concepts[$jsonLink['target']]);
-            $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
-            $concepts[$jsonLink['source']]->addOutgoingRelation($relation);
-            if ($validator->validate($relation)->count() > 0) {
-              throw new DataImportException(
-                  sprintf('Could not create the concept relation: %s', json_encode($jsonLink)));
-            }
-          }
-
-          if (array_key_exists('learning_outcomes', $jsonData)) {
-            if (!is_array($jsonData['learning_outcomes'])) {
-              throw new DataImportException(sprintf('When set, the "learning_outcomes" property must be an array!'));
-            }
-
-            $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
-            foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
-              if (!array_key_exists('label', $jsonLearningOutcome) ||
-                  !array_key_exists('definition', $jsonLearningOutcome) ||
-                  !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome)) {
-                throw new DataImportException(
-                    sprintf('Missing one ore more required properties "label", "definition" or "isLearningOutcomeOf" from learning outcome: %s', json_encode($jsonLearningOutcome)));
-              }
-
-              if (!is_array($jsonLearningOutcome['isLearningOutcomeOf'])) {
-                throw new DataImportException(
-                    sprintf('The "isLearningOutcomeOf" property must be an array in learning outcome: %s', json_encode($jsonLearningOutcome)));
-              }
-
-              $learningOutcome = new LearningOutcome();
-              /* @phan-suppress-next-line PhanTypeMismatchArgument */
-              $learningOutcome->setName($jsonLearningOutcome['label']);
-              /* @phan-suppress-next-line PhanTypeMismatchArgument */
-              $learningOutcome->setText($jsonLearningOutcome['definition']);
-              $learningOutcome->setNumber($learningOutcomeNumber);
-              $learningOutcome->setStudyArea($studyArea);
-              foreach ($jsonLearningOutcome['isLearningOutcomeOf'] as $linkedConceptKey) {
-                if (!array_key_exists($linkedConceptKey, $concepts)) {
-                  throw new DataImportException(
-                      sprintf('The referenced node %d does not exist in learning outcome: %s', $linkedConceptKey, json_encode($jsonLearningOutcome)));
-                }
-
-                $concepts[$linkedConceptKey]->addLearningOutcome($learningOutcome);
-              }
-              if ($validator->validate($learningOutcome)->count() > 0) {
-                throw new DataImportException(
-                    sprintf('Could not create the concept learning outcome: %s', json_encode($jsonLearningOutcome)));
-              }
-              $em->persist($learningOutcome);
-              $learningOutcomeNumber++;
-            }
-          }
-
-          if (array_key_exists('external_resources', $jsonData)) {
-            if (!is_array($jsonData['external_resources'])) {
-              throw new DataImportException(sprintf('When set, the "external_resources" property must be an array!'));
-            }
-
-            foreach ($jsonData['external_resources'] as $jsonExternalResource) {
-              if (!array_key_exists('name', $jsonExternalResource) ||
-                  !array_key_exists('isExternalResourceOf', $jsonExternalResource)) {
-                throw new DataImportException(
-                    sprintf('Missing one ore more required properties "name" or "isExternalResourceOf" from external resource: %s', json_encode($jsonExternalResource)));
-              }
-
-              if (!is_array($jsonExternalResource['isExternalResourceOf'])) {
-                throw new DataImportException(
-                    sprintf('The "isExternalResourceOf" property must be an array in external resource: %s', json_encode($jsonExternalResource)));
-              }
-
-              // Create the external resource
-              $externalResource = (new ExternalResource())
-                  /* @phan-suppress-next-line PhanTypeMismatchArgument */
-                  ->setTitle($jsonExternalResource['name'])
-                  ->setStudyArea($studyArea);
-              if (array_key_exists('description', $jsonExternalResource)) {
-                $externalResource->setDescription($jsonExternalResource['description']);
-              }
-              if (array_key_exists('url', $jsonExternalResource)) {
-                $externalResource->setUrl($jsonExternalResource['url']);
-              }
-
-              // Map to related concepts
-              foreach ($jsonExternalResource['isExternalResourceOf'] as $linkedConceptKey) {
-                if (!array_key_exists($linkedConceptKey, $concepts)) {
-                  throw new DataImportException(
-                      sprintf('The referenced node %d does not exist in external resource: %s', $linkedConceptKey, json_encode($jsonExternalResource)));
-                }
-
-                $concepts[$linkedConceptKey]->addExternalResource($externalResource);
-              }
-
-              // Validate & persist
-              if ($validator->validate($externalResource)->count() > 0) {
-                throw new DataImportException(
-                    sprintf('Could not create the external resource: %s', json_encode($jsonExternalResource)));
-              }
-              $em->persist($externalResource);
-            }
-          }
-
-          // Save the data
-          $em->flush();
-          $this->addFlash('success', $translator->trans('data.json-uploaded'));
-          $this->redirectToRoute('app_data_upload');
-        } catch (DataImportException $e) {
-          $this->addFlash('error', $translator->trans('data.json-incorrect', ['%message%' => $e->getMessage()]));
+        // Check file format
+        if (!($json instanceof UploadedFile)) {
+          throw new DataImportException('File upload failed');
         }
+
+        // Expand default time limit for large imports
+        set_time_limit(600); // 10 minutes
+
+        try {
+          $contents = mb_convert_encoding(file_get_contents($json->getPathname()), 'UTF-8', 'UTF-8');
+
+          // Extra json check as we now allow text/html uploads
+          if (!$this->couldBeJson($contents)) {
+            throw new DataImportException('Invalid JSON contents detected');
+          }
+
+          $jsonData = $serializer->deserialize($contents, 'array', 'json');
+        } catch (\Exception $e) {
+          throw new DataImportException('Deserialization error, did you upload a valid JSON file?', 0, $e);
+        }
+
+        // Check fields
+        if (!array_key_exists('nodes', $jsonData) || !is_array($jsonData['nodes']) ||
+            !array_key_exists('links', $jsonData) || !is_array($jsonData['links'])
+        ) {
+          throw new DataImportException('Expected "nodes" and "links" properties to be an array!');
+        }
+
+        // Resolve the link types
+        $linkTypes = [];
+        foreach ($jsonData['links'] as $jsonLink) {
+          if (!array_key_exists('relationName', $jsonLink)) {
+            throw new DataImportException(
+                sprintf('Missing required "relationName" property on link: %s', json_encode($jsonLink)));
+          }
+
+          // Check whether already cached
+          $linkName = $jsonLink['relationName'];
+          if (!array_key_exists($linkName, $linkTypes)) {
+            // Retrieve from database
+            $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $studyArea]);
+            if ($linkType) {
+              $linkTypes[$linkName] = $linkType;
+            } else {
+              // Create new link type
+              $linkTypes[$linkName] = (new RelationType())->setStudyArea($studyArea)->setName($linkName);
+              if ($validator->validate($linkTypes[$linkName])->count() > 0) {
+                throw new DataImportException(
+                    sprintf('Could not create the relation type: %s', json_encode($jsonLink)));
+              }
+              $em->persist($linkTypes[$linkName]);
+            }
+          }
+        }
+        $em->flush();
+
+        // Create a new concept for every entry
+        /** @var Concept[] $concepts */
+        $concepts = [];
+        foreach ($jsonData['nodes'] as $key => $jsonNode) {
+          if (!array_key_exists('label', $jsonNode) || $jsonNode['label'] === null) {
+            throw new DataImportException(
+                sprintf('Missing required "label" property on node: %s', json_encode($jsonNode)));
+          }
+
+          $concepts[$key] = (new Concept())->setName($jsonNode['label']);
+          if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== null) {
+            $concepts[$key]->setDefinition($jsonNode['definition']);
+          }
+          $concepts[$key]->setStudyArea($studyArea);
+          if ($validator->validate($concepts[$key])->count() > 0) {
+            throw new DataImportException(
+                sprintf('Could not create the concept: %s', json_encode($jsonNode)));
+          }
+          $em->persist($concepts[$key]);
+        }
+
+        // Create the links
+        foreach ($jsonData['links'] as $jsonLink) {
+          if (!array_key_exists('target', $jsonLink) ||
+              !array_key_exists('relationName', $jsonLink) ||
+              !array_key_exists('source', $jsonLink)) {
+            throw new DataImportException(
+                sprintf('Missing one ore more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
+          }
+
+          if (!array_key_exists($jsonLink['source'], $concepts)) {
+            throw new DataImportException(
+                sprintf('Link references non-existing source node: %s', json_encode($jsonLink)));
+          }
+          if (!array_key_exists($jsonLink['target'], $concepts)) {
+            throw new DataImportException(
+                sprintf('Link references non-existing target node: %s', json_encode($jsonLink)));
+          }
+
+          $relation = new ConceptRelation();
+          $relation->setTarget($concepts[$jsonLink['target']]);
+          $relation->setRelationType($linkTypes[$jsonLink['relationName']]);
+          $concepts[$jsonLink['source']]->addOutgoingRelation($relation);
+          if ($validator->validate($relation)->count() > 0) {
+            throw new DataImportException(
+                sprintf('Could not create the concept relation: %s', json_encode($jsonLink)));
+          }
+        }
+
+        if (array_key_exists('learning_outcomes', $jsonData)) {
+          if (!is_array($jsonData['learning_outcomes'])) {
+            throw new DataImportException(sprintf('When set, the "learning_outcomes" property must be an array!'));
+          }
+
+          $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
+          foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
+            if (!array_key_exists('label', $jsonLearningOutcome) ||
+                !array_key_exists('definition', $jsonLearningOutcome) ||
+                !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome)) {
+              throw new DataImportException(
+                  sprintf('Missing one ore more required properties "label", "definition" or "isLearningOutcomeOf" from learning outcome: %s', json_encode($jsonLearningOutcome)));
+            }
+
+            if (!is_array($jsonLearningOutcome['isLearningOutcomeOf'])) {
+              throw new DataImportException(
+                  sprintf('The "isLearningOutcomeOf" property must be an array in learning outcome: %s', json_encode($jsonLearningOutcome)));
+            }
+
+            $learningOutcome = new LearningOutcome();
+            /* @phan-suppress-next-line PhanTypeMismatchArgument */
+            $learningOutcome->setName($jsonLearningOutcome['label']);
+            /* @phan-suppress-next-line PhanTypeMismatchArgument */
+            $learningOutcome->setText($jsonLearningOutcome['definition']);
+            $learningOutcome->setNumber($learningOutcomeNumber);
+            $learningOutcome->setStudyArea($studyArea);
+            foreach ($jsonLearningOutcome['isLearningOutcomeOf'] as $linkedConceptKey) {
+              if (!array_key_exists($linkedConceptKey, $concepts)) {
+                throw new DataImportException(
+                    sprintf('The referenced node %d does not exist in learning outcome: %s', $linkedConceptKey, json_encode($jsonLearningOutcome)));
+              }
+
+              $concepts[$linkedConceptKey]->addLearningOutcome($learningOutcome);
+            }
+            if ($validator->validate($learningOutcome)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept learning outcome: %s', json_encode($jsonLearningOutcome)));
+            }
+            $em->persist($learningOutcome);
+            $learningOutcomeNumber++;
+          }
+        }
+
+        if (array_key_exists('external_resources', $jsonData)) {
+          if (!is_array($jsonData['external_resources'])) {
+            throw new DataImportException(sprintf('When set, the "external_resources" property must be an array!'));
+          }
+
+          foreach ($jsonData['external_resources'] as $jsonExternalResource) {
+            if (!array_key_exists('name', $jsonExternalResource) ||
+                !array_key_exists('isExternalResourceOf', $jsonExternalResource)) {
+              throw new DataImportException(
+                  sprintf('Missing one ore more required properties "name" or "isExternalResourceOf" from external resource: %s', json_encode($jsonExternalResource)));
+            }
+
+            if (!is_array($jsonExternalResource['isExternalResourceOf'])) {
+              throw new DataImportException(
+                  sprintf('The "isExternalResourceOf" property must be an array in external resource: %s', json_encode($jsonExternalResource)));
+            }
+
+            // Create the external resource
+            $externalResource = (new ExternalResource())
+                /* @phan-suppress-next-line PhanTypeMismatchArgument */
+                ->setTitle($jsonExternalResource['name'])
+                ->setStudyArea($studyArea);
+            if (array_key_exists('description', $jsonExternalResource)) {
+              $externalResource->setDescription($jsonExternalResource['description']);
+            }
+            if (array_key_exists('url', $jsonExternalResource)) {
+              $externalResource->setUrl($jsonExternalResource['url']);
+            }
+
+            // Map to related concepts
+            foreach ($jsonExternalResource['isExternalResourceOf'] as $linkedConceptKey) {
+              if (!array_key_exists($linkedConceptKey, $concepts)) {
+                throw new DataImportException(
+                    sprintf('The referenced node %d does not exist in external resource: %s', $linkedConceptKey, json_encode($jsonExternalResource)));
+              }
+
+              $concepts[$linkedConceptKey]->addExternalResource($externalResource);
+            }
+
+            // Validate & persist
+            if ($validator->validate($externalResource)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the external resource: %s', json_encode($jsonExternalResource)));
+            }
+            $em->persist($externalResource);
+          }
+        }
+
+        // Save the data
+        $em->flush();
+        $this->addFlash('success', $translator->trans('data.json-uploaded'));
+        $this->redirectToRoute('app_data_upload');
+      } catch (DataImportException $e) {
+        $this->addFlash('error', $translator->trans('data.json-incorrect', ['%message%' => $e->getMessage()]));
       }
+
     }
 
     return [
@@ -424,5 +433,56 @@ class DataController extends AbstractController
         'form'      => $form->createView(),
         'studyArea' => $studyAreaToDuplicate,
     ];
+  }
+
+  /* Based on https://stackoverflow.com/a/45241792/1439286 */
+  private function couldBeJson(mixed $value): bool
+  {
+    // Numeric strings are always valid JSON.
+    if (is_numeric($value)) {
+      return true;
+    }
+
+    // A non-string value can never be a JSON string.
+    if (!is_string($value)) {
+      return false;
+    }
+
+    // Any non-numeric JSON string must be longer than 2 characters.
+    if (strlen($value) < 2) {
+      return false;
+    }
+
+    // "null" is valid JSON string.
+    if ('null' === $value) {
+      return true;
+    }
+
+    // "true" and "false" are valid JSON strings.
+    if ('true' === $value) {
+      return true;
+    }
+    if ('false' === $value) {
+      return false;
+    }
+
+    // Any other JSON string has to be wrapped in {}, [] or "".
+    if ('{' != $value[0] && '[' != $value[0] && '"' != $value[0]) {
+      return false;
+    }
+
+    // Verify that the trailing character matches the first character.
+    $last_char = $value[strlen($value) - 1];
+    if ('{' == $value[0] && '}' != $last_char) {
+      return false;
+    }
+    if ('[' == $value[0] && ']' != $last_char) {
+      return false;
+    }
+    if ('"' == $value[0] && '"' != $last_char) {
+      return false;
+    }
+
+    return true;
   }
 }
