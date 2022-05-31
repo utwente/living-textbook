@@ -331,7 +331,6 @@ class DataController extends AbstractController
       } catch (DataImportException $e) {
         $this->addFlash('error', $translator->trans('data.json-incorrect', ['%message%' => $e->getMessage()]));
       }
-
     }
 
     return [
