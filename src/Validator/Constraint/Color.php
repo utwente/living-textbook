@@ -12,7 +12,7 @@ class Color extends Regex
   public function __construct($options = null)
   {
     $this->message = 'color.invalid';
-    $this->pattern = '/^#([0-9A-F]{3}){1,2}$/';
+    $this->pattern = '/^#([0-9A-F]{3}){1,2}$/i';
 
     parent::__construct($options);
   }
