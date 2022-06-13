@@ -16,10 +16,16 @@ class TagRepository extends ServiceEntityRepository
   }
 
   /** @return Tag[] */
-  public function findForStudyArea(StudyArea $studyArea)
+  public function findForStudyArea(StudyArea $studyArea, array $ids = null): array
   {
-    return $this->findForStudyAreaQb($studyArea)
-        ->getQuery()->getResult();
+    $qb = $this->findForStudyAreaQb($studyArea);
+
+    if ($ids !== null) {
+      $qb->andWhere($qb->expr()->in('t.id', ':ids'))
+          ->setParameter('ids', $ids);
+    }
+
+    return $qb->getQuery()->getResult();
   }
 
   /**

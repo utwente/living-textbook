@@ -21,6 +21,8 @@ class ConceptApiModel
       #[Groups(['Default', 'mutate'])]
       protected readonly string $synonyms,
       #[OA\Property(description: 'Tag id list', type: 'array', items: new OA\Items(type: 'number'))]
+      #[Type('array')]
+      #[Groups(['Default', 'mutate'])]
       protected readonly array $tags,
       #[OA\Property(type: 'array', items: new OA\Items(new Model(type: ConceptRelationApiModel::class)))]
       protected readonly array $outgoingRelations,
@@ -34,6 +36,12 @@ class ConceptApiModel
   public function getId(): int
   {
     return $this->id;
+  }
+
+  /** @return int[] */
+  public function getTags(): array
+  {
+    return $this->tags;
   }
 
   public static function fromEntity(Concept $concept): self
@@ -51,12 +59,21 @@ class ConceptApiModel
     );
   }
 
-  public function mapToEntity(?Concept $concept): Concept
+  /** @param Tag[]|null $tags */
+  public function mapToEntity(?Concept $concept, ?array $tags): Concept
   {
-    return ($concept ?? new Concept())
+    $concept =  ($concept ?? new Concept())
         ->setName($this->name ?? $concept?->getName() ?? '')
         ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
         ->setSynonyms($this->synonyms ?? $concept?->getSynonyms() ?? '')
         ->setDotronConfig($this->dotronConfig ?? $concept?->getDotronConfig() ?? null);
+
+    if ($tags !== null) {
+      $concept->getTags()->clear();
+
+      array_map($concept->addTag(...), $tags);
+    }
+
+    return $concept;
   }
 }

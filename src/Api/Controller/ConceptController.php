@@ -77,7 +77,7 @@ class ConceptController extends AbstractApiController
       Request $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, ConceptApiModel::class)
-        ->mapToEntity(null)
+        ->mapToEntity(null, null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
@@ -100,14 +100,18 @@ class ConceptController extends AbstractApiController
   public function update(
       RequestStudyArea $requestStudyArea,
       Concept $concept,
-      Request $request
+      Request $request,
+      TagRepository $tagRepository
   ): JsonResponse {
     $requestConcept = $this->getTypedFromBody($request, ConceptApiModel::class);
+
+    $requestTags = $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags());
 
     $concept = $this->updateConcept(
         $requestStudyArea,
         $concept,
-        $requestConcept
+        $requestConcept,
+        $requestTags
     );
 
     return $this->createDataResponse(
@@ -132,17 +136,19 @@ class ConceptController extends AbstractApiController
   public function batchUpdate(
       RequestStudyArea $requestStudyArea,
       Request $request,
-      ConceptRepository $conceptRepository
+      ConceptRepository $conceptRepository,
+      TagRepository $tagRepository
   ): JsonResponse {
     $requestConcepts = $this->getArrayFromBody($request, ConceptApiModel::class);
 
     $this->em->beginTransaction();
 
     try {
-      $concepts = array_map(fn ($requestConcept) => $this->updateConcept(
+      $concepts = array_map(fn (ConceptApiModel $requestConcept) => $this->updateConcept(
           $requestStudyArea,
           $conceptRepository->find($requestConcept->getId()),
-          $requestConcept
+          $requestConcept,
+          $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags())
       ), $requestConcepts);
 
       $this->em->commit();
@@ -224,10 +230,7 @@ class ConceptController extends AbstractApiController
     /** @var int[] $requestTag */
     $requestTags = $this->getUntypedFromBody($request, 'array<int>');
 
-    $tags = $tagRepository->findForStudyAreaQb($requestStudyArea->getStudyArea())
-        ->andWhere('t.id IN (:ids)')
-        ->setParameter('ids', $requestTags)
-        ->getQuery()->getResult();
+    $tags = $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestTags);
 
     $conceptTags = $concept->getTags();
     $conceptTags->clear();
@@ -265,11 +268,12 @@ class ConceptController extends AbstractApiController
     return new ConceptEntityHandler($this->em, $this->validator, null);
   }
 
-  private function updateConcept(RequestStudyArea $requestStudyArea, Concept $concept, ConceptApiModel $requestConcept): Concept
+  /** @param Tag[]|null $requestTags */
+  private function updateConcept(RequestStudyArea $requestStudyArea, Concept $concept, ConceptApiModel $requestConcept, ?array $requestTags): Concept
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $concept = $requestConcept->mapToEntity($concept);
+    $concept = $requestConcept->mapToEntity($concept, $requestTags);
 
     $this->getHandler()->update($concept);
 
