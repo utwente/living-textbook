@@ -75,7 +75,7 @@
         "symfony/security-bundle": "4.4.42",
         "symfony/string": "5.4.10",
         "symfony/translation": "4.4.41",
-        "symfony/translation-contracts": "2.5.1",
+        "symfony/translation-contracts": "2.5.2",
         "symfony/twig-bridge": "4.4.42",
         "symfony/twig-bundle": "4.4.41",
         "symfony/validator": "4.4.43",
