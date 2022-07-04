@@ -90,7 +90,7 @@ sudo -u www-data php bin/console doctrine:migrations:migrate -n
 php bin/console ltb:python:build
 
 # Restore frontend controller
-cp update/controllers/index.php public/index.php
+git checkout public/index.php
 
 # Start the messenger component
 for service in "${messenger_services[@]}"; do
