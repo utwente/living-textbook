@@ -220,11 +220,32 @@ class StudyArea implements Stringable, IdInterface
   private ?array $dotronConfig = null;
 
   /**
+   * @var StylingConfiguration|null
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\StylingConfiguration")
+   */
+  private ?StylingConfiguration $defaultStylingConfiguration = null;
+
+  /**
    * @var Collection<int, StylingConfiguration>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\StylingConfiguration", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
   private Collection $stylingConfigurations;
+
+  /**
+   * @var LayoutConfiguration|null
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\LayoutConfiguration")
+   */
+  private ?LayoutConfiguration $defaultLayoutConfiguration = null;
+
+  /**
+   * @var Collection<int, LayoutConfiguration>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfiguration", mappedBy="studyArea", fetch="EXTRA_LAZY")
+   */
+  private Collection $layoutConfigurations;
 
   /** StudyArea constructor. */
   public function __construct()
@@ -239,6 +260,7 @@ class StudyArea implements Stringable, IdInterface
     $this->learningPaths         = new ArrayCollection();
     $this->tags                  = new ArrayCollection();
     $this->stylingConfigurations = new ArrayCollection();
+    $this->layoutConfigurations  = new ArrayCollection();
   }
 
   /** @Assert\Callback() */
@@ -594,6 +616,9 @@ class StudyArea implements Stringable, IdInterface
     foreach ($this->stylingConfigurations as $stylingConfiguration) {
       $check($stylingConfiguration);
     }
+    foreach ($this->layoutConfigurations as $layoutConfiguration) {
+      $check($layoutConfiguration);
+    }
 
     // Return result
     return [$lastUpdated, $lastUpdatedBy];
@@ -855,14 +880,14 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  public function getDotronConfig(): ?array
+  public function getDefaultStylingConfiguration(): StylingConfiguration
   {
-    return $this->dotronConfig;
+    return $this->defaultStylingConfiguration;
   }
 
-  public function setDotronConfig(?array $dotronConfig): self
+  public function setDefaultStylingConfiguration(StylingConfiguration $defaultStylingConfiguration): self
   {
-    $this->dotronConfig = $dotronConfig;
+    $this->defaultStylingConfiguration = $defaultStylingConfiguration;
 
     return $this;
   }
@@ -871,5 +896,23 @@ class StudyArea implements Stringable, IdInterface
   public function getStylingConfigurations(): Collection
   {
     return $this->stylingConfigurations;
+  }
+
+  public function getDefaultLayoutConfiguration(): LayoutConfiguration
+  {
+    return $this->defaultLayoutConfiguration;
+  }
+
+  public function setDefaultLayoutConfiguration(LayoutConfiguration $defaultLayoutConfiguration): self
+  {
+    $this->defaultLayoutConfiguration = $defaultLayoutConfiguration;
+
+    return $this;
+  }
+
+  /** @return Collection<int, LayoutConfiguration> */
+  public function getLayoutConfigurations(): Collection
+  {
+    return $this->layoutConfigurations;
   }
 }

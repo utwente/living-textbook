@@ -2,10 +2,11 @@
 
 namespace App\Api\Model;
 
+use App\Entity\LayoutConfiguration;
 use App\Entity\StudyArea;
+use App\Entity\StylingConfiguration;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\Groups;
-use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
 
 class StudyAreaApiModel
@@ -20,11 +21,14 @@ class StudyAreaApiModel
       #[OA\Property(nullable: true)]
       protected readonly ?string $group,
       public readonly bool $dotron,
-      #[OA\Property(description: 'Specific Dotron configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
-      #[Type('array')]
+      #[OA\Property(description: 'Default Dotron layout configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Groups(['dotron'])]
       #[Exclude(if: 'object !== null && object.dotron === false')]
-      protected readonly ?array $dotronConfig,
+      protected readonly int $defaultLayout,
+      #[OA\Property(description: 'Default Dotron styling configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
+      #[Groups(['dotron'])]
+      #[Exclude(if: 'object !== null && object.dotron === false')]
+      protected readonly int $defaultStyling,
   ) {
   }
 
@@ -36,15 +40,17 @@ class StudyAreaApiModel
         $studyArea->getDescription(),
         $studyArea->getGroup()?->getName(),
         $studyArea->isDotron(),
-        $studyArea->getDotronConfig()
+        $studyArea->getDefaultLayoutConfiguration()->getId(),
+        $studyArea->getDefaultStylingConfiguration()->getId(),
     );
   }
 
-  public function mapToEntity(?StudyArea $studyArea): StudyArea
+  public function mapToEntity(?StudyArea $studyArea, ?LayoutConfiguration $defaultLayoutConfiguration, ?StylingConfiguration $defaultStylingConfiguration): StudyArea
   {
     return ($studyArea ?? new StudyArea())
         ->setName($this->name ?? $studyArea?->getName() ?? '')
         ->setDescription($this->description ?? $studyArea?->getDescription() ?? '')
-        ->setDotronConfig($this->dotronConfig ?? $studyArea?->getDotronConfig());
+        ->setDefaultLayoutConfiguration($defaultLayoutConfiguration ?? $studyArea->getDefaultLayoutConfiguration() ?? null)
+        ->setDefaultStylingConfiguration($defaultStylingConfiguration ?? $studyArea->getDefaultStylingConfiguration() ?? null);
   }
 }
