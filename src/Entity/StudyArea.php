@@ -216,9 +216,6 @@ class StudyArea implements Stringable, IdInterface
    */
   private bool $dotron = false;
 
-  /** @ORM\Column(type="json", nullable=true) */
-  private ?array $dotronConfig = null;
-
   /**
    * @var StylingConfiguration|null
    *
