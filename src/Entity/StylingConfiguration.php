@@ -35,7 +35,7 @@ class StylingConfiguration implements StudyAreaFilteredInterface
    */
   private $studyArea;
 
-  /** @ORM\Column(type="array", nullable=true) */
+  /** @ORM\Column(type="json", nullable=true) */
   private ?array $stylings = null;
 
   public function getStudyArea(): ?StudyArea

@@ -98,7 +98,7 @@ class ConceptRelation
    */
   private $incomingPosition = 0;
 
-  /** @ORM\Column(type="array", nullable=true) */
+  /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;
 
   /**

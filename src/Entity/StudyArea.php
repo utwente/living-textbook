@@ -214,7 +214,7 @@ class StudyArea
    */
   private bool $dotron = false;
 
-  /** @ORM\Column(type="array", nullable=true) */
+  /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;
 
   /**
