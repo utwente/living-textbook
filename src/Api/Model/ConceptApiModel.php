@@ -38,10 +38,10 @@ class ConceptApiModel
     return $this->id;
   }
 
-  /** @return int[] */
-  public function getTags(): array
+  /** @return int[]|null */
+  public function getTags(): ?array
   {
-    return $this->tags;
+    return $this->tags ?? null;
   }
 
   public static function fromEntity(Concept $concept): self
