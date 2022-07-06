@@ -446,9 +446,6 @@
     "symfony/css-selector": {
         "version": "v4.4.5"
     },
-    "symfony/debug": {
-        "version": "v4.0.2"
-    },
     "symfony/dependency-injection": {
         "version": "v4.0.2"
     },
@@ -510,9 +507,6 @@
         "version": "v4.0.2"
     },
     "symfony/http-kernel": {
-        "version": "v4.0.2"
-    },
-    "symfony/inflector": {
         "version": "v4.0.2"
     },
     "symfony/intl": {
@@ -643,9 +637,6 @@
             "version": "3.3",
             "ref": "a249484db698d1a847a30291c8f732414ac47e25"
         }
-    },
-    "symfony/security": {
-        "version": "v4.0.2"
     },
     "symfony/security-bundle": {
         "version": "3.3",
