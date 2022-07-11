@@ -869,12 +869,12 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  public function getDefaultStylingConfiguration(): StylingConfiguration
+  public function getDefaultStylingConfiguration(): ?StylingConfiguration
   {
     return $this->defaultStylingConfiguration;
   }
 
-  public function setDefaultStylingConfiguration(StylingConfiguration $defaultStylingConfiguration): self
+  public function setDefaultStylingConfiguration(?StylingConfiguration $defaultStylingConfiguration): self
   {
     $this->defaultStylingConfiguration = $defaultStylingConfiguration;
 
@@ -887,12 +887,12 @@ class StudyArea implements Stringable, IdInterface
     return $this->stylingConfigurations;
   }
 
-  public function getDefaultLayoutConfiguration(): LayoutConfiguration
+  public function getDefaultLayoutConfiguration(): ?LayoutConfiguration
   {
     return $this->defaultLayoutConfiguration;
   }
 
-  public function setDefaultLayoutConfiguration(LayoutConfiguration $defaultLayoutConfiguration): self
+  public function setDefaultLayoutConfiguration(?LayoutConfiguration $defaultLayoutConfiguration): self
   {
     $this->defaultLayoutConfiguration = $defaultLayoutConfiguration;
 

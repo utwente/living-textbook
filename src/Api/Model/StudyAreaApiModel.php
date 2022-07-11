@@ -24,11 +24,11 @@ class StudyAreaApiModel
       #[OA\Property(description: 'Default Dotron layout configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Groups(['dotron'])]
       #[Exclude(if: 'object !== null && object.dotron === false')]
-      protected readonly int $defaultLayout,
+      protected readonly ?int $defaultLayout,
       #[OA\Property(description: 'Default Dotron styling configuration for a study area, only returned when Dotron is been enabled', type: 'object', nullable: true)]
       #[Groups(['dotron'])]
       #[Exclude(if: 'object !== null && object.dotron === false')]
-      protected readonly int $defaultStyling,
+      protected readonly ?int $defaultStyling,
   ) {
   }
 
@@ -40,9 +40,19 @@ class StudyAreaApiModel
         $studyArea->getDescription(),
         $studyArea->getGroup()?->getName(),
         $studyArea->isDotron(),
-        $studyArea->getDefaultLayoutConfiguration()->getId(),
-        $studyArea->getDefaultStylingConfiguration()->getId(),
+        $studyArea->getDefaultLayoutConfiguration()?->getId(),
+        $studyArea->getDefaultStylingConfiguration()?->getId(),
     );
+  }
+
+  public function getDefaultLayout(): ?int
+  {
+    return $this->defaultLayout ?? null;
+  }
+
+  public function getDefaultStyling(): ?int
+  {
+    return $this->defaultStyling ?? null;
   }
 
   public function mapToEntity(?StudyArea $studyArea, ?LayoutConfiguration $defaultLayoutConfiguration, ?StylingConfiguration $defaultStylingConfiguration): StudyArea

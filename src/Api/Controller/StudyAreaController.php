@@ -5,7 +5,9 @@ namespace App\Api\Controller;
 use App\Api\Model\StudyAreaApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\EntityHandler\StudyAreaEntityHandler;
+use App\Repository\LayoutConfigurationRepository;
 use App\Repository\StudyAreaRepository;
+use App\Repository\StylingConfigurationRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -64,12 +66,22 @@ class StudyAreaController extends AbstractApiController
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
       RequestStudyArea $requestStudyArea,
-      Request $request
+      Request $request,
+      LayoutConfigurationRepository $layoutConfigurationRepository,
+      StylingConfigurationRepository $stylingConfigurationRepository
   ): JsonResponse {
     $studyArea = $requestStudyArea->getStudyArea();
 
+    $updateStudyArea = $this->getTypedFromBody($request, StudyAreaApiModel::class);
+
+    $requestDefaultLayoutId = $updateStudyArea->getDefaultLayout();
+    $requestDefaultLayout = $requestDefaultLayoutId ? $layoutConfigurationRepository->findForStudyArea($studyArea, $requestDefaultLayoutId) : null;
+
+    $requestDefaultStylingId = $updateStudyArea->getDefaultStyling();
+    $requestDefaultStyling = $requestDefaultStylingId ? $stylingConfigurationRepository->findForStudyArea($studyArea, $requestDefaultStylingId) : null;
+
     $studyArea = $this->getTypedFromBody($request, StudyAreaApiModel::class)
-        ->mapToEntity($studyArea);
+        ->mapToEntity($studyArea, $requestDefaultLayout, $requestDefaultStyling);
 
     $this->getHandler()->update($studyArea);
 
