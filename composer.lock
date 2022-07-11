@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2777bf5617d0a85cd5dbdc99a80b23e",
+    "content-hash": "8c72aee876bb3ed555fa875cfeab4d7a",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1764,16 +1764,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "1.28.1",
+            "version": "1.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "bc9db69ce2aeab32736a4ef8d198ea368c7919da"
+                "reference": "e499d4483ebe9118c4269aaf34bb097142c75e7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/bc9db69ce2aeab32736a4ef8d198ea368c7919da",
-                "reference": "bc9db69ce2aeab32736a4ef8d198ea368c7919da",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/e499d4483ebe9118c4269aaf34bb097142c75e7f",
+                "reference": "e499d4483ebe9118c4269aaf34bb097142c75e7f",
                 "shasum": ""
             },
             "require": {
@@ -1796,8 +1796,9 @@
                 "drenso/phan-extensions": "~2.5 || ~3.0",
                 "jms/serializer-bundle": "^3.3 || ^4.0",
                 "kigkonsult/icalcreator": "^2.39",
+                "maennchen/zipstream-php": "^2.1",
                 "php-decimal/php-decimal": "^1.1",
-                "phpoffice/phpspreadsheet": "^1.10",
+                "phpoffice/phpspreadsheet": "^1.16",
                 "sebastian/comparator": "^3.0 || ^4.0",
                 "sensio/framework-extra-bundle": "^5.2 || ^6.0",
                 "stof/doctrine-extensions-bundle": "^1.3",
@@ -1858,9 +1859,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/1.28.1"
+                "source": "https://github.com/Drenso/symfony-shared/tree/1.29.0"
             },
-            "time": "2022-03-03T16:52:41+00:00"
+            "time": "2022-07-11T10:03:49+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
