@@ -15,7 +15,8 @@ class LayoutConfigurationRepository extends ServiceEntityRepository
     parent::__construct($registry, LayoutConfiguration::class);
   }
 
-  public function findForStudyArea(StudyArea $studyArea, int $id): LayoutConfiguration {
+  public function findForStudyArea(StudyArea $studyArea, int $id): LayoutConfiguration
+  {
     $qb = $this->findForStudyAreaQb($studyArea);
 
     $qb = $qb->andWhere('t.id = :id')->setParameter('id', $id);

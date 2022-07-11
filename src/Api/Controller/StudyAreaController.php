@@ -75,10 +75,10 @@ class StudyAreaController extends AbstractApiController
     $updateStudyArea = $this->getTypedFromBody($request, StudyAreaApiModel::class);
 
     $requestDefaultLayoutId = $updateStudyArea->getDefaultLayout();
-    $requestDefaultLayout = $requestDefaultLayoutId ? $layoutConfigurationRepository->findForStudyArea($studyArea, $requestDefaultLayoutId) : null;
+    $requestDefaultLayout   = $requestDefaultLayoutId ? $layoutConfigurationRepository->findForStudyArea($studyArea, $requestDefaultLayoutId) : null;
 
     $requestDefaultStylingId = $updateStudyArea->getDefaultStyling();
-    $requestDefaultStyling = $requestDefaultStylingId ? $stylingConfigurationRepository->findForStudyArea($studyArea, $requestDefaultStylingId) : null;
+    $requestDefaultStyling   = $requestDefaultStylingId ? $stylingConfigurationRepository->findForStudyArea($studyArea, $requestDefaultStylingId) : null;
 
     $studyArea = $this->getTypedFromBody($request, StudyAreaApiModel::class)
         ->mapToEntity($studyArea, $requestDefaultLayout, $requestDefaultStyling);
