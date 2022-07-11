@@ -61,5 +61,4 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
 
     return $this;
   }
-
 }

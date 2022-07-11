@@ -17,21 +17,21 @@ final class Version20220704143312 extends AbstractMigration
     return 'Move dotronconfig from study area to layout configuration';
   }
 
-    public function up(Schema $schema): void
-    {
-        $this->addSql('INSERT INTO layout_configuration (study_area_id, layouts, created_at) SELECT id, dotron_config, NOW() FROM study_area');
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE study_area DROP dotron_config');
-    }
+  public function up(Schema $schema): void
+  {
+    $this->addSql('INSERT INTO layout_configuration (study_area_id, layouts, created_at) SELECT id, dotron_config, NOW() FROM study_area');
+    // this up() migration is auto-generated, please modify it to your needs
+    $this->addSql('ALTER TABLE study_area DROP dotron_config');
+  }
 
-    public function down(Schema $schema): void
-    {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->throwIrreversibleMigrationException();
-    }
+  public function down(Schema $schema): void
+  {
+    // this down() migration is auto-generated, please modify it to your needs
+    $this->throwIrreversibleMigrationException();
+  }
 
-    public function isTransactional(): bool
-    {
-        return true;
-    }
+  public function isTransactional(): bool
+  {
+    return true;
+  }
 }

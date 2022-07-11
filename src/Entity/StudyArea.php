@@ -217,8 +217,6 @@ class StudyArea implements Stringable, IdInterface
   private bool $dotron = false;
 
   /**
-   * @var StylingConfiguration|null
-   *
    * @ORM\OneToOne(targetEntity="App\Entity\StylingConfiguration")
    */
   private ?StylingConfiguration $defaultStylingConfiguration = null;
@@ -231,8 +229,6 @@ class StudyArea implements Stringable, IdInterface
   private Collection $stylingConfigurations;
 
   /**
-   * @var LayoutConfiguration|null
-   *
    * @ORM\OneToOne(targetEntity="App\Entity\LayoutConfiguration")
    */
   private ?LayoutConfiguration $defaultLayoutConfiguration = null;
