@@ -153,13 +153,17 @@
         "version": "1.6.1"
     },
     "helios-ag/fm-elfinder-bundle": {
-        "version": "7.0",
+        "version": "12.1",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "7.0",
-            "ref": "fb9152ee3538f968d9e0f2c763ecbe4ab63eff26"
-        }
+            "branch": "main",
+            "version": "10.0",
+            "ref": "addd79a9903ee92664f4cff61eb6cdd1b95945e7"
+        },
+        "files": [
+            "config/packages/fm_elfinder.yaml",
+            "config/routes/fm_elfinder.yaml"
+        ]
     },
     "http-interop/http-factory-guzzle": {
         "version": "1.0.0"
