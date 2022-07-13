@@ -1,9 +1,0 @@
-# As of Symfony 5.1, deprecations are logged in the dedicated "deprecation" channel when it exists
-#monolog:
-#    channels: [deprecation]
-#    handlers:
-#        deprecation:
-#            type: rotating_file
-#            channels: [deprecation]
-#            path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
-#            max_files: 30
