@@ -2,3 +2,7 @@ controllers:
   type: annotation
   resource: ../../src/Controller/
   schemes: [ https ]
+
+kernel:
+  resource: ../../src/Kernel.php
+  type: annotation
