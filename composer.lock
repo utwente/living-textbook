@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "039cc529a95c097e925fc9f7899dc497",
+    "content-hash": "5e712060a880a48860b3b29ff0358229",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1698,38 +1698,53 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v1.13.0",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "cebbbf4ad229f55d3d69d3b1fc9c1c7a4aa637db"
+                "reference": "05dffc894722a1039e082070b8037fc843da1290"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/cebbbf4ad229f55d3d69d3b1fc9c1c7a4aa637db",
-                "reference": "cebbbf4ad229f55d3d69d3b1fc9c1c7a4aa637db",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/05dffc894722a1039e082070b8037fc843da1290",
+                "reference": "05dffc894722a1039e082070b8037fc843da1290",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
+                "ext-filter": "*",
                 "ext-hash": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "php": "^7.3 || ^8.0",
-                "phpseclib/phpseclib": "^2.0.31 || ^3.0.7",
-                "psr/log": "^1.1",
-                "symfony/dependency-injection": "^3.4.26 || ^4.1.12 || ^5.0",
-                "symfony/http-foundation": "^3.4.35 || ^4.2.12 || ^5.0.7",
-                "symfony/routing": "^3.4 || ^4.0 || ^5.0",
-                "symfony/security-bundle": "^3.4 || ^4.0 || ^5.0",
-                "symfony/security-core": "^3.4 || ^4.0 || ^5.0",
-                "symfony/security-http": "^3.4.26 || ^4.1.12 || ^5.0.7"
+                "php": ">=8.0.2",
+                "phpseclib/phpseclib": "^2.0.31|^3.0.7",
+                "psr/container": "^1.1|^2.0",
+                "psr/log": "^1.1|^2.0|^3.0",
+                "symfony/config": "^5.4|^6.0",
+                "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/http-foundation": "^5.4|^6.0",
+                "symfony/http-kernel": "^5.4|^6.0",
+                "symfony/property-access": "^5.4|^6.0",
+                "symfony/security-bundle": "^5.4|^6.0",
+                "symfony/security-core": "^5.4|^6.0",
+                "symfony/security-http": "^5.4|^6.0",
+                "symfony/string": "^5.4|^6.0"
             },
             "require-dev": {
-                "drenso/phan-extensions": "^3.0"
+                "drenso/phan-extensions": "^3.0",
+                "symfony/cache": "^5.4|^6.0",
+                "symfony/translation-contracts": "^2.0|^3.0"
+            },
+            "suggest": {
+                "symfony/cache": "When installed, the well known information will be automatically cached"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "v2.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Drenso\\OidcBundle\\": "src"
@@ -1758,9 +1773,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v1.13.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.5.0"
             },
-            "time": "2022-06-23T12:25:08+00:00"
+            "time": "2022-06-23T12:30:13+00:00"
         },
         {
             "name": "drenso/symfony-shared",

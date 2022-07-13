@@ -12,7 +12,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Drenso\OidcBundle\Exception\OidcConfigurationException;
 use Drenso\OidcBundle\Exception\OidcConfigurationResolveException;
-use Drenso\OidcBundle\OidcClient;
+use Drenso\OidcBundle\OidcClientInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -21,13 +21,11 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -92,7 +90,7 @@ class AuthenticationController extends AbstractController
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function resetPassword(
-      Request $request, EntityManagerInterface $em, EncoderFactoryInterface $passwordEncoderFactory,
+      Request $request, EntityManagerInterface $em, PasswordHasherFactoryInterface $passwordHasherFactory,
       UserRepository $userRepository, MailerInterface $mailer, TranslatorInterface $translator)
   {
     if ($this->isGranted('ROLE_USER')) {
@@ -131,10 +129,10 @@ class AuthenticationController extends AbstractController
 
           // Retrieve encoder for user
           // We cannot use the UserPasswordEncoder as it only uses the password field
-          $passwordEncoder = $passwordEncoderFactory->getEncoder($user);
+          $passwordHasher = $passwordHasherFactory->getPasswordHasher($user);
 
           $user
-              ->setResetCode($passwordEncoder->encodePassword($resetCode, null))
+              ->setResetCode($passwordHasher->hash($resetCode, null))
               ->setResetCodeValid((new DateTime())->modify('+10 minutes'));
 
           // Save and send mail
@@ -177,8 +175,8 @@ class AuthenticationController extends AbstractController
     }
 
     // Verify reset code
-    $passwordEncoder = $passwordEncoderFactory->getEncoder($user);
-    if ($user->getResetCode() === null || !$passwordEncoder->isPasswordValid($user->getResetCode(), $resetCode, null)) {
+    $passwordHasher = $passwordHasherFactory->getPasswordHasher($user);
+    if ($user->getResetCode() === null || !$passwordHasher->verify($user->getResetCode(), $resetCode, null)) {
       return $this->redirectToRoute('login');
     }
 
@@ -216,7 +214,7 @@ class AuthenticationController extends AbstractController
    */
   public function createPassword(
       Request $request, EntityManagerInterface $em, UserRepository $userRepository, MailerInterface $mailer,
-      UserPasswordEncoderInterface $userPasswordEncoder, TranslatorInterface $translator)
+      UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator)
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -259,7 +257,7 @@ class AuthenticationController extends AbstractController
       // Store the new password
       $user
           ->setResetCode(null)
-          ->setPassword($userPasswordEncoder->encodePassword($user, $form->getData()['password']));
+          ->setPassword($userPasswordHasher->hashPassword($user, $form->getData()['password']));
       $em->flush();
 
       // Clear the session
@@ -298,7 +296,7 @@ class AuthenticationController extends AbstractController
    */
   public function createAccount(
       Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
-      UserPasswordEncoderInterface $userPasswordEncoder, TranslatorInterface $translator)
+      UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator)
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -320,7 +318,7 @@ class AuthenticationController extends AbstractController
     }
 
     // Validate password
-    if (!$userPasswordEncoder->isPasswordValid($userProto, $password)) {
+    if (!$userPasswordHasher->isPasswordValid($userProto, $password)) {
       return $this->redirectToRoute('login');
     }
 
@@ -334,7 +332,7 @@ class AuthenticationController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Encode the password
-      $user->setPassword($userPasswordEncoder->encodePassword($user, $user->getPassword()));
+      $user->setPassword($userPasswordHasher->hashPassword($user, $user->getPassword()));
 
       // Remove proto user and save the new user
       $em->remove($userProto);
@@ -362,12 +360,8 @@ class AuthenticationController extends AbstractController
    *
    * @return RedirectResponse
    */
-  public function surfconext(SessionInterface $session, OidcClient $oidc)
+  public function surfconext(OidcClientInterface $oidc)
   {
-    // Remove errors from state
-    $session->remove(Security::AUTHENTICATION_ERROR);
-    $session->remove(Security::LAST_USERNAME);
-
     // Redirect to authorization @ surfconext
     return $oidc->generateAuthorizationRedirect();
   }

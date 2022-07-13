@@ -21,10 +21,6 @@ parameters:
   router.request_context.host: '%env(HTTP_HOST)%'
   router.request_context.scheme: '%env(HTTP_SCHEMA)%'
 
-  oidc.well_known_url: '%env(OIDC_WELL_KNOWN)%'
-  oidc.client_id: '%env(OIDC_CLIENT_ID)%'
-  oidc.client_secret: '%env(string:key:oidc:json:file:resolve:SECRETS_FILE)%'
-
 services:
   # default configuration for services in *this* file
   _defaults:
@@ -89,12 +85,6 @@ services:
   App\UrlUtils\UrlScanner:
     lazy: true
 
-  Drenso\OidcBundle\OidcClient:
-    arguments:
-      $wellKnownUrl: '%oidc.well_known_url%'
-      $clientId: '%oidc.client_id%'
-      $clientSecret: '%oidc.client_secret%'
-
   Kickin\ExceptionHandlerBundle\Configuration\SymfonyMailerConfigurationInterface:
     alias: 'App\ExceptionHandler\ExceptionHandlerConfiguration'
 
@@ -105,25 +95,3 @@ services:
           - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
           - Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
           - Symfony\Component\Security\Core\Exception\AccessDeniedException
-
-  security.authentication.provider.oidc:
-    class: Drenso\OidcBundle\Security\Authentication\Provider\OidcProvider
-    arguments:
-      - ''
-      - '@security.user_checker'
-      - '@security.token_storage'
-      - '@logger'
-
-  security.authentication.listener.oidc:
-    class: Drenso\OidcBundle\Security\Firewall\OidcListener
-    arguments:
-      - '@security.token_storage'
-      - '@security.authentication.manager'
-      - '@security.authentication.session_strategy'
-      - '@security.http_utils'
-      - ''
-      - ''
-      - ''
-      - { }
-      - '@logger'
-      - '@Drenso\OidcBundle\OidcClient'

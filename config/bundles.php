@@ -22,4 +22,5 @@ return [
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     Drenso\Shared\DrensoSharedBundle::class => ['all' => true],
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
+    Drenso\OidcBundle\DrensoOidcBundle::class => ['all' => true],
 ];

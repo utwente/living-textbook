@@ -1,9 +1,9 @@
 security:
-  #  enable_authenticator_manager: true
+  enable_authenticator_manager: true
 
   # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-  #  password_hashers:
-  #    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
   # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
   providers:
@@ -12,14 +12,6 @@ security:
 
   access_decision_manager:
     strategy: unanimous
-
-  encoders:
-    App\Entity\User:
-      algorithm: auto
-    App\Entity\UserApiToken:
-      algorithm: auto
-    App\Entity\UserProto:
-      algorithm: auto
 
   firewalls:
     dev:
@@ -34,14 +26,13 @@ security:
           - App\Api\Security\ApiAuthenticator
     main:
       pattern: ^/
-      anonymous: true
       lazy: true
+      entry_point: oidc
       oidc:
-        check_path: login_check
         login_path: app_default_landing
         success_handler: App\Security\Http\Authentication\AuthenticationSuccessHandler
+        user_identifier_property: email
       form_login:
-        check_path: login_check
         login_path: app_default_landing
         success_handler: App\Security\Http\Authentication\AuthenticationSuccessHandler
         username_parameter: "login[_username]"

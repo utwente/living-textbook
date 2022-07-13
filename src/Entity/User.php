@@ -10,12 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\OidcBundle\Exception\OidcException;
-use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
+use Drenso\OidcBundle\Model\OidcUserData;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity({"username", "isOidc"}, message="user.email-used", errorPath="username")
  */
-class User implements UserInterface, Serializable
+class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface
 {
   use IdTrait;
   use Blameable;
@@ -220,9 +221,9 @@ class User implements UserInterface, Serializable
    *
    * @throws OidcException
    */
-  public static function createFromToken(OidcToken $token): User
+  public static function createFromOidcUserData(OidcUserData $userData): User
   {
-    $username = $token->getUsername();
+    $username = $userData->getEmail();
 
     // Username must not be empty!
     if (empty($username)) {
@@ -232,7 +233,7 @@ class User implements UserInterface, Serializable
     return (new User())
         ->setUsername($username)
         ->setIsOidc(true)
-        ->update($token);
+        ->update($userData);
   }
 
   /** Custom sorter, based on display name. */
@@ -245,13 +246,13 @@ class User implements UserInterface, Serializable
    * Update the user with the latest information from the token
    * Do not update the username, this should be the same anyways.
    */
-  public function update(OidcToken $token): User
+  public function update(OidcUserData $userData): User
   {
     return $this
-        ->setDisplayName($token->getDisplayName())
-        ->setFullName($token->getFullName())
-        ->setGivenName($token->getGivenName())
-        ->setFamilyName($token->getFamilyName());
+        ->setDisplayName($userData->getDisplayName())
+        ->setFullName($userData->getFullName())
+        ->setGivenName($userData->getGivenName())
+        ->setFamilyName($userData->getFamilyName());
   }
 
   /**
@@ -403,9 +404,9 @@ class User implements UserInterface, Serializable
   }
 
   /** @return string */
-  public function getPassword()
+  public function getPassword(): string
   {
-    return $this->password;
+    return $this->password ?? '';
   }
 
   /**

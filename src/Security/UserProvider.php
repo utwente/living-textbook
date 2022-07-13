@@ -5,8 +5,7 @@ namespace App\Security;
 use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Drenso\OidcBundle\Exception\OidcException;
-use Drenso\OidcBundle\Security\Authentication\Token\OidcToken;
+use Drenso\OidcBundle\Model\OidcUserData;
 use Drenso\OidcBundle\Security\UserProvider\OidcUserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,24 +20,15 @@ class UserProvider implements OidcUserProviderInterface
     $this->em = $em;
   }
 
-  /**
-   * Call this method to create a new user from the data available in the token,
-   * but only if the user does not exist yet.
-   * If it does exist, return that user.
-   *
-   * @throws OidcException
-   *
-   * @return User
-   */
-  public function loadUserByToken(OidcToken $token)
+  public function ensureUserExists(string $userIdentifier, OidcUserData $userData)
   {
     // Determine whether this user already exists
     try {
-      $user = $this->loadUserByIdentifier($token->getUserIdentifier(), true);
-      $user->update($token);
+      $user = $this->loadUserByIdentifier($userIdentifier, true);
+      $user->update($userData);
     } catch (UserNotFoundException $e) {
       // Create a new user
-      $user = User::createFromToken($token);
+      $user = User::createFromOidcUserData($userData);
 
       // Save the user
       $this->em->persist($user);
@@ -47,8 +37,11 @@ class UserProvider implements OidcUserProviderInterface
     // Update last used
     $user->setLastUsed(new DateTime());
     $this->em->flush();
+  }
 
-    return $user;
+  public function loadOidcUser(string $userIdentifier): UserInterface
+  {
+    return $this->loadUserByIdentifier($userIdentifier, true);
   }
 
   /** @deprecated */

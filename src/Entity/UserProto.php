@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity({"email"}, errorPath="email")
  */
-class UserProto implements UserInterface
+class UserProto implements UserInterface, PasswordAuthenticatedUserInterface
 {
   use IdTrait;
   use Blameable;
