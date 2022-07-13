@@ -710,13 +710,16 @@
         ]
     },
     "symfony/security-bundle": {
-        "version": "3.3",
+        "version": "5.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "85834af1496735f28d831489d12ab1921a875e0d"
-        }
+            "branch": "main",
+            "version": "5.3",
+            "ref": "98f1f2b0d635908c2b40f3675da2d23b1a069d30"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
     },
     "symfony/serializer": {
         "version": "v4.0.3"

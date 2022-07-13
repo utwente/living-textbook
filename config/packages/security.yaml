@@ -1,5 +1,11 @@
 security:
-  # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+  #  enable_authenticator_manager: true
+
+  # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+  #  password_hashers:
+  #    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+  # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
   providers:
     default_provider:
       id: App\Security\UserProvider
@@ -29,6 +35,7 @@ security:
     main:
       pattern: ^/
       anonymous: true
+      lazy: true
       oidc:
         check_path: login_check
         login_path: app_default_landing
@@ -40,10 +47,25 @@ security:
         username_parameter: "login[_username]"
         password_parameter: "login[_password]"
       logout:
-        path:   logout
+        path: logout
         target: app_default_landing
 
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/_wdt/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/_profiler/.*, roles: IS_AUTHENTICATED_ANONYMOUSLY  }
-    - { path: ^/login.*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/_wdt/.*, roles: PUBLIC_ACCESS }
+    - { path: ^/_profiler/.*, roles: PUBLIC_ACCESS }
+    - { path: ^/login.*, roles: PUBLIC_ACCESS }
+
+when@test:
+  security:
+    password_hashers:
+      # By default, password hashers are resource intensive and take time. This is
+      # important to generate secure password hashes. In tests however, secure hashes
+      # are not important, waste resources and increase test times. The following
+      # reduces the work factor to the lowest possible values.
+      Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+        algorithm: auto
+        cost: 4 # Lowest possible value for bcrypt
+        time_cost: 3 # Lowest possible value for argon
+        memory_cost: 10 # Lowest possible value for argon
