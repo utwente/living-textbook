@@ -1,8 +1,8 @@
 # Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
 
-#twig:
-#  form_themes:
-#    - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+twig:
+  form_themes:
+    - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 
 parameters:
   ckeditor_tags: "<p><br><span><h1><h2><h3><h4><a>
