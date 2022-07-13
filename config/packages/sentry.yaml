@@ -1,5 +1,5 @@
 sentry:
-  dsn: ~
+  dsn: '%env(SENTRY_DSN)%'
   options:
     release: '%sentry_release%'
     send_default_pii: true

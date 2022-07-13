@@ -17,5 +17,5 @@ twig:
   globals:
     allowed_ckeditor_tags: '%ckeditor_tags%'
     naming: '@App\Naming\NamingService'
-    sentry_dsn: ~ # This disables sentry by default, we enable it explicitly in the prod environment
+    sentry_dsn: '%env(SENTRY_JS_DSN)%'
     sentry_release: '%sentry_release%'
