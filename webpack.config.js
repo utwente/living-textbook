@@ -1,6 +1,8 @@
-var Encore = require('@symfony/webpack-encore');
+const Encore = require('@symfony/webpack-encore');
 
-// Let PHPStorm load the webpack configuration correctly
+// Manually configure the runtime environment if not already configured yet by the "encore" command.
+// It's useful when you use tools that rely on webpack.config.js file.
+// This is used by PHPStorm
 if (!Encore.isRuntimeEnvironmentConfigured()) {
   Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
@@ -10,14 +12,12 @@ Encore
     .setOutputPath('public/build/')
     // the public path used by the web server to access the previous directory
     .setPublicPath('/build')
-    .cleanupOutputBeforeBuild()
-    .enableSourceMaps()
-    // uncomment to create hashed filenames (e.g. app.abc123.css)
-    .enableVersioning(Encore.isProduction())
-
-    // Enable it for all builds with the
-    // default hash algorithm (sha384)
-    .enableIntegrityHashes(Encore.isProduction)
+    /*
+     * ENTRY CONFIG
+     *
+     * Each entry will result in one JavaScript file (e.g. app.js)
+     * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
+     */
 
     // uncomment to define the assets of the project
     .addEntry('app', [
@@ -84,14 +84,23 @@ Encore
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
 
+    /*
+     * FEATURE CONFIG
+     *
+     * Enable & configure other features below. For a full
+     * list of features, see:
+     * https://symfony.com/doc/current/frontend.html#adding-more-features
+     */
+    .cleanupOutputBeforeBuild()
+    // .enableBuildNotifications()
+    .enableSourceMaps()
+    // enables hashed filenames (e.g. app.abc123.css)
+    .enableVersioning(Encore.isProduction())
     // Enable typescript
     .enableTypeScriptLoader()
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
-
-    // uncomment for legacy applications that require $/jQuery as a global variable
-    .autoProvidejQuery()
 
     // Provide popper global var for bootstrap
     .autoProvideVariables({
@@ -105,6 +114,16 @@ Encore
     // Fixes CSS HMR
     // See https://github.com/symfony/webpack-encore/issues/348
     .disableCssExtraction(Encore.isDevServer())
+
+    // uncomment if you use React
+    //.enableReactPreset()
+
+    // uncomment to get integrity="..." attributes on your script & link tags
+    // requires WebpackEncoreBundle 1.4 or higher
+    .enableIntegrityHashes(Encore.isProduction())
+
+    // uncomment if you're having problems with a jQuery plugin
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();
