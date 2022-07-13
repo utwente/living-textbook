@@ -71,6 +71,7 @@
         "symfony/property-access": "5.4.8",
         "symfony/proxy-manager-bridge": "5.4.6",
         "symfony/routing": "5.4.8",
+        "symfony/runtime": "5.4.8",
         "symfony/security-bundle": "5.4.9",
         "symfony/security-core": "5.4.10",
         "symfony/security-guard": "5.4.9",
@@ -107,7 +108,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "autoload": {
