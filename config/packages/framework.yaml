@@ -1,19 +1,29 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
   secret: '%env(string:key:app:json:file:resolve:SECRETS_FILE)%'
   csrf_protection: ~
   http_method_override: false
 
+  # Enables session support. Note that the session will ONLY be started if you read or write from it.
+  # Remove or comment this section to explicitly disable session support.
   session:
     # With this config, PHP's native session handling is used
     handler_id: session.handler.native_file
     save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
     cookie_secure: true
     cookie_samesite: lax
+    storage_factory_id: session.storage.factory.native
 
   assets:
     json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
 
-  #esi: ~
-  #fragments: ~
+  #esi: true
+  #fragments: true
   php_errors:
     log: true
+
+when@test:
+  framework:
+    test: true
+    session:
+      storage_factory_id: session.storage.factory.mock_file
