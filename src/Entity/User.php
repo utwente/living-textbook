@@ -366,8 +366,13 @@ class User implements UserInterface, Serializable
   {
   }
 
-  /** @return string */
+  /** @deprecated */
   public function getUsername()
+  {
+    return $this->getUserIdentifier();
+  }
+
+  public function getUserIdentifier(): string
   {
     return $this->username;
   }

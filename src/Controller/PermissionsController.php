@@ -172,7 +172,7 @@ class PermissionsController extends AbstractController
       // Find users, and remove those from the email list
       $foundUsers = $userRepository->getUsersForEmails($emails);
       $emails     = array_diff($emails, array_map(function (User $foundUser) {
-        return $foundUser->getUsername();
+        return $foundUser->getUserIdentifier();
       }, $foundUsers));
 
       // Add the users/emails to the requested groups

@@ -485,8 +485,8 @@ class AnalyticsService
 
     // Remove the matched directories
     foreach ($finder as $dir) {
-      if ($this->fileSystem->exists($dir)) {
-        $this->fileSystem->remove($dir);
+      if ($this->fileSystem->exists($dir->getPathname())) {
+        $this->fileSystem->remove($dir->getPathname());
       }
     }
   }

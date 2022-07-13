@@ -8,7 +8,6 @@ use Exception;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
-use Symfony\Component\Config\Exception\FileLoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -65,7 +64,6 @@ class Kernel extends BaseKernel
     $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
   }
 
-  /** @throws FileLoaderLoadException */
   protected function configureRoutes(RouteCollectionBuilder $routes)
   {
     $confDir = $this->getProjectDir() . '/config';
@@ -84,6 +82,6 @@ class Kernel extends BaseKernel
     // Register the Oidc factory
     $extension = $container->getExtension('security');
     assert($extension instanceof SecurityExtension);
-    $extension->addSecurityListenerFactory(new OidcFactory());
+    $extension->addSecurityListenerFactory(new OidcFactory()); /* @phan-suppress-current-line PhanDeprecatedFunction */
   }
 }

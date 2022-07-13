@@ -74,7 +74,13 @@ class UserProto implements UserInterface
     return null;
   }
 
+  /** @deprecated */
   public function getUsername()
+  {
+    return $this->getUserIdentifier();
+  }
+
+  public function getUserIdentifier(): string
   {
     return $this->email;
   }

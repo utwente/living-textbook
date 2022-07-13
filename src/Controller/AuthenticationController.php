@@ -147,7 +147,7 @@ class AuthenticationController extends AbstractController
                   ->context([
                       'user'       => $user->getFullName(),
                       'user_id'    => $user->getId(),
-                      'email_hash' => sha1($user->getUsername()),
+                      'email_hash' => sha1($user->getUserIdentifier()),
                       'reset_code' => $resetCode,
                   ])
           );
@@ -172,7 +172,7 @@ class AuthenticationController extends AbstractController
     if (!$user = $userRepository->find($userId)) {
       return $this->redirectToRoute('login');
     }
-    if (sha1($user->getUsername()) !== $emailHash) {
+    if (sha1($user->getUserIdentifier()) !== $emailHash) {
       return $this->redirectToRoute('login');
     }
 

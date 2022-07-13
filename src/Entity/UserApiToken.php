@@ -125,9 +125,15 @@ class UserApiToken implements UserInterface
     return null;
   }
 
+  /** @deprecated */
   public function getUsername()
   {
-    return $this->getUser()->getUsername();
+    return $this->getUserIdentifier();
+  }
+
+  public function getUserIdentifier(): string
+  {
+    return $this->getUser()->getUserIdentifier();
   }
 
   public function eraseCredentials()

@@ -130,8 +130,8 @@ class DuplicateType extends AbstractType
     $resolver
         ->setDefaults([
             'constraints' => [
-                new Callback(['callback' => [$this, 'checkConcepts'], 'groups' => [self::CHOICE_NEW, self::CHOICE_EXISTING]]),
-                new Callback(['callback' => [$this, 'checkNewStudyArea'], 'groups' => [self::CHOICE_NEW, self::CHOICE_EXISTING]]),
+                new Callback($this->checkConcepts(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
+                new Callback($this->checkNewStudyArea(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
             ],
             'validation_groups' => function (FormInterface $form) {
               return [$form->getData()[self::CHOICE]];

@@ -80,7 +80,7 @@ class TrackingController extends AbstractController
           // Set the updated data
           $pageLoad
               ->setStudyArea($studyArea)
-              ->setUserId($user ? $user->getUsername() : 'anonymous')
+              ->setUserId($user ? $user->getUserIdentifier() : 'anonymous')
               ->setPathContext($pathContext)
               ->setOriginContext($originContext);
         },
@@ -102,7 +102,7 @@ class TrackingController extends AbstractController
         function (TrackingEvent $pageLoad, StudyArea $studyArea, ?User $user) {
           $pageLoad
               ->setStudyArea($studyArea)
-              ->setUserId($user ? $user->getUsername() : 'anonymous');
+              ->setUserId($user ? $user->getUserIdentifier() : 'anonymous');
         },
         $request, $requestStudyArea, $em, $serializer, $validator);
   }

@@ -45,7 +45,7 @@ class SoftDeletableSubscriber implements EventSubscriber
     $oldValue = $reflProp->getValue($object);
 
     // Update the value
-    $user = $this->tokenStorage->getToken()->getUsername();
+    $user = $this->tokenStorage->getToken()->getUserIdentifier();
     $reflProp->setValue($object, $user);
 
     // Make sure the unit of works knows about this

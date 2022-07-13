@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
 
+/** @phan-suppress-next-line PhanDeprecatedClass */
 class ApiAuthenticator extends AbstractGuardAuthenticator
 {
   public const API_TOKEN_HEADER = 'X-LTB-AUTH';

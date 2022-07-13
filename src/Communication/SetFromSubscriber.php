@@ -31,6 +31,6 @@ class SetFromSubscriber implements EventSubscriberInterface
       return;
     }
 
-    $email->from(Address::fromString($this->from));
+    $email->from(Address::create($this->from));
   }
 }

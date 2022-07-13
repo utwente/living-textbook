@@ -81,10 +81,16 @@ class UserPermissions
     return '';
   }
 
+  /** @deprecated */
   public function getUsername(): string
   {
+    return $this->getUserIdentifier();
+  }
+
+  public function getUserIdentifier(): string
+  {
     if ($this->isUser()) {
-      return $this->user->getUsername();
+      return $this->user->getUserIdentifier();
     }
 
     return $this->userGroupEmail->getEmail();

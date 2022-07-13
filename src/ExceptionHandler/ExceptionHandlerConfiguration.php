@@ -61,7 +61,7 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
   public function getUserInformation(TokenInterface $token = null): string
   {
     if ($token !== null) {
-      return $token->getUsername();
+      return $token->getUserIdentifier();
     }
 
     return 'No user (not authenticated)';
