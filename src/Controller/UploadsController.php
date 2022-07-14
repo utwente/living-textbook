@@ -43,7 +43,7 @@ class UploadsController extends AbstractController
 
   /**
    * @Route("/global/{path}", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
    */

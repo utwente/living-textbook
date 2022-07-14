@@ -67,7 +67,7 @@ class DefaultController extends AbstractController
    * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"},
    *                           name="_home_simple", options={"no_login_wrap"=true})
    * @Template("double_column.html.twig")
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return array|RedirectResponse
    */
@@ -112,7 +112,7 @@ class DefaultController extends AbstractController
    * @Route("/", options={"no_login_wrap"=true})
    * @Route("", name="base_url", options={"no_login_wrap"=true})
    * @Template()
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return array|Response
    */

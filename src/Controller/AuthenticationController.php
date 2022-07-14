@@ -41,7 +41,7 @@ class AuthenticationController extends AbstractController
    * This route is defined in the routes.yml in order to remove the _locale requirement
    *
    * @Route("/login_check", name="login_check", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
    */
@@ -59,7 +59,7 @@ class AuthenticationController extends AbstractController
    * or with an local account.
    *
    * @Route("/login", name="login", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return array|RedirectResponse
    */
@@ -81,7 +81,7 @@ class AuthenticationController extends AbstractController
    * 6. Forward to login.
    *
    * @Route("/password/reset", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws TransportExceptionInterface
    *
@@ -205,7 +205,7 @@ class AuthenticationController extends AbstractController
    * Create a password for a user.
    *
    * @Route("/password/create", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws TransportExceptionInterface
    *
@@ -289,7 +289,7 @@ class AuthenticationController extends AbstractController
    * Create a new local account. This can only be done based on invite, and the supplied password must match.
    *
    * @Route("/account/create", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    * @Template()
    *
    * @return array|RedirectResponse
@@ -353,7 +353,7 @@ class AuthenticationController extends AbstractController
    * This controller forward the user to the SURFconext login.
    *
    * @Route("/login_surf", name="login_surf", options={"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws OidcConfigurationException
    * @throws OidcConfigurationResolveException

@@ -50,7 +50,7 @@ class TrackingController extends AbstractController
 
   /**
    * @Route("/pageload", methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
    */
@@ -89,7 +89,7 @@ class TrackingController extends AbstractController
 
   /**
    * @Route("/event", methods={"POST"}, options={"expose"="true"})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
    */

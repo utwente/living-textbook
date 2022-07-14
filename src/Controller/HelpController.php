@@ -29,7 +29,7 @@ class HelpController extends AbstractController
    *
    * @Route()
    * @Template()
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws NoResultException
    * @throws NonUniqueResultException

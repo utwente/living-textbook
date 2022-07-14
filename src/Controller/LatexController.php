@@ -31,7 +31,7 @@ class LatexController extends AbstractController
 {
   /**
    * @Route("/render", methods={"GET"}, options={"expose"=true,"no_login_wrap"=true})
-   * @IsGranted("IS_AUTHENTICATED_ANONYMOUSLY")
+   * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws InvalidArgumentException
    *

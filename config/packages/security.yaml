@@ -26,7 +26,6 @@ security:
           - App\Api\Security\ApiAuthenticator
     main:
       pattern: ^/
-      lazy: true
       entry_point: oidc
       oidc:
         login_path: app_default_landing
