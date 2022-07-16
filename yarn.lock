@@ -2487,6 +2487,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
+ckeditor4@4.19.0:
+  version "4.19.0"
+  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.19.0.tgz#eba0af7e3e044e1f14d914ff53a128cd8d09e8a0"
+  integrity sha512-hh+SslqHmqr9xmcUVMgdmWjO4tdxW+Lzd6jfxDzzjf6zwIFIoNSflgCqUvg2wcry4w0dHgdEoxVMdoJK9E7kUw==
+
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"

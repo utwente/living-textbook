@@ -125,7 +125,6 @@
     "scripts": {
         "auto-scripts": {
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "ckeditor:install %PUBLIC_DIR%/ckeditor --exclude=samples --exclude=adapters --clear=drop -q": "symfony-cmd",
             "fos:js-routing:dump --target=assets/js/_fos_js_routes.js --callback=\"import Routing from 'fos-routing'; Routing.setData\"": "symfony-cmd"
         },
         "post-install-cmd": [

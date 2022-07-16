@@ -12,7 +12,7 @@
     <script type="text/javascript">
       var ckeditorCss = '{{ asset('build/ckeditorContents.css') }}';
     </script>
-    <script src="{{ asset('ckeditor/ckeditor.js') }}" type="text/javascript"></script>
+    {{ encore_entry_script_tags('ckeditor') }}
     {{ encore_entry_script_tags('ckeditorPatches') }}
   {% endif %}
 {% endblock %}

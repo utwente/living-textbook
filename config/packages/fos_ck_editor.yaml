@@ -7,6 +7,8 @@ parameters:
   <ltb-abbr><div><symbol>"
 
 fos_ck_editor:
+  base_path: build/ckeditor
+  js_path: build/ckeditor/ckeditor.js
   autoload: false
   jquery: true
   default_config: ltb_config
