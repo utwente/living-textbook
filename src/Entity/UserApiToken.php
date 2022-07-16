@@ -116,6 +116,14 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface
     return $this->token;
   }
 
+  /** Used to upgrade the token to the newest encoding */
+  public function setPassword(string $password): self
+  {
+    $this->token = $password;
+
+    return $this;
+  }
+
   public function getRoles()
   {
     return $this->getUser()->getRoles();

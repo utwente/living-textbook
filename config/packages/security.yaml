@@ -21,9 +21,8 @@ security:
       request_matcher: App\Security\RequestMatcher\ApiSessionRequestMatcher
       anonymous: false
       stateless: true
-      guard:
-        authenticators:
-          - App\Api\Security\ApiAuthenticator
+      custom_authenticators:
+        - App\Api\Security\ApiAuthenticator
     main:
       pattern: ^/
       entry_point: oidc

@@ -10,88 +10,63 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PasswordUpgradeBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
-/** @phan-suppress-next-line PhanDeprecatedClass */
-class ApiAuthenticator extends AbstractGuardAuthenticator
+class ApiAuthenticator extends AbstractAuthenticator
 {
   public const API_TOKEN_HEADER = 'X-LTB-AUTH';
-  private UserApiTokenRepository $userApiTokenRepository;
-  private UserPasswordEncoderInterface $userPasswordEncoder;
-  private EntityManagerInterface $entityManager;
 
   public function __construct(
-      UserApiTokenRepository $userApiTokenRepository,
-      UserPasswordEncoderInterface $userPasswordEncoder,
-      EntityManagerInterface $entityManager)
+      private readonly UserApiTokenRepository $userApiTokenRepository,
+      private readonly UserPasswordHasherInterface $passwordHasher,
+      private readonly EntityManagerInterface $entityManager)
   {
-    $this->userApiTokenRepository = $userApiTokenRepository;
-    $this->userPasswordEncoder    = $userPasswordEncoder;
-    $this->entityManager          = $entityManager;
   }
 
-  public function start(Request $request, AuthenticationException $authException = null)
-  {
-    return $this->createUnauthorizedResponse(
-        sprintf('Make sure to provide the %s header', self::API_TOKEN_HEADER)
-    );
-  }
-
-  public function supports(Request $request)
+  public function supports(Request $request): bool
   {
     return $request->headers->has(self::API_TOKEN_HEADER);
   }
 
-  public function getCredentials(Request $request)
+  public function authenticate(Request $request): Passport
   {
     // Split token into user id and token
     $token = $request->headers->get(self::API_TOKEN_HEADER);
 
     $tokenData = explode('_', $token);
 
-    return [
-        'token_id' => $tokenData[0] ?? null,
-        'token'    => $tokenData[1] ?? null,
-    ];
+    return new Passport(
+        new UserBadge(
+            $tokenData[0],
+            fn ($userIdentifier): UserApiToken => $this->userApiTokenRepository->findOneBy(['tokenId' => $userIdentifier])
+        ),
+        new CustomCredentials(
+            fn (string $password, UserApiToken $apiToken): bool => (!$apiToken->getValidUntil() || $apiToken->getValidUntil() > new DateTimeImmutable())
+            && $this->passwordHasher->isPasswordValid($apiToken, $password),
+            $tokenData[1]
+        ),
+        [
+            new PasswordUpgradeBadge($tokenData[1], $this->userApiTokenRepository),
+        ]
+    );
   }
 
-  public function getUser($credentials, UserProviderInterface $userProvider)
-  {
-    return $this->userApiTokenRepository->findOneBy(['tokenId' => $credentials['token_id']]);
-  }
-
-  public function checkCredentials($credentials, UserInterface $user)
-  {
-    if (!$credentials['token'] || !$user instanceof UserApiToken) {
-      throw new AuthenticationException('Missing token');
-    }
-
-    if ($user->getValidUntil() && $user->getValidUntil() < new DateTimeImmutable()) {
-      throw new AuthenticationException('Token expired');
-    }
-
-    return $this->userPasswordEncoder->isPasswordValid($user, $credentials['token']);
-  }
-
-  public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+  public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
   {
     return $this->createUnauthorizedResponse('Invalid API credentials');
   }
 
-  public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+  public function onAuthenticationSuccess(Request $request, TokenInterface $token, $firewallName): ?Response
   {
     return null;
-  }
-
-  public function supportsRememberMe(): bool
-  {
-    return false;
   }
 
   private function createUnauthorizedResponse(string $description): JsonResponse
@@ -99,17 +74,18 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
     return new ApiErrorResponse('Unauthorized', Response::HTTP_UNAUTHORIZED, $description);
   }
 
-  public function createAuthenticatedToken(UserInterface $user, $providerKey): GuardTokenInterface
+  public function createToken(Passport $passport, $firewallName): TokenInterface
   {
-    if (!$user instanceof UserApiToken) {
+    $apiToken = $passport->getUser();
+    if (!$apiToken instanceof UserApiToken) {
       throw new AuthenticationException('Invalid user class');
     }
 
     // Store last used
-    $user->setLastUsed(new DateTimeImmutable());
+    $apiToken->setLastUsed(new DateTimeImmutable());
     $this->entityManager->flush();
 
     // Create the token
-    return parent::createAuthenticatedToken($user->getUser(), $providerKey);
+    return new PostAuthenticationToken($apiToken->getUser(), $firewallName, $apiToken->getUser()->getRoles());
   }
 }

@@ -75,7 +75,6 @@
         "symfony/runtime": "5.4.8",
         "symfony/security-bundle": "5.4.9",
         "symfony/security-core": "5.4.10",
-        "symfony/security-guard": "5.4.9",
         "symfony/security-http": "5.4.10",
         "symfony/string": "5.4.10",
         "symfony/translation": "5.4.9",
