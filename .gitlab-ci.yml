@@ -108,18 +108,11 @@ code-style-fixer:
       paths:
         - vendor/
       policy: pull
-    - key:
-        files:
-          - composer.lock
-        prefix: ${CI_PROJECT_PATH_SLUG}_code_style
-      paths:
-        - cs_tools/vendor/
   script:
     - >-
       if [[ "skip" == $(php -r "echo (str_starts_with('$CI_COMMIT_REF_NAME', 'renovate/') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'rector-rector') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'friendsofphp-php-cs-fixer')) ? 'skip' : '';") ]]; then echo "Skipping automated rector"; exit 0; fi
-    - composer install --working-dir cs_tools --no-interaction --no-progress
-    - cs_tools/vendor/bin/rector --no-progress-bar --no-diffs --autoload-file=vendor/autoload.php
-    - cs_tools/vendor/bin/php-cs-fixer fix
+    - vendor/bin/rector --no-progress-bar --no-diffs
+    - vendor/bin/php-cs-fixer fix
     - if [[ $(git status --porcelain | wc -l) -eq "0" ]]; then echo "All looks good 👍🏻"; exit 0; fi
     - echo "Changes required 👎🏻"
     - git config gc.auto 0 # Disable automatic GC
