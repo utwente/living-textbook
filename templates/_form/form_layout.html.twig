@@ -112,7 +112,7 @@
   {% set select2_placeholder = select2_placeholder is not none ? select2_placeholder : placeholder %}
   {% set placeholder = placeholder is not none ? '' : placeholder %}
   {{- parent() -}}
-  {%- spaceless -%}
+  {%- apply spaceless -%}
     {% if select2 %}
       <script type="text/javascript">
         $('#{{ id }}').select2({
@@ -123,7 +123,7 @@
         });
       </script>
     {% endif %}
-  {%- endspaceless -%}
+  {%- endapply -%}
 {%- endblock -%}
 
 {% block checkbox_widget %}
