@@ -39,6 +39,15 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $stylings = null;
 
+  /**
+   * @ORM\Column(name="name", type="string", length=255, nullable=false)
+   * @Assert\NotBlank()
+   * @Assert\Length(min=1, max=255)
+   *
+   * @JMSA\Expose()
+   */
+  private string $name = '';
+
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -61,5 +70,17 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
     $this->stylings = $stylings;
 
     return $this;
+  }
+
+  public function getName(): string
+  {
+    return $this->name;
+  }
+
+  public function setName(string $name): self
+  {
+    $this->name = $name;
+
+    return  $this;
   }
 }

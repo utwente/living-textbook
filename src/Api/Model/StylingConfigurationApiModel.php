@@ -10,6 +10,8 @@ class StylingConfigurationApiModel
 {
   protected function __construct(
       protected readonly int $id,
+      #[Groups(['Default', 'mutate'])]
+      protected readonly string $name,
       #[Type('array')]
       #[Groups(['Default', 'mutate'])]
       protected readonly ?array $stylings,
@@ -20,6 +22,7 @@ class StylingConfigurationApiModel
   {
     return new self(
         $stylingConfiguration->getId(),
+        $stylingConfiguration->getName(),
         $stylingConfiguration->getStylings()
     );
   }
@@ -27,6 +30,7 @@ class StylingConfigurationApiModel
   public function mapToEntity(?StylingConfiguration $stylingConfiguration): StylingConfiguration
   {
     return ($stylingConfiguration ?? new StylingConfiguration())
+        ->setName($this->name ?? $stylingConfiguration->getName())
         ->setStylings($this->stylings ?? $stylingConfiguration->getStylings());
   }
 }
