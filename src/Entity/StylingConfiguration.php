@@ -81,6 +81,6 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
   {
     $this->name = $name;
 
-    return  $this;
+    return $this;
   }
 }

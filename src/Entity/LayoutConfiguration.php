@@ -80,6 +80,6 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
   {
     $this->name = $name;
 
-    return  $this;
+    return $this;
   }
 }
