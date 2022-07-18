@@ -1,6 +1,6 @@
-@import '~bootstrap/scss/_mixins';
-@import '~bootstrap/scss/_functions';
-@import '~bootstrap/scss/_variables';
+@import 'bootstrap/scss/_mixins';
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
 @import '../css/vars/colors';
 
 $primary-color: map-get($theme-colors, primary);
@@ -14,7 +14,7 @@ $dark-gray: darken($background-color, 40%);
 $image-margin: 16px;
 $button-margin: 0;
 
-@import '~foundation-emails/scss/foundation-emails';
+@import 'foundation-emails/scss/foundation-emails';
 
 @mixin background() {
   background: $light-gray;
@@ -42,7 +42,7 @@ html,
 
     .full-name {
       color: $global-font-color;
-      margin-top: -($image-margin / 2);
+      margin-top: -($image-margin * 0.5);
       font-weight: bold;
     }
   }

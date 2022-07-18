@@ -8,7 +8,7 @@
   > .license-image {
     flex-shrink: 0;
     flex-grow: 0;
-    margin-top: $spacer / 2;
+    margin-top: $spacer * 0.5;
     height: 2rem;
     width: 6.5rem;
     background: url('../../img/footer/license.svg') no-repeat bottom left;

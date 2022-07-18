@@ -77,7 +77,7 @@ $comment-spacer: $spacer;
       display: block;
 
       &:not(:last-of-type) {
-        margin-bottom: $comment-spacer / 4;
+        margin-bottom: $comment-spacer * 0.25;
       }
     }
 
@@ -89,13 +89,13 @@ $comment-spacer: $spacer;
   }
 
   .annotations-comment-container {
-    margin-top: $comment-spacer / 4;
+    margin-top: $comment-spacer * 0.25;
 
     div {
       margin-left: $comment-spacer;
 
       .btn {
-        margin-top: $comment-spacer / 4;
+        margin-top: $comment-spacer * 0.25;
         float: right;
       }
     }

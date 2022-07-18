@@ -8,16 +8,16 @@ $font-family-sans-serif: $font-family;
 $popover-font-size: 1rem;
 
 // Import bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 
 // Import Select2 Bootstrap theme
-@import '~select2-theme-bootstrap4/src/select2-bootstrap';
+@import 'select2-theme-bootstrap4/src/select2-bootstrap';
 
 .card.container-card {
   border-radius: 0;
 
   &:not(:first-child) {
-    margin-top: ($grid-gutter-width / 2);
+    margin-top: ($grid-gutter-width * 0.5);
   }
 }
 
@@ -34,8 +34,8 @@ $popover-font-size: 1rem;
   border: inherit;
   border-radius: inherit;
   height: inherit;
-  padding-right: ($grid-gutter-width / 2);
-  padding-left: ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width * 0.5);
+  padding-left: ($grid-gutter-width * 0.5);
 }
 
 .required.custom-file-label::after {
