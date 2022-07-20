@@ -39,7 +39,7 @@
         "nelmio/api-doc-bundle": "4.9.0",
         "nelmio/cors-bundle": "2.2.0",
         "phpoffice/phpspreadsheet": "1.24.0",
-        "rollerworks/password-strength-validator": "1.7.2",
+        "rollerworks/password-strength-validator": "1.7.3",
         "ryakad/pandoc-php": "1.0.0",
         "sensio/framework-extra-bundle": "6.2.6",
         "sentry/sentry-symfony": "4.3.0",

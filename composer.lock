@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2518b47a0216e5d1b681fe327c6dbc45",
+    "content-hash": "34fc0df918ffc5c99e570db38c1dd89a",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5323,16 +5323,16 @@
         },
         {
             "name": "rollerworks/password-strength-validator",
-            "version": "v1.7.2",
+            "version": "v1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
-                "reference": "26e46654139f98b9f9fbb8bd4683122942de7cd6"
+                "reference": "7ad6e573f506fe7693f83265d858f0f04ffbf97e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/26e46654139f98b9f9fbb8bd4683122942de7cd6",
-                "reference": "26e46654139f98b9f9fbb8bd4683122942de7cd6",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/7ad6e573f506fe7693f83265d858f0f04ffbf97e",
+                "reference": "7ad6e573f506fe7693f83265d858f0f04ffbf97e",
                 "shasum": ""
             },
             "require": {
@@ -5390,9 +5390,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rollerworks/PasswordStrengthValidator/issues",
-                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v1.7.2"
+                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v1.7.3"
             },
-            "time": "2021-12-05T11:57:34+00:00"
+            "time": "2022-07-13T09:56:53+00:00"
         },
         {
             "name": "ryakad/pandoc-php",
