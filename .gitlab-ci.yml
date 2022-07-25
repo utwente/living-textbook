@@ -90,8 +90,6 @@ install-js-dependencies:
         echo "Using updated dotron version ${UPSTREAM_DOTRON_VERSION}"
         yarn add @utwente/dotron-app@${UPSTREAM_DOTRON_VERSION}
       fi
-  after_script:
-    - rm .npmrc
   tags:
     - docker
   except:
