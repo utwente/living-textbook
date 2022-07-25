@@ -86,7 +86,7 @@ install-js-dependencies:
     # Install the dependencies
     - yarn install
     - >- # Use upstream dotron version when triggered from dotron repo
-      if [[ -v ${UPSTREAM_DOTRON_VERSION} ]]; then
+      if [ -n "${UPSTREAM_DOTRON_VERSION}" ]; then
         echo "Using updated dotron version ${UPSTREAM_DOTRON_VERSION}"
         yarn add @utwente/dotron-app@${UPSTREAM_DOTRON_VERSION}
       fi
