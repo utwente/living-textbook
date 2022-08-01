@@ -29,8 +29,9 @@ class LayoutConfigurationApiModel
 
   public function mapToEntity(?LayoutConfiguration $layoutConfiguration): LayoutConfiguration
   {
-    return ($layoutConfiguration ?? new LayoutConfiguration())
+    $layoutConfiguration = $layoutConfiguration ?? new LayoutConfiguration();
+    return $layoutConfiguration
         ->setName($this->name ?? $layoutConfiguration->getName())
-        ->setLayouts($this->layouts ?? $layoutConfiguration->getLayouts());
+        ->setLayouts($this->layouts ?? $layoutConfiguration->getLayouts() ?? []);
   }
 }

@@ -29,8 +29,9 @@ class StylingConfigurationApiModel
 
   public function mapToEntity(?StylingConfiguration $stylingConfiguration): StylingConfiguration
   {
-    return ($stylingConfiguration ?? new StylingConfiguration())
+    $stylingConfiguration = $stylingConfiguration ?? new StylingConfiguration();
+    return $stylingConfiguration
         ->setName($this->name ?? $stylingConfiguration->getName())
-        ->setStylings($this->stylings ?? $stylingConfiguration->getStylings());
+        ->setStylings($this->stylings ?? $stylingConfiguration->getStylings() ?? []);
   }
 }
