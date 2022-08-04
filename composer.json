@@ -20,7 +20,7 @@
         "doctrine/dbal": "3.3.7",
         "doctrine/doctrine-bundle": "2.7.0",
         "doctrine/doctrine-migrations-bundle": "3.2.2",
-        "doctrine/event-manager": "1.1.1",
+        "doctrine/event-manager": "1.1.2",
         "doctrine/migrations": "3.5.1",
         "doctrine/orm": "2.12.3",
         "doctrine/persistence": "3.0.2",
