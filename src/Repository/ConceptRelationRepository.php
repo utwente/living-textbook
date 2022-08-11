@@ -10,9 +10,12 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Drenso\Shared\Database\RepositoryTraits\FindIdsTrait;
 
 class ConceptRelationRepository extends ServiceEntityRepository
 {
+  use FindIdsTrait;
+
   public function __construct(ManagerRegistry $registry)
   {
     parent::__construct($registry, ConceptRelation::class);

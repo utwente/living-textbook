@@ -12,6 +12,7 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Drenso\Shared\IdMap\IdMap;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -165,12 +166,27 @@ class ConceptRelationController extends AbstractApiController
     $this->em->beginTransaction();
 
     try {
-      $conceptRelations = array_map(fn ($requestRelation) => $this->updateRelation(
-          $requestStudyArea,
-          $relationRepository->find($requestRelation->getId()),
-          $requestRelation,
-          $relationTypeRepository
-      ), $requestRelations);
+      // Prefetch all relations in a single query
+      $dbRelations = new IdMap($relationRepository->findByIds(array_map(
+          fn (UpdateConceptRelationApiModel $requestRelation) => $requestRelation->getId(),
+          $requestRelations
+      )));
+
+      $conceptRelations = [];
+      foreach ($requestRelations as $requestRelation) {
+        if (!$dbRelation = $dbRelations[$requestRelation->getId()] ?? null) {
+          // Silently ignore missing relation in database
+          continue;
+        }
+        assert($dbRelation instanceof ConceptRelation);
+
+        $conceptRelations[] = $this->updateRelation(
+            $requestStudyArea,
+            $dbRelation,
+            $requestRelation,
+            $relationTypeRepository
+        );
+      }
 
       $this->em->commit();
     } catch (Exception $e) {

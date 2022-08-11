@@ -5,11 +5,12 @@ namespace App\Api\Model\Update;
 use App\Api\Model\ConceptRelationApiModel;
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
+use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
 
-class UpdateConceptRelationApiModel extends ConceptRelationApiModel
+class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements IdInterface
 {
   protected function __construct(
       protected readonly int $id,
