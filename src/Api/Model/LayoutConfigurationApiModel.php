@@ -12,7 +12,7 @@ class LayoutConfigurationApiModel
       protected readonly int $id,
       #[Groups(['Default', 'mutate'])]
       protected readonly string $name,
-      #[Type('array')]
+      #[Type('array<string, array>')]
       #[Groups(['Default', 'mutate'])]
       protected readonly ?array $layouts
   ) {
