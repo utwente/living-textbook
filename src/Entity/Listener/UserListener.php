@@ -21,7 +21,7 @@ class UserListener
    */
   public function updateStudyAreaRights(User $user, LifecycleEventArgs $event)
   {
-    $em = $event->getEntityManager();
+    $em = $event->getObjectManager();
 
     // Find any UserGroupEmail to upgrade
     $repo = $em->getRepository(UserGroupEmail::class);

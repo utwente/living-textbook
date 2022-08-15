@@ -3,7 +3,8 @@
 namespace App\Database;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Gedmo\SoftDeleteable\SoftDeleteableListener;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -12,13 +13,9 @@ class SoftDeletableSubscriber implements EventSubscriber
   /** Field name for deleted by */
   public const FIELD_NAME = 'deletedBy';
 
-  /** @var TokenStorageInterface */
-  private $tokenStorage;
-
   /** SoftDeletableSubscriber constructor. */
-  public function __construct(TokenStorageInterface $tokenStorage)
+  public function __construct(private readonly TokenStorageInterface $tokenStorage)
   {
-    $this->tokenStorage = $tokenStorage;
   }
 
   /**
@@ -36,8 +33,9 @@ class SoftDeletableSubscriber implements EventSubscriber
   {
     // Get needed objects
     $object = $args->getObject();
-    $om     = $args->getEntityManager();
-    $uow    = $args->getEntityManager()->getUnitOfWork();
+    $om     = $args->getObjectManager();
+    assert($om instanceof EntityManagerInterface);
+    $uow    = $om->getUnitOfWork();
 
     // Get old field value
     $meta     = $om->getClassMetadata(get_class($object));
