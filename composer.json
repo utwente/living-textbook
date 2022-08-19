@@ -88,7 +88,7 @@
         "twig/extra-bundle": "3.4.0",
         "twig/inky-extra": "3.4.0",
         "twig/intl-extra": "3.4.2",
-        "twig/twig": "3.4.1",
+        "twig/twig": "3.4.2",
         "zircote/swagger-php": "4.4.7"
     },
     "require-dev": {
