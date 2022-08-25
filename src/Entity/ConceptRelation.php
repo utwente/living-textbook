@@ -111,7 +111,6 @@ class ConceptRelation
     return $this->getTarget()?->getId();
   }
 
-  /** @return int|null */
   public function getSourceId(): ?int
   {
     return $this->getSource()?->getId();
@@ -126,7 +125,6 @@ class ConceptRelation
     return $this->relationType ? $this->relationType->getName() : '';
   }
 
-  /** @return Concept|null */
   public function getSource(): ?Concept
   {
     return $this->source;
@@ -139,7 +137,6 @@ class ConceptRelation
     return $this;
   }
 
-  /** @return Concept|null */
   public function getTarget(): ?Concept
   {
     return $this->target;
@@ -152,7 +149,6 @@ class ConceptRelation
     return $this;
   }
 
-  /** @return RelationType|null */
   public function getRelationType(): ?RelationType
   {
     return $this->relationType;
@@ -170,7 +166,6 @@ class ConceptRelation
     return $this;
   }
 
-  /** @return int */
   public function getOutgoingPosition(): int
   {
     return $this->outgoingPosition;
@@ -183,7 +178,6 @@ class ConceptRelation
     return $this;
   }
 
-  /** @return int */
   public function getIncomingPosition(): int
   {
     return $this->incomingPosition;

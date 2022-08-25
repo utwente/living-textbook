@@ -54,13 +54,11 @@ class UserBrowserState implements StudyAreaFilteredInterface
    */
   private $filterState;
 
-  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
   }
 
-  /** @return UserBrowserState */
   public function setUser(?User $user): self
   {
     $this->user = $user;
@@ -68,7 +66,6 @@ class UserBrowserState implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -81,13 +78,11 @@ class UserBrowserState implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return array|null */
   public function getFilterState(): ?array
   {
     return $this->filterState;
   }
 
-  /** @return UserBrowserState */
   public function setFilterState(?array $filterState): self
   {
     $this->filterState = $filterState;

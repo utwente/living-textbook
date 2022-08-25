@@ -108,7 +108,6 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     return lcfirst(str_replace(' ', '', ucwords($this->getName())));
   }
 
-  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
@@ -121,7 +120,6 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string */
   public function getName(): string
   {
     return $this->name;
@@ -134,7 +132,6 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

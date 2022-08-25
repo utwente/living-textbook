@@ -21,9 +21,7 @@ class LearningPathElementsType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->addModelTransformer(new CallbackTransformer(
-        function (Collection $modelData): array {
-          return LearningPath::OrderElements($modelData)->toArray();
-        },
+        fn (Collection $modelData): array => LearningPath::OrderElements($modelData)->toArray(),
         function (array $formData): ArrayCollection {
           /** @var LearningPathElement[] $formData */
           $previousElement = null;

@@ -45,7 +45,6 @@ class EditRelationTypeType extends AbstractType
         ]);
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -152,7 +152,7 @@ class ReviewService
     }
 
     // If nothing has changed, we have nothing to do for review and we use the original behavior
-    if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE && 0 === count($pendingChange->getChangedFields())) {
+    if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE && 0 === count((array)$pendingChange->getChangedFields())) {
       // Use the normal save behavior
       $this->directSave($object, $changeType, $directCallback);
 
@@ -280,9 +280,7 @@ class ReviewService
     }
 
     return 0 === count(array_filter($this->pendingChangeRepository->getForObject($object),
-            function (PendingChange $pendingChange) {
-              return $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT;
-            }));
+            fn (PendingChange $pendingChange) => $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT));
   }
 
   /** Retrieve whether the object can be removed. */
@@ -532,10 +530,8 @@ class ReviewService
    * Convert value to simple type which can be compared by simple if statements.
    *
    * @param $value
-   *
-   * @return false|string
    */
-  private function asSimpleType(&$value)
+  private function asSimpleType(&$value): string|false|null
   {
     if ($value === null) {
       return null;

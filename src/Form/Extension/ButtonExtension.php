@@ -16,7 +16,6 @@ class ButtonExtension extends AbstractTypeExtension
         : sprintf('%s %s', $options['icon_prefix'], $options['icon']);
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

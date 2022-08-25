@@ -30,10 +30,10 @@ use function Symfony\Component\String\b;
 class RequestStudyAreaSubscriber implements EventSubscriberInterface
 {
   /** @var string Study area session/request key */
-  public const STUDY_AREA_KEY = '_studyArea';
+  final public const STUDY_AREA_KEY = '_studyArea';
 
   /** @var string Study area twig key */
-  public const TWIG_STUDY_AREA_KEY = '_twigStudyArea';
+  final public const TWIG_STUDY_AREA_KEY = '_twigStudyArea';
 
   private ?StudyArea $studyArea = null;
 
@@ -179,7 +179,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
       // Set the arguments
       $event->setArguments($arguments);
-    } catch (ReflectionException $e) {
+    } catch (ReflectionException) {
       // Do nothing
     }
   }

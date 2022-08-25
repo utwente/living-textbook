@@ -21,7 +21,6 @@ class ButtonUrlType extends AbstractType
     $view->vars['route_params'] = $options['route_params'];
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setRequired('route');

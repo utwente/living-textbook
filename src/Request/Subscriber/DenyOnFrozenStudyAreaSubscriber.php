@@ -70,7 +70,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     // An study area is required
     if ($studyArea === null || !$studyArea instanceof StudyArea) {
       throw new InvalidArgumentException(sprintf('Subject "%s" does not contain the expected study area, but a "%s"',
-          $configuration->getSubject(), $studyArea === null ? 'null' : get_class($studyArea)));
+          $configuration->getSubject(), $studyArea === null ? 'null' : $studyArea::class));
     }
 
     // Check for frozen
@@ -87,8 +87,8 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
       // Parse route params
       $routeParams = [];
       foreach ($configuration->getRouteParams() as $key => $param) {
-        if (stripos($param, '{') === 0 && stripos($param, '}') === strlen($param) - 1) {
-          $param = substr($param, 1, strlen($param) - 2);
+        if (stripos((string)$param, '{') === 0 && stripos((string)$param, '}') === strlen((string)$param) - 1) {
+          $param = substr((string)$param, 1, strlen((string)$param) - 2);
           if (array_key_exists($param, $arguments)) {
             $param = $arguments[$param];
             if (is_object($param) && method_exists($param, 'getId')) {
@@ -101,9 +101,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 
       // Redirect to new url
       $redirectRoute = $this->router->generate($configuration->getRoute(), $routeParams);
-      $event->setController(function () use ($redirectRoute) {
-        return new RedirectResponse($redirectRoute);
-      });
+      $event->setController(fn () => new RedirectResponse($redirectRoute));
     }
   }
 }

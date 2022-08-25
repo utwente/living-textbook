@@ -15,7 +15,6 @@ class OrderedCollectionType extends AbstractType
     $view->vars['position_selector'] = $options['position_selector'];
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefault('position_selector', 'collection-position');

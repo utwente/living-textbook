@@ -37,11 +37,9 @@ class LearningPathController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -81,12 +79,10 @@ class LearningPathController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_show",
    *   routeParams={"learningPath"="{learningPath}"}, subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function edit(
       Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
-      EntityManagerInterface $em, TranslatorInterface $trans)
+      EntityManagerInterface $em, TranslatorInterface $trans): array|Response
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
     $studyArea = $requestStudyArea->getStudyArea();
@@ -183,12 +179,10 @@ class LearningPathController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
    *                                                       subject="requestStudyArea")
-   *
-   * @return array|RedirectResponse
    */
   public function remove(
       Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
-      TranslatorInterface $trans)
+      TranslatorInterface $trans): array|RedirectResponse
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
     $studyArea = $requestStudyArea->getStudyArea();

@@ -64,7 +64,7 @@ class TrackingController extends AbstractController
           $pathContext = null;
           try {
             $pathContext = $router->match($pageLoad->getPath());
-          } catch (ResourceNotFoundException $e) {
+          } catch (ResourceNotFoundException) {
             // Try to resolve the path context, set empty context when route not found
           }
 
@@ -72,7 +72,7 @@ class TrackingController extends AbstractController
           if ($pageLoad->getOrigin()) {
             try {
               $originContext = $router->match($pageLoad->getOrigin());
-            } catch (ResourceNotFoundException $e) {
+            } catch (ResourceNotFoundException) {
               // Try to resolve the origin context, but ignore when not matched
             }
           }

@@ -21,7 +21,7 @@ class ReviewExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('reviewEnabled', [$this, 'reviewEnabled']),
+        new TwigFunction('reviewEnabled', $this->reviewEnabled(...)),
     ];
   }
 

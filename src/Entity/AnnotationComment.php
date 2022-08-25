@@ -74,7 +74,6 @@ class AnnotationComment
     return $this->createdAt;
   }
 
-  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
@@ -105,7 +104,6 @@ class AnnotationComment
     return $this;
   }
 
-  /** @return Annotation|null */
   public function getAnnotation(): ?Annotation
   {
     return $this->annotation;
@@ -118,7 +116,6 @@ class AnnotationComment
     return $this;
   }
 
-  /** @return string|null */
   public function getText(): ?string
   {
     return $this->text;

@@ -41,26 +41,22 @@ class LearningPathElementSelectorType extends AbstractType
 
     $builder
         ->add('concepts', EntityType::class, [
-            'label'         => 'menu.concept',
-            'class'         => Concept::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
-              return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea);
-            },
+            'label'               => 'menu.concept',
+            'class'               => Concept::class,
+            'choice_label'        => 'name',
+            'required'            => false,
+            'multiple'            => true,
+            'query_builder'       => fn (ConceptRepository $conceptRepository)       => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
             'select2'             => true,
             'select2_placeholder' => 'learning-path.select',
         ])
         ->add('learningOutcomes', EntityType::class, [
-            'label'         => ucfirst($this->namingService->get()->learningOutcome()->objs()),
-            'class'         => LearningOutcome::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'multiple'      => true,
-            'query_builder' => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
-              return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
-            },
+            'label'               => ucfirst($this->namingService->get()->learningOutcome()->objs()),
+            'class'               => LearningOutcome::class,
+            'choice_label'        => 'name',
+            'required'            => false,
+            'multiple'            => true,
+            'query_builder'       => fn (LearningOutcomeRepository $learningOutcomeRepository)       => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
             'select2'             => true,
             'select2_placeholder' => 'learning-path.select',
         ])

@@ -26,13 +26,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class MenuVoter extends Voter
 {
-  public const CONCEPTS             = 'MENU_CONCEPTS';
-  public const LEARNING_PATHS       = 'MENU_LEARNING_PATHS';
-  public const ABBREVIATIONS        = 'MENU_ABBREVIATIONS';
-  public const CONTRIBUTORS         = 'MENU_CONTRIBUTORS';
-  public const EXTERNAL_RESOURCES   = 'MENU_EXTERNAL_RESOURCES';
-  public const LEARNING_OUTCOMES    = 'MENU_LEARNING_OUTCOMES';
-  public const SUPPORTED_ATTRIBUTES = [
+  final public const CONCEPTS             = 'MENU_CONCEPTS';
+  final public const LEARNING_PATHS       = 'MENU_LEARNING_PATHS';
+  final public const ABBREVIATIONS        = 'MENU_ABBREVIATIONS';
+  final public const CONTRIBUTORS         = 'MENU_CONTRIBUTORS';
+  final public const EXTERNAL_RESOURCES   = 'MENU_EXTERNAL_RESOURCES';
+  final public const LEARNING_OUTCOMES    = 'MENU_LEARNING_OUTCOMES';
+  final public const SUPPORTED_ATTRIBUTES = [
       self::CONCEPTS,
       self::LEARNING_PATHS,
       self::ABBREVIATIONS,
@@ -119,21 +119,14 @@ class MenuVoter extends Voter
     /* @var StudyArea $subject */
     assert($subject instanceof StudyArea);
 
-    switch ($attribute) {
-      case self::CONCEPTS:
-        return $this->conceptRepository->getCountForStudyArea($subject) > 0;
-      case self::LEARNING_PATHS:
-        return $this->learningPathRepository->getCountForStudyArea($subject) > 0;
-      case self::ABBREVIATIONS:
-        return $this->abbreviationRepository->getCountForStudyArea($subject) > 0;
-      case self::CONTRIBUTORS:
-        return $this->contributorRepository->getCountForStudyArea($subject) > 0;
-      case self::EXTERNAL_RESOURCES:
-        return $this->externalResourceRepository->getCountForStudyArea($subject) > 0;
-      case self::LEARNING_OUTCOMES:
-        return $this->learningOutcomeRepository->getCountForStudyArea($subject) > 0;
-    }
-
-    throw new RuntimeException('This code should not be reached!');
+    return match ($attribute) {
+      self::CONCEPTS             => $this->conceptRepository->getCountForStudyArea($subject) > 0,
+        self::LEARNING_PATHS     => $this->learningPathRepository->getCountForStudyArea($subject) > 0,
+        self::ABBREVIATIONS      => $this->abbreviationRepository->getCountForStudyArea($subject) > 0,
+        self::CONTRIBUTORS       => $this->contributorRepository->getCountForStudyArea($subject) > 0,
+        self::EXTERNAL_RESOURCES => $this->externalResourceRepository->getCountForStudyArea($subject) > 0,
+        self::LEARNING_OUTCOMES  => $this->learningOutcomeRepository->getCountForStudyArea($subject) > 0,
+        default                  => throw new RuntimeException('This code should not be reached!'),
+    };
   }
 }

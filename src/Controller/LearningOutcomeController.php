@@ -34,12 +34,10 @@ class LearningOutcomeController extends AbstractController
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function add(
       Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans,
-      NamingService $namingService)
+      NamingService $namingService): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -82,12 +80,10 @@ class LearningOutcomeController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
    *                                                          subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function edit(
       Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
-      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService)
+      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): array|Response
   {
     // Check if correct study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -159,12 +155,10 @@ class LearningOutcomeController extends AbstractController
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_show",
    *   routeParams={"learningOutcome"="{learningOutcome}"}, subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function remove(
       Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
-      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService)
+      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -211,12 +205,10 @@ class LearningOutcomeController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function removeUnused(
       Request $request, RequestStudyArea $requestStudyArea, LearningOutcomeRepository $learningOutcomeRepository,
-      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService)
+      ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 

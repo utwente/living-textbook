@@ -74,6 +74,7 @@ class RelationTypeController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
+   * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
    */
   public function edit(
       Request $request,
@@ -147,6 +148,7 @@ class RelationTypeController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
+   * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
    */
   public function remove(
       Request $request,

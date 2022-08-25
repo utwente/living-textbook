@@ -217,16 +217,16 @@ abstract class LtbSection extends Section
 
     // Replace unsupported graphics with an unavailable image
     $matches = [];
-    preg_match_all('/\\\\includegraphics(\[.+\])?\{([^}]+)\}/u', $latex, $matches);
+    preg_match_all('/\\\\includegraphics(\[.+\])?\{([^}]+)\}/u', (string)$latex, $matches);
     foreach ($matches[2] as $imageLocation) {
       if ($this->fileSystem->exists($imageLocation)) {
-        $extension = strtolower(pathinfo($imageLocation, PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo((string)$imageLocation, PATHINFO_EXTENSION));
         if (in_array($extension, ['png', 'jpg', 'jpeg'])) {
           continue;
         }
 
         // Unsupported image found, replace with notice image
-        $latex = str_replace($imageLocation, sprintf('%s%s/assets/img/print/notavailable.png', $this->projectDir, DIRECTORY_SEPARATOR), $latex);
+        $latex = str_replace($imageLocation, sprintf('%s%s/assets/img/print/notavailable.png', $this->projectDir, DIRECTORY_SEPARATOR), (string)$latex);
       }
     }
 

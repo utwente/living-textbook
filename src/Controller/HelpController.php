@@ -52,11 +52,9 @@ class HelpController extends AbstractController
    *
    * @throws NoResultException
    * @throws NonUniqueResultException
-   *
-   * @return array|Response
    */
   public function edit(
-      Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator)
+      Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
   {
     $help = $helpRepository->getCurrent();
     $form = $this->createForm(EditHelpType::class, $help);

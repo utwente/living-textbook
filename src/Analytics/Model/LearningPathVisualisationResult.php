@@ -29,7 +29,6 @@ class LearningPathVisualisationResult
   /** @var SplFileInfo */
   public $metaDataFile;
 
-  /** @return string */
   public function getFlowThroughFileJson(): string
   {
     return $this->flowThroughFile->getContents();

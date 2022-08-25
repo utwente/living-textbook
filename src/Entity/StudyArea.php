@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Stringable;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -26,16 +27,16 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
-class StudyArea
+class StudyArea implements Stringable
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
   // Access types, used to determine if a user can access the study area
-  public const ACCESS_PUBLIC  = 'public';
-  public const ACCESS_PRIVATE = 'private';
-  public const ACCESS_GROUP   = 'group';
+  final public const ACCESS_PUBLIC  = 'public';
+  final public const ACCESS_PRIVATE = 'private';
+  final public const ACCESS_GROUP   = 'group';
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
@@ -50,7 +51,7 @@ class StudyArea
   private ?string $description = null;
 
   /**
-   * @var Collection|Concept[]
+   * @var Collection<Concept>
    *
    * @ORM\OneToMany(targetEntity="Concept", mappedBy="studyArea", cascade={"persist","remove"})
    *
@@ -59,7 +60,7 @@ class StudyArea
   private $concepts;
 
   /**
-   * @var Collection|UserGroup[]
+   * @var Collection<UserGroup>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\UserGroup", mappedBy="studyArea", cascade={"persist","remove"})
    *
@@ -84,49 +85,49 @@ class StudyArea
   private string $accessType = self::ACCESS_PRIVATE;
 
   /**
-   * @var Collection|RelationType[]
+   * @var Collection<RelationType>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\RelationType", mappedBy="studyArea")
    */
   private $relationTypes;
 
   /**
-   * @var Collection|Abbreviation[]
+   * @var Collection<Abbreviation>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Abbreviation", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
   private $abbreviations;
 
   /**
-   * @var Collection|ExternalResource[]
+   * @var Collection<ExternalResource>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\ExternalResource", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
   private $externalResources;
 
   /**
-   * @var Collection|Contributor[]
+   * @var Collection<Contributor>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Contributor", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
   private $contributors;
 
   /**
-   * @var Collection|LearningOutcome[]
+   * @var Collection<LearningOutcome>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningOutcome", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
   private $learningOutcomes;
 
   /**
-   * @var Collection|LearningPath[]
+   * @var Collection<LearningPath>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningPath", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
   private $learningPaths;
 
   /**
-   * @var Collection|Tag[]
+   * @var Collection<Tag>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
@@ -279,9 +280,7 @@ class StudyArea
     // Get choices, remove public type when not administrator, and field has changed
     $choices = StudyArea::getAccessTypes();
     if (!$security->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
-      $choices = array_filter($choices, function ($item) {
-        return $item !== StudyArea::ACCESS_PUBLIC;
-      });
+      $choices = array_filter($choices, fn ($item) => $item !== StudyArea::ACCESS_PUBLIC);
     }
 
     return $choices;
@@ -299,8 +298,8 @@ class StudyArea
     return false;
   }
 
-  /** @return UserGroup[]|Collection */
-  public function getUserGroups(string $groupType = null)
+  /** @return Collection<UserGroup> */
+  public function getUserGroups(string $groupType = null): Collection
   {
     return $groupType === null ? $this->userGroups : $this->userGroups->matching(
         Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
@@ -379,10 +378,8 @@ class StudyArea
       return [];
     }
 
-    $users = array_merge(...$editorGroup->map(function (UserGroup $userGroup) {
-      return $userGroup->getUsers()->toArray();
-    })->toArray());
-    usort($users, [User::class, 'sortOnDisplayName']);
+    $users = array_merge(...$editorGroup->map(fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
+    usort($users, User::sortOnDisplayName(...));
 
     return $users;
   }
@@ -400,10 +397,8 @@ class StudyArea
       return [];
     }
 
-    $userGroupEmails = array_merge(...$editorGroup->map(function (UserGroup $userGroup) {
-      return $userGroup->getEmails()->toArray();
-    })->toArray());
-    usort($userGroupEmails, [UserGroupEmail::class, 'sortOnEmail']);
+    $userGroupEmails = array_merge(...$editorGroup->map(fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
+    usort($userGroupEmails, UserGroupEmail::sortOnEmail(...));
 
     return $userGroupEmails;
   }
@@ -421,10 +416,8 @@ class StudyArea
       return [];
     }
 
-    $users = array_merge(...$reviewGroup->map(function (UserGroup $userGroup) {
-      return $userGroup->getUsers()->toArray();
-    })->toArray());
-    usort($users, [User::class, 'sortOnDisplayName']);
+    $users = array_merge(...$reviewGroup->map(fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
+    usort($users, User::sortOnDisplayName(...));
 
     return $users;
   }
@@ -442,10 +435,8 @@ class StudyArea
       return [];
     }
 
-    $userGroupEmails = array_merge(...$reviewGroup->map(function (UserGroup $userGroup) {
-      return $userGroup->getEmails()->toArray();
-    })->toArray());
-    usort($userGroupEmails, [UserGroupEmail::class, 'sortOnEmail']);
+    $userGroupEmails = array_merge(...$reviewGroup->map(fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
+    usort($userGroupEmails, UserGroupEmail::sortOnEmail(...));
 
     return $userGroupEmails;
   }
@@ -463,10 +454,8 @@ class StudyArea
       return [];
     }
 
-    $users = array_merge(...$viewerGroup->map(function (UserGroup $userGroup) {
-      return $userGroup->getUsers()->toArray();
-    })->toArray());
-    usort($users, [User::class, 'sortOnDisplayName']);
+    $users = array_merge(...$viewerGroup->map(fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
+    usort($users, User::sortOnDisplayName(...));
 
     return $users;
   }
@@ -484,10 +473,8 @@ class StudyArea
       return [];
     }
 
-    $userGroupEmails = array_merge(...$viewerGroup->map(function (UserGroup $userGroup) {
-      return $userGroup->getEmails()->toArray();
-    })->toArray());
-    usort($userGroupEmails, [UserGroupEmail::class, 'sortOnEmail']);
+    $userGroupEmails = array_merge(...$viewerGroup->map(fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
+    usort($userGroupEmails, UserGroupEmail::sortOnEmail(...));
 
     return $userGroupEmails;
   }
@@ -513,16 +500,12 @@ class StudyArea
       return false;
     }
 
-    switch ($this->accessType) {
-      case StudyArea::ACCESS_PUBLIC:
-        return true;
-      case StudyArea::ACCESS_PRIVATE:
-        return $this->isOwner($user);
-      case StudyArea::ACCESS_GROUP:
-        return $this->isOwner($user) || $this->isUserInGroup($user);
-    }
-
-    return false;
+    return match ($this->accessType) {
+      StudyArea::ACCESS_PUBLIC  => true,
+      StudyArea::ACCESS_PRIVATE => $this->isOwner($user),
+      StudyArea::ACCESS_GROUP   => $this->isOwner($user) || $this->isUserInGroup($user),
+      default                   => false,
+    };
   }
 
   /** Check whether the StudyArea is editable for the user */
@@ -639,8 +622,8 @@ class StudyArea
     return $this;
   }
 
-  /** @return Concept[]|Collection */
-  public function getConcepts()
+  /** @return Collection<Concept> */
+  public function getConcepts(): Collection
   {
     return $this->concepts;
   }
@@ -710,8 +693,8 @@ class StudyArea
     return $this;
   }
 
-  /** @return RelationType[]|Collection */
-  public function getRelationTypes()
+  /** @return Collection<RelationType> */
+  public function getRelationTypes(): Collection
   {
     return $this->relationTypes;
   }

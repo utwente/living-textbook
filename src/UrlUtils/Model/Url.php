@@ -2,12 +2,14 @@
 
 namespace App\UrlUtils\Model;
 
+use Stringable;
+
 /**
  * Class Url.
  *
  * Contains found URL metadata
  */
-class Url extends AbstractUrl
+class Url extends AbstractUrl implements Stringable
 {
   /** @var bool */
   private $isPath;
@@ -36,7 +38,7 @@ class Url extends AbstractUrl
    * Implementation to determine duplicates correctly
    * https://stackoverflow.com/questions/2426557/array-unique-for-objects.
    */
-  public function __toString()
+  public function __toString(): string
   {
     return $this->url . '.' . ($this->internal ? '1' : '0') . '.' . $this->context->__toString();
   }
@@ -77,13 +79,11 @@ class Url extends AbstractUrl
     return $this->getUrlParts()[4];
   }
 
-  /** @return bool */
   public function isInternal(): bool
   {
     return $this->internal;
   }
 
-  /** @return UrlContext */
   public function getContext(): UrlContext
   {
     return $this->context;

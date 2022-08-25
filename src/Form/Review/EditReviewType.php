@@ -26,7 +26,6 @@ class EditReviewType extends AbstractReviewType
         ]);
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     parent::configureOptions($resolver);

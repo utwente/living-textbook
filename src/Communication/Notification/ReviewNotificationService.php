@@ -31,7 +31,7 @@ class ReviewNotificationService
   {
     $changeCount = 0;
     foreach ($review->getPendingChanges() as $pendingChange) {
-      $changeCount += count($pendingChange->getChangedFields());
+      $changeCount += count((array)$pendingChange->getChangedFields());
     }
 
     $this->mailer->send(

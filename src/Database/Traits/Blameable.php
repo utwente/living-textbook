@@ -43,13 +43,13 @@ trait Blameable
   /** Get the last update time, which is either creation time or update time */
   public function getLastUpdated()
   {
-    return $this->getUpdatedAt() !== null ? $this->getUpdatedAt() : $this->getCreatedAt();
+    return $this->getUpdatedAt() ?? $this->getCreatedAt();
   }
 
   /** Get the last updated by, which is either creation by or update by */
   public function getLastUpdatedBy()
   {
-    return $this->getUpdatedBy() !== null ? $this->getUpdatedBy() : $this->getCreatedBy();
+    return $this->getUpdatedBy() ?? $this->getCreatedBy();
   }
 
   /**

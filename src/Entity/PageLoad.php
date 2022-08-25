@@ -95,7 +95,6 @@ class PageLoad implements StudyAreaFilteredInterface
    */
   private $originContext;
 
-  /** @return string */
   public function getUserId(): string
   {
     return $this->userId;
@@ -108,7 +107,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return DateTime */
   public function getTimestamp(): DateTime
   {
     return $this->timestamp;
@@ -121,7 +119,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getSessionId(): string
   {
     return $this->sessionId;
@@ -134,7 +131,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
@@ -147,7 +143,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getPath(): string
   {
     return $this->path;
@@ -160,7 +155,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return array|null */
   public function getPathContext(): ?array
   {
     return $this->pathContext;
@@ -173,7 +167,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getOrigin(): ?string
   {
     return $this->origin;
@@ -186,7 +179,6 @@ class PageLoad implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return array|null */
   public function getOriginContext(): ?array
   {
     return $this->originContext;

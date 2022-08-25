@@ -118,7 +118,7 @@ class PrintController extends AbstractController
   {
     // Retrieve study area from one of the given objects
     $studyArea = $concept ? $concept->getStudyArea() : null;
-    $studyArea = $studyArea ?? ($learningPath ? $learningPath->getStudyArea() : null);
+    $studyArea ??= $learningPath ? $learningPath->getStudyArea() : null;
 
     switch (true) {
       case $e instanceof ImageNotFoundException:

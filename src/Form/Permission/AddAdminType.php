@@ -18,11 +18,9 @@ class AddAdminType extends AbstractType
             'label'         => 'permissions.admin',
             'class'         => User::class,
             'choice_label'  => 'selectionName',
-            'query_builder' => function (UserRepository $ur) {
-              return $ur->createQueryBuilder('u')
-                  ->where('u.isAdmin = false')
-                  ->orderBy('u.displayName', 'ASC');
-            },
+            'query_builder' => fn (UserRepository $ur) => $ur->createQueryBuilder('u')
+                ->where('u.isAdmin = false')
+                ->orderBy('u.displayName', 'ASC'),
             'select2' => true,
         ])
         ->add('submit', SaveType::class, [

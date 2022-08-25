@@ -11,12 +11,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class StudyAreaAccessType extends Constraint
 {
-  /**
-   * Sets this validator as class validator.
-   *
-   * @return array|string
-   */
-  public function getTargets()
+  /** Sets this validator as class validator. */
+  public function getTargets(): array|string
   {
     return self::PROPERTY_CONSTRAINT;
   }

@@ -76,11 +76,9 @@ class EditConceptType extends AbstractType
             'choice_label'  => 'name',
             'required'      => false,
             'multiple'      => true,
-            'query_builder' => function (TagRepository $tagRepository) use ($concept) {
-              return $tagRepository->findForStudyAreaQb($concept->getStudyArea());
-            },
-            'select2'  => true,
-            'disabled' => in_array('tags', $disabledFields),
+            'query_builder' => fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($concept->getStudyArea()),
+            'select2'       => true,
+            'disabled'      => in_array('tags', $disabledFields),
         ])
         ->add('tags_review', DisplayPendingChangeType::class, [
             'field'               => 'tags',
@@ -171,11 +169,9 @@ class EditConceptType extends AbstractType
             'choice_label'  => 'title',
             'required'      => false,
             'multiple'      => true,
-            'query_builder' => function (ExternalResourceRepository $externalResourceRepository) use ($studyArea) {
-              return $externalResourceRepository->findForStudyAreaQb($studyArea);
-            },
-            'select2'  => true,
-            'disabled' => in_array('externalResources', $disabledFields),
+            'query_builder' => fn (ExternalResourceRepository $externalResourceRepository) => $externalResourceRepository->findForStudyAreaQb($studyArea),
+            'select2'       => true,
+            'disabled'      => in_array('externalResources', $disabledFields),
         ])
         ->add('externalResources_review', DisplayPendingChangeType::class, [
             'field'               => 'externalResources',
@@ -188,11 +184,9 @@ class EditConceptType extends AbstractType
             'choice_label'       => 'shortName',
             'required'           => false,
             'multiple'           => true,
-            'query_builder'      => function (LearningOutcomeRepository $learningOutcomeRepository) use ($studyArea) {
-              return $learningOutcomeRepository->findForStudyAreaQb($studyArea);
-            },
-            'select2'  => true,
-            'disabled' => in_array('learningOutcomes', $disabledFields),
+            'query_builder'      => fn (LearningOutcomeRepository $learningOutcomeRepository)      => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+            'select2'            => true,
+            'disabled'           => in_array('learningOutcomes', $disabledFields),
         ])
         ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
             'field'               => 'learningOutcomes',
@@ -283,11 +277,9 @@ class EditConceptType extends AbstractType
             'choice_label'  => 'name',
             'required'      => false,
             'multiple'      => true,
-            'query_builder' => function (ContributorRepository $contributorRepository) use ($concept) {
-              return $contributorRepository->findForStudyAreaQb($concept->getStudyArea());
-            },
-            'select2'  => true,
-            'disabled' => in_array('contributors', $disabledFields),
+            'query_builder' => fn (ContributorRepository $contributorRepository) => $contributorRepository->findForStudyAreaQb($concept->getStudyArea()),
+            'select2'       => true,
+            'disabled'      => in_array('contributors', $disabledFields),
         ])
         ->add('contributors_review', DisplayPendingChangeType::class, [
             'field'               => 'contributors',
@@ -312,12 +304,10 @@ class EditConceptType extends AbstractType
             'choice_label'  => 'abbreviation',
             'required'      => false,
             'mapped'        => false,
-            'query_builder' => function (AbbreviationRepository $abbreviationRepository) use ($concept) {
-              return $abbreviationRepository->createQueryBuilder('a')
-                  ->where('a.studyArea = :studyArea')
-                  ->setParameter('studyArea', $concept->getStudyArea())
-                  ->orderBy('a.abbreviation');
-            },
+            'query_builder' => fn (AbbreviationRepository $abbreviationRepository) => $abbreviationRepository->createQueryBuilder('a')
+                ->where('a.studyArea = :studyArea')
+                ->setParameter('studyArea', $concept->getStudyArea())
+                ->orderBy('a.abbreviation'),
             'attr' => [
                 'data-ckeditor-selector' => 'abbreviations', // Register for ckeditor
             ],

@@ -71,9 +71,7 @@ class SearchController extends AbstractController
     if ($user) {
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
-      $ownAnnotations = array_filter($allAnnotations, function (Annotation $annotation) use ($userId) {
-        return $annotation->getUserId() == $userId;
-      });
+      $ownAnnotations = array_filter($allAnnotations, fn (Annotation $annotation) => $annotation->getUserId() == $userId);
 
       $result['ownAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($ownAnnotations, $search));
       $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
@@ -85,15 +83,11 @@ class SearchController extends AbstractController
   /** @param SearchableInterface[] $data */
   private function searchData(array $data, string $search): array
   {
-    $data = array_map(function (SearchableInterface $element) use ($search) {
-      return $element->searchIn($search);
-    }, $data);
+    $data = array_map(fn (SearchableInterface $element) => $element->searchIn($search), $data);
 
-    $data = array_filter($data, function ($element) {
-      return $this->filterSortData($element);
-    });
+    $data = array_filter($data, fn ($element) => $this->filterSortData($element));
 
-    usort($data, [SearchController::class, 'sortSearchData']);
+    usort($data, SearchController::sortSearchData(...));
 
     return $data;
   }
@@ -113,7 +107,7 @@ class SearchController extends AbstractController
       if (!array_key_exists($conceptKey, $result)) {
         $result[$conceptKey] = ['count' => 0, 'items' => []];
       }
-      $result[$conceptKey]['count']   += count($item['results']);
+      $result[$conceptKey]['count']   += is_countable($item['results']) ? count($item['results']) : 0;
       $result[$conceptKey]['items'][] = $item;
     }, $data);
 
@@ -124,20 +118,18 @@ class SearchController extends AbstractController
 
   private function filterSortData($element): bool
   {
-    return array_key_exists('results', $element) && count($element['results']) > 0;
+    return array_key_exists('results', $element) && (is_countable($element['results']) ? count($element['results']) : 0) > 0;
   }
 
   public static function sortSearchData($a, $b)
   {
-    $reduceFunction = function ($carry, $item) {
-      return $item['prio'] > $carry ? $item['prio'] : $carry;
-    };
+    $reduceFunction = fn ($carry, $item) => $item['prio'] > $carry ? $item['prio'] : $carry;
 
     $ap = array_reduce($a['results'], $reduceFunction, 0);
     $bp = array_reduce($b['results'], $reduceFunction, 0);
 
     if ($ap == $bp) {
-      return strcmp($a['_title'], $b['_title']);
+      return strcmp((string)$a['_title'], (string)$b['_title']);
     }
 
     return $bp - $ap;
@@ -151,7 +143,7 @@ class SearchController extends AbstractController
    * @param string|array $data     Result data. Should be a string in the common cases, but can be a data array when
    *                               more data is required
    */
-  public static function createResult(int $prio, string $property, $data): array
+  public static function createResult(int $prio, string $property, string|array $data): array
   {
     return [
         'prio'     => $prio,

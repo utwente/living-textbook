@@ -29,12 +29,8 @@ class ConceptRelation extends Constraint
    */
   public $inversedRelation = 'concept.inversed-relation';
 
-  /**
-   * Sets this validator as class validator.
-   *
-   * @return array|string
-   */
-  public function getTargets()
+  /** Sets this validator as class validator. */
+  public function getTargets(): array|string
   {
     return self::CLASS_CONSTRAINT;
   }

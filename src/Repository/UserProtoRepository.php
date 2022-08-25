@@ -33,7 +33,7 @@ class UserProtoRepository extends ServiceEntityRepository
           ->setParameter('email', $email)
           ->setMaxResults(1)
           ->getQuery()->getOneOrNullResult();
-    } catch (NonUniqueResultException $e) {
+    } catch (NonUniqueResultException) {
       // Cannot happen
       return null;
     }

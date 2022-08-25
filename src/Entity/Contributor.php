@@ -32,7 +32,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
   use ReviewableTrait;
 
   /**
-   * @var Concept[]|Collection
+   * @var Collection<Concept>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="contributors")
    */
@@ -143,19 +143,17 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /** @return Concept[]|Collection */
-  public function getConcepts()
+  /** @return Collection<Concept> */
+  public function getConcepts(): Collection
   {
     return $this->concepts;
   }
 
-  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /** @return Contributor */
   public function setName(string $name): self
   {
     $this->name = trim($name);
@@ -163,7 +161,6 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
@@ -176,7 +173,6 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getUrl(): ?string
   {
     return $this->url;
@@ -189,7 +185,6 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return bool */
   public function isBroken(): bool
   {
     return $this->broken;
@@ -202,7 +197,6 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getEmail(): ?string
   {
     return $this->email;
@@ -215,7 +209,6 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

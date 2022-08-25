@@ -28,10 +28,10 @@ class PendingChange
    * Change types
    * Number are added to force time dependant ordering.
    */
-  public const CHANGE_TYPE_ADD    = '10_add';
-  public const CHANGE_TYPE_EDIT   = '20_edit';
-  public const CHANGE_TYPE_REMOVE = '30_remove';
-  public const CHANGE_TYPES       = [
+  final public const CHANGE_TYPE_ADD    = '10_add';
+  final public const CHANGE_TYPE_EDIT   = '20_edit';
+  final public const CHANGE_TYPE_REMOVE = '30_remove';
+  final public const CHANGE_TYPES       = [
       self::CHANGE_TYPE_ADD,
       self::CHANGE_TYPE_EDIT,
       self::CHANGE_TYPE_REMOVE,
@@ -160,8 +160,6 @@ class PendingChange
    *
    * @throws IncompatibleChangeMergeException
    * @throws OverlappingFieldsChangedException
-   *
-   * @return PendingChange
    */
   public function merge(PendingChange $merge): self
   {
@@ -271,13 +269,11 @@ class PendingChange
     });
   }
 
-  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /** @return PendingChange */
   public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
@@ -285,13 +281,11 @@ class PendingChange
     return $this;
   }
 
-  /** @return string|null */
   public function getChangeType(): ?string
   {
     return $this->changeType;
   }
 
-  /** @return PendingChange */
   public function setChangeType(?string $changeType): self
   {
     $this->changeType = $changeType;
@@ -299,7 +293,6 @@ class PendingChange
     return $this;
   }
 
-  /** @return string|null */
   public function getObjectType(): ?string
   {
     return $this->objectType;
@@ -315,7 +308,6 @@ class PendingChange
     return substr($this->objectType, $pos + 1);
   }
 
-  /** @return PendingChange */
   public function setObjectType(?string $objectType): self
   {
     $this->cachedObject = null;
@@ -324,13 +316,11 @@ class PendingChange
     return $this;
   }
 
-  /** @return int|null */
   public function getObjectId(): ?int
   {
     return $this->objectId;
   }
 
-  /** @return PendingChange */
   public function setObjectId(?int $objectId): self
   {
     $this->objectId = $objectId;
@@ -397,13 +387,11 @@ class PendingChange
     return $this->cachedObject;
   }
 
-  /** @return array|null */
   public function getChangedFields(): ?array
   {
     return $this->changedFields;
   }
 
-  /** @return PendingChange */
   public function setChangedFields(?array $changedFields): self
   {
     $this->changedFields = $changedFields;
@@ -412,13 +400,11 @@ class PendingChange
     return $this;
   }
 
-  /** @return User|null */
   public function getOwner(): ?User
   {
     return $this->owner;
   }
 
-  /** @return PendingChange */
   public function setOwner(?User $owner): self
   {
     $this->owner = $owner;
@@ -426,13 +412,11 @@ class PendingChange
     return $this;
   }
 
-  /** @return Review|null */
   public function getReview(): ?Review
   {
     return $this->review;
   }
 
-  /** @return PendingChange */
   public function setReview(?Review $review): self
   {
     $this->review = $review;
@@ -440,7 +424,6 @@ class PendingChange
     return $this;
   }
 
-  /** @return array|null */
   public function getReviewComments(): ?array
   {
     return $this->reviewComments;

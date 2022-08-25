@@ -179,14 +179,14 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   private $resetCodeValid;
 
   /**
-   * @var UserGroup[]|Collection
+   * @var Collection<UserGroup>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\UserGroup", mappedBy="users")
    */
   private $userGroups;
 
   /**
-   * @var Annotation[]|Collection
+   * @var Collection<Annotation>
    *
    * @ORM\OneToMany(targetEntity="Annotation", mappedBy="user")
    */
@@ -390,7 +390,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return bool */
   public function isOidc(): bool
   {
     return $this->isOidc;
@@ -403,7 +402,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return string */
   public function getPassword(): string
   {
     return $this->password ?? '';
@@ -431,7 +429,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->registeredOn;
   }
 
-  /** @return DateTime|null */
   public function getLastUsed(): ?DateTime
   {
     return $this->lastUsed;
@@ -469,7 +466,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->securityRoles;
   }
 
-  /** @return string */
   public function getGivenName(): string
   {
     return $this->givenName;
@@ -482,7 +478,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return string */
   public function getFamilyName(): string
   {
     return $this->familyName;
@@ -495,7 +490,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return string */
   public function getFullName(): string
   {
     return $this->fullName;
@@ -508,7 +502,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return string */
   public function getDisplayName(): string
   {
     return $this->displayName;
@@ -521,7 +514,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return bool */
   public function isAdmin(): bool
   {
     return $this->isAdmin;
@@ -534,13 +526,11 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return string|null */
   public function getResetCode(): ?string
   {
     return $this->resetCode;
   }
 
-  /** @return User */
   public function setResetCode(?string $resetCode): self
   {
     $this->resetCode = $resetCode;
@@ -548,13 +538,11 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return DateTime|null */
   public function getResetCodeValid(): ?DateTime
   {
     return $this->resetCodeValid;
   }
 
-  /** @return User */
   public function setResetCodeValid(?DateTime $resetCodeValid): self
   {
     $this->resetCodeValid = $resetCodeValid;
@@ -562,14 +550,14 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return UserGroup[]|Collection */
-  public function getUserGroups()
+  /** @return Collection<UserGroup> */
+  public function getUserGroups(): Collection
   {
     return $this->userGroups;
   }
 
-  /** @return Annotation[]|Collection */
-  public function getAnnotations()
+  /** @return Collection<Annotation> */
+  public function getAnnotations(): Collection
   {
     return $this->annotations;
   }

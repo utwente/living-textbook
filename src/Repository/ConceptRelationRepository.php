@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,8 +18,8 @@ class ConceptRelationRepository extends ServiceEntityRepository
     parent::__construct($registry, ConceptRelation::class);
   }
 
-  /** @return ConceptRelation[]|Collection */
-  public function getByRelationType(RelationType $relationType)
+  /** @return ConceptRelation[] */
+  public function getByRelationType(RelationType $relationType): array
   {
     return $this->getByRelationTypeQb($relationType)
         ->getQuery()->getResult();
@@ -37,7 +37,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
       return $this->getByRelationTypeQb($relationType)
           ->select('COUNT(cr.id)')
           ->getQuery()->getSingleScalarResult();
-    } catch (NonUniqueResultException $e) {
+    } catch (NonUniqueResultException) {
       return 0;
     }
   }
@@ -45,9 +45,11 @@ class ConceptRelationRepository extends ServiceEntityRepository
   /**
    * Retrieve all links related to the given concepts.
    *
-   * @return ConceptRelation[]|Collection
+   * @param Concept[] $concepts
+   *
+   * @return ConceptRelation[]
    */
-  public function findByConcepts(array $concepts)
+  public function findByConcepts(array $concepts): array
   {
     return $this->createQueryBuilder('cr')
         ->distinct()
@@ -76,8 +78,8 @@ class ConceptRelationRepository extends ServiceEntityRepository
         ->setParameter('studyArea', $studyArea);
   }
 
-  /** @return ConceptRelation[]|Collection */
-  public function getByStudyArea(StudyArea $studyArea)
+  /** @return ConceptRelation[] */
+  public function getByStudyArea(StudyArea $studyArea): array
   {
     return $this->getByStudyAreaQb($studyArea)
         ->getQuery()->getResult();

@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\PageLoad;
 use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PageLoadRepository extends ServiceEntityRepository
@@ -15,8 +14,8 @@ class PageLoadRepository extends ServiceEntityRepository
     parent::__construct($registry, PageLoad::class);
   }
 
-  /** @return PageLoad[]|Collection */
-  public function getByStudyAreaOrderedOnIds(StudyArea $studyArea)
+  /** @return PageLoad[] */
+  public function getByStudyAreaOrderedOnIds(StudyArea $studyArea): array
   {
     return $this->createQueryBuilder('pl')
         ->where('pl.studyArea = :studyArea')

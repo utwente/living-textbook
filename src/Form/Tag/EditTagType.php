@@ -30,7 +30,6 @@ class EditTagType extends AbstractType
         ]);
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

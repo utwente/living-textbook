@@ -3,8 +3,9 @@
 namespace App\UrlUtils\Model;
 
 use InvalidArgumentException;
+use Stringable;
 
-class UrlContext
+class UrlContext implements Stringable
 {
   /** @var string Class name */
   private $class;
@@ -34,7 +35,7 @@ class UrlContext
    * Implementation to determine duplicates correctly
    * https://stackoverflow.com/questions/2426557/array-unique-for-objects.
    */
-  public function __toString()
+  public function __toString(): string
   {
     return $this->class . '.' . $this->path . '.' . ($this->inline ? '1' : '0');
   }
@@ -52,19 +53,16 @@ class UrlContext
     return $new;
   }
 
-  /** @return string */
   public function getClass(): string
   {
     return $this->class;
   }
 
-  /** @return int */
   public function getId(): int
   {
     return $this->id;
   }
 
-  /** @return string */
   public function getPath(): string
   {
     return $this->path;
@@ -76,7 +74,6 @@ class UrlContext
     return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $this->getPath()));
   }
 
-  /** @return bool */
   public function isInline(): bool
   {
     return $this->inline;

@@ -18,7 +18,7 @@ class HtmlDiffExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('htmldiff', [$this, 'htmlDiff'], ['is_safe' => ['html']]),
+        new TwigFunction('htmldiff', $this->htmlDiff(...), ['is_safe' => ['html']]),
     ];
   }
 

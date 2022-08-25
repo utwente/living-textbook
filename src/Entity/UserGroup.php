@@ -27,10 +27,10 @@ class UserGroup
   use IdTrait;
   use Blameable;
   use SoftDeletable;
-  public const GROUP_REVIEWER = 'reviewer';
-  public const GROUP_EDITOR   = 'editor';
-  public const GROUP_VIEWER   = 'viewer';
-  public const GROUP_ANALYSIS = 'analysis';
+  final public const GROUP_REVIEWER = 'reviewer';
+  final public const GROUP_EDITOR   = 'editor';
+  final public const GROUP_VIEWER   = 'viewer';
+  final public const GROUP_ANALYSIS = 'analysis';
 
   /**
    * @var StudyArea
@@ -53,7 +53,7 @@ class UserGroup
   private $groupType;
 
   /**
-   * @var User[]|Collection
+   * @var Collection<User>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userGroups", fetch="EAGER")
    * @ORM\JoinTable(name="user_group_users",
@@ -66,7 +66,7 @@ class UserGroup
   private $users;
 
   /**
-   * @var UserGroupEmail[]|Collection
+   * @var Collection<UserGroupEmail>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\UserGroupEmail",
    *   mappedBy="userGroup", fetch="EAGER", cascade={"persist", "remove"})
@@ -93,7 +93,6 @@ class UserGroup
     return [self::GROUP_VIEWER, self::GROUP_EDITOR, self::GROUP_REVIEWER, self::GROUP_ANALYSIS];
   }
 
-  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
@@ -106,7 +105,6 @@ class UserGroup
     return $this;
   }
 
-  /** @return string */
   public function getGroupType(): string
   {
     return $this->groupType;
@@ -119,8 +117,8 @@ class UserGroup
     return $this;
   }
 
-  /** @return User[]|Collection */
-  public function getUsers()
+  /** @return Collection<User> */
+  public function getUsers(): Collection
   {
     return $this->users;
   }
@@ -143,8 +141,8 @@ class UserGroup
     return $this;
   }
 
-  /** @return Collection|UserGroupEmail[] */
-  public function getEmails()
+  /** @return Collection<UserGroupEmail> */
+  public function getEmails(): Collection
   {
     return $this->emails;
   }

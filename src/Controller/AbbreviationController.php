@@ -34,11 +34,9 @@ class AbbreviationController extends AbstractController
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -76,9 +74,7 @@ class AbbreviationController extends AbstractController
   {
     // Retrieve the abbreviations
     $ids           = $request->query->get('ids');
-    $ids           = array_filter($ids, function ($id) {
-      return is_numeric($id);
-    });
+    $ids           = array_filter($ids, fn ($id) => is_numeric($id));
     $abbreviations = $abbreviationRepo->findBy(['id' => $ids, 'studyArea' => $requestStudyArea->getStudyArea()]);
 
     $json = $serializer->serialize($abbreviations, 'json');
@@ -91,12 +87,10 @@ class AbbreviationController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function edit(
       Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
-      TranslatorInterface $trans)
+      TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -161,12 +155,10 @@ class AbbreviationController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function remove(
       Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
-      TranslatorInterface $trans)
+      TranslatorInterface $trans): array|Response
   {
     $studyArea = $abbreviation->getStudyArea();
 

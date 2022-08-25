@@ -37,7 +37,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   use ReviewableTrait;
 
   /**
-   * @var Concept[]|Collection
+   * @var Collection<Concept>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="externalResources")
    */
@@ -160,13 +160,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->getTitle();
   }
 
-  /** @return Concept[]|Collection */
-  public function getConcepts()
+  /** @return Collection<Concept> */
+  public function getConcepts(): Collection
   {
     return $this->concepts;
   }
 
-  /** @return string */
   public function getTitle(): string
   {
     return $this->title;
@@ -179,7 +178,6 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;
@@ -192,7 +190,6 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /** @return string|null */
   public function getUrl(): ?string
   {
     return $this->url;
@@ -205,7 +202,6 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /** @return bool */
   public function isBroken(): bool
   {
     return $this->broken;
@@ -218,7 +214,6 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

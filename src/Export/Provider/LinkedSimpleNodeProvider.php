@@ -162,9 +162,7 @@ EOT,
     $mappedContributors = [];
     foreach ($contributors as $contributor) {
       $mappedContributors[] = [
-          'nodes' => $contributor->getConcepts()->map(function (Concept $concept) use ($idMap) {
-            return $idMap[$concept->getId()];
-          }),
+          'nodes'       => $contributor->getConcepts()->map(fn (Concept $concept)       => $idMap[$concept->getId()]),
           'name'        => $contributor->getName(),
           'description' => $contributor->getDescription(),
           'url'         => $contributor->getUrl(),
@@ -176,9 +174,7 @@ EOT,
     $mappedExternalResources = [];
     foreach ($externalResources as $externalResource) {
       $mappedExternalResources[] = [
-          'nodes' => $externalResource->getConcepts()->map(function (Concept $concept) use ($idMap) {
-            return $idMap[$concept->getId()];
-          }),
+          'nodes'       => $externalResource->getConcepts()->map(fn (Concept $concept)       => $idMap[$concept->getId()]),
           'title'       => $externalResource->getTitle(),
           'description' => $externalResource->getDescription(),
           'url'         => $externalResource->getUrl(),
@@ -189,9 +185,7 @@ EOT,
     $mappedLearningOutcomes = [];
     foreach ($learningOutcomes as $learningOutcome) {
       $mappedLearningOutcomes[] = [
-          'nodes' => $learningOutcome->getConcepts()->map(function (Concept $concept) use ($idMap) {
-            return $idMap[$concept->getId()];
-          }),
+          'nodes'   => $learningOutcome->getConcepts()->map(fn (Concept $concept)   => $idMap[$concept->getId()]),
           'number'  => $learningOutcome->getNumber(),
           'name'    => $learningOutcome->getName(),
           'content' => $learningOutcome->getText(),
@@ -211,16 +205,14 @@ EOT,
     $serializationContext->setSerializeNull(true);
     $json = $this->serializer->serialize(
           [
-              'nodes' => array_map(function (Concept $concept) use ($definitionName, $selfAssessmentName) {
-                return [
-                    'instance'          => $concept->isInstance(),
-                    'label'             => $concept->getName(),
-                    'link'              => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-                    'numberOfLinks'     => $concept->getNumberOfLinks(),
-                    $definitionName     => $concept->getDefinition(),
-                    $selfAssessmentName => $concept->getSelfAssessment()->getText(),
-                ];
-              }, $concepts),
+              'nodes' => array_map(fn (Concept $concept) => [
+                  'instance'          => $concept->isInstance(),
+                  'label'             => $concept->getName(),
+                  'link'              => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+                  'numberOfLinks'     => $concept->getNumberOfLinks(),
+                  $definitionName     => $concept->getDefinition(),
+                  $selfAssessmentName => $concept->getSelfAssessment()->getText(),
+              ], $concepts),
               'links'               => $mappedLinks,
               'contributors'        => $mappedContributors,
               'external_resources'  => $mappedExternalResources,

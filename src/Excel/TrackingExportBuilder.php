@@ -192,7 +192,7 @@ class TrackingExportBuilder
   private function mapContextElements(Worksheet &$sheet, int &$column, int $row, ?iterable $context, array $contextMap): void
   {
     foreach ($context ?? [] as $cKey => $cItem) {
-      $cKey = strtolower($cKey);
+      $cKey = strtolower((string)$cKey);
 
       if (!array_key_exists($cKey, $contextMap)) {
         // Create column

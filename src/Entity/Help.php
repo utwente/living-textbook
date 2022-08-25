@@ -28,13 +28,11 @@ class Help
    */
   private $content;
 
-  /** @return string */
   public function getContent(): string
   {
     return $this->content;
   }
 
-  /** @return Help */
   public function setContent(string $content): self
   {
     $this->content = $content;

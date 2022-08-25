@@ -116,7 +116,7 @@ class ReviewSubmissionType extends AbstractType
           ]);
 
       foreach ($pendingChange->getChangedFields() as $changedField) {
-        list($formType, $formOptions) = self::getFormTypeForField($pendingChange, $changedField);
+        [$formType, $formOptions] = self::getFormTypeForField($pendingChange, $changedField);
 
         $form->add($this->getFieldName($pendingChange, $changedField),
             $formType, array_merge([

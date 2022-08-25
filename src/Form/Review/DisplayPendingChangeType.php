@@ -43,7 +43,7 @@ class DisplayPendingChangeType extends AbstractType
     }
 
     $changeType                   = $pendingChange->getChangeType();
-    list($formType, $formOptions) = ReviewSubmissionType::getFormTypeForField($pendingChange, $field);
+    [$formType, $formOptions]     = ReviewSubmissionType::getFormTypeForField($pendingChange, $field);
 
     $builder->add('preview', $formType, array_merge([
         'hide_label'      => true,

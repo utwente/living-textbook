@@ -227,7 +227,7 @@ class UrlChecker
       $cleanPath = strstr($entry->getPath(), '?', true) ?: $entry->getPath();
       try {
         $urlInfo = $router->match($cleanPath);
-      } catch (ResourceNotFoundException $e) {
+      } catch (ResourceNotFoundException) {
         return true;
       }
 
@@ -328,7 +328,7 @@ class UrlChecker
       if ($urlInfo['_route'] === '_home') {
         $urlInfo = $this->router->match(str_replace('/page', '', $cleanPath));
       }
-    } catch (ResourceNotFoundException $e) {
+    } catch (ResourceNotFoundException) {
       return null;
     }
     // Check if the URL is in the right study area

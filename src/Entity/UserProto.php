@@ -91,13 +91,11 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface
     // Nothing to do
   }
 
-  /** @return string */
   public function getEmail(): string
   {
     return $this->email;
   }
 
-  /** @return UserProto */
   public function setEmail(string $email): self
   {
     $this->email = $email;
@@ -105,13 +103,11 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
-  /** @return DateTime */
   public function getInvitedAt(): DateTime
   {
     return $this->invitedAt;
   }
 
-  /** @return UserProto */
   public function setInvitedAt(DateTime $invitedAt): self
   {
     $this->invitedAt = $invitedAt;
@@ -119,7 +115,6 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
-  /** @return UserProto */
   public function setPassword(string $password): self
   {
     $this->password = $password;
@@ -127,7 +122,6 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
-  /** @return string */
   public function getPassword(): string
   {
     return $this->password;

@@ -615,7 +615,7 @@ class StudyAreaDuplicator
       foreach ($matches[1] as $key => $match) {
         // Find new id
         if (array_key_exists(intval($match), $source)) {
-          $replace = str_replace($match, $source[intval($match)]->getId(), $matches[0][$key]);
+          $replace = str_replace($match, $source[intval($match)]->getId(), (string)$matches[0][$key]);
           $text    = str_replace($matches[0][$key], $replace, $text);
         }
       }
@@ -624,12 +624,8 @@ class StudyAreaDuplicator
     return $text;
   }
 
-  /**
-   * Try to match the given path with the internal routing.
-   *
-   * @return bool|array
-   */
-  private function matchPath(string $path)
+  /** Try to match the given path with the internal routing. */
+  private function matchPath(string $path): bool|array
   {
     // Test if url actually matches an internal route
     try {

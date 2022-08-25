@@ -29,13 +29,9 @@ class EmailListType extends AbstractType
                 return [];
               }
 
-              $emails = array_map(function ($email) {
-                return mb_strtolower(trim($email));
-              }, preg_split('/\r\n|\r|\n|,/', $reverseTransform));
+              $emails = array_map(fn ($email) => mb_strtolower(trim($email)), preg_split('/\r\n|\r|\n|,/', $reverseTransform));
 
-              return array_filter($emails, function ($email) {
-                return strlen($email) > 0;
-              });
+              return array_filter($emails, fn ($email) => strlen($email) > 0);
             }
         ));
   }

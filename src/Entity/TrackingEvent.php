@@ -19,7 +19,7 @@ class TrackingEvent implements StudyAreaFilteredInterface
   use IdTrait;
 
   /** The supported events */
-  public const SUPPORTED_EVENTS = [
+  final public const SUPPORTED_EVENTS = [
       'concept_browser_open',
       'concept_browser_open_concept',
       'concept_browser_close',
@@ -88,13 +88,11 @@ class TrackingEvent implements StudyAreaFilteredInterface
    */
   private $context;
 
-  /** @return string */
   public function getUserId(): string
   {
     return $this->userId;
   }
 
-  /** @return TrackingEvent */
   public function setUserId(string $userId): self
   {
     $this->userId = $userId;
@@ -102,13 +100,11 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return DateTime */
   public function getTimestamp(): DateTime
   {
     return $this->timestamp;
   }
 
-  /** @return TrackingEvent */
   public function setTimestamp(DateTime $timestamp): self
   {
     $this->timestamp = $timestamp;
@@ -116,13 +112,11 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getSessionId(): string
   {
     return $this->sessionId;
   }
 
-  /** @return TrackingEvent */
   public function setSessionId(string $sessionId): self
   {
     $this->sessionId = $sessionId;
@@ -130,13 +124,11 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /** @return TrackingEvent */
   public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
@@ -144,13 +136,11 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getEvent(): string
   {
     return $this->event;
   }
 
-  /** @return TrackingEvent */
   public function setEvent(string $event): self
   {
     $this->event = $event;
@@ -158,13 +148,11 @@ class TrackingEvent implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return array|null */
   public function getContext(): ?array
   {
     return $this->context;
   }
 
-  /** @return TrackingEvent */
   public function setContext(?array $context): self
   {
     $this->context = $context;

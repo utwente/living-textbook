@@ -50,7 +50,6 @@ class UserGroupEmail
     return strcmp($a->getEmail(), $b->getEmail());
   }
 
-  /** @return UserGroup */
   public function getUserGroup(): UserGroup
   {
     return $this->userGroup;
@@ -63,7 +62,6 @@ class UserGroupEmail
     return $this;
   }
 
-  /** @return string */
   public function getEmail(): string
   {
     return $this->email;

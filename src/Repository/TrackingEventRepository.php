@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\StudyArea;
 use App\Entity\TrackingEvent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TrackingEventRepository extends ServiceEntityRepository
@@ -15,8 +14,8 @@ class TrackingEventRepository extends ServiceEntityRepository
     parent::__construct($registry, TrackingEvent::class);
   }
 
-  /** @return TrackingEvent[]|Collection */
-  public function getByStudyAreaOrderedOnIds(StudyArea $studyArea)
+  /** @return TrackingEvent[] */
+  public function getByStudyAreaOrderedOnIds(StudyArea $studyArea): array
   {
     return $this->createQueryBuilder('te')
         ->where('te.studyArea = :studyArea')

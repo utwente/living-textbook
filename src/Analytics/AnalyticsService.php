@@ -130,10 +130,8 @@ class AnalyticsService
         'learningpaths' => [
             $learningPath->getId() => [
                 'starting time' => $this->formatPythonDateTime($request->teachingMoment),
-                'list'          => $learningPath->getElementsOrdered()->map(function (LearningPathElement $element) {
-                  return $element->getConcept()->getId();
-                })->toArray(),
-                'id' => $learningPath->getId(),
+                'list'          => $learningPath->getElementsOrdered()->map(fn (LearningPathElement $element)          => $element->getConcept()->getId())->toArray(),
+                'id'            => $learningPath->getId(),
             ],
         ],
         'functions' => ['usersPerDayPerLearningPath'], // This single function delivers the required output here
@@ -144,12 +142,10 @@ class AnalyticsService
         ->build($learningPath, $request->periodStart, $request->periodEnd, $settings, $request->forceRebuild);
 
     // Return the data
-    $finder = function () use ($outputDirectory) {
-      return (new Finder())
-          ->files()
-          ->in($outputDirectory)
-          ->depth(0);
-    };
+    $finder = fn () => (new Finder())
+        ->files()
+        ->in($outputDirectory)
+        ->depth(0);
 
     $result                  = new LearningPathVisualisationResult();
     $result->heatMapImage    = $this->firstFromFinder($finder()->name('heatmap*'));
@@ -203,9 +199,7 @@ class AnalyticsService
                 ->modify(sprintf('-%d days', $request->daysBeforeTest))
                 ->modify(sprintf('-%d days', $key * $request->daysBetweenLearningPaths))
                 ->format('Y-m-d H:i:s'),
-            'concepts' => array_values(array_map(function (LearningPathElement $el) {
-              return (string)$el->getConcept()->getId();
-            }, $lp->getElementsOrdered()->toArray())),
+            'concepts'         => array_values(array_map(fn (LearningPathElement $el)         => (string)$el->getConcept()->getId(), $lp->getElementsOrdered()->toArray())),
             'learningpathName' => $lp->getName(),
         ];
       }
@@ -215,7 +209,7 @@ class AnalyticsService
       $concepts = [];
       foreach ($studyArea->getConcepts() as $concept) {
         $concepts[(string)$concept->getId()] = [
-            'timeOnConcept' => rand(1, 8) * 30,
+            'timeOnConcept' => random_int(1, 8) * 30,
         ];
       }
       $settings['conceptData'] = $concepts;

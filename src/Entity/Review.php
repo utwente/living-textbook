@@ -34,7 +34,7 @@ class Review
   /**
    * The pending changes in this review.
    *
-   * @var PendingChange[]|Collection
+   * @var Collection<PendingChange>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\PendingChange", mappedBy="review", cascade={"remove"})
    * @ORM\OrderBy({"objectType" = "ASC", "changeType" = "ASC"})
@@ -151,13 +151,11 @@ class Review
     return false;
   }
 
-  /** @return StudyArea */
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;
   }
 
-  /** @return Review */
   public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
@@ -165,13 +163,11 @@ class Review
     return $this;
   }
 
-  /** @return User|null */
   public function getOwner(): ?User
   {
     return $this->owner;
   }
 
-  /** @return Review */
   public function setOwner(?User $owner): self
   {
     $this->owner = $owner;
@@ -179,13 +175,11 @@ class Review
     return $this;
   }
 
-  /** @return string|null */
   public function getNotes(): ?string
   {
     return $this->notes;
   }
 
-  /** @return Review */
   public function setNotes(?string $notes): self
   {
     $this->notes = $notes;
@@ -193,8 +187,8 @@ class Review
     return $this;
   }
 
-  /** @return PendingChange[]|Collection */
-  public function getPendingChanges()
+  /** @return Collection<PendingChange> */
+  public function getPendingChanges(): Collection
   {
     return $this->pendingChanges;
   }
@@ -217,7 +211,6 @@ class Review
     return $this;
   }
 
-  /** @return DateTime|null */
   public function getRequestedReviewAt(): ?DateTime
   {
     return $this->requestedReviewAt;
@@ -230,7 +223,6 @@ class Review
     return $this;
   }
 
-  /** @return User|null */
   public function getRequestedReviewBy(): ?User
   {
     return $this->requestedReviewBy;
@@ -243,7 +235,6 @@ class Review
     return $this;
   }
 
-  /** @return DateTime|null */
   public function getReviewedAt(): ?DateTime
   {
     return $this->reviewedAt;
@@ -256,7 +247,6 @@ class Review
     return $this;
   }
 
-  /** @return User|null */
   public function getReviewedBy(): ?User
   {
     return $this->reviewedBy;
@@ -269,13 +259,11 @@ class Review
     return $this;
   }
 
-  /** @return DateTime|null */
   public function getApprovedAt(): ?DateTime
   {
     return $this->approvedAt;
   }
 
-  /** @return Review */
   public function setApprovedAt(?DateTime $approvedAt): self
   {
     $this->approvedAt = $approvedAt;
@@ -283,13 +271,11 @@ class Review
     return $this;
   }
 
-  /** @return User|null */
   public function getApprovedBy(): ?User
   {
     return $this->approvedBy;
   }
 
-  /** @return Review */
   public function setApprovedBy(?User $approvedBy): self
   {
     $this->approvedBy = $approvedBy;

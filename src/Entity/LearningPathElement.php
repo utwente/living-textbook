@@ -83,7 +83,6 @@ class LearningPathElement
    */
   private $description;
 
-  /** @return LearningPath|null */
   public function getLearningPath(): ?LearningPath
   {
     return $this->learningPath;
@@ -96,7 +95,6 @@ class LearningPathElement
     return $this;
   }
 
-  /** @return Concept|null */
   public function getConcept(): ?Concept
   {
     return $this->concept;
@@ -109,7 +107,6 @@ class LearningPathElement
     return $this;
   }
 
-  /** @return LearningPathElement|null */
   public function getNext(): ?LearningPathElement
   {
     return $this->next;
@@ -133,7 +130,6 @@ class LearningPathElement
     return $this;
   }
 
-  /** @return string|null */
   public function getDescription(): ?string
   {
     return $this->description;

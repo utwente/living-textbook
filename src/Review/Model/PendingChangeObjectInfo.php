@@ -50,7 +50,6 @@ class PendingChangeObjectInfo
     }
   }
 
-  /** @return bool */
   public function hasChanges(): bool
   {
     return count($this->pendingChanges) > 0;
@@ -67,14 +66,11 @@ class PendingChangeObjectInfo
       throw new InvalidArgumentException(sprintf('Cannot retrieve pending change for field %s, as there are none', $field));
     }
 
-    $pendingChange = array_values(array_filter($this->pendingChanges, function (PendingChange $pendingChange) use ($field) {
-      return in_array($field, $pendingChange->getChangedFields());
-    }));
+    $pendingChange = array_values(array_filter($this->pendingChanges, fn (PendingChange $pendingChange) => in_array($field, $pendingChange->getChangedFields())));
 
     return $pendingChange[0];
   }
 
-  /** @return string|null */
   public function getObjectType(): ?string
   {
     if (!$this->hasChanges()) {

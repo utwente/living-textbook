@@ -40,7 +40,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   use ReviewableTrait;
 
   /**
-   * @var Concept[]|Collection
+   * @var Collection<Concept>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="learningOutcomes")
    */
@@ -164,7 +164,6 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this->getName();
   }
 
-  /** @return int */
   public function getNumber(): int
   {
     return $this->number;
@@ -177,7 +176,6 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getName(): string
   {
     return $this->name;
@@ -190,7 +188,6 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getText(): string
   {
     return $this->text;
@@ -203,13 +200,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return Concept[]|Collection */
-  public function getConcepts()
+  /** @return Collection<Concept> */
+  public function getConcepts(): Collection
   {
     return $this->concepts;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

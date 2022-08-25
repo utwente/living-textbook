@@ -96,43 +96,36 @@ class UserPermissions
     return $this->userGroupEmail->getEmail();
   }
 
-  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
   }
 
-  /** @return UserGroupEmail|null */
   public function getEmail(): ?UserGroupEmail
   {
     return $this->userGroupEmail;
   }
 
-  /** @return bool */
   public function isViewer(): bool
   {
     return $this->viewer;
   }
 
-  /** @return bool */
   public function isViewerOnly(): bool
   {
     return $this->isViewer() && !$this->isEditor() && !$this->isReviewer() && !$this->isAnalysis();
   }
 
-  /** @return bool */
   public function isEditor(): bool
   {
     return $this->editor;
   }
 
-  /** @return bool */
   public function isReviewer(): bool
   {
     return $this->reviewer;
   }
 
-  /** @return bool */
   public function isAnalysis(): bool
   {
     return $this->analysis;

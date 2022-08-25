@@ -50,9 +50,7 @@ class AbstractReviewType extends AbstractType
     assert($studyArea instanceof StudyArea);
     $userGroup      = $this->userGroupRepository->getForType($studyArea, UserGroup::GROUP_REVIEWER);
     $groupReviewers = array_filter($userGroup ? $userGroup->getUsers()->toArray() : [],
-        function (User $user) use ($self) {
-          return $user->getId() != $self->getId();
-        });
+        fn (User $user) => $user->getId() != $self->getId());
 
     $possibleUsers = array_merge(
         [$studyArea->getOwner()], // Owner is always available for review

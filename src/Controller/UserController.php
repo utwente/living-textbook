@@ -141,7 +141,6 @@ class UserController extends AbstractController
    *
    * @throws TransportExceptionInterface
    *
-   * @return array|Response
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function fallbackAdd(
@@ -151,7 +150,7 @@ class UserController extends AbstractController
       MailerInterface $mailer,
       UserRepository $userRepository,
       UserProtoRepository $userProtoRepository,
-      UserPasswordEncoderInterface $userPasswordEncoder)
+      UserPasswordEncoderInterface $userPasswordEncoder): array|Response
   {
     $form = $this->createForm(AddFallbackUsersType::class);
     $form->handleRequest($request);
@@ -211,14 +210,12 @@ class UserController extends AbstractController
    * @Route("/fallback/password/change")
    * @Template()
    * @IsGranted("ROLE_USER")
-   *
-   * @return array|Response
    */
   public function fallbackChangeOwnPassword(
       Request $request,
       EntityManagerInterface $em,
       UserPasswordEncoderInterface $encoder,
-      TranslatorInterface $trans)
+      TranslatorInterface $trans): array|Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -249,10 +246,8 @@ class UserController extends AbstractController
    * @Route("/fallback/edit/{user}", requirements={"user"="\d+"})
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array|Response
    */
-  public function fallbackEdit(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function fallbackEdit(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -294,15 +289,13 @@ class UserController extends AbstractController
    * @Route("/fallback/password/{user}", requirements={"user"="\d+"})
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array|Response
    */
   public function fallbackResetPassword(
       Request $request,
       User $user,
       EntityManagerInterface $em,
       UserPasswordEncoderInterface $encoder,
-      TranslatorInterface $trans)
+      TranslatorInterface $trans): array|Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -335,15 +328,13 @@ class UserController extends AbstractController
    * @Route("/fallback/remove/{user}", requirements={"user"="\d+"})
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array|Response
    */
   public function fallbackRemove(
       Request $request,
       User $user,
       EntityManagerInterface $em,
       TranslatorInterface $trans,
-      StudyAreaRepository $studyAreaRepository)
+      StudyAreaRepository $studyAreaRepository): array|Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -392,14 +383,12 @@ class UserController extends AbstractController
    * @Route("/invite/remove/{user}", requirements={"user"="\d+"})
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array|Response
    */
   public function fallbackInviteRemove(
       Request $request,
       UserProto $user,
       EntityManagerInterface $em,
-      TranslatorInterface $trans)
+      TranslatorInterface $trans): array|Response
   {
     $form = $this->createForm(RemoveType::class, null, [
         'cancel_route' => 'app_user_fallbacklist',

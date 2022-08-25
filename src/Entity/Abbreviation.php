@@ -127,7 +127,6 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this->getAbbreviation();
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -140,7 +139,6 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this;
   }
 
-  /** @return string */
   public function getAbbreviation(): string
   {
     return $this->abbreviation;
@@ -153,7 +151,6 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this;
   }
 
-  /** @return string */
   public function getMeaning(): string
   {
     return $this->meaning;

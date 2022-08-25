@@ -84,13 +84,11 @@ class StudyAreaFieldConfiguration
    */
   private $learningOutcomeObjName;
 
-  /** @return string|null */
   public function getConceptDefinitionName(): ?string
   {
     return $this->conceptDefinitionName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptDefinitionName(?string $conceptDefinitionName): self
   {
     $this->conceptDefinitionName = $conceptDefinitionName;
@@ -98,13 +96,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptIntroductionName(): ?string
   {
     return $this->conceptIntroductionName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptIntroductionName(?string $conceptIntroductionName): self
   {
     $this->conceptIntroductionName = $conceptIntroductionName;
@@ -112,13 +108,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptSynonymsName(): ?string
   {
     return $this->conceptSynonymsName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptSynonymsName(?string $conceptSynonymsName): self
   {
     $this->conceptSynonymsName = $conceptSynonymsName;
@@ -126,13 +120,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptPriorKnowledgeName(): ?string
   {
     return $this->conceptPriorKnowledgeName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptPriorKnowledgeName(?string $conceptPriorKnowledgeName): self
   {
     $this->conceptPriorKnowledgeName = $conceptPriorKnowledgeName;
@@ -140,13 +132,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptTheoryExplanationName(): ?string
   {
     return $this->conceptTheoryExplanationName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptTheoryExplanationName(?string $conceptTheoryExplanationName): self
   {
     $this->conceptTheoryExplanationName = $conceptTheoryExplanationName;
@@ -154,13 +144,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptHowtoName(): ?string
   {
     return $this->conceptHowtoName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptHowtoName(?string $conceptHowtoName): self
   {
     $this->conceptHowtoName = $conceptHowtoName;
@@ -168,13 +156,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptExamplesName(): ?string
   {
     return $this->conceptExamplesName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptExamplesName(?string $conceptExamplesName): self
   {
     $this->conceptExamplesName = $conceptExamplesName;
@@ -182,13 +168,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getConceptSelfAssessmentName(): ?string
   {
     return $this->conceptSelfAssessmentName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setConceptSelfAssessmentName(?string $conceptSelfAssessmentName): self
   {
     $this->conceptSelfAssessmentName = $conceptSelfAssessmentName;
@@ -196,13 +180,11 @@ class StudyAreaFieldConfiguration
     return $this;
   }
 
-  /** @return string|null */
   public function getLearningOutcomeObjName(): ?string
   {
     return $this->learningOutcomeObjName;
   }
 
-  /** @return StudyAreaFieldConfiguration */
   public function setLearningOutcomeObjName(?string $learningOutcomeObjName): self
   {
     $this->learningOutcomeObjName = $learningOutcomeObjName;

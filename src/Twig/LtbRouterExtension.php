@@ -19,7 +19,7 @@ class LtbRouterExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('browserPath', [$this, 'browserPath']),
+        new TwigFunction('browserPath', $this->browserPath(...)),
     ];
   }
 

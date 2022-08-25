@@ -107,6 +107,7 @@ return [
   // Added are the show/actions/excel controllers that are not used.
   // They are however required to generate some of the routes that are used
     'exclude_file_list'               => [
+        'vendor/myclabs/php-enum/stubs/Stringable.php',
         'vendor/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/IntlDateFormatter.php',
     ],
 ];

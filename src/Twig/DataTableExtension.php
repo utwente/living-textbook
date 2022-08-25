@@ -30,7 +30,7 @@ class DataTableExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('dataTable', [$this, 'dataTable'], ['is_safe' => ['html']]),
+        new TwigFunction('dataTable', $this->dataTable(...), ['is_safe' => ['html']]),
     ];
   }
 

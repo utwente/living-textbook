@@ -39,6 +39,7 @@ class RelationTypeHandler extends AbstractEntityHandler
     }
   }
 
+  /** @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector */
   public function delete(RelationType $relationType, mixed $user): void
   {
     if ($relationType->getDeletedAt() !== null) {

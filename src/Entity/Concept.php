@@ -208,7 +208,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $examples;
 
   /**
-   * @var ExternalResource[]|Collection
+   * @var Collection<ExternalResource>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\ExternalResource", inversedBy="concepts")
    * @ORM\JoinTable(name="concepts_external_resources",
@@ -227,7 +227,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $externalResources;
 
   /**
-   * @var Contributor[]|Collection
+   * @var Collection<Contributor>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Contributor", inversedBy="concepts")
    * @ORM\JoinTable(name="concepts_contributors",
@@ -246,7 +246,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $contributors;
 
   /**
-   * @var Tag[]|Collection
+   * @var Collection<Tag>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="concepts")
    *
@@ -273,7 +273,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $selfAssessment;
 
   /**
-   * @var ArrayCollection|ConceptRelation[]
+   * @var Collection<ConceptRelation>
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
    * @ORM\OrderBy({"outgoingPosition" = "ASC"})
@@ -290,7 +290,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private $outgoingRelations;
 
   /**
-   * @var ArrayCollection|ConceptRelation[]
+   * @var Collection<ConceptRelation>
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"})
    * @ORM\OrderBy({"incomingPosition" = "ASC"})
@@ -395,7 +395,7 @@ class Concept implements SearchableInterface, ReviewableInterface
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
       return $val === 0
-          ? strcasecmp($a->$conceptRetriever()->getName(), $b->$conceptRetriever()->getName())
+          ? strcasecmp((string)$a->$conceptRetriever()->getName(), (string)$b->$conceptRetriever()->getName())
           : $val;
     });
 
@@ -699,19 +699,16 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /** @return bool */
   public function isInstance(): bool
   {
     return $this->instance;
   }
 
-  /** @return Concept */
   public function setInstance(bool $instance): self
   {
     $this->instance = $instance;
@@ -726,7 +723,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string */
   public function getDefinition(): string
   {
     return $this->definition;
@@ -739,7 +735,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string */
   public function getSynonyms(): string
   {
     return $this->synonyms;
@@ -757,13 +752,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this->getOutgoingRelations();
   }
 
-  /** @return ArrayCollection|ConceptRelation[] */
-  public function getOutgoingRelations()
+  /** @return Collection<ConceptRelation> */
+  public function getOutgoingRelations(): Collection
   {
     return $this->outgoingRelations;
   }
 
-  /** @return $this */
   public function addOutgoingRelation(ConceptRelation $conceptRelation): Concept
   {
     // Check whether the source is set, otherwise set it as this
@@ -776,7 +770,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return $this */
   public function removeOutgoingRelation(ConceptRelation $conceptRelation): Concept
   {
     $this->outgoingRelations->removeElement($conceptRelation);
@@ -784,13 +777,12 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return ArrayCollection|ConceptRelation[] */
-  public function getIncomingRelations()
+  /** @return Collection<ConceptRelation> */
+  public function getIncomingRelations(): Collection
   {
     return $this->incomingRelations;
   }
 
-  /** @return $this */
   public function addIncomingRelation(ConceptRelation $conceptRelation): Concept
   {
     // Check whether the source is set, otherwise set it as this
@@ -803,7 +795,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -816,7 +807,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return DataIntroduction */
   public function getIntroduction(): DataIntroduction
   {
     return $this->introduction;
@@ -829,7 +819,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return DataTheoryExplanation */
   public function getTheoryExplanation(): DataTheoryExplanation
   {
     return $this->theoryExplanation;
@@ -842,7 +831,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return DataHowTo */
   public function getHowTo(): DataHowTo
   {
     return $this->howTo;
@@ -855,7 +843,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return DataExamples */
   public function getExamples(): DataExamples
   {
     return $this->examples;
@@ -868,7 +855,6 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return DataSelfAssessment */
   public function getSelfAssessment(): DataSelfAssessment
   {
     return $this->selfAssessment;
@@ -881,8 +867,8 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return ExternalResource[]|Collection */
-  public function getExternalResources()
+  /** @return Collection<ExternalResource> */
+  public function getExternalResources(): Collection
   {
     return $this->externalResources;
   }
@@ -901,8 +887,8 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return Contributor[]|Collection */
-  public function getContributors()
+  /** @return Collection<Contributor> */
+  public function getContributors(): Collection
   {
     return $this->contributors;
   }
@@ -921,8 +907,8 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return Concept[]|Collection */
-  public function getPriorKnowledge()
+  /** @return Collection<Concept> */
+  public function getPriorKnowledge(): Collection
   {
     return $this->priorKnowledge;
   }
@@ -941,14 +927,14 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return Concept[]|Collection */
-  public function getPriorKnowledgeOf()
+  /** @return Collection<Concept> */
+  public function getPriorKnowledgeOf(): Collection
   {
     return $this->priorKnowledgeOf;
   }
 
-  /** @return LearningOutcome[]|Collection */
-  public function getLearningOutcomes()
+  /** @return Collection<LearningOutcome> */
+  public function getLearningOutcomes(): Collection
   {
     return $this->learningOutcomes;
   }
@@ -967,8 +953,8 @@ class Concept implements SearchableInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return Tag[]|Collection */
-  public function getTags()
+  /** @return Collection<Tag> */
+  public function getTags(): Collection
   {
     return $this->tags;
   }

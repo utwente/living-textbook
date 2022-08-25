@@ -42,12 +42,10 @@ class ReviewController extends AbstractController
    * @Route("/{review}/edit", requirements={"review"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
-   *
-   * @return array|Response
    */
   public function editReview(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $this->checkAccess($studyArea, $review);
@@ -105,12 +103,10 @@ class ReviewController extends AbstractController
    *
    * @throws ORMException
    * @throws Throwable
-   *
-   * @return array|Response
    */
   public function publishReview(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, ReviewService $reviewService,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator): array|Response
   {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
@@ -148,12 +144,10 @@ class ReviewController extends AbstractController
    * @Route("/{review}/remove", requirements={"review"="\d+"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
-   *
-   * @return array|Response
    */
   public function removeReview(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-      TranslatorInterface $translator)
+      TranslatorInterface $translator): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $this->checkAccess($studyArea, $review);
@@ -188,12 +182,11 @@ class ReviewController extends AbstractController
    *
    * @throws TransportExceptionInterface
    *
-   * @return array|Response
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function resubmitSubmission(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-      ReviewNotificationService $reviewNotificationService, TranslatorInterface $translator)
+      ReviewNotificationService $reviewNotificationService, TranslatorInterface $translator): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -240,12 +233,11 @@ class ReviewController extends AbstractController
    *
    * @throws TransportExceptionInterface
    *
-   * @return array|Response
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function reviewSubmission(
       Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-      TranslatorInterface $translator, ReviewNotificationService $reviewNotificationService)
+      TranslatorInterface $translator, ReviewNotificationService $reviewNotificationService): array|Response
   {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
@@ -309,10 +301,8 @@ class ReviewController extends AbstractController
    * @Route("/{review}/show", requirements={"review"="\d+"})
    * @Template()
    * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
-  public function showSubmission(RequestStudyArea $requestStudyArea, Review $review)
+  public function showSubmission(RequestStudyArea $requestStudyArea, Review $review): array|Response
   {
     // Check study area
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
@@ -335,10 +325,8 @@ class ReviewController extends AbstractController
    * @Route("/submissions")
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template
-   *
-   * @return array|Response
    */
-  public function submissions(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository)
+  public function submissions(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository): array|Response
   {
     $this->isReviewable($requestStudyArea);
 
@@ -353,12 +341,10 @@ class ReviewController extends AbstractController
    * @Route("/submit")
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @Template()
-   *
-   * @return array|Response
    */
   public function submit(
       Request $request, RequestStudyArea $requestStudyArea, PendingChangeRepository $pendingChangeRepository,
-      ReviewService $reviewService, TranslatorInterface $translator)
+      ReviewService $reviewService, TranslatorInterface $translator): array|Response
   {
     $this->isReviewable($requestStudyArea);
 
@@ -424,12 +410,8 @@ class ReviewController extends AbstractController
     ];
   }
 
-  /**
-   * Verify whether the study area has access to review mode.
-   *
-   * @param StudyArea|RequestStudyArea $studyArea
-   */
-  private function isReviewable($studyArea)
+  /** Verify whether the study area has access to review mode. */
+  private function isReviewable(StudyArea|RequestStudyArea $studyArea)
   {
     if ($studyArea instanceof RequestStudyArea) {
       $studyArea = $studyArea->getStudyArea();

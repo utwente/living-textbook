@@ -28,7 +28,7 @@ class StudyAreaGroup
   private $name;
 
   /**
-   * @var StudyArea[]|ArrayCollection
+   * @var Collection<StudyArea>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\StudyArea", mappedBy="group", fetch="EXTRA_LAZY")
    */
@@ -45,13 +45,11 @@ class StudyAreaGroup
     return $this->studyAreas->count();
   }
 
-  /** @return string|null */
   public function getName(): ?string
   {
     return $this->name;
   }
 
-  /** @return StudyAreaGroup */
   public function setName(string $name): self
   {
     $this->name = $name;
@@ -59,8 +57,8 @@ class StudyAreaGroup
     return $this;
   }
 
-  /** @return StudyArea[]|Collection */
-  public function getStudyAreas()
+  /** @return Collection<StudyArea> */
+  public function getStudyAreas(): Collection
   {
     return $this->studyAreas;
   }

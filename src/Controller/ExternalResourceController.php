@@ -32,11 +32,9 @@ class ExternalResourceController extends AbstractController
    * @Template
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -69,12 +67,10 @@ class ExternalResourceController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function edit(
       Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
-      ReviewService $reviewService, TranslatorInterface $trans)
+      ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -139,12 +135,10 @@ class ExternalResourceController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
   public function remove(
       Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
-      ReviewService $reviewService, TranslatorInterface $trans)
+      ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 

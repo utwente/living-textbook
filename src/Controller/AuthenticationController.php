@@ -60,10 +60,8 @@ class AuthenticationController extends AbstractController
    *
    * @Route("/login", name="login", options={"no_login_wrap"=true})
    * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @return array|RedirectResponse
    */
-  public function login(Request $request, TranslatorInterface $trans)
+  public function login(Request $request, TranslatorInterface $trans): array|RedirectResponse
   {
     // Forward to landing for urls backwards compatibility
     return $this->redirectToRoute('app_default_landing');
@@ -291,12 +289,10 @@ class AuthenticationController extends AbstractController
    * @Route("/account/create", options={"no_login_wrap"=true})
    * @IsGranted("PUBLIC_ACCESS")
    * @Template()
-   *
-   * @return array|RedirectResponse
    */
   public function createAccount(
       Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
-      UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator)
+      UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator): array|RedirectResponse
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');

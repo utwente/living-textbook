@@ -227,7 +227,6 @@ EOT;
     return new JsonResponse($jsonLd, Response::HTTP_OK, [], true);
   }
 
-  /** @return string */
   public function generateStudyAreaResourceUrl(): string
   {
     return $this->router->generate('app_resource_studyarea', [], UrlGeneratorInterface::ABSOLUTE_URL);

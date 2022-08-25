@@ -40,7 +40,6 @@ trait BaseDataTextObject
     return $this->text !== null && $this->text != '';
   }
 
-  /** @return string|null */
   public function getText(): ?string
   {
     return $this->text;

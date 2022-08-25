@@ -42,49 +42,41 @@ class ResolvedConceptNames implements ResolvedNamesInterface
     // Nothing to do here
   }
 
-  /** @return string */
   public function definition(): string
   {
     return $this->definition;
   }
 
-  /** @return string */
   public function examples(): string
   {
     return $this->examples;
   }
 
-  /** @return string */
   public function howTo(): string
   {
     return $this->howTo;
   }
 
-  /** @return string */
   public function introduction(): string
   {
     return $this->introduction;
   }
 
-  /** @return string */
   public function priorKnowledge(): string
   {
     return $this->priorKnowledge;
   }
 
-  /** @return string */
   public function selfAssessment(): string
   {
     return $this->selfAssessment;
   }
 
-  /** @return string */
   public function synonyms(): string
   {
     return $this->synonyms;
   }
 
-  /** @return string */
   public function theoryExplanation(): string
   {
     return $this->theoryExplanation;

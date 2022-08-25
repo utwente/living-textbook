@@ -68,12 +68,10 @@ class DefaultController extends AbstractController
    *                           name="_home_simple", options={"no_login_wrap"=true})
    * @Template("double_column.html.twig")
    * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @return array|RedirectResponse
    */
   public function index(
       Request $request, RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
-      UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler)
+      UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler): array|RedirectResponse
   {
     // Disable profiler on the home page
     if ($profiler) {
@@ -113,12 +111,10 @@ class DefaultController extends AbstractController
    * @Route("", name="base_url", options={"no_login_wrap"=true})
    * @Template()
    * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @return array|Response
    */
   public function landing(
       Request $request, FormFactoryInterface $formFactory, TranslatorInterface $translator,
-      StudyAreaRepository $studyAreaRepository)
+      StudyAreaRepository $studyAreaRepository): array|Response
   {
     $user    = $this->getUser();
     $session = $request->getSession();
@@ -203,9 +199,7 @@ class DefaultController extends AbstractController
             'choice_label'  => 'name',
             'class'         => Concept::class,
             'select2'       => true,
-            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
-              return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea);
-            },
+            'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
         ])
         ->add('submit', SubmitType::class, [
             'disabled' => true,
@@ -285,9 +279,9 @@ class DefaultController extends AbstractController
     $this->learningPaths     = $this->mapArrayById($learningPathRepository->findForStudyArea($studyArea));
 
     // Split the various arrays, while simultaneously sorting them
-    list($badInternalUrls, $badExternalUrls)             = $this->splitUrlLocation($badUrls['bad']);
-    list($unscannedInternalUrls, $unscannedExternalUrls) = $this->splitUrlLocation($badUrls['unscanned']);
-    list($goodInternalUrls, $goodExternalUrls)           = $this->splitUrlLocation($goodUrls);
+    [$badInternalUrls, $badExternalUrls]             = $this->splitUrlLocation($badUrls['bad']);
+    [$unscannedInternalUrls, $unscannedExternalUrls] = $this->splitUrlLocation($badUrls['unscanned']);
+    [$goodInternalUrls, $goodExternalUrls]           = $this->splitUrlLocation($goodUrls);
 
     return [
         'lastScanned'           => $urls['lastScanned'],
@@ -322,7 +316,7 @@ class DefaultController extends AbstractController
    */
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
   {
-    $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode($url)));
+    $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode((string)$url)));
     $result = $urlChecker->checkUrl($url[0], true, false) ?
         $translator->trans('url.good') :
         $translator->trans('url.bad');
@@ -441,7 +435,7 @@ class DefaultController extends AbstractController
   /** Add the Id of an array of objects as key, for easier searching of arrays. */
   private function mapArrayById(array $objects): array
   {
-    $objectIds = array_map([$this, 'findId'], $objects);
+    $objectIds = array_map($this->findId(...), $objects);
 
     return array_combine($objectIds, $objects);
   }
@@ -449,9 +443,9 @@ class DefaultController extends AbstractController
   /** Sort an array of urls for viewing in the overview, then split them according to location. */
   private function splitUrlLocation(?array $urls): array
   {
-    $urls = array_filter($urls, [$this, 'filterDeleted']);
-    usort($urls, [$this, 'sortUrls']);
-    $internalUrls = array_filter($urls, [$this, 'filterInternal']);
+    $urls = array_filter($urls, $this->filterDeleted(...));
+    usort($urls, $this->sortUrls(...));
+    $internalUrls = array_filter($urls, $this->filterInternal(...));
     $externalUrls = array_diff($urls, $internalUrls);
 
     return [$internalUrls, $externalUrls];

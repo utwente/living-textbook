@@ -19,7 +19,7 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
    *
    * @var string
    */
-  public const KEY = 'deny_on_frozen_study_area';
+  final public const KEY = 'deny_on_frozen_study_area';
 
   /**
    * @Required
@@ -38,19 +38,16 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
    */
   public $subject;
 
-  /** @return string */
   public function getRoute(): string
   {
     return $this->route;
   }
 
-  /** @return array */
   public function getRouteParams(): array
   {
     return $this->routeParams;
   }
 
-  /** @return string */
   public function getSubject(): string
   {
     return $this->subject;

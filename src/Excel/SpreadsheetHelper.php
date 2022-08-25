@@ -102,8 +102,7 @@ class SpreadsheetHelper
     $this->setCellValue($sheet, $column, $row, $this->translator->trans($value), $bold);
   }
 
-  /** @param mixed $value */
-  public function setCellValue(Worksheet &$sheet, int $column, int $row, $value, bool $bold = false)
+  public function setCellValue(Worksheet &$sheet, int $column, int $row, mixed $value, bool $bold = false)
   {
     $sheet->setCellValueByColumnAndRow($column, $row, $value);
 

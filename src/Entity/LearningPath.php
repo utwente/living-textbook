@@ -171,7 +171,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this->getName();
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -184,7 +183,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string */
   public function getName(): string
   {
     return $this->name;
@@ -197,7 +195,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string */
   public function getQuestion(): string
   {
     return $this->question;
@@ -210,7 +207,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getIntroduction(): ?string
   {
     return $this->introduction;
@@ -226,9 +222,9 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   /**
    * Retrieve the ordered element list.
    *
-   * @return LearningPathElement[]|Collection
+   * @return Collection<LearningPathElement>
    */
-  public function getElements()
+  public function getElements(): Collection
   {
     return $this->elements;
   }
@@ -236,13 +232,13 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   /**
    * Get the elements ordered.
    *
-   * @return LearningPathElement[]|Collection
+   * @return Collection<LearningPathElement>
    *
    * @JMSA\Expose()
    * @JMSA\VirtualProperty()
    * @JMSA\SerializedName("elements")
    */
-  public function getElementsOrdered()
+  public function getElementsOrdered(): Collection
   {
     return self::OrderElements($this->elements);
   }
@@ -250,9 +246,11 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface
   /**
    * Get the elements ordered.
    *
-   * @return LearningPathElement[]|Collection
+   * @param Collection<LearningPathElement> $elements
+   *
+   * @return Collection<LearningPathElement>
    */
-  public static function OrderElements(Collection $elements)
+  public static function OrderElements(Collection $elements): Collection
   {
     $result      = [];
     $mappingNext = [];

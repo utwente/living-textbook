@@ -20,7 +20,7 @@ class HighlightExtension extends AbstractExtension
   public function getFilters()
   {
     return [
-        new TwigFilter('highlight', [$this, 'hilightFilter'], ['is_safe' => ['html']]),
+        new TwigFilter('highlight', $this->hilightFilter(...), ['is_safe' => ['html']]),
     ];
   }
 
@@ -34,6 +34,6 @@ class HighlightExtension extends AbstractExtension
    */
   public function hilightFilter($text, $search)
   {
-    return preg_replace(sprintf('/(%s)/i', preg_quote($search)), '<b>$1</b>', $text);
+    return preg_replace(sprintf('/(%s)/i', preg_quote((string)$search)), '<b>$1</b>', $text);
   }
 }

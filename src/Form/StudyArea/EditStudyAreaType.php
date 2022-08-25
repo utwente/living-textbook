@@ -39,12 +39,10 @@ class EditStudyAreaType extends AbstractType
             'empty_data' => '',
         ])
         ->add('accessType', ChoiceType::class, [
-            'label'        => 'study-area.access-type',
-            'help'         => 'study-area.access-type-change-note',
-            'choices'      => $studyArea->getAvailableAccessTypes($this->security, $this->em),
-            'choice_label' => function ($value) {
-              return ucfirst($value);
-            },
+            'label'                     => 'study-area.access-type',
+            'help'                      => 'study-area.access-type-change-note',
+            'choices'                   => $studyArea->getAvailableAccessTypes($this->security, $this->em),
+            'choice_label'              => fn ($value)              => ucfirst((string)$value),
             'choice_translation_domain' => false,
             'select2'                   => true,
         ]);
@@ -57,10 +55,8 @@ class EditStudyAreaType extends AbstractType
               'label'         => 'study-area.groups.group',
               'choice_label'  => 'name',
               'select2'       => true,
-              'query_builder' => function (StudyAreaGroupRepository $repo) {
-                return $repo->createQueryBuilder('sag')
-                    ->orderBy('sag.name', 'ASC');
-              },
+              'query_builder' => fn (StudyAreaGroupRepository $repo) => $repo->createQueryBuilder('sag')
+                  ->orderBy('sag.name', 'ASC'),
           ]);
     }
 
@@ -126,9 +122,7 @@ class EditStudyAreaType extends AbstractType
               'class'         => Tag::class,
               'choice_label'  => 'name',
               'select2'       => true,
-              'query_builder' => function (TagRepository $tagRepository) use ($studyArea) {
-                return $tagRepository->findForStudyAreaQb($studyArea);
-              },
+              'query_builder' => fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
           ]);
     }
 

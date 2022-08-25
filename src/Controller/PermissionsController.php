@@ -54,10 +54,8 @@ class PermissionsController extends AbstractController
    * @Route("/admin/add")
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array|Response
    */
-  public function addAdmin(Request $request, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function addAdmin(Request $request, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
   {
     $form = $this->createForm(AddAdminType::class);
     $form->handleRequest($request);
@@ -83,10 +81,8 @@ class PermissionsController extends AbstractController
    * @Route("/admin/{user}/remove", requirements={"user"="\d+"})
    * @Template()
    * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array|Response
    */
-  public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans)
+  public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
   {
     // Check if not self
     $secUser = $this->getUser();
@@ -146,12 +142,10 @@ class PermissionsController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
-   *
-   * @return array|Response
    */
   public function addPermissions(
       Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
-      UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans)
+      UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -171,9 +165,7 @@ class PermissionsController extends AbstractController
 
       // Find users, and remove those from the email list
       $foundUsers = $userRepository->getUsersForEmails($emails);
-      $emails     = array_diff($emails, array_map(function (User $foundUser) {
-        return $foundUser->getUserIdentifier();
-      }, $foundUsers));
+      $emails     = array_diff($emails, array_map(fn (User $foundUser) => $foundUser->getUserIdentifier(), $foundUsers));
 
       // Add the users/emails to the requested groups
       foreach ($groupTypes as $groupType) {
@@ -268,9 +260,7 @@ class PermissionsController extends AbstractController
     $email = mb_strtolower(trim(urldecode($email)));
 
     $newPermission   = null;
-    $userGroupEmails = $userGroup->getEmails()->filter(function (UserGroupEmail $userGroupEmail) use ($email) {
-      return $userGroupEmail->getEmail() === $email;
-    });
+    $userGroupEmails = $userGroup->getEmails()->filter(fn (UserGroupEmail $userGroupEmail) => $userGroupEmail->getEmail() === $email);
 
     if (count($userGroupEmails) > 0) {
       foreach ($userGroupEmails as $userGroupEmail) {
@@ -296,11 +286,9 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/all")
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @return array|RedirectResponse
    */
   public function removeAllPermissions(
-      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -335,12 +323,10 @@ class PermissionsController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
-   *
-   * @return array|Response
    */
   public function removeAllPermissionsForType(
       Request $request, RequestStudyArea $requestStudyArea, string $groupType,
-      EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans)
+      EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -351,9 +337,7 @@ class PermissionsController extends AbstractController
     $userPermissions = $studyArea->getUserPermissions();
 
     if ($groupType === UserGroup::GROUP_VIEWER) {
-      $notNecessary = 0 === count(array_filter($userPermissions, function (UserPermissions $userPermission) {
-        return $userPermission->isViewerOnly();
-      }));
+      $notNecessary = 0 === count(array_filter($userPermissions, fn (UserPermissions $userPermission) => $userPermission->isViewerOnly()));
     } else {
       $notNecessary = !$userGroup || ($userGroup->getUsers()->isEmpty() && $userGroup->getEmails()->isEmpty());
     }
@@ -416,12 +400,10 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/self")
    * @Template
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array|RedirectResponse
    */
   public function removeSelf(
       Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-      EntityManagerInterface $entityManager)
+      EntityManagerInterface $entityManager): array|RedirectResponse
   {
     $user = $this->getUser();
     if (!$user) {
@@ -466,11 +448,9 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/{user}", requirements={"user"="\d+"})
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @return array|RedirectResponse
    */
   public function removePermissions(
-      Request $request, RequestStudyArea $requestStudyArea, User $user, EntityManagerInterface $em, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -478,9 +458,7 @@ class PermissionsController extends AbstractController
     }
 
     // Retrieve the user groups this user is in
-    $userGroups = $studyArea->getUserGroups()->filter(function (UserGroup $userGroup) use ($user) {
-      return $userGroup->getUsers()->contains($user);
-    });
+    $userGroups = $studyArea->getUserGroups()->filter(fn (UserGroup $userGroup) => $userGroup->getUsers()->contains($user));
     if (count($userGroups) === 0) {
       $this->addFlash('notice', $trans->trans('permissions.remove-not-possible', [
           '%user%' => $user->getDisplayName(),
@@ -520,11 +498,9 @@ class PermissionsController extends AbstractController
    * @Route("/studyarea/revoke/{email}")
    * @Template
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @return array|RedirectResponse
    */
   public function removeEmailPermissions(
-      Request $request, RequestStudyArea $requestStudyArea, string $email, EntityManagerInterface $em, TranslatorInterface $trans)
+      Request $request, RequestStudyArea $requestStudyArea, string $email, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -537,9 +513,7 @@ class PermissionsController extends AbstractController
     // Retrieve the correct user group
     $userGroupEmails = [];
     foreach ($studyArea->getUserGroups() as $userGroup) {
-      $userGroupEmails = array_merge($userGroupEmails, $userGroup->getEmails()->filter(function (UserGroupEmail $userGroup) use ($email) {
-        return $userGroup->getEmail() == $email;
-      })->toArray());
+      $userGroupEmails = array_merge($userGroupEmails, $userGroup->getEmails()->filter(fn (UserGroupEmail $userGroup) => $userGroup->getEmail() == $email)->toArray());
     }
 
     // Verify whether remove is required

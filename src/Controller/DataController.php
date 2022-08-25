@@ -103,13 +103,11 @@ class DataController extends AbstractController
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
-   *
-   * @return array|Response
    */
   public function upload(
       Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
       EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
-      LearningOutcomeRepository $learningOutcomeRepository)
+      LearningOutcomeRepository $learningOutcomeRepository): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -342,10 +340,8 @@ class DataController extends AbstractController
    * @Route("/download")
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @return array|Response
    */
-  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService)
+  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): array|Response
   {
     $form = $this->createForm(DownloadType::class);
     $form->handleRequest($request);
@@ -367,8 +363,6 @@ class DataController extends AbstractController
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws \Exception
-   *
-   * @return array|Response
    */
   public function duplicate(
       Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
@@ -376,7 +370,7 @@ class DataController extends AbstractController
       AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
       LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo,
-      TagRepository $tagRepository)
+      TagRepository $tagRepository): array|Response
   {
     $user = $this->getUser();
     assert($user instanceof User);

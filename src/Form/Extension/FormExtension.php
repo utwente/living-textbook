@@ -34,7 +34,6 @@ class FormExtension extends AbstractTypeExtension
     $view->vars['form_header']      = $options['form_header'];
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

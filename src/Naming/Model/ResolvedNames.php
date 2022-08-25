@@ -24,13 +24,11 @@ class ResolvedNames implements ResolvedNamesInterface
     $this->learningOutcome->resolvePlurals($inflector);
   }
 
-  /** @return ResolvedConceptNames */
   public function concept(): ResolvedConceptNames
   {
     return $this->concept;
   }
 
-  /** @return ResolvedLearningOutcomeNames */
   public function learningOutcome(): ResolvedLearningOutcomeNames
   {
     return $this->learningOutcome;

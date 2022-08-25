@@ -65,7 +65,7 @@ class PendingChangeRepository extends ServiceEntityRepository
 
       return $qb
           ->getQuery()->getOneOrNullResult();
-    } catch (NonUniqueResultException $e) {
+    } catch (NonUniqueResultException) {
       return null;
     }
   }

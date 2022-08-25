@@ -27,7 +27,7 @@ class WordCountValidator extends ConstraintValidator
     }
 
     // Count words
-    $count = str_word_count(strip_tags($value));
+    $count = str_word_count(strip_tags((string)$value));
 
     // Check count
     $message = false;

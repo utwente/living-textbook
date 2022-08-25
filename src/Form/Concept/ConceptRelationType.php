@@ -53,14 +53,11 @@ class ConceptRelationType extends AbstractType
       $form           = $event->getForm();
 
       $form->add('relationType', EntityType::class, [
-          'label'        => 'relation.type',
-          'class'        => RelationType::class,
-          'select2'      => true,
-          'choice_label' => 'name',
-          'choice_attr'  => function ($val, $key, $index) {
-            /* @var RelationType $val */
-            return $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'];
-          },
+          'label'         => 'relation.type',
+          'class'         => RelationType::class,
+          'select2'       => true,
+          'choice_label'  => 'name',
+          'choice_attr'   => fn (RelationType $val, $key, $index) => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
           'query_builder' => function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
             $qb = $repo->createQueryBuilder('rt');
 
@@ -125,14 +122,12 @@ class ConceptRelationType extends AbstractType
             'class'         => Concept::class,
             'choice_label'  => 'name',
             'select2'       => true,
-            'query_builder' => function (ConceptRepository $repo) use ($concept) {
-              return $repo->createQueryBuilder('c')
-                  ->where('c.id != :id')
-                  ->andWhere('c.studyArea = :studyArea')
-                  ->orderBy('c.name', 'ASC')
-                  ->setParameter('id', $concept->getId() ?? 0)
-                  ->setParameter('studyArea', $concept->getStudyArea());
-            },
+            'query_builder' => fn (ConceptRepository $repo) => $repo->createQueryBuilder('c')
+                ->where('c.id != :id')
+                ->andWhere('c.studyArea = :studyArea')
+                ->orderBy('c.name', 'ASC')
+                ->setParameter('id', $concept->getId() ?? 0)
+                ->setParameter('studyArea', $concept->getStudyArea()),
         ]);
   }
 

@@ -82,7 +82,6 @@ class SaveType extends AbstractType
     return false;
   }
 
-  /** @param OptionsResolver $resolver */
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

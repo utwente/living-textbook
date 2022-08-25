@@ -36,7 +36,7 @@ class UserGroupRepository extends ServiceEntityRepository
           ->setParameter('studyArea', $studyArea)
           ->setParameter('type', $groupType)
           ->getQuery()->getSingleResult();
-    } catch (NoResultException $e) {
+    } catch (NoResultException) {
       return null;
     }
   }

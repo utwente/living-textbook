@@ -155,15 +155,15 @@ class UrlScanner
     }
 
     // Prepare context
-    $context       = $context ?? new UrlContext(self::class);
+    $context ??= new UrlContext(self::class);
     $inlineContext = $context->asInline();
 
     // Convert matches
     foreach ($matches[0] as $key => $match) {
       // If it starts with src or href, it is linked
       $inline = true;
-      if (0 === mb_stripos($match, 'src') ||
-          0 === mb_stripos($match, 'href')) {
+      if (0 === mb_stripos((string)$match, 'src') ||
+          0 === mb_stripos((string)$match, 'href')) {
         $inline = false;
       }
 

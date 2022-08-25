@@ -44,7 +44,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     // Determine whether to wrap this url or not
     try {
       $matchedRoute = $this->router->match($targetPath);
-    } catch (Exception $e) {
+    } catch (Exception) {
       // On exception, use the original forward
       return $this->httpUtils->createRedirectResponse($request, $targetUrl);
     }

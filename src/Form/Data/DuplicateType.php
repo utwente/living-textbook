@@ -24,13 +24,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DuplicateType extends AbstractType
 {
-  public const CHOICE              = 'type';
-  public const CHOICE_EXISTING     = 'existing';
-  public const CHOICE_NEW          = 'new';
-  public const EXISTING_STUDY_AREA = 'existing_study_area';
-  public const NEW_STUDY_AREA      = 'new_study_area';
-  public const CONCEPTS            = 'concepts';
-  public const SELECT_ALL          = 'select_all';
+  final public const CHOICE              = 'type';
+  final public const CHOICE_EXISTING     = 'existing';
+  final public const CHOICE_NEW          = 'new';
+  final public const EXISTING_STUDY_AREA = 'existing_study_area';
+  final public const NEW_STUDY_AREA      = 'new_study_area';
+  final public const CONCEPTS            = 'concepts';
+  final public const SELECT_ALL          = 'select_all';
   /** @var Security */
   private $security;
   /** @var StudyAreaRepository */
@@ -78,9 +78,7 @@ class DuplicateType extends AbstractType
             'choice_loader' => new CallbackChoiceLoader(function () use ($currentStudyArea) {
               $studyAreas = $this->studyAreaRepository->findBy(['reviewModeEnabled' => false, 'frozenOn' => null]);
 
-              return array_filter($studyAreas, function (StudyArea $studyArea) use ($currentStudyArea) {
-                return $studyArea->getId() !== $currentStudyArea->getId() && $this->security->isGranted('STUDYAREA_EDIT', $studyArea);
-              });
+              return array_filter($studyAreas, fn (StudyArea $studyArea) => $studyArea->getId() !== $currentStudyArea->getId() && $this->security->isGranted('STUDYAREA_EDIT', $studyArea));
             }),
             'choice_label' => 'name',
             'constraints'  => [
@@ -102,12 +100,10 @@ class DuplicateType extends AbstractType
             'multiple'      => true,
             'class'         => Concept::class,
             'choice_label'  => 'name',
-            'query_builder' => function (ConceptRepository $cr) use ($currentStudyArea) {
-              return $cr->createQueryBuilder('c')
-                  ->where('c.studyArea = :studyArea')
-                  ->setParameter('studyArea', $currentStudyArea)
-                  ->orderBy('c.name', 'ASC');
-            },
+            'query_builder' => fn (ConceptRepository $cr) => $cr->createQueryBuilder('c')
+                ->where('c.studyArea = :studyArea')
+                ->setParameter('studyArea', $currentStudyArea)
+                ->orderBy('c.name', 'ASC'),
         ])
         ->add(self::SELECT_ALL, CheckboxType::class, [
             'label'    => 'data.select-all',
@@ -133,9 +129,7 @@ class DuplicateType extends AbstractType
                 new Callback($this->checkConcepts(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
                 new Callback($this->checkNewStudyArea(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
             ],
-            'validation_groups' => function (FormInterface $form) {
-              return [$form->getData()[self::CHOICE]];
-            },
+            'validation_groups' => fn (FormInterface $form) => [$form->getData()[self::CHOICE]],
         ])
         ->setRequired('current_study_area')
         ->setRequired('new_study_area')
@@ -150,7 +144,7 @@ class DuplicateType extends AbstractType
    */
   public function checkConcepts($data, ExecutionContextInterface $context)
   {
-    if ($data['select_all'] === false && count($data['concepts']) === 0) {
+    if ($data['select_all'] === false && (is_countable($data['concepts']) ? count($data['concepts']) : 0) === 0) {
       $context->buildViolation('data.concepts-no-selection')
           ->atPath('[' . self::CONCEPTS . ']')
           ->addViolation();

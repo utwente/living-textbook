@@ -38,7 +38,7 @@ class Tag implements StudyAreaFilteredInterface
   private $studyArea;
 
   /**
-   * @var Concept[]|Collection
+   * @var Collection<Concept>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="tags")
    */
@@ -76,13 +76,12 @@ class Tag implements StudyAreaFilteredInterface
     $this->concepts = new ArrayCollection();
   }
 
-  /** @return Concept[]|Collection */
-  public function getConcepts()
+  /** @return Collection<Concept> */
+  public function getConcepts(): Collection
   {
     return $this->concepts;
   }
 
-  /** @return StudyArea|null */
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -95,13 +94,11 @@ class Tag implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getName(): string
   {
     return $this->name;
   }
 
-  /** @return Tag */
   public function setName(string $name): self
   {
     $this->name = $name;
@@ -109,13 +106,11 @@ class Tag implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return string */
   public function getColor(): string
   {
     return $this->color;
   }
 
-  /** @return Tag */
   public function setColor(string $color): self
   {
     $this->color = $color;

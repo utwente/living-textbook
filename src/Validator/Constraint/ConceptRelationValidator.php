@@ -9,12 +9,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class ConceptRelationValidator extends ConstraintValidator
 {
-  /**
-   * Violation state variable.
-   *
-   * @var array
-   */
-  private $violations = [];
+  /** Violation state variable. */
+  private array $violations = [];
 
   /**
    * Checks if the passed value is valid.

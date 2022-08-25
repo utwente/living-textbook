@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\StudyArea;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,9 +45,9 @@ class StudyAreaRepository extends ServiceEntityRepository
   /**
    * Retrieve the visible study area's.
    *
-   * @return StudyArea[]|Collection
+   * @return StudyArea[]
    */
-  public function getVisible(?User $user)
+  public function getVisible(?User $user): array
   {
     return $this->getVisibleQueryBuilder($user)->getQuery()->getResult();
   }
@@ -62,7 +61,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   {
     try {
       return $this->getVisibleQueryBuilder($user)->setMaxResults(1)->getQuery()->getOneOrNullResult();
-    } catch (NonUniqueResultException $e) {
+    } catch (NonUniqueResultException) {
       // Impossible due to max results
       return null;
     }

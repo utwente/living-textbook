@@ -118,7 +118,7 @@ abstract class AbstractApiController extends AbstractController
   {
     $user = parent::getUser();
     if (!$user instanceof User) {
-      throw new RuntimeException(sprintf('Unsupported user %s', get_class($user)));
+      throw new RuntimeException(sprintf('Unsupported user %s', $user::class));
     }
 
     return $user;

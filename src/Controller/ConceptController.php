@@ -283,10 +283,8 @@ class ConceptController extends AbstractController
             'choice_label'  => 'name',
             'class'         => Concept::class,
             'select2'       => true,
-            'query_builder' => function (ConceptRepository $conceptRepository) use ($studyArea) {
-              return $conceptRepository->findForStudyAreaOrderByNameQb($studyArea, true);
-            },
-            'constraints' => [
+            'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea, true),
+            'constraints'   => [
                 new NotNull(),
             ],
         ])
@@ -310,17 +308,15 @@ class ConceptController extends AbstractController
       $instanceRelationType = $relationRepository->getOrCreateRelation(
           $studyArea, $translator->trans('concept.instantiate.default-relation-name'));
 
-      $createInstance = function (Concept $base) use ($studyArea, $instanceRelationType): Concept {
-        return (new Concept())
-            ->setStudyArea($studyArea)
-            ->setInstance(true)
-            ->setName($base->getName())
-            ->addOutgoingRelation(
-                (new ConceptRelation())
-                    ->setRelationType($instanceRelationType)
-                    ->setTarget($base)
-            );
-      };
+      $createInstance = fn (Concept $base): Concept => (new Concept())
+          ->setStudyArea($studyArea)
+          ->setInstance(true)
+          ->setName($base->getName())
+          ->addOutgoingRelation(
+              (new ConceptRelation())
+                  ->setRelationType($instanceRelationType)
+                  ->setTarget($base)
+          );
 
       $baseInstance = $createInstance($baseConcept);
       $this->em->persist($baseInstance);

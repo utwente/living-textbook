@@ -157,7 +157,7 @@ class Annotation implements SearchableInterface
   private $visibility;
 
   /**
-   * @var AnnotationComment[]|Collection
+   * @var Collection<AnnotationComment>
    *
    * @ORM\OneToMany(targetEntity="AnnotationComment", mappedBy="annotation")
    *
@@ -241,7 +241,6 @@ class Annotation implements SearchableInterface
     ];
   }
 
-  /** @return User|null */
   public function getUser(): ?User
   {
     return $this->user;
@@ -281,7 +280,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return Concept|null */
   public function getConcept(): ?Concept
   {
     return $this->concept;
@@ -303,7 +301,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getText(): ?string
   {
     return $this->text;
@@ -316,7 +313,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return string */
   public function getContext(): string
   {
     return $this->context;
@@ -329,7 +325,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return int */
   public function getStart(): int
   {
     return $this->start;
@@ -342,7 +337,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return int */
   public function getEnd(): int
   {
     return $this->end;
@@ -355,7 +349,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return string|null */
   public function getSelectedText(): ?string
   {
     return $this->selectedText;
@@ -368,7 +361,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return DateTime|null */
   public function getVersion(): ?DateTime
   {
     return $this->version;
@@ -381,7 +373,6 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return string */
   public function getVisibility(): string
   {
     return $this->visibility;
@@ -398,25 +389,23 @@ class Annotation implements SearchableInterface
     return $this;
   }
 
-  /** @return AnnotationComment[]|Collection */
-  public function getComments()
+  /** @return Collection<AnnotationComment> */
+  public function getComments(): Collection
   {
     return $this->comments;
   }
 
-  /** @return int */
   public function getCommentCount(): int
   {
     return $this->comments->count();
   }
 
-  /** @return int */
   public function getCommentsFromOthersCount(): int
   {
     $annotation = $this;
 
-    return $this->comments->filter(function (AnnotationComment $annotationComment) use ($annotation) {
-      return $annotationComment->getUser()->getId() !== $annotation->getUserId();
-    })->count();
+    return $this->comments
+        ->filter(fn (AnnotationComment $annotationComment) => $annotationComment->getUser()->getId() !== $annotation->getUserId())
+        ->count();
   }
 }

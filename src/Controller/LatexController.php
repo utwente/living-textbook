@@ -81,7 +81,7 @@ class LatexController extends AbstractController
         $pdf = new Pdf($pdfLocation);
         $pdf->setOutputFormat('jpg');
         $pdf->saveImage($imageLocation);
-      } catch (Exception $e) {
+      } catch (Exception) {
         $imageLocation = sprintf('%s/%s',
             $this->getParameter('kernel.project_dir'),
             'public/img/latex/error.jpg');

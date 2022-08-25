@@ -26,7 +26,7 @@ class UserProvider implements OidcUserProviderInterface
     try {
       $user = $this->loadUserByIdentifier($userIdentifier, true);
       $user->update($userData);
-    } catch (UserNotFoundException $e) {
+    } catch (UserNotFoundException) {
       // Create a new user
       $user = User::createFromOidcUserData($userData);
 
