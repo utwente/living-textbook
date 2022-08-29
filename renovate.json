@@ -31,6 +31,9 @@
     },
     "npmrc": "registry=https://registry.yarnpkg.com",
     "platformAutomerge": true,
+    "postUpdateOptions": [
+        "yarnDedupeFewer"
+    ],
     "prConcurrentLimit": 0,
     "prHourlyLimit": 5,
     "rangeStrategy": "pin",
