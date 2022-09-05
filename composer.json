@@ -33,7 +33,7 @@
         "helios-ag/fm-elfinder-bundle": "12.1.3",
         "jms/serializer": "3.18.1",
         "jms/serializer-bundle": "4.0.2",
-        "kick-in/exception-handler-bundle": "3.0.2",
+        "kick-in/exception-handler-bundle": "3.0.3",
         "league/html-to-markdown": "5.1.0",
         "ml/json-ld": "1.2.0",
         "nelmio/api-doc-bundle": "4.9.0",
