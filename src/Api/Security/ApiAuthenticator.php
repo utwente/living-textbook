@@ -46,7 +46,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     return new Passport(
         new UserBadge(
             $tokenData[0],
-            fn ($userIdentifier): UserApiToken => $this->userApiTokenRepository->findOneBy(['tokenId' => $userIdentifier])
+            fn ($userIdentifier): ?UserApiToken => $this->userApiTokenRepository->findOneBy(['tokenId' => $userIdentifier])
         ),
         new CustomCredentials(
             fn (string $password, UserApiToken $apiToken): bool => (!$apiToken->getValidUntil() || $apiToken->getValidUntil() > new DateTimeImmutable())
