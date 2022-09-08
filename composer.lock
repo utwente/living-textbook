@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8765a4985a15bfb52d7bfcf06925c7c6",
+    "content-hash": "02993aedbdc74dd890ee7f322b002b75",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -57,31 +57,31 @@
         },
         {
             "name": "bobv/latex-bundle",
-            "version": "v2.8.0",
+            "version": "v2.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "4193d638596a79e78ca23189c4464e859cf58c63"
+                "reference": "8a82992f6600bbebea1a5dd7fe9e86155b0a1802"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/4193d638596a79e78ca23189c4464e859cf58c63",
-                "reference": "4193d638596a79e78ca23189c4464e859cf58c63",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/8a82992f6600bbebea1a5dd7fe9e86155b0a1802",
+                "reference": "8a82992f6600bbebea1a5dd7fe9e86155b0a1802",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
-                "symfony/config": "~3.4 || ~4.3 || ~5.0",
-                "symfony/console": "~3.4 || ~4.3 || ~5.0",
-                "symfony/dependency-injection": "~3.4 || ~4.3 || ~5.0",
-                "symfony/filesystem": "~3.4 || ~4.3 || ~5.0",
-                "symfony/finder": "~3.4 || ~4.3 || ~5.0",
-                "symfony/form": "~3.4 || ~4.3 || ~5.0",
-                "symfony/framework-bundle": "~3.4 || ~4.3 || ~5.0",
-                "symfony/http-foundation": "~3.4 || ~4.3 || ~5.0",
-                "symfony/http-kernel": "~3.4 || ~4.3 || ~5.0",
-                "symfony/options-resolver": "~3.4 || ~4.3 || ~5.0",
-                "symfony/process": "~3.4 || ~4.3 || ~5.0",
+                "symfony/config": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/console": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/dependency-injection": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/filesystem": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/finder": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/form": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/framework-bundle": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/http-foundation": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/http-kernel": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/options-resolver": "~3.4 || ~4.3 || ~5.0 || ~6.0",
+                "symfony/process": "~3.4 || ~4.3 || ~5.0 || ~6.0",
                 "twig/twig": "~1.9.0 || ~2.0 || ~3.0"
             },
             "require-dev": {
@@ -121,9 +121,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobvandevijver/latex-bundle/issues",
-                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v2.8.0"
+                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v2.9.0"
             },
-            "time": "2022-07-20T08:58:45+00:00"
+            "time": "2022-08-31T18:32:29+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
