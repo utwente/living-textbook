@@ -522,7 +522,7 @@ class Concept implements SearchableInterface, ReviewableInterface
   private function filterDataOn(array &$results, DataInterface $data, int $prio, string $property, string $search)
   {
     assert($data instanceof BaseDataTextObject);
-    if ($data->hasData() && stripos($data->getText(), $search) !== false) {
+    if ($data->hasData() && stripos((string)$data->getText(), $search) !== false) {
       $results[] = SearchController::createResult($prio, $property, $data->getText());
     }
   }

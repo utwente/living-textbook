@@ -143,19 +143,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
-      switch ($changedField) {
-        case 'number':
-          $this->setNumber($changeObj->getNumber());
-          break;
-        case 'name':
-          $this->setName($changeObj->getName());
-          break;
-        case 'text':
-          $this->setText($changeObj->getText());
-          break;
-        default:
-          throw new IncompatibleFieldChangedException($this, $changedField);
-      }
+      match ($changedField) {
+        'number' => $this->setNumber($changeObj->getNumber()),
+        'name'   => $this->setName($changeObj->getName()),
+        'text'   => $this->setText($changeObj->getText()),
+        default  => throw new IncompatibleFieldChangedException($this, $changedField),
+      };
     }
   }
 

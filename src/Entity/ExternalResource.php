@@ -139,19 +139,12 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
-      switch ($changedField) {
-        case 'title':
-          $this->setTitle($changeObj->getTitle());
-          break;
-        case 'description':
-          $this->setDescription($changeObj->getDescription());
-          break;
-        case 'url':
-          $this->setUrl($changeObj->getUrl());
-          break;
-        default:
-          throw new IncompatibleFieldChangedException($this, $changedField);
-      }
+      match ($changedField) {
+        'title'       => $this->setTitle($changeObj->getTitle()),
+        'description' => $this->setDescription($changeObj->getDescription()),
+        'url'         => $this->setUrl($changeObj->getUrl()),
+        default       => throw new IncompatibleFieldChangedException($this, $changedField),
+      };
     }
   }
 

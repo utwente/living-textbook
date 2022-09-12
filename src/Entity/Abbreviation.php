@@ -109,16 +109,11 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
-      switch ($changedField) {
-        case 'abbreviation':
-          $this->setAbbreviation($changeObj->getAbbreviation());
-          break;
-        case 'meaning':
-          $this->setMeaning($changeObj->getMeaning());
-          break;
-        default:
-          throw new IncompatibleFieldChangedException($this, $changedField);
-      }
+      match ($changedField) {
+        'abbreviation' => $this->setAbbreviation($changeObj->getAbbreviation()),
+        'meaning'      => $this->setMeaning($changeObj->getMeaning()),
+        default        => throw new IncompatibleFieldChangedException($this, $changedField),
+      };
     }
   }
 

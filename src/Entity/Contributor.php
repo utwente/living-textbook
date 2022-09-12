@@ -122,19 +122,12 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface
     assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
-      switch ($changedField) {
-        case 'name':
-          $this->setName($changeObj->getName());
-          break;
-        case 'description':
-          $this->setDescription($changeObj->getDescription());
-          break;
-        case 'url':
-          $this->setUrl($changeObj->getUrl());
-          break;
-        default:
-          throw new IncompatibleFieldChangedException($this, $changedField);
-      }
+      match ($changedField) {
+        'name'        => $this->setName($changeObj->getName()),
+        'description' => $this->setDescription($changeObj->getDescription()),
+        'url'         => $this->setUrl($changeObj->getUrl()),
+        default       => throw new IncompatibleFieldChangedException($this, $changedField),
+      };
     }
   }
 
