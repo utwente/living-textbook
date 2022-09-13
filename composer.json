@@ -41,7 +41,7 @@
         "phpoffice/phpspreadsheet": "1.24.1",
         "rollerworks/password-strength-validator": "1.7.3",
         "ryakad/pandoc-php": "1.0.0",
-        "sensio/framework-extra-bundle": "6.2.7",
+        "sensio/framework-extra-bundle": "6.2.8",
         "sentry/sentry-symfony": "4.3.0",
         "spatie/pdf-to-image": "2.2.0",
         "stof/doctrine-extensions-bundle": "1.7.0",
