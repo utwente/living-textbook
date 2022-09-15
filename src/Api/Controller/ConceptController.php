@@ -11,6 +11,7 @@ use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Drenso\Shared\IdMap\IdMap;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -139,17 +140,25 @@ class ConceptController extends AbstractApiController
       ConceptRepository $conceptRepository,
       TagRepository $tagRepository
   ): JsonResponse {
-    $requestConcepts = $this->getArrayFromBody($request, ConceptApiModel::class);
+    $requestConcepts = new IdMap($this->getArrayFromBody($request, ConceptApiModel::class));
 
     $this->em->beginTransaction();
 
+    // Retrieve all concepts, this automatically filters null values
+    $concepts = new IdMap($conceptRepository->findByIds($requestConcepts->getKeys()));
+
     try {
-      $concepts = array_map(fn (ConceptApiModel $requestConcept) => $this->updateConcept(
-          $requestStudyArea,
-          $conceptRepository->find($requestConcept->getId()),
-          $requestConcept,
-          $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags())
-      ), $requestConcepts);
+      $concepts = array_map(function (Concept $concept) use ($requestStudyArea, $requestConcepts, $tagRepository) {
+        $requestConcept = $requestConcepts[$concept->getId()];
+        assert($requestConcept instanceof ConceptApiModel);
+
+        return $this->updateConcept(
+            $requestStudyArea,
+            $concept,
+            $requestConcept,
+            $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags())
+        );
+      }, $concepts->getValues());
 
       $this->em->commit();
     } catch (Exception $e) {

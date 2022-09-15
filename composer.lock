@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d4b91014e973c851fd16a98812cf37f",
+    "content-hash": "f9ec6ec96bcc5f3b97ecf12b076a8e6b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1777,16 +1777,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "1.29.1",
+            "version": "1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "602fd2c49addf320e8af79556a6622794ac5a536"
+                "reference": "f35ef9e7846d3317392103994bb05af1a04bf3da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/602fd2c49addf320e8af79556a6622794ac5a536",
-                "reference": "602fd2c49addf320e8af79556a6622794ac5a536",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/f35ef9e7846d3317392103994bb05af1a04bf3da",
+                "reference": "f35ef9e7846d3317392103994bb05af1a04bf3da",
                 "shasum": ""
             },
             "require": {
@@ -1872,9 +1872,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/1.29.1"
+                "source": "https://github.com/Drenso/symfony-shared/tree/1.30.0"
             },
-            "time": "2022-08-29T18:11:41+00:00"
+            "time": "2022-09-15T12:30:27+00:00"
         },
         {
             "name": "easyrdf/easyrdf",

@@ -5,12 +5,13 @@ namespace App\Api\Model;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\Tag;
+use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 
-class ConceptApiModel
+class ConceptApiModel implements IdInterface
 {
   protected function __construct(
       protected readonly int $id,

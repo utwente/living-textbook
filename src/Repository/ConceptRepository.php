@@ -7,10 +7,13 @@ use App\Entity\StudyArea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Drenso\Shared\Database\RepositoryTraits\FindIdsTrait;
 use InvalidArgumentException;
 
 class ConceptRepository extends ServiceEntityRepository
 {
+  use FindIdsTrait;
+
   public function __construct(ManagerRegistry $registry)
   {
     parent::__construct($registry, Concept::class);
