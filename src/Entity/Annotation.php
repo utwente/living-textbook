@@ -11,6 +11,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Interfaces\IdInterface;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use InvalidArgumentException;
@@ -27,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @JMSA\ExclusionPolicy("all")
  */
-class Annotation implements SearchableInterface
+class Annotation implements SearchableInterface, IdInterface
 {
   use IdTrait;
   use Blameable;

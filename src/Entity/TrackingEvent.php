@@ -6,6 +6,7 @@ use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Interfaces\IdInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\TrackingEventRepository")
  */
-class TrackingEvent implements StudyAreaFilteredInterface
+class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
 

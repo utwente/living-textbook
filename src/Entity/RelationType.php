@@ -13,6 +13,7 @@ use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
+use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * removed. They should however no longer be displayed in the list/edit possibilities.
  * //Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
-class RelationType implements StudyAreaFilteredInterface, ReviewableInterface
+class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
   use Blameable;

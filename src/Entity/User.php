@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Model\OidcUserData;
+use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -33,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity({"username", "isOidc"}, message="user.email-used", errorPath="username")
  */
-class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface
+class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
   use Blameable;

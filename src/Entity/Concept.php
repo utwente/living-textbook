@@ -25,6 +25,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
+use Drenso\Shared\Interfaces\IdInterface;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -44,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ConceptRelationValidator()
  */
-class Concept implements SearchableInterface, ReviewableInterface
+class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
   use Blameable;

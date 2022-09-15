@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
+use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @JMSA\ExclusionPolicy("all")
  */
-class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface
+class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
   use Blameable;

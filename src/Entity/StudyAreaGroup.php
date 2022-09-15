@@ -8,12 +8,13 @@ use App\Database\Traits\SoftDeletable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Interfaces\IdInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaGroupRepository")
  */
-class StudyAreaGroup
+class StudyAreaGroup implements IdInterface
 {
   use IdTrait;
   use Blameable;

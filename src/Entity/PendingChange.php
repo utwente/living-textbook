@@ -9,6 +9,7 @@ use App\Review\Exception\IncompatibleChangeMergeException;
 use App\Review\Exception\OverlappingFieldsChangedException;
 use App\Review\ReviewService;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Interfaces\IdInterface;
 use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="App\Repository\PendingChangeRepository")
  */
-class PendingChange
+class PendingChange implements IdInterface
 {
   use IdTrait;
   use Blameable;
