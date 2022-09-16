@@ -36,7 +36,7 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
   /** {@inheritdoc} */
   public function isProductionEnvironment(): bool
   {
-    return $this->productionServer;
+    return $this->productionServer && $this->exceptionSender && $this->exceptionReceiver;
   }
 
   /** {@inheritdoc} */
