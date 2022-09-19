@@ -3,12 +3,12 @@
 namespace App\ConceptPrint\Base;
 
 use App\Entity\StudyArea;
-use BobV\LatexBundle\Exception\LatexException;
-use BobV\LatexBundle\Helper\Parser;
-use BobV\LatexBundle\Latex\Element\CustomCommand;
-use BobV\LatexBundle\Latex\Element\Text;
-use BobV\LatexBundle\Latex\LatexBase;
-use BobV\LatexBundle\Latex\Section\SubSection;
+use Bobv\LatexBundle\Exception\LatexException;
+use Bobv\LatexBundle\Helper\Parser;
+use Bobv\LatexBundle\Latex\Element\CustomCommand;
+use Bobv\LatexBundle\Latex\Element\Text;
+use Bobv\LatexBundle\Latex\LatexBase;
+use Bobv\LatexBundle\Latex\Section\SubSection;
 use DateTime;
 use Exception;
 use InvalidArgumentException;

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use BobV\LatexBundle\Generator\LatexGeneratorInterface;
-use BobV\LatexBundle\Latex\Base\Standalone;
-use BobV\LatexBundle\Latex\Element\CustomCommand;
+use Bobv\LatexBundle\Generator\LatexGeneratorInterface;
+use Bobv\LatexBundle\Latex\Base\Standalone;
+use Bobv\LatexBundle\Latex\Element\CustomCommand;
 use DateTime;
 use Exception;
 use Psr\Cache\InvalidArgumentException;

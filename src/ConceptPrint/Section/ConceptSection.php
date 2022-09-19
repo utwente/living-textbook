@@ -5,9 +5,9 @@ namespace App\ConceptPrint\Section;
 use App\Entity\Concept;
 use App\Naming\NamingService;
 use App\Router\LtbRouter;
-use BobV\LatexBundle\Exception\LatexException;
-use BobV\LatexBundle\Latex\Element\CustomCommand;
-use BobV\LatexBundle\Latex\Element\Text;
+use Bobv\LatexBundle\Exception\LatexException;
+use Bobv\LatexBundle\Latex\Element\CustomCommand;
+use Bobv\LatexBundle\Latex\Element\Text;
 use Pandoc\PandocException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

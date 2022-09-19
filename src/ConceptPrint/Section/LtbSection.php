@@ -3,11 +3,11 @@
 namespace App\ConceptPrint\Section;
 
 use App\Router\LtbRouter;
-use BobV\LatexBundle\Exception\LatexException;
-use BobV\LatexBundle\Helper\Parser;
-use BobV\LatexBundle\Latex\Element\CustomCommand;
-use BobV\LatexBundle\Latex\Section\Section;
-use BobV\LatexBundle\Latex\Section\SubSection;
+use Bobv\LatexBundle\Exception\LatexException;
+use Bobv\LatexBundle\Helper\Parser;
+use Bobv\LatexBundle\Latex\Element\CustomCommand;
+use Bobv\LatexBundle\Latex\Section\Section;
+use Bobv\LatexBundle\Latex\Section\SubSection;
 use DOMDocument;
 use DOMElement;
 use Pandoc\Pandoc;
