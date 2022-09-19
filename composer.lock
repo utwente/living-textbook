@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3da1718c000eb2feb15990b654adcf64",
+    "content-hash": "c80de6eb4105469176f5863460c7a7e0",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -57,16 +57,16 @@
         },
         {
             "name": "bobv/latex-bundle",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "de73742ff928701be529b76b12b846e8b7c6afb2"
+                "reference": "bbb5eef43c023e8a6f57d9f1c80d46e9a664f545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/de73742ff928701be529b76b12b846e8b7c6afb2",
-                "reference": "de73742ff928701be529b76b12b846e8b7c6afb2",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/bbb5eef43c023e8a6f57d9f1c80d46e9a664f545",
+                "reference": "bbb5eef43c023e8a6f57d9f1c80d46e9a664f545",
                 "shasum": ""
             },
             "require": {
@@ -82,7 +82,7 @@
                 "symfony/http-kernel": "~3.4 || ~4.3 || ~5.0 || ~6.0",
                 "symfony/options-resolver": "~3.4 || ~4.3 || ~5.0 || ~6.0",
                 "symfony/process": "~3.4 || ~4.3 || ~5.0 || ~6.0",
-                "twig/twig": "~1.38.0 || ~2.7.0 || ~3.0"
+                "twig/twig": "~1.38 || ~2.15 || ~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.5",
@@ -121,9 +121,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobvandevijver/latex-bundle/issues",
-                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v3.0.0"
+                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v3.0.1"
             },
-            "time": "2022-09-09T13:42:56+00:00"
+            "time": "2022-09-09T13:52:49+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
