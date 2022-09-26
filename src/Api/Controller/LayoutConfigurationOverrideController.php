@@ -10,19 +10,19 @@ use App\Repository\ConceptRepository;
 use App\Repository\LayoutConfigurationRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Attributes as OA;
 
 /** @Route("/layoutconfigurationoverride") */
 #[OA\Tag('Layout Configuration Override')]
 class LayoutConfigurationOverrideController extends AbstractApiController
 {
   /**
-   * Retrieve single layout override
+   * Retrieve single layout override.
    *
    * @Route("/{override<\d+>}", methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
@@ -38,7 +38,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
   }
 
   /**
-   * Add a new layout override
+   * Add a new layout override.
    *
    * @Route(methods={"POST"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -54,8 +54,8 @@ class LayoutConfigurationOverrideController extends AbstractApiController
   ): JsonResponse {
     $requestOverride = $this->getTypedFromBody($request, LayoutConfigurationOverrideApiModel::class);
 
-    $studyArea = $requestStudyArea->getStudyArea();
-    $concept = $conceptRepository->findForStudyArea($studyArea, $requestOverride->getConcept());
+    $studyArea           = $requestStudyArea->getStudyArea();
+    $concept             = $conceptRepository->findForStudyArea($studyArea, $requestOverride->getConcept());
     $layoutConfiguration = $layoutConfigurationRepository->findForStudyArea($studyArea, $requestOverride->getLayoutConfiguration());
 
     $override = new LayoutConfigurationOverride(
@@ -71,7 +71,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
   }
 
   /**
-   * Update an existing layout configuration override
+   * Update an existing layout configuration override.
    *
    * @Route("/{override<\d+>}", methods={"PATCH"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -93,9 +93,8 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     return $this->createDataResponse(LayoutConfigurationOverrideApiModel::fromEntity($requestOverride));
   }
 
-
   /**
-   * Delete an existing layout configuration override
+   * Delete an existing layout configuration override.
    *
    * @Route("/{override<\d+>}", methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
@@ -112,7 +111,8 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
-  private function getHandler(): LayoutConfigurationOverrideHandler {
+  private function getHandler(): LayoutConfigurationOverrideHandler
+  {
     return new LayoutConfigurationOverrideHandler($this->em, $this->validator, null);
   }
 }

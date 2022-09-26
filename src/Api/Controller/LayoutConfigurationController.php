@@ -3,14 +3,10 @@
 namespace App\Api\Controller;
 
 use App\Api\Model\LayoutConfigurationApiModel;
-use App\Api\Model\LayoutConfigurationOverrideApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\Entity\LayoutConfiguration;
-use App\Entity\LayoutConfigurationOverride;
 use App\EntityHandler\LayoutConfigurationHandler;
-use App\Repository\ConceptRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
