@@ -91,17 +91,13 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
     return $this;
   }
 
-  /**
-   * @return Collection<int, LayoutConfigurationOverride>
-   */
+  /** @return Collection<int, LayoutConfigurationOverride> */
   public function getOverrides(): Collection
   {
     return $this->overrides;
   }
 
-  /**
-   * @param Collection<int, LayoutConfigurationOverride> $overrides
-   */
+  /** @param Collection<int, LayoutConfigurationOverride> $overrides */
   public function setOverrides(Collection $overrides): self
   {
     // TODO clear first to ensure removals happen?
@@ -109,6 +105,4 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
 
     return $this;
   }
-
-
 }

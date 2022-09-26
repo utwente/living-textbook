@@ -8,9 +8,9 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMSA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMSA;
 
 /**
  * @ORM\Table()
@@ -42,9 +42,7 @@ class LayoutConfigurationOverride implements StudyAreaFilteredInterface
    */
   private Concept $concept;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="LayoutConfiguration", inversedBy="overrides")
-   */
+  /** @ORM\ManyToOne(targetEntity="LayoutConfiguration", inversedBy="overrides") */
   private LayoutConfiguration $layoutConfiguration;
 
   /**
@@ -55,24 +53,17 @@ class LayoutConfigurationOverride implements StudyAreaFilteredInterface
    */
   private ?array $override = null;
 
-  /**
-   * @param StudyArea           $studyArea
-   * @param Concept             $concept
-   * @param LayoutConfiguration $layoutConfiguration
-   * @param array|null          $override
-   */
   public function __construct(
       StudyArea $studyArea,
       Concept $concept,
       LayoutConfiguration $layoutConfiguration,
       ?array $override
-  ){
+  ) {
     $this->studyArea           = $studyArea;
     $this->concept             = $concept;
     $this->layoutConfiguration = $layoutConfiguration;
     $this->override            = $override;
   }
-
 
   public function getStudyArea(): ?StudyArea
   {
@@ -94,9 +85,6 @@ class LayoutConfigurationOverride implements StudyAreaFilteredInterface
     return $this->override;
   }
 
-  /**
-   * @param array|null $override
-   */
   public function setOverride(?array $override): self
   {
     $this->override = $override;

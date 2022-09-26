@@ -19,11 +19,13 @@ class ConceptRepository extends ServiceEntityRepository
     parent::__construct($registry, Concept::class);
   }
 
-  public function findById(int $id): Concept {
+  public function findById(int $id): Concept
+  {
     return $this->createQueryBuilder('c')->where('c.id = :id')->setParameter('id', $id)->getQuery()->getSingleResult();
   }
 
-  public function findForStudyArea(StudyArea $studyArea, int $id): Concept {
+  public function findForStudyArea(StudyArea $studyArea, int $id): Concept
+  {
     $qb = $this->createQueryBuilder('c')
         ->where('c.studyArea = :studyArea')
         ->setParameter('studyArea', $studyArea)

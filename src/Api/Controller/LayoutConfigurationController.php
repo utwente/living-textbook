@@ -70,7 +70,7 @@ class LayoutConfigurationController extends AbstractApiController
       Request $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, LayoutConfigurationApiModel::class)
-        ->mapToEntity(null, null)
+        ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
@@ -141,9 +141,7 @@ class LayoutConfigurationController extends AbstractApiController
     return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
-  /**
-   * @param LayoutConfigurationApiModel[] $requestOverrides
-   */
+  /** @param LayoutConfigurationApiModel[] $requestOverrides */
   public function updateOverrides(
       array $requestOverrides,
       ConceptRepository $conceptRepository,
@@ -166,7 +164,7 @@ class LayoutConfigurationController extends AbstractApiController
     $existingOverrides = $layoutConfiguration->getOverrides()->toArray();
 
     $requestIds  = array_map(fn (LayoutConfigurationOverrideApiModel $override) => $override->getId(), $requestUpdateOverrides);
-    $existingIds = array_map(fn (LayoutConfigurationOverride $override) => $override->getId(), $existingOverrides);
+    $existingIds = array_map(fn (LayoutConfigurationOverride $override)         => $override->getId(), $existingOverrides);
 
     $updateIds = array_intersect($requestIds, $existingIds);
     $removeIds = array_diff($existingIds, $updateIds);

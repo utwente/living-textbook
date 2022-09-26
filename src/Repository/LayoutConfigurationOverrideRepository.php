@@ -27,6 +27,7 @@ class LayoutConfigurationOverrideRepository extends ServiceEntityRepository
   public function findForConcept(Concept $concept): LayoutConfigurationOverride
   {
     $qb = $this->findForConceptQb($concept);
+
     return $qb->getQuery()->getSingleResult();
   }
 
@@ -40,6 +41,7 @@ class LayoutConfigurationOverrideRepository extends ServiceEntityRepository
   public function findForLayoutConfiguration(LayoutConfiguration $layoutConfiguration): LayoutConfigurationOverride
   {
     $qb = $this->findForLayoutConfigurationQb($layoutConfiguration);
+
     return $qb->getQuery()->getSingleResult();
   }
 
@@ -49,5 +51,4 @@ class LayoutConfigurationOverrideRepository extends ServiceEntityRepository
         ->where('l.layoutConfiguration = :layoutConfiguration')
         ->setParameter('layoutConfiguration', $layoutConfiguration);
   }
-
 }

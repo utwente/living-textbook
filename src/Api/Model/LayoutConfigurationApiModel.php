@@ -21,9 +21,7 @@ class LayoutConfigurationApiModel
   ) {
   }
 
-  /**
-   * @return LayoutConfigurationOverrideApiModel[]
-   */
+  /** @return LayoutConfigurationOverrideApiModel[] */
   public function getOverrides(): array
   {
     return $this->overrides;

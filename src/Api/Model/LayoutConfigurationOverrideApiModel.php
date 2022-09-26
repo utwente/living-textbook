@@ -13,7 +13,7 @@ class LayoutConfigurationOverrideApiModel
       protected readonly int $layoutConfiguration,
       #[Type('array')]
       protected readonly array $override
-  ){
+  ) {
   }
 
   public function getId(): ?int
