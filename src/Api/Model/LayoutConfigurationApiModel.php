@@ -14,8 +14,19 @@ class LayoutConfigurationApiModel
       protected readonly string $name,
       #[Type('array<string, array>')]
       #[Groups(['Default', 'mutate'])]
-      protected readonly ?array $layouts
+      protected readonly ?array $layouts,
+      #[Groups(['Default', 'mutate'])]
+      #[Type('array<' . LayoutConfigurationOverrideApiModel::class . '>')]
+      protected readonly array $overrides,
   ) {
+  }
+
+  /**
+   * @return LayoutConfigurationOverrideApiModel[]
+   */
+  public function getOverrides(): array
+  {
+    return $this->overrides;
   }
 
   public static function fromEntity(LayoutConfiguration $layoutConfiguration): self
@@ -23,7 +34,9 @@ class LayoutConfigurationApiModel
     return new self(
         $layoutConfiguration->getId(),
         $layoutConfiguration->getName(),
-        $layoutConfiguration->getLayouts()
+        $layoutConfiguration->getLayouts(),
+        $layoutConfiguration->getOverrides()
+            ->map(fn ($layoutConfiguration) => LayoutConfigurationOverrideApiModel::fromEntity($layoutConfiguration))->getValues(),
     );
   }
 

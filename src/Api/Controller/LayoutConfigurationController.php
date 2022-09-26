@@ -3,10 +3,14 @@
 namespace App\Api\Controller;
 
 use App\Api\Model\LayoutConfigurationApiModel;
+use App\Api\Model\LayoutConfigurationOverrideApiModel;
 use App\Api\Model\Validation\ValidationFailedData;
 use App\Entity\LayoutConfiguration;
+use App\Entity\LayoutConfigurationOverride;
 use App\EntityHandler\LayoutConfigurationHandler;
+use App\Repository\ConceptRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -66,7 +70,7 @@ class LayoutConfigurationController extends AbstractApiController
       Request $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, LayoutConfigurationApiModel::class)
-        ->mapToEntity(null)
+        ->mapToEntity(null, null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
@@ -86,14 +90,35 @@ class LayoutConfigurationController extends AbstractApiController
   public function update(
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
-      Request $request
+      Request $request,
+      ConceptRepository $conceptRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
 
-    $layoutConfiguration = $this->getTypedFromBody($request, LayoutConfigurationApiModel::class)
-        ->mapToEntity($layoutConfiguration);
+    $requestLayoutConfiguration = $this->getTypedFromBody($request, LayoutConfigurationApiModel::class);
 
-    $this->getHandler()->update($layoutConfiguration);
+    $requestOverrides = $requestLayoutConfiguration->getOverrides();
+
+    $this->em->beginTransaction();
+
+    try {
+      $this->updateOverrides(
+          $requestOverrides,
+          $conceptRepository,
+          $layoutConfiguration,
+      );
+
+      $layoutConfiguration = $requestLayoutConfiguration->mapToEntity($layoutConfiguration);
+
+      $this->getHandler()->update($layoutConfiguration);
+
+      $this->em->commit();
+    } catch (Exception $e) {
+      $this->em->rollback();
+      throw $e;
+    }
+
+    $this->em->refresh($layoutConfiguration);
 
     return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($layoutConfiguration));
   }
@@ -114,6 +139,81 @@ class LayoutConfigurationController extends AbstractApiController
     $this->getHandler()->delete($layoutConfiguration);
 
     return new JsonResponse(null, Response::HTTP_ACCEPTED);
+  }
+
+  /**
+   * @param LayoutConfigurationApiModel[] $requestOverrides
+   */
+  public function updateOverrides(
+      array $requestOverrides,
+      ConceptRepository $conceptRepository,
+      LayoutConfiguration $layoutConfiguration,
+  ): void {
+    // Split into new and existing overrides
+    $requestNewOverrides    = [];
+    $requestUpdateOverrides = [];
+
+    /** @var LayoutConfigurationOverrideApiModel $override */
+    foreach ($requestOverrides as $override) {
+      if ($override->getId()) {
+        $requestUpdateOverrides[] = $override;
+      } else {
+        $requestNewOverrides[] = $override;
+      }
+    }
+
+    // Split into updates and removals
+    $existingOverrides = $layoutConfiguration->getOverrides()->toArray();
+
+    $requestIds  = array_map(fn (LayoutConfigurationOverrideApiModel $override) => $override->getId(), $requestUpdateOverrides);
+    $existingIds = array_map(fn (LayoutConfigurationOverride $override) => $override->getId(), $existingOverrides);
+
+    $updateIds = array_intersect($requestIds, $existingIds);
+    $removeIds = array_diff($existingIds, $updateIds);
+
+    // Remove overrides
+    $removeOverrides = $layoutConfiguration->getOverrides()->filter(fn (LayoutConfigurationOverride $override) => in_array($override->getId(), $removeIds));
+    /** @var LayoutConfigurationOverride $override */
+    foreach ($removeOverrides as $override) {
+      if (!$override->isDeleted()) {
+        $this->em->remove($override);
+      }
+    }
+    $this->em->flush();
+
+    // Update overrides
+    $updateExistingOverrides = array_filter($existingOverrides, fn (LayoutConfigurationOverride $override) => in_array($override->getId(), $updateIds));
+    $updateRequestOverrides  = array_filter($requestOverrides, fn (LayoutConfigurationOverrideApiModel $override) => in_array($override->getId(), $updateIds));
+
+    assert(count($updateExistingOverrides) == count($updateRequestOverrides));
+
+    // Sort so the ids are matched
+    usort($updateExistingOverrides, fn ($a, $b) => $a->getId() - $b->getId());
+    usort($updateRequestOverrides, fn ($a, $b) => $a->getId() - $b->getId());
+
+    array_map(
+        fn (LayoutConfigurationOverrideApiModel $apiOverride,
+            LayoutConfigurationOverride $existingOverride) => $apiOverride->mapToEntity($existingOverride),
+        $updateRequestOverrides,
+        $updateExistingOverrides
+    );
+
+    // Add new overrides
+    $studyArea = $layoutConfiguration->getStudyArea();
+    array_map(function (LayoutConfigurationOverrideApiModel $override) use (
+        $layoutConfiguration,
+        $conceptRepository,
+        $studyArea
+    ) {
+      $newOverride = new LayoutConfigurationOverride(
+          $studyArea,
+          $conceptRepository->findForStudyArea($studyArea, $override->getConcept()),
+          $layoutConfiguration,
+          $override->getOverride(),
+      );
+      $this->em->persist($newOverride);
+    }, $requestNewOverrides);
+    $this->em->flush();
   }
 
   private function getHandler(): LayoutConfigurationHandler

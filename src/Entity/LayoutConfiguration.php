@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -47,6 +48,13 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
    */
   private string $name = '';
 
+  /**
+   * @var Collection<int, LayoutConfigurationOverride>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfigurationOverride", mappedBy="layoutConfiguration", fetch="EXTRA_LAZY")
+   */
+  private Collection $overrides;
+
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -82,4 +90,25 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
 
     return $this;
   }
+
+  /**
+   * @return Collection<int, LayoutConfigurationOverride>
+   */
+  public function getOverrides(): Collection
+  {
+    return $this->overrides;
+  }
+
+  /**
+   * @param Collection<int, LayoutConfigurationOverride> $overrides
+   */
+  public function setOverrides(Collection $overrides): self
+  {
+    // TODO clear first to ensure removals happen?
+    $this->overrides = $overrides;
+
+    return $this;
+  }
+
+
 }
