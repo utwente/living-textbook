@@ -3,14 +3,19 @@
 namespace App\Api\Model;
 
 use App\Entity\LayoutConfigurationOverride;
+use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 
 class LayoutConfigurationOverrideApiModel
 {
   protected function __construct(
+      #[Groups(['Default'])]
       protected readonly int $id,
+      #[Groups(['Default', 'create'])]
       protected readonly int $concept,
+      #[Groups(['Default', 'create'])]
       protected readonly int $layoutConfiguration,
+      #[Groups(['Default', 'mutate', 'create'])]
       #[Type('array')]
       protected readonly array $override
   ) {

@@ -51,7 +51,7 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
   /**
    * @var Collection<int, LayoutConfigurationOverride>
    *
-   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfigurationOverride", mappedBy="layoutConfiguration", fetch="EXTRA_LAZY")
+   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfigurationOverride", mappedBy="layoutConfiguration", fetch="EXTRA_LAZY", cascade={"remove"})
    */
   private Collection $overrides;
 

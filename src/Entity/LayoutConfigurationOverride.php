@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\LayoutConfigurationOverrideRepository",)
  * @ORM\HasLifecycleCallbacks()
  *
- * @UniqueEntity({"concept", "layout_configuration"})
+ * @UniqueEntity({"concept", "layoutConfiguration"})
  * @Gedmo\SoftDeleteable()
  * @JMSA\ExclusionPolicy("all")
  */
@@ -36,7 +36,7 @@ class LayoutConfigurationOverride implements StudyAreaFilteredInterface
   private StudyArea $studyArea;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Concept")
+   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="layoutOverrides")
    *
    * @JMSA\Expose()
    */

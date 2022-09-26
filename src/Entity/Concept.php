@@ -319,6 +319,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;
 
+  /**
+   * @var Collection<int, LayoutConfigurationOverride>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfigurationOverride", mappedBy="concept", fetch="EXTRA_LAZY", cascade={"remove"})
+   */
+  private Collection $layoutOverrides;
+
   /** Concept constructor. */
   public function __construct()
   {

@@ -15,7 +15,7 @@ class LayoutConfigurationApiModel
       #[Type('array<string, array>')]
       #[Groups(['Default', 'mutate'])]
       protected readonly ?array $layouts,
-      #[Groups(['Default', 'mutate'])]
+      #[Groups(['Default'])]
       #[Type('array<' . LayoutConfigurationOverrideApiModel::class . '>')]
       protected readonly array $overrides,
   ) {
