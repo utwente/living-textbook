@@ -47,7 +47,7 @@
             "stabilityDays": 0
         },
         {
-            "matchPackagePrefixes": ["symfony/"],
+            "matchPackagePrefixes": ["symfony/", "twig/"],
             "rebaseWhen": "conflicted",
             "stabilityDays": 0
         },
