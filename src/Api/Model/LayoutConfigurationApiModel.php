@@ -17,7 +17,7 @@ class LayoutConfigurationApiModel
       #[Groups(['Default', 'mutate'])]
       protected readonly ?array $layouts,
       #[Groups(['Default'])]
-      #[Type(IdMap::class .'<' . LayoutConfigurationOverrideApiModel::class . '>')]
+      #[Type(IdMap::class)]
       protected readonly IdMap $overrides,
   ) {
   }

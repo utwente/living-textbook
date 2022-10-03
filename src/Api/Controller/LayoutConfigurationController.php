@@ -65,13 +65,15 @@ class LayoutConfigurationController extends AbstractApiController
       RequestStudyArea $requestStudyArea,
       Request $request): JsonResponse
   {
-    $relationType = $this->getTypedFromBody($request, LayoutConfigurationApiModel::class)
+    $layoutConfiguration = $this->getTypedFromBody($request, LayoutConfigurationApiModel::class)
         ->mapToEntity(null)
         ->setStudyArea($requestStudyArea->getStudyArea());
 
-    $this->getHandler()->add($relationType);
+    $this->getHandler()->add($layoutConfiguration);
 
-    return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($relationType));
+    $this->em->refresh($layoutConfiguration);
+
+    return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($layoutConfiguration));
   }
 
   /**

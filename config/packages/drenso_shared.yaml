@@ -9,3 +9,6 @@ drenso_shared:
       enabled: true
       controller_prefix: App\Api\Controller
       data_field: violations
+  serializer:
+    handlers:
+      id_map: ~
