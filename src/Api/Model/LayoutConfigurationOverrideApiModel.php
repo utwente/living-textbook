@@ -3,10 +3,11 @@
 namespace App\Api\Model;
 
 use App\Entity\LayoutConfigurationOverride;
+use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 
-class LayoutConfigurationOverrideApiModel
+class LayoutConfigurationOverrideApiModel implements IdInterface
 {
   protected function __construct(
       #[Groups(['Default'])]
