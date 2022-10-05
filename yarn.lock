@@ -2197,10 +2197,10 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-ckeditor4@4.19.1:
-  version "4.19.1"
-  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.19.1.tgz#73e786c4194e9ee6072a0fa267ac32f230d69174"
-  integrity sha512-eK/tilHSUpLc9mrD7Lvt07LJfJ13BBa4ftxJBxIX49sGMlWg5WaB81C+MRBZwnntcfpjVdyCLpZAptAHTDB65Q==
+ckeditor4@4.20.0:
+  version "4.20.0"
+  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.20.0.tgz#3c717c9a3943e9eb1d94c99d15778199631be2aa"
+  integrity sha512-Wa7OzaRXN6qRQ0IxIcX4CjZ5qxNlNqIbdQnBf9sxVEx22kTTsAaE5ePT+TpME0rJhLdCwAIRnbjRCJoGcp05oA==
 
 class-utils@^0.3.5:
   version "0.3.6"
