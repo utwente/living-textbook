@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "51787fd61ef53203482feea3daf0ade2",
+    "content-hash": "30bb7d8e1275391a4a55fe85ed42cefd",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3794,16 +3794,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v4.10.0",
+            "version": "v4.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "f808eafbe49f66180d7e73451a3c19fa4cf20b49"
+                "reference": "b42ac43bebe0dc3372e9feb0ef0a43ae3cfbb349"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/f808eafbe49f66180d7e73451a3c19fa4cf20b49",
-                "reference": "f808eafbe49f66180d7e73451a3c19fa4cf20b49",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/b42ac43bebe0dc3372e9feb0ef0a43ae3cfbb349",
+                "reference": "b42ac43bebe0dc3372e9feb0ef0a43ae3cfbb349",
                 "shasum": ""
             },
             "require": {
@@ -3829,7 +3829,7 @@
                 "symfony/framework-bundle": "4.2.7"
             },
             "require-dev": {
-                "api-platform/core": "^2.7.0",
+                "api-platform/core": "^2.7.0|^3@dev",
                 "composer/package-versions-deprecated": "1.11.99.1",
                 "friendsofsymfony/rest-bundle": "^2.8|^3.0",
                 "jms/serializer": "^1.14|^3.0",
@@ -3900,9 +3900,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.10.0"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.10.1"
             },
-            "time": "2022-09-25T17:56:43+00:00"
+            "time": "2022-09-28T20:10:51+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
