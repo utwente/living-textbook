@@ -11,10 +11,8 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
 {
   protected function __construct(
       #[Groups(['Default'])]
-      protected readonly int $id,
-      #[Groups(['Default', 'create'])]
       protected readonly int $concept,
-      #[Groups(['Default', 'create'])]
+      #[Groups(['Default'])]
       protected readonly int $layoutConfiguration,
       #[Groups(['Default', 'mutate', 'create'])]
       #[Type('array')]
@@ -24,7 +22,7 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
 
   public function getId(): ?int
   {
-    return $this->id ?? null;
+    return $this->concept;
   }
 
   public function getConcept(): int
@@ -45,7 +43,6 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
   public static function fromEntity(LayoutConfigurationOverride $override): self
   {
     return new self(
-        $override->getId(),
         $override->getConcept()->getId(),
         $override->getLayoutConfiguration()->getId(),
         $override->getOverride(),

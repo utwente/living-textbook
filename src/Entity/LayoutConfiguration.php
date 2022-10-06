@@ -97,12 +97,8 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
     return $this->overrides;
   }
 
-  /** @param Collection<int, LayoutConfigurationOverride> $overrides */
-  public function setOverrides(Collection $overrides): self
+  public function getOverride(Concept $concept): LayoutConfigurationOverride
   {
-    // TODO clear first to ensure removals happen?
-    $this->overrides = $overrides;
-
-    return $this;
+    return $this->overrides->filter(fn (LayoutConfigurationOverride $override) => $override->getConcept()->getId() === $concept->getId())->first();
   }
 }
