@@ -97,7 +97,7 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
     return $this->overrides;
   }
 
-  public function getOverride(Concept $concept): LayoutConfigurationOverride
+  public function getOverride(Concept $concept): LayoutConfigurationOverride|false
   {
     return $this->overrides->filter(fn (LayoutConfigurationOverride $override) => $override->getConcept()->getId() === $concept->getId())->first();
   }

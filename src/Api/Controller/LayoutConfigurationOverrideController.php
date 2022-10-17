@@ -38,6 +38,10 @@ class LayoutConfigurationOverrideController extends AbstractApiController
 
     $override = $layoutConfiguration->getOverride($concept);
 
+    if (!$override) {
+      throw $this->createNotFoundException();
+    }
+
     return $this->createDataResponse(LayoutConfigurationOverrideApiModel::fromEntity($override));
   }
 
@@ -93,6 +97,10 @@ class LayoutConfigurationOverrideController extends AbstractApiController
 
     $override = $layoutConfiguration->getOverride($concept);
 
+    if (!$override) {
+      throw $this->createNotFoundException();
+    }
+
     $requestOverride = $this->getTypedFromBody($request, LayoutConfigurationOverrideApiModel::class)->mapToEntity($override);
 
     $this->getHandler()->update($requestOverride);
@@ -116,6 +124,10 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
     $override = $layoutConfiguration->getOverride($concept);
+
+    if (!$override) {
+      throw $this->createNotFoundException();
+    }
 
     $this->getHandler()->delete($override);
 
