@@ -27,7 +27,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
    * @Route(methods={"GET"})
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
-  #[OA\Response(response: 200, description: 'A single study area layout configuration', content: [new Model(type: LayoutConfigurationOverrideApiModel::class)])]
+  #[OA\Response(response: 200, description: 'A single layout override', content: [new Model(type: LayoutConfigurationOverrideApiModel::class)])]
   public function single(
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
@@ -106,7 +106,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
    * @Route(methods={"DELETE"})
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  #[OA\Response(response: 202, description: 'The layout configuration has been deleted')]
+  #[OA\Response(response: 202, description: 'The layout override has been deleted')]
   public function delete(
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
