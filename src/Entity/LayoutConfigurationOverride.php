@@ -2,15 +2,10 @@
 
 namespace App\Entity;
 
-use App\Database\Traits\Blameable;
-use App\Database\Traits\IdTrait;
-use App\Database\Traits\SoftDeletable;
-use App\Entity\Contracts\StudyAreaFilteredInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table()
@@ -21,19 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Gedmo\SoftDeleteable()
  * @JMSA\ExclusionPolicy("all")
  */
-class LayoutConfigurationOverride implements StudyAreaFilteredInterface
+class LayoutConfigurationOverride extends Override
 {
-  use IdTrait;
-  use Blameable;
-  use SoftDeletable;
-
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea")
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
-  private StudyArea $studyArea;
 
   /**
    * @ORM\ManyToOne(targetEntity="Concept", inversedBy="layoutOverrides")
@@ -45,31 +29,16 @@ class LayoutConfigurationOverride implements StudyAreaFilteredInterface
   /** @ORM\ManyToOne(targetEntity="LayoutConfiguration", inversedBy="overrides") */
   private LayoutConfiguration $layoutConfiguration;
 
-  /**
-   * @ORM\Column(type="json", nullable=true)
-   *
-   * @JMSA\Expose()
-   * @Assert\NotNull()
-   */
-  private ?array $override = null;
-
   public function __construct(
       StudyArea $studyArea,
       Concept $concept,
       LayoutConfiguration $layoutConfiguration,
       ?array $override
   ) {
-    $this->studyArea           = $studyArea;
+    parent::__construct($studyArea, $override);
     $this->concept             = $concept;
     $this->layoutConfiguration = $layoutConfiguration;
-    $this->override            = $override;
   }
-
-  public function getStudyArea(): ?StudyArea
-  {
-    return $this->studyArea;
-  }
-
   public function getConcept(): Concept
   {
     return $this->concept;
@@ -78,17 +47,5 @@ class LayoutConfigurationOverride implements StudyAreaFilteredInterface
   public function getLayoutConfiguration(): LayoutConfiguration
   {
     return $this->layoutConfiguration;
-  }
-
-  public function getOverride(): ?array
-  {
-    return $this->override;
-  }
-
-  public function setOverride(?array $override): self
-  {
-    $this->override = $override;
-
-    return $this;
   }
 }
