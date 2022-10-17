@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -48,6 +49,13 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
    */
   private string $name = '';
 
+  /**
+   * @var Collection<int, StylingConfigurationConceptOverride>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationConceptOverride", mappedBy="stylingConfiguration", fetch="EXTRA_LAZY", cascade={"remove"})
+   */
+  private Collection $conceptOverrides;
+
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -82,5 +90,16 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
     $this->name = $name;
 
     return $this;
+  }
+
+  /** @return Collection<int, StylingConfigurationConceptOverride> */
+  public function getConceptOverrides(): Collection
+  {
+    return $this->conceptOverrides;
+  }
+
+  public function getConceptOverride(Concept $concept): StylingConfigurationConceptOverride
+  {
+    return $this->conceptOverrides->filter(fn (StylingConfigurationConceptOverride $override) => $override->getConcept()->getId() === $concept->getId())->first();
   }
 }

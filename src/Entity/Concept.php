@@ -326,6 +326,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    */
   private Collection $layoutOverrides;
 
+  /**
+   * @var Collection<int, StylingConfigurationConceptOverride>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationConceptOverride", mappedBy="concept", fetch="EXTRA_LAZY", cascade={"remove"})
+   */
+  private Collection $stylingOverrides;
+
   /** Concept constructor. */
   public function __construct()
   {
