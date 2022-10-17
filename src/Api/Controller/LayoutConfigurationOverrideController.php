@@ -32,8 +32,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
       Concept $concept
-  ): JsonResponse
-  {
+  ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
