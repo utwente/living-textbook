@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -101,6 +102,13 @@ class ConceptRelation implements IdInterface
 
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;
+
+  /**
+   * @var Collection<int, StylingConfigurationRelationOverride>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationRelationOverride", mappedBy="relation", fetch="EXTRA_LAZY", cascade={"remove"})
+   */
+  private Collection $stylingOverrides;
 
   /**
    * @JMSA\VirtualProperty()

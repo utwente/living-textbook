@@ -56,6 +56,13 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
    */
   private Collection $conceptOverrides;
 
+  /**
+   * @var Collection<int, StylingConfigurationRelationOverride>
+   *
+   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationRelationOverride", mappedBy="stylingConfiguration", fetch="EXTRA_LAZY", cascade={"remove"})
+   */
+  private Collection $relationOverrides;
+
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
@@ -101,5 +108,16 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
   public function getConceptOverride(Concept $concept): StylingConfigurationConceptOverride
   {
     return $this->conceptOverrides->filter(fn (StylingConfigurationConceptOverride $override) => $override->getConcept()->getId() === $concept->getId())->first();
+  }
+
+  /** @return Collection<int, StylingConfigurationRelationOverride> */
+  public function getRelationOverrides(): Collection
+  {
+    return $this->relationOverrides;
+  }
+
+  public function getRelationOverride(ConceptRelation $relation): StylingConfigurationRelationOverride
+  {
+    return $this->relationOverrides->filter(fn (StylingConfigurationRelationOverride $override) => $override->getRelation()->getId() === $relation->getId())->first();
   }
 }
