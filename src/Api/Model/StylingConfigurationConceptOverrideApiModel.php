@@ -17,8 +17,7 @@ class StylingConfigurationConceptOverrideApiModel implements IdInterface
       #[Groups(['Default', 'mutate', 'create'])]
       #[Type('array')]
       protected readonly array $override
-  )
-  {
+  ) {
   }
 
   // Used as index when responding with multiple

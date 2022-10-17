@@ -18,7 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class LayoutConfigurationOverride extends Override
 {
-
   /**
    * @ORM\ManyToOne(targetEntity="Concept", inversedBy="layoutOverrides")
    *
