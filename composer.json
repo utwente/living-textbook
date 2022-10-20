@@ -24,7 +24,7 @@
         "doctrine/migrations": "3.5.2",
         "doctrine/orm": "2.13.3",
         "doctrine/persistence": "3.0.3",
-        "drenso/symfony-oidc-bundle": "2.6.0",
+        "drenso/symfony-oidc-bundle": "2.7.0",
         "drenso/symfony-shared": "1.30.0",
         "easyrdf/easyrdf": "1.1.1",
         "friendsofsymfony/ckeditor-bundle": "2.4.0",
