@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df56d119ddc9342a491dbaaf87dad12c",
+    "content-hash": "f91b3b22c137a88d5e3af795e0b630e1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1780,16 +1780,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "1.30.0",
+            "version": "1.31.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "f35ef9e7846d3317392103994bb05af1a04bf3da"
+                "reference": "72aa957c3ae950dc81ee302449c1ef73ea1ed92e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/f35ef9e7846d3317392103994bb05af1a04bf3da",
-                "reference": "f35ef9e7846d3317392103994bb05af1a04bf3da",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/72aa957c3ae950dc81ee302449c1ef73ea1ed92e",
+                "reference": "72aa957c3ae950dc81ee302449c1ef73ea1ed92e",
                 "shasum": ""
             },
             "require": {
@@ -1810,7 +1810,7 @@
                 "bomo/ical-bundle": "^2.0.2",
                 "doctrine/orm": "^2.7",
                 "drenso/phan-extensions": "~2.5 || ~3.0",
-                "jms/serializer-bundle": "^3.3 || ^4.0",
+                "jms/serializer-bundle": "^3.14 || ^4.0 || ^5.0",
                 "kigkonsult/icalcreator": "^2.39",
                 "maennchen/zipstream-php": "^2.1",
                 "php-decimal/php-decimal": "^1.1",
@@ -1875,9 +1875,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/1.30.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/1.31.0"
             },
-            "time": "2022-09-15T12:30:27+00:00"
+            "time": "2022-10-24T12:10:09+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
