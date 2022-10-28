@@ -42,6 +42,10 @@
     "timezone": "Europe/Amsterdam",
     "packageRules": [
         {
+            "matchPackageNames": ["php"],
+            "rangeStrategy": "replace"
+        },
+        {
             "matchPackagePrefixes": ["drenso/", "@drenso/"],
             "rebaseWhen": "conflicted",
             "stabilityDays": 0
