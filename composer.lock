@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65f73337c64a7649a273cf62c09f9540",
+    "content-hash": "06ab1064cf41effe5dde2861f8ee9380",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -12017,16 +12017,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.4.10",
+            "version": "4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "795be27b3b3bacc8353350cacc663ac5cbcd05cc"
+                "reference": "6bd53355eb6505e1a1825f163dced55c240a3102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/795be27b3b3bacc8353350cacc663ac5cbcd05cc",
-                "reference": "795be27b3b3bacc8353350cacc663ac5cbcd05cc",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/6bd53355eb6505e1a1825f163dced55c240a3102",
+                "reference": "6bd53355eb6505e1a1825f163dced55c240a3102",
                 "shasum": ""
             },
             "require": {
@@ -12034,6 +12034,7 @@
                 "ext-json": "*",
                 "php": ">=7.2",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
+                "symfony/deprecation-contracts": "^2 || ^3",
                 "symfony/finder": ">=2.2",
                 "symfony/yaml": ">=3.3"
             },
@@ -12088,9 +12089,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.4.10"
+                "source": "https://github.com/zircote/swagger-php/tree/4.5.0"
             },
-            "time": "2022-10-19T02:28:50+00:00"
+            "time": "2022-11-03T19:42:57+00:00"
         }
     ],
     "packages-dev": [
