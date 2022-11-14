@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Repository\LayoutConfigurationOverrideRepository",)
+ * @ORM\Entity(repositoryClass="App\Repository\LayoutConfigurationOverrideRepository")
  * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity({"concept", "layoutConfiguration"})
