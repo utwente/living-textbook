@@ -36,9 +36,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $override = $layoutConfiguration->getOverride($concept);
-
-    if (!$override) {
+    if (!$override = $layoutConfiguration->getOverride($concept)) {
       throw $this->createNotFoundException();
     }
 
@@ -95,9 +93,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $override = $layoutConfiguration->getOverride($concept);
-
-    if (!$override) {
+    if (!$override = $layoutConfiguration->getOverride($concept)) {
       throw $this->createNotFoundException();
     }
 
@@ -123,9 +119,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $override = $layoutConfiguration->getOverride($concept);
-
-    if (!$override) {
+    if (!$override = $layoutConfiguration->getOverride($concept)) {
       throw $this->createNotFoundException();
     }
 

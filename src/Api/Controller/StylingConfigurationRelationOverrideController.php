@@ -36,9 +36,7 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
-    $override = $stylingConfiguration->getRelationOverride($relation);
-
-    if (!$override) {
+    if (!$override = $stylingConfiguration->getRelationOverride($relation)) {
       throw $this->createNotFoundException();
     }
 
@@ -95,9 +93,7 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
-    $override = $stylingConfiguration->getRelationOverride($relation);
-
-    if (!$override) {
+    if (!$override = $stylingConfiguration->getRelationOverride($relation)) {
       throw $this->createNotFoundException();
     }
 
@@ -124,9 +120,7 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
-    $override = $stylingConfiguration->getRelationOverride($relation);
-
-    if (!$override) {
+    if (!$override = $stylingConfiguration->getRelationOverride($relation)) {
       throw $this->createNotFoundException();
     }
 

@@ -36,9 +36,7 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $override = $stylingConfiguration->getConceptOverride($concept);
-
-    if (!$override) {
+    if (!$override = $stylingConfiguration->getConceptOverride($concept)) {
       throw $this->createNotFoundException();
     }
 
@@ -95,9 +93,7 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $override = $stylingConfiguration->getConceptOverride($concept);
-
-    if (!$override) {
+    if (!$override = $stylingConfiguration->getConceptOverride($concept)) {
       throw $this->createNotFoundException();
     }
 
@@ -124,9 +120,7 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    $override = $stylingConfiguration->getConceptOverride($concept);
-
-    if (!$override) {
+    if (!$override = $stylingConfiguration->getConceptOverride($concept)) {
       throw $this->createNotFoundException();
     }
 
