@@ -602,12 +602,6 @@ class StudyArea implements Stringable, IdInterface
     foreach ($this->tags as $tag) {
       $check($tag);
     }
-    foreach ($this->stylingConfigurations as $stylingConfiguration) {
-      $check($stylingConfiguration);
-    }
-    foreach ($this->layoutConfigurations as $layoutConfiguration) {
-      $check($layoutConfiguration);
-    }
 
     // Return result
     return [$lastUpdated, $lastUpdatedBy];
