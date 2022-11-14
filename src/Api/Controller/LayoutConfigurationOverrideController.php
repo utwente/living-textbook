@@ -9,12 +9,12 @@ use App\Entity\LayoutConfiguration;
 use App\Entity\LayoutConfigurationOverride;
 use App\EntityHandler\LayoutConfigurationOverrideHandler;
 use App\Request\Wrapper\RequestStudyArea;
+use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** @Route("/layoutconfiguration/{layoutConfiguration<\d+>}/override/{concept<\d+>}") */
@@ -115,7 +115,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
       Concept $concept,
-  ): JsonResponse {
+  ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
@@ -125,7 +125,7 @@ class LayoutConfigurationOverrideController extends AbstractApiController
 
     $this->getHandler()->delete($override);
 
-    return new JsonResponse(null, Response::HTTP_ACCEPTED);
+    return new AcceptedResponse();
   }
 
   private function getHandler(): LayoutConfigurationOverrideHandler

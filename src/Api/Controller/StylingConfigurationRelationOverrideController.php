@@ -9,12 +9,12 @@ use App\Entity\StylingConfiguration;
 use App\Entity\StylingConfigurationRelationOverride;
 use App\EntityHandler\StylingConfigurationRelationOverrideHandler;
 use App\Request\Wrapper\RequestStudyArea;
+use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** @Route("/stylingconfiguration/{stylingConfiguration<\d+>}/relationoverride/{relation<\d+>}") */
@@ -116,7 +116,7 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
       RequestStudyArea $requestStudyArea,
       StylingConfiguration $stylingConfiguration,
       ConceptRelation $relation,
-  ): JsonResponse {
+  ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
@@ -126,7 +126,7 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
 
     $this->getHandler()->delete($override);
 
-    return new JsonResponse(null, Response::HTTP_ACCEPTED);
+    return new AcceptedResponse();
   }
 
   private function getHandler(): StylingConfigurationRelationOverrideHandler
