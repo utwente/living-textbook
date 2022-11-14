@@ -98,7 +98,7 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
     }
 
     $requestOverride = $this->getTypedFromBody($request, StylingConfigurationConceptOverrideApiModel::class);
-    $override = $requestOverride->mapToEntity($override);
+    $override        = $requestOverride->mapToEntity($override);
 
     $this->getHandler()->update($override);
 
