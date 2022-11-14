@@ -71,6 +71,7 @@ class LayoutConfigurationController extends AbstractApiController
 
     $this->getHandler()->add($layoutConfiguration);
 
+    // Ensure the response contains the completed entity
     $this->em->refresh($layoutConfiguration);
 
     return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($layoutConfiguration));
