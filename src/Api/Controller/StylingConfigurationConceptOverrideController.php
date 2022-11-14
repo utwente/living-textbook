@@ -8,6 +8,7 @@ use App\Entity\Concept;
 use App\Entity\StylingConfiguration;
 use App\Entity\StylingConfigurationConceptOverride;
 use App\EntityHandler\StylingConfigurationConceptOverrideHandler;
+use App\Repository\StylingConfigurationConceptOverrideRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -32,11 +33,12 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
       RequestStudyArea $requestStudyArea,
       StylingConfiguration $stylingConfiguration,
       Concept $concept,
+      StylingConfigurationConceptOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    if (!$override = $stylingConfiguration->getConceptOverride($concept)) {
+    if (!$override = $overrideRepository->getUnique($concept, $stylingConfiguration)) {
       throw $this->createNotFoundException();
     }
 
@@ -89,11 +91,12 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
       StylingConfiguration $stylingConfiguration,
       Concept $concept,
       Request $request,
+      StylingConfigurationConceptOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    if (!$override = $stylingConfiguration->getConceptOverride($concept)) {
+    if (!$override = $overrideRepository->getUnique($concept, $stylingConfiguration)) {
       throw $this->createNotFoundException();
     }
 
@@ -116,11 +119,12 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
       RequestStudyArea $requestStudyArea,
       StylingConfiguration $stylingConfiguration,
       Concept $concept,
+      StylingConfigurationConceptOverrideRepository $overrideRepository,
   ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    if (!$override = $stylingConfiguration->getConceptOverride($concept)) {
+    if (!$override = $overrideRepository->getUnique($concept, $stylingConfiguration)) {
       throw $this->createNotFoundException();
     }
 

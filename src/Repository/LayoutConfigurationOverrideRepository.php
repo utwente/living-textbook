@@ -16,36 +16,15 @@ class LayoutConfigurationOverrideRepository extends ServiceEntityRepository
     parent::__construct($registry, LayoutConfigurationOverride::class);
   }
 
-  public function findUnique(Concept $concept, LayoutConfiguration $layoutConfiguration): LayoutConfigurationOverride
+  public function getUnique(Concept $concept, LayoutConfiguration $layoutConfiguration): LayoutConfigurationOverride
   {
-    $qb = $this->findForLayoutConfigurationQb($layoutConfiguration);
+    $qb = $this->getForLayoutConfigurationQb($layoutConfiguration);
     $qb = $qb->andWhere('l.concept = :concept')->setParameter('concept', $concept);
 
-    return $qb->getQuery()->getSingleResult();
+    return $qb->getQuery()->getOneOrNullResult();
   }
 
-  public function findForConcept(Concept $concept): LayoutConfigurationOverride
-  {
-    $qb = $this->findForConceptQb($concept);
-
-    return $qb->getQuery()->getSingleResult();
-  }
-
-  public function findForConceptQb(Concept $concept): QueryBuilder
-  {
-    return $this->createQueryBuilder('l')
-        ->where('l.concept = :concept')
-        ->setParameter('concept', $concept);
-  }
-
-  public function findForLayoutConfiguration(LayoutConfiguration $layoutConfiguration): LayoutConfigurationOverride
-  {
-    $qb = $this->findForLayoutConfigurationQb($layoutConfiguration);
-
-    return $qb->getQuery()->getSingleResult();
-  }
-
-  public function findForLayoutConfigurationQb(LayoutConfiguration $layoutConfiguration): QueryBuilder
+  public function getForLayoutConfigurationQb(LayoutConfiguration $layoutConfiguration): QueryBuilder
   {
     return $this->createQueryBuilder('l')
         ->where('l.layoutConfiguration = :layoutConfiguration')

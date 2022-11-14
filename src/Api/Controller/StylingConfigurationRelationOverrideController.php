@@ -8,6 +8,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\StylingConfiguration;
 use App\Entity\StylingConfigurationRelationOverride;
 use App\EntityHandler\StylingConfigurationRelationOverrideHandler;
+use App\Repository\StylingConfigurationRelationOverrideRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -32,11 +33,12 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
       RequestStudyArea $requestStudyArea,
       StylingConfiguration $stylingConfiguration,
       ConceptRelation $relation,
+      StylingConfigurationRelationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
-    if (!$override = $stylingConfiguration->getRelationOverride($relation)) {
+    if (!$override = $overrideRepository->getUnique($relation, $stylingConfiguration)) {
       throw $this->createNotFoundException();
     }
 
@@ -89,11 +91,12 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
       StylingConfiguration $stylingConfiguration,
       ConceptRelation $relation,
       Request $request,
+      StylingConfigurationRelationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
-    if (!$override = $stylingConfiguration->getRelationOverride($relation)) {
+    if (!$override = $overrideRepository->getUnique($relation, $stylingConfiguration)) {
       throw $this->createNotFoundException();
     }
 
@@ -116,11 +119,12 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
       RequestStudyArea $requestStudyArea,
       StylingConfiguration $stylingConfiguration,
       ConceptRelation $relation,
+      StylingConfigurationRelationOverrideRepository $overrideRepository,
   ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
 
-    if (!$override = $stylingConfiguration->getRelationOverride($relation)) {
+    if (!$override = $overrideRepository->getUnique($relation, $stylingConfiguration)) {
       throw $this->createNotFoundException();
     }
 

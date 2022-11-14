@@ -8,6 +8,7 @@ use App\Entity\Concept;
 use App\Entity\LayoutConfiguration;
 use App\Entity\LayoutConfigurationOverride;
 use App\EntityHandler\LayoutConfigurationOverrideHandler;
+use App\Repository\LayoutConfigurationOverrideRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -31,12 +32,13 @@ class LayoutConfigurationOverrideController extends AbstractApiController
   public function single(
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
-      Concept $concept
+      Concept $concept,
+      LayoutConfigurationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    if (!$override = $layoutConfiguration->getOverride($concept)) {
+    if (!$override = $overrideRepository->getUnique($concept, $layoutConfiguration)) {
       throw $this->createNotFoundException();
     }
 
@@ -89,11 +91,12 @@ class LayoutConfigurationOverrideController extends AbstractApiController
       LayoutConfiguration $layoutConfiguration,
       Concept $concept,
       Request $request,
+      LayoutConfigurationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    if (!$override = $layoutConfiguration->getOverride($concept)) {
+    if (!$override = $overrideRepository->getUnique($concept, $layoutConfiguration)) {
       throw $this->createNotFoundException();
     }
 
@@ -115,11 +118,12 @@ class LayoutConfigurationOverrideController extends AbstractApiController
       RequestStudyArea $requestStudyArea,
       LayoutConfiguration $layoutConfiguration,
       Concept $concept,
+      LayoutConfigurationOverrideRepository $overrideRepository,
   ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
-    if (!$override = $layoutConfiguration->getOverride($concept)) {
+    if (!$override = $overrideRepository->getUnique($concept, $layoutConfiguration)) {
       throw $this->createNotFoundException();
     }
 

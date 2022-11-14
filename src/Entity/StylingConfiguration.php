@@ -105,19 +105,9 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
     return $this->conceptOverrides;
   }
 
-  public function getConceptOverride(Concept $concept): StylingConfigurationConceptOverride|false
-  {
-    return $this->conceptOverrides->filter(fn (StylingConfigurationConceptOverride $override) => $override->getConcept()->getId() === $concept->getId())->first();
-  }
-
   /** @return Collection<int, StylingConfigurationRelationOverride> */
   public function getRelationOverrides(): Collection
   {
     return $this->relationOverrides;
-  }
-
-  public function getRelationOverride(ConceptRelation $relation): StylingConfigurationRelationOverride|false
-  {
-    return $this->relationOverrides->filter(fn (StylingConfigurationRelationOverride $override) => $override->getRelation()->getId() === $relation->getId())->first();
   }
 }
