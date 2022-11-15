@@ -44,7 +44,7 @@
     "core-js": "3.26.0",
     "custom-event": "1.0.1",
     "d3": "5.16.0",
-    "datatables.net": "1.12.1",
+    "datatables.net": "1.13.0",
     "datatables.net-bs4": "1.13.0",
     "datatables.net-responsive": "2.4.0",
     "datatables.net-responsive-bs4": "2.4.0",
@@ -67,7 +67,7 @@
     "uuid": "9.0.0"
   },
   "resolutions": {
-    "datatables.net": "1.12.1",
+    "datatables.net": "1.13.0",
     "datatables.net-bs4": "1.13.0",
     "jquery": "3.6.1"
   }
