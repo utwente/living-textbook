@@ -3345,16 +3345,16 @@
         },
         {
             "name": "maennchen/zipstream-php",
-            "version": "2.2.1",
+            "version": "2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/maennchen/ZipStream-PHP.git",
-                "reference": "211e9ba1530ea5260b45d90c9ea252f56ec52729"
+                "reference": "30ad6f93cf3efe4192bc7a4c9cad11ff8f4f237f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/211e9ba1530ea5260b45d90c9ea252f56ec52729",
-                "reference": "211e9ba1530ea5260b45d90c9ea252f56ec52729",
+                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/30ad6f93cf3efe4192bc7a4c9cad11ff8f4f237f",
+                "reference": "30ad6f93cf3efe4192bc7a4c9cad11ff8f4f237f",
                 "shasum": ""
             },
             "require": {
@@ -3365,6 +3365,7 @@
             },
             "require-dev": {
                 "ext-zip": "*",
+                "friendsofphp/php-cs-fixer": "^3.9",
                 "guzzlehttp/guzzle": "^6.5.3 || ^7.2.0",
                 "mikey179/vfsstream": "^1.6",
                 "php-coveralls/php-coveralls": "^2.4",
@@ -3406,15 +3407,19 @@
             ],
             "support": {
                 "issues": "https://github.com/maennchen/ZipStream-PHP/issues",
-                "source": "https://github.com/maennchen/ZipStream-PHP/tree/2.2.1"
+                "source": "https://github.com/maennchen/ZipStream-PHP/tree/2.2.6"
             },
             "funding": [
+                {
+                    "url": "https://github.com/maennchen",
+                    "type": "github"
+                },
                 {
                     "url": "https://opencollective.com/zipstream",
                     "type": "open_collective"
                 }
             ],
-            "time": "2022-05-18T15:52:06+00:00"
+            "time": "2022-11-25T18:57:19+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -4853,16 +4858,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.13.1",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "aac44118344d197e6d5f7c6cee91885f0a89acdd"
+                "reference": "df1a79430e14e30cd192fe6c05842133d076e58d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/aac44118344d197e6d5f7c6cee91885f0a89acdd",
-                "reference": "aac44118344d197e6d5f7c6cee91885f0a89acdd",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/df1a79430e14e30cd192fe6c05842133d076e58d",
+                "reference": "df1a79430e14e30cd192fe6c05842133d076e58d",
                 "shasum": ""
             },
             "require": {
@@ -4892,9 +4897,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.13.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.14.0"
             },
-            "time": "2022-11-20T08:52:26+00:00"
+            "time": "2022-11-27T19:09:16+00:00"
         },
         {
             "name": "psr/cache",
@@ -5588,16 +5593,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.11.0",
+            "version": "3.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "91bd6e54d9352754bbdd1d800d2b88618f8130d4"
+                "reference": "4902f43640963ed45517fd7c1da7fdd5511bb304"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/91bd6e54d9352754bbdd1d800d2b88618f8130d4",
-                "reference": "91bd6e54d9352754bbdd1d800d2b88618f8130d4",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/4902f43640963ed45517fd7c1da7fdd5511bb304",
+                "reference": "4902f43640963ed45517fd7c1da7fdd5511bb304",
                 "shasum": ""
             },
             "require": {
@@ -5642,7 +5647,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.11.x-dev"
+                    "dev-master": "3.12.x-dev"
                 }
             },
             "autoload": {
@@ -5676,7 +5681,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.11.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.12.0"
             },
             "funding": [
                 {
@@ -5688,7 +5693,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-10-25T14:36:50+00:00"
+            "time": "2022-11-22T10:57:08+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
