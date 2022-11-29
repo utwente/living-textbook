@@ -16,7 +16,7 @@ class StylingConfigurationConceptOverrideRepository extends ServiceEntityReposit
     parent::__construct($registry, StylingConfigurationConceptOverride::class);
   }
 
-  public function getUnique(Concept $concept, StylingConfiguration $stylingConfiguration): StylingConfigurationConceptOverride
+  public function getUnique(Concept $concept, StylingConfiguration $stylingConfiguration): ?StylingConfigurationConceptOverride
   {
     $qb = $this->getForStylingConfigurationQb($stylingConfiguration);
     $qb = $qb->andWhere('s.concept = :concept')->setParameter('concept', $concept);

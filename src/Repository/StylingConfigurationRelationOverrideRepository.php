@@ -16,7 +16,7 @@ class StylingConfigurationRelationOverrideRepository extends ServiceEntityReposi
     parent::__construct($registry, StylingConfigurationRelationOverride::class);
   }
 
-  public function getUnique(ConceptRelation $relation, StylingConfiguration $stylingConfiguration): StylingConfigurationRelationOverride
+  public function getUnique(ConceptRelation $relation, StylingConfiguration $stylingConfiguration): ?StylingConfigurationRelationOverride
   {
     $qb = $this->getForStylingConfigurationQb($stylingConfiguration);
     $qb = $qb->andWhere('s.relation = :relation')->setParameter('relation', $relation);

@@ -16,7 +16,7 @@ class LayoutConfigurationOverrideRepository extends ServiceEntityRepository
     parent::__construct($registry, LayoutConfigurationOverride::class);
   }
 
-  public function getUnique(Concept $concept, LayoutConfiguration $layoutConfiguration): LayoutConfigurationOverride
+  public function getUnique(Concept $concept, LayoutConfiguration $layoutConfiguration): ?LayoutConfigurationOverride
   {
     $qb = $this->getForLayoutConfigurationQb($layoutConfiguration);
     $qb = $qb->andWhere('l.concept = :concept')->setParameter('concept', $concept);

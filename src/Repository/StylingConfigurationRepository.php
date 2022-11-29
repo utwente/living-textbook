@@ -15,7 +15,7 @@ class StylingConfigurationRepository extends ServiceEntityRepository
     parent::__construct($registry, StylingConfiguration::class);
   }
 
-  public function findForStudyArea(StudyArea $studyArea, int $id): StylingConfiguration
+  public function findForStudyArea(StudyArea $studyArea, int $id): ?StylingConfiguration
   {
     $qb = $this->findForStudyAreaQb($studyArea);
 
