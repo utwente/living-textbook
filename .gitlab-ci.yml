@@ -89,6 +89,9 @@ install-js-dependencies:
       if [ -n "${UPSTREAM_DOTRON_VERSION}" ]; then
         echo "Using updated dotron version ${UPSTREAM_DOTRON_VERSION}"
         yarn add @utwente/dotron-app@${UPSTREAM_DOTRON_VERSION}
+      elif [ "$CI_COMMIT_REF_NAME" == "research" ]; then
+        echo "Pulling latest research version for $CI_COMMIT_REF_NAME branch"
+        yarn add @utwente/dotron-app@research
       fi
   tags:
     - docker
