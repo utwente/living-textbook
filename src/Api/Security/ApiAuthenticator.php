@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PasswordUpgradeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -42,6 +43,10 @@ class ApiAuthenticator extends AbstractAuthenticator
     $token = $request->headers->get(self::API_TOKEN_HEADER);
 
     $tokenData = explode('_', $token);
+
+    if (count($tokenData) !== 2) {
+      throw new BadCredentialsException();
+    }
 
     return new Passport(
         new UserBadge(
