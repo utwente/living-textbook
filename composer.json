@@ -14,7 +14,7 @@
         "bobv/latex-bundle": "3.0.1",
         "caxy/php-htmldiff": "0.1.14",
         "composer/package-versions-deprecated": "1.11.99.4",
-        "doctrine/annotations": "1.13.3",
+        "doctrine/annotations": "1.14.0",
         "doctrine/collections": "1.8.0",
         "doctrine/common": "3.4.3",
         "doctrine/dbal": "3.5.1",
