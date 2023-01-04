@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "676af540434d8c2d9b738a4746944cb4",
+    "content-hash": "a989771f607c2f360345e6792cfea393",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1700,16 +1700,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v2.7.0",
+            "version": "v2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "85b7eb9bdc2ce7061d1fbf7f477e67dee158799e"
+                "reference": "9843838293d545a31bc8cfa7cd25d10c63a3c889"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/85b7eb9bdc2ce7061d1fbf7f477e67dee158799e",
-                "reference": "85b7eb9bdc2ce7061d1fbf7f477e67dee158799e",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/9843838293d545a31bc8cfa7cd25d10c63a3c889",
+                "reference": "9843838293d545a31bc8cfa7cd25d10c63a3c889",
                 "shasum": ""
             },
             "require": {
@@ -1718,13 +1718,13 @@
                 "ext-hash": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "ext-openssl": "*",
                 "php": ">=8.0.2",
                 "phpseclib/phpseclib": "^2.0.31|^3.0.7",
                 "psr/container": "^1.1|^2.0",
                 "psr/log": "^1.1|^2.0|^3.0",
                 "symfony/config": "^5.4|^6.0",
                 "symfony/dependency-injection": "^5.4|^6.0",
+                "symfony/event-dispatcher": "^5.4|^6.0",
                 "symfony/http-foundation": "^5.4|^6.0",
                 "symfony/http-kernel": "^5.4|^6.0",
                 "symfony/property-access": "^5.4|^6.0",
@@ -1736,7 +1736,7 @@
             "require-dev": {
                 "drenso/phan-extensions": "^3.0",
                 "friendsofphp/php-cs-fixer": "3.8.0",
-                "rector/rector": "0.14.5",
+                "rector/rector": "0.14.8",
                 "symfony/cache": "^5.4|^6.0",
                 "symfony/translation-contracts": "^2.0|^3.0"
             },
@@ -1777,9 +1777,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.7.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.8.0"
             },
-            "time": "2022-10-19T19:25:14+00:00"
+            "time": "2022-12-28T17:19:28+00:00"
         },
         {
             "name": "drenso/symfony-shared",
