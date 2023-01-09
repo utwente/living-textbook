@@ -9,6 +9,7 @@ use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -71,18 +72,18 @@ EOT;
     $column      = 1;
     $spreadSheet = new Spreadsheet();
     $sheet       = $spreadSheet->getSheet(0);
-    $sheet->setCellValueByColumnAndRow($column++, $row, 'From');
-    $sheet->setCellValueByColumnAndRow($column++, $row, 'From name');
-    $sheet->setCellValueByColumnAndRow($column++, $row, 'To');
-    $sheet->setCellValueByColumnAndRow($column++, $row, 'To name');
-    $sheet->setCellValueByColumnAndRow($column, $row++, 'Relation');
+    $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), 'From');
+    $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), 'From name');
+    $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), 'To');
+    $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), 'To name');
+    $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row++), 'Relation');
     foreach ($links as $link) {
       $column = 1;
-      $sheet->setCellValueByColumnAndRow($column++, $row, $link->getSourceId());
-      $sheet->setCellValueByColumnAndRow($column++, $row, $link->getSource()->getName());
-      $sheet->setCellValueByColumnAndRow($column++, $row, $link->getTargetId());
-      $sheet->setCellValueByColumnAndRow($column++, $row, $link->getTarget()->getName());
-      $sheet->setCellValueByColumnAndRow($column, $row++, $link->getRelationName());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getSourceId());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getSource()->getName());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getTargetId());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getTarget()->getName());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row++), $link->getRelationName());
     }
 
     return $spreadSheet;
