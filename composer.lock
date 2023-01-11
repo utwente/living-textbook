@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1ab84e9f93d626413b58fd1207fa295",
+    "content-hash": "b73f16cd17dadebe5072bcb602e94c7a",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -12023,20 +12023,20 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.5.3",
+            "version": "4.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "e505bce612a86fe90f8fd50917e0848afc5d2ba8"
+                "reference": "09356f4d68d29bdf3254811fb2602a5d5d1788ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/e505bce612a86fe90f8fd50917e0848afc5d2ba8",
-                "reference": "e505bce612a86fe90f8fd50917e0848afc5d2ba8",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/09356f4d68d29bdf3254811fb2602a5d5d1788ea",
+                "reference": "09356f4d68d29bdf3254811fb2602a5d5d1788ea",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.7",
+                "doctrine/annotations": "^1.7 || ^2.0",
                 "ext-json": "*",
                 "php": ">=7.2",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
@@ -12095,9 +12095,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.5.3"
+                "source": "https://github.com/zircote/swagger-php/tree/4.5.4"
             },
-            "time": "2022-12-21T18:26:59+00:00"
+            "time": "2023-01-04T00:51:43+00:00"
         }
     ],
     "packages-dev": [
