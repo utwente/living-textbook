@@ -240,6 +240,11 @@ php-analysis:
       - vendor/
     policy: pull
   interruptible: true
+  before_script: # Fix for new lazy ServiceEntityRepository being detected as redefined
+    - |-
+      if [[ -f vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php ]]; then
+        sed -i '/LazyServiceEntityRepository/d' vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php
+      fi
   script:
     - phan -k tests/phan/config.php
   tags:
