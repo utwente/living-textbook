@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e70a178cae9a6c26449e7a87a9b8e0e8",
+    "content-hash": "691856bfc95449d0b4866ca3688e2ad9",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2986,21 +2986,21 @@
         },
         {
             "name": "jms/serializer-bundle",
-            "version": "5.1.0",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSSerializerBundle.git",
-                "reference": "4b7f6a6cdbbff6000051a2efa29e7566c9a4528e"
+                "reference": "cdc876a8bc4611279a7ec970f3da2052cda55078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/4b7f6a6cdbbff6000051a2efa29e7566c9a4528e",
-                "reference": "4b7f6a6cdbbff6000051a2efa29e7566c9a4528e",
+                "url": "https://api.github.com/repos/schmittjoh/JMSSerializerBundle/zipball/cdc876a8bc4611279a7ec970f3da2052cda55078",
+                "reference": "cdc876a8bc4611279a7ec970f3da2052cda55078",
                 "shasum": ""
             },
             "require": {
                 "jms/metadata": "^2.5",
-                "jms/serializer": "^3.18",
+                "jms/serializer": "^3.20",
                 "php": "^7.2 || ^8.0",
                 "symfony/dependency-injection": "^3.4 || ^4.0 || ^5.0 || ^6.0",
                 "symfony/framework-bundle": "^3.4 || ^4.0 || ^5.0 || ^6.0"
@@ -3061,7 +3061,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/JMSSerializerBundle/issues",
-                "source": "https://github.com/schmittjoh/JMSSerializerBundle/tree/5.1.0"
+                "source": "https://github.com/schmittjoh/JMSSerializerBundle/tree/5.2.0"
             },
             "funding": [
                 {
@@ -3069,7 +3069,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-06T15:28:54+00:00"
+            "time": "2023-01-09T16:25:13+00:00"
         },
         {
             "name": "kick-in/exception-handler-bundle",
