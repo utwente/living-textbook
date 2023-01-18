@@ -29,6 +29,7 @@ use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\OutputStyle;
@@ -274,14 +275,14 @@ class AnalyticsService
         $this->entityManager->persist(
             (new PageLoad())
                 ->setStudyArea($studyArea)
-                ->setUserId($sheet->getCellByColumnAndRow(3, $row->getRowIndex())->getFormattedValue())
+                ->setUserId($sheet->getCell(CellAddress::fromColumnAndRow(3, $row->getRowIndex()))->getFormattedValue())
                 ->setTimestamp(DateTime::createFromFormat('Y-m-d H:i:s',
-                    $sheet->getCellByColumnAndRow(4, $row->getRowIndex())->getFormattedValue()))
-                ->setSessionId($sheet->getCellByColumnAndRow(5, $row->getRowIndex())->getFormattedValue())
-                ->setPath($sheet->getCellByColumnAndRow(6, $row->getRowIndex())->getFormattedValue())
-                ->setPathContext(unserialize($sheet->getCellByColumnAndRow(7, $row->getRowIndex())->getFormattedValue()))
-                ->setOrigin($sheet->getCellByColumnAndRow(8, $row->getRowIndex())->getFormattedValue())
-                ->setOriginContext(unserialize($sheet->getCellByColumnAndRow(9, $row->getRowIndex())->getFormattedValue()))
+                    $sheet->getCell(CellAddress::fromColumnAndRow(4, $row->getRowIndex()))->getFormattedValue()))
+                ->setSessionId($sheet->getCell(CellAddress::fromColumnAndRow(5, $row->getRowIndex()))->getFormattedValue())
+                ->setPath($sheet->getCell(CellAddress::fromColumnAndRow(6, $row->getRowIndex()))->getFormattedValue())
+                ->setPathContext(unserialize($sheet->getCell(CellAddress::fromColumnAndRow(7, $row->getRowIndex()))->getFormattedValue()))
+                ->setOrigin($sheet->getCell(CellAddress::fromColumnAndRow(8, $row->getRowIndex()))->getFormattedValue())
+                ->setOriginContext(unserialize($sheet->getCell(CellAddress::fromColumnAndRow(9, $row->getRowIndex()))->getFormattedValue()))
         );
       }
 

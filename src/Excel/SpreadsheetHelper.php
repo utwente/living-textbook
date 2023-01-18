@@ -4,6 +4,7 @@ namespace App\Excel;
 
 use App\Export\ExportService;
 use DateTime;
+use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -104,20 +105,20 @@ class SpreadsheetHelper
 
   public function setCellValue(Worksheet &$sheet, int $column, int $row, mixed $value, bool $bold = false)
   {
-    $sheet->setCellValueByColumnAndRow($column, $row, $value);
+    $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row), $value);
 
     if ($bold) {
-      $sheet->getStyleByColumnAndRow($column, $row)->getFont()->setBold(true);
+      $sheet->getStyle(CellAddress::fromColumnAndRow($column, $row))->getFont()->setBold(true);
     }
   }
 
   public function setCellDateTime(Worksheet &$sheet, int $column, int $row, DateTime $dateTime, bool $leftAligned = false, bool $bold = false)
   {
     $this->setCellValue($sheet, $column, $row, Date::PHPToExcel($dateTime), $bold);
-    $sheet->getStyleByColumnAndRow($column, $row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
+    $sheet->getStyle(CellAddress::fromColumnAndRow($column, $row))->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);
 
     if ($leftAligned) {
-      $sheet->getStyleByColumnAndRow($column, $row)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+      $sheet->getStyle(CellAddress::fromColumnAndRow($column, $row))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
     }
   }
 }

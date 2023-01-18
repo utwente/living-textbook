@@ -34,14 +34,14 @@
     "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
   },
   "dependencies": {
-    "@sentry/browser": "7.26.0",
+    "@sentry/browser": "7.30.0",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
     "bootstrap4-toggle": "3.6.1",
     "ckeditor4": "4.20.1",
     "color": "4.2.3",
-    "core-js": "3.26.1",
+    "core-js": "3.27.1",
     "custom-event": "1.0.1",
     "d3": "5.16.0",
     "datatables.net": "1.13.1",
@@ -51,7 +51,7 @@
     "font-awesome": "4.7.0",
     "fos-routing": "0.0.6",
     "foundation-emails": "2.4.0",
-    "jquery": "3.6.2",
+    "jquery": "3.6.3",
     "jquery-contextmenu": "2.9.2",
     "jquery-ui": "1.13.2",
     "jquery-ui-dist": "1.13.2",
@@ -69,6 +69,6 @@
   "resolutions": {
     "datatables.net": "1.13.1",
     "datatables.net-bs4": "1.13.1",
-    "jquery": "3.6.2"
+    "jquery": "3.6.3"
   }
 }

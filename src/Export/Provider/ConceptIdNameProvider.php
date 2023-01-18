@@ -7,6 +7,7 @@ use App\Entity\StudyArea;
 use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
+use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,8 +60,8 @@ EOT;
     $sheet       = $spreadSheet->getSheet(0);
     foreach ($concepts as $concept) {
       $column = 1;
-      $sheet->setCellValueByColumnAndRow($column++, $row, $concept->getId());
-      $sheet->setCellValueByColumnAndRow($column, $row++, $concept->getName());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $concept->getId());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row++), $concept->getName());
     }
 
     return $spreadSheet;

@@ -83,7 +83,7 @@
             "groupSlug": "sentry"
         },
         {
-            "matchPackagePatterns": "^twig/\\w+-extra$",
+            "matchPackagePatterns": ["^twig/\\w+-extra$", "^twig/extra-bundle$"],
             "groupName": "Twig extra packages",
             "groupSlug": "twig-extra"
         },

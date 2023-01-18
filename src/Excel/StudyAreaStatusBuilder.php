@@ -10,6 +10,8 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use Doctrine\Common\Collections\Collection;
+use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
+use PhpOffice\PhpSpreadsheet\Cell\CellRange;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -99,7 +101,7 @@ class StudyAreaStatusBuilder
 
     // Reset active sheet index and selected cells
     foreach ($this->spreadsheet->getAllSheets() as $sheet) {
-      $sheet->setSelectedCellByColumnAndRow(1, 1);
+      $sheet->setSelectedCell(CellAddress::fromColumnAndRow(1, 1));
     }
     $this->spreadsheet->setActiveSheetIndex(0);
 
@@ -140,8 +142,10 @@ class StudyAreaStatusBuilder
     $this->spreadsheetHelper->setCellDateTime($sheet, $column + 1, $row, $lastEditInfo[0], true);
     $this->spreadsheetHelper->setCellValue($sheet, $column + 2, $row, $lastEditInfo[1]);
 
-    $sheet->getStyleByColumnAndRow(1, 1, $column + 2, $row)
-        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(1, 1),
+        CellAddress::fromColumnAndRow($column + 2, $row)
+    ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 
   /** @throws Exception */
@@ -236,10 +240,12 @@ class StudyAreaStatusBuilder
       $this->spreadsheetHelper->setCellValue($sheet, $column + 1, $row, $this->conceptRelationRepo->getByRelationTypeCount($relationType));
     }
 
-    $sheet->getStyleByColumnAndRow(1, 1, $column + 1, $row)
-        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-    $sheet->getStyleByColumnAndRow(1, 1)->getBorders()->getRight()->setBorderStyle(Border::BORDER_NONE);
-    $sheet->getStyleByColumnAndRow(2, 1)->getBorders()->getLeft()->setBorderStyle(Border::BORDER_NONE);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(1, 1),
+        CellAddress::fromColumnAndRow($column + 1, $row)
+    ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyle(CellAddress::fromColumnAndRow(1, 1))->getBorders()->getRight()->setBorderStyle(Border::BORDER_NONE);
+    $sheet->getStyle(CellAddress::fromColumnAndRow(2, 1))->getBorders()->getLeft()->setBorderStyle(Border::BORDER_NONE);
   }
 
   /** @throws Exception */
@@ -290,15 +296,23 @@ class StudyAreaStatusBuilder
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
 
-    $sheet->getStyleByColumnAndRow(1, 1, $maxCol, $row)
-        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-    $sheet->getStyleByColumnAndRow(2, 1, $maxCol, 1)
-        ->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(1, 1),
+        CellAddress::fromColumnAndRow($maxCol, $row)
+    ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(2, 1),
+        CellAddress::fromColumnAndRow($maxCol, 1)
+    ))->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
 
-    $sheet->getStyleByColumnAndRow(1, 1 + $conceptCount, $maxCol, $row + $conceptCount)
-        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
-    $sheet->getStyleByColumnAndRow(2, 1 + $conceptCount, $maxCol, 1 + $conceptCount)
-        ->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(1, 1 + $conceptCount),
+        CellAddress::fromColumnAndRow($maxCol, $row + $conceptCount)
+    ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(2, 1 + $conceptCount),
+        CellAddress::fromColumnAndRow($maxCol, 1 + $conceptCount)
+    ))->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
   }
 
   /** @throws Exception */
@@ -346,7 +360,9 @@ class StudyAreaStatusBuilder
       $this->spreadsheetHelper->setCellValue($sheet, $column + 12, $row, $lastEditInfo[1]);
     }
 
-    $sheet->getStyleByColumnAndRow(1, 1, $column + 12, $row)
-        ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+    $sheet->getStyle(new CellRange(
+        CellAddress::fromColumnAndRow(1, 1),
+        CellAddress::fromColumnAndRow($column + 12, $row)
+    ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 }
