@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a8273f58881ffe5f8eb72fe524cbfb9",
+    "content-hash": "e809cbd5beb57ee09147b9a0337c224f",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1778,16 +1778,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "1.31.0",
+            "version": "1.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "72aa957c3ae950dc81ee302449c1ef73ea1ed92e"
+                "reference": "26c4cbbe3cc4712fa9410edf611b3646aff0b967"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/72aa957c3ae950dc81ee302449c1ef73ea1ed92e",
-                "reference": "72aa957c3ae950dc81ee302449c1ef73ea1ed92e",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/26c4cbbe3cc4712fa9410edf611b3646aff0b967",
+                "reference": "26c4cbbe3cc4712fa9410edf611b3646aff0b967",
                 "shasum": ""
             },
             "require": {
@@ -1808,6 +1808,7 @@
                 "bomo/ical-bundle": "^2.0.2",
                 "doctrine/orm": "^2.7",
                 "drenso/phan-extensions": "~2.5 || ~3.0",
+                "eluceo/ical": "^2.7",
                 "jms/serializer-bundle": "^3.14 || ^4.0 || ^5.0",
                 "kigkonsult/icalcreator": "^2.39",
                 "maennchen/zipstream-php": "^2.1",
@@ -1829,6 +1830,7 @@
             "suggest": {
                 "bomo/ical-bundle": "Needed for the IcalProvider",
                 "doctrine/orm": "Needed to use the Database traits",
+                "eluceo/ical": "Needed for the IcalBuilder",
                 "jms/serializer-bundle": "Needed to use the Database traits and the Decimal serialization handler",
                 "php-decimal/php-decimal": "Needed to use the Decimal serialization handler and the form transformer",
                 "phpoffice/phpspreadsheet": "Needed to use the SpreadsheetHelper",
@@ -1873,9 +1875,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/1.31.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/1.32.0"
             },
-            "time": "2022-10-24T12:10:09+00:00"
+            "time": "2023-01-31T19:00:44+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
