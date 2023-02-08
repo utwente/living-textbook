@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c16f23399788f57fce3986f999d04586",
+    "content-hash": "77a9ed9e9d2425a175c983cd09960d76",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11555,16 +11555,16 @@
         },
         {
             "name": "twig/cssinliner-extra",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/cssinliner-extra.git",
-                "reference": "2917fc4a5d4d2a95dcaf79f0c21c0c2a0a30eff4"
+                "reference": "381877765d17b0178322d68b818e0c67f9c93187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/2917fc4a5d4d2a95dcaf79f0c21c0c2a0a30eff4",
-                "reference": "2917fc4a5d4d2a95dcaf79f0c21c0c2a0a30eff4",
+                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/381877765d17b0178322d68b818e0c67f9c93187",
+                "reference": "381877765d17b0178322d68b818e0c67f9c93187",
                 "shasum": ""
             },
             "require": {
@@ -11609,7 +11609,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/cssinliner-extra/tree/v3.5.0"
+                "source": "https://github.com/twigphp/cssinliner-extra/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -11621,20 +11621,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:23:36+00:00"
+            "time": "2023-02-08T07:44:55+00:00"
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "edfcdbdc943b52101011d57ec546af393dc56537"
+                "reference": "a961e553a624eebdbd423ad5ab931497ca6d87cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/edfcdbdc943b52101011d57ec546af393dc56537",
-                "reference": "edfcdbdc943b52101011d57ec546af393dc56537",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/a961e553a624eebdbd423ad5ab931497ca6d87cd",
+                "reference": "a961e553a624eebdbd423ad5ab931497ca6d87cd",
                 "shasum": ""
             },
             "require": {
@@ -11688,7 +11688,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.5.0"
+                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -11700,20 +11700,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:23:36+00:00"
+            "time": "2023-02-08T07:44:55+00:00"
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
-                "reference": "2845c9c7ad25227c3b79285a2421ee9cebbf48e8"
+                "reference": "4efde499b99942a27e206898e55208a8692c16ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/2845c9c7ad25227c3b79285a2421ee9cebbf48e8",
-                "reference": "2845c9c7ad25227c3b79285a2421ee9cebbf48e8",
+                "url": "https://api.github.com/repos/twigphp/inky-extra/zipball/4efde499b99942a27e206898e55208a8692c16ca",
+                "reference": "4efde499b99942a27e206898e55208a8692c16ca",
                 "shasum": ""
             },
             "require": {
@@ -11759,7 +11759,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/inky-extra/tree/v3.5.0"
+                "source": "https://github.com/twigphp/inky-extra/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -11771,20 +11771,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:23:36+00:00"
+            "time": "2023-02-08T07:44:55+00:00"
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.5.0",
+            "version": "v3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
-                "reference": "92f2c73471e077d0f72195a331c9a245da2010cd"
+                "reference": "c3ebfac1624228c0556de57a34af6b7d83a1a408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/92f2c73471e077d0f72195a331c9a245da2010cd",
-                "reference": "92f2c73471e077d0f72195a331c9a245da2010cd",
+                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/c3ebfac1624228c0556de57a34af6b7d83a1a408",
+                "reference": "c3ebfac1624228c0556de57a34af6b7d83a1a408",
                 "shasum": ""
             },
             "require": {
@@ -11828,7 +11828,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/intl-extra/tree/v3.5.0"
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.5.1"
             },
             "funding": [
                 {
@@ -11840,7 +11840,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-27T12:23:36+00:00"
+            "time": "2023-02-08T07:44:55+00:00"
         },
         {
             "name": "twig/twig",
