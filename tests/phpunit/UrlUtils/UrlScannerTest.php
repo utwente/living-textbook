@@ -5,13 +5,14 @@ namespace Tests\UrlUtils;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
 class UrlScannerTest extends TestCase
 {
-  /** @dataProvider scanTextProvider */
+  #[DataProvider('scanTextProvider')]
   public function testScanText(string $val, array $expected)
   {
     // Arrange
