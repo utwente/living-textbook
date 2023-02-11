@@ -31,6 +31,7 @@ assets/js/_fos_js_routes.js
 ###< symfony/framework-bundle ###
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
+.phpunit.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
