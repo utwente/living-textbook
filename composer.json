@@ -37,7 +37,7 @@
         "league/html-to-markdown": "5.1.0",
         "ml/json-ld": "1.2.1",
         "nelmio/api-doc-bundle": "4.11.1",
-        "nelmio/cors-bundle": "2.2.0",
+        "nelmio/cors-bundle": "2.3.0",
         "phpoffice/phpspreadsheet": "1.27.1",
         "rollerworks/password-strength-validator": "1.7.3",
         "ryakad/pandoc-php": "1.0.0",
