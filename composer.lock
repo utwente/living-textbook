@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb3b9bf66362dbfccb689a7766a3392f",
+    "content-hash": "4856f2bb5ec396e52455e9db711b5d47",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2887,16 +2887,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.22.0",
+            "version": "3.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "576d226178697534e214531dbf80058637a10ebc"
+                "reference": "ac0b16ee5317d1aacc41deb91c6c325eae97c176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/576d226178697534e214531dbf80058637a10ebc",
-                "reference": "576d226178697534e214531dbf80058637a10ebc",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/ac0b16ee5317d1aacc41deb91c6c325eae97c176",
+                "reference": "ac0b16ee5317d1aacc41deb91c6c325eae97c176",
                 "shasum": ""
             },
             "require": {
@@ -2918,7 +2918,7 @@
                 "phpbench/phpbench": "^1.0",
                 "phpstan/phpstan": "^1.0.2",
                 "phpunit/phpunit": "^8.5.21||^9.0",
-                "psr/container": "^1.0",
+                "psr/container": "^1.0|^2.0",
                 "symfony/dependency-injection": "^3.0|^4.0|^5.0|^6.0",
                 "symfony/expression-language": "^3.2|^4.0|^5.0|^6.0",
                 "symfony/filesystem": "^3.0|^4.0|^5.0|^6.0",
@@ -2971,7 +2971,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/3.22.0"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.23.0"
             },
             "funding": [
                 {
@@ -2979,7 +2979,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-03T04:58:11+00:00"
+            "time": "2023-02-17T17:40:48+00:00"
         },
         {
             "name": "jms/serializer-bundle",
