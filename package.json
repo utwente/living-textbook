@@ -51,7 +51,7 @@
     "font-awesome": "4.7.0",
     "fos-routing": "0.0.6",
     "foundation-emails": "2.4.0",
-    "jquery": "3.6.3",
+    "jquery": "3.6.4",
     "jquery-contextmenu": "2.9.2",
     "jquery-ui": "1.13.2",
     "jquery-ui-dist": "1.13.2",
@@ -69,6 +69,6 @@
   "resolutions": {
     "datatables.net": "1.13.3",
     "datatables.net-bs4": "1.13.3",
-    "jquery": "3.6.3"
+    "jquery": "3.6.4"
   }
 }
