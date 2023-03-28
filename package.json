@@ -70,5 +70,8 @@
     "datatables.net": "1.13.4",
     "datatables.net-bs4": "1.13.4",
     "jquery": "3.6.4"
+  },
+  "engines" : {
+    "node" : "~16"
   }
 }
