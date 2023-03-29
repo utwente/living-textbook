@@ -42,7 +42,7 @@
         "rollerworks/password-strength-validator": "1.7.3",
         "ryakad/pandoc-php": "1.0.0",
         "sensio/framework-extra-bundle": "6.2.10",
-        "sentry/sentry-symfony": "4.6.0",
+        "sentry/sentry-symfony": "4.7.0",
         "spatie/pdf-to-image": "2.2.0",
         "stof/doctrine-extensions-bundle": "1.7.1",
         "symfony/asset": "5.4.21",
@@ -89,12 +89,12 @@
         "twig/inky-extra": "3.5.1",
         "twig/intl-extra": "3.5.1",
         "twig/twig": "3.5.1",
-        "zircote/swagger-php": "4.7.3"
+        "zircote/swagger-php": "4.7.8"
     },
     "require-dev": {
         "drenso/phan-extensions": "3.5.1",
         "friendsofphp/php-cs-fixer": "3.8.0",
-        "phpunit/phpunit": "10.0.14",
+        "phpunit/phpunit": "10.0.18",
         "rector/rector": "0.14.8",
         "symfony/error-handler": "5.4.21",
         "symfony/phpunit-bridge": "5.4.21",

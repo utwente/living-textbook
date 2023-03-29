@@ -1,5 +1,5 @@
-You will need to have a local installation of [Node LTS](https://nodejs.org/en/) to be able to build the frontend assets. See
-the [frontend development docs](frontend-development.md) for more information.
+You will need to have a local installation of [Node](https://nodejs.org/en/, see the `package.json` `engines` definition for the required version)
+to be able to build the frontend assets.
 
 ## Install dependencies
 

@@ -25,7 +25,7 @@ services:
       - ltb-network
 
   nginx:
-    image: nginx:1.23.3-alpine
+    image: nginx:1.23.4-alpine
     restart: always
     volumes:
       - 'ltb-public:/usr/src/app/public:ro'

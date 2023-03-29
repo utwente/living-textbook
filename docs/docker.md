@@ -74,9 +74,8 @@ sources will directly be reflected in the container, without having to build aga
 > Note: When using Windows as OS, make sure to clone the sources on the WSL disk you're also using docker with. If you
 > do not do this, the volume bind will be slow and most probably unworkable!
 
-You will need to have a local installation of [Node LTS](https://nodejs.org/en/) to be able to build the frontend
-assets. See
-the [frontend development docs](frontend-development.md) for more information.
+You will need to have a local installation of [Node](https://nodejs.org/en/, see the `package.json` `engines` definition for the required version)
+to be able to build the frontend assets. See the [frontend development docs](frontend-development.md) for more information.
 
 > Note: OIDC login will not work, as localhost is not configured (or can be configured as) as valid return URL.
 
