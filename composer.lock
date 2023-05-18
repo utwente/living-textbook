@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d5774761c0f117fb75fae48478dd271",
+    "content-hash": "8d266f7cf87b0836c3a66ae6c7ca9cb2",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2625,16 +2625,16 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "12.2.3",
+            "version": "12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "68a3b900a49894feaf5bf500c92376e5d1bc9925"
+                "reference": "735b9b0a0f8f1eab47c5001d95e7b16f273e0430"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/68a3b900a49894feaf5bf500c92376e5d1bc9925",
-                "reference": "68a3b900a49894feaf5bf500c92376e5d1bc9925",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/735b9b0a0f8f1eab47c5001d95e7b16f273e0430",
+                "reference": "735b9b0a0f8f1eab47c5001d95e7b16f273e0430",
                 "shasum": ""
             },
             "require": {
@@ -2694,7 +2694,7 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.2.3"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.3"
             },
             "funding": [
                 {
@@ -2702,7 +2702,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-02-13T14:27:16+00:00"
+            "time": "2023-05-10T23:12:16+00:00"
         },
         {
             "name": "http-interop/http-factory-guzzle",
