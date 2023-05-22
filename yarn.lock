@@ -328,20 +328,12 @@
     "@babel/helper-plugin-utils" "^7.18.6"
     "@babel/plugin-syntax-json-strings" "^7.8.3"
 
-"@babel/plugin-proposal-logical-assignment-operators@7.14.5":
+"@babel/plugin-proposal-logical-assignment-operators@7.14.5", "@babel/plugin-proposal-logical-assignment-operators@^7.14.5":
   version "7.14.5"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-logical-assignment-operators/-/plugin-proposal-logical-assignment-operators-7.14.5.tgz#6e6229c2a99b02ab2915f82571e0cc646a40c738"
   integrity sha512-YGn2AvZAo9TwyhlLvCCWxD90Xq8xJ4aSgaX3G5D/8DW94L8aaT+dS5cSP+Z06+rCJERGSr9GxMBZ601xoc2taw==
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
-    "@babel/plugin-syntax-logical-assignment-operators" "^7.10.4"
-
-"@babel/plugin-proposal-logical-assignment-operators@^7.14.5":
-  version "7.20.7"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-logical-assignment-operators/-/plugin-proposal-logical-assignment-operators-7.20.7.tgz#dfbcaa8f7b4d37b51e8bfb46d94a5aea2bb89d83"
-  integrity sha512-y7C7cZgpMIjWlKE5T7eJwp+tnRYM89HmRvWM5EQuB5BoHEONjmQ8lSNmBUwOyy/GFRsohJED51YBF79hE1djug==
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.20.2"
     "@babel/plugin-syntax-logical-assignment-operators" "^7.10.4"
 
 "@babel/plugin-proposal-nullish-coalescing-operator@^7.14.5":
@@ -938,57 +930,57 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@sentry-internal/tracing@7.51.2":
-  version "7.51.2"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.51.2.tgz#17833047646426ca71445327018ffcb33506a699"
-  integrity sha512-OBNZn7C4CyocmlSMUPfkY9ORgab346vTHu5kX35PgW5XR51VD2nO5iJCFbyFcsmmRWyCJcZzwMNARouc2V4V8A==
+"@sentry-internal/tracing@7.52.0":
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.52.0.tgz#c4e0750ad0c3949c5bb4b59cbb708b0fef274080"
+  integrity sha512-o1YPcRGtC9tjeFCvWRJsbgK94zpExhzfxWaldAKvi3PuWEmPeewSdO/Q5pBIY1QonvSI+Q3gysLRcVlLYHhO5A==
   dependencies:
-    "@sentry/core" "7.51.2"
-    "@sentry/types" "7.51.2"
-    "@sentry/utils" "7.51.2"
+    "@sentry/core" "7.52.0"
+    "@sentry/types" "7.52.0"
+    "@sentry/utils" "7.52.0"
     tslib "^1.9.3"
 
-"@sentry/browser@7.51.2":
-  version "7.51.2"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.51.2.tgz#c01758a54c613be45df58ab503805737256f51a4"
-  integrity sha512-FQFEaTFbvYHPQE2emFjNoGSy+jXplwzoM/XEUBRjrGo62lf8BhMvWnPeG3H3UWPgrWA1mq0amvHRwXUkwofk0g==
+"@sentry/browser@7.52.0":
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.52.0.tgz#55d266c89ed668389ff687e5cc885c27016ea85c"
+  integrity sha512-Sib0T24cQCqqqAhg+nZdfI7qNYGE03jiM3RbY7yG5UoycdnJzWEwrBVSzRTgg3Uya9TRTEGJ+d9vxPIU5TL7TA==
   dependencies:
-    "@sentry-internal/tracing" "7.51.2"
-    "@sentry/core" "7.51.2"
-    "@sentry/replay" "7.51.2"
-    "@sentry/types" "7.51.2"
-    "@sentry/utils" "7.51.2"
+    "@sentry-internal/tracing" "7.52.0"
+    "@sentry/core" "7.52.0"
+    "@sentry/replay" "7.52.0"
+    "@sentry/types" "7.52.0"
+    "@sentry/utils" "7.52.0"
     tslib "^1.9.3"
 
-"@sentry/core@7.51.2":
-  version "7.51.2"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.51.2.tgz#f2c938de334f9bf26f4416079168275832423964"
-  integrity sha512-p8ZiSBxpKe+rkXDMEcgmdoyIHM/1bhpINLZUFPiFH8vzomEr7sgnwRhyrU8y/ADnkPeNg/2YF3QpDpk0OgZJUA==
+"@sentry/core@7.52.0":
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.52.0.tgz#6c820ca48fe2f06bfd6b290044c96de2375f2ad4"
+  integrity sha512-BWdG6vCMeUeMhF4ILpxXTmw70JJvT1MGJcnv09oSupWHTmqy6I19YP6YcEyFuBL4jXPN51eCl7luIdLGJrPbOg==
   dependencies:
-    "@sentry/types" "7.51.2"
-    "@sentry/utils" "7.51.2"
+    "@sentry/types" "7.52.0"
+    "@sentry/utils" "7.52.0"
     tslib "^1.9.3"
 
-"@sentry/replay@7.51.2":
-  version "7.51.2"
-  resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.51.2.tgz#1f54e92b472ab87dfdb4e8cd6b8c8252600fe7b0"
-  integrity sha512-W8YnSxkK9LTUXDaYciM7Hn87u57AX9qvH8jGcxZZnvpKqHlDXOpSV8LRtBkARsTwgLgswROImSifY0ic0lyCWg==
+"@sentry/replay@7.52.0":
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/@sentry/replay/-/replay-7.52.0.tgz#4d78e88282d2c1044ea4b648a68d1b22173e810d"
+  integrity sha512-RRPALjDST2s7MHiMcUJ7Wo4WW7EWfUDYSG0LuhMT8DNc+ZsxQoFsLYX/yz8b3f0IUSr7xKBXP+aPeIy3jDAS2g==
   dependencies:
-    "@sentry/core" "7.51.2"
-    "@sentry/types" "7.51.2"
-    "@sentry/utils" "7.51.2"
+    "@sentry/core" "7.52.0"
+    "@sentry/types" "7.52.0"
+    "@sentry/utils" "7.52.0"
 
-"@sentry/types@7.51.2":
-  version "7.51.2"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.51.2.tgz#cb742f374d9549195f62c462c915adeafed31d65"
-  integrity sha512-/hLnZVrcK7G5BQoD/60u9Qak8c9AvwV8za8TtYPJDUeW59GrqnqOkFji7RVhI7oH1OX4iBxV+9pAKzfYE6A6SA==
+"@sentry/types@7.52.0":
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.52.0.tgz#b7d5372f17355e3991cbe818ad567f3fe277cc6b"
+  integrity sha512-XnEWpS6P6UdP1FqbmeqhI96Iowqd2jM5R7zJ97txTdAd5NmdHHH0pODTR9NiQViA1WlsXDut7ZLxgPzC9vIcMA==
 
-"@sentry/utils@7.51.2":
-  version "7.51.2"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.51.2.tgz#2a52ac2cfb00ffd128248981279c0a561b39eccb"
-  integrity sha512-EcjBU7qG4IG+DpIPvdgIBcdIofROMawKoRUNKraeKzH/waEYH9DzCaqp/mzc5/rPBhpDB4BShX9xDDSeH+8c0A==
+"@sentry/utils@7.52.0":
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.52.0.tgz#cacc36d905036ba7084c14965e964fc44239d7f0"
+  integrity sha512-X1NHYuqW0qpZfP731YcVe+cn36wJdAeBHPYPIkXCl4o4GePCJfH/CM/+9V9cZykNjyLrs2Xy/TavSAHNCj8j7w==
   dependencies:
-    "@sentry/types" "7.51.2"
+    "@sentry/types" "7.52.0"
     tslib "^1.9.3"
 
 "@symfony/webpack-encore@0.33.0":
@@ -6312,12 +6304,12 @@ safe-array-concat@^1.0.0:
     has-symbols "^1.0.3"
     isarray "^2.0.5"
 
-safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+safe-buffer@5.1.2, safe-buffer@>=5.1.0, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
 
-safe-buffer@5.2.1, safe-buffer@>=5.1.0, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0:
+safe-buffer@5.2.1, safe-buffer@^5.2.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
