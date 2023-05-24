@@ -44,7 +44,7 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 # Docker environment
-docker-compose.prod.yml
+docker-compose.yml
 docker/db.env
 docker/ltb_prod.env
 docker/nginx/server.key
