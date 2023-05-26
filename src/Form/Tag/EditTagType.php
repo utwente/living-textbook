@@ -7,6 +7,7 @@ use App\Entity\Tag;
 use App\Form\Type\SaveType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +19,10 @@ class EditTagType extends AbstractType
     $builder
         ->add('name', TextType::class, [
             'label' => 'tag.name',
+        ])
+        ->add('description', TextareaType::class, [
+          'label'    => 'tag.description',
+          'required' => false,
         ])
         ->add('color', ColorType::class, [
             'label' => 'tag.color',

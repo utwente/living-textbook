@@ -854,6 +854,7 @@ review:
 tag:
   add-title: 'Add tag'
   color: 'Colour'
+  description: 'Description'
   edit-title: 'Edit tag "%tag%"'
   list-title: 'Tag list'
   name: 'Name'
