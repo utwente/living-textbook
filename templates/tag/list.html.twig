@@ -35,6 +35,7 @@
         </td>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <td class="actions">
+            {{ buttons.show_button(path('app_tag_show', {'tag': tag.id})) }}
             {{ buttons.edit_button_disabled_when_frozen(path('app_tag_edit', {'tag': tag.id})) }}
             {{ buttons.remove_button_disabled_when_frozen(path('app_tag_remove', {'tag': tag.id})) }}
           </td>

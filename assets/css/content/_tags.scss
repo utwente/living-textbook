@@ -10,6 +10,10 @@ $tag-grid: map-get($spacers, 1);
     border: 2px solid;
     margin: $tag-grid;
     padding: 0.1rem 0.75rem;
+
+    &.clickable {
+      cursor: pointer;
+    }
   }
 }
 

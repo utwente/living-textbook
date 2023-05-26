@@ -13,5 +13,17 @@ $(function () {
     if (color.isDark()) {
       tag.addClass('text-white');
     }
+
+    const link = tag.data('link');
+    if (link) {
+      tag.addClass('clickable');
+      tag.on('click', () => {
+        if (inDoubleColumn) {
+          eDispatch.pageLoad(link);
+        } else {
+          window.location.href = link;
+        }
+      });
+    }
   });
 });

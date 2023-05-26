@@ -204,7 +204,7 @@
 {% endmacro %}
 
 {% macro render_tag(tag) %}
-  <div class="concept-tag" data-color="{{ tag.color }}">
+  <div class="concept-tag" data-color="{{ tag.color }}" data-link="{{ path ('app_tag_show', { tag: tag.id }) }}">
     <span>{{ tag.name }}</span>
   </div>
 {% endmacro %}

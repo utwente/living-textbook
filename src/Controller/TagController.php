@@ -107,6 +107,23 @@ class TagController extends AbstractController
   }
 
   /**
+   * @Route("/show/{tag}", requirements={"tag"="\d+"})
+   * @Template()
+   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
+   */
+  public function show(RequestStudyArea $requestStudyArea, Tag $tag)
+  {
+    // Check if correct study area
+    if ($tag->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
+      throw $this->createNotFoundException();
+    }
+
+    return [
+        'tag' => $tag,
+    ];
+  }
+
+  /**
    * @Route("/list")
    * @Template()
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
