@@ -367,6 +367,10 @@ class DataController extends AbstractController
                 ->setName($jsonTag['name'])
                 ->setStudyArea($studyArea);
 
+            if (array_key_exists('description', $jsonTag)) {
+              $tag->setDescription($jsonTag['description']);
+            }
+
             // Map to related concepts
             foreach ($jsonTag['isTagOf'] as $taggedConceptKey) {
               if (!array_key_exists($taggedConceptKey, $concepts)) {
