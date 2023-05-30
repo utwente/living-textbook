@@ -319,6 +319,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;
 
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="image_path", type="string", nullable=true)
+   *
+   * @Assert\Length(max=512)
+   * @JMSA\Type("string")
+   * @JMSA\Expose()
+   */
+  private ?string $imagePath = null;
+
   /** Concept constructor. */
   public function __construct()
   {
@@ -984,6 +996,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   public function setDotronConfig(?array $dotronConfig): self
   {
     $this->dotronConfig = $dotronConfig;
+
+    return $this;
+  }
+
+  public function getImagePath(): ?string
+  {
+    return $this->imagePath;
+  }
+
+  public function setImagePath(?string $imagePath): self
+  {
+    $this->imagePath = $imagePath;
 
     return $this;
   }
