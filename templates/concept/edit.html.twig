@@ -25,5 +25,25 @@
   {% from '_macro/_review.html.twig' import reviewNotice %}
   {{ reviewNotice(concept) }}
 
-  {{ form(form) }}
+  {{ form_start(form) }}
+    {% for row in form %}
+        {% if row.vars.name == 'imageFile' %}
+          {% if concept.imagePath %}
+            <div class="form-group row">
+              {{ form_label(form.imageFile) }}            
+              <div class="col-md-9 col-lg-10">              
+                  {% import '_macro/_action_buttons.html.twig' as buttons %}            
+                  {{ buttons._action_button(concept.imagePath, 'fa-eye', 'concept.image-file-view', 'primary', true) }}
+                  
+              </div>
+            </div>
+            {{ form_row(form.imageFile, { 'label': false }) }}
+          {% else %}
+          {{ form_row(form.imageFile) }}
+          {% endif %}
+        {% elseif row.vars.name not in ['imageFile', '_token', 'imagePath'] %}
+          {{ form_row(row) }}
+        {% endif %}
+    {% endfor %}
+    {{ form_end(form) }}
 {% endblock %}
