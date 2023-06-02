@@ -26,6 +26,7 @@ $tag-grid: map-get($spacers, 1);
     display: inline-block;
     margin-bottom: $spacer * 2;
     padding-top: 0;
+    width: 100%;
   }
 
   .concept-image {
