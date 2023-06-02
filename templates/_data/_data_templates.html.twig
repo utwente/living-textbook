@@ -248,12 +248,10 @@
 {% macro data_tag_concepts(data) %}
   {% if data|length > 0 %}
     <h2>{{ 'menu.concept'|trans }}</h2>
-    <ul class="tag-concepts">
+    <ul class="tagged-concepts">
       {% for concept in data %}
-        <li>
-          <div class="concept-header">
-              <h5><a href="{{ path('app_concept_show', { concept: concept.id}) }}">{{ concept.name }}</a></h5>
-          </div>
+        <li class="tagged-concept">
+          <h5><a href="{{ path('app_concept_show', { concept: concept.id}) }}">{{ concept.name }}</a></h5>          
           {% if concept.imagePath %}
             <div class="concept-image">
               <img src="{{ concept.imagePath }}" alt="" title="{{ concept.name }}">
