@@ -69,6 +69,17 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
    */
   private $color;
 
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="description", type="text", nullable=true)
+   *
+   * @Assert\Length(max=1024)
+   *
+   * @JMSA\Expose()
+   */
+  private ?string $description = null;
+
   public function __construct()
   {
     $this->name  = '';
@@ -115,6 +126,18 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
   public function setColor(string $color): self
   {
     $this->color = $color;
+
+    return $this;
+  }
+
+  public function getDescription(): ?string
+  {
+    return $this->description;
+  }
+
+  public function setDescription(?string $description): self
+  {
+    $this->description = $description;
 
     return $this;
   }

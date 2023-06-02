@@ -10,6 +10,7 @@ use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Excel\StudyAreaStatusBuilder;
 use App\Exception\DataImportException;
@@ -195,6 +196,27 @@ class DataController extends AbstractController
           if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== null) {
             $concepts[$key]->setDefinition($jsonNode['definition']);
           }
+
+          if (array_key_exists('explanation', $jsonNode) && $jsonNode['explanation'] !== null) {
+            $theoryExplanation = $concepts[$key]->getTheoryExplanation();
+            $theoryExplanation->setText($jsonNode['explanation']);
+
+            if ($validator->validate($theoryExplanation)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept theory of explanation: %s', json_encode($theoryExplanation)));
+            }
+          }
+
+          if (array_key_exists('introduction', $jsonNode) && $jsonNode['introduction'] !== null) {
+            $introduction = $concepts[$key]->getIntroduction();
+            $introduction->setText($jsonNode['introduction']);
+
+            if ($validator->validate($introduction)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept introduction: %s', json_encode($introduction)));
+            }
+          }
+
           $concepts[$key]->setStudyArea($studyArea);
           if ($validator->validate($concepts[$key])->count() > 0) {
             throw new DataImportException(
@@ -319,6 +341,52 @@ class DataController extends AbstractController
                   sprintf('Could not create the external resource: %s', json_encode($jsonExternalResource)));
             }
             $em->persist($externalResource);
+          }
+        }
+
+        // Tags
+        if (array_key_exists('tags', $jsonData)) {
+          if (!is_array($jsonData['tags'])) {
+            throw new DataImportException(sprintf('When set, the "tags" property must be an array!'));
+          }
+
+          foreach ($jsonData['tags'] as $jsonTag) {
+            if (!array_key_exists('name', $jsonTag) ||
+                !array_key_exists('isTagOf', $jsonTag)) {
+              throw new DataImportException(
+                  sprintf('Missing one ore more required properties "name" or "isTagOf" from tag: %s', json_encode($jsonTag)));
+            }
+            if (!is_array($jsonTag['isTagOf'])) {
+              throw new DataImportException(
+                  sprintf('The "isTagOf" property must be an array in tag: %s', json_encode($jsonTag)));
+            }
+
+            // Create the tag
+            $tag = (new Tag())
+                /* @phan-suppress-next-line PhanTypeMismatchArgument */
+                ->setName($jsonTag['name'])
+                ->setStudyArea($studyArea);
+
+            if (array_key_exists('description', $jsonTag)) {
+              $tag->setDescription($jsonTag['description']);
+            }
+
+            // Map to related concepts
+            foreach ($jsonTag['isTagOf'] as $taggedConceptKey) {
+              if (!array_key_exists($taggedConceptKey, $concepts)) {
+                throw new DataImportException(
+                    sprintf('The referenced node %d does not exist in tag: %s', $taggedConceptKey, json_encode($jsonTag)));
+              }
+
+              $concepts[$taggedConceptKey]->addTag($tag);
+            }
+
+            // Validate & persist
+            if ($validator->validate($tag)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the tag: %s', json_encode($jsonTag)));
+            }
+            $em->persist($tag);
           }
         }
 

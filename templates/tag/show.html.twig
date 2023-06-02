@@ -1,0 +1,15 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ tag.name|capitalize }}
+{% endblock %}
+
+
+{% block content %}
+  {% if tag.description %}
+    <p> {{ tag.description }} </p>
+  {% endif %}
+
+  {% import '_data/_data_templates.html.twig' as macros %}
+  {{ macros.data_concepts(tag.concepts) }}
+{% endblock %}
