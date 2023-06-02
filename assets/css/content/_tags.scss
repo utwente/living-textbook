@@ -17,3 +17,40 @@ $tag-grid: map-get($spacers, 1);
   }
 }
 
+.tagged-concepts {
+  padding: 0;
+  list-style: none;
+
+  .tagged-concept {
+    border-top: 0;
+    display: inline-block;
+    margin-bottom: $spacer * 2;
+    padding-top: 0;
+  }
+
+  .concept-image {
+    float: left;
+    margin: 0 $spacer * 2 $spacer * 2 0;
+    width: 30%;
+  }
+
+  .concept-image img {
+    max-width: 100%;
+    vertical-align: top;
+  }
+
+  p {
+    text-align: justify;
+  }
+}
+
+
+@include media-breakpoint-down(md) {
+  .tagged-concepts{
+    .concept-image {
+      float: unset;
+      width: 100%;
+    }
+  }  
+}
+
