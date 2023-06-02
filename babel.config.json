@@ -10,24 +10,24 @@
   ],
   "plugins": [
     [
-      "@babel/proposal-class-properties",
+      "@babel/transform-class-properties",
       {
         "loose": true
       }
     ],
     [
-      "@babel/plugin-proposal-private-methods",
+      "@babel/transform-private-methods",
       {
         "loose": true
       }
     ],
     [
-      "@babel/plugin-proposal-private-property-in-object",
+      "@babel/transform-private-property-in-object",
       {
         "loose": true
       }
     ],
-    "@babel/proposal-object-rest-spread",
-    "@babel/plugin-proposal-logical-assignment-operators"
+    "@babel/transform-object-rest-spread",
+    "@babel/transform-logical-assignment-operators"
   ]
 }
