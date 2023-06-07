@@ -17,11 +17,11 @@
 
 {% macro data_definition(concept) %}
   {% if concept.definition|length > 0 %}
-    <p data-annotations-contains-text="true"
+    <div data-annotations-contains-text="true"
        data-annotations-context="definition"
        data-annotations-version="{{ concept.lastUpdated|default('now'|date)|date('c') }}">
-      {{ concept.definition }}
-    </p>
+      {{ concept.definition|striptags(allowed_ckeditor_tags)|raw}}
+    </div>
   {% endif %}
 {% endmacro %}
 
@@ -260,7 +260,7 @@
             {# Show definition is available, otherwise introduction if available #}
           {% if concept.definition|length > 0 %}
               <div class="ltb-text-container">
-                <p>{{ concept.definition }}</p>
+                <p>{{ concept.definition|striptags(allowed_ckeditor_tags)|raw }}</p>
               </div>
           {% elseif concept.introduction.text|length > 0 %}
               <div class="ltb-text-container">
