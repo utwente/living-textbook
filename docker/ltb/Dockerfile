@@ -60,8 +60,8 @@ RUN printf "date.timezone = \"America/Chicago\"\n" >> `php -i | grep php.ini | a
 RUN printf "zend.assertions = -1\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
 
 # Max File upload and form post size.
-printf "post_max_size = 10M\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
-printf "upload_max_filesize = 10M\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
+RUN printf "post_max_size = 10M\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
+RUN printf "upload_max_filesize = 10M\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
 
 # Install PHP extensions
 RUN docker-php-ext-install zip
