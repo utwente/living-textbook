@@ -17,12 +17,12 @@
         "doctrine/annotations": "1.14.3",
         "doctrine/collections": "1.8.0",
         "doctrine/common": "3.4.3",
-        "doctrine/dbal": "3.6.2",
+        "doctrine/dbal": "3.6.3",
         "doctrine/doctrine-bundle": "2.9.1",
         "doctrine/doctrine-migrations-bundle": "3.2.3",
         "doctrine/event-manager": "1.2.0",
         "doctrine/migrations": "3.6.0",
-        "doctrine/orm": "2.15.1",
+        "doctrine/orm": "2.15.2",
         "doctrine/persistence": "3.2.0",
         "drenso/symfony-oidc-bundle": "2.9.0",
         "drenso/symfony-shared": "1.32.0",
@@ -88,7 +88,7 @@
         "twig/extra-bundle": "3.6.0",
         "twig/inky-extra": "3.6.0",
         "twig/intl-extra": "3.6.0",
-        "twig/twig": "3.6.0",
+        "twig/twig": "3.6.1",
         "zircote/swagger-php": "4.7.10"
     },
     "require-dev": {
