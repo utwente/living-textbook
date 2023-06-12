@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65274ab23fdca19b538946d65be9f3aa",
+    "content-hash": "2dd4484a7d431dd2aa620edf5a353ef3",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -816,16 +816,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.9.1",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "7539b3c8bd620f7df6c2c6d510204bd2ce0064e3"
+                "reference": "c09bfc30e18ad9ad3f5e1d967888437b916f0254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/7539b3c8bd620f7df6c2c6d510204bd2ce0064e3",
-                "reference": "7539b3c8bd620f7df6c2c6d510204bd2ce0064e3",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/c09bfc30e18ad9ad3f5e1d967888437b916f0254",
+                "reference": "c09bfc30e18ad9ad3f5e1d967888437b916f0254",
                 "shasum": ""
             },
             "require": {
@@ -912,7 +912,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.9.1"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.9.2"
             },
             "funding": [
                 {
@@ -928,7 +928,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-14T05:39:34+00:00"
+            "time": "2023-06-04T11:31:35+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
