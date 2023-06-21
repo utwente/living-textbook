@@ -34,14 +34,14 @@
     "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
   },
   "dependencies": {
-    "@sentry/browser": "7.53.1",
+    "@sentry/browser": "7.55.2",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
     "bootstrap4-toggle": "3.6.1",
     "ckeditor4": "4.21.0",
     "color": "4.2.3",
-    "core-js": "3.30.2",
+    "core-js": "3.31.0",
     "custom-event": "1.0.1",
     "d3": "5.16.0",
     "datatables.net": "1.13.4",
