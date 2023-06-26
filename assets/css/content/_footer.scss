@@ -12,16 +12,16 @@ $footer-height: 60px;
     background-size: contain !important;
     max-width: 50%;
 
-    &.logo-itc {
+    &.logo-ucgis {
       float: left;
-      background: url('../../img/footer/itc.png') no-repeat top left;
+      background: url('../../img/footer/ucgis_graphic.png') no-repeat top left;
       height: $footer-height;
       width: $footer-height;
     }
 
-    &.logo-ut {
+    &.text-ucgis {
       float: right;
-      background: url('../../img/footer/ut.svg') no-repeat top right;
+      background: url('../../img/footer/ucgis-logo-horizontal.svg') no-repeat top right;
       height: $footer-height;
       width: 300px;
     }
