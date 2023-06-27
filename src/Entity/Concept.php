@@ -14,6 +14,7 @@ use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataInterface;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
+use App\Entity\Data\DataAdditionalResources;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\Traits\ReviewableTrait;
 use App\Review\Exception\IncompatibleChangeException;
@@ -276,6 +277,20 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   private $selfAssessment;
 
   /**
+   * @var DataAdditionalResources
+   *
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataAdditionalResources", cascade={"persist", "remove"})
+   * @ORM\JoinColumn(name="self_assessment_id", referencedColumnName="id", nullable=false)
+   *
+   * @Assert\Valid()
+   *
+   * @JMSA\Expose()
+   * @JMSA\Groups({"review_change"})
+   * @JMSA\Type(DataAdditionalResources::class)
+   */
+  private $additionalResources;
+
+  /**
    * @var Collection<ConceptRelation>
    *
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
@@ -373,6 +388,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
     $this->selfAssessment    = new DataSelfAssessment();
+    $this->additionalResources = new DataAdditionalResources();
   }
 
   /**
@@ -461,6 +477,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
         || $this->getExamples()->hasData()
         || $this->getHowTo()->hasData()
         || $this->selfAssessment->hasData()
+        || $this->additionalResources->hasData()
         || $this->theoryExplanation->hasData();
   }
 
@@ -484,6 +501,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $check($this->getHowTo());
     $check($this->getIntroduction());
     $check($this->getSelfAssessment());
+    $check($this->getAdditionalResources());
     $check($this->getTheoryExplanation());
 
     // Check other data
@@ -534,6 +552,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->filterDataOn($results, $this->getTheoryExplanation(), 80, 'theory-explanation', $search);
     $this->filterDataOn($results, $this->getHowTo(), 60, 'how-to', $search);
     $this->filterDataOn($results, $this->getSelfAssessment(), 40, 'self-assessment', $search);
+    $this->filterDataOn($results, $this->getAdditionalResources(), 30, 'additional-resources', $search);
 
     return [
         '_id'     => $this->getId(),
@@ -638,6 +657,9 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 
         case 'selfAssessment':
           $this->getSelfAssessment()->setText($changeObj->getSelfAssessment()->getText());
+          break;
+        case 'additionalResources':
+          $this->getAdditionalResources()->setText($changeObj->getAdditionalResources()->getText());
           break;
         case 'relations': // This would be outgoingRelations, but the serialized name is relations
           // This construct is required for Doctrine to work correctly. Why? No clue.
@@ -886,6 +908,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   public function setSelfAssessment(DataSelfAssessment $selfAssessment): Concept
   {
     $this->selfAssessment = $selfAssessment;
+
+    return $this;
+  }
+
+  public function getAdditionalResources(): DataAdditionalResources
+  {
+    return $this->additionalResources;
+  }
+
+  public function setAdditionalResources(DataAdditionalResources $additionalResources): Concept
+  {
+    $this->additionalResources = $additionalResources;
 
     return $this;
   }

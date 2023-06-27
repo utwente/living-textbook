@@ -19,13 +19,15 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   /** @var string */
   private $selfAssessment;
   /** @var string */
+  private $additionalResources;
+  /** @var string */
   private $synonyms;
   /** @var string */
   private $theoryExplanation;
 
   public function __construct(
       string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
-      string $howTo, string $examples, string $selfAssessment)
+      string $howTo, string $examples, string $selfAssessment, string $additionalResources)
   {
     $this->definition        = strtolower($definition);
     $this->introduction      = strtolower($introduction);
@@ -35,6 +37,7 @@ class ResolvedConceptNames implements ResolvedNamesInterface
     $this->howTo             = strtolower($howTo);
     $this->examples          = strtolower($examples);
     $this->selfAssessment    = strtolower($selfAssessment);
+    $this->additionalResources = strtolower($additionalResources);
   }
 
   public function resolvePlurals(InflectorInterface $inflector)
@@ -70,6 +73,11 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   public function selfAssessment(): string
   {
     return $this->selfAssessment;
+  }
+
+  public function additionalResources(): string
+  {
+    return $this->additionalResources;
   }
 
   public function synonyms(): string

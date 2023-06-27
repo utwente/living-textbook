@@ -71,7 +71,8 @@ class UrlScanner
         $this->scanText($concept->getTheoryExplanation()->getText(), new UrlContext(Concept::class, $id, 'theoryExplanation')),
         $this->scanText($concept->getHowTo()->getText(), new UrlContext(Concept::class, $id, 'howTo')),
         $this->scanText($concept->getExamples()->getText(), new UrlContext(Concept::class, $id, 'examples')),
-        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, $id, 'selfAssessment'))
+        $this->scanText($concept->getSelfAssessment()->getText(), new UrlContext(Concept::class, $id, 'selfAssessment')),
+        $this->scanText($concept->getAdditionalResources()->getText(), new UrlContext(Concept::class, $id, 'additionalResources'))
     )));
   }
 

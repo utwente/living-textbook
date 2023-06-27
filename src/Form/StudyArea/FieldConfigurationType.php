@@ -81,6 +81,12 @@ class FieldConfigurationType extends AbstractType
             'attr'  => [
                 'placeholder' => 'concept.self-assessment',
             ],
+            ])
+        ->add('concept_additional_resources_name', null, [
+            'label' => 'concept.additional-resources',
+            'attr'  => [
+                'placeholder' => 'concept.additional-resources',
+            ],
         ]);
 
     return $this;

@@ -115,6 +115,12 @@
   {{ block('data_display_block') }}
 {% endmacro %}
 
+{% macro data_additional_resources(data) %}
+  {% set title = naming.get.concept.additionalResources|capitalize %}
+  {% set annotationContext = 'additional-resources' %}
+  {{ block('data_display_block') }}
+{% endmacro %}
+
 {% block data_display_relations %}
   {% import _self as macros %}
   <h2>{{ title }}</h2>

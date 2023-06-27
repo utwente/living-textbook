@@ -217,6 +217,7 @@ class PendingChange implements IdInterface
             'learningOutcomes'  => 120,
             'priorKnowledge'    => 110,
             'selfAssessment'    => 90,
+            'additionalResources'=>85,
             'relations'         => 80,
             'incomingRelations' => 70,
             'contributors'      => 60,

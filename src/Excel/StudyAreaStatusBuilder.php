@@ -352,6 +352,7 @@ class StudyAreaStatusBuilder
       $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 6, $row, !$concept->getLearningOutcomes()->isEmpty());
       $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 7, $row, $concept->getHowTo()->hasData());
       $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 8, $row, $concept->getSelfAssessment()->hasData());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 8, $row, $concept->getAdditionalResources()->hasData());
       $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 9, $row, !$concept->getExternalResources()->isEmpty());
       $this->spreadsheetHelper->setCellValue($sheet, $column + 10, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
 

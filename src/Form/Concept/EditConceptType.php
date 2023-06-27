@@ -9,6 +9,7 @@ use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
+use App\Entity\Data\DataAdditionalResources;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
@@ -238,6 +239,17 @@ class EditConceptType extends AbstractType
         ])
         ->add('selfAssessment_review', DisplayPendingChangeType::class, [
             'field'               => 'selfAssessment',
+            'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('additionalResources', BaseDataTextType::class, [
+            'label'      => ucfirst($fieldNames->additionalResources()),
+            'required'   => false,
+            'data_class' => DataAdditionalResources::class,
+            'studyArea'  => $studyArea,
+            'disabled'   => in_array('additionalResources', $disabledFields),
+        ])
+        ->add('additionalResources_review', DisplayPendingChangeType::class, [
+            'field'               => 'additionalResources',
             'pending_change_info' => $pendingChangeObjectInfo,
         ]);
 
