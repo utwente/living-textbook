@@ -280,7 +280,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    * @var DataAdditionalResources
    *
    * @ORM\OneToOne(targetEntity="App\Entity\Data\DataAdditionalResources", cascade={"persist", "remove"})
-   * @ORM\JoinColumn(name="self_assessment_id", referencedColumnName="id", nullable=false)
+   * @ORM\JoinColumn(name="additional_resources_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\Valid()
    *
