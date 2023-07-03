@@ -48,10 +48,10 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
   /**
    * @var string
    *
-   * @ORM\Column(length=25, nullable=false)
+   * @ORM\Column(length=100, nullable=false)
    *
    * @Assert\NotBlank()
-   * @Assert\Length(max=25)
+   * @Assert\Length(max=100)
    *
    * @JMSA\Expose()
    */

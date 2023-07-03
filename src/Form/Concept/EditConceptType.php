@@ -15,6 +15,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\Tag;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Review\DisplayPendingChangeType;
+use App\Form\Type\CkEditorType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
 use App\Naming\NamingService;
@@ -28,6 +29,8 @@ use App\Review\Model\PendingChangeObjectInfo;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -93,10 +96,11 @@ class EditConceptType extends AbstractType
             'field'               => 'instance',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
-        ->add('definition', TextareaType::class, [
+        ->add('definition', CkEditorType::class, [
             'label'              => ucfirst($fieldNames->definition()),
             'translation_domain' => false,
             'empty_data'         => '',
+            'studyArea'          => $studyArea,
             'required'           => false,
             'disabled'           => in_array('definition', $disabledFields),
         ])
@@ -284,6 +288,15 @@ class EditConceptType extends AbstractType
         ->add('contributors_review', DisplayPendingChangeType::class, [
             'field'               => 'contributors',
             'pending_change_info' => $pendingChangeObjectInfo,
+        ])
+        ->add('imageFile', FileType::class, [
+            'label' => 'concept.image-file',
+            'help'  => 'concept.image-file-help',
+            'required' => false,
+            'attr' => ['accept' => 'image/png,image/gif,image/jpeg'],
+        ])
+        ->add('imagePath', HiddenType::class, [
+            'mapped' => false,
         ])
         ->add('submit', SaveType::class, [
             'locate_static'        => true,

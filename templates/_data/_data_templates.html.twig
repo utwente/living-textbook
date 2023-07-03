@@ -17,11 +17,11 @@
 
 {% macro data_definition(concept) %}
   {% if concept.definition|length > 0 %}
-    <p data-annotations-contains-text="true"
+    <div data-annotations-contains-text="true"
        data-annotations-context="definition"
        data-annotations-version="{{ concept.lastUpdated|default('now'|date)|date('c') }}">
-      {{ concept.definition }}
-    </p>
+      {{ concept.definition|striptags(allowed_ckeditor_tags)|raw}}
+    </div>
   {% endif %}
 {% endmacro %}
 
@@ -219,7 +219,7 @@
           {# Show definition is available, otherwise introduction if available #}
           {% if concept.definition|length > 0 %}
             <div class="ltb-text-container">
-              {{ concept.definition }}
+              {{ concept.definition|striptags(allowed_ckeditor_tags)|raw }}
             </div>
           {% elseif concept.introduction.text|length > 0 %}
             <div class="ltb-text-container">
@@ -239,6 +239,34 @@
       {% for learningPath in data %}
         <li>
           <a href="{{ path('app_learningpath_show', { learningPath: learningPath.id }) }}">{{ learningPath.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro data_tag_concepts(data) %}
+  {% if data|length > 0 %}
+    <h2>{{ 'menu.concept'|trans }}</h2>
+    <ul class="tagged-concepts">
+      {% for concept in data %}
+        <li class="tagged-concept">
+          <h5><a href="{{ path('app_concept_show', { concept: concept.id}) }}">{{ concept.name }}</a></h5>          
+          {% if concept.imagePath %}
+            <div class="concept-image">
+              <img src="{{ concept.imagePath }}" alt="" title="{{ concept.name }}">
+            </div>
+          {% endif %}
+            {# Show definition is available, otherwise introduction if available #}
+          {% if concept.definition|length > 0 %}
+              <div class="ltb-text-container">
+                <p>{{ concept.definition|striptags(allowed_ckeditor_tags)|raw }}</p>
+              </div>
+          {% elseif concept.introduction.text|length > 0 %}
+              <div class="ltb-text-container">
+                <p>{{ concept.introduction.text|striptags(allowed_ckeditor_tags)|raw }}</p>
+              </div>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>

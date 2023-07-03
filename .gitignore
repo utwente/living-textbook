@@ -54,3 +54,6 @@ docker/nginx/server.cert
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+# Ignore .DS_Store file
+.DS_Store

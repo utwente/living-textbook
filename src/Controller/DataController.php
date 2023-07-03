@@ -246,6 +246,10 @@ class DataController extends AbstractController
                   sprintf('Could not create the concept self assessment: %s', json_encode($selfAssessment)));
             }
           }
+            
+          if (array_key_exists('imagePath', $jsonNode) && $jsonNode['imagePath'] !== null && $jsonNode['imagePath'] !== '') {
+            $concepts[$key]->setImagePath($jsonNode['imagePath']);
+          }
 
           $concepts[$key]->setStudyArea($studyArea);
           if ($validator->validate($concepts[$key])->count() > 0) {

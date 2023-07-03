@@ -50,14 +50,18 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 # Set system timezone
 RUN rm -f /etc/localtime \
-    && ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime \
-	  && echo Europe/Amsterdam > /etc/timezone
+    && ln -s /usr/share/zoneinfo/America/Chicago /etc/localtime \
+	  && echo America/Chicago > /etc/timezone
 
-# Set PHP timezone to Amsterdam
-RUN printf "date.timezone = \"Europe/Amsterdam\"\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
+# Set PHP timezone to Chicago
+RUN printf "date.timezone = \"America/Chicago\"\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
 
 # Disable asserts
 RUN printf "zend.assertions = -1\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
+
+# Max File upload and form post size.
+RUN printf "post_max_size = 10M\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
+RUN printf "upload_max_filesize = 10M\n" >> `php -i | grep php.ini | awk '{print $6'}`/php.ini
 
 # Install PHP extensions
 RUN docker-php-ext-install zip

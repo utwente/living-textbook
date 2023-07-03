@@ -29,6 +29,8 @@ use Drenso\Shared\Interfaces\IdInterface;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -318,6 +320,26 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;
+
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="image_path", type="string", nullable=true)
+   *
+   * @Assert\Length(max=512)
+   * @JMSA\Type("string")
+   * @JMSA\Expose()
+   */
+  private ?string $imagePath = null;
+
+  /**
+     * @Assert\Image(
+     *     maxSize="2M",
+     *     mimeTypes={"image/jpg", "image/jpeg", "image/png", "image/gif"}
+     * )
+     */
+  private $imageFile;
 
   /** Concept constructor. */
   public function __construct()
@@ -986,5 +1008,31 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->dotronConfig = $dotronConfig;
 
     return $this;
+  }
+
+  public function getImagePath(): ?string
+  {
+    return $this->imagePath;
+  }
+
+  public function setImagePath(?string $imagePath): self
+  {
+    $this->imagePath = $imagePath;
+
+    return $this;
+  }
+
+  public function getImageFile(): ?File
+  {
+    return $this->imageFile;
+  }
+
+  public function setImageFile(?File $imageFile): void
+  {
+    $this->imageFile = $imageFile;
+
+    if ($imageFile instanceof UploadedFile) {
+      $this->setUpdatedAt(new \DateTime('now'));
+    }
   }
 }

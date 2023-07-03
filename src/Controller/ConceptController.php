@@ -73,6 +73,16 @@ class ConceptController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      $imageFile = $concept->getImageFile();
+      if ($imageFile) {
+        $imageName = uniqid().'.'.$imageFile->guessExtension();
+        $imageFile->move(
+          sprintf('%s/public/uploads/studyarea/%s', $this->getParameter('kernel.project_dir'), $studyArea->getId()), 
+          $imageName
+        );
+        $concept->setImagePath(sprintf('/uploads/studyarea/%s/%s', $studyArea->getId(), $imageName));
+      }
+
       // Save the data
       $this->getHandler()->add($concept, $snapshot);
 
@@ -142,6 +152,16 @@ class ConceptController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      $imageFile = $concept->getImageFile();
+      if ($imageFile) {
+        $imageName = uniqid().'.'.$imageFile->guessExtension();
+        $imageFile->move(
+          sprintf('%s/public/uploads/studyarea/%s', $this->getParameter('kernel.project_dir'), $studyArea->getId()), 
+          $imageName
+        );
+        $concept->setImagePath(sprintf('/uploads/studyarea/%s/%s', $studyArea->getId(), $imageName));
+      }
+
       // Save the data
       $this->getHandler()->update($concept, $snapshot, $originalOutgoingRelations, $originalIncomingRelations);
 
