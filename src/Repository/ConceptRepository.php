@@ -101,10 +101,12 @@ class ConceptRepository extends ServiceEntityRepository
         ->join($alias . '.theoryExplanation', 'dt')
         ->join($alias . '.howTo', 'dh')
         ->join($alias . '.selfAssessment', 'ds')
+        ->join($alias . '.additionalResources', 'da')
         ->addSelect('de')
         ->addSelect('di')
         ->addSelect('dt')
         ->addSelect('dh')
-        ->addSelect('ds');
+        ->addSelect('ds')
+        ->addSelect('da');
   }
 }

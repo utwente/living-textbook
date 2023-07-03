@@ -83,6 +83,13 @@ class StudyAreaFieldConfiguration implements IdInterface
    * @ORM\Column(type="string", length=50, nullable=true)
    * @Assert\Length(max="50")
    */
+  private $conceptAdditionalResourcesName;
+
+  /**
+   * @var string|null
+   * @ORM\Column(type="string", length=50, nullable=true)
+   * @Assert\Length(max="50")
+   */
   private $learningOutcomeObjName;
 
   public function getConceptDefinitionName(): ?string
@@ -177,6 +184,18 @@ class StudyAreaFieldConfiguration implements IdInterface
   public function setConceptSelfAssessmentName(?string $conceptSelfAssessmentName): self
   {
     $this->conceptSelfAssessmentName = $conceptSelfAssessmentName;
+
+    return $this;
+  }
+
+  public function getConceptAdditionalResourcesName(): ?string
+  {
+    return $this->conceptAdditionalResourcesName;
+  }
+
+  public function setConceptAdditionalResourcesName(?string $conceptAdditionalResourcesName): self
+  {
+    $this->conceptAdditionalResourcesName = $conceptAdditionalResourcesName;
 
     return $this;
   }

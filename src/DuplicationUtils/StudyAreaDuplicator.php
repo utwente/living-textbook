@@ -329,7 +329,8 @@ class StudyAreaDuplicator
           ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
           ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
           ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
-          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()));
+          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()))
+          ->setAdditionalResources($newConcept->getAdditionalResources()->setText($concept->getAdditionalResources()->getText()));
 
       // Set learning outcomes
       foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
@@ -449,6 +450,8 @@ class StudyAreaDuplicator
           $this->updateUrls($newConcept->getExamples()->getText()));
       $newConcept->getSelfAssessment()->setText(
           $this->updateUrls($newConcept->getSelfAssessment()->getText()));
+      $newConcept->getAdditionalResources()->setText(
+          $this->updateUrls($newConcept->getAdditionalResources()->getText()));
     }
   }
 

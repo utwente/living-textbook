@@ -192,6 +192,7 @@ concept:
   removed: '"%item%" has been removed successfully'
   saved: '"%item%" has been saved successfully.'
   self-assessment: 'Self assessment'
+  additional-resources: 'Additional resources'
   synonyms: 'Synonyms'
   tags: 'Tags'
   theory-explanation: 'Explanation'
@@ -313,6 +314,7 @@ excel:
       examples: "Examples"
       how-to: "How to"
       self-assessment: "Self assessment"
+      additional-resources: "Additional resources"
       external-links: "External links"
       number-of-relations: "Number of relations"
       last-edit-time: "Last time of editing"
