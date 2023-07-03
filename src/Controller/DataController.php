@@ -203,7 +203,7 @@ class DataController extends AbstractController
 
             if ($validator->validate($theoryExplanation)->count() > 0) {
               throw new DataImportException(
-                  sprintf('Could not create the concept theory of explanation: %s', json_encode($theoryExplanation)));
+                  sprintf('Could not create the concept explanation: %s', json_encode($theoryExplanation)));
             }
           }
 
@@ -217,6 +217,36 @@ class DataController extends AbstractController
             }
           }
 
+          if (array_key_exists('examples', $jsonNode) && $jsonNode['examples'] !== null) {
+            $examples = $concepts[$key]->getExamples();
+            $examples->setText($jsonNode['examples']);
+
+            if ($validator->validate($examples)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept examples: %s', json_encode($examples)));
+            }
+          }
+
+          if (array_key_exists('howTo', $jsonNode) && $jsonNode['howTo'] !== null) {
+            $howTo = $concepts[$key]->getHowTo();
+            $howTo->setText($jsonNode['howTo']);
+
+            if ($validator->validate($howTo)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept how to: %s', json_encode($howTo)));
+            }
+          }
+
+          if (array_key_exists('selfAssessment', $jsonNode) && $jsonNode['selfAssessment'] !== null) {
+            $selfAssessment = $concepts[$key]->getSelfAssessment();
+            $selfAssessment->setText($jsonNode['selfAssessment']);
+
+            if ($validator->validate($selfAssessment)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept self assessment: %s', json_encode($selfAssessment)));
+            }
+          }
+            
           if (array_key_exists('imagePath', $jsonNode) && $jsonNode['imagePath'] !== null && $jsonNode['imagePath'] !== '') {
             $concepts[$key]->setImagePath($jsonNode['imagePath']);
           }
