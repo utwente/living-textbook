@@ -203,7 +203,7 @@ class DataController extends AbstractController
 
             if ($validator->validate($theoryExplanation)->count() > 0) {
               throw new DataImportException(
-                  sprintf('Could not create the concept theory of explanation: %s', json_encode($theoryExplanation)));
+                  sprintf('Could not create the concept explanation: %s', json_encode($theoryExplanation)));
             }
           }
 
@@ -214,6 +214,36 @@ class DataController extends AbstractController
             if ($validator->validate($introduction)->count() > 0) {
               throw new DataImportException(
                   sprintf('Could not create the concept introduction: %s', json_encode($introduction)));
+            }
+          }
+
+          if (array_key_exists('examples', $jsonNode) && $jsonNode['examples'] !== null) {
+            $examples = $concepts[$key]->getExamples();
+            $examples->setText($jsonNode['examples']);
+
+            if ($validator->validate($examples)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept examples: %s', json_encode($examples)));
+            }
+          }
+
+          if (array_key_exists('howTo', $jsonNode) && $jsonNode['howTo'] !== null) {
+            $howTo = $concepts[$key]->getHowTo();
+            $howTo->setText($jsonNode['howTo']);
+
+            if ($validator->validate($howTo)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept how to: %s', json_encode($howTo)));
+            }
+          }
+
+          if (array_key_exists('selfAssessment', $jsonNode) && $jsonNode['selfAssessment'] !== null) {
+            $selfAssessment = $concepts[$key]->getSelfAssessment();
+            $selfAssessment->setText($jsonNode['selfAssessment']);
+
+            if ($validator->validate($selfAssessment)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept self assessment: %s', json_encode($selfAssessment)));
             }
           }
 
@@ -387,6 +417,26 @@ class DataController extends AbstractController
                   sprintf('Could not create the tag: %s', json_encode($jsonTag)));
             }
             $em->persist($tag);
+          }
+        }
+
+        // Prior knowledge
+        if (array_key_exists('priorKnowledge', $jsonData)) {
+          foreach ($jsonData['priorKnowledge'] as $jsonPriorKnowledge) {
+            if (!array_key_exists('node', $jsonPriorKnowledge) || !array_key_exists('isPriorKnowledgeOf', $jsonPriorKnowledge)) {
+              throw new DataImportException(
+                sprintf('Missing one ore more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
+            }
+
+            if (!array_key_exists($jsonPriorKnowledge['node'], $concepts)) {
+              throw new DataImportException(
+                  sprintf('Prior knowledge references non-existing "node": %s', json_encode($jsonPriorKnowledge)));
+            }
+            if (!array_key_exists($jsonPriorKnowledge['isPriorKnowledgeOf'], $concepts)) {
+              throw new DataImportException(
+                  sprintf('Prior knowledge references non-existing "isPriorKnowledgeOf": %s', json_encode($jsonPriorKnowledge)));
+            }
+            $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$jsonPriorKnowledge['isPriorKnowledgeOf']]);
           }
         }
 
