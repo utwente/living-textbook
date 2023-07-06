@@ -112,6 +112,20 @@ class EditStudyAreaType extends AbstractType
             'label'    => 'study-area.dotron',
             'help'     => 'study-area.dotron-help',
         ]);
+    
+    if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+        $builder
+            ->add('urlExportEnabled', CheckboxType::class, [            
+                'label'    => 'study-area.url-export-enabled',
+                'help'     => 'study-area.url-export-enabled-help',
+                'required' => false,
+            ])
+            ->add('exportUrl', TextType::class, [
+                'label'    => 'study-area.export-url',
+                'help'     => 'study-area.export-url-help',
+                'required' => false,
+            ]);
+    }
 
     if ($studyArea->getId()) {
       $builder
