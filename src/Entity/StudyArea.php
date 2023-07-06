@@ -220,6 +220,24 @@ class StudyArea implements Stringable, IdInterface
   private ?array $dotronConfig = null;
 
   /**
+   * Setting this to true makes it possible to export studyarea to given URL endpoint
+   *
+   * @ORM\Column(type="boolean",name="url_export_enabled")
+   */
+  private bool $urlExportEnabled = false;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="export_url", type="string", nullable=true)
+   *
+   * @Assert\Length(max=256)
+   * @JMSA\Type("string")
+   * @JMSA\Expose()
+   */
+  private ?string $exportUrl = null;
+
+  /**
    * @var Collection<int, StylingConfiguration>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\StylingConfiguration", mappedBy="studyArea", fetch="EXTRA_LAZY")
@@ -863,6 +881,30 @@ class StudyArea implements Stringable, IdInterface
   public function setDotronConfig(?array $dotronConfig): self
   {
     $this->dotronConfig = $dotronConfig;
+
+    return $this;
+  }
+
+  public function isUrlExportEnabled(): bool
+  {
+    return $this->urlExportEnabled;
+  }
+
+  public function setUrlExportEnabled(bool $urlExportEnabled): self
+  {
+    $this->urlExportEnabled = $urlExportEnabled;
+
+    return $this;
+  }
+
+  public function getExportUrl(): ?string
+  {
+    return $this->exportUrl;
+  }
+
+  public function setExportUrl(?string $exportUrl): self
+  {
+    $this->exportUrl = $exportUrl;
 
     return $this;
   }

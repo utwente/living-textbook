@@ -102,6 +102,18 @@
                 $('#{{ form.reviewModeEnabled.vars.id }}').prop('checked', false);
               }
             });
+
+        $('#{{ form.urlExportEnabled.vars.id }}')
+            .on('change', function(){
+              var urlExportEnabled = $(this).is(':checked');
+              var $exportUrlForm = $('#{{ form.exportUrl.vars.id }}').closest('.form-group');
+              if (urlExportEnabled) {
+                $exportUrlForm.show();
+              } else {
+                $exportUrlForm.hide();
+              }
+            })
+            .change();
       });
     </script>
   {% endif %}

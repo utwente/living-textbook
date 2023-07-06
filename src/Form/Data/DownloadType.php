@@ -2,6 +2,7 @@
 
 namespace App\Form\Data;
 
+use App\Entity\StudyArea;
 use App\Export\ExportService;
 use App\Form\Type\SingleSubmitType;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +21,7 @@ class DownloadType extends AbstractType
   }
 
   public function buildForm(FormBuilderInterface $builder, array $options)
-  {
+  {    
     $builder
         ->add('type', ChoiceType::class, [
             'label'   => 'data.download.type',
@@ -37,14 +38,29 @@ class DownloadType extends AbstractType
                 'class' => 'btn btn-outline-success',
             ],
         ]);
+   
   }
 
   public function configureOptions(OptionsResolver $resolver)
-  {
-    $resolver->setDefaults([
+  {  
+    $resolver
+      ->setRequired('current_study_area')
+      ->setAllowedTypes('current_study_area', StudyArea::class)
+      ->setDefaults([
         'attr' => [
             'target' => '_blank',
         ],
     ]);
+
+    $resolver->setNormalizer('attr', function (OptionsResolver $optionsResolver, $attr) {
+      /** @var StudyArea $studyArea */
+      $studyArea = $optionsResolver->offsetGet('current_study_area');
+      if ($studyArea->isUrlExportEnabled() && $studyArea->getExportUrl() !== null) {
+        $attr['target'] = '_self';
+      } else {
+        $attr['target'] = '_blank';
+      }
+      return $attr;
+    });
   }
 }
