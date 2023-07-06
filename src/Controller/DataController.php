@@ -227,6 +227,16 @@ class DataController extends AbstractController
             }
           }
 
+          if (array_key_exists('additionalResources', $jsonNode) && $jsonNode['additionalResources'] !== null) {
+            $additionalResources = $concepts[$key]->getAdditionalResources();
+            $additionalResources->setText($jsonNode['additionalResources']);
+
+            if ($validator->validate($additionalResources)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept additional resources: %s', json_encode($additionalResources)));
+            }
+          }
+
           if (array_key_exists('howTo', $jsonNode) && $jsonNode['howTo'] !== null) {
             $howTo = $concepts[$key]->getHowTo();
             $howTo->setText($jsonNode['howTo']);
