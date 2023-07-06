@@ -548,7 +548,9 @@ class DataController extends AbstractController
         ->setAccessType(StudyArea::ACCESS_PRIVATE)
         ->setDescription($studyAreaToDuplicate->getDescription())
         ->setPrintHeader($studyAreaToDuplicate->getPrintHeader())
-        ->setPrintIntroduction($studyAreaToDuplicate->getPrintIntroduction());
+        ->setPrintIntroduction($studyAreaToDuplicate->getPrintIntroduction())
+        ->setUrlExportEnabled($studyAreaToDuplicate->isUrlExportEnabled())
+        ->setExportUrl($studyAreaToDuplicate->isUrlExportEnabled()? $studyAreaToDuplicate->getExportUrl(): null);
 
     $form = $this->createForm(DuplicateType::class, [
         DuplicateType::NEW_STUDY_AREA => $newStudyArea,
