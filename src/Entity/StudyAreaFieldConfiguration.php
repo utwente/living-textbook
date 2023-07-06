@@ -90,6 +90,13 @@ class StudyAreaFieldConfiguration implements IdInterface
    * @ORM\Column(type="string", length=50, nullable=true)
    * @Assert\Length(max="50")
    */
+  private $conceptImagePathName;
+
+  /**
+   * @var string|null
+   * @ORM\Column(type="string", length=50, nullable=true)
+   * @Assert\Length(max="50")
+   */
   private $learningOutcomeObjName;
 
   public function getConceptDefinitionName(): ?string
@@ -208,6 +215,18 @@ class StudyAreaFieldConfiguration implements IdInterface
   public function setLearningOutcomeObjName(?string $learningOutcomeObjName): self
   {
     $this->learningOutcomeObjName = $learningOutcomeObjName;
+
+    return $this;
+  }
+
+  public function getConceptImagePathName(): ?string
+  {
+    return $this->conceptImagePathName;
+  }
+
+  public function setConceptImagePathName(?string $conceptImagePathName): self
+  {
+    $this->conceptImagePathName = $conceptImagePathName;
 
     return $this;
   }

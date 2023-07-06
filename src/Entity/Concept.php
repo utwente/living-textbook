@@ -280,7 +280,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    * @var DataAdditionalResources
    *
    * @ORM\OneToOne(targetEntity="App\Entity\Data\DataAdditionalResources", cascade={"persist", "remove"})
-   * @ORM\JoinColumn(name="additional_resources_id", referencedColumnName="id", nullable=false)
+   * @ORM\JoinColumn(name="additional_resources_id", referencedColumnName="id", nullable=true)
    *
    * @Assert\Valid()
    *
@@ -288,7 +288,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    * @JMSA\Groups({"review_change"})
    * @JMSA\Type(DataAdditionalResources::class)
    */
-  private $additionalResources;
+  private ?DataAdditionalResources $additionalResources = null;
 
   /**
    * @var Collection<ConceptRelation>
@@ -388,7 +388,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->howTo             = new DataHowTo();
     $this->examples          = new DataExamples();
     $this->selfAssessment    = new DataSelfAssessment();
-    $this->additionalResources = new DataAdditionalResources();
   }
 
   /**
@@ -912,12 +911,12 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  public function getAdditionalResources(): DataAdditionalResources
+  public function getAdditionalResources(): ?DataAdditionalResources
   {
     return $this->additionalResources;
   }
 
-  public function setAdditionalResources(DataAdditionalResources $additionalResources): Concept
+  public function setAdditionalResources(?DataAdditionalResources $additionalResources): Concept
   {
     $this->additionalResources = $additionalResources;
 

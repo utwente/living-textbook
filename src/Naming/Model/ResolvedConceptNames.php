@@ -24,20 +24,23 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   private $synonyms;
   /** @var string */
   private $theoryExplanation;
+  /** @var string */
+  private $imagePath;
 
   public function __construct(
       string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
-      string $howTo, string $examples, string $selfAssessment, string $additionalResources)
+      string $howTo, string $examples, string $selfAssessment, string $additionalResources, string $imagePath)
   {
-    $this->definition        = strtolower($definition);
-    $this->introduction      = strtolower($introduction);
-    $this->synonyms          = strtolower($synonyms);
-    $this->priorKnowledge    = strtolower($priorKnowledge);
-    $this->theoryExplanation = strtolower($theoryExplanation);
-    $this->howTo             = strtolower($howTo);
-    $this->examples          = strtolower($examples);
-    $this->selfAssessment    = strtolower($selfAssessment);
+    $this->definition          = strtolower($definition);
+    $this->introduction        = strtolower($introduction);
+    $this->synonyms            = strtolower($synonyms);
+    $this->priorKnowledge      = strtolower($priorKnowledge);
+    $this->theoryExplanation   = strtolower($theoryExplanation);
+    $this->howTo               = strtolower($howTo);
+    $this->examples            = strtolower($examples);
+    $this->selfAssessment      = strtolower($selfAssessment);
     $this->additionalResources = strtolower($additionalResources);
+    $this->imagePath           = strtolower($imagePath);
   }
 
   public function resolvePlurals(InflectorInterface $inflector)
@@ -88,5 +91,10 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   public function theoryExplanation(): string
   {
     return $this->theoryExplanation;
+  }
+
+  public function imagePath(): string
+  {
+    return $this->imagePath;
   }
 }

@@ -88,6 +88,8 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "%7$s": "<concept-%8$s>",
             "%9$s": "<concept-%10$s>",
             "%11$s": "<concept-%12$s>",
+            "%13$s": "<concept-%14$s>",
+            "%15$s": "<concept-%16$s>",
         }
     ],
     "links": [
@@ -114,12 +116,12 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "url": "<external-resource-url>",
         }
     ]
-    "%13$s": [
+    "%17$s": [
         {
             "nodes": [<node-ids>],
-            "number": "<%14$s-number>",
-            "name": "<%14$s-name>",
-            "content": "<%14$s-content>",
+            "number": "<%18$s-number>",
+            "name": "<%18$s-name>",
+            "content": "<%18$s-content>",
         }
     ]
 }
@@ -136,6 +138,10 @@ EOT,
         $this->fieldDescription($fieldNames->selfAssessment()),
         $this->fieldName($fieldNames->howTo()),
         $this->fieldDescription($fieldNames->howTo()),
+        $this->fieldName($fieldNames->additionalResources()),
+        $this->fieldDescription($fieldNames->additionalResources()),
+        $this->fieldName($fieldNames->imagePath()),
+        $this->fieldDescription($fieldNames->imagePath()),
         $this->fieldName($names->learningOutcome()->objs()),
         $this->fieldDescription($names->learningOutcome()->obj())
     );
@@ -206,15 +212,17 @@ EOT,
 
     // Create JSON data
 
-    $names                 = $this->namingService->get();
-    $fieldNames            = $names->concept();
-    $definitionName        = $this->fieldName($fieldNames->definition());
-    $theoryExplanationName = $this->fieldName($fieldNames->theoryExplanation());
-    $introductionName      = $this->fieldName($fieldNames->introduction());
-    $examplesName          = $this->fieldName($fieldNames->examples());
-    $howToName             = $this->fieldName($fieldNames->howTo());
-    $selfAssessmentName    = $this->fieldName($fieldNames->selfAssessment());
-    $learningOutcomeField  = $this->fieldName($names->learningOutcome()->objs());
+    $names                    = $this->namingService->get();
+    $fieldNames               = $names->concept();
+    $definitionName           = $this->fieldName($fieldNames->definition()); 
+    $theoryExplanationName    = $this->fieldName($fieldNames->theoryExplanation());
+    $introductionName         = $this->fieldName($fieldNames->introduction());
+    $examplesName             = $this->fieldName($fieldNames->examples());
+    $howToName                = $this->fieldName($fieldNames->howTo());
+    $additionalResourcesName  = $this->fieldName($fieldNames->additionalResources());
+    $imagePathName            = $this->fieldName($fieldNames->imagePath());
+    $selfAssessmentName       = $this->fieldName($fieldNames->selfAssessment());
+    $learningOutcomeField     = $this->fieldName($names->learningOutcome()->objs());
 
     // Return as JSON
     $serializationContext = SerializationContext::create();
@@ -222,16 +230,18 @@ EOT,
     $json = $this->serializer->serialize(
           [
               'nodes' => array_map(fn (Concept $concept) => [
-                  'instance'             => $concept->isInstance(),
-                  'label'                => $concept->getName(),
-                  'link'                 => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-                  'numberOfLinks'        => $concept->getNumberOfLinks(),
-                  $definitionName        => $concept->getDefinition(),
-                  $theoryExplanationName => $concept->getTheoryExplanation()->getText(),
-                  $introductionName      => $concept->getIntroduction()->getText(),
-                  $examplesName          => $concept->getExamples()->getText(),
-                  $howToName             => $concept->getHowTo()->getText(),
-                  $selfAssessmentName    => $concept->getSelfAssessment()->getText(),
+                  'instance'                => $concept->isInstance(),
+                  'label'                   => $concept->getName(),
+                  'link'                    => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+                  'numberOfLinks'           => $concept->getNumberOfLinks(),
+                  $definitionName           => $concept->getDefinition(),
+                  $theoryExplanationName    => $concept->getTheoryExplanation()->getText(),
+                  $introductionName         => $concept->getIntroduction()->getText(),
+                  $examplesName             => $concept->getExamples()->getText(),
+                  $howToName                => $concept->getHowTo()->getText(),
+                  $additionalResourcesName  => $concept->getAdditionalResources() ? $concept->getAdditionalResources()->getText(): '',
+                  $imagePathName            => $concept->getImagePath(),
+                  $selfAssessmentName       => $concept->getSelfAssessment()->getText(),
               ], $concepts),
               'links'               => $mappedLinks,
               'contributors'        => $mappedContributors,

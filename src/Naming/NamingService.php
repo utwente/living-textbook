@@ -83,7 +83,8 @@ class NamingService
               $conf->getConceptHowtoName() ?: $this->translator->trans('concept.how-to'),
               $conf->getConceptExamplesName() ?: $this->translator->trans('concept.examples'),
               $conf->getConceptSelfAssessmentName() ?: $this->translator->trans('concept.self-assessment'),
-              $conf->getConceptAdditionalResourcesName() ?: $this->translator->trans('concept.additional-resources')
+              $conf->getConceptAdditionalResourcesName() ?: $this->translator->trans('concept.additional-resources'),
+              $conf->getConceptImagePathName() ?: $this->translator->trans('concept.image-path')
           );
 
           $learningOutcomeNames = new ResolvedLearningOutcomeNames(
