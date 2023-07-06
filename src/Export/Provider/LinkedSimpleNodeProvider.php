@@ -84,6 +84,10 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "numberOfLinks": <number-of-relations>,
             "%1$s": "<concept-%2$s>",
             "%3$s": "<concept-%4$s>",
+            "%5$s": "<concept-%6$s>",
+            "%7$s": "<concept-%8$s>",
+            "%9$s": "<concept-%10$s>",
+            "%11$s": "<concept-%12$s>",
         }
     ],
     "links": [
@@ -110,20 +114,28 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "url": "<external-resource-url>",
         }
     ]
-    "%5$s": [
+    "%13$s": [
         {
             "nodes": [<node-ids>],
-            "number": "<%6$s-number>",
-            "name": "<%6$s-name>",
-            "content": "<%6$s-content>",
+            "number": "<%14$s-number>",
+            "name": "<%14$s-name>",
+            "content": "<%14$s-content>",
         }
     ]
 }
 EOT,
         $this->fieldName($fieldNames->definition()),
         $this->fieldDescription($fieldNames->definition()),
+        $this->fieldName($fieldNames->theoryExplanation()),
+        $this->fieldDescription($fieldNames->theoryExplanation()),
+        $this->fieldName($fieldNames->introduction()),
+        $this->fieldDescription($fieldNames->introduction()),
+        $this->fieldName($fieldNames->examples()),
+        $this->fieldDescription($fieldNames->examples()),
         $this->fieldName($fieldNames->selfAssessment()),
         $this->fieldDescription($fieldNames->selfAssessment()),
+        $this->fieldName($fieldNames->howTo()),
+        $this->fieldDescription($fieldNames->howTo()),
         $this->fieldName($names->learningOutcome()->objs()),
         $this->fieldDescription($names->learningOutcome()->obj())
     );
@@ -194,11 +206,15 @@ EOT,
 
     // Create JSON data
 
-    $names                = $this->namingService->get();
-    $fieldNames           = $names->concept();
-    $definitionName       = $this->fieldName($fieldNames->definition());
-    $selfAssessmentName   = $this->fieldName($fieldNames->selfAssessment());
-    $learningOutcomeField = $this->fieldName($names->learningOutcome()->objs());
+    $names                 = $this->namingService->get();
+    $fieldNames            = $names->concept();
+    $definitionName        = $this->fieldName($fieldNames->definition());
+    $theoryExplanationName = $this->fieldName($fieldNames->theoryExplanation());
+    $introductionName      = $this->fieldName($fieldNames->introduction());
+    $examplesName          = $this->fieldName($fieldNames->examples());
+    $howToName             = $this->fieldName($fieldNames->howTo());
+    $selfAssessmentName    = $this->fieldName($fieldNames->selfAssessment());
+    $learningOutcomeField  = $this->fieldName($names->learningOutcome()->objs());
 
     // Return as JSON
     $serializationContext = SerializationContext::create();
@@ -206,12 +222,16 @@ EOT,
     $json = $this->serializer->serialize(
           [
               'nodes' => array_map(fn (Concept $concept) => [
-                  'instance'          => $concept->isInstance(),
-                  'label'             => $concept->getName(),
-                  'link'              => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-                  'numberOfLinks'     => $concept->getNumberOfLinks(),
-                  $definitionName     => $concept->getDefinition(),
-                  $selfAssessmentName => $concept->getSelfAssessment()->getText(),
+                  'instance'             => $concept->isInstance(),
+                  'label'                => $concept->getName(),
+                  'link'                 => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+                  'numberOfLinks'        => $concept->getNumberOfLinks(),
+                  $definitionName        => $concept->getDefinition(),
+                  $theoryExplanationName => $concept->getTheoryExplanation()->getText(),
+                  $introductionName      => $concept->getIntroduction()->getText(),
+                  $examplesName          => $concept->getExamples()->getText(),
+                  $howToName             => $concept->getHowTo()->getText(),
+                  $selfAssessmentName    => $concept->getSelfAssessment()->getText(),
               ], $concepts),
               'links'               => $mappedLinks,
               'contributors'        => $mappedContributors,

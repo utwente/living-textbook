@@ -424,6 +424,26 @@ class DataController extends AbstractController
           }
         }
 
+        // Prior knowledge
+        if (array_key_exists('priorKnowledge', $jsonData)) {
+          foreach ($jsonData['priorKnowledge'] as $jsonPriorKnowledge) {
+            if (!array_key_exists('node', $jsonPriorKnowledge) || !array_key_exists('isPriorKnowledgeOf', $jsonPriorKnowledge)) {
+              throw new DataImportException(
+                sprintf('Missing one ore more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
+            }
+
+            if (!array_key_exists($jsonPriorKnowledge['node'], $concepts)) {
+              throw new DataImportException(
+                  sprintf('Prior knowledge references non-existing "node": %s', json_encode($jsonPriorKnowledge)));
+            }
+            if (!array_key_exists($jsonPriorKnowledge['isPriorKnowledgeOf'], $concepts)) {
+              throw new DataImportException(
+                  sprintf('Prior knowledge references non-existing "isPriorKnowledgeOf": %s', json_encode($jsonPriorKnowledge)));
+            }
+            $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$jsonPriorKnowledge['isPriorKnowledgeOf']]);
+          }
+        }
+
         // Save the data
         $em->flush();
         $this->addFlash('success', $translator->trans('data.json-uploaded'));
