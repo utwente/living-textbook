@@ -2,6 +2,7 @@
 
 namespace App\Form\Data;
 
+use App\Entity\StudyArea;
 use App\Export\ExportService;
 use App\Form\Type\SingleSubmitType;
 use Override;
@@ -45,5 +46,16 @@ class DownloadType extends AbstractType
         'target' => '_blank',
       ],
     ]);
+
+    $resolver->setNormalizer('attr', function (OptionsResolver $optionsResolver, $attr) {
+      /** @var StudyArea $studyArea */
+      $studyArea = $optionsResolver->offsetGet('current_study_area');
+      if ($studyArea->isUrlExportEnabled() && $studyArea->getExportUrl() !== null) {
+        $attr['target'] = '_self';
+      } else {
+        $attr['target'] = '_blank';
+      }
+      return $attr;
+    });
   }
 }
