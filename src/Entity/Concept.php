@@ -383,11 +383,12 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->tags = new ArrayCollection();
 
     // Initialize data
-    $this->introduction      = new DataIntroduction();
-    $this->theoryExplanation = new DataTheoryExplanation();
-    $this->howTo             = new DataHowTo();
-    $this->examples          = new DataExamples();
-    $this->selfAssessment    = new DataSelfAssessment();
+    $this->introduction        = new DataIntroduction();
+    $this->theoryExplanation   = new DataTheoryExplanation();
+    $this->howTo               = new DataHowTo();
+    $this->examples            = new DataExamples();
+    $this->selfAssessment      = new DataSelfAssessment();
+    $this->additionalResources = new DataAdditionalResources();
   }
 
   /**
