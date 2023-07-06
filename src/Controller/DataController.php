@@ -38,6 +38,7 @@ use PhpOffice\PhpSpreadsheet\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -473,14 +474,47 @@ class DataController extends AbstractController
    * @Template()
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
-  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): array|Response
+  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService, TranslatorInterface $translator): array|Response
   {
-    $form = $this->createForm(DownloadType::class);
-    $form->handleRequest($request);
-
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($form->isSubmitted()) {
-      return $exportService->export($studyArea, $form->getData()['type']);
+    $form = $this->createForm(DownloadType::class, null, [
+      'current_study_area' => $studyArea,
+    ]);
+    $form->handleRequest($request);   
+    
+    if ($form->isSubmitted()) {     
+      $exportResponse =$exportService->export($studyArea, $form->getData()['type']);
+
+      if ($studyArea->isUrlExportEnabled() && $studyArea->getExportUrl() !== null 
+        && $exportResponse->getStatusCode() == Response::HTTP_OK) {
+        $client = HttpClient::create();
+
+        $response = $client->request('PUT', 
+          sprintf('%s/%s.json', $studyArea->getExportUrl(), $studyArea->getName(), $studyArea->getId()), 
+          [
+            'headers' => [
+                'Content-Type' => 'application/json',
+          ],
+          'body' => $exportResponse->getContent() ? $exportResponse->getContent() : ''
+        ]);
+
+        $statusCode = $response->getStatusCode();
+        if ($statusCode == Response::HTTP_OK) {
+          $this->addFlash(
+            'success', sprintf('%s: "%s"', 
+            $translator->trans('data.export-to-url-success'), 
+            $studyArea->getExportUrl())
+          );
+          $this->redirectToRoute('app_data_download');
+        } else {
+          $this->addFlash('error', sprintf('%s: "%s".', 
+            $translator->trans('data.export-to-url-error'), 
+            $studyArea->getExportUrl())
+          );          
+        }
+      } else {
+        return $exportResponse;
+      }      
     }
 
     return [
