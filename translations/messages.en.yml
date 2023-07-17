@@ -156,7 +156,7 @@ concept:
   definition: 'Definition'
   edit-title: 'Edit "%item%"'
   examples: 'Examples'
-  external-resources: 'External resources'
+  external-resources: 'References'
   how-to: 'How to'
   image-file: 'Concept Image'
   image-file-help: 'Files must be less than 2 MB. Allowed file types: png, gif, jpeg.'
