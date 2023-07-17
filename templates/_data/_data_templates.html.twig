@@ -200,6 +200,7 @@
 
 {% macro data_tags(data) %}
   {% if data|length > 0 %}
+    <h2>{{ 'concept.tags'|trans }}</h2>
     <div class="concept-tags">
       {% from _self import render_tag %}
       {% for tag in data %}
