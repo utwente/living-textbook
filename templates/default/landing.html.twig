@@ -61,7 +61,7 @@
         });
 
         $('#studyarea_form_submit').on('click', function () {
-          window.location.href = Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, true);
+          window.location.href = Routing.generate('_home', {'_studyArea': $('#studyarea_form_studyArea').val()}, false);
           return false;
         });
       </script>
