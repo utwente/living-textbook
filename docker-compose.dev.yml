@@ -16,7 +16,7 @@ services:
       DATABASE_URL: 'mysql://ltb:%database_password%@db:3306/ltb'
       PRODUCTION_SERVER: 'false'
       TRUSTED_PROXIES: 10.9.8.1
-      HTTP_HOST: localhost
+      HTTP_HOST: 'localhost:10443'
     depends_on:
       - db
     networks:

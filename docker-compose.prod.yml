@@ -35,7 +35,7 @@ services:
     depends_on:
       - ltb
     ports:
-      - '10443:443'
+      - '443:443'
     networks:
       - ltb-network
 
