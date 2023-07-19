@@ -135,7 +135,7 @@
     "scripts": {
         "auto-scripts": {
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "fos:js-routing:dump --target=assets/js/_fos_js_routes.js --callback=\"import Routing from 'fos-routing'; Routing.setData\"": "symfony-cmd"
+            "fos:js-routing:dump --format=json --target=assets/js/_fos_routes.json": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

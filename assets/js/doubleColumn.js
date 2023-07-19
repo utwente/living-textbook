@@ -4,8 +4,6 @@ require('../css/doubleColumn/doubleColumn.scss');
 const d3 = require('d3');
 global.d3 = d3;
 
-// Import routing
-import Routing from 'fos-routing';
 // Create global tracker
 import Tracker from './tracking/tracker';
 import ConceptBrowser from './conceptBrowser/ConceptBrowser';

@@ -1,8 +1,5 @@
 require('../event/eventTypes');
 
-// Import routing
-import Routing from 'fos-routing';
-
 /**
  * This module handles events from the content of the application
  */

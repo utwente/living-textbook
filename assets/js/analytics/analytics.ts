@@ -1,5 +1,5 @@
-import Routing from 'fos-routing';
 import 'regenerator-runtime/runtime';
+import {RoutingInterface} from '@/routing';
 import AnalyticsBrowser, {FlowThroughElement} from './analyticsBrowser';
 
 interface AnalyticsData {
@@ -26,7 +26,7 @@ interface AnalyticsData {
 export default class Analytics {
     public data?: AnalyticsData;
 
-    private router: Routing;
+    private router: RoutingInterface;
     private browser?: AnalyticsBrowser;
 
     private $container?: JQuery;
@@ -39,7 +39,7 @@ export default class Analytics {
     private $imgResults?: JQuery;
     private $browserResults?: JQuery;
 
-    constructor(router: Routing, data?: AnalyticsData) {
+    constructor(router: RoutingInterface, data?: AnalyticsData) {
         this.router = router;
         this.data = data;
 

@@ -1,7 +1,5 @@
 require('../../css/learningPathBrowser/learningPathBrowser.scss');
 
-// Import routing
-import Routing from 'fos-routing';
 import BrowserConfigurationInstance from '../conceptBrowser/BrowserConfiguration';
 
 /**

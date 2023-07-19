@@ -3820,11 +3820,6 @@ forwarded@0.2.0:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
   integrity sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==
 
-fos-routing@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/fos-routing/-/fos-routing-0.0.6.tgz#7410aad990a7a4eef0b5a69fc3329311022a099b"
-  integrity sha512-+eeaFADJSbxdBI7l/hqZGZlvYmxFudOhiv+GHypQHvzbkr05pBYrm7AON80uuQp+3kBDiaRSh8Ln34Y1rHYzYw==
-
 foundation-emails@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/foundation-emails/-/foundation-emails-2.4.0.tgz#5020b44c6a1ee366ad53dd9ba29368d351aef8dd"
@@ -6968,7 +6963,6 @@ svgo@^1.0.0:
 
 symfony-collection@ninsuo/symfony-collection:
   version "2.1.30"
-  uid "61e92c33a86676a812c8dfbcaab45dfdfb0c12ff"
   resolved "https://codeload.github.com/ninsuo/symfony-collection/tar.gz/61e92c33a86676a812c8dfbcaab45dfdfb0c12ff"
   dependencies:
     jquery ">=1.7"
