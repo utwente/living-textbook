@@ -498,7 +498,7 @@ menu:
   duplicate: 'Duplicate'
   edit: 'Edit'
   excel-status: 'Progress export'
-  external-resources: "External resources"
+  external-resources: "References"
   concept: 'Concepts'
   case-study: 'Case studies'
   fallback-users: 'Local accounts'
