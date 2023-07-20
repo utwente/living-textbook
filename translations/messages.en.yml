@@ -185,7 +185,7 @@ concept:
   no-relations-possible-linktype: "There are no link types defined."
   online-source: 'Browse online'
   outgoing-relations: 'Outgoing relations'
-  prior-knowledge: 'Prior knowledge'
+  prior-knowledge: 'Related topics'
   relations: 'Relations'
   remove: 'Remove "%item%"'
   remove-in-learning-path: '{1} Beware! This %type% is used in a learning path.|]1,Inf[ Beware! This %type% is used in %count% learning paths.'
@@ -313,7 +313,7 @@ excel:
       definition: "Definition"
       introduction: "Introduction"
       explanation: "Explanation"
-      prior-knowledge: "Prior knowledge"
+      prior-knowledge: "Related topics"
       examples: "Examples"
       how-to: "How to"
       self-assessment: "Self assessment"
@@ -336,7 +336,7 @@ excel:
       no-text: "Without any (text) content"
       no-definition: "Without definition"
       no-introduction: "Without introduction"
-      no-prior-knowledge: "Without prior knowledge"
+      no-prior-knowledge: "Without related topics"
       no-learning-outcomes: "Without %plural%"
       no-relation: "Without relations"
       more-relations-5: "More than 5 relations"
