@@ -14,4 +14,10 @@
   {{ reviewNotice(concept) }}
 
   {{ form(form) }}
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#{{ form.selfAssessment.vars.id }}').hide();
+    });      
+  </script>
 {% endblock %}

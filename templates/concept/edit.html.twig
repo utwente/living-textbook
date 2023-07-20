@@ -46,4 +46,10 @@
         {% endif %}
     {% endfor %}
     {{ form_end(form) }}
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#{{ form.selfAssessment.vars.id }}').hide();
+      });      
+    </script>
 {% endblock %}
