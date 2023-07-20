@@ -156,7 +156,7 @@ concept:
   definition: 'Definition'
   edit-title: 'Edit "%item%"'
   examples: 'Examples'
-  external-resources: 'External resources'
+  external-resources: 'References'
   how-to: 'How to'
   image-file: 'Concept Image'
   image-file-help: 'Files must be less than 2 MB. Allowed file types: png, gif, jpeg.'
@@ -185,7 +185,7 @@ concept:
   no-relations-possible-linktype: "There are no link types defined."
   online-source: 'Browse online'
   outgoing-relations: 'Outgoing relations'
-  prior-knowledge: 'Prior knowledge'
+  prior-knowledge: 'Related topics'
   relations: 'Relations'
   remove: 'Remove "%item%"'
   remove-in-learning-path: '{1} Beware! This %type% is used in a learning path.|]1,Inf[ Beware! This %type% is used in %count% learning paths.'
@@ -236,7 +236,7 @@ data:
     Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
     In order to select an existing area, you need to have write right, and review mode must be disabled.
     You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
-    Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
+    Note that other elements will always be duplicated fully (e.g. contributors, references).'
   export-to-url-error: 'You get this message because your enabled export to URL in your study area. The system could not export the current study area to'
   export-to-url-success: 'Because you enabled export to URL, this study area was exported successfully to'  
   json-file: 'JSON data file'
@@ -274,7 +274,7 @@ dashboard:
   abbreviation-count: '{0} No abbreviations|{1} One abbreviation|]1,Inf[ %count% abbreviations'
   concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
   contributor-count: '{0} No contributors|{1} One contributor|]1,Inf[ %count% contributors'
-  external-resource-count: '{0} No external resources|{1} One external resource|]1,Inf[ %count% external resources'
+  external-resource-count: '{0} No references|{1} One reference|]1,Inf[ %count% reference'
   instance-count: '{0} No instances|{1} One instance|]1,Inf[ %count% instances'
   learning-outcome-count: '{0} No %plural%|{1} One %singular%|]1,Inf[ %count% %plural%'
   learning-path-count: '{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths'
@@ -313,7 +313,7 @@ excel:
       definition: "Definition"
       introduction: "Introduction"
       explanation: "Explanation"
-      prior-knowledge: "Prior knowledge"
+      prior-knowledge: "Related topics"
       examples: "Examples"
       how-to: "How to"
       self-assessment: "Self assessment"
@@ -336,7 +336,7 @@ excel:
       no-text: "Without any (text) content"
       no-definition: "Without definition"
       no-introduction: "Without introduction"
-      no-prior-knowledge: "Without prior knowledge"
+      no-prior-knowledge: "Without related topics"
       no-learning-outcomes: "Without %plural%"
       no-relation: "Without relations"
       more-relations-5: "More than 5 relations"
@@ -365,19 +365,19 @@ exception:
   error-title-404: 'Page not found!'
 
 external-resource:
-  _name: 'External resource'
-  add-title: 'Add new external resource'
+  _name: 'Reference'
+  add-title: 'Add new reference'
   description: 'Description'
-  edit-title: 'Edit external resource "%item%"'
-  list-title: 'External resources list'
+  edit-title: 'Edit reference "%item%"'
+  list-title: 'References list'
   no-url: 'No url'
-  saved: 'External resource "%item%" has been saved successfully.'
-  remove: 'Remove external resource "%item%"'
-  remove-concepts: 'Note that the external resource will also be removed from the following concepts/instances:'
-  remove-text: 'Are you sure you want to remove the external resource "%item%"?'
-  removed: 'External resource "%item%" has been removed successfully.'
+  saved: 'Reference "%item%" has been saved successfully.'
+  remove: 'Remove reference "%item%"'
+  remove-concepts: 'Note that the reference will also be removed from the following concepts/instances:'
+  remove-text: 'Are you sure you want to remove the reference "%item%"?'
+  removed: 'Reference "%item%" has been removed successfully.'
   title: 'Title'
-  updated: 'External resource "%item%" has been successfully updated.'
+  updated: 'Reference "%item%" has been successfully updated.'
   url: 'Url'
 
 field-configuration:
@@ -498,7 +498,7 @@ menu:
   duplicate: 'Duplicate'
   edit: 'Edit'
   excel-status: 'Progress export'
-  external-resources: "External resources"
+  external-resources: "References"
   concept: 'Concepts'
   case-study: 'Case studies'
   fallback-users: 'Local accounts'
@@ -643,7 +643,7 @@ search:
     abbreviations: "Abbreviations"
     all-annotations: "All annotations"
     concepts: "Concepts"
-    external-resources: "External resources"
+    external-resources: "References"
     instances: "Instances"
     own-annotations: "Own annotations"
   results: 'Search results'
@@ -901,7 +901,7 @@ url:
   bad-internal-wrong: 'Internal URLs linking to the wrong study area'
   concept-path: 'Concept/instance: %name% - %path%'
   contributor-path: 'Contributor: %name% - %path%'
-  external-resource-path: 'External resource: %title% - %path%'
+  external-resource-path: 'References: %title% - %path%'
   good: 'Healthy'
   good-external: 'Healthy external URLs'
   good-internal: 'Healthy internal URLs'

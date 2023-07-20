@@ -13,15 +13,15 @@ $footer-height: 60px;
     max-width: 50%;
 
     &.logo-ucgis {
-      float: left;
-      background: url('../../img/footer/ucgis_graphic.png') no-repeat top left;
+      float: right;
+      background: url('../../img/footer/ucgis-logo-horizontal.svg') no-repeat center right;
       height: $footer-height;
-      width: $footer-height;
+      width: 300px;
     }
 
-    &.text-ucgis {
-      float: right;
-      background: url('../../img/footer/ucgis-logo-horizontal.svg') no-repeat top right;
+    &.logo-ut {
+      float: left;
+      background: url('../../img/footer/ut.svg') no-repeat center left;
       height: $footer-height;
       width: 300px;
     }
