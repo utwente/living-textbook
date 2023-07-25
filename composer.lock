@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "913e65569043f7bba5ff5c495cb65d25",
+    "content-hash": "b5a15a297d595e51218b7709b9460d99",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1784,16 +1784,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "1.32.0",
+            "version": "1.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "26c4cbbe3cc4712fa9410edf611b3646aff0b967"
+                "reference": "e346f07a1b1f2c47ca7600ef53928ee8ec6a059d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/26c4cbbe3cc4712fa9410edf611b3646aff0b967",
-                "reference": "26c4cbbe3cc4712fa9410edf611b3646aff0b967",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/e346f07a1b1f2c47ca7600ef53928ee8ec6a059d",
+                "reference": "e346f07a1b1f2c47ca7600ef53928ee8ec6a059d",
                 "shasum": ""
             },
             "require": {
@@ -1808,7 +1808,8 @@
                 "twig/twig": "~2.0 || ~3.0"
             },
             "conflict": {
-                "kigkonsult/icalcreator": "<2.39"
+                "kigkonsult/icalcreator": "<2.39",
+                "maennchen/zipstream-php": "<3"
             },
             "require-dev": {
                 "bomo/ical-bundle": "^2.0.2",
@@ -1817,7 +1818,7 @@
                 "eluceo/ical": "^2.7",
                 "jms/serializer-bundle": "^3.14 || ^4.0 || ^5.0",
                 "kigkonsult/icalcreator": "^2.39",
-                "maennchen/zipstream-php": "^2.1",
+                "maennchen/zipstream-php": "^3.0",
                 "php-decimal/php-decimal": "^1.1",
                 "phpoffice/phpspreadsheet": "^1.16",
                 "sebastian/comparator": "^3.0 || ^4.0",
@@ -1838,6 +1839,7 @@
                 "doctrine/orm": "Needed to use the Database traits",
                 "eluceo/ical": "Needed for the IcalBuilder",
                 "jms/serializer-bundle": "Needed to use the Database traits and the Decimal serialization handler",
+                "maennchen/zipstream-php": "Needed to use the zipped spreadsheet responses",
                 "php-decimal/php-decimal": "Needed to use the Decimal serialization handler and the form transformer",
                 "phpoffice/phpspreadsheet": "Needed to use the SpreadsheetHelper",
                 "stof/doctrine-extensions-bundle": "Needed to use the Blameable trait",
@@ -1881,9 +1883,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/1.32.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/1.33.2"
             },
-            "time": "2023-01-31T19:00:44+00:00"
+            "time": "2023-07-24T20:04:00+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
