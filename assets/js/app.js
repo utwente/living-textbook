@@ -5,7 +5,8 @@ import './ie11';
 // Sentry
 import * as Sentry from '@sentry/browser';
 // Import routing
-import Routing from 'fos-routing';
+import './routing';
+
 
 // Only bind when production mode is set
 if (window.SENTRY_DSN) {
@@ -25,8 +26,6 @@ if (window.SENTRY_DSN) {
 // Create global $ and jQuery variables
 const $ = require('jquery');
 global.$ = global.jQuery = $;
-
-global.Routing = Routing;
 
 // Disable scroll restoration if possible
 if ('scrollRestoration' in window.history) {

@@ -45,7 +45,7 @@ install-dependencies:
       - vendor/drenso/symfony-shared/src/Resources/translations
       - .secrets.json
       # Extra paths
-      - assets/js/_fos_js_routes.js
+      - assets/js/_fos_routes.json
       - vendor/studio-42/elfinder/css
       - vendor/studio-42/elfinder/img
       - vendor/studio-42/elfinder/js
