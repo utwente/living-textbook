@@ -6,6 +6,7 @@ use App\Annotation\DenyOnFrozenStudyArea;
 use App\DuplicationUtils\StudyAreaDuplicator;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\Contributor;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
@@ -290,26 +291,26 @@ class DataController extends AbstractController
 
           $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
           foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
-            if (!array_key_exists('label', $jsonLearningOutcome) ||
-                !array_key_exists('definition', $jsonLearningOutcome) ||
-                !array_key_exists('isLearningOutcomeOf', $jsonLearningOutcome)) {
+            if (!array_key_exists('name', $jsonLearningOutcome) ||
+                !array_key_exists('content', $jsonLearningOutcome) ||
+                !array_key_exists('nodes', $jsonLearningOutcome)) {
               throw new DataImportException(
-                  sprintf('Missing one ore more required properties "label", "definition" or "isLearningOutcomeOf" from learning outcome: %s', json_encode($jsonLearningOutcome)));
+                  sprintf('Missing one ore more required properties "name", "content" or "nodes" from learning outcome: %s', json_encode($jsonLearningOutcome)));
             }
 
-            if (!is_array($jsonLearningOutcome['isLearningOutcomeOf'])) {
+            if (!is_array($jsonLearningOutcome['nodes'])) {
               throw new DataImportException(
-                  sprintf('The "isLearningOutcomeOf" property must be an array in learning outcome: %s', json_encode($jsonLearningOutcome)));
+                  sprintf('The "nodes" property must be an array in learning outcome: %s', json_encode($jsonLearningOutcome)));
             }
 
             $learningOutcome = new LearningOutcome();
             /* @phan-suppress-next-line PhanTypeMismatchArgument */
-            $learningOutcome->setName($jsonLearningOutcome['label']);
+            $learningOutcome->setName($jsonLearningOutcome['name']);
             /* @phan-suppress-next-line PhanTypeMismatchArgument */
-            $learningOutcome->setText($jsonLearningOutcome['definition']);
+            $learningOutcome->setText($jsonLearningOutcome['content']);
             $learningOutcome->setNumber($learningOutcomeNumber);
             $learningOutcome->setStudyArea($studyArea);
-            foreach ($jsonLearningOutcome['isLearningOutcomeOf'] as $linkedConceptKey) {
+            foreach ($jsonLearningOutcome['nodes'] as $linkedConceptKey) {
               if (!array_key_exists($linkedConceptKey, $concepts)) {
                 throw new DataImportException(
                     sprintf('The referenced node %d does not exist in learning outcome: %s', $linkedConceptKey, json_encode($jsonLearningOutcome)));
@@ -332,21 +333,21 @@ class DataController extends AbstractController
           }
 
           foreach ($jsonData['external_resources'] as $jsonExternalResource) {
-            if (!array_key_exists('name', $jsonExternalResource) ||
-                !array_key_exists('isExternalResourceOf', $jsonExternalResource)) {
+            if (!array_key_exists('title', $jsonExternalResource) ||
+                !array_key_exists('nodes', $jsonExternalResource)) {
               throw new DataImportException(
-                  sprintf('Missing one ore more required properties "name" or "isExternalResourceOf" from external resource: %s', json_encode($jsonExternalResource)));
+                  sprintf('Missing one ore more required properties "title" or "nodes" from external resource: %s', json_encode($jsonExternalResource)));
             }
 
-            if (!is_array($jsonExternalResource['isExternalResourceOf'])) {
+            if (!is_array($jsonExternalResource['nodes'])) {
               throw new DataImportException(
-                  sprintf('The "isExternalResourceOf" property must be an array in external resource: %s', json_encode($jsonExternalResource)));
+                  sprintf('The "nodes" property must be an array in external resource: %s', json_encode($jsonExternalResource)));
             }
 
             // Create the external resource
             $externalResource = (new ExternalResource())
                 /* @phan-suppress-next-line PhanTypeMismatchArgument */
-                ->setTitle($jsonExternalResource['name'])
+                ->setTitle($jsonExternalResource['title'])
                 ->setStudyArea($studyArea);
             if (array_key_exists('description', $jsonExternalResource)) {
               $externalResource->setDescription($jsonExternalResource['description']);
@@ -356,7 +357,7 @@ class DataController extends AbstractController
             }
 
             // Map to related concepts
-            foreach ($jsonExternalResource['isExternalResourceOf'] as $linkedConceptKey) {
+            foreach ($jsonExternalResource['nodes'] as $linkedConceptKey) {
               if (!array_key_exists($linkedConceptKey, $concepts)) {
                 throw new DataImportException(
                     sprintf('The referenced node %d does not exist in external resource: %s', $linkedConceptKey, json_encode($jsonExternalResource)));
@@ -382,13 +383,13 @@ class DataController extends AbstractController
 
           foreach ($jsonData['tags'] as $jsonTag) {
             if (!array_key_exists('name', $jsonTag) ||
-                !array_key_exists('isTagOf', $jsonTag)) {
+                !array_key_exists('nodes', $jsonTag)) {
               throw new DataImportException(
-                  sprintf('Missing one ore more required properties "name" or "isTagOf" from tag: %s', json_encode($jsonTag)));
+                  sprintf('Missing one ore more required properties "name" or "nodes" from tag: %s', json_encode($jsonTag)));
             }
-            if (!is_array($jsonTag['isTagOf'])) {
+            if (!is_array($jsonTag['nodes'])) {
               throw new DataImportException(
-                  sprintf('The "isTagOf" property must be an array in tag: %s', json_encode($jsonTag)));
+                  sprintf('The "nodes" property must be an array in tag: %s', json_encode($jsonTag)));
             }
 
             // Create the tag
@@ -401,8 +402,12 @@ class DataController extends AbstractController
               $tag->setDescription($jsonTag['description']);
             }
 
+            if (array_key_exists('color', $jsonTag)) {
+              $tag->setColor($jsonTag['color']);
+            }
+
             // Map to related concepts
-            foreach ($jsonTag['isTagOf'] as $taggedConceptKey) {
+            foreach ($jsonTag['nodes'] as $taggedConceptKey) {
               if (!array_key_exists($taggedConceptKey, $concepts)) {
                 throw new DataImportException(
                     sprintf('The referenced node %d does not exist in tag: %s', $taggedConceptKey, json_encode($jsonTag)));
@@ -421,8 +426,8 @@ class DataController extends AbstractController
         }
 
         // Prior knowledge
-        if (array_key_exists('priorKnowledge', $jsonData)) {
-          foreach ($jsonData['priorKnowledge'] as $jsonPriorKnowledge) {
+        if (array_key_exists('prior_knowledge', $jsonData)) {
+          foreach ($jsonData['prior_knowledge'] as $jsonPriorKnowledge) {
             if (!array_key_exists('node', $jsonPriorKnowledge) || !array_key_exists('isPriorKnowledgeOf', $jsonPriorKnowledge)) {
               throw new DataImportException(
                 sprintf('Missing one ore more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
@@ -437,6 +442,54 @@ class DataController extends AbstractController
                   sprintf('Prior knowledge references non-existing "isPriorKnowledgeOf": %s', json_encode($jsonPriorKnowledge)));
             }
             $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$jsonPriorKnowledge['isPriorKnowledgeOf']]);
+          }
+        }
+
+        // Contributors
+        if (array_key_exists('contributors', $jsonData)) {
+          foreach ($jsonData['contributors'] as $jsonContributor) {
+            if (!array_key_exists('name', $jsonContributor) || !array_key_exists('nodes', $jsonContributor)) {
+              throw new DataImportException(
+                sprintf('Missing one ore more required properties "nodes" or "name" from contributors: %s', json_encode($jsonContributor)));
+            }
+
+            if (!is_array($jsonContributor['nodes'])) {
+              throw new DataImportException(
+                  sprintf('The "nodes" property must be an array in contributors: %s', json_encode($jsonContributor)));
+            }
+
+            // Create the contributor
+            $contributor = (new Contributor())
+                /* @phan-suppress-next-line PhanTypeMismatchArgument */
+                ->setName($jsonContributor['name'])
+                ->setStudyArea($studyArea);
+
+            if (array_key_exists('description', $jsonContributor)) {
+              $contributor->setDescription($jsonContributor['description']);
+            }
+
+            if (array_key_exists('url', $jsonContributor)) {
+              $contributor->setUrl($jsonContributor['url']);
+            }
+
+            if (array_key_exists('email', $jsonContributor)) {
+              $contributor->setEmail($jsonContributor['email']);
+            }
+
+            // Map contributor to concepts
+            foreach ($jsonContributor['nodes'] as $contributorConceptKey) {
+              if (!array_key_exists($contributorConceptKey, $concepts)) {
+                throw new DataImportException(
+                    sprintf('The referenced node %d does not exist in contributor: %s', $contributorConceptKey, json_encode($jsonContributor)));
+              }
+              $concepts[$contributorConceptKey]->addContributor($contributor);
+            }
+            // Validate & persist
+            if ($validator->validate($contributor)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the contributor: %s', json_encode($jsonContributor)));
+            }
+            $em->persist($contributor);
           }
         }
 

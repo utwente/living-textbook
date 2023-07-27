@@ -13,6 +13,7 @@ use App\Repository\ContributorRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
+use App\Repository\TagRepository;
 use App\Router\LtbRouter;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -37,6 +38,8 @@ class LinkedSimpleNodeProvider implements ProviderInterface
   private $namingService;
   /** @var RelationTypeRepository */
   private $relationTypeRepository;
+  /** @var TagRepository */
+  private $tagRepository;
   /** @var LtbRouter */
   private $router;
   /** @var SerializerInterface */
@@ -48,7 +51,8 @@ class LinkedSimpleNodeProvider implements ProviderInterface
       ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
       ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
       LearningOutcomeRepository $learningOutcomeRepository, RelationTypeRepository $relationTypeRepository,
-      SerializerInterface $serializer, NamingService $namingService, LtbRouter $router)
+      TagRepository $tagRepository, SerializerInterface $serializer, NamingService $namingService,
+      LtbRouter $router)
   {
     $this->conceptRepository          = $conceptRepository;
     $this->conceptRelationRepository  = $conceptRelationRepository;
@@ -56,6 +60,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->externalResourceRepository = $externalResourceRepository;
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
     $this->relationTypeRepository     = $relationTypeRepository;
+    $this->tagRepository              = $tagRepository;
     $this->serializer                 = $serializer;
     $this->namingService              = $namingService;
     $this->router                     = $router;
@@ -113,15 +118,29 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "description": "<external-resource-description>",
             "url": "<external-resource-url>",
         }
-    ]
-    "%13$s": [
+    ],
+    "learning_outcomes": [
         {
             "nodes": [<node-ids>],
-            "number": "<%14$s-number>",
-            "name": "<%14$s-name>",
-            "content": "<%14$s-content>",
+            "number": "<learning_outcome-number>",
+            "name": "<learning_outcome-name>",
+            "content": "<learning_outcome-content>",
         }
-    ]
+    ],
+    "tags": [
+      {
+          "nodes": [<node-ids>],
+          "color": "<tag-color>",
+          "name": "<tag-name>",
+          "description": "<tag-description>",
+      }
+    ],
+    "prior_knowledge": [
+      {
+          "node": "<node-id>",
+          "isPriorKnowledgeOf": [<node-ids>],          
+      }
+    ],
 }
 EOT,
         $this->fieldName($fieldNames->definition()),
@@ -135,9 +154,7 @@ EOT,
         $this->fieldName($fieldNames->selfAssessment()),
         $this->fieldDescription($fieldNames->selfAssessment()),
         $this->fieldName($fieldNames->howTo()),
-        $this->fieldDescription($fieldNames->howTo()),
-        $this->fieldName($names->learningOutcome()->objs()),
-        $this->fieldDescription($names->learningOutcome()->obj())
+        $this->fieldDescription($fieldNames->howTo())
     );
   }
 
@@ -153,6 +170,7 @@ EOT,
     $contributors      = $this->contributorRepository->findForStudyArea($studyArea);
     $externalResources = $this->externalResourceRepository->findForStudyAreaOrderedByTitle($studyArea);
     $learningOutcomes  = $this->learningOutcomeRepository->findForStudyAreaOrderedByName($studyArea);
+    $tags              = $this->tagRepository->findForStudyArea($studyArea);
 
     // Detach the data from the ORM
     $idMap = [];
@@ -204,6 +222,28 @@ EOT,
       ];
     }
 
+    // Create tags data
+    $mappedTags = [];
+    foreach ($tags as $tag) {
+      $mappedTags[] = [
+          'nodes'       => $tag->getConcepts()->map(fn (Concept $concept)       => $idMap[$concept->getId()]),
+          'color'       => $tag->getColor(),
+          'name'        => $tag->getName(),
+          'description' => $tag->getDescription(),
+      ];
+    }
+
+    // Create prior knowledge data
+    $mappedPriorKnowledge = [];
+    foreach ($concepts as $concept) {
+      if (!$concept->getPriorKnowledge()->isEmpty()) {
+        $mappedPriorKnowledge[] = [
+          'node'               => $idMap[$concept->getId()],
+          'isPriorKnowledgeOf' => $concept->getPriorKnowledge()->map(fn (Concept $priorKnowledge) => $idMap[$priorKnowledge->getId()]),
+        ];
+      }
+    }
+
     // Create JSON data
 
     $names                 = $this->namingService->get();
@@ -233,10 +273,12 @@ EOT,
                   $howToName             => $concept->getHowTo()->getText(),
                   $selfAssessmentName    => $concept->getSelfAssessment()->getText(),
               ], $concepts),
-              'links'               => $mappedLinks,
-              'contributors'        => $mappedContributors,
-              'external_resources'  => $mappedExternalResources,
-              $learningOutcomeField => $mappedLearningOutcomes,
+              'links'              => $mappedLinks,
+              'contributors'       => $mappedContributors,
+              'external_resources' => $mappedExternalResources,
+              'learning_outcomes'  => $mappedLearningOutcomes,
+              'tags'               => $mappedTags,
+              'prior_knowledge'    => $mappedPriorKnowledge,
           ],
           'json', $serializationContext);
 
