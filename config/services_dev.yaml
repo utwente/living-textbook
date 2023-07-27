@@ -9,4 +9,4 @@ services:
     tags: [ 'kernel.event_subscriber' ]
     arguments:
       $sender: null
-      $recipients: [ 'webmaster@drenso.nl' ]
+      $recipients: [ '%env(EXCEPTION_RECEIVER)%' ]
