@@ -42,7 +42,7 @@
     "timezone": "Europe/Amsterdam",
     "packageRules": [
         {
-            "matchPackageNames": ["php"],
+            "matchDepNames": ["php"],
             "rangeStrategy": "replace"
         },
         {
