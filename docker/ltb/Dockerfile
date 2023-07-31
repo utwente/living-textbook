@@ -135,6 +135,8 @@ WORKDIR /usr/src/app
 
 # Install application
 COPY . .
+COPY --from=ltb_prod_php_build /usr/src/app/assets/js/_fos_routes.json ./assets/js/_fos_routes.json
+COPY --from=ltb_prod_php_build /usr/src/app/vendor/friendsofsymfony ./vendor/friendsofsymfony
 COPY --from=ltb_prod_php_build /usr/src/app/vendor/studio-42 ./vendor/studio-42
 
 # Install assets dependencies
