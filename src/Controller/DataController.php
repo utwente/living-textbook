@@ -437,11 +437,16 @@ class DataController extends AbstractController
               throw new DataImportException(
                   sprintf('Prior knowledge references non-existing "node": %s', json_encode($jsonPriorKnowledge)));
             }
-            if (!array_key_exists($jsonPriorKnowledge['isPriorKnowledgeOf'], $concepts)) {
-              throw new DataImportException(
-                  sprintf('Prior knowledge references non-existing "isPriorKnowledgeOf": %s', json_encode($jsonPriorKnowledge)));
+
+            // Map prior knowledge to concepts
+            foreach ($jsonPriorKnowledge['isPriorKnowledgeOf'] as $priorKnowledgeConceptKey) {
+              if (!array_key_exists($priorKnowledgeConceptKey, $concepts)) {
+                throw new DataImportException(
+                    sprintf('The referenced node %d does not exist in "isPriorKnowledgeOf": %s', $priorKnowledgeConceptKey, json_encode($jsonPriorKnowledge)));
+              }
+              $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$priorKnowledgeConceptKey]);
             }
-            $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$jsonPriorKnowledge['isPriorKnowledgeOf']]);
+
           }
         }
 
