@@ -446,7 +446,6 @@ class DataController extends AbstractController
               }
               $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$priorKnowledgeConceptKey]);
             }
-
           }
         }
 
