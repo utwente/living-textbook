@@ -105,13 +105,7 @@
     {% endfor %}
 
     <ul class="nav nav-tabs nav-fill">
-      {# NOTE: Temporarily disable SSO login function until further notice... }
-      {# <li class="nav-item">
-        <a class="nav-link{% if not loginFormActive %} active{% endif %}"
-           id="tab-surfconext-button" href="#tab-surfconext" role="tab" data-toggle="tab">
-          {{ 'login.surfconext'|trans }}
-        </a>
-      </li> #}
+      {# NOTE: Temporarily disable SSO login function until further notice... #}
       <li class="nav-item">
         <a class="nav-link{% if loginFormActive %} active{% endif %}"
            onclick="focusLoginForm()"
@@ -121,15 +115,7 @@
       </li>
     </ul>
     <div class="tab-content" id="login-option">
-      {# NOTE: Temporarily disable SSO login function until further notice... }
-      {# <div class="tab-pane" id="tab-surfconext" role="tabpanel" aria-labelledby="tab-surfconext-button">
-        <a href="{{ path('login_surf') }}" class="top-level" data-toggle="tooltip" data-placement="bottom"
-           title="{{ 'login.surfconext-login'|trans }}">
-          <div class="login-surfconext"></div>
-        </a>
-        <p class="card-text text-center">{{ 'login.surfconext-login-text'|trans }}</p>
-      </div> #}
-
+      {# NOTE: Temporarily disable SSO login function until further notice... #}
       <div class="tab-pane" id="tab-custom-account" role="tabpanel" aria-labelledby="tab-custom-account-button">
         {{ form(loginForm, {'attr': {'target': '_parent'}}) }}
       </div>
