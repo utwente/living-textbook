@@ -299,13 +299,13 @@ class DataController extends AbstractController
           }
         }
 
-        if (array_key_exists('learning_outcomes', $jsonData)) {
-          if (!is_array($jsonData['learning_outcomes'])) {
-            throw new DataImportException(sprintf('When set, the "learning_outcomes" property must be an array!'));
+        if (array_key_exists('learningOutcomes', $jsonData)) {
+          if (!is_array($jsonData['learningOutcomes'])) {
+            throw new DataImportException(sprintf('When set, the "learningOutcomes" property must be an array!'));
           }
 
           $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
-          foreach ($jsonData['learning_outcomes'] as $jsonLearningOutcome) {
+          foreach ($jsonData['learningOutcomes'] as $jsonLearningOutcome) {
             if (!array_key_exists('name', $jsonLearningOutcome) ||
                 !array_key_exists('content', $jsonLearningOutcome) ||
                 !array_key_exists('nodes', $jsonLearningOutcome)) {
@@ -342,12 +342,12 @@ class DataController extends AbstractController
           }
         }
 
-        if (array_key_exists('external_resources', $jsonData)) {
-          if (!is_array($jsonData['external_resources'])) {
-            throw new DataImportException(sprintf('When set, the "external_resources" property must be an array!'));
+        if (array_key_exists('externalResources', $jsonData)) {
+          if (!is_array($jsonData['externalResources'])) {
+            throw new DataImportException(sprintf('When set, the "externalResources" property must be an array!'));
           }
 
-          foreach ($jsonData['external_resources'] as $jsonExternalResource) {
+          foreach ($jsonData['externalResources'] as $jsonExternalResource) {
             if (!array_key_exists('title', $jsonExternalResource) ||
                 !array_key_exists('nodes', $jsonExternalResource)) {
               throw new DataImportException(
@@ -441,8 +441,8 @@ class DataController extends AbstractController
         }
 
         // Prior knowledge
-        if (array_key_exists('prior_knowledge', $jsonData)) {
-          foreach ($jsonData['prior_knowledge'] as $jsonPriorKnowledge) {
+        if (array_key_exists('priorKnowledge', $jsonData)) {
+          foreach ($jsonData['priorKnowledge'] as $jsonPriorKnowledge) {
             if (!array_key_exists('node', $jsonPriorKnowledge) || !array_key_exists('isPriorKnowledgeOf', $jsonPriorKnowledge)) {
               throw new DataImportException(
                 sprintf('Missing one ore more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
@@ -452,11 +452,15 @@ class DataController extends AbstractController
               throw new DataImportException(
                   sprintf('Prior knowledge references non-existing "node": %s', json_encode($jsonPriorKnowledge)));
             }
-            if (!array_key_exists($jsonPriorKnowledge['isPriorKnowledgeOf'], $concepts)) {
-              throw new DataImportException(
-                  sprintf('Prior knowledge references non-existing "isPriorKnowledgeOf": %s', json_encode($jsonPriorKnowledge)));
+
+            // Map prior knowledge to concepts
+            foreach ($jsonPriorKnowledge['isPriorKnowledgeOf'] as $priorKnowledgeConceptKey) {
+              if (!array_key_exists($priorKnowledgeConceptKey, $concepts)) {
+                throw new DataImportException(
+                    sprintf('The referenced node %d does not exist in "isPriorKnowledgeOf": %s', $priorKnowledgeConceptKey, json_encode($jsonPriorKnowledge)));
+              }
+              $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$priorKnowledgeConceptKey]);
             }
-            $concepts[$jsonPriorKnowledge['node']]->addPriorKnowledge($concepts[$jsonPriorKnowledge['isPriorKnowledgeOf']]);
           }
         }
 
