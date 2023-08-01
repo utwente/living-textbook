@@ -256,20 +256,9 @@ EOT,
 
     // Create JSON data
 
-    $names                    = $this->namingService->get();
-    $fieldNames               = $names->concept();
-    $definitionName           = $this->fieldName($fieldNames->definition()); 
-    $theoryExplanationName    = $this->fieldName($fieldNames->theoryExplanation());
-    $introductionName         = $this->fieldName($fieldNames->introduction());
-    $examplesName             = $this->fieldName($fieldNames->examples());
-    $howToName                = $this->fieldName($fieldNames->howTo());
-    $additionalResourcesName  = $this->fieldName($fieldNames->additionalResources());
-    $imagePathName            = $this->fieldName($fieldNames->imagePath());
-    $selfAssessmentName       = $this->fieldName($fieldNames->selfAssessment());
-    $learningOutcomeField     = $this->fieldName($names->learningOutcome()->objs());
     $names                 = $this->namingService->get();
     $fieldNames            = $names->concept();
-
+    
     // Return as JSON
     $serializationContext = SerializationContext::create();
     $serializationContext->setSerializeNull(true);
