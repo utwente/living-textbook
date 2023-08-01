@@ -19,8 +19,6 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\String\Slugger\AsciiSlugger;
-use function Symfony\Component\String\u;
 
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
@@ -44,8 +42,6 @@ class LinkedSimpleNodeProvider implements ProviderInterface
   private $router;
   /** @var SerializerInterface */
   private $serializer;
-  /** @var AsciiSlugger */
-  private $slugger;
 
   public function __construct(
       ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
@@ -64,7 +60,6 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->serializer                 = $serializer;
     $this->namingService              = $namingService;
     $this->router                     = $router;
-    $this->slugger                    = new AsciiSlugger();
   }
 
   /** {@inheritdoc} */
@@ -87,12 +82,12 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "label": "<concept-name>",
             "link": "<concept-url>",
             "numberOfLinks": <number-of-relations>,
-            "%1$s": "<concept-%2$s>",
-            "%3$s": "<concept-%4$s>",
-            "%5$s": "<concept-%6$s>",
-            "%7$s": "<concept-%8$s>",
-            "%9$s": "<concept-%10$s>",
-            "%11$s": "<concept-%12$s>",
+            "definition": "<concept-definition>",
+            "explanation": "<concept-theory-explanation>",
+            "introduction": "<concept-introduction>",
+            "examples": "<concept-examples>",
+            "selfAssessment": "<concept-self-assessment>",
+            "howTo": "<concept-how-to>",
         }
     ],
     "links": [
@@ -111,7 +106,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "email": "<contributor-email>"
         }
     ],
-    "external_resources": [
+    "externalResources": [
         {
             "nodes": [<node-ids>],
             "title": "<external-resource-title>",
@@ -119,7 +114,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "url": "<external-resource-url>",
         }
     ],
-    "learning_outcomes": [
+    "learningOutcomes": [
         {
             "nodes": [<node-ids>],
             "number": "<learning_outcome-number>",
@@ -135,26 +130,32 @@ class LinkedSimpleNodeProvider implements ProviderInterface
           "description": "<tag-description>",
       }
     ],
-    "prior_knowledge": [
+    "priorKnowledge": [
       {
           "node": "<node-id>",
           "isPriorKnowledgeOf": [<node-ids>],          
       }
     ],
+    "aliases" : [
+      "definition": "%1$s",
+      "explanation": "%2$s",
+      "introduction": "%3$s",
+      "examples": "%4$s",
+      "selfAssessment": "%5$s",
+      "howTo": "%6$s",
+      "learningOutcomes": "%7$s",
+      "priorKnowledge": "%8$s",
+    ]
 }
 EOT,
-        $this->fieldName($fieldNames->definition()),
-        $this->fieldDescription($fieldNames->definition()),
-        $this->fieldName($fieldNames->theoryExplanation()),
-        $this->fieldDescription($fieldNames->theoryExplanation()),
-        $this->fieldName($fieldNames->introduction()),
-        $this->fieldDescription($fieldNames->introduction()),
-        $this->fieldName($fieldNames->examples()),
-        $this->fieldDescription($fieldNames->examples()),
-        $this->fieldName($fieldNames->selfAssessment()),
-        $this->fieldDescription($fieldNames->selfAssessment()),
-        $this->fieldName($fieldNames->howTo()),
-        $this->fieldDescription($fieldNames->howTo())
+        $fieldNames->definition(),
+        $fieldNames->theoryExplanation(),
+        $fieldNames->introduction(),
+        $fieldNames->examples(),
+        $fieldNames->selfAssessment(),
+        $fieldNames->howTo(),
+        $names->learningOutcome()->obj(),
+        $fieldNames->priorKnowledge()
     );
   }
 
@@ -248,13 +249,6 @@ EOT,
 
     $names                 = $this->namingService->get();
     $fieldNames            = $names->concept();
-    $definitionName        = $this->fieldName($fieldNames->definition());
-    $theoryExplanationName = $this->fieldName($fieldNames->theoryExplanation());
-    $introductionName      = $this->fieldName($fieldNames->introduction());
-    $examplesName          = $this->fieldName($fieldNames->examples());
-    $howToName             = $this->fieldName($fieldNames->howTo());
-    $selfAssessmentName    = $this->fieldName($fieldNames->selfAssessment());
-    $learningOutcomeField  = $this->fieldName($names->learningOutcome()->objs());
 
     // Return as JSON
     $serializationContext = SerializationContext::create();
@@ -262,23 +256,33 @@ EOT,
     $json = $this->serializer->serialize(
           [
               'nodes' => array_map(fn (Concept $concept) => [
-                  'instance'             => $concept->isInstance(),
-                  'label'                => $concept->getName(),
-                  'link'                 => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-                  'numberOfLinks'        => $concept->getNumberOfLinks(),
-                  $definitionName        => $concept->getDefinition(),
-                  $theoryExplanationName => $concept->getTheoryExplanation()->getText(),
-                  $introductionName      => $concept->getIntroduction()->getText(),
-                  $examplesName          => $concept->getExamples()->getText(),
-                  $howToName             => $concept->getHowTo()->getText(),
-                  $selfAssessmentName    => $concept->getSelfAssessment()->getText(),
+                  'instance'       => $concept->isInstance(),
+                  'label'          => $concept->getName(),
+                  'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+                  'numberOfLinks'  => $concept->getNumberOfLinks(),
+                  'definition'     => $concept->getDefinition(),
+                  'explanation'    => $concept->getTheoryExplanation()->getText(),
+                  'introduction'   => $concept->getIntroduction()->getText(),
+                  'examples'       => $concept->getExamples()->getText(),
+                  'howTo'          => $concept->getHowTo()->getText(),
+                  'selfAssessment' => $concept->getSelfAssessment()->getText(),
               ], $concepts),
-              'links'              => $mappedLinks,
-              'contributors'       => $mappedContributors,
-              'external_resources' => $mappedExternalResources,
-              'learning_outcomes'  => $mappedLearningOutcomes,
-              'tags'               => $mappedTags,
-              'prior_knowledge'    => $mappedPriorKnowledge,
+              'links'             => $mappedLinks,
+              'contributors'      => $mappedContributors,
+              'externalResources' => $mappedExternalResources,
+              'learningOutcomes'  => $mappedLearningOutcomes,
+              'tags'              => $mappedTags,
+              'priorKnowledge'    => $mappedPriorKnowledge,
+              'aliases'           => [
+                'definition'       => $fieldNames->definition(),
+                'explanation'      => $fieldNames->theoryExplanation(),
+                'introduction'     => $fieldNames->introduction(),
+                'examples'         => $fieldNames->examples(),
+                'selfAssessment'   => $fieldNames->selfAssessment(),
+                'howTo'            => $fieldNames->howTo(),
+                'learningOutcomes' => $names->learningOutcome()->obj(),
+                'priorKnowledge'   => $fieldNames->priorKnowledge(),
+              ],
           ],
           'json', $serializationContext);
 
@@ -286,15 +290,5 @@ EOT,
     ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));
 
     return $response;
-  }
-
-  private function fieldName(string $fieldName): string
-  {
-    return u($fieldName)->ascii()->camel()->toString();
-  }
-
-  private function fieldDescription(string $fieldName): string
-  {
-    return $this->slugger->slug($fieldName)->lower()->toString();
   }
 }
