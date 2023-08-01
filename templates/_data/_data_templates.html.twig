@@ -143,7 +143,7 @@
   {% endif %}
 {% endmacro %}
 
-{# {% macro data_incoming_relations(relations) %}
+{% macro data_incoming_relations(relations) %}
   {% if relations|length > 0 %}
     {% set title = 'concept.incoming-relations'|trans %}
     {% set incoming = true %}
@@ -157,7 +157,7 @@
     {% set incoming = false %}
     {{ block('data_display_relations') }}
   {% endif %}
-{% endmacro %} #}
+{% endmacro %}
 
 {% macro data_prior_knowledge(data) %}
   {% if data|length > 0 %}
