@@ -11,6 +11,7 @@ use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
+use App\Entity\StudyAreaFieldConfiguration;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Excel\StudyAreaStatusBuilder;
@@ -19,6 +20,7 @@ use App\Export\ExportService;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
+use App\Naming\NamingService;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
@@ -110,7 +112,7 @@ class DataController extends AbstractController
   public function upload(
       Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
       EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
-      LearningOutcomeRepository $learningOutcomeRepository): array|Response
+      LearningOutcomeRepository $learningOutcomeRepository, NamingService $namingService): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -512,8 +514,49 @@ class DataController extends AbstractController
           }
         }
 
+        // aliases for study area field configuration
+        if (array_key_exists('aliases', $jsonData)) {
+          $studyAreaConfiguration = $studyArea->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
+          $jsonAliases            = $jsonData['aliases'];
+
+          if (array_key_exists('definition', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptDefinitionName($jsonAliases['definition']);
+          }
+
+          if (array_key_exists('explanation', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptTheoryExplanationName($jsonAliases['definition']);
+          }
+
+          if (array_key_exists('introduction', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptIntroductionName($jsonAliases['introduction']);
+          }
+
+          if (array_key_exists('examples', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptExamplesName($jsonAliases['examples']);
+          }
+
+          if (array_key_exists('selfAssessment', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptSelfAssessmentName($jsonAliases['selfAssessment']);
+          }
+
+          if (array_key_exists('howTo', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptHowtoName($jsonAliases['howTo']);
+          }
+
+          if (array_key_exists('learningOutcomes', $jsonAliases)) {
+            $studyAreaConfiguration->setLearningOutcomeObjName($jsonAliases['learningOutcomes']);
+          }
+
+          if (array_key_exists('priorKnowledge', $jsonAliases)) {
+            $studyAreaConfiguration->setConceptPriorKnowledgeName($jsonAliases['priorKnowledge']);
+          }
+
+          $studyArea->setFieldConfiguration($studyAreaConfiguration);
+        }
+
         // Save the data
         $em->flush();
+        $namingService->clearCache();
         $this->addFlash('success', $translator->trans('data.json-uploaded'));
         $this->redirectToRoute('app_data_upload');
       } catch (DataImportException $e) {
