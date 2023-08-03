@@ -79,6 +79,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     "id": "<studyarea-id>",
     "dateCreated": "<studyarea-date-created>",
     "lastUpdated": "<studyarea-date-last-updated>",
+    "datePublished": "<studyarea-publishing-date>",
     "nodes": [
         {
             "instance": "<concept-instance>",
@@ -264,9 +265,10 @@ EOT,
     $serializationContext->setSerializeNull(true);
     $json = $this->serializer->serialize(
           [
-              'id'                          => $studyArea->getId(),
-              'dateCreated'                => $studyArea->getCreatedAt(),
-              'lastUpdated'                => $studyArea->getLastUpdated(),
+              'id'                  => $studyArea->getId(),
+              'dateCreated'         => $studyArea->getCreatedAt(),
+              'lastUpdated'         => $studyArea->getLastUpdated(),
+              'datePublished'       => date('Y-m-d H:i:s'),
               'nodes' => array_map(fn (Concept $concept) => [                  
                   'instance'       => $concept->isInstance(),
                   'label'          => $concept->getName(),
@@ -288,14 +290,16 @@ EOT,
               'tags'              => $mappedTags,
               'priorKnowledge'    => $mappedPriorKnowledge,
               'aliases'           => [
-                'definition'       => $fieldNames->definition(),
-                'explanation'      => $fieldNames->theoryExplanation(),
-                'introduction'     => $fieldNames->introduction(),
-                'examples'         => $fieldNames->examples(),
-                'selfAssessment'   => $fieldNames->selfAssessment(),
-                'howTo'            => $fieldNames->howTo(),
-                'learningOutcomes' => $names->learningOutcome()->obj(),
-                'priorKnowledge'   => $fieldNames->priorKnowledge(),
+                'definition'          => $fieldNames->definition(),
+                'explanation'         => $fieldNames->theoryExplanation(),
+                'introduction'        => $fieldNames->introduction(),
+                'examples'            => $fieldNames->examples(),
+                'selfAssessment'      => $fieldNames->selfAssessment(),
+                'howTo'               => $fieldNames->howTo(),
+                'learningOutcomes'    => $names->learningOutcome()->obj(),
+                'priorKnowledge'      => $fieldNames->priorKnowledge(),
+                'additionalResources' => $fieldNames->additionalResources(),
+                'imagePath'           => $fieldNames->imagePath(),
               ],
           ],
           'json', $serializationContext);
