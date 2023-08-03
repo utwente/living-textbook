@@ -555,7 +555,7 @@ class DataController extends AbstractController
             $studyAreaConfiguration->setConceptAdditionalResourcesName($jsonAliases['additionalResources']);
           }
 
-          if (array_key_exists('imagePath', $jsonAliases) && $jsonAliases['imagePath'] !== null) {
+          if (array_key_exists('imagePath', $jsonAliases)) {
             $studyAreaConfiguration->setConceptImagePathName($jsonAliases['imagePath']);
           }
           
