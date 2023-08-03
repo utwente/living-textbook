@@ -10,5 +10,5 @@ The following environment variables are interesting to be configured.
 | `SENTRY_JS_DSN`        | Configure this for JS Sentry error tracking                                                                                                          | 
 | `OIDC_WELL_KNOWN`      | Well-known endpoint for OIDC authentication                                                                                                          |
 | `OIDC_CLIENT_ID`       | OIDC client ID                                                                                                                                       |
-| `HTTP_HOST`            | The HTTP host you're going to use. `localhost` for development                                                                                       |
+| `HTTP_HOST`            | The HTTP host you're going to use. `localhost:10443` for development                                                                                 |
 | `MAIL_FROM`            | Where email sent normally is coming from                                                                                                             |

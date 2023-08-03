@@ -34,7 +34,7 @@
     "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
   },
   "dependencies": {
-    "@sentry/browser": "7.57.0",
+    "@sentry/browser": "7.60.1",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
@@ -49,7 +49,6 @@
     "datatables.net-responsive": "2.5.0",
     "datatables.net-responsive-bs4": "2.5.0",
     "font-awesome": "4.7.0",
-    "fos-routing": "0.0.6",
     "foundation-emails": "2.4.0",
     "jquery": "3.7.0",
     "jquery-contextmenu": "2.9.2",

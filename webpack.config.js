@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const path = require('path');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -21,8 +22,7 @@ Encore
 
     // uncomment to define the assets of the project
     .addEntry('app', [
-      './assets/js/app.js',
-      './assets/js/_fos_js_routes.js'
+      './assets/js/app.js'
     ])
     .addEntry('double-column', './assets/js/doubleColumn.js')
     .addEntry('content', [
@@ -126,4 +126,10 @@ Encore
     .autoProvidejQuery()
 ;
 
-module.exports = Encore.getWebpackConfig();
+const webpackConfig = Encore.getWebpackConfig();
+
+// Add aliases
+webpackConfig.resolve.alias['@'] = path.resolve(__dirname, 'assets/js');
+webpackConfig.resolve.alias['@fos'] = path.resolve(__dirname, 'vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js');
+
+module.exports = webpackConfig;
