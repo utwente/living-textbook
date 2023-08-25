@@ -34,18 +34,18 @@
     "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
   },
   "dependencies": {
-    "@sentry/browser": "7.60.1",
+    "@sentry/browser": "7.64.0",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
     "bootstrap4-toggle": "3.6.1",
     "ckeditor4": "4.22.1",
     "color": "4.2.3",
-    "core-js": "3.31.1",
+    "core-js": "3.32.0",
     "custom-event": "1.0.1",
     "d3": "5.16.0",
-    "datatables.net": "1.13.5",
-    "datatables.net-bs4": "1.13.5",
+    "datatables.net": "1.13.6",
+    "datatables.net-bs4": "1.13.6",
     "datatables.net-responsive": "2.5.0",
     "datatables.net-responsive-bs4": "2.5.0",
     "font-awesome": "4.7.0",
@@ -58,7 +58,7 @@
     "jquery-ui-touch-punch": "0.2.3",
     "mark.js": "8.11.1",
     "popper.js": "1.16.1",
-    "regenerator-runtime": "0.13.11",
+    "regenerator-runtime": "0.14.0",
     "requirejs": "2.3.6",
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
@@ -66,8 +66,8 @@
     "uuid": "9.0.0"
   },
   "resolutions": {
-    "datatables.net": "1.13.5",
-    "datatables.net-bs4": "1.13.5",
+    "datatables.net": "1.13.6",
+    "datatables.net-bs4": "1.13.6",
     "jquery": "3.7.0"
   },
   "engines" : {
