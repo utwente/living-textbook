@@ -83,9 +83,9 @@
             "groupSlug": "sentry"
         },
         {
-            "matchPackagePatterns": ["^twig/\\w+-extra$", "^twig/extra-bundle$"],
-            "groupName": "Twig extra packages",
-            "groupSlug": "twig-extra"
+            "matchPackagePatterns": ["^twig/twig$", "^twig/\\w+-extra$", "^twig/extra-bundle$"],
+            "groupName": "Twig packages",
+            "groupSlug": "twig"
         },
         {
             "matchDepTypes": [
