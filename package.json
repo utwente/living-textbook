@@ -50,7 +50,7 @@
     "datatables.net-responsive-bs4": "2.5.0",
     "font-awesome": "4.7.0",
     "foundation-emails": "2.4.0",
-    "jquery": "3.7.0",
+    "jquery": "3.7.1",
     "jquery-contextmenu": "2.9.2",
     "jquery-ui": "1.13.2",
     "jquery-ui-dist": "1.13.2",
@@ -68,7 +68,7 @@
   "resolutions": {
     "datatables.net": "1.13.6",
     "datatables.net-bs4": "1.13.6",
-    "jquery": "3.7.0"
+    "jquery": "3.7.1"
   },
   "engines" : {
     "node" : "~16"
