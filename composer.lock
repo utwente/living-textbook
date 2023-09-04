@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28a2f2c8d75941e4aef1de094206a6e1",
+    "content-hash": "d1b3900d43e8befe21f3adb4d34058cd",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1702,16 +1702,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v2.9.0",
+            "version": "v2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "ca0eb83d8235d5f35d9b3428f679bf7085e9f155"
+                "reference": "d8c1a5420d5752eb99b0ad8d0526481217dcb50f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/ca0eb83d8235d5f35d9b3428f679bf7085e9f155",
-                "reference": "ca0eb83d8235d5f35d9b3428f679bf7085e9f155",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/d8c1a5420d5752eb99b0ad8d0526481217dcb50f",
+                "reference": "d8c1a5420d5752eb99b0ad8d0526481217dcb50f",
                 "shasum": ""
             },
             "require": {
@@ -1720,7 +1720,7 @@
                 "ext-hash": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": ">=8.0.2",
+                "php": ">=8.1",
                 "phpseclib/phpseclib": "^2.0.31|^3.0.7",
                 "psr/container": "^1.1|^2.0",
                 "psr/log": "^1.1|^2.0|^3.0",
@@ -1779,9 +1779,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.9.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.11.0"
             },
-            "time": "2023-01-12T15:00:18+00:00"
+            "time": "2023-09-04T13:51:27+00:00"
         },
         {
             "name": "drenso/symfony-shared",
