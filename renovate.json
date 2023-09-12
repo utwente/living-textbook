@@ -46,6 +46,7 @@
             "rangeStrategy": "replace"
         },
         {
+            "enabled": true,
             "matchPackagePrefixes": ["drenso/", "@drenso/"],
             "rebaseWhen": "conflicted",
             "stabilityDays": 0
@@ -56,6 +57,11 @@
             "stabilityDays": 0
         },
         {
+            "matchPackagePrefixes": ["@types/"],
+            "enabled": true
+        },
+        {
+            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
             "matchPackagePrefixes": ["@types/"],
             "rebaseWhen": "auto",
             "automerge": true,
