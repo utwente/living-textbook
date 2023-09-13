@@ -22,9 +22,9 @@
         "doctrine/doctrine-migrations-bundle": "3.2.4",
         "doctrine/event-manager": "1.2.0",
         "doctrine/migrations": "3.6.0",
-        "doctrine/orm": "2.16.1",
+        "doctrine/orm": "2.16.2",
         "doctrine/persistence": "3.2.0",
-        "drenso/symfony-oidc-bundle": "2.9.0",
+        "drenso/symfony-oidc-bundle": "2.11.0",
         "drenso/symfony-shared": "1.33.2",
         "easyrdf/easyrdf": "1.1.1",
         "friendsofsymfony/ckeditor-bundle": "2.4.0",
@@ -89,12 +89,12 @@
         "twig/inky-extra": "3.7.1",
         "twig/intl-extra": "3.7.1",
         "twig/twig": "3.7.1",
-        "zircote/swagger-php": "4.7.11"
+        "zircote/swagger-php": "4.7.13"
     },
     "require-dev": {
         "drenso/phan-extensions": "3.5.1",
         "friendsofphp/php-cs-fixer": "3.8.0",
-        "phpunit/phpunit": "10.3.2",
+        "phpunit/phpunit": "10.3.3",
         "rector/rector": "0.14.8",
         "symfony/error-handler": "5.4.26",
         "symfony/phpunit-bridge": "5.4.26",
