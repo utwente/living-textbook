@@ -1071,10 +1071,10 @@
     webpack-virtual-modules "^0.2.2"
     yargs-parser "^18.1.3"
 
-"@types/bootstrap@4.6.2":
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-4.6.2.tgz#84d4dd3ee41e903c7bc17e47b9997ec804d8d64e"
-  integrity sha512-HbqVAre9VMZF8KBw1UpmBkw0xt4rjrAxMO/JWqFfJZGbVi09t8BVccvB/VxDlygVvvu0BZkAU8ocfNc7/jlFsA==
+"@types/bootstrap@4.6.3":
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-4.6.3.tgz#211e4417b4ddb88353b6d1509133b027f1423b3a"
+  integrity sha512-3XyO1U1tPeSeDvVJJndQ4YhfBPWFgk06Q/dRXVYur0C0FVUDC9drfUWu0Nxj9whCmBvYiAb+MAmztMamT1aXSA==
   dependencies:
     "@types/jquery" "*"
     popper.js "^1.14.1"
