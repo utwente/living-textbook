@@ -55,8 +55,19 @@
             "stabilityDays": 0
         },
         {
-            "matchPackagePrefixes": ["symfony/", "twig/"],
+            "matchPackagePrefixes": ["twig/"],
             "rebaseWhen": "conflicted",
+            "stabilityDays": 0
+        },
+        {
+            "matchPackagePrefixes": ["symfony/"],
+            "groupName": "Symfony packages",
+            "groupSlug": "symfony",
+            "excludePackagePatterns": "-contracts$",
+            "excludePackageNames": [
+                "symfony/maker-bundle",
+                "symfony/webpack-encore-bundle"
+            ],
             "stabilityDays": 0
         },
         {
