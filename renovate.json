@@ -6,6 +6,9 @@
         ":disableDevDependencies",
         ":labels(Maintenance,RenovateBot)"
     ],
+    "ignorePresets": [
+        "group:symfony"
+    ],
     "dependencyDashboard": true,
     "dependencyDashboardLabels": ["Maintenance", "RenovateBot"],
     "commitMessagePrefix": "[RenovateBot]",
