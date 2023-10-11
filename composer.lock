@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec48b63317916f6492295ea6fa22d87a",
+    "content-hash": "0d07fdc77340c03f696abbc34dc1ade1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1702,16 +1702,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v2.11.0",
+            "version": "v2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "d8c1a5420d5752eb99b0ad8d0526481217dcb50f"
+                "reference": "dc8618fdb80c1c804fa476876991b2e5530f98ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/d8c1a5420d5752eb99b0ad8d0526481217dcb50f",
-                "reference": "d8c1a5420d5752eb99b0ad8d0526481217dcb50f",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/dc8618fdb80c1c804fa476876991b2e5530f98ea",
+                "reference": "dc8618fdb80c1c804fa476876991b2e5530f98ea",
                 "shasum": ""
             },
             "require": {
@@ -1779,9 +1779,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.11.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.12.0"
             },
-            "time": "2023-09-04T13:51:27+00:00"
+            "time": "2023-10-11T13:32:46+00:00"
         },
         {
             "name": "drenso/symfony-shared",
