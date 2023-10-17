@@ -17,8 +17,7 @@ use Symfony\Component\Security\Http\HttpUtils;
  */
 class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
-  /** @var LtbRouter */
-  private $router;
+  private LtbRouter $router;
 
   public function __construct(LtbRouter $router, HttpUtils $httpUtils, array $options = [])
   {

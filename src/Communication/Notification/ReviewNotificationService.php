@@ -10,10 +10,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReviewNotificationService
 {
-  /** @var MailerInterface */
-  private $mailer;
-  /** @var TranslatorInterface */
-  private $translator;
+  private MailerInterface $mailer;
+  private TranslatorInterface $translator;
 
   public function __construct(MailerInterface $mailer, TranslatorInterface $translator)
   {

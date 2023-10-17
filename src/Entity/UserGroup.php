@@ -34,24 +34,21 @@ class UserGroup implements IdInterface
   final public const GROUP_ANALYSIS = 'analysis';
 
   /**
-   * @var StudyArea
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea", inversedBy="userGroups")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="group_type", type="string", length=10, nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\Choice(callback="getGroupTypes")
    */
-  private $groupType;
+  private string $groupType = self::GROUP_VIEWER;
 
   /**
    * @var Collection<User>
@@ -64,7 +61,7 @@ class UserGroup implements IdInterface
    *
    * @Assert\NotNull()
    */
-  private $users;
+  private Collection $users;
 
   /**
    * @var Collection<UserGroupEmail>
@@ -74,12 +71,11 @@ class UserGroup implements IdInterface
    *
    * @Assert\NotNull()
    */
-  private $emails;
+  private Collection $emails;
 
   /** UserGroup constructor. */
   public function __construct()
   {
-    $this->groupType = self::GROUP_VIEWER;
     $this->users     = new ArrayCollection();
     $this->emails    = new ArrayCollection();
   }

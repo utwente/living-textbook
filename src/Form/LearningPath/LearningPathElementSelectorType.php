@@ -20,12 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathElementSelectorType extends AbstractType
 {
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepository;
-  /** @var NamingService */
-  private $namingService;
-  /** @var SerializerInterface */
-  private $serializer;
+  private LearningOutcomeRepository $learningOutcomeRepository;
+  private NamingService $namingService;
+  private SerializerInterface $serializer;
 
   public function __construct(
       LearningOutcomeRepository $learningOutcomeRepository, SerializerInterface $serializer, NamingService $namingService)

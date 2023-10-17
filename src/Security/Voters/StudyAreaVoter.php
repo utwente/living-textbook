@@ -30,8 +30,7 @@ class StudyAreaVoter extends Voter
       self::ANALYTICS,
   ];
 
-  /** @var AccessDecisionManagerInterface */
-  private $decisionManager;
+  private AccessDecisionManagerInterface $decisionManager;
 
   /** StudyAreaVoter constructor. */
   public function __construct(AccessDecisionManagerInterface $decisionManager)

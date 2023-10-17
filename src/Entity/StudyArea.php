@@ -58,7 +58,7 @@ class StudyArea implements Stringable, IdInterface
    *
    * @JMSA\Expose()
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
    * @var Collection<UserGroup>
@@ -67,7 +67,7 @@ class StudyArea implements Stringable, IdInterface
    *
    * @JMSA\Expose()
    */
-  private $userGroups;
+  private Collection $userGroups;
 
   /**
    * @ORM\ManyToOne(targetEntity="User")
@@ -90,49 +90,49 @@ class StudyArea implements Stringable, IdInterface
    *
    * @ORM\OneToMany(targetEntity="App\Entity\RelationType", mappedBy="studyArea")
    */
-  private $relationTypes;
+  private Collection $relationTypes;
 
   /**
    * @var Collection<Abbreviation>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Abbreviation", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $abbreviations;
+  private Collection $abbreviations;
 
   /**
    * @var Collection<ExternalResource>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\ExternalResource", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $externalResources;
+  private Collection $externalResources;
 
   /**
    * @var Collection<Contributor>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Contributor", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $contributors;
+  private Collection $contributors;
 
   /**
    * @var Collection<LearningOutcome>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningOutcome", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $learningOutcomes;
+  private Collection $learningOutcomes;
 
   /**
    * @var Collection<LearningPath>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningPath", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $learningPaths;
+  private Collection $learningPaths;
 
   /**
    * @var Collection<Tag>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $tags;
+  private Collection $tags;
 
   /** @ORM\Column(name="frozen_on", type="datetime", nullable=true) */
   private ?DateTime $frozenOn = null;

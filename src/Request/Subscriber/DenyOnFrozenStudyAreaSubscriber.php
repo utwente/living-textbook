@@ -17,14 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 {
-  /** @var ArgumentNameConverter */
-  private $argumentNameConverter;
+  private ArgumentNameConverter $argumentNameConverter;
 
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
-  /** @var RouterInterface */
-  private $router;
+  private RouterInterface $router;
 
   /** FreezeSubscriber constructor. */
   public function __construct(ArgumentNameConverter $argumentNameConverter, TranslatorInterface $translator, RouterInterface $router)

@@ -15,14 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RelationProvider implements ProviderInterface
 {
-  /** @var ConceptRepository */
-  private $conceptRepository;
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepository;
-  /** @var RelationTypeRepository */
-  private $relationTypeRepository;
-  /** @var SpreadsheetHelper */
-  private $spreadsheetHelper;
+  private ConceptRepository $conceptRepository;
+  private ConceptRelationRepository $conceptRelationRepository;
+  private RelationTypeRepository $relationTypeRepository;
+  private SpreadsheetHelper $spreadsheetHelper;
 
   public function __construct(ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
                               RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)

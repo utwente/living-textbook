@@ -25,29 +25,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class StudyAreaStatusBuilder
 {
-  /** @var NamingService */
-  private $namingService;
+  private NamingService $namingService;
 
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
-  /** @var RelationTypeRepository */
-  private $relationTypeRepo;
+  private RelationTypeRepository $relationTypeRepo;
 
-  /** @var ConceptRepository */
-  private $conceptRepo;
+  private ConceptRepository $conceptRepo;
 
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepo;
+  private ConceptRelationRepository $conceptRelationRepo;
 
-  /** @var SpreadsheetHelper */
-  private $spreadsheetHelper;
+  private SpreadsheetHelper $spreadsheetHelper;
 
-  /** @var Spreadsheet */
-  private $spreadsheet;
+  private ?Spreadsheet $spreadsheet = null;
 
-  /** @var StudyArea */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /** @var RelationType[]|Collection */
   private $relationTypes;

@@ -23,11 +23,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class LearningPathElementType extends AbstractType
 {
-  /** @var ConceptRepository */
-  private $conceptRepository;
+  private ConceptRepository $conceptRepository;
 
-  /** @var LearningPathElementRepository */
-  private $learningPathElementRepository;
+  private LearningPathElementRepository $learningPathElementRepository;
 
   public function __construct(ConceptRepository $conceptRepository, LearningPathElementRepository $learningPathElementRepository)
   {

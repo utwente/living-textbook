@@ -17,8 +17,7 @@ use Twig\TwigFunction;
  */
 class DataTableExtension extends AbstractExtension
 {
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
   /** DataTableExtension constructor. */
   public function __construct(TranslatorInterface $translator)

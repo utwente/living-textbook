@@ -21,8 +21,7 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
   /** @var string */
   private $exceptionReceiver;
 
-  /** @var string */
-  private $appVersion;
+  private string $appVersion;
 
   public function __construct(ParameterBagInterface $parameterBag)
   {

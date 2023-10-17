@@ -29,19 +29,16 @@ class LearningPathElement implements IdInterface
   /**
    * Belongs to a certain learning path.
    *
-   * @var LearningPath|null
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\LearningPath", inversedBy="elements")
    * @ORM\JoinColumn(name="learning_path_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $learningPath;
+  private ?LearningPath $learningPath = null;
 
   /**
    * Linked concept.
    *
-   * @var Concept|null
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\Concept")
    * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
@@ -53,12 +50,11 @@ class LearningPathElement implements IdInterface
    * @JMSA\Type(Concept::class)
    * @JMSA\MaxDepth(2)
    */
-  private $concept;
+  private ?Concept $concept = null;
 
   /**
    * Transition to the next element, if any.
    *
-   * @var LearningPathElement|null
    *
    * @ORM\ManyToOne(targetEntity="LearningPathElement")
    * @ORM\JoinColumn(name="next_id", referencedColumnName="id", nullable=true)
@@ -68,12 +64,11 @@ class LearningPathElement implements IdInterface
    * @JMSA\Type(LearningPathElement::class)
    * @JMSA\MaxDepth(2)
    */
-  private $next;
+  private ?LearningPathElement $next = null;
 
   /**
    * Optional description of the transition to the next element.
    *
-   * @var string|null
    *
    * @ORM\Column(type="string", length=1024, nullable=true)
    * @Assert\Length(max=1024)
@@ -82,7 +77,7 @@ class LearningPathElement implements IdInterface
    * @JMSA\Groups({"Default","review_change"})
    * @JMSA\Type("string")
    */
-  private $description;
+  private ?string $description = null;
 
   public function getLearningPath(): ?LearningPath
   {

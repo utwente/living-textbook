@@ -16,20 +16,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TrackingExportBuilder
 {
-  /** @var NamingService */
-  private $namingService;
+  private NamingService $namingService;
 
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
-  /** @var SpreadsheetHelper */
-  private $spreadsheetHelper;
+  private SpreadsheetHelper $spreadsheetHelper;
 
-  /** @var PageLoadRepository */
-  private $pageLoadRepository;
+  private PageLoadRepository $pageLoadRepository;
 
-  /** @var TrackingEventRepository */
-  private $trackingEventRepository;
+  private TrackingEventRepository $trackingEventRepository;
 
   /** TrackingExportBuilder constructor. */
   public function __construct(

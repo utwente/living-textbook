@@ -17,11 +17,9 @@ class CheckUrlCommand extends Command
    */
   protected static $defaultName = 'ltb:check:urls';
 
-  /** @var UrlChecker */
-  private $urlChecker;
+  private UrlChecker $urlChecker;
 
-  /** @var StudyAreaRepository */
-  private $studyAreaRepository;
+  private StudyAreaRepository $studyAreaRepository;
 
   /** CheckUrlCommand constructor. */
   public function __construct(UrlChecker $urlChecker, StudyAreaRepository $studyAreaRepository)

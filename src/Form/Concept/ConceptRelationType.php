@@ -19,8 +19,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptRelationType extends AbstractType
 {
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
   /** ConceptRelationType constructor. */
   public function __construct(TranslatorInterface $translator)

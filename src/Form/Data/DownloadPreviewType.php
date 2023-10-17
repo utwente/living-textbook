@@ -9,8 +9,7 @@ use Symfony\Component\Form\FormView;
 
 class DownloadPreviewType extends AbstractType
 {
-  /** @var ExportService */
-  private $exportService;
+  private ExportService $exportService;
 
   public function __construct(ExportService $exportService)
   {

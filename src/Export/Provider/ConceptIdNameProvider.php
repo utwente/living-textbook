@@ -14,11 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ConceptIdNameProvider implements ProviderInterface
 {
-  /** @var ConceptRepository */
-  private $conceptRepository;
+  private ConceptRepository $conceptRepository;
 
-  /** @var SpreadsheetHelper */
-  private $spreadsheetHelper;
+  private SpreadsheetHelper $spreadsheetHelper;
 
   public function __construct(ConceptRepository $conceptRepository, SpreadsheetHelper $spreadsheetHelper)
   {

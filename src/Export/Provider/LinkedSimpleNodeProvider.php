@@ -22,26 +22,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
-  /** @var ConceptRepository */
-  private $conceptRepository;
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepository;
-  /** @var ContributorRepository */
-  private $contributorRepository;
-  /** @var ExternalResourceRepository */
-  private $externalResourceRepository;
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepository;
-  /** @var NamingService */
-  private $namingService;
-  /** @var RelationTypeRepository */
-  private $relationTypeRepository;
-  /** @var TagRepository */
-  private $tagRepository;
-  /** @var LtbRouter */
-  private $router;
-  /** @var SerializerInterface */
-  private $serializer;
+  private ConceptRepository $conceptRepository;
+  private ConceptRelationRepository $conceptRelationRepository;
+  private ContributorRepository $contributorRepository;
+  private ExternalResourceRepository $externalResourceRepository;
+  private LearningOutcomeRepository $learningOutcomeRepository;
+  private NamingService $namingService;
+  private RelationTypeRepository $relationTypeRepository;
+  private TagRepository $tagRepository;
+  private LtbRouter $router;
+  private SerializerInterface $serializer;
 
   public function __construct(
       ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,

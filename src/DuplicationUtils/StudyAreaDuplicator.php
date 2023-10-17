@@ -34,70 +34,56 @@ use Symfony\Component\Routing\RouterInterface;
 
 class StudyAreaDuplicator
 {
-  /** @var TagRepository */
-  private $tagRepository;
-  /** @var UrlContext */
-  private $urlContext;
+  private TagRepository $tagRepository;
+  private UrlContext $urlContext;
 
-  /** @var string */
-  private $uploadsPath;
+  private string $uploadsPath;
 
-  /** @var EntityManagerInterface */
-  private $em;
+  private EntityManagerInterface $em;
 
-  /** @var UrlScanner */
-  private $urlScanner;
+  private UrlScanner $urlScanner;
 
-  /** @var LtbRouter */
-  private $router;
+  private LtbRouter $router;
 
-  /** @var AbbreviationRepository */
-  private $abbreviationRepo;
+  private AbbreviationRepository $abbreviationRepo;
 
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepo;
+  private ConceptRelationRepository $conceptRelationRepo;
 
-  /** @var ContributorRepository */
-  private $contributorRepo;
+  private ContributorRepository $contributorRepo;
 
-  /** @var ExternalResourceRepository */
-  private $externalResourceRepo;
+  private ExternalResourceRepository $externalResourceRepo;
 
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepo;
+  private LearningOutcomeRepository $learningOutcomeRepo;
 
-  /** @var LearningPathRepository */
-  private $learningPathRepo;
+  private LearningPathRepository $learningPathRepo;
 
-  /** @var StudyArea */
-  private $studyAreaToDuplicate;
+  private StudyArea $studyAreaToDuplicate;
 
-  /** @var StudyArea */
-  private $newStudyArea;
+  private StudyArea $newStudyArea;
 
   /** @var Concept[] */
-  private $concepts;
+  private array $concepts;
 
   /** @var LearningPath[] Array of duplicated learning paths ([original id] = new learning path) */
-  private $newLearningPaths = [];
+  private array $newLearningPaths = [];
 
   /** @var LearningOutcome[] Array of duplicated learning outcomes ([original id] = new learning outcome) */
-  private $newLearningOutcomes = [];
+  private array $newLearningOutcomes = [];
 
   /** @var ExternalResource[] Array of duplicated external resources ([original id] = new external resource) */
-  private $newExternalResources = [];
+  private array $newExternalResources = [];
 
   /** @var Contributor[] Array of duplicated contributors ([original id] = new external resource) */
-  private $newContributors = [];
+  private array $newContributors = [];
 
   /** @var Abbreviation[] Array of duplicated abbreviations ([original id] = new abbreviation) */
-  private $newAbbreviations = [];
+  private array $newAbbreviations = [];
 
   /** @var Tag[] Array of duplicated tags ([original id] = new tag) */
-  private $newTags = [];
+  private array $newTags = [];
 
   /** @var Concept[] Array of duplicated concepts ([original id] = new concept) */
-  private $newConcepts = [];
+  private array $newConcepts = [];
 
   /**
    * StudyAreaDuplicator constructor.

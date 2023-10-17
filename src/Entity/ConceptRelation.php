@@ -29,7 +29,6 @@ class ConceptRelation implements IdInterface
   use SoftDeletable;
 
   /**
-   * @var Concept
    *
    * @ORM\ManyToOne(targetEntity="Concept", inversedBy="outgoingRelations")
    * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
@@ -41,10 +40,9 @@ class ConceptRelation implements IdInterface
    * @JMSA\Type(Concept::class)
    * @JMSA\MaxDepth(2)
    */
-  private $source;
+  private ?Concept $source = null;
 
   /**
-   * @var Concept
    *
    * @ORM\ManyToOne(targetEntity="Concept", inversedBy="incomingRelations")
    * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
@@ -56,10 +54,9 @@ class ConceptRelation implements IdInterface
    * @JMSA\Type(Concept::class)
    * @JMSA\MaxDepth(2)
    */
-  private $target;
+  private ?Concept $target = null;
 
   /**
-   * @var RelationType
    *
    * @ORM\ManyToOne(targetEntity="RelationType")
    * @ORM\JoinColumn(name="relation_type", referencedColumnName="id", nullable=false)
@@ -71,33 +68,31 @@ class ConceptRelation implements IdInterface
    * @JMSA\Type(RelationType::class)
    * @JMSA\MaxDepth(2)
    */
-  private $relationType;
+  private ?RelationType $relationType = null;
 
   /**
    * The position field will be filled automatically by a callback in the concept,
    * in order to force the desired positioning.
    *
-   * @var int
    *
    * @ORM\Column(name="outgoing_position", type="integer", nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
    */
-  private $outgoingPosition = 0;
+  private int $outgoingPosition = 0;
 
   /**
    * The position field will be filled automatically by a callback in the concept,
    * in order to force the desired positioning.
    *
-   * @var int
    *
    * @ORM\Column(name="incoming_position", type="integer", nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\GreaterThanOrEqual(value="0")
    */
-  private $incomingPosition = 0;
+  private int $incomingPosition = 0;
 
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $dotronConfig = null;

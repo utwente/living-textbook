@@ -42,20 +42,17 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="externalResources")
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
-   * @var StudyArea|null
    *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="externalResources")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    * @ORM\Column(name="title", type="string", length=512, nullable=false)
    *
    * @Assert\NotBlank()
@@ -63,10 +60,9 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $title;
+  private string $title = '';
 
   /**
-   * @var string|null
    *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
@@ -74,10 +70,9 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $description;
+  private ?string $description = null;
 
   /**
-   * @var string|null
    *
    * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
@@ -86,23 +81,18 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $url;
+  private ?string $url = null;
 
   /**
-   * @var bool
    *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $broken;
+  private bool $broken = false;
 
   /** ExternalResource constructor. */
   public function __construct()
   {
-    $this->title  = '';
-    $this->broken = false;
-
     $this->concepts = new ArrayCollection();
   }
 

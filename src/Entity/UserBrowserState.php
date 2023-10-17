@@ -27,33 +27,28 @@ class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
   use SoftDeletable;
 
   /**
-   * @var User|null
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
    * @ORM\JoinColumn(nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $user;
+  private ?User $user = null;
 
   /**
-   * @var StudyArea|null
    *
    * @ORM\ManyToOne(targetEntity="StudyArea")
    * @ORM\JoinColumn(nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
    * The current filter state.
    *
-   * @var array
    *
    * @ORM\Column(type="json", nullable=true)
    */
-  private $filterState;
+  private ?array $filterState = null;
 
   public function getUser(): ?User
   {

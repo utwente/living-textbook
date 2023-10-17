@@ -50,7 +50,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @Assert\NotBlank()
    * @Assert\Length(min=2,max=100)
    */
-  protected $givenName;
+  protected string $givenName = '';
 
   /**
    * Family name.
@@ -62,7 +62,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @Assert\NotBlank()
    * @Assert\Length(min=2,max=100)
    */
-  protected $familyName;
+  protected string $familyName = '';
 
   /**
    * Full name.
@@ -74,24 +74,20 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @Assert\NotBlank()
    * @Assert\Length(min=4, max=200)
    */
-  protected $fullName;
+  protected string $fullName = '';
 
   /**
    * Display name.
-   *
-   * @var string
    *
    * @ORM\Column(name="display_name", type="string", length=200)
    *
    * @Assert\NotBlank()
    * @Assert\Length(min=4, max=200)
    */
-  protected $displayName;
+  protected ?string $displayName = null;
 
   /**
    * Authentication name (username), equal to email address.
-   *
-   * @var string
    *
    * @ORM\Column(name="username", type="string", length=180)
    *
@@ -99,48 +95,40 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @Assert\Email()
    * @Assert\Length(min=5, max=180)
    */
-  protected $username;
+  protected ?string $username = null;
 
   /**
    * If set, the account was created using OIDC.
-   *
-   * @var bool
    *
    * @ORM\Column(name="is_oidc", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
    */
-  protected $isOidc = false;
+  protected bool $isOidc = false;
 
   /**
    * Password, stored encrypted, if any.
    * No password is stored for OIDC authentication.
    *
-   * @var string
-   *
    * @ORM\Column(name="password", type="string", length=255, nullable=true)
    */
-  protected $password;
+  protected ?string $password = null;
 
   /**
    * Datetime on which the user registered.
-   *
-   * @var DateTime
    *
    * @ORM\Column(name="registered_on", type="datetime")
    *
    * @Assert\NotNull()
    */
-  protected $registeredOn;
+  protected DateTime $registeredOn;
 
   /**
    * DateTime on which the user has lastly logged on.
    *
-   * @var DateTime|null
-   *
    * @ORM\Column(name="last_used", type="datetime", nullable=true)
    */
-  protected $lastUsed;
+  protected ?DateTime $lastUsed = null;
 
   /**
    * @var array[string]
@@ -149,60 +137,51 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @Assert\NotNull()
    */
-  private $securityRoles;
+  private array $securityRoles = [];
 
   /**
-   * @var bool
    *
    * @ORM\Column(name="is_admin", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
    * @Assert\Type("bool")
    */
-  private $isAdmin;
+  private bool $isAdmin = false;
 
   /**
    * Hashed reset code, used for resetting the password.
    *
-   * @var string|null
    *
    * @ORM\Column(type="string", length=255, nullable=true)
    */
-  private $resetCode;
+  private ?string $resetCode = null;
 
   /**
    * Datetime till when the reset code is still valid.
    *
-   * @var DateTime|null
    *
    * @ORM\Column(type="datetime", nullable=true)
    */
-  private $resetCodeValid;
+  private ?DateTime $resetCodeValid = null;
 
   /**
    * @var Collection<UserGroup>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\UserGroup", mappedBy="users")
    */
-  private $userGroups;
+  private Collection $userGroups;
 
   /**
    * @var Collection<Annotation>
    *
    * @ORM\OneToMany(targetEntity="Annotation", mappedBy="user")
    */
-  private $annotations;
+  private Collection $annotations;
 
   /** User constructor. */
   public function __construct()
   {
-    $this->givenName     = '';
-    $this->familyName    = '';
-    $this->fullName      = '';
     $this->registeredOn  = new DateTime();
-    $this->isOidc        = false;
-    $this->isAdmin       = false;
-    $this->securityRoles = [];
     $this->userGroups    = new ArrayCollection();
     $this->annotations   = new ArrayCollection();
   }

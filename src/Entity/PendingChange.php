@@ -39,44 +39,38 @@ class PendingChange implements IdInterface
   ];
 
   /**
-   * @var StudyArea
    *
    * @ORM\ManyToOne(targetEntity="StudyArea")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
    * The change type of the pending change.
    *
-   * @var string|null
    * @ORM\Column(type="string", length=10)
    *
    * @Assert\NotNull()
    * @Assert\Choice(choices=PendingChange::CHANGE_TYPES)
    */
-  private $changeType;
+  private ?string $changeType = null;
 
   /**
    * The object type of the pending change.
    *
-   * @var string|null
    * @ORM\Column(type="string", length=255)
-   *
    * @Assert\NotBlank(allowNull=false)
    */
-  private $objectType;
+  private ?string $objectType = null;
 
   /**
    * The object id of the pending change.
    *
-   * @var int|null
    *
    * @ORM\Column(type="integer", nullable=true)
    */
-  private $objectId;
+  private ?int $objectId = null;
 
   /**
    * JSON encoded object.
@@ -102,42 +96,35 @@ class PendingChange implements IdInterface
   /**
    * The owner of the pending change (aka, the user who created it).
    *
-   * @var User|null
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
    * @ORM\JoinColumn(nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $owner;
+  private ?User $owner = null;
 
   /**
    * The review this pending change belongs to, if any.
    *
-   * @var Review|null
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\Review", inversedBy="pendingChanges")
    * @ORM\JoinColumn(nullable=true)
    */
-  private $review;
+  private ?Review $review = null;
 
   /**
    * If any, review comments on particular changes (per field) are stores here.
    *
-   * @var array|null
    *
    * @ORM\Column(type="json", nullable=true)
-   *
    * @Assert\Type("array")
    */
-  private $reviewComments;
+  private ?array $reviewComments = null;
 
   /**
    * Cached deserialized object.
-   *
-   * @var ReviewableInterface|null
    */
-  private $cachedObject = null;
+  private ?ReviewableInterface $cachedObject = null;
 
   /** Duplicated the pending change, while setting the new marked fields as supplied. */
   public function duplicate(array $changedFields): PendingChange

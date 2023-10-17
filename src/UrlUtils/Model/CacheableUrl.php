@@ -7,8 +7,7 @@ use Exception;
 
 class CacheableUrl extends AbstractUrl
 {
-  /** @var DateTime */
-  private $timestamp;
+  private DateTime $timestamp;
 
   /**
    * CacheableUrl constructor.

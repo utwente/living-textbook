@@ -11,14 +11,11 @@ use Stringable;
  */
 class Url extends AbstractUrl implements Stringable
 {
-  /** @var bool */
-  private $isPath;
+  private bool $isPath;
 
-  /** @var bool */
-  private $internal;
+  private bool $internal;
 
-  /** @var UrlContext */
-  private $context;
+  private UrlContext $context;
 
   public function __construct(string $url, bool $internal, UrlContext $context)
   {

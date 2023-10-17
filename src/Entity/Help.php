@@ -23,11 +23,10 @@ class Help implements IdInterface
   /**
    * The help content.
    *
-   * @var string
    *
    * @ORM\Column(name="content", type="text", nullable=false)
    */
-  private $content;
+  private ?string $content = null;
 
   public function getContent(): string
   {

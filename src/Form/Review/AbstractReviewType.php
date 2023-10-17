@@ -17,10 +17,8 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class AbstractReviewType extends AbstractType
 {
-  /** @var Security */
-  private $security;
-  /** @var UserGroupRepository */
-  private $userGroupRepository;
+  private Security $security;
+  private UserGroupRepository $userGroupRepository;
 
   /** AbstractReviewType constructor. */
   public function __construct(UserGroupRepository $userGroupRepository, Security $security)

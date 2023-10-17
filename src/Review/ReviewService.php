@@ -2,6 +2,7 @@
 
 namespace App\Review;
 
+use JMS\Serializer\Serializer;
 use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Concept;
 use App\Entity\Contracts\ReviewableInterface;
@@ -37,23 +38,18 @@ use Throwable;
 class ReviewService
 {
   /** @var EntityManager */
-  private $entityManager;
-  /** @var PendingChangeRepository */
-  private $pendingChangeRepository;
-  /** @var ReviewNotificationService */
-  private $reviewNotificationService;
-  /** @var Security */
-  private $security;
+  private EntityManagerInterface $entityManager;
+  private PendingChangeRepository $pendingChangeRepository;
+  private ReviewNotificationService $reviewNotificationService;
+  private Security $security;
   /** @var Session */
-  private $session;
-  /** @var TranslatorInterface */
-  private $translator;
-  /** @var ValidatorInterface */
-  private $validator;
+  private SessionInterface $session;
+  private TranslatorInterface $translator;
+  private ValidatorInterface $validator;
 
   // Serializer details
   /** @var SerializerInterface|null */
-  private static $serializer      = null;
+  private static ?Serializer $serializer      = null;
   private const SERIALIZER_FORMAT = 'json';
 
   public function __construct(

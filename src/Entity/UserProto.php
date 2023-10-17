@@ -30,25 +30,22 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
   /**
    * The email address that has been invited.
    *
-   * @var string
    *
    * @ORM\Column(type="string")
    *
    * @Assert\NotBlank()
    * @Assert\Email()
    */
-  private $email = '';
+  private string $email = '';
 
   /**
    * The invited at timestamp.
    *
-   * @var DateTime
    *
    * @ORM\Column(type="datetime")
-   *
    * @Assert\NotNull()
    */
-  private $invitedAt;
+  private DateTime $invitedAt;
 
   /**
    * Hashed temporary password.
@@ -59,7 +56,7 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
    *
    * @Assert\NotBlank()
    */
-  private $password = '';
+  private string $password = '';
 
   public function __construct()
   {

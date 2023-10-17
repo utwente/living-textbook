@@ -6,11 +6,9 @@ use Symfony\Component\String\Inflector\InflectorInterface;
 
 class ResolvedNames implements ResolvedNamesInterface
 {
-  /** @var ResolvedConceptNames */
-  private $concept;
+  private ResolvedConceptNames $concept;
 
-  /** @var ResolvedLearningOutcomeNames */
-  private $learningOutcome;
+  private ResolvedLearningOutcomeNames $learningOutcome;
 
   public function __construct(ResolvedConceptNames $concept, ResolvedLearningOutcomeNames $learningOutcome)
   {

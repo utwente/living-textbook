@@ -37,20 +37,17 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="contributors")
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
-   * @var StudyArea|null
    *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="contributors")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    * @ORM\Column(name="name", type="string", length=512, nullable=false)
    *
    * @Assert\NotBlank()
@@ -58,10 +55,9 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $name;
+  private string $name = '';
 
   /**
-   * @var string|null
    *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
@@ -69,10 +65,9 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $description;
+  private ?string $description = null;
 
   /**
-   * @var string|null
    *
    * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
@@ -81,10 +76,9 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $url;
+  private ?string $url = null;
 
   /**
-   * @var string|null
    *
    * @ORM\Column(name="email", type="string", length=255, nullable=true)
    *
@@ -93,23 +87,18 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $email;
+  private ?string $email = null;
 
   /**
-   * @var bool
    *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $broken;
+  private bool $broken = false;
 
   /** Contributor constructor. */
   public function __construct()
   {
-    $this->name   = '';
-    $this->broken = false;
-
     $this->concepts = new ArrayCollection();
   }
 

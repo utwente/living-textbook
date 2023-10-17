@@ -8,8 +8,7 @@ use Twig\TwigFunction;
 
 class LtbRouterExtension extends AbstractExtension
 {
-  /** @var LtbRouter */
-  private $router;
+  private LtbRouter $router;
 
   public function __construct(LtbRouter $router)
   {

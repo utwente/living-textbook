@@ -11,8 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DownloadType extends AbstractType
 {
-  /** @var ExportService */
-  private $exportService;
+  private ExportService $exportService;
 
   public function __construct(ExportService $exportService)
   {

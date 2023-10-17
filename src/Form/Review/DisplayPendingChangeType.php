@@ -17,10 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DisplayPendingChangeType extends AbstractType
 {
-  /** @var EntityManagerInterface */
-  private $entityManager;
-  /** @var ReviewService */
-  private $reviewService;
+  private EntityManagerInterface $entityManager;
+  private ReviewService $reviewService;
 
   public function __construct(EntityManagerInterface $entityManager, ReviewService $reviewService)
   {

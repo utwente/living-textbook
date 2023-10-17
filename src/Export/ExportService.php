@@ -19,7 +19,7 @@ class ExportService
    *
    * @var ProviderInterface[]
    */
-  private $providers = [];
+  private array $providers = [];
 
   public function __construct(
       LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4, LearningPathProvider $p5)

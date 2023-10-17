@@ -46,19 +46,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DefaultController extends AbstractController
 {
   /** @var Concept[] */
-  private $concepts;
+  private ?array $concepts = null;
 
   /** @var Contributor[] */
-  private $contributors;
+  private ?array $contributors = null;
 
   /** @var LearningOutcome[] */
-  private $learningOutcomes;
+  private ?array $learningOutcomes = null;
 
   /** @var ExternalResource[] */
-  private $externalResources;
+  private ?array $externalResources = null;
 
   /** @var LearningPath[] */
-  private $learningPaths;
+  private ?array $learningPaths = null;
 
   /**
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},

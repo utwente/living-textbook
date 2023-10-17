@@ -26,14 +26,14 @@ class StudyAreaGroup implements IdInterface
    * @Assert\NotBlank()
    * @Assert\Length(min=5)
    */
-  private $name;
+  private ?string $name = null;
 
   /**
    * @var Collection<StudyArea>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\StudyArea", mappedBy="group", fetch="EXTRA_LAZY")
    */
-  private $studyAreas;
+  private Collection $studyAreas;
 
   public function __construct()
   {

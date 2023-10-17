@@ -13,11 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LearningPathProvider implements ProviderInterface
 {
-  /** @var LearningPathRepository */
-  private $learningPathRepository;
+  private LearningPathRepository $learningPathRepository;
 
-  /** @var SerializerInterface */
-  private $serializer;
+  private SerializerInterface $serializer;
 
   public function __construct(LearningPathRepository $learningPathRepository, SerializerInterface $serializer)
   {

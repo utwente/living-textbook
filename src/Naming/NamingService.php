@@ -22,15 +22,11 @@ class NamingService
 {
   private const CACHE_TAG = 'studyarea.naming';
 
-  /** @var TagAwareAdapter */
-  private $cache;
-  /** @var StudyAreaFieldConfigurationRepository */
-  private $fieldConfigurationRepository;
-  /** @var TranslatorInterface */
-  private $translator;
+  private TagAwareAdapter $cache;
+  private StudyAreaFieldConfigurationRepository $fieldConfigurationRepository;
+  private TranslatorInterface $translator;
 
-  /** @var StudyArea|null */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   public function __construct(
       TranslatorInterface $translator, StudyAreaFieldConfigurationRepository $fieldConfigurationRepository)

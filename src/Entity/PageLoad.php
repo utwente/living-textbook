@@ -20,46 +20,39 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
   use IdTrait;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="user_id", type="string", length=255)
    *
    * @Assert\NotNull()
    * @Assert\NotBlank()
    */
-  private $userId;
+  private ?string $userId = null;
 
   /**
-   * @var DateTime
    *
    * @ORM\Column(name="timestamp", type="datetime")
-   *
    * @Assert\NotNull()
    */
-  private $timestamp;
+  private ?DateTime $timestamp = null;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="session_id", type="guid")
    *
    * @Assert\NotNull()
    * @Assert\NotBlank()
    */
-  private $sessionId;
+  private ?string $sessionId = null;
 
   /**
-   * @var StudyArea
    *
    * @ORM\ManyToOne(targetEntity="StudyArea")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="path", type="string", length=1024)
    *
@@ -67,34 +60,28 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
    * @Assert\NotBlank()
    * @Assert\Length(max=1024)
    */
-  private $path;
+  private ?string $path = null;
 
   /**
-   * @var array|null
    *
    * @ORM\Column(name="path_context", type="array", nullable=true)
-   *
    * @Assert\Type("array")
    */
-  private $pathContext;
+  private ?array $pathContext = null;
 
   /**
-   * @var string|null
    *
    * @ORM\Column(name="origin", type="string", length=1024, nullable=true)
-   *
    * @Assert\Length(max=1024)
    */
-  private $origin;
+  private ?string $origin = null;
 
   /**
-   * @var array|null
    *
    * @ORM\Column(name="origin_context", type="array")
-   *
    * @Assert\Type("array")
    */
-  private $originContext;
+  private ?array $originContext = null;
 
   public function getUserId(): string
   {

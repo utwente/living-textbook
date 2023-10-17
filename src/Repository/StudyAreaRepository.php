@@ -13,10 +13,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class StudyAreaRepository extends ServiceEntityRepository
 {
-  /** @var AuthorizationCheckerInterface */
-  private $auth;
-  /** @var TokenStorageInterface */
-  private $tokenStorage;
+  private AuthorizationCheckerInterface $auth;
+  private TokenStorageInterface $tokenStorage;
 
   public function __construct(
       ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker,

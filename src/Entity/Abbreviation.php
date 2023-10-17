@@ -35,17 +35,14 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
   use ReviewableTrait;
 
   /**
-   * @var StudyArea|null
    *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="abbreviations")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="abbreviation", length=25, nullable=false)
    *
@@ -56,10 +53,9 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $abbreviation;
+  private string $abbreviation = '';
 
   /**
-   * @var string
    * @ORM\Column(name="meaning", length=255, nullable=false)
    *
    * @Assert\NotBlank()
@@ -69,14 +65,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
    * @JMSA\Groups({"Default", "review_change"})
    * @JMSA\Type("string")
    */
-  private $meaning;
-
-  /** Abbreviation constructor. */
-  public function __construct()
-  {
-    $this->abbreviation = '';
-    $this->meaning      = '';
-  }
+  private string $meaning = '';
 
   /** Searches in the abbreviation on the given search, returns an array with search result metadata. */
   public function searchIn(string $search): array

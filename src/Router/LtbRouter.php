@@ -8,8 +8,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class LtbRouter
 {
-  /** @var RouterInterface */
-  private $router;
+  private RouterInterface $router;
 
   public function __construct(RouterInterface $router)
   {

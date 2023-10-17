@@ -31,13 +31,10 @@ class DuplicateType extends AbstractType
   final public const NEW_STUDY_AREA      = 'new_study_area';
   final public const CONCEPTS            = 'concepts';
   final public const SELECT_ALL          = 'select_all';
-  /** @var Security */
-  private $security;
-  /** @var StudyAreaRepository */
-  private $studyAreaRepository;
+  private Security $security;
+  private StudyAreaRepository $studyAreaRepository;
 
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
   public function __construct(
       TranslatorInterface $translator, StudyAreaRepository $studyAreaRepository, Security $security)

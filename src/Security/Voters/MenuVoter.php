@@ -40,20 +40,13 @@ class MenuVoter extends Voter
       self::EXTERNAL_RESOURCES,
       self::LEARNING_OUTCOMES,
   ];
-  /** @var AbbreviationRepository */
-  private $abbreviationRepository;
-  /** @var ConceptRepository */
-  private $conceptRepository;
-  /** @var ContributorRepository */
-  private $contributorRepository;
-  /** @var AccessDecisionManagerInterface */
-  private $decisionManager;
-  /** @var ExternalResourceRepository */
-  private $externalResourceRepository;
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepository;
-  /** @var LearningPathRepository */
-  private $learningPathRepository;
+  private AbbreviationRepository $abbreviationRepository;
+  private ConceptRepository $conceptRepository;
+  private ContributorRepository $contributorRepository;
+  private AccessDecisionManagerInterface $decisionManager;
+  private ExternalResourceRepository $externalResourceRepository;
+  private LearningOutcomeRepository $learningOutcomeRepository;
+  private LearningPathRepository $learningPathRepository;
 
   public function __construct(
       AccessDecisionManagerInterface $decisionManager, ConceptRepository $conceptRepository,

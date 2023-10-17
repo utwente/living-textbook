@@ -31,46 +31,39 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
   ];
 
   /**
-   * @var string
    *
    * @ORM\Column(name="user_id", type="string", length=255)
    *
    * @Assert\NotNull()
    * @Assert\NotBlank()
    */
-  private $userId;
+  private ?string $userId = null;
 
   /**
-   * @var DateTime
    *
    * @ORM\Column(name="timestamp", type="datetime")
-   *
    * @Assert\NotNull()
    */
-  private $timestamp;
+  private ?DateTime $timestamp = null;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="session_id", type="guid")
    *
    * @Assert\NotNull()
    * @Assert\NotBlank()
    */
-  private $sessionId;
+  private ?string $sessionId = null;
 
   /**
-   * @var StudyArea
    *
    * @ORM\ManyToOne(targetEntity="StudyArea")
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    *
    * @ORM\Column(name="event", type="string", length=50)
    *
@@ -78,16 +71,14 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
    * @Assert\Choice(choices=TrackingEvent::SUPPORTED_EVENTS)
    * @Assert\Length(max=50)
    */
-  private $event;
+  private ?string $event = null;
 
   /**
-   * @var array|null
    *
    * @ORM\Column(name="context", type="array", nullable=true)
-   *
    * @Assert\Type("array")
    */
-  private $context;
+  private ?array $context = null;
 
   public function getUserId(): string
   {

@@ -16,11 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptPrint extends LatexBase
 {
-  /** @var Parser */
-  private $parser;
+  private Parser $parser;
 
-  /** @var string */
-  private $baseUrl;
+  private ?string $baseUrl = null;
 
   /**
    * Article constructor, sets defaults.
