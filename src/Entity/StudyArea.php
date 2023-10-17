@@ -11,6 +11,8 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ReadableCollection;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -65,13 +67,13 @@ class StudyArea implements Stringable, IdInterface
   private Collection $concepts;
 
   /**
-   * @var Collection<UserGroup>
+   * @var Collection<UserGroup>&Selectable<UserGroup>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\UserGroup", mappedBy="studyArea", cascade={"persist","remove"})
    *
    * @JMSA\Expose()
    */
-  private Collection $userGroups;
+  private Collection&Selectable $userGroups;
 
   /**
    * @ORM\ManyToOne(targetEntity="User")
@@ -309,8 +311,8 @@ class StudyArea implements Stringable, IdInterface
     return false;
   }
 
-  /** @return Collection<UserGroup> */
-  public function getUserGroups(?string $groupType = null): Collection
+  /** @return ReadableCollection<UserGroup>&Selectable<UserGroup> */
+  public function getUserGroups(?string $groupType = null): ReadableCollection&Selectable
   {
     return $groupType === null ? $this->userGroups : $this->userGroups->matching(
       Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));

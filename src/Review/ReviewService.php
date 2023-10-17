@@ -14,7 +14,6 @@ use App\Repository\PendingChangeRepository;
 use App\Review\Exception\InvalidChangeException;
 use App\Review\Model\PendingChangeObjectInfo;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\OptimisticLockException;
@@ -27,8 +26,8 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -37,33 +36,20 @@ use Throwable;
 
 class ReviewService
 {
-  /** @var EntityManager */
-  private EntityManagerInterface $entityManager;
-  private PendingChangeRepository $pendingChangeRepository;
-  private ReviewNotificationService $reviewNotificationService;
-  private Security $security;
-  /** @var Session */
-  private SessionInterface $session;
-  private TranslatorInterface $translator;
-  private ValidatorInterface $validator;
-
   // Serializer details
   /** @var SerializerInterface|null */
   private static ?Serializer $serializer      = null;
   private const SERIALIZER_FORMAT             = 'json';
 
   public function __construct(
-    EntityManagerInterface $entityManager, PendingChangeRepository $pendingChangeRepository,
-    ReviewNotificationService $reviewNotificationService,
-    ValidatorInterface $validator, SessionInterface $session, TranslatorInterface $translator, Security $security)
+    private readonly EntityManagerInterface $entityManager,
+    private readonly PendingChangeRepository $pendingChangeRepository,
+    private readonly ReviewNotificationService $reviewNotificationService,
+    private readonly ValidatorInterface $validator,
+    private readonly RequestStack $requestStack,
+    private readonly TranslatorInterface $translator,
+    private readonly Security $security)
   {
-    $this->entityManager             = $entityManager;
-    $this->pendingChangeRepository   = $pendingChangeRepository;
-    $this->validator                 = $validator;
-    $this->session                   = $session;
-    $this->translator                = $translator;
-    $this->security                  = $security;
-    $this->reviewNotificationService = $reviewNotificationService;
   }
 
   /**
@@ -374,7 +360,7 @@ class ReviewService
     $this->entityManager->remove($review);
 
     // Flush the changes in a transaction
-    $this->entityManager->transactional(function (EntityManagerInterface $em) {
+    $this->entityManager->wrapInTransaction(function (EntityManagerInterface $em) {
       $em->flush();
     });
 
@@ -539,7 +525,11 @@ class ReviewService
   /** Adds a flash message to the current session for type. */
   private function addFlash(string $type, string $message)
   {
-    $this->session->getFlashBag()->add($type, $message);
+    if (!$request = $this->requestStack->getMainRequest()) {
+      $session = $request->getSession();
+      assert($session instanceof Session);
+      $session->getFlashBag()->add($type, $message);
+    }
   }
 
   /**
