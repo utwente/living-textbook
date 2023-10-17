@@ -25,7 +25,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
   public function getByRelationType(RelationType $relationType): array
   {
     return $this->getByRelationTypeQb($relationType)
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   /**
@@ -38,8 +38,8 @@ class ConceptRelationRepository extends ServiceEntityRepository
   {
     try {
       return $this->getByRelationTypeQb($relationType)
-          ->select('COUNT(cr.id)')
-          ->getQuery()->getSingleScalarResult();
+        ->select('COUNT(cr.id)')
+        ->getQuery()->getSingleScalarResult();
     } catch (NonUniqueResultException) {
       return 0;
     }
@@ -55,37 +55,37 @@ class ConceptRelationRepository extends ServiceEntityRepository
   public function findByConcepts(array $concepts): array
   {
     return $this->createQueryBuilder('cr')
-        ->distinct()
-        ->where('cr.source IN (:concepts)')
-        ->orWhere('cr.target IN (:concepts)')
-        ->setParameter('concepts', $concepts)
-        ->getQuery()->getResult();
+      ->distinct()
+      ->where('cr.source IN (:concepts)')
+      ->orWhere('cr.target IN (:concepts)')
+      ->setParameter('concepts', $concepts)
+      ->getQuery()->getResult();
   }
 
   public function getByRelationTypeQb(RelationType $relationType): QueryBuilder
   {
     return $this->createQueryBuilder('cr')
-        ->join('cr.source', 'c')
-        ->where('cr.relationType = :relationType')
-        ->orderBy('c.name', 'ASC')
-        ->setParameter('relationType', $relationType);
+      ->join('cr.source', 'c')
+      ->where('cr.relationType = :relationType')
+      ->orderBy('c.name', 'ASC')
+      ->setParameter('relationType', $relationType);
   }
 
   public function getByStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('cr')
-        ->join('cr.source', 's')
-        ->join('cr.target', 't')
-        ->where('s.studyArea = :studyArea')
-        ->andWhere('t.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea);
+      ->join('cr.source', 's')
+      ->join('cr.target', 't')
+      ->where('s.studyArea = :studyArea')
+      ->andWhere('t.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea);
   }
 
   /** @return ConceptRelation[] */
   public function getByStudyArea(StudyArea $studyArea): array
   {
     return $this->getByStudyAreaQb($studyArea)
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   /**
@@ -97,7 +97,7 @@ class ConceptRelationRepository extends ServiceEntityRepository
   public function getCountForStudyArea(StudyArea $studyArea): int
   {
     return $this->getByStudyAreaQb($studyArea)
-        ->select('COUNT(cr.id)')
-        ->getQuery()->getSingleScalarResult();
+      ->select('COUNT(cr.id)')
+      ->getQuery()->getSingleScalarResult();
   }
 }

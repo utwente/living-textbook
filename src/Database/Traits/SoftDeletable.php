@@ -9,12 +9,14 @@ trait SoftDeletable
 {
   /**
    * @var DateTime
+   *
    * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
    */
   protected $deletedAt;
 
   /**
    * @var string
+   *
    * @ORM\Column(name="deleted_by", type="string", length=255, nullable=true)
    */
   protected $deletedBy;
@@ -24,7 +26,7 @@ trait SoftDeletable
    *
    * @return $this
    */
-  public function setDeletedAt(DateTime $deletedAt = null)
+  public function setDeletedAt(?DateTime $deletedAt = null)
   {
     $this->deletedAt = $deletedAt;
 

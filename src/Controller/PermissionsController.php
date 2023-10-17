@@ -38,7 +38,9 @@ class PermissionsController extends AbstractController
 {
   /**
    * @Route("/admins")
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
    * @return array
@@ -46,13 +48,15 @@ class PermissionsController extends AbstractController
   public function admins(UserRepository $userRepository)
   {
     return [
-        'admins' => $userRepository->getSuperAdmins(),
+      'admins' => $userRepository->getSuperAdmins(),
     ];
   }
 
   /**
    * @Route("/admin/add")
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function addAdmin(Request $request, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
@@ -73,13 +77,15 @@ class PermissionsController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/admin/{user}/remove", requirements={"user"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
@@ -102,7 +108,7 @@ class PermissionsController extends AbstractController
 
     // Create form
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_permissions_admins',
+      'cancel_route' => 'app_permissions_admins',
     ]);
     $form->handleRequest($request);
 
@@ -117,14 +123,16 @@ class PermissionsController extends AbstractController
     }
 
     return [
-        'admin' => $user,
-        'form'  => $form->createView(),
+      'admin' => $user,
+      'form'  => $form->createView(),
     ];
   }
 
   /**
    * @Route("/studyarea")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @return array
@@ -132,20 +140,22 @@ class PermissionsController extends AbstractController
   public function studyArea(RequestStudyArea $requestStudyArea)
   {
     return [
-        'studyArea' => $requestStudyArea->getStudyArea(),
+      'studyArea' => $requestStudyArea->getStudyArea(),
     ];
   }
 
   /**
    * @Route("/studyarea/add")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
    */
   public function addPermissions(
-      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
-      UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
+    UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -154,7 +164,7 @@ class PermissionsController extends AbstractController
 
     $groupTypes = $studyArea->getAvailableUserGroupTypes();
     $form       = $this->createForm(AddPermissionsType::class, null, [
-        'group_types' => $groupTypes,
+      'group_types' => $groupTypes,
     ]);
     $form->handleRequest($request);
 
@@ -197,21 +207,22 @@ class PermissionsController extends AbstractController
     }
 
     return [
-        'studyArea' => $studyArea,
-        'form'      => $form->createView(),
+      'studyArea' => $studyArea,
+      'form'      => $form->createView(),
     ];
   }
 
   /**
    * @Route("/studyarea/update/{user}/{groupType}", methods={"POST"},
    *   requirements={"user"="\d+", "groupType"="editor|reviewer|analysis"}, options={"expose"=true})
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
    */
   public function updatePermission(
-      Request $request, User $user, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
-      UserGroupRepository $userGroupRepository): JsonResponse
+    Request $request, User $user, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
+    UserGroupRepository $userGroupRepository): JsonResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -234,20 +245,21 @@ class PermissionsController extends AbstractController
     $em->flush();
 
     return new JsonResponse([
-        'value' => $newPermission,
+      'value' => $newPermission,
     ]);
   }
 
   /**
    * @Route("/studyarea/update/{email}/{groupType}", methods={"POST"},
    *   requirements={"groupType"="editor|reviewer|analysis"}, options={"expose"=true})
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
    */
   public function updateEmailPermission(
-      Request $request, string $email, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
-      UserGroupRepository $userGroupRepository): JsonResponse
+    Request $request, string $email, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
+    UserGroupRepository $userGroupRepository): JsonResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -278,17 +290,19 @@ class PermissionsController extends AbstractController
     $em->flush();
 
     return new JsonResponse([
-        'value' => $newPermission,
+      'value' => $newPermission,
     ]);
   }
 
   /**
    * @Route("/studyarea/revoke/all")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    */
   public function removeAllPermissions(
-      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -296,7 +310,7 @@ class PermissionsController extends AbstractController
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_permissions_studyarea',
+      'cancel_route' => 'app_permissions_studyarea',
     ]);
     $form->handleRequest($request);
 
@@ -312,21 +326,23 @@ class PermissionsController extends AbstractController
     }
 
     return [
-        'studyArea' => $studyArea,
-        'form'      => $form->createView(),
+      'studyArea' => $studyArea,
+      'form'      => $form->createView(),
     ];
   }
 
   /**
    * @Route("/studyarea/revoke/all/{groupType}", requirements={"groupType"="viewer|editor|reviewer|analysis"})
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
    */
   public function removeAllPermissionsForType(
-      Request $request, RequestStudyArea $requestStudyArea, string $groupType,
-      EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, string $groupType,
+    EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -344,14 +360,14 @@ class PermissionsController extends AbstractController
 
     if ($notNecessary) {
       $this->addFlash('notice', $trans->trans('permissions.remove-all-not-necessary', [
-          '%type%' => $groupType,
+        '%type%' => $groupType,
       ]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_permissions_studyarea',
+      'cancel_route' => 'app_permissions_studyarea',
     ]);
     $form->handleRequest($request);
 
@@ -383,27 +399,29 @@ class PermissionsController extends AbstractController
       $em->flush();
 
       $this->addFlash('success', $trans->trans('permissions.removed-permissions-type', [
-          '%type%' => $groupType,
+        '%type%' => $groupType,
       ]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
     return [
-        'studyArea' => $studyArea,
-        'type'      => $groupType,
-        'form'      => $form->createView(),
+      'studyArea' => $studyArea,
+      'type'      => $groupType,
+      'form'      => $form->createView(),
     ];
   }
 
   /**
    * @Route("/studyarea/revoke/self")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function removeSelf(
-      Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-      EntityManagerInterface $entityManager): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
+    EntityManagerInterface $entityManager): array|RedirectResponse
   {
     $user = $this->getUser();
     if (!$user) {
@@ -421,8 +439,8 @@ class PermissionsController extends AbstractController
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'remove_label' => 'permissions.remove-self-confirm',
-        'cancel_route' => 'app_default_dashboard',
+      'remove_label' => 'permissions.remove-self-confirm',
+      'cancel_route' => 'app_default_dashboard',
     ]);
 
     $form->handleRequest($request);
@@ -439,18 +457,20 @@ class PermissionsController extends AbstractController
     }
 
     return [
-        'form'      => $form->createView(),
-        'studyArea' => $studyArea,
+      'form'      => $form->createView(),
+      'studyArea' => $studyArea,
     ];
   }
 
   /**
    * @Route("/studyarea/revoke/{user}", requirements={"user"="\d+"})
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    */
   public function removePermissions(
-      Request $request, RequestStudyArea $requestStudyArea, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -461,7 +481,7 @@ class PermissionsController extends AbstractController
     $userGroups = $studyArea->getUserGroups()->filter(fn (UserGroup $userGroup) => $userGroup->getUsers()->contains($user));
     if (count($userGroups) === 0) {
       $this->addFlash('notice', $trans->trans('permissions.remove-not-possible', [
-          '%user%' => $user->getDisplayName(),
+        '%user%' => $user->getDisplayName(),
       ]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
@@ -469,7 +489,7 @@ class PermissionsController extends AbstractController
 
     // Create form
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_permissions_studyarea',
+      'cancel_route' => 'app_permissions_studyarea',
     ]);
     $form->handleRequest($request);
 
@@ -481,26 +501,28 @@ class PermissionsController extends AbstractController
       $em->flush();
 
       $this->addFlash('success', $trans->trans('permissions.removed-permissions', [
-          '%user%' => $user->getDisplayName(),
+        '%user%' => $user->getDisplayName(),
       ]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
     return [
-        'studyArea' => $studyArea,
-        'user'      => $user,
-        'form'      => $form->createView(),
+      'studyArea' => $studyArea,
+      'user'      => $user,
+      'form'      => $form->createView(),
     ];
   }
 
   /**
    * @Route("/studyarea/revoke/{email}")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    */
   public function removeEmailPermissions(
-      Request $request, RequestStudyArea $requestStudyArea, string $email, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, string $email, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -519,7 +541,7 @@ class PermissionsController extends AbstractController
     // Verify whether remove is required
     if (count($userGroupEmails) === 0) {
       $this->addFlash('notice', $trans->trans('permissions.remove-not-possible', [
-          '%user%' => $email,
+        '%user%' => $email,
       ]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
@@ -527,7 +549,7 @@ class PermissionsController extends AbstractController
 
     // Create form
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_permissions_studyarea',
+      'cancel_route' => 'app_permissions_studyarea',
     ]);
     $form->handleRequest($request);
 
@@ -539,16 +561,16 @@ class PermissionsController extends AbstractController
       $em->flush();
 
       $this->addFlash('success', $trans->trans('permissions.removed-permissions', [
-          '%user%' => $email,
+        '%user%' => $email,
       ]));
 
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
     return [
-        'studyArea' => $studyArea,
-        'email'     => $email,
-        'form'      => $form->createView(),
+      'studyArea' => $studyArea,
+      'email'     => $email,
+      'form'      => $form->createView(),
     ];
   }
 }

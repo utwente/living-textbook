@@ -7,7 +7,7 @@ use Throwable;
 
 class VisualisationDependenciesFailed extends Exception
 {
-  public function __construct(string $dependency, Throwable $previous = null)
+  public function __construct(string $dependency, ?Throwable $previous = null)
   {
     parent::__construct(sprintf('Dependency %s failed to build', $dependency), 0, $previous);
   }

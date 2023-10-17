@@ -24,8 +24,8 @@ class HelpRepository extends ServiceEntityRepository
   public function getCurrent(): Help
   {
     return $this->createQueryBuilder('h')
-        ->orderBy('h.createdAt', 'DESC')
-        ->setMaxResults(1)
-        ->getQuery()->getSingleResult();
+      ->orderBy('h.createdAt', 'DESC')
+      ->setMaxResults(1)
+      ->getQuery()->getSingleResult();
   }
 }

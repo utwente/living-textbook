@@ -23,8 +23,8 @@ use Symfony\Component\Security\Core\Security;
 class EditStudyAreaType extends AbstractType
 {
   public function __construct(
-      private readonly Security $security,
-      private readonly EntityManagerInterface $em
+    private readonly Security $security,
+    private readonly EntityManagerInterface $em
   ) {
   }
 
@@ -34,130 +34,130 @@ class EditStudyAreaType extends AbstractType
     assert($studyArea instanceof StudyArea);
     $editing = $studyArea->getId() !== null;
     $builder
-        ->add('name', TextType::class, [
-            'label'      => 'study-area.name',
-            'empty_data' => '',
-        ])
-        ->add('accessType', ChoiceType::class, [
-            'label'                     => 'study-area.access-type',
-            'help'                      => 'study-area.access-type-change-note',
-            'choices'                   => $studyArea->getAvailableAccessTypes($this->security, $this->em),
-            'choice_label'              => fn ($value)              => ucfirst((string)$value),
-            'choice_translation_domain' => false,
-            'select2'                   => true,
-        ]);
+      ->add('name', TextType::class, [
+        'label'      => 'study-area.name',
+        'empty_data' => '',
+      ])
+      ->add('accessType', ChoiceType::class, [
+        'label'                     => 'study-area.access-type',
+        'help'                      => 'study-area.access-type-change-note',
+        'choices'                   => $studyArea->getAvailableAccessTypes($this->security, $this->em),
+        'choice_label'              => fn ($value) => ucfirst((string)$value),
+        'choice_translation_domain' => false,
+        'select2'                   => true,
+      ]);
 
     if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
       $builder
-          ->add('group', EntityType::class, [
-              'required'      => false,
-              'class'         => StudyAreaGroup::class,
-              'label'         => 'study-area.groups.group',
-              'choice_label'  => 'name',
-              'select2'       => true,
-              'query_builder' => fn (StudyAreaGroupRepository $repo) => $repo->createQueryBuilder('sag')
-                  ->orderBy('sag.name', 'ASC'),
-          ]);
+        ->add('group', EntityType::class, [
+          'required'      => false,
+          'class'         => StudyAreaGroup::class,
+          'label'         => 'study-area.groups.group',
+          'choice_label'  => 'name',
+          'select2'       => true,
+          'query_builder' => fn (StudyAreaGroupRepository $repo) => $repo->createQueryBuilder('sag')
+            ->orderBy('sag.name', 'ASC'),
+        ]);
     }
 
     $builder
-        ->add('description', CkEditorType::class, [
-            'label'     => 'study-area.description',
-            'required'  => false,
-            'studyArea' => $studyArea,
-        ])
-        ->add('printHeader', TextType::class, [
-            'label'    => 'study-area.print-header',
-            'help'     => 'study-area.print-header-help',
-            'required' => false,
-        ])
-        ->add('printIntroduction', TextareaType::class, [
-            'label'    => 'study-area.print-introduction',
-            'help'     => 'study-area.print-introduction-help',
-            'required' => false,
-        ]);
+      ->add('description', CkEditorType::class, [
+        'label'     => 'study-area.description',
+        'required'  => false,
+        'studyArea' => $studyArea,
+      ])
+      ->add('printHeader', TextType::class, [
+        'label'    => 'study-area.print-header',
+        'help'     => 'study-area.print-header-help',
+        'required' => false,
+      ])
+      ->add('printIntroduction', TextareaType::class, [
+        'label'    => 'study-area.print-introduction',
+        'help'     => 'study-area.print-introduction-help',
+        'required' => false,
+      ]);
 
     if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
       $builder
-          ->add('openAccess', CheckboxType::class, [
-              'required' => false,
-              'label'    => 'study-area.open-access',
-              'help'     => 'study-area.open-access-help',
-          ])
-          ->add('trackUsers', CheckboxType::class, [
-              'label'    => 'study-area.track-users',
-              'help'     => 'study-area.track-users-help',
-              'required' => false,
-          ])
-          ->add('analyticsDashboardEnabled', CheckboxType::class, [
-              'label'    => 'study-area.analytics-dashboard',
-              'help'     => 'study-area.analytics-dashboard-help',
-              'required' => false,
-          ]);
+        ->add('openAccess', CheckboxType::class, [
+          'required' => false,
+          'label'    => 'study-area.open-access',
+          'help'     => 'study-area.open-access-help',
+        ])
+        ->add('trackUsers', CheckboxType::class, [
+          'label'    => 'study-area.track-users',
+          'help'     => 'study-area.track-users-help',
+          'required' => false,
+        ])
+        ->add('analyticsDashboardEnabled', CheckboxType::class, [
+          'label'    => 'study-area.analytics-dashboard',
+          'help'     => 'study-area.analytics-dashboard-help',
+          'required' => false,
+        ]);
     }
 
     $builder
-        ->add('reviewModeEnabled', CheckboxType::class, [
-            'label'    => 'study-area.review-mode',
-            'help'     => 'study-area.review-mode-help',
-            'required' => false,
-        ])
-        ->add('apiEnabled', CheckboxType::class, [
-            'label'    => 'study-area.api-enabled',
-            'help'     => 'study-area.api-enabled-help',
-            'required' => false,
-        ])
-        ->add('dotron', CheckboxType::class, [
-            'required' => false,
-            'label'    => 'study-area.dotron',
-            'help'     => 'study-area.dotron-help',
-        ]);
+      ->add('reviewModeEnabled', CheckboxType::class, [
+        'label'    => 'study-area.review-mode',
+        'help'     => 'study-area.review-mode-help',
+        'required' => false,
+      ])
+      ->add('apiEnabled', CheckboxType::class, [
+        'label'    => 'study-area.api-enabled',
+        'help'     => 'study-area.api-enabled-help',
+        'required' => false,
+      ])
+      ->add('dotron', CheckboxType::class, [
+        'required' => false,
+        'label'    => 'study-area.dotron',
+        'help'     => 'study-area.dotron-help',
+      ]);
 
     if ($studyArea->getId()) {
       $builder
-          ->add('defaultTagFilter', EntityType::class, [
-              'required'      => false,
-              'label'         => 'study-area.default-tag-filter',
-              'help'          => 'study-area.default-tag-filter-help',
-              'class'         => Tag::class,
-              'choice_label'  => 'name',
-              'select2'       => true,
-              'query_builder' => fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
-          ]);
+        ->add('defaultTagFilter', EntityType::class, [
+          'required'      => false,
+          'label'         => 'study-area.default-tag-filter',
+          'help'          => 'study-area.default-tag-filter-help',
+          'class'         => Tag::class,
+          'choice_label'  => 'name',
+          'select2'       => true,
+          'query_builder' => fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
+        ]);
     }
 
     if (!$options['hide_submit']) {
       $builder
-          ->add('submit', SaveType::class, [
-              'enable_save_and_list' => !$options['save_only'] && $options['save_and_list'],
-              'save_and_list_label'  => 'form.save-and-dashboard',
-              'enable_cancel'        => !$options['save_only'],
-              'cancel_label'         => 'form.discard',
-              'cancel_route'         => $editing ? $options['cancel_route_edit'] : $options['cancel_route'],
-              'cancel_route_params'  => [],
-          ]);
+        ->add('submit', SaveType::class, [
+          'enable_save_and_list' => !$options['save_only'] && $options['save_and_list'],
+          'save_and_list_label'  => 'form.save-and-dashboard',
+          'enable_cancel'        => !$options['save_only'],
+          'cancel_label'         => 'form.discard',
+          'cancel_route'         => $editing ? $options['cancel_route_edit'] : $options['cancel_route'],
+          'cancel_route_params'  => [],
+        ]);
     }
   }
 
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefaults([
-            'data_class'        => StudyArea::class,
-            'save_only'         => false,
-            'save_and_list'     => true,
-            'cancel_route'      => 'app_studyarea_list',
-            'cancel_route_edit' => 'app_default_dashboard',
-            'hide_submit'       => false,
-        ])
-        ->setAllowedTypes('save_only', 'bool')
-        ->setAllowedTypes('save_and_list', 'bool')
-        ->setRequired('studyArea')
-        ->setAllowedTypes('studyArea', StudyArea::class)
-        ->setAllowedTypes('cancel_route', 'string')
-        ->setAllowedTypes('cancel_route_edit', 'string')
-        ->setRequired('select_owner')
-        ->setAllowedTypes('select_owner', 'bool')
-        ->setAllowedTypes('hide_submit', 'bool');
+      ->setDefaults([
+        'data_class'        => StudyArea::class,
+        'save_only'         => false,
+        'save_and_list'     => true,
+        'cancel_route'      => 'app_studyarea_list',
+        'cancel_route_edit' => 'app_default_dashboard',
+        'hide_submit'       => false,
+      ])
+      ->setAllowedTypes('save_only', 'bool')
+      ->setAllowedTypes('save_and_list', 'bool')
+      ->setRequired('studyArea')
+      ->setAllowedTypes('studyArea', StudyArea::class)
+      ->setAllowedTypes('cancel_route', 'string')
+      ->setAllowedTypes('cancel_route_edit', 'string')
+      ->setRequired('select_owner')
+      ->setAllowedTypes('select_owner', 'bool')
+      ->setAllowedTypes('hide_submit', 'bool');
   }
 }

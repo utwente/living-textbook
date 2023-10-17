@@ -13,10 +13,10 @@ use Doctrine\Migrations\AbstractMigration;
 final class Version20220704130200 extends AbstractMigration
 {
   private const COLUMNS = [
-      'concept'               => 'dotron_config',
-      'concept_relation'      => 'dotron_config',
-      'study_area'            => 'dotron_config',
-      'styling_configuration' => 'stylings',
+    'concept'               => 'dotron_config',
+    'concept_relation'      => 'dotron_config',
+    'study_area'            => 'dotron_config',
+    'styling_configuration' => 'stylings',
   ];
 
   public function getDescription(): string

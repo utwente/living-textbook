@@ -8,9 +8,9 @@ use OpenApi\Attributes\Schema;
 class CreateConceptRelationApiModel
 {
   protected function __construct(
-      protected readonly int $sourceId,
-      protected readonly int $targetId,
-      protected readonly int $relationTypeId,
+    protected readonly int $sourceId,
+    protected readonly int $targetId,
+    protected readonly int $relationTypeId,
   ) {
   }
 

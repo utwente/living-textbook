@@ -32,7 +32,9 @@ class AnalyticsController extends AbstractController
    * The analytics dashboard.
    *
    * @Route("/")
+   *
    * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
+   *
    * @Template()
    *
    * @return array
@@ -40,11 +42,11 @@ class AnalyticsController extends AbstractController
   public function dashboard(RequestStudyArea $requestStudyArea)
   {
     $form = $this->createForm(LearningPathAnalyticsType::class, new LearningPathVisualisationRequest(), [
-        'study_area' => $requestStudyArea->getStudyArea(),
+      'study_area' => $requestStudyArea->getStudyArea(),
     ]);
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 
@@ -52,18 +54,19 @@ class AnalyticsController extends AbstractController
    * Generate the analytics.
    *
    * @Route("/generate", methods={"POST"}, options={"expose"=true})
+   *
    * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
    *
    * @throws VisualisationBuildFailed
    * @throws VisualisationDependenciesFailed
    */
   public function generate(
-      Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
-      SerializerInterface $serializer): JsonResponse
+    Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
+    SerializerInterface $serializer): JsonResponse
   {
     $data = new LearningPathVisualisationRequest();
     $form = $this->createForm(LearningPathAnalyticsType::class, $data, [
-        'study_area' => $requestStudyArea->getStudyArea(),
+      'study_area' => $requestStudyArea->getStudyArea(),
     ]);
     $form->handleRequest($request);
 
@@ -91,12 +94,14 @@ class AnalyticsController extends AbstractController
 
   /**
    * @Route("/synthesize")
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
+   *
    * @Template
    */
   public function synthesize(
-      Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
-      TranslatorInterface $translator, LearningPathRepository $learningPathRepository)
+    Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
+    TranslatorInterface $translator, LearningPathRepository $learningPathRepository)
   {
     if ($learningPathRepository->getCountForStudyArea($requestStudyArea->getStudyArea()) === 0) {
       $this->addFlash('error', $translator->trans('analytics.synthesize-not-possible'));
@@ -117,7 +122,7 @@ class AnalyticsController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 }

@@ -17,9 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ConceptRelationRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class ConceptRelation implements IdInterface
@@ -29,43 +31,52 @@ class ConceptRelation implements IdInterface
   use SoftDeletable;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="Concept", inversedBy="outgoingRelations")
+   *
    * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type(Concept::class)
+   *
    * @JMSA\MaxDepth(2)
    */
   private ?Concept $source = null;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="Concept", inversedBy="incomingRelations")
+   *
    * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type(Concept::class)
+   *
    * @JMSA\MaxDepth(2)
    */
   private ?Concept $target = null;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="RelationType")
+   *
    * @ORM\JoinColumn(name="relation_type", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type(RelationType::class)
+   *
    * @JMSA\MaxDepth(2)
    */
   private ?RelationType $relationType = null;
@@ -74,10 +85,10 @@ class ConceptRelation implements IdInterface
    * The position field will be filled automatically by a callback in the concept,
    * in order to force the desired positioning.
    *
-   *
    * @ORM\Column(name="outgoing_position", type="integer", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\GreaterThanOrEqual(value="0")
    */
   private int $outgoingPosition = 0;
@@ -86,10 +97,10 @@ class ConceptRelation implements IdInterface
    * The position field will be filled automatically by a callback in the concept,
    * in order to force the desired positioning.
    *
-   *
    * @ORM\Column(name="incoming_position", type="integer", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\GreaterThanOrEqual(value="0")
    */
   private int $incomingPosition = 0;
@@ -99,7 +110,9 @@ class ConceptRelation implements IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\SerializedName("target")
+   *
    * @JMSA\Expose()
    */
   public function getTargetId(): ?int
@@ -114,6 +127,7 @@ class ConceptRelation implements IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getRelationName(): string

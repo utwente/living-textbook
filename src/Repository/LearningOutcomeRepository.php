@@ -20,23 +20,23 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   /** @return LearningOutcome[] */
   public function findForStudyAreaOrderedByName(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->orderBy('lo.name', 'ASC')
-        ->getQuery()->getResult();
+      ->orderBy('lo.name', 'ASC')
+      ->getQuery()->getResult();
   }
 
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('lo')
-        ->where('lo.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('lo.number', 'ASC');
+      ->where('lo.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->orderBy('lo.number', 'ASC');
   }
 
   /**
@@ -47,38 +47,30 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   public function findForConcepts(array $concepts)
   {
     return $this->createQueryBuilder('lo')
-        ->distinct()
-        ->leftJoin('lo.concepts', 'c')
-        ->where('c IN (:concepts)')
-        ->setParameter('concepts', $concepts)
-        ->getQuery()->getResult();
+      ->distinct()
+      ->leftJoin('lo.concepts', 'c')
+      ->where('c IN (:concepts)')
+      ->setParameter('concepts', $concepts)
+      ->getQuery()->getResult();
   }
 
-  /**
-   * @throws NonUniqueResultException
-   *
-   * @return mixed
-   */
+  /** @throws NonUniqueResultException */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('lo')
-        ->select('COUNT(lo.id)')
-        ->where('lo.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getSingleScalarResult();
+      ->select('COUNT(lo.id)')
+      ->where('lo.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->getSingleScalarResult();
   }
 
-  /**
-   * Find the concepts ids used in every learning outcome in the given study area.
-   *
-   * @return mixed
-   */
+  /** Find the concepts ids used in every learning outcome in the given study area. */
   public function findUsedConceptIdsForStudyArea(StudyArea $studyArea)
   {
     $result = $this->findForStudyAreaQb($studyArea)
-        ->innerJoin('lo.concepts', 'c')
-        ->select('lo.id, c.id AS cid')
-        ->getQuery()->getResult();
+      ->innerJoin('lo.concepts', 'c')
+      ->select('lo.id, c.id AS cid')
+      ->getQuery()->getResult();
 
     $return = [];
     array_walk($result, function ($item) use (&$return) {
@@ -95,14 +87,12 @@ class LearningOutcomeRepository extends ServiceEntityRepository
    * Find the next unused learning outcome number in a study area.
    *
    * @throws NonUniqueResultException
-   *
-   * @return mixed
    */
   public function findUnusedNumberInStudyArea(StudyArea $studyArea)
   {
     $highestNumber = $this->findForStudyAreaQb($studyArea)
-        ->select('MAX(lo.number)')
-        ->getQuery()->getSingleScalarResult();
+      ->select('MAX(lo.number)')
+      ->getQuery()->getSingleScalarResult();
 
     return ++$highestNumber;
   }
@@ -115,9 +105,9 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   public function findUnusedInStudyArea(StudyArea $studyArea): array
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->leftJoin('lo.concepts', 'c')
-        ->having('COUNT(c.id) = 0')
-        ->groupBy('lo.id')
-        ->getQuery()->getResult();
+      ->leftJoin('lo.concepts', 'c')
+      ->having('COUNT(c.id) = 0')
+      ->groupBy('lo.id')
+      ->getQuery()->getResult();
   }
 }

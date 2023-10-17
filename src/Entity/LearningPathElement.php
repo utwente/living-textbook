@@ -15,9 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class LearningPathConcept.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathElementRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class LearningPathElement implements IdInterface
@@ -29,9 +31,10 @@ class LearningPathElement implements IdInterface
   /**
    * Belongs to a certain learning path.
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\LearningPath", inversedBy="elements")
+   *
    * @ORM\JoinColumn(name="learning_path_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?LearningPath $learningPath = null;
@@ -39,15 +42,18 @@ class LearningPathElement implements IdInterface
   /**
    * Linked concept.
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\Concept")
+   *
    * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type(Concept::class)
+   *
    * @JMSA\MaxDepth(2)
    */
   private ?Concept $concept = null;
@@ -55,13 +61,16 @@ class LearningPathElement implements IdInterface
   /**
    * Transition to the next element, if any.
    *
-   *
    * @ORM\ManyToOne(targetEntity="LearningPathElement")
+   *
    * @ORM\JoinColumn(name="next_id", referencedColumnName="id", nullable=true)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type(LearningPathElement::class)
+   *
    * @JMSA\MaxDepth(2)
    */
   private ?LearningPathElement $next = null;
@@ -69,12 +78,14 @@ class LearningPathElement implements IdInterface
   /**
    * Optional description of the transition to the next element.
    *
-   *
    * @ORM\Column(type="string", length=1024, nullable=true)
+   *
    * @Assert\Length(max=1024)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default","review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $description = null;
@@ -110,8 +121,11 @@ class LearningPathElement implements IdInterface
 
   /**
    * @JMSA\Expose()
+   *
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\SerializedName("next")
+   *
    * @JMSA\Groups({"Default"})
    */
   public function getNextId(): ?int

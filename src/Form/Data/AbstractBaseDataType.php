@@ -13,10 +13,10 @@ abstract class AbstractBaseDataType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'label'      => false,
-        'required'   => true,
-        'hide_label' => true,
-        'ckeditor'   => true,
+      'label'      => false,
+      'required'   => true,
+      'hide_label' => true,
+      'ckeditor'   => true,
     ]);
     $resolver->setAllowedTypes('label', ['string', 'bool']);
     $resolver->setAllowedTypes('required', ['bool']);

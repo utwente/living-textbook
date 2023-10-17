@@ -14,17 +14,17 @@ class EditHelpType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('content', CKEditorType::class, [
-            'label'       => 'help.content',
-            'required'    => true,
-            'config_name' => 'ltb_help',
-        ])
-        ->add('submit', SaveType::class, [
-            'enable_cancel'        => true,
-            'enable_save_and_list' => false,
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_help_index',
-        ]);
+      ->add('content', CKEditorType::class, [
+        'label'       => 'help.content',
+        'required'    => true,
+        'config_name' => 'ltb_help',
+      ])
+      ->add('submit', SaveType::class, [
+        'enable_cancel'        => true,
+        'enable_save_and_list' => false,
+        'cancel_label'         => 'form.discard',
+        'cancel_route'         => 'app_help_index',
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)

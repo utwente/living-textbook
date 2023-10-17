@@ -65,7 +65,7 @@ abstract class LtbSection extends Section
   protected function addSection(string $title, string $html)
   {
     // See https://tex.stackexchange.com/a/282/110054
-    $this->addElement((new CustomCommand('\\FloatBarrier')));
+    $this->addElement(new CustomCommand('\\FloatBarrier'));
     $this->addElement((new SubSection($title))->addElement(new CustomCommand($this->convertHtmlToLatex($html))));
   }
 
@@ -157,8 +157,8 @@ abstract class LtbSection extends Section
           // Retrieve relevant information
           $latex                  = $imgElement->getAttribute('alt');
           $inlineLatexImages[$id] = [
-              'replace' => urldecode($latex),
-              'caption' => '',
+            'replace' => urldecode($latex),
+            'caption' => '',
           ];
         } elseif ($isLatex) {
           if (!$imgElement->hasAttribute('alt')) {
@@ -168,8 +168,8 @@ abstract class LtbSection extends Section
           // Retrieve relevant information
           $latex            = $imgElement->getAttribute('alt');
           $latexImages[$id] = [
-              'replace' => urldecode($latex),
-              'caption' => $caption,
+            'replace' => urldecode($latex),
+            'caption' => $caption,
           ];
         } elseif ($isImage) {
           if (!$imgElement->hasAttribute('src')) {
@@ -179,8 +179,8 @@ abstract class LtbSection extends Section
           // Retrieve relevant information
           $image             = $imgElement->getAttribute('src');
           $normalImages[$id] = [
-              'replace' => preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s%spublic$1', $this->projectDir, DIRECTORY_SEPARATOR), $image),
-              'caption' => $caption,
+            'replace' => preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s%spublic$1', $this->projectDir, DIRECTORY_SEPARATOR), $image),
+            'caption' => $caption,
           ];
         }
 

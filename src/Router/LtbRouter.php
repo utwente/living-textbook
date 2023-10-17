@@ -30,7 +30,7 @@ class LtbRouter
   public function generateBrowserUrlForPath(string $path): string
   {
     return $this->router->generate('_home_simple', [
-        'pageUrl' => ltrim($path, '/'),
+      'pageUrl' => ltrim($path, '/'),
     ], RouterInterface::ABSOLUTE_URL);
   }
 

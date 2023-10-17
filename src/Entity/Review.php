@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Review.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ReviewRepository")
  */
 class Review implements IdInterface
@@ -23,9 +24,10 @@ class Review implements IdInterface
   use Blameable;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
@@ -36,9 +38,11 @@ class Review implements IdInterface
    * @var Collection<PendingChange>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\PendingChange", mappedBy="review", cascade={"remove"})
+   *
    * @ORM\OrderBy({"objectType" = "ASC", "changeType" = "ASC"})
    *
    * @Assert\NotNull()
+   *
    * @Assert\Count(min=1)
    */
   private Collection $pendingChanges;
@@ -46,9 +50,10 @@ class Review implements IdInterface
   /**
    * The owner of the pending change (aka, the user who created it).
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?User $owner = null;
@@ -56,8 +61,8 @@ class Review implements IdInterface
   /**
    * Notes left for the reviewer, if any.
    *
-   *
    * @ORM\Column(type="text", nullable=true)
+   *
    * @Assert\Length(max=2000)
    */
   private ?string $notes = null;
@@ -65,10 +70,10 @@ class Review implements IdInterface
   /**
    * Requested datetime.
    *
-   *
    * @ORM\Column(type="datetime")
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("datetime")
    */
   private ?DateTime $requestedReviewAt = null;
@@ -76,9 +81,10 @@ class Review implements IdInterface
   /**
    * The requested reviewer.
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?User $requestedReviewBy = null;
@@ -86,8 +92,8 @@ class Review implements IdInterface
   /**
    * Reviewed at datetime.
    *
-   *
    * @ORM\Column(type="datetime", nullable=true)
+   *
    * @Assert\Type("datetime")
    */
   private ?DateTime $reviewedAt = null;
@@ -95,8 +101,8 @@ class Review implements IdInterface
   /**
    * Approved by, can be different than the requested reviewer.
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?User $reviewedBy = null;
@@ -104,8 +110,8 @@ class Review implements IdInterface
   /**
    * Approval datetime.
    *
-   *
    * @ORM\Column(type="datetime", nullable=true)
+   *
    * @Assert\Type("datetime")
    */
   private ?DateTime $approvedAt = null;
@@ -113,8 +119,8 @@ class Review implements IdInterface
   /**
    * Approved by, can be different than the requested reviewer.
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?User $approvedBy = null;

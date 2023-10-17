@@ -44,9 +44,9 @@ class WordCountValidator extends ConstraintValidator
 
     // Build violation
     $this->context->buildViolation($message, [
-        '%min%'   => $constraint->min,
-        '%max%'   => $constraint->max,
-        '%count%' => $count,
+      '%min%'   => $constraint->min,
+      '%max%'   => $constraint->max,
+      '%count%' => $count,
     ])->addViolation();
   }
 }

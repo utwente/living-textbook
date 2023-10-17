@@ -21,7 +21,7 @@ class RelationProvider implements ProviderInterface
   private SpreadsheetHelper $spreadsheetHelper;
 
   public function __construct(ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-                              RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)
+    RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)
   {
     $this->conceptRepository         = $conceptRepository;
     $this->conceptRelationRepository = $conceptRelationRepository;
@@ -29,13 +29,11 @@ class RelationProvider implements ProviderInterface
     $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
-  /** {@inheritdoc} */
   public function getName(): string
   {
     return 'relation';
   }
 
-  /** {@inheritdoc} */
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -85,10 +83,9 @@ EOT;
     return $spreadSheet;
   }
 
-  /** {@inheritdoc} */
   public function export(StudyArea $studyArea): Response
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadsheet($studyArea),
-        sprintf('%s_concept_relation_export.csv', $studyArea->getName()));
+      sprintf('%s_concept_relation_export.csv', $studyArea->getName()));
   }
 }

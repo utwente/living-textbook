@@ -18,7 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserGroupRepository")
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -34,18 +36,19 @@ class UserGroup implements IdInterface
   final public const GROUP_ANALYSIS = 'analysis';
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea", inversedBy="userGroups")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
 
   /**
-   *
    * @ORM\Column(name="group_type", type="string", length=10, nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Choice(callback="getGroupTypes")
    */
   private string $groupType = self::GROUP_VIEWER;
@@ -54,6 +57,7 @@ class UserGroup implements IdInterface
    * @var Collection<User>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userGroups", fetch="EAGER")
+   *
    * @ORM\JoinTable(name="user_group_users",
    *   joinColumns={@ORM\JoinColumn(name="user_group_id", referencedColumnName="id")},
    *   inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}

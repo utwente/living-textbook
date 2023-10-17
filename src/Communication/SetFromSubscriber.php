@@ -19,7 +19,7 @@ class SetFromSubscriber implements EventSubscriberInterface
   public static function getSubscribedEvents()
   {
     return [
-        MessageEvent::class => 'onMessage',
+      MessageEvent::class => 'onMessage',
     ];
   }
 

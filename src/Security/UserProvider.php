@@ -64,7 +64,7 @@ class UserProvider implements OidcUserProviderInterface
   public function loadUserByIdentifier(string $identifier, bool $isOidc = false): UserInterface
   {
     $user = $this->em->getRepository(User::class)
-        ->findOneBy(['username' => $identifier, 'isOidc' => $isOidc]);
+      ->findOneBy(['username' => $identifier, 'isOidc' => $isOidc]);
 
     if (!$user) {
       throw new UserNotFoundException();

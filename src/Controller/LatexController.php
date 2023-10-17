@@ -31,6 +31,7 @@ class LatexController extends AbstractController
 {
   /**
    * @Route("/render", methods={"GET"}, options={"expose"=true,"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws InvalidArgumentException
@@ -66,10 +67,10 @@ class LatexController extends AbstractController
       try {
         // Create latex object
         $document = (new Standalone(md5($content)))
-            ->addPackages(['mathtools', 'amssymb', 'esint'])
-            ->addElement(new CustomCommand('\\begin{displaymath}'))
-            ->addElement(new CustomCommand($content))
-            ->addElement(new CustomCommand('\\end{displaymath}'));
+          ->addPackages(['mathtools', 'amssymb', 'esint'])
+          ->addElement(new CustomCommand('\\begin{displaymath}'))
+          ->addElement(new CustomCommand($content))
+          ->addElement(new CustomCommand('\\end{displaymath}'));
 
         // Generate pdf output
         $pdfLocation = $generator->generate($document);
@@ -83,8 +84,8 @@ class LatexController extends AbstractController
         $pdf->saveImage($imageLocation);
       } catch (Exception) {
         $imageLocation = sprintf('%s/%s',
-            $this->getParameter('kernel.project_dir'),
-            'public/img/latex/error.jpg');
+          $this->getParameter('kernel.project_dir'),
+          'public/img/latex/error.jpg');
 
         // Do not really store it in the cache
         $item->expiresAfter(0);

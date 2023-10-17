@@ -23,9 +23,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class StudyArea implements Stringable, IdInterface
@@ -41,7 +43,9 @@ class StudyArea implements Stringable, IdInterface
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
+   *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
@@ -71,6 +75,7 @@ class StudyArea implements Stringable, IdInterface
 
   /**
    * @ORM\ManyToOne(targetEntity="User")
+   *
    * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -81,6 +86,7 @@ class StudyArea implements Stringable, IdInterface
    * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @StudyAreaAccessType()
    */
   private string $accessType = self::ACCESS_PRIVATE;
@@ -153,6 +159,7 @@ class StudyArea implements Stringable, IdInterface
    * @ORM\Column(name="track_users", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("bool")
    */
   private bool $trackUsers = false;
@@ -161,6 +168,7 @@ class StudyArea implements Stringable, IdInterface
    * Group.
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?StudyAreaGroup $group = null;
@@ -197,6 +205,7 @@ class StudyArea implements Stringable, IdInterface
    * The study area field names object.
    *
    * @ORM\OneToOne(targetEntity="App\Entity\StudyAreaFieldConfiguration", cascade={"all"})
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?StudyAreaFieldConfiguration $fieldConfiguration = null;
@@ -205,6 +214,7 @@ class StudyArea implements Stringable, IdInterface
    * A default tag filter for the browser.
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?Tag $defaultTagFilter = null;
@@ -246,14 +256,14 @@ class StudyArea implements Stringable, IdInterface
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {
       $context->buildViolation('study-area.api-and-review-mode-enabled')
-          ->atPath('apiEnabled')
-          ->addViolation();
+        ->atPath('apiEnabled')
+        ->addViolation();
     }
 
     if ($this->dotron && !$this->apiEnabled) {
       $context->buildViolation('study-area.api-disabled-and-dotron-enabled')
-          ->atPath('dotron')
-          ->addViolation();
+        ->atPath('dotron')
+        ->addViolation();
     }
   }
 
@@ -288,7 +298,7 @@ class StudyArea implements Stringable, IdInterface
   }
 
   /** Check whether the user is in a certain or one of the groups */
-  public function isUserInGroup(User $user, string $groupType = null): bool
+  public function isUserInGroup(User $user, ?string $groupType = null): bool
   {
     foreach ($this->getUserGroups($groupType) as $userGroup) {
       if ($userGroup->getUsers()->contains($user)) {
@@ -300,10 +310,10 @@ class StudyArea implements Stringable, IdInterface
   }
 
   /** @return Collection<UserGroup> */
-  public function getUserGroups(string $groupType = null): Collection
+  public function getUserGroups(?string $groupType = null): Collection
   {
     return $groupType === null ? $this->userGroups : $this->userGroups->matching(
-        Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
+      Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
   }
 
   /**

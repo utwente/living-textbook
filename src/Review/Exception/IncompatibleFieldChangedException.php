@@ -11,6 +11,6 @@ class IncompatibleFieldChangedException extends Exception
   public function __construct(ReviewableInterface $object, string $changedField)
   {
     parent::__construct(sprintf('The changed field "%s" is not compatible with the object "%s"',
-        $changedField, $object->getReviewName()));
+      $changedField, $object->getReviewName()));
   }
 }

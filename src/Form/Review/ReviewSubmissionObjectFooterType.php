@@ -47,7 +47,7 @@ class ReviewSubmissionObjectFooterType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setRequired('pending_change')
-        ->setAllowedTypes('pending_change', PendingChange::class);
+      ->setRequired('pending_change')
+      ->setAllowedTypes('pending_change', PendingChange::class);
   }
 }

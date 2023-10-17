@@ -33,12 +33,12 @@ class MenuVoter extends Voter
   final public const EXTERNAL_RESOURCES   = 'MENU_EXTERNAL_RESOURCES';
   final public const LEARNING_OUTCOMES    = 'MENU_LEARNING_OUTCOMES';
   final public const SUPPORTED_ATTRIBUTES = [
-      self::CONCEPTS,
-      self::LEARNING_PATHS,
-      self::ABBREVIATIONS,
-      self::CONTRIBUTORS,
-      self::EXTERNAL_RESOURCES,
-      self::LEARNING_OUTCOMES,
+    self::CONCEPTS,
+    self::LEARNING_PATHS,
+    self::ABBREVIATIONS,
+    self::CONTRIBUTORS,
+    self::EXTERNAL_RESOURCES,
+    self::LEARNING_OUTCOMES,
   ];
   private AbbreviationRepository $abbreviationRepository;
   private ConceptRepository $conceptRepository;
@@ -49,10 +49,10 @@ class MenuVoter extends Voter
   private LearningPathRepository $learningPathRepository;
 
   public function __construct(
-      AccessDecisionManagerInterface $decisionManager, ConceptRepository $conceptRepository,
-      LearningPathRepository $learningPathRepository, AbbreviationRepository $abbreviationRepository,
-      ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
-      LearningOutcomeRepository $learningOutcomeRepository)
+    AccessDecisionManagerInterface $decisionManager, ConceptRepository $conceptRepository,
+    LearningPathRepository $learningPathRepository, AbbreviationRepository $abbreviationRepository,
+    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
+    LearningOutcomeRepository $learningOutcomeRepository)
   {
     $this->decisionManager            = $decisionManager;
     $this->conceptRepository          = $conceptRepository;
@@ -63,7 +63,6 @@ class MenuVoter extends Voter
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
   }
 
-  /** {@inheritDoc} */
   protected function supports($attribute, $subject)
   {
     if (!in_array($attribute, self::SUPPORTED_ATTRIBUTES)) {
@@ -77,11 +76,7 @@ class MenuVoter extends Voter
     return true;
   }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
   {
     // Always allow users who can edit the area
@@ -113,13 +108,13 @@ class MenuVoter extends Voter
     assert($subject instanceof StudyArea);
 
     return match ($attribute) {
-      self::CONCEPTS             => $this->conceptRepository->getCountForStudyArea($subject) > 0,
-        self::LEARNING_PATHS     => $this->learningPathRepository->getCountForStudyArea($subject) > 0,
-        self::ABBREVIATIONS      => $this->abbreviationRepository->getCountForStudyArea($subject) > 0,
-        self::CONTRIBUTORS       => $this->contributorRepository->getCountForStudyArea($subject) > 0,
-        self::EXTERNAL_RESOURCES => $this->externalResourceRepository->getCountForStudyArea($subject) > 0,
-        self::LEARNING_OUTCOMES  => $this->learningOutcomeRepository->getCountForStudyArea($subject) > 0,
-        default                  => throw new RuntimeException('This code should not be reached!'),
+      self::CONCEPTS           => $this->conceptRepository->getCountForStudyArea($subject) > 0,
+      self::LEARNING_PATHS     => $this->learningPathRepository->getCountForStudyArea($subject) > 0,
+      self::ABBREVIATIONS      => $this->abbreviationRepository->getCountForStudyArea($subject) > 0,
+      self::CONTRIBUTORS       => $this->contributorRepository->getCountForStudyArea($subject) > 0,
+      self::EXTERNAL_RESOURCES => $this->externalResourceRepository->getCountForStudyArea($subject) > 0,
+      self::LEARNING_OUTCOMES  => $this->learningOutcomeRepository->getCountForStudyArea($subject) > 0,
+      default                  => throw new RuntimeException('This code should not be reached!'),
     };
   }
 }

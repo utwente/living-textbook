@@ -31,12 +31,15 @@ class AbbreviationController extends AbstractController
 {
   /**
    * @Route("/add")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -59,13 +62,14 @@ class AbbreviationController extends AbstractController
     }
 
     return [
-        'abbreviation' => $abbreviation,
-        'form'         => $form->createView(),
+      'abbreviation' => $abbreviation,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/data", options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return JsonResponse
@@ -84,13 +88,16 @@ class AbbreviationController extends AbstractController
 
   /**
    * @Route("/edit/{abbreviation}", requirements={"abbreviation"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    */
   public function edit(
-      Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
-      TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
+    TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -102,7 +109,7 @@ class AbbreviationController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $abbreviation)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-          '%item%' => $trans->trans('abbreviation._name'),
+        '%item%' => $trans->trans('abbreviation._name'),
       ]));
 
       return $this->redirectToRoute('app_abbreviation_list');
@@ -113,8 +120,8 @@ class AbbreviationController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditAbbreviationType::class, $abbreviation, [
-        'studyArea'           => $studyArea,
-        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $abbreviation),
+      'studyArea'           => $studyArea,
+      'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $abbreviation),
     ]);
     $form->handleRequest($request);
 
@@ -130,14 +137,16 @@ class AbbreviationController extends AbstractController
     }
 
     return [
-        'abbreviation' => $abbreviation,
-        'form'         => $form->createView(),
+      'abbreviation' => $abbreviation,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/list")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
@@ -145,20 +154,23 @@ class AbbreviationController extends AbstractController
   public function list(RequestStudyArea $requestStudyArea, AbbreviationRepository $repo)
   {
     return [
-        'studyArea'     => $requestStudyArea->getStudyArea(),
-        'abbreviations' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
+      'studyArea'     => $requestStudyArea->getStudyArea(),
+      'abbreviations' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{abbreviation}", requirements={"abbreviation"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
    */
   public function remove(
-      Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
-      TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
+    TranslatorInterface $trans): array|Response
   {
     $studyArea = $abbreviation->getStudyArea();
 
@@ -170,14 +182,14 @@ class AbbreviationController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $abbreviation)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-          '%item%' => $trans->trans('abbreviation._name'),
+        '%item%' => $trans->trans('abbreviation._name'),
       ]));
 
       return $this->redirectToRoute('app_abbreviation_list');
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_abbreviation_list',
+      'cancel_route' => 'app_abbreviation_list',
     ]);
     $form->handleRequest($request);
 
@@ -190,8 +202,8 @@ class AbbreviationController extends AbstractController
     }
 
     return [
-        'abbreviation' => $abbreviation,
-        'form'         => $form->createView(),
+      'abbreviation' => $abbreviation,
+      'form'         => $form->createView(),
     ];
   }
 }

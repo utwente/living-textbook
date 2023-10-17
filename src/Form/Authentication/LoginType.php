@@ -13,23 +13,23 @@ class LoginType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('_username', TextType::class, [
-            'label' => 'login.username',
-        ])
-        ->add('_password', PasswordType::class, [
-            'label' => 'login.password',
-            'attr'  => [
-                'autocomplete' => false,
-            ],
-        ])
-        ->add('submit', SaveType::class, [
-            'save_label'           => 'login.login',
-            'cancel_label'         => 'auth.forgot-password',
-            'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_route'         => 'app_authentication_resetpassword',
-            'cancel_icon'          => 'fa-question',
-            'cancel_btn_class'     => 'btn btn-outline-secondary',
-        ]);
+      ->add('_username', TextType::class, [
+        'label' => 'login.username',
+      ])
+      ->add('_password', PasswordType::class, [
+        'label' => 'login.password',
+        'attr'  => [
+          'autocomplete' => false,
+        ],
+      ])
+      ->add('submit', SaveType::class, [
+        'save_label'           => 'login.login',
+        'cancel_label'         => 'auth.forgot-password',
+        'enable_save_and_list' => false,
+        'enable_cancel'        => true,
+        'cancel_route'         => 'app_authentication_resetpassword',
+        'cancel_icon'          => 'fa-question',
+        'cancel_btn_class'     => 'btn btn-outline-secondary',
+      ]);
   }
 }

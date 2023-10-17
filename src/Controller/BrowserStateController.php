@@ -24,11 +24,12 @@ class BrowserStateController extends AbstractController
    * Retrieve the current filter state.
    *
    * @Route("/filter", methods={"GET"}, options={"expose"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function filterState(
-      RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
-      SerializerInterface $serializer): Response
+    RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
+    SerializerInterface $serializer): Response
   {
     if (!$user = $this->getUser()) {
       return new Response(null, Response::HTTP_FORBIDDEN);
@@ -46,11 +47,12 @@ class BrowserStateController extends AbstractController
    * Stores the current filter state.
    *
    * @Route("/filter", methods={"POST"}, options={"expose"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function storeFilterState(
-      Request $request, RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
-      SerializerInterface $serializer, EntityManagerInterface $em): Response
+    Request $request, RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
+    SerializerInterface $serializer, EntityManagerInterface $em): Response
   {
     if (!$user = $this->getUser()) {
       return new Response(null, Response::HTTP_FORBIDDEN);
@@ -59,8 +61,8 @@ class BrowserStateController extends AbstractController
 
     if (!$state = $repository->findForUser($user, $requestStudyArea->getStudyArea())) {
       $state = (new UserBrowserState())
-          ->setUser($user)
-          ->setStudyArea($requestStudyArea->getStudyArea());
+        ->setUser($user)
+        ->setStudyArea($requestStudyArea->getStudyArea());
     }
 
     $state->setFilterState($serializer->deserialize($request->getContent(), 'array', 'json'));

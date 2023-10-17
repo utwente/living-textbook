@@ -32,32 +32,27 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
     $this->appVersion        = sprintf('%s+%s', $parameterBag->get('app_version'), $parameterBag->get('commit_hash'));
   }
 
-  /** {@inheritdoc} */
   public function isProductionEnvironment(): bool
   {
     return $this->productionServer && $this->exceptionSender && $this->exceptionReceiver;
   }
 
-  /** {@inheritdoc} */
   public function getBacktraceFolder(): string
   {
     return $this->cacheDir . '/exception_handler';
   }
 
-  /** {@inheritdoc} */
   public function getSender()
   {
     return new Address($this->exceptionSender, 'Living Textbook');
   }
 
-  /** {@inheritdoc} */
   public function getReceiver()
   {
     return new Address($this->exceptionReceiver, 'Living Textbook');
   }
 
-  /** {@inheritdoc} */
-  public function getUserInformation(TokenInterface $token = null): string
+  public function getUserInformation(?TokenInterface $token = null): string
   {
     if ($token !== null) {
       return $token->getUserIdentifier();
@@ -66,7 +61,6 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
     return 'No user (not authenticated)';
   }
 
-  /** {@inheritdoc} */
   public function getSystemVersion(): string
   {
     return $this->appVersion;

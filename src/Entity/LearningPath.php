@@ -24,9 +24,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class LearningPath.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -37,9 +39,10 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   use ReviewableTrait;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningPaths")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
@@ -47,14 +50,16 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   /**
    * Learning path name.
    *
-   *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(max=255)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private string $name = '';
@@ -62,13 +67,14 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   /**
    * Learning path introduction.
    *
-   *
    * @ORM\Column(name="introduction", type="text", nullable=true)
    *
    * @Assert\NotBlank();
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $introduction = null;
@@ -76,14 +82,16 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   /**
    * Learning path question.
    *
-   *
    * @ORM\Column(name="question", type="string", length=1024, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(max=1024)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private string $question = '';
@@ -97,7 +105,9 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @Assert\Valid()
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type("ArrayCollection<App\Entity\LearningPathElement>")
    */
   private Collection $elements;
@@ -229,7 +239,9 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @return Collection<LearningPathElement>
    *
    * @JMSA\Expose()
+   *
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\SerializedName("elements")
    */
   public function getElementsOrdered(): Collection

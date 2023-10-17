@@ -18,27 +18,27 @@ class CkEditorType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefault('studyArea', null)
-        ->setAllowedTypes('studyArea', ['null', StudyArea::class])
-        ->setDefault('config', function (Options $options) {
-          if ($options['studyArea'] === null) {
-            return [];
-          }
+      ->setDefault('studyArea', null)
+      ->setAllowedTypes('studyArea', ['null', StudyArea::class])
+      ->setDefault('config', function (Options $options) {
+        if ($options['studyArea'] === null) {
+          return [];
+        }
 
-          return [
-              'filebrowserBrowseRouteParameters' => [
-                // If not given, route generation will fail. In case of 0, the button should be hidden anyways
-                  'studyAreaId' => $options['studyArea']->getId() ?? 0,
-              ],
-          ];
-        })
-        ->setNormalizer('config_name', function (Options $options, $value) {
-          if ($value === 'ltb_config' && ($options['studyArea'] !== null && $options['studyArea']->getId() === null)) {
-            return 'ltb_no_image';
-          }
+        return [
+          'filebrowserBrowseRouteParameters' => [
+            // If not given, route generation will fail. In case of 0, the button should be hidden anyways
+            'studyAreaId' => $options['studyArea']->getId() ?? 0,
+          ],
+        ];
+      })
+      ->setNormalizer('config_name', function (Options $options, $value) {
+        if ($value === 'ltb_config' && ($options['studyArea'] !== null && $options['studyArea']->getId() === null)) {
+          return 'ltb_no_image';
+        }
 
-          return $value;
-        });
+        return $value;
+      });
   }
 
   public function getParent()

@@ -16,16 +16,16 @@ class ConceptRelationsType extends AbstractType
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
-        'incoming'       => false,
-        'allow_add'      => true,
-        'allow_delete'   => true,
-        'prototype'      => true,
-        'error_bubbling' => false,
-        'entry_type'     => ConceptRelationType::class,
-        'entry_options'  => [
-            'hide_label' => true,
-            'incoming'   => false,
-        ],
+      'incoming'       => false,
+      'allow_add'      => true,
+      'allow_delete'   => true,
+      'prototype'      => true,
+      'error_bubbling' => false,
+      'entry_type'     => ConceptRelationType::class,
+      'entry_options'  => [
+        'hide_label' => true,
+        'incoming'   => false,
+      ],
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);

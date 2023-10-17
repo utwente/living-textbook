@@ -29,19 +29,20 @@ class ConceptController extends AbstractApiController
    * Retrieve all study area concepts.
    *
    * @Route(methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area concepts', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
   ])]
   public function list(RequestStudyArea $requestStudyArea, ConceptRepository $conceptRepository): JsonResponse
   {
     return $this->createDataResponse(
-        array_map(
-            [ConceptApiModel::class, 'fromEntity'],
-            $conceptRepository->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea(), conceptsOnly: true)
-        ),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      array_map(
+        [ConceptApiModel::class, 'fromEntity'],
+        $conceptRepository->findForStudyAreaOrderedByName($requestStudyArea->getStudyArea(), conceptsOnly: true)
+      ),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -49,18 +50,19 @@ class ConceptController extends AbstractApiController
    * Retrieve a single study area concept.
    *
    * @Route("/{concept<\d+>}", methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'A single study area concept', content: [
-      new Model(type: ConceptApiModel::class),
+    new Model(type: ConceptApiModel::class),
   ])]
   public function single(RequestStudyArea $requestStudyArea, Concept $concept): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
     return $this->createDataResponse(
-        ConceptApiModel::fromEntity($concept),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      ConceptApiModel::fromEntity($concept),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -68,24 +70,25 @@ class ConceptController extends AbstractApiController
    * Add a new study area concept.
    *
    * @Route(methods={"POST"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The new concept', required: true, content: [new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The new concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
-      RequestStudyArea $requestStudyArea,
-      Request $request): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Request $request): JsonResponse
   {
     $relationType = $this->getTypedFromBody($request, ConceptApiModel::class)
-        ->mapToEntity(null, null)
-        ->setStudyArea($requestStudyArea->getStudyArea());
+      ->mapToEntity(null, null)
+      ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($relationType);
 
     return $this->createDataResponse(
-        ConceptApiModel::fromEntity($relationType),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      ConceptApiModel::fromEntity($relationType),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -93,31 +96,32 @@ class ConceptController extends AbstractApiController
    * Update an existing study area concept.
    *
    * @Route("/{concept<\d+>}", methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
-      RequestStudyArea $requestStudyArea,
-      Concept $concept,
-      Request $request,
-      TagRepository $tagRepository
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    Request $request,
+    TagRepository $tagRepository
   ): JsonResponse {
     $requestConcept = $this->getTypedFromBody($request, ConceptApiModel::class);
 
     $requestTags = $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags());
 
     $concept = $this->updateConcept(
-        $requestStudyArea,
-        $concept,
-        $requestConcept,
-        $requestTags
+      $requestStudyArea,
+      $concept,
+      $requestConcept,
+      $requestTags
     );
 
     return $this->createDataResponse(
-        ConceptApiModel::fromEntity($concept),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      ConceptApiModel::fromEntity($concept),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -125,20 +129,21 @@ class ConceptController extends AbstractApiController
    * Update a batch of existing study area concepts.
    *
    * @Route("/batch", methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron']))),
-    ])]
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron']))),
+  ])]
   #[OA\Response(response: 200, description: 'The updated concepts', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
-    ])]
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
+  ])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function batchUpdate(
-      RequestStudyArea $requestStudyArea,
-      Request $request,
-      ConceptRepository $conceptRepository,
-      TagRepository $tagRepository
+    RequestStudyArea $requestStudyArea,
+    Request $request,
+    ConceptRepository $conceptRepository,
+    TagRepository $tagRepository
   ): JsonResponse {
     $requestConcepts = new IdMap($this->getArrayFromBody($request, ConceptApiModel::class));
 
@@ -153,10 +158,10 @@ class ConceptController extends AbstractApiController
         assert($requestConcept instanceof ConceptApiModel);
 
         return $this->updateConcept(
-            $requestStudyArea,
-            $concept,
-            $requestConcept,
-            $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags())
+          $requestStudyArea,
+          $concept,
+          $requestConcept,
+          $tagRepository->findForStudyArea($requestStudyArea->getStudyArea(), $requestConcept->getTags())
         );
       }, $concepts->getValues());
 
@@ -167,8 +172,8 @@ class ConceptController extends AbstractApiController
     }
 
     return $this->createDataResponse(
-        array_map(fn ($concept) => ConceptApiModel::fromEntity($concept), $concepts),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      array_map(fn ($concept) => ConceptApiModel::fromEntity($concept), $concepts),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -176,13 +181,14 @@ class ConceptController extends AbstractApiController
    * Delete an existing study area concept.
    *
    * @Route("/{concept<\d+>}", methods={"DELETE"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The concept has been deleted')]
   public function delete(
-      RequestStudyArea $requestStudyArea,
-      Concept $concept,
-      LearningPathRepository $learningPathRepository): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    LearningPathRepository $learningPathRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
 
@@ -195,16 +201,17 @@ class ConceptController extends AbstractApiController
    * Add a tag to an existing study area concept.
    *
    * @Route("/{concept<\d+>}/tag", methods={"POST"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The new tag id', required: true, content: [new OA\JsonContent(type: 'number')])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function addTag(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      Concept $concept,
-      TagRepository $tagRepository): JsonResponse
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    TagRepository $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     /** @var int $requestTag */
@@ -224,16 +231,17 @@ class ConceptController extends AbstractApiController
    * Replace the tags for an existing study area concept.
    *
    * @Route("/{concept<\d+>}/tag", methods={"PUT"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The tag ids', required: true, content: [new OA\JsonContent(type: 'array', items: new OA\Items(type: 'number'))])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function putTags(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      Concept $concept,
-      TagRepository $tagRepository): JsonResponse
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    TagRepository $tagRepository): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     /** @var int[] $requestTag */
@@ -255,14 +263,15 @@ class ConceptController extends AbstractApiController
    * Remove an existing study area concept tag.
    *
    * @Route("/{concept<\d+>}/tag/{tag<\d+>}", methods={"DELETE"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function deleteTag(
-      RequestStudyArea $requestStudyArea,
-      Concept $concept,
-      Tag $tag): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
     $this->assertStudyAreaObject($requestStudyArea, $tag);

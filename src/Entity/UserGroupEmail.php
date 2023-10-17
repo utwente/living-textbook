@@ -11,27 +11,33 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table(indexes={@ORM\Index(name="user_group_idx", columns={"user_group_id"}),
+ *
  *                     @ORM\Index(name="email_idx", columns={"email"})})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserGroupEmailRepository")
  */
 class UserGroupEmail
 {
   /**
-   *
    * @ORM\Id()
+   *
    * @ORM\ManyToOne(targetEntity="App\Entity\UserGroup", inversedBy="emails")
+   *
    * @ORM\JoinColumn(name="user_group_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?UserGroup $userGroup = null;
 
   /**
-   *
    * @ORM\Id()
+   *
    * @ORM\Column(name="email", type="string", length=180, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Email()
+   *
    * @Assert\Length(max=180)
    */
   private string $email = '';

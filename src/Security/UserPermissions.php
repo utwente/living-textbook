@@ -9,11 +9,11 @@ use InvalidArgumentException;
 
 class UserPermissions
 {
-  private ?User $user = null;
+  private ?User $user                     = null;
   private ?UserGroupEmail $userGroupEmail = null;
 
-  private bool $viewer = false;
-  private bool $editor = false;
+  private bool $viewer   = false;
+  private bool $editor   = false;
   private bool $reviewer = false;
   private bool $analysis = false;
 

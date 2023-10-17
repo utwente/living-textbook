@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\RelationTypeRepository")
  *
  * We do not enable the soft-deletable extension here, as soft-deleted relations should still work after they have been
@@ -37,30 +38,32 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
   use ReviewableTrait;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="relationTypes")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
 
   /**
-   *
    * @ORM\Column(name="name", type="string", length=100, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=3, max=100)
    *
    * @Serializer\Groups({"Default", "review_change", "name_only"})
+   *
    * @Serializer\Type("string")
    */
   private string $name = '';
 
   /**
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Serializer\Groups({"Default", "review_change"})
+   *
    * @Serializer\Type("string")
    */
   private ?string $description = null;

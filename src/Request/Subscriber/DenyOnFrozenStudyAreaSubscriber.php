@@ -35,10 +35,10 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
   public static function getSubscribedEvents()
   {
     return [
-        KernelEvents::CONTROLLER_ARGUMENTS => [
-            'checkFrozenStudyArea',
-            -50,
-        ],
+      KernelEvents::CONTROLLER_ARGUMENTS => [
+        'checkFrozenStudyArea',
+        -50,
+      ],
     ];
   }
 
@@ -67,7 +67,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     // An study area is required
     if ($studyArea === null || !$studyArea instanceof StudyArea) {
       throw new InvalidArgumentException(sprintf('Subject "%s" does not contain the expected study area, but a "%s"',
-          $configuration->getSubject(), $studyArea === null ? 'null' : $studyArea::class));
+        $configuration->getSubject(), $studyArea === null ? 'null' : $studyArea::class));
     }
 
     // Check for frozen

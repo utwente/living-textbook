@@ -29,7 +29,7 @@ class ReviewRelationDiffType extends AbstractReviewDiffType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setRequired('incoming')
-        ->setAllowedTypes('incoming', 'bool');
+      ->setRequired('incoming')
+      ->setAllowedTypes('incoming', 'bool');
   }
 }

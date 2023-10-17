@@ -20,23 +20,23 @@ class ExternalResourceRepository extends ServiceEntityRepository
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   /** @return ExternalResource[] */
   public function findForStudyAreaOrderedByTitle(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->orderBy('er.title', 'ASC')
-        ->getQuery()->getResult();
+      ->orderBy('er.title', 'ASC')
+      ->getQuery()->getResult();
   }
 
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('er')
-        ->where('er.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('er.title', 'ASC');
+      ->where('er.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->orderBy('er.title', 'ASC');
   }
 
   /**
@@ -47,24 +47,20 @@ class ExternalResourceRepository extends ServiceEntityRepository
   public function findForConcepts(array $concepts)
   {
     return $this->createQueryBuilder('er')
-        ->distinct()
-        ->leftJoin('er.concepts', 'c')
-        ->where('c IN (:concepts)')
-        ->setParameter('concepts', $concepts)
-        ->getQuery()->getResult();
+      ->distinct()
+      ->leftJoin('er.concepts', 'c')
+      ->where('c IN (:concepts)')
+      ->setParameter('concepts', $concepts)
+      ->getQuery()->getResult();
   }
 
-  /**
-   * @throws NonUniqueResultException
-   *
-   * @return mixed
-   */
+  /** @throws NonUniqueResultException */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('lo')
-        ->select('COUNT(lo.id)')
-        ->where('lo.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getSingleScalarResult();
+      ->select('COUNT(lo.id)')
+      ->where('lo.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->getSingleScalarResult();
   }
 }

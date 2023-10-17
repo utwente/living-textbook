@@ -13,15 +13,15 @@ use OpenApi\Attributes as OA;
 class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements IdInterface
 {
   protected function __construct(
-      protected readonly int $id,
-      protected readonly int $sourceId,
-      protected readonly int $targetId,
-      #[Groups(['Default', 'mutate'])]
-      protected readonly ?int $relationTypeId,
-      #[OA\Property(description: 'Specific Dotron configuration for a concept relation, only returned when Dotron is been enabled', type: 'object', nullable: true)]
-      #[Type('array')]
-      #[Groups(['dotron'])]
-      protected readonly ?array $dotronConfig
+    protected readonly int $id,
+    protected readonly int $sourceId,
+    protected readonly int $targetId,
+    #[Groups(['Default', 'mutate'])]
+    protected readonly ?int $relationTypeId,
+    #[OA\Property(description: 'Specific Dotron configuration for a concept relation, only returned when Dotron is been enabled', type: 'object', nullable: true)]
+    #[Type('array')]
+    #[Groups(['dotron'])]
+    protected readonly ?array $dotronConfig
   ) {
     parent::__construct($id, $sourceId, $targetId);
   }
@@ -39,18 +39,18 @@ class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements I
   public static function fromEntity(ConceptRelation $conceptRelation): self
   {
     return new self(
-        $conceptRelation->getId(),
-        $conceptRelation->getSourceId(),
-        $conceptRelation->getTargetId(),
-        $conceptRelation->getRelationType()->getId(),
-        $conceptRelation->getDotronConfig(),
+      $conceptRelation->getId(),
+      $conceptRelation->getSourceId(),
+      $conceptRelation->getTargetId(),
+      $conceptRelation->getRelationType()->getId(),
+      $conceptRelation->getDotronConfig(),
     );
   }
 
   public function mapToEntity(?ConceptRelation $conceptRelation, ?RelationType $relationType): ConceptRelation
   {
     return ($conceptRelation ?? new ConceptRelation())
-        ->setRelationType($relationType ?? $conceptRelation->getRelationType())
-        ->setDotronConfig($this->dotronConfig ?? $conceptRelation->getDotronConfig() ?? null);
+      ->setRelationType($relationType ?? $conceptRelation->getRelationType())
+      ->setDotronConfig($this->dotronConfig ?? $conceptRelation->getDotronConfig() ?? null);
   }
 }

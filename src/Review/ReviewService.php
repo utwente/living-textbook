@@ -2,7 +2,6 @@
 
 namespace App\Review;
 
-use JMS\Serializer\Serializer;
 use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Concept;
 use App\Entity\Contracts\ReviewableInterface;
@@ -25,6 +24,7 @@ use InvalidArgumentException;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -50,12 +50,12 @@ class ReviewService
   // Serializer details
   /** @var SerializerInterface|null */
   private static ?Serializer $serializer      = null;
-  private const SERIALIZER_FORMAT = 'json';
+  private const SERIALIZER_FORMAT             = 'json';
 
   public function __construct(
-      EntityManagerInterface $entityManager, PendingChangeRepository $pendingChangeRepository,
-      ReviewNotificationService $reviewNotificationService,
-      ValidatorInterface $validator, SessionInterface $session, TranslatorInterface $translator, Security $security)
+    EntityManagerInterface $entityManager, PendingChangeRepository $pendingChangeRepository,
+    ReviewNotificationService $reviewNotificationService,
+    ValidatorInterface $validator, SessionInterface $session, TranslatorInterface $translator, Security $security)
   {
     $this->entityManager             = $entityManager;
     $this->pendingChangeRepository   = $pendingChangeRepository;
@@ -119,8 +119,8 @@ class ReviewService
    * @noinspection PhpUnhandledExceptionInspection
    */
   public function storeChange(
-      StudyArea $studyArea, ReviewableInterface $object, string $changeType, ?string $originalDataSnapshot = null,
-      ?callable $directCallback = null)
+    StudyArea $studyArea, ReviewableInterface $object, string $changeType, ?string $originalDataSnapshot = null,
+    ?callable $directCallback = null)
   {
     if (!in_array($changeType, PendingChange::CHANGE_TYPES)) {
       throw new InvalidArgumentException(sprintf('Supplied change type %s is not valid', $changeType));
@@ -135,13 +135,13 @@ class ReviewService
 
     // Create the pending change entity
     $pendingChange = (new PendingChange())
-        ->setStudyArea($studyArea)
-        ->setChangeType($changeType)
-        ->setObject($object)
-        ->setObjectId($object->getId())
-        ->setObjectType($object->getReviewName())
-        ->setChangedFields([])
-        ->setOwner($this->getUser());
+      ->setStudyArea($studyArea)
+      ->setChangeType($changeType)
+      ->setObject($object)
+      ->setObjectId($object->getId())
+      ->setObjectType($object->getReviewName())
+      ->setChangedFields([])
+      ->setOwner($this->getUser());
 
     if ($changeType !== PendingChange::CHANGE_TYPE_REMOVE) {
       $pendingChange->setChangedFields($this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot));
@@ -193,7 +193,7 @@ class ReviewService
    * @throws MappingException
    */
   public function updateChange(
-      StudyArea $studyArea, ReviewableInterface $object, PendingChange $pendingChange, ?string $originalDataSnapshot = null)
+    StudyArea $studyArea, ReviewableInterface $object, PendingChange $pendingChange, ?string $originalDataSnapshot = null)
   {
     if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_REMOVE) {
       throw new InvalidArgumentException('Remove changes cannot be updated!');
@@ -206,14 +206,14 @@ class ReviewService
 
     // Determine the new change fields
     $changedFields = array_unique(array_merge(
-        $pendingChange->getChangedFields(),
-        $this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot)
+      $pendingChange->getChangedFields(),
+      $this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot)
     ));
 
     // Update the pending change
     $pendingChange
-        ->setObject($object)
-        ->setChangedFields($changedFields);
+      ->setObject($object)
+      ->setChangedFields($changedFields);
 
     // Validate the entity
     if (count($violations = $this->validator->validate($pendingChange))) {
@@ -226,16 +226,16 @@ class ReviewService
 
     // Reapply the changes in a fresh pending change object, as we just cleared the EM
     /** @var PendingChange $pendingChange */
-    $pendingChange = ($this->pendingChangeRepository->find($pendingChange->getId()))
-        ->setObject($object)
-        ->setChangedFields($changedFields);
+    $pendingChange = $this->pendingChangeRepository->find($pendingChange->getId())
+      ->setObject($object)
+      ->setChangedFields($changedFields);
 
     // If the review was already reviewed, clear its approval status
     $review = $pendingChange->getReview();
     if ($review) {
       $review
-          ->setApprovedAt(null)
-          ->setApprovedBy(null);
+        ->setApprovedAt(null)
+        ->setApprovedBy(null);
     }
 
     // Store the updated pending change
@@ -259,7 +259,7 @@ class ReviewService
    * @param PendingChange|null $exclude Exclude this pending change from the object information
    */
   public function getPendingChangeObjectInformation(
-      StudyArea $studyArea, ReviewableInterface $object, ?PendingChange $exclude = null): PendingChangeObjectInfo
+    StudyArea $studyArea, ReviewableInterface $object, ?PendingChange $exclude = null): PendingChangeObjectInfo
   {
     if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return new PendingChangeObjectInfo();
@@ -276,7 +276,7 @@ class ReviewService
     }
 
     return 0 === count(array_filter($this->pendingChangeRepository->getForObject($object),
-            fn (PendingChange $pendingChange) => $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT));
+      fn (PendingChange $pendingChange) => $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT));
   }
 
   /** Retrieve whether the object can be removed. */
@@ -311,11 +311,11 @@ class ReviewService
 
     // Create the review
     $review = (new Review())
-        ->setOwner($this->getUser())
-        ->setNotes($notes)
-        ->setStudyArea($studyArea)
-        ->setRequestedReviewAt(new DateTime())
-        ->setRequestedReviewBy($reviewer);
+      ->setOwner($this->getUser())
+      ->setNotes($notes)
+      ->setStudyArea($studyArea)
+      ->setRequestedReviewAt(new DateTime())
+      ->setRequestedReviewBy($reviewer);
 
     // Add the changes to the review
     foreach ($markedChanges as $pendingChangeId => $markedFields) {
@@ -401,7 +401,7 @@ class ReviewService
   {
     if (!self::$serializer) {
       $serializerBuilder = SerializerBuilder::create()
-          ->setPropertyNamingStrategy(new SerializedNameAnnotationStrategy(new IdenticalPropertyNamingStrategy()));
+        ->setPropertyNamingStrategy(new SerializedNameAnnotationStrategy(new IdenticalPropertyNamingStrategy()));
       self::$serializer  = $serializerBuilder->build();
     }
 
@@ -412,28 +412,28 @@ class ReviewService
   public static function getSerializationContext(): SerializationContext
   {
     return SerializationContext::create()
-        ->setSerializeNull(true)
-        ->enableMaxDepthChecks()
-        ->setGroups([
-            'review_change',
-            'elements' => [
-                'review_change',
-                'concept' => ['id_only', 'name_only'],
-                'next'    => ['id_only'],
-            ],
-            'outgoingRelations' => [
-                'review_change',
-                'source'       => ['id_only', 'name_only'],
-                'target'       => ['id_only', 'name_only'],
-                'relationType' => ['id_only', 'name_only'],
-            ],
-            'incomingRelations' => [
-                'review_change',
-                'source'       => ['id_only', 'name_only'],
-                'target'       => ['id_only', 'name_only'],
-                'relationType' => ['id_only', 'name_only'],
-            ],
-        ]);
+      ->setSerializeNull(true)
+      ->enableMaxDepthChecks()
+      ->setGroups([
+        'review_change',
+        'elements' => [
+          'review_change',
+          'concept' => ['id_only', 'name_only'],
+          'next'    => ['id_only'],
+        ],
+        'outgoingRelations' => [
+          'review_change',
+          'source'       => ['id_only', 'name_only'],
+          'target'       => ['id_only', 'name_only'],
+          'relationType' => ['id_only', 'name_only'],
+        ],
+        'incomingRelations' => [
+          'review_change',
+          'source'       => ['id_only', 'name_only'],
+          'target'       => ['id_only', 'name_only'],
+          'relationType' => ['id_only', 'name_only'],
+        ],
+      ]);
   }
 
   /**
@@ -522,11 +522,7 @@ class ReviewService
     return $changedFields;
   }
 
-  /**
-   * Convert value to simple type which can be compared by simple if statements.
-   *
-   * @param $value
-   */
+  /** Convert value to simple type which can be compared by simple if statements. */
   private function asSimpleType(&$value): string|false|null
   {
     if ($value === null) {
@@ -552,7 +548,7 @@ class ReviewService
    * @throws ORMException
    * @throws OptimisticLockException
    */
-  private function directSave(ReviewableInterface $object, string $changeType, callable $directCallback = null)
+  private function directSave(ReviewableInterface $object, string $changeType, ?callable $directCallback = null)
   {
     if ($directCallback) {
       $directCallback($object);

@@ -52,30 +52,30 @@ class ConceptRelationType extends AbstractType
       $form           = $event->getForm();
 
       $form->add('relationType', EntityType::class, [
-          'label'         => 'relation.type',
-          'class'         => RelationType::class,
-          'select2'       => true,
-          'choice_label'  => 'name',
-          'choice_attr'   => fn (RelationType $val, $key, $index) => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
-          'query_builder' => function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
-            $qb = $repo->createQueryBuilder('rt');
+        'label'         => 'relation.type',
+        'class'         => RelationType::class,
+        'select2'       => true,
+        'choice_label'  => 'name',
+        'choice_attr'   => fn (RelationType $val, $key, $index) => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
+        'query_builder' => function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
+          $qb = $repo->createQueryBuilder('rt');
 
-            // Update result based on current data
-            if ($relationTypeId === null) {
-              $qb->where('rt.deletedAt IS NULL');
-            } else {
-              $qb->where($qb->expr()->orX(
-                  $qb->expr()->isNull('rt.deletedAt'),
-                  $qb->expr()->eq('rt.id', ':id')
-              ));
-              $qb->setParameter('id', $relationTypeId);
-            }
+          // Update result based on current data
+          if ($relationTypeId === null) {
+            $qb->where('rt.deletedAt IS NULL');
+          } else {
+            $qb->where($qb->expr()->orX(
+              $qb->expr()->isNull('rt.deletedAt'),
+              $qb->expr()->eq('rt.id', ':id')
+            ));
+            $qb->setParameter('id', $relationTypeId);
+          }
 
-            $qb->andWhere('rt.studyArea = :studyArea')
-                ->setParameter('studyArea', $concept->getStudyArea());
+          $qb->andWhere('rt.studyArea = :studyArea')
+            ->setParameter('studyArea', $concept->getStudyArea());
 
-            return $qb;
-          },
+          return $qb;
+        },
       ]);
     });
 
@@ -83,30 +83,30 @@ class ConceptRelationType extends AbstractType
     $builder->addModelTransformer(new CallbackTransformer(function (?ConceptRelation $conceptRelation) {
       if ($conceptRelation) {
         return [
-            'source'       => $conceptRelation->getSource(),
-            'target'       => $conceptRelation->getTarget(),
-            'relationType' => $conceptRelation->getRelationType(),
+          'source'       => $conceptRelation->getSource(),
+          'target'       => $conceptRelation->getTarget(),
+          'relationType' => $conceptRelation->getRelationType(),
         ];
       }
 
       return [
-          'source'       => null,
-          'target'       => null,
-          'relationType' => null,
+        'source'       => null,
+        'target'       => null,
+        'relationType' => null,
       ];
     }, function ($data) use ($concept, $incoming) {
       $conceptRelation = (new ConceptRelation())
-          ->setRelationType($data['relationType']);
+        ->setRelationType($data['relationType']);
 
       // Create correct data
       if ($incoming) {
         $conceptRelation
-            ->setSource($data['source'])
-            ->setTarget($concept);
+          ->setSource($data['source'])
+          ->setTarget($concept);
       } else {
         $conceptRelation
-            ->setSource($concept)
-            ->setTarget($data['target']);
+          ->setSource($concept)
+          ->setTarget($data['target']);
       }
 
       return $conceptRelation;
@@ -116,28 +116,28 @@ class ConceptRelationType extends AbstractType
   private function addConceptType(FormBuilderInterface $builder, string $field, Concept $concept)
   {
     $builder
-        ->add($field, EntityType::class, [
-            'label'         => 'relation.' . $field,
-            'class'         => Concept::class,
-            'choice_label'  => 'name',
-            'select2'       => true,
-            'query_builder' => fn (ConceptRepository $repo) => $repo->createQueryBuilder('c')
-                ->where('c.id != :id')
-                ->andWhere('c.studyArea = :studyArea')
-                ->orderBy('c.name', 'ASC')
-                ->setParameter('id', $concept->getId() ?? 0)
-                ->setParameter('studyArea', $concept->getStudyArea()),
-        ]);
+      ->add($field, EntityType::class, [
+        'label'         => 'relation.' . $field,
+        'class'         => Concept::class,
+        'choice_label'  => 'name',
+        'select2'       => true,
+        'query_builder' => fn (ConceptRepository $repo) => $repo->createQueryBuilder('c')
+          ->where('c.id != :id')
+          ->andWhere('c.studyArea = :studyArea')
+          ->orderBy('c.name', 'ASC')
+          ->setParameter('id', $concept->getId() ?? 0)
+          ->setParameter('studyArea', $concept->getStudyArea()),
+      ]);
   }
 
   private function addTextType(FormBuilderInterface $builder, string $field, string $name)
   {
     $builder->add($field, TextType::class, [
-        'label'    => 'relation.' . $field,
-        'disabled' => true,
-        'mapped'   => false,
-        'required' => false,
-        'data'     => empty($name) ? $this->translator->trans('concept.new') : $name,
+      'label'    => 'relation.' . $field,
+      'disabled' => true,
+      'mapped'   => false,
+      'required' => false,
+      'data'     => empty($name) ? $this->translator->trans('concept.new') : $name,
     ]);
   }
 
@@ -145,7 +145,7 @@ class ConceptRelationType extends AbstractType
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
-        'incoming' => false,
+      'incoming' => false,
     ]);
 
     $resolver->setAllowedTypes('concept', [Concept::class]);

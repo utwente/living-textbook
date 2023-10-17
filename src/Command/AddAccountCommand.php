@@ -26,10 +26,10 @@ class AddAccountCommand extends Command
   protected static $defaultName = 'ltb:add:account';
 
   public function __construct(
-      private readonly EntityManagerInterface $entityManager,
-      private readonly UserRepository $userRepository,
-      private readonly ValidatorInterface $validator,
-      private readonly UserPasswordEncoderInterface $passwordEncoder,
+    private readonly EntityManagerInterface $entityManager,
+    private readonly UserRepository $userRepository,
+    private readonly ValidatorInterface $validator,
+    private readonly UserPasswordEncoderInterface $passwordEncoder,
   ) {
     parent::__construct();
   }
@@ -37,8 +37,8 @@ class AddAccountCommand extends Command
   protected function configure()
   {
     $this
-        ->setDescription('Directly add a new local user to the database')
-        ->addOption('with-area', mode: InputOption::VALUE_NONE, description: 'Directly add a area owner by the added user');
+      ->setDescription('Directly add a new local user to the database')
+      ->addOption('with-area', mode: InputOption::VALUE_NONE, description: 'Directly add a area owner by the added user');
   }
 
   public function run(InputInterface $input, OutputInterface $output)
@@ -50,47 +50,47 @@ class AddAccountCommand extends Command
 
     try {
       ($user = new User())
-          ->setGivenName($helper->ask($input, $output,
-              $this->buildQuestion('Provide a given name', 'LTB')
-                  ->setValidator(fn ($answer) => $this->validateProp('givenName', $answer))
-          ))
-          ->setFamilyName($helper->ask($input, $output,
-              $this->buildQuestion('Provide a family name', 'Developer')
-                  ->setValidator(fn ($answer) => $this->validateProp('familyName', $answer))
-          ))
-          ->setUsername($helper->ask($input, $output,
-              $this->buildQuestion('Provide a username (email)', 'developer@ltb.local')
-                  ->setValidator(function ($answer) {
-                    $this->validateProp('username', $answer);
-                    if ($this->userRepository->findOneBy(['username' => $answer])) {
-                      throw new Exception('This e-mail address is already in user');
-                    }
+        ->setGivenName($helper->ask($input, $output,
+          $this->buildQuestion('Provide a given name', 'LTB')
+            ->setValidator(fn ($answer) => $this->validateProp('givenName', $answer))
+        ))
+        ->setFamilyName($helper->ask($input, $output,
+          $this->buildQuestion('Provide a family name', 'Developer')
+            ->setValidator(fn ($answer) => $this->validateProp('familyName', $answer))
+        ))
+        ->setUsername($helper->ask($input, $output,
+          $this->buildQuestion('Provide a username (email)', 'developer@ltb.local')
+            ->setValidator(function ($answer) {
+              $this->validateProp('username', $answer);
+              if ($this->userRepository->findOneBy(['username' => $answer])) {
+                throw new Exception('This e-mail address is already in user');
+              }
 
-                    return $answer;
-                  })
-          ))
-          ->setPassword($this->passwordEncoder->encodePassword($user, $helper->ask($input, $output,
-              (new Question('Provide a password: '))
-                  ->setHidden(true)
-                  ->setValidator(function ($answer) {
-                    $violations = $this->validator->validate($answer, [
-                        new NotBlank(),
-                        new Length(['max' => 72]),
-                        new PasswordStrength(minStrength: 4, minLength: 8, message: 'user.password-too-weak'),
-                    ]);
+              return $answer;
+            })
+        ))
+        ->setPassword($this->passwordEncoder->encodePassword($user, $helper->ask($input, $output,
+          (new Question('Provide a password: '))
+            ->setHidden(true)
+            ->setValidator(function ($answer) {
+              $violations = $this->validator->validate($answer, [
+                new NotBlank(),
+                new Length(['max' => 72]),
+                new PasswordStrength(minStrength: 4, minLength: 8, message: 'user.password-too-weak'),
+              ]);
 
-                    if ($violations->count() === 0) {
-                      return $answer;
-                    }
+              if ($violations->count() === 0) {
+                return $answer;
+              }
 
-                    throw new Exception($violations->get(0)->getMessage());
-                  })
-          )))
-          ->setIsAdmin($helper->ask($input, $output,
-              (new ConfirmationQuestion('Must this user be marked as admin [y/N]? ', false))
-          ))
-          ->setDisplayName($user->getGivenName() . ' ' . $user->getFamilyName())
-          ->setFullName($user->getDisplayName());
+              throw new Exception($violations->get(0)->getMessage());
+            })
+        )))
+        ->setIsAdmin($helper->ask($input, $output,
+          new ConfirmationQuestion('Must this user be marked as admin [y/N]? ', false)
+        ))
+        ->setDisplayName($user->getGivenName() . ' ' . $user->getFamilyName())
+        ->setFullName($user->getDisplayName());
 
       if (!$this->validateObject($user, $style)) {
         return 1; // Command::FAILURE (Symfony 5.1+)
@@ -103,10 +103,10 @@ class AddAccountCommand extends Command
 
       if ($input->getOption('with-area')) {
         ($area = new StudyArea())
-            ->setOwner($user)
-            ->setName($helper->ask($input, $output,
-                $this->buildQuestion('Provide the new study area name', 'Developer Area')
-            ));
+          ->setOwner($user)
+          ->setName($helper->ask($input, $output,
+            $this->buildQuestion('Provide the new study area name', 'Developer Area')
+          ));
 
         if (!$this->validateObject($area, $style)) {
           return 1; // Command::FAILURE (Symfony 5.1+)

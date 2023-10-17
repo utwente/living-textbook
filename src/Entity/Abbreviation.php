@@ -23,8 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Abbreviation.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\AbbreviationRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -35,22 +38,25 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
   use ReviewableTrait;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="abbreviations")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
 
   /**
-   *
    * @ORM\Column(name="abbreviation", length=25, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=25)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private string $abbreviation = '';
@@ -59,10 +65,13 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
    * @ORM\Column(name="meaning", length=255, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=255)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private string $meaning = '';
@@ -83,9 +92,9 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     }
 
     return [
-        '_data'   => $this,
-        '_title'  => $this->getAbbreviation(),
-        'results' => $results,
+      '_data'   => $this,
+      '_title'  => $this->getAbbreviation(),
+      'results' => $results,
     ];
   }
 

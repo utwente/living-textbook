@@ -27,7 +27,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ExternalResourceRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class ExternalResource implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -45,9 +47,10 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   private Collection $concepts;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="externalResources")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
@@ -56,36 +59,42 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @ORM\Column(name="title", type="string", length=512, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=512)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private string $title = '';
 
   /**
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Assert\Length(max=1024)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $description = null;
 
   /**
-   *
    * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
    * @Assert\Url()
+   *
    * @Assert\Length(max=512)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $url = null;
 
   /**
-   *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private bool $broken = false;
@@ -114,9 +123,9 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     }
 
     return [
-        '_data'   => $this,
-        '_title'  => $this->getTitle(),
-        'results' => $results,
+      '_data'   => $this,
+      '_title'  => $this->getTitle(),
+      'results' => $results,
     ];
   }
 

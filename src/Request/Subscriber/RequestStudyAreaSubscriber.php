@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
+
 use function Symfony\Component\String\b;
 
 /**
@@ -40,11 +41,11 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   private ?int $studyAreaId = null;
 
   public function __construct(
-      private readonly RouterInterface $router,
-      private readonly StudyAreaRepository $studyAreaRepository,
-      private readonly TokenStorageInterface $tokenStorage,
-      private readonly Environment $twig,
-      private readonly NamingService $namingService)
+    private readonly RouterInterface $router,
+    private readonly StudyAreaRepository $studyAreaRepository,
+    private readonly TokenStorageInterface $tokenStorage,
+    private readonly Environment $twig,
+    private readonly NamingService $namingService)
   {
   }
 
@@ -56,15 +57,15 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   public static function getSubscribedEvents()
   {
     return [
-        KernelEvents::CONTROLLER => [
-            ['determineStudyArea', 100],
-            ['validateApiStudyArea', 99],
-            ['injectStudyAreaInNamingService', 98],
-            ['injectStudyAreaInView', 98],
-        ],
-        KernelEvents::CONTROLLER_ARGUMENTS => [
-            ['injectStudyAreaInControllerArguments', 100],
-        ],
+      KernelEvents::CONTROLLER => [
+        ['determineStudyArea', 100],
+        ['validateApiStudyArea', 99],
+        ['injectStudyAreaInNamingService', 98],
+        ['injectStudyAreaInView', 98],
+      ],
+      KernelEvents::CONTROLLER_ARGUMENTS => [
+        ['injectStudyAreaInControllerArguments', 100],
+      ],
     ];
   }
 
@@ -219,9 +220,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
       // Validate whether the area is frozen
       if (!$event->getRequest()->isMethod('GET') && $this->studyArea->isFrozen()) {
         $event->setController(static fn () => new ApiErrorResponse(
-            'Study area frozen',
-            Response::HTTP_BAD_REQUEST,
-            'This study area has been frozen'
+          'Study area frozen',
+          Response::HTTP_BAD_REQUEST,
+          'This study area has been frozen'
         ));
       }
 
@@ -230,9 +231,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
 
     // Return an error response
     $event->setController(static fn () => new ApiErrorResponse(
-        'API disabled',
-        Response::HTTP_FORBIDDEN,
-        'API not enabled for this study area'
+      'API disabled',
+      Response::HTTP_FORBIDDEN,
+      'API not enabled for this study area'
     ));
   }
 

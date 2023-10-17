@@ -27,74 +27,74 @@ class SynthesizeRequestType extends AbstractType
     $this->addDaysBetweenType($builder, 'daysBeforeTest');
 
     $builder
-        ->add('testMoment', DateTimeType::class, [
-            'label'            => 'analytics.synthesize-label.testMoment',
-            'help'             => 'analytics.synthesize-help.testMoment',
-            'full_width_label' => true,
-            'required'         => true,
-            'widget'           => 'single_text',
-            'html5'            => true,
-        ])
-        ->add('submit', RemoveType::class, [
-            'label'        => false,
-            'cancel_route' => 'app_analytics_dashboard',
-            'remove_label' => 'analytics.synthesize',
-        ]);
+      ->add('testMoment', DateTimeType::class, [
+        'label'            => 'analytics.synthesize-label.testMoment',
+        'help'             => 'analytics.synthesize-help.testMoment',
+        'full_width_label' => true,
+        'required'         => true,
+        'widget'           => 'single_text',
+        'html5'            => true,
+      ])
+      ->add('submit', RemoveType::class, [
+        'label'        => false,
+        'cancel_route' => 'app_analytics_dashboard',
+        'remove_label' => 'analytics.synthesize',
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'data_class' => SynthesizeRequest::class,
+      'data_class' => SynthesizeRequest::class,
     ]);
   }
 
   private function addNumberType(FormBuilderInterface $builder, string $field): void
   {
     $builder->add($field, NumberType::class, [
-        'label'            => 'analytics.synthesize-label.' . $field,
-        'help'             => 'analytics.synthesize-help.' . $field,
-        'full_width_label' => true,
-        'required'         => true,
-        'html5'            => true,
-        'scale'            => 0,
-        'attr'             => [
-            'min' => 0,
-            'max' => 200,
-        ],
+      'label'            => 'analytics.synthesize-label.' . $field,
+      'help'             => 'analytics.synthesize-help.' . $field,
+      'full_width_label' => true,
+      'required'         => true,
+      'html5'            => true,
+      'scale'            => 0,
+      'attr'             => [
+        'min' => 0,
+        'max' => 200,
+      ],
     ]);
   }
 
   private function addDaysBetweenType(FormBuilderInterface $builder, string $field): void
   {
     $builder->add($field, NumberType::class, [
-        'label'            => 'analytics.synthesize-label.' . $field,
-        'help'             => 'analytics.synthesize-help.' . $field,
-        'full_width_label' => true,
-        'required'         => true,
-        'html5'            => true,
-        'scale'            => 0,
-        'attr'             => [
-            'min' => 1,
-            'max' => 31,
-        ],
+      'label'            => 'analytics.synthesize-label.' . $field,
+      'help'             => 'analytics.synthesize-help.' . $field,
+      'full_width_label' => true,
+      'required'         => true,
+      'html5'            => true,
+      'scale'            => 0,
+      'attr'             => [
+        'min' => 1,
+        'max' => 31,
+      ],
     ]);
   }
 
   private function addChanceType(FormBuilderInterface $builder, string $field): void
   {
     $builder->add($field, NumberType::class, [
-        'label'            => 'analytics.synthesize-label.' . $field,
-        'help'             => 'analytics.synthesize-help.' . $field,
-        'full_width_label' => true,
-        'required'         => true,
-        'html5'            => true,
-        'scale'            => 3,
-        'attr'             => [
-            'min'  => 0,
-            'max'  => 1,
-            'step' => 0.001,
-        ],
+      'label'            => 'analytics.synthesize-label.' . $field,
+      'help'             => 'analytics.synthesize-help.' . $field,
+      'full_width_label' => true,
+      'required'         => true,
+      'html5'            => true,
+      'scale'            => 3,
+      'attr'             => [
+        'min'  => 0,
+        'max'  => 1,
+        'step' => 0.001,
+      ],
     ]);
   }
 }

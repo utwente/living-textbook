@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Holds information about the current browser state for the user, per study area.
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"user_id", "study_area_id"})})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserBrowserStateRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -27,24 +28,25 @@ class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
   use SoftDeletable;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?User $user = null;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea")
+   *
    * @ORM\JoinColumn(nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
 
   /**
    * The current filter state.
-   *
    *
    * @ORM\Column(type="json", nullable=true)
    */

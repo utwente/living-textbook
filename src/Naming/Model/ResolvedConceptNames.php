@@ -16,8 +16,8 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   private string $theoryExplanation;
 
   public function __construct(
-      string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
-      string $howTo, string $examples, string $selfAssessment)
+    string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
+    string $howTo, string $examples, string $selfAssessment)
   {
     $this->definition        = strtolower($definition);
     $this->introduction      = strtolower($introduction);

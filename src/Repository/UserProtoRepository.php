@@ -20,19 +20,15 @@ class UserProtoRepository extends ServiceEntityRepository
     parent::__construct($registry, UserProto::class);
   }
 
-  /**
-   * Find a user proto for the given email address.
-   *
-   * @param $email
-   */
+  /** Find a user proto for the given email address. */
   public function getForEmail($email): ?UserProto
   {
     try {
       return $this->createQueryBuilder('u')
-          ->where('u.email  = :email')
-          ->setParameter('email', $email)
-          ->setMaxResults(1)
-          ->getQuery()->getOneOrNullResult();
+        ->where('u.email  = :email')
+        ->setParameter('email', $email)
+        ->setMaxResults(1)
+        ->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException) {
       // Cannot happen
       return null;

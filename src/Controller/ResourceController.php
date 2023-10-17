@@ -24,6 +24,7 @@ class ResourceController extends AbstractController
 {
   /**
    * @Route("/concept/{concept}", requirements={"concept"="\d+"}, options={"no_login_wrap"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @throws Exception
@@ -41,6 +42,7 @@ class ResourceController extends AbstractController
 
   /**
    * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"}, options={"no_login_wrap"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @throws Exception
@@ -59,6 +61,7 @@ class ResourceController extends AbstractController
   /**
    * @Route("/learningoutcome/{learningOutcome}", requirements={"learningOutcome"="\d+"},
    *                                              options={"no_login_wrap"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @throws Exception
@@ -76,6 +79,7 @@ class ResourceController extends AbstractController
 
   /**
    * @Route("/studyarea", options={"no_login_wrap"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @throws Exception

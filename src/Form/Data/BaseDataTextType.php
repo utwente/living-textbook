@@ -15,8 +15,8 @@ class BaseDataTextType extends AbstractBaseDataType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $formOptions = [
-        'label'    => $options['label'],
-        'required' => $options['required'],
+      'label'    => $options['label'],
+      'required' => $options['required'],
     ];
     if ($options['ckeditor']) {
       $formOptions['studyArea']   = $options['studyArea'];
@@ -24,7 +24,7 @@ class BaseDataTextType extends AbstractBaseDataType
     }
 
     $builder
-        ->add('text', $options['ckeditor'] ? CkEditorType::class : TextareaType::class, $formOptions);
+      ->add('text', $options['ckeditor'] ? CkEditorType::class : TextareaType::class, $formOptions);
   }
 
   public function configureOptions(OptionsResolver $resolver)
@@ -32,18 +32,18 @@ class BaseDataTextType extends AbstractBaseDataType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setDefaults([
-            'ckeditor'  => true,
-            'studyArea' => null,
-        ])
-        ->setAllowedTypes('ckeditor', ['bool'])
-        ->setAllowedTypes('studyArea', ['null', StudyArea::class])
-        ->setNormalizer('studyArea', function (Options $options, $value) {
-          if ($options['ckeditor'] && null === $value) {
-            throw new MissingOptionsException('The required option "studyArea" is missing (as the form is a ckeditor type).');
-          }
+      ->setDefaults([
+        'ckeditor'  => true,
+        'studyArea' => null,
+      ])
+      ->setAllowedTypes('ckeditor', ['bool'])
+      ->setAllowedTypes('studyArea', ['null', StudyArea::class])
+      ->setNormalizer('studyArea', function (Options $options, $value) {
+        if ($options['ckeditor'] && null === $value) {
+          throw new MissingOptionsException('The required option "studyArea" is missing (as the form is a ckeditor type).');
+        }
 
-          return $value;
-        });
+        return $value;
+      });
   }
 }

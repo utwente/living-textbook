@@ -27,7 +27,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table(name="user__table", indexes={@ORM\Index(columns={"username"})})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
  * @ORM\EntityListeners({"App\Entity\Listener\UserListener"})
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -43,11 +45,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   /**
    * Given name.
    *
-   * @var string
-   *
    * @ORM\Column(name="given_name", type="string", length=100)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=2,max=100)
    */
   protected string $givenName = '';
@@ -55,11 +56,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   /**
    * Family name.
    *
-   * @var string
-   *
    * @ORM\Column(name="last_name", type="string", length=100)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=2,max=100)
    */
   protected string $familyName = '';
@@ -67,11 +67,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   /**
    * Full name.
    *
-   * @var string
-   *
    * @ORM\Column(name="full_name", type="string", length=200)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=4, max=200)
    */
   protected string $fullName = '';
@@ -82,6 +81,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @ORM\Column(name="display_name", type="string", length=200)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=4, max=200)
    */
   protected ?string $displayName = null;
@@ -92,7 +92,9 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @ORM\Column(name="username", type="string", length=180)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Email()
+   *
    * @Assert\Length(min=5, max=180)
    */
   protected ?string $username = null;
@@ -140,10 +142,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   private array $securityRoles = [];
 
   /**
-   *
    * @ORM\Column(name="is_admin", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("bool")
    */
   private bool $isAdmin = false;
@@ -151,14 +153,12 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   /**
    * Hashed reset code, used for resetting the password.
    *
-   *
    * @ORM\Column(type="string", length=255, nullable=true)
    */
   private ?string $resetCode = null;
 
   /**
    * Datetime till when the reset code is still valid.
-   *
    *
    * @ORM\Column(type="datetime", nullable=true)
    */
@@ -211,9 +211,9 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     }
 
     return (new User())
-        ->setUsername($username)
-        ->setIsOidc(true)
-        ->update($userData);
+      ->setUsername($username)
+      ->setIsOidc(true)
+      ->update($userData);
   }
 
   /** Custom sorter, based on display name. */
@@ -229,10 +229,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   public function update(OidcUserData $userData): User
   {
     return $this
-        ->setDisplayName($userData->getDisplayName())
-        ->setFullName($userData->getFullName())
-        ->setGivenName($userData->getGivenName())
-        ->setFamilyName($userData->getFamilyName());
+      ->setDisplayName($userData->getDisplayName())
+      ->setFullName($userData->getFullName())
+      ->setGivenName($userData->getGivenName())
+      ->setFamilyName($userData->getFamilyName());
   }
 
   /**
@@ -262,11 +262,11 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   public function __serialize(): array
   {
     return [
-        $this->id,
-        $this->username,
-        $this->password,
-        true, // BC-compatibility with serialized sessions
-        $this->isOidc,
+      $this->id,
+      $this->username,
+      $this->password,
+      true, // BC-compatibility with serialized sessions
+      $this->isOidc,
     ];
   }
 
@@ -289,11 +289,11 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   public function __unserialize(array $data): void
   {
     [
-        $this->id,
-        $this->username,
-        $this->password,
+      $this->id,
+      $this->username,
+      $this->password,
       , //  BC-compatibility with serialized sessions
-        $this->isOidc,
+      $this->isOidc,
     ] = $data;
   }
 

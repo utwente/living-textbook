@@ -31,11 +31,11 @@ class UserGroupRepository extends ServiceEntityRepository
 
     try {
       return $this->createQueryBuilder('ug')
-          ->where('ug.studyArea = :studyArea')
-          ->andWhere('ug.groupType = :type')
-          ->setParameter('studyArea', $studyArea)
-          ->setParameter('type', $groupType)
-          ->getQuery()->getSingleResult();
+        ->where('ug.studyArea = :studyArea')
+        ->andWhere('ug.groupType = :type')
+        ->setParameter('studyArea', $studyArea)
+        ->setParameter('type', $groupType)
+        ->getQuery()->getSingleResult();
     } catch (NoResultException) {
       return null;
     }
@@ -48,8 +48,8 @@ class UserGroupRepository extends ServiceEntityRepository
   public function removeObsoleteGroups(StudyArea $studyArea)
   {
     $qb = $this->createQueryBuilder('ug')
-        ->where('ug.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea);
+      ->where('ug.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea);
 
     switch ($studyArea->getAccessType()) {
       case StudyArea::ACCESS_PRIVATE:
@@ -61,7 +61,7 @@ class UserGroupRepository extends ServiceEntityRepository
       case StudyArea::ACCESS_PUBLIC:
         // Remove viewer group
         $qb->andWhere('ug.groupType = :groupType')
-            ->setParameter('groupType', UserGroup::GROUP_VIEWER);
+          ->setParameter('groupType', UserGroup::GROUP_VIEWER);
         break;
     }
 

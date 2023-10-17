@@ -29,12 +29,15 @@ class ExternalResourceController extends AbstractController
 {
   /**
    * @Route("/add")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -57,20 +60,23 @@ class ExternalResourceController extends AbstractController
     }
 
     return [
-        'externalResource' => $externalResource,
-        'form'             => $form->createView(),
+      'externalResource' => $externalResource,
+      'form'             => $form->createView(),
     ];
   }
 
   /**
    * @Route("/edit/{externalResource}", requirements={"externalResource"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
    */
   public function edit(
-      Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
-      ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
+    ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -82,7 +88,7 @@ class ExternalResourceController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $externalResource)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-          '%item%' => $trans->trans('external-resource._name'),
+        '%item%' => $trans->trans('external-resource._name'),
       ]));
 
       return $this->redirectToRoute('app_externalresource_list');
@@ -93,8 +99,8 @@ class ExternalResourceController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditExternalResourceType::class, $externalResource, [
-        'studyArea'           => $studyArea,
-        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $externalResource),
+      'studyArea'           => $studyArea,
+      'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $externalResource),
     ]);
     $form->handleRequest($request);
 
@@ -110,14 +116,16 @@ class ExternalResourceController extends AbstractController
     }
 
     return [
-        'externalResource' => $externalResource,
-        'form'             => $form->createView(),
+      'externalResource' => $externalResource,
+      'form'             => $form->createView(),
     ];
   }
 
   /**
    * @Route("/list")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
@@ -125,20 +133,23 @@ class ExternalResourceController extends AbstractController
   public function list(RequestStudyArea $requestStudyArea, ExternalResourceRepository $repo)
   {
     return [
-        'studyArea'         => $requestStudyArea->getStudyArea(),
-        'externalResources' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
+      'studyArea'         => $requestStudyArea->getStudyArea(),
+      'externalResources' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{externalResource}", requirements={"externalResource"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
    */
   public function remove(
-      Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
-      ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
+    ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -150,14 +161,14 @@ class ExternalResourceController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $externalResource)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-          '%item%' => $trans->trans('external-resource._name'),
+        '%item%' => $trans->trans('external-resource._name'),
       ]));
 
       return $this->redirectToRoute('app_externalresource_list');
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_externalresource_list',
+      'cancel_route' => 'app_externalresource_list',
     ]);
     $form->handleRequest($request);
 
@@ -171,8 +182,8 @@ class ExternalResourceController extends AbstractController
     }
 
     return [
-        'externalResource' => $externalResource,
-        'form'             => $form->createView(),
+      'externalResource' => $externalResource,
+      'form'             => $form->createView(),
     ];
   }
 }

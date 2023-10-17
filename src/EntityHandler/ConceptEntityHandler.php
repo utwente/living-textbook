@@ -10,13 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ConceptEntityHandler extends AbstractEntityHandler
 {
-  public function add(Concept $concept, string $snapshot = null): void
+  public function add(Concept $concept, ?string $snapshot = null): void
   {
     $this->validate($concept);
 
     if ($this->useReviewService($snapshot)) {
       $this->reviewService->storeChange(
-          $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_ADD, $snapshot);
+        $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_ADD, $snapshot);
     } else {
       $this->em->persist($concept);
       $this->em->flush();
@@ -31,10 +31,10 @@ class ConceptEntityHandler extends AbstractEntityHandler
   }
 
   public function update(
-      Concept $concept,
-      string $snapshot = null,
-      ArrayCollection $originalOutgoingRelations = null,
-      ArrayCollection $originalIncomingRelations = null): void
+    Concept $concept,
+    ?string $snapshot = null,
+    ?ArrayCollection $originalOutgoingRelations = null,
+    ?ArrayCollection $originalIncomingRelations = null): void
   {
     $this->validate($concept);
 
@@ -56,14 +56,14 @@ class ConceptEntityHandler extends AbstractEntityHandler
 
     if ($this->useReviewService($snapshot)) {
       $this->reviewService->storeChange(
-          $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_EDIT, $snapshot, $updateFunction);
+        $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_EDIT, $snapshot, $updateFunction);
     } else {
       $updateFunction();
       $this->em->flush();
     }
   }
 
-  public function updateRelation(ConceptRelation $relation, string $snapshot = null): void
+  public function updateRelation(ConceptRelation $relation, ?string $snapshot = null): void
   {
     $this->validate($relation);
     $this->em->flush();
@@ -76,7 +76,7 @@ class ConceptEntityHandler extends AbstractEntityHandler
 
     if ($this->reviewService !== null) {
       $this->reviewService->storeChange(
-          $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_REMOVE, null, $deleteFunction);
+        $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_REMOVE, null, $deleteFunction);
     } else {
       $deleteFunction();
       $this->em->remove($concept);

@@ -26,6 +26,6 @@ class ReviewSimpleListDiffType extends AbstractReviewDiffType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setAllowedValues('field', ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors']);
+      ->setAllowedValues('field', ['priorKnowledge', 'learningOutcomes', 'externalResources', 'contributors']);
   }
 }

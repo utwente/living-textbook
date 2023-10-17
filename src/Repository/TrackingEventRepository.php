@@ -18,21 +18,21 @@ class TrackingEventRepository extends ServiceEntityRepository
   public function getByStudyAreaOrderedOnIds(StudyArea $studyArea): array
   {
     return $this->createQueryBuilder('te')
-        ->where('te.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('te.userId')
-        ->addOrderBy('te.sessionId')
-        ->addOrderBy('te.timestamp')
-        ->getQuery()->getResult();
+      ->where('te.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->orderBy('te.userId')
+      ->addOrderBy('te.sessionId')
+      ->addOrderBy('te.timestamp')
+      ->getQuery()->getResult();
   }
 
   /** Remove all tracking events for a certain study area. */
   public function purgeForStudyArea(StudyArea $studyArea)
   {
     $this->createQueryBuilder('te')
-        ->delete()
-        ->where('te.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->execute();
+      ->delete()
+      ->where('te.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->execute();
   }
 }

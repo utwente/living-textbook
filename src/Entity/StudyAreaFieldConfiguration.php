@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaFieldConfigurationRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -24,54 +25,63 @@ class StudyAreaFieldConfiguration implements IdInterface
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptDefinitionName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptIntroductionName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptSynonymsName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptPriorKnowledgeName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptTheoryExplanationName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptHowtoName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptExamplesName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $conceptSelfAssessmentName = null;
 
   /**
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
   private ?string $learningOutcomeObjName = null;

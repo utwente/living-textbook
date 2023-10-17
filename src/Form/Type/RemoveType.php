@@ -20,19 +20,19 @@ class RemoveType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('_remove', SubmitType::class, [
-            'label' => $options['remove_label'],
-            'icon'  => 'fa-check',
-            'attr'  => [
-                'class' => 'btn btn-' . $options['remove_btn_variant'],
-            ],
-        ])
-        ->add('_cancel', ButtonUrlType::class, [
-            'label'        => $options['cancel_label'],
-            'icon'         => 'fa-times',
-            'route'        => $options['cancel_route'],
-            'route_params' => $options['cancel_route_params'],
-        ]);
+      ->add('_remove', SubmitType::class, [
+        'label' => $options['remove_label'],
+        'icon'  => 'fa-check',
+        'attr'  => [
+          'class' => 'btn btn-' . $options['remove_btn_variant'],
+        ],
+      ])
+      ->add('_cancel', ButtonUrlType::class, [
+        'label'        => $options['cancel_label'],
+        'icon'         => 'fa-times',
+        'route'        => $options['cancel_route'],
+        'route_params' => $options['cancel_route_params'],
+      ]);
   }
 
   /**
@@ -58,11 +58,11 @@ class RemoveType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'mapped'              => false,
-        'remove_btn_variant'  => 'outline-danger',
-        'remove_label'        => 'form.confirm-remove',
-        'cancel_label'        => 'form.cancel',
-        'cancel_route_params' => [],
+      'mapped'              => false,
+      'remove_btn_variant'  => 'outline-danger',
+      'remove_label'        => 'form.confirm-remove',
+      'cancel_label'        => 'form.cancel',
+      'cancel_route_params' => [],
     ]);
 
     $resolver->setRequired('cancel_route');

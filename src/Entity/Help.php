@@ -13,6 +13,7 @@ use Drenso\Shared\Interfaces\IdInterface;
  * Each update will be saved as a new iteration of the help entity
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\HelpRepository")
  */
 class Help implements IdInterface
@@ -22,7 +23,6 @@ class Help implements IdInterface
 
   /**
    * The help content.
-   *
    *
    * @ORM\Column(name="content", type="text", nullable=false)
    */

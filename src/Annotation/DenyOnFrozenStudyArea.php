@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
  * attributes.
  *
  * @Annotation
+ *
  * @Target("METHOD")
  */
 class DenyOnFrozenStudyArea implements ConfigurationInterface
@@ -53,13 +54,11 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
     return $this->subject;
   }
 
-  /** {@inheritdoc} */
   public function getAliasName()
   {
     return self::KEY;
   }
 
-  /** {@inheritdoc} */
   public function allowArray()
   {
     return false;

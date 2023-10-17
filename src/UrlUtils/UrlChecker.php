@@ -49,9 +49,9 @@ class UrlChecker
 
   /** UrlChecker constructor. */
   public function __construct(
-      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-      StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository,
-      ContributorRepository $contributorRepository, UrlScanner $urlScanner, RouterInterface $router)
+    ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
+    StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository,
+    ContributorRepository $contributorRepository, UrlScanner $urlScanner, RouterInterface $router)
   {
     $this->contributorRepository      = $contributorRepository;
     $this->externalResourceRepository = $externalResourceRepository;
@@ -252,8 +252,6 @@ class UrlChecker
   /**
    * Cache a URL in the given cache.
    *
-   * @param $expiry
-   *
    * @throws InvalidArgumentException
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
@@ -261,9 +259,9 @@ class UrlChecker
   private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
   {
     $cache->save(
-        $cache->getItem($cacheableUrl->getCachekey())
-            ->set($cacheableUrl)
-            ->expiresAfter($expiry)
+      $cache->getItem($cacheableUrl->getCachekey())
+        ->set($cacheableUrl)
+        ->expiresAfter($expiry)
     );
   }
 

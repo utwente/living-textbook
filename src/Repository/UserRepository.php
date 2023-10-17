@@ -38,9 +38,9 @@ class UserRepository extends ServiceEntityRepository
   public function getSuperAdmins()
   {
     return $this->createQueryBuilder('u')
-        ->where('u.isAdmin = :admin')
-        ->setParameter('admin', true)
-        ->getQuery()->getResult();
+      ->where('u.isAdmin = :admin')
+      ->setParameter('admin', true)
+      ->getQuery()->getResult();
   }
 
   /**
@@ -53,25 +53,21 @@ class UserRepository extends ServiceEntityRepository
   public function getUsersForEmails(array $emails): array
   {
     $qb = $this->createQueryBuilder('u')
-        ->where('u.username IN (:emails)')
-        ->setParameter('emails', $emails);
+      ->where('u.username IN (:emails)')
+      ->setParameter('emails', $emails);
 
     return $qb->getQuery()->getResult();
   }
 
-  /**
-   * Find a user for the given email address.
-   *
-   * @param $email
-   */
+  /** Find a user for the given email address. */
   public function getUserForEmail($email): ?User
   {
     try {
       return $this->createQueryBuilder('u')
-          ->where('u.username  = :email')
-          ->setParameter('email', $email)
-          ->setMaxResults(1)
-          ->getQuery()->getOneOrNullResult();
+        ->where('u.username  = :email')
+        ->setParameter('email', $email)
+        ->setMaxResults(1)
+        ->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException) {
       // Cannot happen
       return null;

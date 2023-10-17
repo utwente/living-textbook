@@ -25,19 +25,19 @@ class PendingChangeRepository extends ServiceEntityRepository
   public function getForObject(ReviewableInterface $object, ?PendingChange $exclude = null): array
   {
     $qb = $this->createQueryBuilder('pc')
-        ->where('pc.objectType = :objectType')
-        ->andWhere('pc.objectId = :objectId')
-        ->setParameter('objectType', $object->getReviewName())
-        ->setParameter('objectId', $object->getId());
+      ->where('pc.objectType = :objectType')
+      ->andWhere('pc.objectId = :objectId')
+      ->setParameter('objectType', $object->getReviewName())
+      ->setParameter('objectId', $object->getId());
 
     if (null !== $exclude) {
       $qb
-          ->andWhere('pc.id != :exclude')
-          ->setParameter('exclude', $exclude->getId());
+        ->andWhere('pc.id != :exclude')
+        ->setParameter('exclude', $exclude->getId());
     }
 
     return $qb
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   /** Retrieve a mergeable pending change for the given one. */
@@ -45,26 +45,26 @@ class PendingChangeRepository extends ServiceEntityRepository
   {
     try {
       $qb = $this->createQueryBuilder('pc')
-          ->where('pc.objectType = :objectType')
-          ->andWhere('pc.objectId = :objectId')
-          ->andWhere('pc.changeType = :changeType')
-          ->andWhere('pc.owner = :owner')
-          ->setParameter('objectType', $pendingChange->getObjectType())
-          ->setParameter('objectId', $pendingChange->getObjectId())
-          ->setParameter('changeType', $pendingChange->getChangeType())
-          ->setParameter('owner', $pendingChange->getOwner())
-          ->setMaxResults(1);
+        ->where('pc.objectType = :objectType')
+        ->andWhere('pc.objectId = :objectId')
+        ->andWhere('pc.changeType = :changeType')
+        ->andWhere('pc.owner = :owner')
+        ->setParameter('objectType', $pendingChange->getObjectType())
+        ->setParameter('objectId', $pendingChange->getObjectId())
+        ->setParameter('changeType', $pendingChange->getChangeType())
+        ->setParameter('owner', $pendingChange->getOwner())
+        ->setMaxResults(1);
 
       if ($pendingChange->getReview()) {
         $qb
-            ->andWhere('pc.review = :review')
-            ->setParameter('review', $pendingChange->getReview());
+          ->andWhere('pc.review = :review')
+          ->setParameter('review', $pendingChange->getReview());
       } else {
         $qb->andWhere('pc.review is null');
       }
 
       return $qb
-          ->getQuery()->getOneOrNullResult();
+        ->getQuery()->getOneOrNullResult();
     } catch (NonUniqueResultException) {
       return null;
     }
@@ -78,8 +78,8 @@ class PendingChangeRepository extends ServiceEntityRepository
   public function getForUser(StudyArea $studyArea, User $user): array
   {
     return $this->findBy([
-        'studyArea' => $studyArea,
-        'owner'     => $user,
+      'studyArea' => $studyArea,
+      'owner'     => $user,
     ]);
   }
 
@@ -91,14 +91,14 @@ class PendingChangeRepository extends ServiceEntityRepository
   public function getSubmittableForUser(StudyArea $studyArea, User $user): array
   {
     return $this->createQueryBuilder('pc')
-        ->where('pc.studyArea = :studyArea')
-        ->andWhere('pc.owner = :owner')
-        ->andWhere('pc.review IS NULL')
-        ->setParameter('studyArea', $studyArea)
-        ->setParameter('owner', $user)
-        ->orderBy('pc.objectType')
-        ->addOrderBy('pc.changeType')
-        ->getQuery()->getResult();
+      ->where('pc.studyArea = :studyArea')
+      ->andWhere('pc.owner = :owner')
+      ->andWhere('pc.review IS NULL')
+      ->setParameter('studyArea', $studyArea)
+      ->setParameter('owner', $user)
+      ->orderBy('pc.objectType')
+      ->addOrderBy('pc.changeType')
+      ->getQuery()->getResult();
   }
 
   /**
@@ -109,8 +109,8 @@ class PendingChangeRepository extends ServiceEntityRepository
   public function getMultiple(array $ids): array
   {
     return $this->createQueryBuilder('pc')
-        ->where('pc.id IN (:ids)')
-        ->setParameter('ids', $ids)
-        ->getQuery()->getResult();
+      ->where('pc.id IN (:ids)')
+      ->setParameter('ids', $ids)
+      ->getQuery()->getResult();
   }
 }

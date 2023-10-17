@@ -17,8 +17,8 @@ class StudyAreaRepository extends ServiceEntityRepository
   private TokenStorageInterface $tokenStorage;
 
   public function __construct(
-      ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker,
-      TokenStorageInterface $tokenStorage)
+    ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker,
+    TokenStorageInterface $tokenStorage)
   {
     parent::__construct($registry, StudyArea::class);
 
@@ -26,18 +26,14 @@ class StudyAreaRepository extends ServiceEntityRepository
     $this->tokenStorage = $tokenStorage;
   }
 
-  /**
-   * @throws NonUniqueResultException
-   *
-   * @return mixed
-   */
+  /** @throws NonUniqueResultException */
   public function getOwnerAmount(User $owner)
   {
     return $this->createQueryBuilder('sa')
-        ->where('sa.owner = :owner')
-        ->setParameter('owner', $owner)
-        ->select('COUNT(sa.id)')
-        ->getQuery()->getSingleScalarResult();
+      ->where('sa.owner = :owner')
+      ->setParameter('owner', $owner)
+      ->select('COUNT(sa.id)')
+      ->getQuery()->getSingleScalarResult();
   }
 
   /**
@@ -69,8 +65,6 @@ class StudyAreaRepository extends ServiceEntityRepository
    * Retrieve the amount of visible study area's.
    *
    * @throws NonUniqueResultException
-   *
-   * @return mixed
    */
   public function getVisibleCount(User $user)
   {
@@ -85,14 +79,14 @@ class StudyAreaRepository extends ServiceEntityRepository
   public function getVisibleQueryBuilder(?User $user)
   {
     $qb = $this->createQueryBuilder('sa')
-        ->leftJoin('sa.group', 'g')
-        ->addSelect('g')
+      ->leftJoin('sa.group', 'g')
+      ->addSelect('g')
         // Special hidden select to move null groups to the end of the query result
         // https://stackoverflow.com/questions/12652034/how-can-i-order-by-null-in-dql
-        ->addSelect('CASE WHEN g.name IS NULL THEN 1 ELSE 0 END HIDDEN _isFieldNull')
-        ->orderBy('_isFieldNull', 'ASC')
-        ->addOrderBy('g.name', 'ASC')
-        ->addOrderBy('sa.name', 'ASC');
+      ->addSelect('CASE WHEN g.name IS NULL THEN 1 ELSE 0 END HIDDEN _isFieldNull')
+      ->orderBy('_isFieldNull', 'ASC')
+      ->addOrderBy('g.name', 'ASC')
+      ->addOrderBy('sa.name', 'ASC');
 
     // Return everything for super admins
     if ($this->tokenStorage->getToken() && $this->auth->isGranted('ROLE_SUPER_ADMIN')) {
@@ -102,22 +96,22 @@ class StudyAreaRepository extends ServiceEntityRepository
     // If user is not provided, only return open access study areas
     if (!$user) {
       return $qb
-          ->where('sa.openAccess = :openAccess')
-          ->setParameter('openAccess', true);
+        ->where('sa.openAccess = :openAccess')
+        ->setParameter('openAccess', true);
     }
 
     return $qb
-        ->distinct()
-        ->leftJoin('sa.userGroups', 'ug')
-        ->leftJoin('ug.users', 'u')
-        ->where($qb->expr()->orX(
-            $qb->expr()->eq('sa.owner', ':user'),
-            $qb->expr()->eq('sa.accessType', ':public'),
-            $qb->expr()->eq('u', ':user')
-        ))
-        ->orWhere('sa.openAccess = :openAccess')
-        ->setParameter('openAccess', true)
-        ->setParameter('user', $user)
-        ->setParameter('public', StudyArea::ACCESS_PUBLIC);
+      ->distinct()
+      ->leftJoin('sa.userGroups', 'ug')
+      ->leftJoin('ug.users', 'u')
+      ->where($qb->expr()->orX(
+        $qb->expr()->eq('sa.owner', ':user'),
+        $qb->expr()->eq('sa.accessType', ':public'),
+        $qb->expr()->eq('u', ':user')
+      ))
+      ->orWhere('sa.openAccess = :openAccess')
+      ->setParameter('openAccess', true)
+      ->setParameter('user', $user)
+      ->setParameter('public', StudyArea::ACCESS_PUBLIC);
   }
 }

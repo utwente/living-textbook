@@ -29,12 +29,15 @@ class ContributorController extends AbstractController
 {
   /**
    * @Route("/add")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea")
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -57,20 +60,23 @@ class ContributorController extends AbstractController
     }
 
     return [
-        'contributor' => $contributor,
-        'form'        => $form->createView(),
+      'contributor' => $contributor,
+      'form'        => $form->createView(),
     ];
   }
 
   /**
    * @Route("/edit/{contributor}", requirements={"contributor"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea")
    */
   public function edit(
-      Request $request, RequestStudyArea $requestStudyArea, Contributor $contributor,
-      ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, Contributor $contributor,
+    ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -82,7 +88,7 @@ class ContributorController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $contributor)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-          '%item%' => $trans->trans('contributor._name'),
+        '%item%' => $trans->trans('contributor._name'),
       ]));
 
       return $this->redirectToRoute('app_contributor_list');
@@ -93,8 +99,8 @@ class ContributorController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditContributorType::class, $contributor, [
-        'studyArea'           => $studyArea,
-        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $contributor),
+      'studyArea'           => $studyArea,
+      'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $contributor),
     ]);
     $form->handleRequest($request);
 
@@ -110,14 +116,16 @@ class ContributorController extends AbstractController
     }
 
     return [
-        'contributor' => $contributor,
-        'form'        => $form->createView(),
+      'contributor' => $contributor,
+      'form'        => $form->createView(),
     ];
   }
 
   /**
    * @Route("/list")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
@@ -125,20 +133,23 @@ class ContributorController extends AbstractController
   public function list(RequestStudyArea $requestStudyArea, ContributorRepository $repo)
   {
     return [
-        'studyArea'    => $requestStudyArea->getStudyArea(),
-        'contributors' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
+      'studyArea'    => $requestStudyArea->getStudyArea(),
+      'contributors' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{contributor}", requirements={"contributor"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea")
    */
   public function remove(
-      Request $request, RequestStudyArea $requestStudyArea, Contributor $contributor,
-      ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, Contributor $contributor,
+    ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -150,14 +161,14 @@ class ContributorController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $contributor)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-          '%item%' => $trans->trans('contributor._name'),
+        '%item%' => $trans->trans('contributor._name'),
       ]));
 
       return $this->redirectToRoute('app_contributor_list');
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_contributor_list',
+      'cancel_route' => 'app_contributor_list',
     ]);
     $form->handleRequest($request);
 
@@ -171,8 +182,8 @@ class ContributorController extends AbstractController
     }
 
     return [
-        'contributor' => $contributor,
-        'form'        => $form->createView(),
+      'contributor' => $contributor,
+      'form'        => $form->createView(),
     ];
   }
 }

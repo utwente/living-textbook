@@ -17,6 +17,6 @@ class IncompatibleChangeException extends Exception
   public function __construct($reviewable, PendingChange $pendingChange)
   {
     parent::__construct(sprintf('The pending change (id: %d, type: %s, objectId: %d) is not compatible with this object (id: %d, type: %s)',
-        $pendingChange->getId(), $pendingChange->getObjectType(), $pendingChange->getObjectId(), $reviewable->getId(), $reviewable->getReviewName()));
+      $pendingChange->getId(), $pendingChange->getObjectType(), $pendingChange->getObjectId(), $reviewable->getId(), $reviewable->getReviewName()));
   }
 }

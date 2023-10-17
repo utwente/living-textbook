@@ -26,6 +26,7 @@ class UploadsController extends AbstractController
   /**
    * @Route("/studyarea/{_studyArea}/{path}", requirements={"_studyArea"="\d+", "path"=".+"},
    *                                          options={"no_login_wrap"=true})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return Response
@@ -34,15 +35,16 @@ class UploadsController extends AbstractController
   {
     // Create path from request
     $requestedFile = sprintf('%s/public/uploads/studyarea/%s/%s',
-        $this->getParameter('kernel.project_dir'),
-        $requestStudyArea->getStudyArea()->getId(),
-        $path);
+      $this->getParameter('kernel.project_dir'),
+      $requestStudyArea->getStudyArea()->getId(),
+      $path);
 
     return $this->getFile($request, $requestedFile);
   }
 
   /**
    * @Route("/global/{path}", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
@@ -51,8 +53,8 @@ class UploadsController extends AbstractController
   {
     // Create path from request
     $requestedFile = sprintf('%s/public/uploads/global/%s',
-        $this->getParameter('kernel.project_dir'),
-        $path);
+      $this->getParameter('kernel.project_dir'),
+      $path);
 
     return $this->getFile($request, $requestedFile);
   }

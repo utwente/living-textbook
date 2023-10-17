@@ -30,6 +30,7 @@ trait BaseDataTextObject
    * @ORM\Column(name="text", type="text", nullable=true)
    *
    * @Serializer\Groups({"review_change"})
+   *
    * @Serializer\Type("string")
    */
   private $text;

@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Contributor.
  *
  * @ORM\Entity(repositoryClass="App\Repository\ContributorRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -40,9 +41,10 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
   private Collection $concepts;
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="contributors")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
@@ -51,47 +53,55 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    * @ORM\Column(name="name", type="string", length=512, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=512)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private string $name = '';
 
   /**
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Assert\Length(max=1024)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $description = null;
 
   /**
-   *
    * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
    * @Assert\Url()
+   *
    * @Assert\Length(max=512)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $url = null;
 
   /**
-   *
    * @ORM\Column(name="email", type="string", length=255, nullable=true)
    *
    * @Assert\Email()
+   *
    * @Assert\Length(max=255)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
   private ?string $email = null;
 
   /**
-   *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private bool $broken = false;

@@ -21,29 +21,29 @@ class DownloadType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('type', ChoiceType::class, [
-            'label'   => 'data.download.type',
-            'choices' => $this->exportService->getChoices(),
-            'attr'    => [
-                'class' => 'download-type',
-            ],
-        ])
-        ->add('preview', DownloadPreviewType::class)
-        ->add('submit', SingleSubmitType::class, [
-            'label' => 'data.download.title',
-            'icon'  => 'fa-download',
-            'attr'  => [
-                'class' => 'btn btn-outline-success',
-            ],
-        ]);
+      ->add('type', ChoiceType::class, [
+        'label'   => 'data.download.type',
+        'choices' => $this->exportService->getChoices(),
+        'attr'    => [
+          'class' => 'download-type',
+        ],
+      ])
+      ->add('preview', DownloadPreviewType::class)
+      ->add('submit', SingleSubmitType::class, [
+        'label' => 'data.download.title',
+        'icon'  => 'fa-download',
+        'attr'  => [
+          'class' => 'btn btn-outline-success',
+        ],
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'attr' => [
-            'target' => '_blank',
-        ],
+      'attr' => [
+        'target' => '_blank',
+      ],
     ]);
   }
 }

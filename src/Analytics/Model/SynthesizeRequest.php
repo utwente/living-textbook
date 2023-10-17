@@ -17,6 +17,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
    */
   public $usersIgnore = 10;
@@ -27,6 +28,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
    */
   public $usersPerfect = 20;
@@ -37,6 +39,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
    */
   public $usersFlawed = 150;
@@ -47,7 +50,9 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
+   *
    * @Assert\LessThanOrEqual(propertyPath="usersFlawed")
    */
   public $usersFlawedTest = 100;
@@ -58,6 +63,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
    */
   public $usersConceptBrowsers = 30;
@@ -68,7 +74,9 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
+   *
    * @Assert\LessThanOrEqual(propertyPath="usersConceptBrowsers")
    */
   public $usersConceptBrowsersTest = 20;
@@ -79,6 +87,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min=0, max=200)
    */
   public $usersTest = 100;
@@ -96,6 +105,7 @@ class SynthesizeRequest
    * @var float
    *
    * @Assert\NotNull
+   *
    * @Assert\Range(min=0, max=1)
    */
   public $flawedDropOffChance = 0.04;
@@ -106,6 +116,7 @@ class SynthesizeRequest
    * @var float
    *
    * @Assert\NotNull
+   *
    * @Assert\Range(min=0, max=1)
    */
   public $conceptBrowserDropOffChance = 0.08;
@@ -116,6 +127,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull
+   *
    * @Assert\Range(min=1, max=31)
    */
   public $daysBetweenLearningPaths = 7;
@@ -126,6 +138,7 @@ class SynthesizeRequest
    * @var int
    *
    * @Assert\NotNull
+   *
    * @Assert\Range(min=1, max=31)
    */
   public $daysBeforeTest = 7;
@@ -141,32 +154,32 @@ class SynthesizeRequest
   {
     if ($this->testMoment >= new DateTimeImmutable()) {
       $context->buildViolation('analytics.before-now')
-          ->atPath('testMoment')
-          ->addViolation();
+        ->atPath('testMoment')
+        ->addViolation();
     }
   }
 
   public function getSettings(bool $debug, string $host): array
   {
     return [
-        'debug'                  => $debug,
-        'userGenerationSettings' => [
-            'debug'           => $debug,
-            'ignore'          => $this->usersIgnore,
-            'perfect'         => $this->usersPerfect,
-            'flawed'          => [$this->usersFlawed, $this->usersFlawedTest],
-            'conceptBrowsers' => [$this->usersConceptBrowsers, $this->usersConceptBrowsersTest],
-            'test'            => $this->usersTest,
-            'basis'           => ['synthetic-data+', '@' . $host],
-        ],
-        'studyArea'        => $this->studyArea->getId(),
-        'pathFollowerPath' => [
-            'dropOffChance' => $this->flawedDropOffChance,
-        ],
-        'conceptbrowserFollowerdropOffChance' => $this->conceptBrowserDropOffChance,
-        'testMoment'                          => $this->testMoment->format('Y-m-d H:i:s'),
-        'learningpaths'                       => [],
-        'conceptData'                         => [],
+      'debug'                  => $debug,
+      'userGenerationSettings' => [
+        'debug'           => $debug,
+        'ignore'          => $this->usersIgnore,
+        'perfect'         => $this->usersPerfect,
+        'flawed'          => [$this->usersFlawed, $this->usersFlawedTest],
+        'conceptBrowsers' => [$this->usersConceptBrowsers, $this->usersConceptBrowsersTest],
+        'test'            => $this->usersTest,
+        'basis'           => ['synthetic-data+', '@' . $host],
+      ],
+      'studyArea'        => $this->studyArea->getId(),
+      'pathFollowerPath' => [
+        'dropOffChance' => $this->flawedDropOffChance,
+      ],
+      'conceptbrowserFollowerdropOffChance' => $this->conceptBrowserDropOffChance,
+      'testMoment'                          => $this->testMoment->format('Y-m-d H:i:s'),
+      'learningpaths'                       => [],
+      'conceptData'                         => [],
     ];
   }
 }

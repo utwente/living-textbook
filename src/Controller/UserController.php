@@ -37,23 +37,25 @@ class UserController extends AbstractController
 {
   /**
    * @Route("/api-tokens")
+   *
    * @IsGranted("ROLE_USER")
    */
   public function apiTokens(UserApiTokenRepository $tokenRepository): Response
   {
     return $this->render('user/api_tokens.html.twig', [
-        'tokens' => $tokenRepository->findBy(['user' => $this->getUser()]),
+      'tokens' => $tokenRepository->findBy(['user' => $this->getUser()]),
     ]);
   }
 
   /**
    * @Route("/api-tokens/generate")
+   *
    * @IsGranted("ROLE_USER")
    */
   public function apiTokensGenerate(
-      Request $request,
-      EntityManagerInterface $em,
-      UserPasswordEncoderInterface $passwordEncoder): Response
+    Request $request,
+    EntityManagerInterface $em,
+    UserPasswordEncoderInterface $passwordEncoder): Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -65,8 +67,8 @@ class UserController extends AbstractController
       // Create the actual token, with the actual token in it
       $token       = bin2hex(random_bytes(32));
       $tokenObject = (new UserApiToken($user, $passwordEncoder->encodePassword($formToken, $token)))
-          ->setDescription($formToken->getDescription())
-          ->setValidUntil($formToken->getValidUntil());
+        ->setDescription($formToken->getDescription())
+        ->setValidUntil($formToken->getValidUntil());
 
       $em->persist($tokenObject);
       $em->flush();
@@ -77,12 +79,13 @@ class UserController extends AbstractController
     }
 
     return $this->render('user/api_tokens_generate.html.twig', [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ]);
   }
 
   /**
    * @Route("/api-tokens/generated")
+   *
    * @IsGranted("ROLE_USER")
    */
   public function apiTokensGenerated(Request $request): Response
@@ -95,19 +98,20 @@ class UserController extends AbstractController
     $request->getSession()->remove('new_token');
 
     return $this->render('user/api_tokens_show.html.twig', [
-        'token' => $token,
+      'token' => $token,
     ]);
   }
 
   /**
    * @Route("/api-tokens/remove/{userApiToken}", requirements={"userApiToken": "\d+"})
+   *
    * @IsGranted("ROLE_USER")
    */
   public function apiTokensRemove(
-      Request $request,
-      UserApiToken $userApiToken,
-      EntityManagerInterface $em,
-      TranslatorInterface $trans): Response
+    Request $request,
+    UserApiToken $userApiToken,
+    EntityManagerInterface $em,
+    TranslatorInterface $trans): Response
   {
     $currentUser = $this->getUser();
     assert($currentUser instanceof User);
@@ -116,7 +120,7 @@ class UserController extends AbstractController
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_user_apitokens',
+      'cancel_route' => 'app_user_apitokens',
     ]);
     $form->handleRequest($request);
 
@@ -130,13 +134,15 @@ class UserController extends AbstractController
     }
 
     return $this->render('user/api_tokens_remove.html.twig', [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ]);
   }
 
   /**
    * @Route("/fallback/add")
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
    * @throws TransportExceptionInterface
@@ -144,13 +150,13 @@ class UserController extends AbstractController
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function fallbackAdd(
-      Request $request,
-      EntityManagerInterface $em,
-      TranslatorInterface $trans,
-      MailerInterface $mailer,
-      UserRepository $userRepository,
-      UserProtoRepository $userProtoRepository,
-      UserPasswordEncoderInterface $userPasswordEncoder): array|Response
+    Request $request,
+    EntityManagerInterface $em,
+    TranslatorInterface $trans,
+    MailerInterface $mailer,
+    UserRepository $userRepository,
+    UserProtoRepository $userProtoRepository,
+    UserPasswordEncoderInterface $userPasswordEncoder): array|Response
   {
     $form = $this->createForm(AddFallbackUsersType::class);
     $form->handleRequest($request);
@@ -168,7 +174,7 @@ class UserController extends AbstractController
 
         // Create the proto user
         $userProto = (new UserProto())
-            ->setEmail($email);
+          ->setEmail($email);
 
         // Generate a password
         $password = bin2hex(random_bytes(20));
@@ -177,8 +183,8 @@ class UserController extends AbstractController
         // Persist the new user
         $em->persist($userProto);
         $notificationContexts[] = [
-            'user_email' => $email,
-            'password'   => $password,
+          'user_email' => $email,
+          'password'   => $password,
         ];
       }
 
@@ -188,11 +194,11 @@ class UserController extends AbstractController
       // Schedule emails
       foreach ($notificationContexts as $notificationContext) {
         $mailer->send(
-            (new TemplatedEmail())
-                ->to($notificationContext['user_email'])
-                ->subject($trans->trans('auth.new-local-account.subject', [], 'communication'))
-                ->htmlTemplate('communication/auth/new_local_account.html.twig')
-                ->context($notificationContext)
+          (new TemplatedEmail())
+            ->to($notificationContext['user_email'])
+            ->subject($trans->trans('auth.new-local-account.subject', [], 'communication'))
+            ->htmlTemplate('communication/auth/new_local_account.html.twig')
+            ->context($notificationContext)
         );
       }
 
@@ -202,20 +208,22 @@ class UserController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/fallback/password/change")
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_USER")
    */
   public function fallbackChangeOwnPassword(
-      Request $request,
-      EntityManagerInterface $em,
-      UserPasswordEncoderInterface $encoder,
-      TranslatorInterface $trans): array|Response
+    Request $request,
+    EntityManagerInterface $em,
+    UserPasswordEncoderInterface $encoder,
+    TranslatorInterface $trans): array|Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -238,13 +246,15 @@ class UserController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/fallback/edit/{user}", requirements={"user"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function fallbackEdit(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
@@ -266,36 +276,40 @@ class UserController extends AbstractController
     }
 
     return [
-        'user' => $user,
-        'form' => $form->createView(),
+      'user' => $user,
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/fallback/list")
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function fallbackList(UserRepository $userRepository, UserProtoRepository $userProtoRepository): array
   {
     // Retrieve users
     return [
-        'users'        => $userRepository->getFallbackUsers(),
-        'open_invites' => $userProtoRepository->findAll(),
+      'users'        => $userRepository->getFallbackUsers(),
+      'open_invites' => $userProtoRepository->findAll(),
     ];
   }
 
   /**
    * @Route("/fallback/password/{user}", requirements={"user"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function fallbackResetPassword(
-      Request $request,
-      User $user,
-      EntityManagerInterface $em,
-      UserPasswordEncoderInterface $encoder,
-      TranslatorInterface $trans): array|Response
+    Request $request,
+    User $user,
+    EntityManagerInterface $em,
+    UserPasswordEncoderInterface $encoder,
+    TranslatorInterface $trans): array|Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -310,7 +324,7 @@ class UserController extends AbstractController
       $em->flush();
 
       $this->addFlash('success', $trans->trans('user.fallback.password-updated', [
-          '%user%' => $user->getDisplayName(),
+        '%user%' => $user->getDisplayName(),
       ]));
 
       return $this->redirectToRoute('app_user_fallbacklist');
@@ -319,22 +333,24 @@ class UserController extends AbstractController
     $this->addFlash('warning', $trans->trans('user.fallback.reset-password-warning'));
 
     return [
-        'user' => $user,
-        'form' => $form->createView(),
+      'user' => $user,
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/fallback/remove/{user}", requirements={"user"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function fallbackRemove(
-      Request $request,
-      User $user,
-      EntityManagerInterface $em,
-      TranslatorInterface $trans,
-      StudyAreaRepository $studyAreaRepository): array|Response
+    Request $request,
+    User $user,
+    EntityManagerInterface $em,
+    TranslatorInterface $trans,
+    StudyAreaRepository $studyAreaRepository): array|Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -354,7 +370,7 @@ class UserController extends AbstractController
     $studyAreas = $studyAreaRepository->findBy(['owner' => $user], ['name' => 'ASC']);
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_user_fallbacklist',
+      'cancel_route' => 'app_user_fallbacklist',
     ]);
     $form->handleRequest($request);
 
@@ -366,32 +382,34 @@ class UserController extends AbstractController
       $em->flush();
 
       $this->addFlash('success', $trans->trans('user.fallback.removed', [
-          '%user%' => $user->getDisplayName(),
+        '%user%' => $user->getDisplayName(),
       ]));
 
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
     return [
-        'user'       => $user,
-        'studyAreas' => $studyAreas,
-        'form'       => $form->createView(),
+      'user'       => $user,
+      'studyAreas' => $studyAreas,
+      'form'       => $form->createView(),
     ];
   }
 
   /**
    * @Route("/invite/remove/{user}", requirements={"user"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    */
   public function fallbackInviteRemove(
-      Request $request,
-      UserProto $user,
-      EntityManagerInterface $em,
-      TranslatorInterface $trans): array|Response
+    Request $request,
+    UserProto $user,
+    EntityManagerInterface $em,
+    TranslatorInterface $trans): array|Response
   {
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_user_fallbacklist',
+      'cancel_route' => 'app_user_fallbacklist',
     ]);
     $form->handleRequest($request);
 
@@ -400,15 +418,15 @@ class UserController extends AbstractController
       $em->flush();
 
       $this->addFlash('success', $trans->trans('user.invite.removed', [
-          '%email%' => $user->getEmail(),
+        '%email%' => $user->getEmail(),
       ]));
 
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
     return [
-        'userProto' => $user,
-        'form'      => $form->createView(),
+      'userProto' => $user,
+      'form'      => $form->createView(),
     ];
   }
 }

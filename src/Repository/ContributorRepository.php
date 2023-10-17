@@ -20,15 +20,15 @@ class ContributorRepository extends ServiceEntityRepository
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('c')
-        ->where('c.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('c.name', 'ASC');
+      ->where('c.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->orderBy('c.name', 'ASC');
   }
 
   /**
@@ -39,24 +39,20 @@ class ContributorRepository extends ServiceEntityRepository
   public function findForConcepts(array $concepts)
   {
     return $this->createQueryBuilder('c')
-        ->distinct()
-        ->leftJoin('c.concepts', 'c')
-        ->where('c IN (:concepts)')
-        ->setParameter('concepts', $concepts)
-        ->getQuery()->getResult();
+      ->distinct()
+      ->leftJoin('c.concepts', 'c')
+      ->where('c IN (:concepts)')
+      ->setParameter('concepts', $concepts)
+      ->getQuery()->getResult();
   }
 
-  /**
-   * @throws NonUniqueResultException
-   *
-   * @return mixed
-   */
+  /** @throws NonUniqueResultException */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('c')
-        ->select('COUNT(c.id)')
-        ->where('c.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getSingleScalarResult();
+      ->select('COUNT(c.id)')
+      ->where('c.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->getSingleScalarResult();
   }
 }

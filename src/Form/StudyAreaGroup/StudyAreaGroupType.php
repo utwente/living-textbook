@@ -20,35 +20,35 @@ class StudyAreaGroupType extends AbstractType
     assert($studyAreaGroup instanceof StudyAreaGroup);
 
     $builder
-        ->add('name', TextType::class)
-        ->add('studyAreas', EntityType::class, [
-            'label'         => 'study-area.groups.areas',
-            'class'         => StudyArea::class,
-            'choice_label'  => 'name',
-            'required'      => false,
-            'by_reference'  => false,
-            'multiple'      => true,
-            'query_builder' => function (StudyAreaRepository $repo) use ($studyAreaGroup) {
-              $qb = $repo->createQueryBuilder('s');
-              $qb->where('s.group IS NULL');
+      ->add('name', TextType::class)
+      ->add('studyAreas', EntityType::class, [
+        'label'         => 'study-area.groups.areas',
+        'class'         => StudyArea::class,
+        'choice_label'  => 'name',
+        'required'      => false,
+        'by_reference'  => false,
+        'multiple'      => true,
+        'query_builder' => function (StudyAreaRepository $repo) use ($studyAreaGroup) {
+          $qb = $repo->createQueryBuilder('s');
+          $qb->where('s.group IS NULL');
 
-              if ($studyAreaGroup->getId() !== null) {
-                $qb->orWhere('s.group = :group')
-                    ->setParameter('group', $studyAreaGroup);
-              }
+          if ($studyAreaGroup->getId() !== null) {
+            $qb->orWhere('s.group = :group')
+              ->setParameter('group', $studyAreaGroup);
+          }
 
-              $qb->orderBy('s.name', 'ASC');
+          $qb->orderBy('s.name', 'ASC');
 
-              return $qb;
-            },
-            'select2' => true,
-        ])
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_studyarea_listgroups',
-        ]);
+          return $qb;
+        },
+        'select2' => true,
+      ])
+      ->add('submit', SaveType::class, [
+        'enable_save_and_list' => false,
+        'enable_cancel'        => true,
+        'cancel_label'         => 'form.discard',
+        'cancel_route'         => 'app_studyarea_listgroups',
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)

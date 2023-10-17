@@ -31,6 +31,7 @@ class TrackingController extends AbstractController
 {
   /**
    * @Route("/export")
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
    *
    * @throws Exception
@@ -50,61 +51,63 @@ class TrackingController extends AbstractController
 
   /**
    * @Route("/pageload", methods={"POST"}, options={"expose"="true"})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
    */
   public function pageload(
-      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
-      ValidatorInterface $validator, RouterInterface $router)
+    Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
+    ValidatorInterface $validator, RouterInterface $router)
   {
     return $this->processTrackingItem(
-        Pageload::class,
-        function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
-          $pathContext = null;
+      Pageload::class,
+      function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
+        $pathContext = null;
+        try {
+          $pathContext = $router->match($pageLoad->getPath());
+        } catch (ResourceNotFoundException) {
+          // Try to resolve the path context, set empty context when route not found
+        }
+
+        $originContext = null;
+        if ($pageLoad->getOrigin()) {
           try {
-            $pathContext = $router->match($pageLoad->getPath());
+            $originContext = $router->match($pageLoad->getOrigin());
           } catch (ResourceNotFoundException) {
-            // Try to resolve the path context, set empty context when route not found
+            // Try to resolve the origin context, but ignore when not matched
           }
+        }
 
-          $originContext = null;
-          if ($pageLoad->getOrigin()) {
-            try {
-              $originContext = $router->match($pageLoad->getOrigin());
-            } catch (ResourceNotFoundException) {
-              // Try to resolve the origin context, but ignore when not matched
-            }
-          }
-
-          // Set the updated data
-          $pageLoad
-              ->setStudyArea($studyArea)
-              ->setUserId($user ? $user->getUserIdentifier() : 'anonymous')
-              ->setPathContext($pathContext)
-              ->setOriginContext($originContext);
-        },
-        $request, $requestStudyArea, $em, $serializer, $validator);
+        // Set the updated data
+        $pageLoad
+          ->setStudyArea($studyArea)
+          ->setUserId($user ? $user->getUserIdentifier() : 'anonymous')
+          ->setPathContext($pathContext)
+          ->setOriginContext($originContext);
+      },
+      $request, $requestStudyArea, $em, $serializer, $validator);
   }
 
   /**
    * @Route("/event", methods={"POST"}, options={"expose"="true"})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
    */
   public function event(
-      Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
-      ValidatorInterface $validator)
+    Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
+    ValidatorInterface $validator)
   {
     return $this->processTrackingItem(
-        TrackingEvent::class,
-        function (TrackingEvent $pageLoad, StudyArea $studyArea, ?User $user) {
-          $pageLoad
-              ->setStudyArea($studyArea)
-              ->setUserId($user ? $user->getUserIdentifier() : 'anonymous');
-        },
-        $request, $requestStudyArea, $em, $serializer, $validator);
+      TrackingEvent::class,
+      function (TrackingEvent $pageLoad, StudyArea $studyArea, ?User $user) {
+        $pageLoad
+          ->setStudyArea($studyArea)
+          ->setUserId($user ? $user->getUserIdentifier() : 'anonymous');
+      },
+      $request, $requestStudyArea, $em, $serializer, $validator);
   }
 
   /**
@@ -113,8 +116,8 @@ class TrackingController extends AbstractController
    * @return Response
    */
   private function processTrackingItem(
-      string $clazz, Closure $callback, Request $request, RequestStudyArea $requestStudyArea,
-      EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator)
+    string $clazz, Closure $callback, Request $request, RequestStudyArea $requestStudyArea,
+    EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator)
   {
     // Verify whether tracking is actually enabled
     $studyArea = $requestStudyArea->getStudyArea();

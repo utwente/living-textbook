@@ -28,8 +28,8 @@ class TrackingExportBuilder
 
   /** TrackingExportBuilder constructor. */
   public function __construct(
-      TranslatorInterface $translator, SpreadsheetHelper $spreadsheetHelper, PageLoadRepository $pageLoadRepository,
-      TrackingEventRepository $trackingEventRepository, NamingService $namingService)
+    TranslatorInterface $translator, SpreadsheetHelper $spreadsheetHelper, PageLoadRepository $pageLoadRepository,
+    TrackingEventRepository $trackingEventRepository, NamingService $namingService)
   {
     $this->translator              = $translator;
     $this->spreadsheetHelper       = $spreadsheetHelper;
@@ -48,9 +48,9 @@ class TrackingExportBuilder
     // Create spreadsheet
     $spreadsheet = new Spreadsheet();
     $spreadsheet->getProperties()->setCreator($studyArea->getOwner()->getDisplayName())
-        ->setTitle($studyArea->getName())
-        ->setSubject($this->translator->trans('tracking.export.subject', ['%item%' => $studyArea->getName()]))
-        ->setDescription($this->translator->trans('tracking.export.description', ['%item%' => $studyArea->getName()]));
+      ->setTitle($studyArea->getName())
+      ->setSubject($this->translator->trans('tracking.export.subject', ['%item%' => $studyArea->getName()]))
+      ->setDescription($this->translator->trans('tracking.export.description', ['%item%' => $studyArea->getName()]));
 
     // Add the exports
     $this->exportPageLoads($studyArea, $spreadsheet->setActiveSheetIndex(0));
@@ -70,7 +70,7 @@ class TrackingExportBuilder
   {
     // Create response
     return $this->spreadsheetHelper->createExcelResponse($this->buildSpreadsheet($studyArea),
-        sprintf('%s_tracking_export.xlsx', $studyArea->getName()));
+      sprintf('%s_tracking_export.xlsx', $studyArea->getName()));
   }
 
   private function exportPageLoads(StudyArea $studyArea, Worksheet $sheet): void
@@ -90,7 +90,7 @@ class TrackingExportBuilder
 
     // Controller argument map, predefine commonly used values
     $contextMap = [
-        '_controller' => null, // Do not include this item in the export
+      '_controller' => null, // Do not include this item in the export
     ];
 
     $sheet->getColumnDimensionByColumn(++$column)->setAutoSize(true);
@@ -183,7 +183,6 @@ class TrackingExportBuilder
     }
   }
 
-  /** @param $column */
   private function mapContextElements(Worksheet &$sheet, int &$column, int $row, ?iterable $context, array $contextMap): void
   {
     foreach ($context ?? [] as $cKey => $cItem) {

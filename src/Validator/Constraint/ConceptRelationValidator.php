@@ -91,11 +91,11 @@ class ConceptRelationValidator extends ConstraintValidator
 
     // Build violation
     $this->context
-        ->buildViolation($message, [
-            '%c1%' => $source->getName(),
-            '%c2%' => $target->getName(),
-        ])
-        ->atPath($direction ? 'outgoingRelations' : 'incomingRelations')
-        ->addViolation();
+      ->buildViolation($message, [
+        '%c1%' => $source->getName(),
+        '%c2%' => $target->getName(),
+      ])
+      ->atPath($direction ? 'outgoingRelations' : 'incomingRelations')
+      ->addViolation();
   }
 }

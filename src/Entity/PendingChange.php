@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * Class PendingChange.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\PendingChangeRepository")
  */
 class PendingChange implements IdInterface
@@ -33,15 +34,16 @@ class PendingChange implements IdInterface
   final public const CHANGE_TYPE_EDIT   = '20_edit';
   final public const CHANGE_TYPE_REMOVE = '30_remove';
   final public const CHANGE_TYPES       = [
-      self::CHANGE_TYPE_ADD,
-      self::CHANGE_TYPE_EDIT,
-      self::CHANGE_TYPE_REMOVE,
+    self::CHANGE_TYPE_ADD,
+    self::CHANGE_TYPE_EDIT,
+    self::CHANGE_TYPE_REMOVE,
   ];
 
   /**
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?StudyArea $studyArea = null;
@@ -52,6 +54,7 @@ class PendingChange implements IdInterface
    * @ORM\Column(type="string", length=10)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Choice(choices=PendingChange::CHANGE_TYPES)
    */
   private ?string $changeType = null;
@@ -60,13 +63,13 @@ class PendingChange implements IdInterface
    * The object type of the pending change.
    *
    * @ORM\Column(type="string", length=255)
+   *
    * @Assert\NotBlank(allowNull=false)
    */
   private ?string $objectType = null;
 
   /**
    * The object id of the pending change.
-   *
    *
    * @ORM\Column(type="integer", nullable=true)
    */
@@ -76,6 +79,7 @@ class PendingChange implements IdInterface
    * JSON encoded object.
    *
    * @var string|null
+   *
    * @ORM\Column(type="text")
    *
    * @Assert\NotBlank(allowNull=false)
@@ -96,9 +100,10 @@ class PendingChange implements IdInterface
   /**
    * The owner of the pending change (aka, the user who created it).
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=false)
+   *
    * @Assert\NotNull()
    */
   private ?User $owner = null;
@@ -106,8 +111,8 @@ class PendingChange implements IdInterface
   /**
    * The review this pending change belongs to, if any.
    *
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\Review", inversedBy="pendingChanges")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?Review $review = null;
@@ -115,27 +120,25 @@ class PendingChange implements IdInterface
   /**
    * If any, review comments on particular changes (per field) are stores here.
    *
-   *
    * @ORM\Column(type="json", nullable=true)
+   *
    * @Assert\Type("array")
    */
   private ?array $reviewComments = null;
 
-  /**
-   * Cached deserialized object.
-   */
+  /** Cached deserialized object. */
   private ?ReviewableInterface $cachedObject = null;
 
   /** Duplicated the pending change, while setting the new marked fields as supplied. */
   public function duplicate(array $changedFields): PendingChange
   {
     $new = (new PendingChange())
-        ->setStudyArea($this->getStudyArea())
-        ->setChangeType($this->getChangeType())
-        ->setObjectType($this->getObjectType())
-        ->setObjectId($this->getObjectId())
-        ->setOwner($this->getOwner())
-        ->setChangedFields($changedFields);
+      ->setStudyArea($this->getStudyArea())
+      ->setChangeType($this->getChangeType())
+      ->setObjectType($this->getObjectType())
+      ->setObjectId($this->getObjectId())
+      ->setOwner($this->getOwner())
+      ->setChangedFields($changedFields);
 
     $new->payload = $this->payload;
 
@@ -186,62 +189,62 @@ class PendingChange implements IdInterface
     switch ($this->objectType) {
       case Abbreviation::class:
         $sortOrder = [
-            'abbreviation' => 200,
-            'meaning'      => 150,
+          'abbreviation' => 200,
+          'meaning'      => 150,
         ];
         break;
       case Concept::class:
         $sortOrder = [
-            'name'              => 200,
-            'instance'          => 190,
-            'definition'        => 180,
-            'introduction'      => 170,
-            'theoryExplanation' => 160,
-            'examples'          => 150,
-            'howTo'             => 145,
-            'synonyms'          => 140,
-            'externalResources' => 130,
-            'learningOutcomes'  => 120,
-            'priorKnowledge'    => 110,
-            'selfAssessment'    => 90,
-            'relations'         => 80,
-            'incomingRelations' => 70,
-            'contributors'      => 60,
+          'name'              => 200,
+          'instance'          => 190,
+          'definition'        => 180,
+          'introduction'      => 170,
+          'theoryExplanation' => 160,
+          'examples'          => 150,
+          'howTo'             => 145,
+          'synonyms'          => 140,
+          'externalResources' => 130,
+          'learningOutcomes'  => 120,
+          'priorKnowledge'    => 110,
+          'selfAssessment'    => 90,
+          'relations'         => 80,
+          'incomingRelations' => 70,
+          'contributors'      => 60,
         ];
         break;
       case Contributor::class:
         $sortOrder = [
-            'name'        => 200,
-            'description' => 150,
-            'url'         => 100,
+          'name'        => 200,
+          'description' => 150,
+          'url'         => 100,
         ];
         break;
       case ExternalResource::class:
         $sortOrder = [
-            'title'       => 200,
-            'description' => 150,
-            'url'         => 100,
+          'title'       => 200,
+          'description' => 150,
+          'url'         => 100,
         ];
         break;
       case LearningOutcome::class:
         $sortOrder = [
-            'number' => 200,
-            'name'   => 150,
-            'text'   => 100,
+          'number' => 200,
+          'name'   => 150,
+          'text'   => 100,
         ];
         break;
       case LearningPath::class:
         $sortOrder = [
-            'name'         => 200,
-            'introduction' => 150,
-            'question'     => 100,
-            'elements'     => 50,
+          'name'         => 200,
+          'introduction' => 150,
+          'question'     => 100,
+          'elements'     => 50,
         ];
         break;
       case RelationType::class:
         $sortOrder = [
-            'name'        => 200,
-            'description' => 150,
+          'name'        => 200,
+          'description' => 150,
         ];
         break;
       default:
@@ -320,8 +323,6 @@ class PendingChange implements IdInterface
    * Validates the object id field, which must be empty for new objects, but filled for existing objects.
    *
    * @Assert\Callback()
-   *
-   * @param $payload
    */
   public function validateObjectId(ExecutionContextInterface $context, $payload)
   {
@@ -338,7 +339,7 @@ class PendingChange implements IdInterface
 
     if ($violation) {
       $violation->atPath('objectId')
-          ->addViolation();
+        ->addViolation();
     }
   }
 

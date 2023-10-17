@@ -26,6 +26,6 @@ class ReviewCheckboxDiffType extends AbstractReviewDiffType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setAllowedValues('field', ['instance']);
+      ->setAllowedValues('field', ['instance']);
   }
 }

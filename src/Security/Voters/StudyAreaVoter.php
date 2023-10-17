@@ -21,13 +21,13 @@ class StudyAreaVoter extends Voter
   final public const PRINTER              = 'STUDYAREA_PRINT';
   final public const ANALYTICS            = 'STUDYAREA_ANALYTICS';
   final public const SUPPORTED_ATTRIBUTES = [
-      self::OWNER,
-      self::SHOW,
-      self::EDIT,
-      self::REVIEW,
-      self::ANNOTATE,
-      self::PRINTER,
-      self::ANALYTICS,
+    self::OWNER,
+    self::SHOW,
+    self::EDIT,
+    self::REVIEW,
+    self::ANNOTATE,
+    self::PRINTER,
+    self::ANALYTICS,
   ];
 
   private AccessDecisionManagerInterface $decisionManager;
@@ -64,7 +64,6 @@ class StudyAreaVoter extends Voter
    * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
    *
    * @param string $attribute
-   * @param mixed  $subject
    *
    * @return bool
    */

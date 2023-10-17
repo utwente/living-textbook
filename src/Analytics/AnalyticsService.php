@@ -50,19 +50,19 @@ class AnalyticsService
   private string $baseOutputDir;
 
   public function __construct(
-      private TrackingExportBuilder $trackingExportBuilder,
-      private ConceptIdNameProvider $conceptIdNameProvider,
-      private SpreadsheetHelper $spreadsheetHelper,
-      string $projectDir,
-      string $cacheDir,
-      private TrackingEventRepository $trackingEventRepository,
-      private PageLoadRepository $pageLoadRepository,
-      private LearningPathRepository $learningPathRepository,
-      private RelationProvider $relationProvider,
-      private EntityManagerInterface $entityManager,
-      private string $host,
-      private bool $isDebug,
-      private string $pythonPath)
+    private TrackingExportBuilder $trackingExportBuilder,
+    private ConceptIdNameProvider $conceptIdNameProvider,
+    private SpreadsheetHelper $spreadsheetHelper,
+    string $projectDir,
+    string $cacheDir,
+    private TrackingEventRepository $trackingEventRepository,
+    private PageLoadRepository $pageLoadRepository,
+    private LearningPathRepository $learningPathRepository,
+    private RelationProvider $relationProvider,
+    private EntityManagerInterface $entityManager,
+    private string $host,
+    private bool $isDebug,
+    private string $pythonPath)
   {
     $this->analyticsDir  = $projectDir . '/python/data-visualisation';
     $this->baseOutputDir = $cacheDir . '/data-visualisation';
@@ -85,7 +85,7 @@ class AnalyticsService
 
     // Create the virtual environment directory
     (new Process([$this->pythonPath, '-m', 'venv', self::ENV_DIR], $this->analyticsDir))
-        ->mustRun();
+      ->mustRun();
 
     $progressBar->clear();
     $output->text('Upgrading pip...');
@@ -94,9 +94,9 @@ class AnalyticsService
 
     // Upgrade the pip version in the venv
     Process::fromShellCommandline(
-        sprintf('. %s/bin/activate; pip install --upgrade pip', self::ENV_DIR),
-        $this->analyticsDir, null, null, 600)
-        ->mustRun();
+      sprintf('. %s/bin/activate; pip install --upgrade pip', self::ENV_DIR),
+      $this->analyticsDir, null, null, 600)
+      ->mustRun();
 
     $progressBar->clear();
     $output->text('Installing python packages...');
@@ -105,8 +105,8 @@ class AnalyticsService
 
     // Install packages
     $process = Process::fromShellCommandline(
-        sprintf('. %s/bin/activate; pip install -r requirements.txt --no-cache-dir', self::ENV_DIR),
-        $this->analyticsDir, null, null, null);
+      sprintf('. %s/bin/activate; pip install -r requirements.txt --no-cache-dir', self::ENV_DIR),
+      $this->analyticsDir, null, null, null);
     $process->mustRun(function ($type, $buffer) use ($output, $progressBar) {
       $progressBar->clear();
       if (Process::ERR === $type) {
@@ -128,25 +128,25 @@ class AnalyticsService
     // Create the settings
     $learningPath = $request->learningPath;
     $settings     = [
-        'learningpaths' => [
-            $learningPath->getId() => [
-                'starting time' => $this->formatPythonDateTime($request->teachingMoment),
-                'list'          => $learningPath->getElementsOrdered()->map(fn (LearningPathElement $element)          => $element->getConcept()->getId())->toArray(),
-                'id'            => $learningPath->getId(),
-            ],
+      'learningpaths' => [
+        $learningPath->getId() => [
+          'starting time' => $this->formatPythonDateTime($request->teachingMoment),
+          'list'          => $learningPath->getElementsOrdered()->map(fn (LearningPathElement $element) => $element->getConcept()->getId())->toArray(),
+          'id'            => $learningPath->getId(),
         ],
-        'functions' => ['usersPerDayPerLearningPath'], // This single function delivers the required output here
+      ],
+      'functions' => ['usersPerDayPerLearningPath'], // This single function delivers the required output here
     ];
 
     // Build the visualisation
     $outputDirectory = $this
-        ->build($learningPath, $request->periodStart, $request->periodEnd, $settings, $request->forceRebuild);
+      ->build($learningPath, $request->periodStart, $request->periodEnd, $settings, $request->forceRebuild);
 
     // Return the data
     $finder = fn () => (new Finder())
-        ->files()
-        ->in($outputDirectory)
-        ->depth(0);
+      ->files()
+      ->in($outputDirectory)
+      ->depth(0);
 
     $result                  = new LearningPathVisualisationResult();
     $result->heatMapImage    = $this->firstFromFinder($finder()->name('heatmap*'));
@@ -191,17 +191,17 @@ class AnalyticsService
 
       // Generate learning path data
       $learningPaths = [
-          'order' => [],
+        'order' => [],
       ];
       foreach (array_reverse($this->learningPathRepository->findForStudyArea($studyArea)) as $key => $lp) {
         array_unshift($learningPaths['order'], (string)$lp->getId());
         $learningPaths[(string)$lp->getId()] = [
-            'lectureMoment' => $request->testMoment
-                ->modify(sprintf('-%d days', $request->daysBeforeTest))
-                ->modify(sprintf('-%d days', $key * $request->daysBetweenLearningPaths))
-                ->format('Y-m-d H:i:s'),
-            'concepts'         => array_values(array_map(fn (LearningPathElement $el)         => (string)$el->getConcept()->getId(), $lp->getElementsOrdered()->toArray())),
-            'learningpathName' => $lp->getName(),
+          'lectureMoment' => $request->testMoment
+            ->modify(sprintf('-%d days', $request->daysBeforeTest))
+            ->modify(sprintf('-%d days', $key * $request->daysBetweenLearningPaths))
+            ->format('Y-m-d H:i:s'),
+          'concepts'         => array_values(array_map(fn (LearningPathElement $el) => (string)$el->getConcept()->getId(), $lp->getElementsOrdered()->toArray())),
+          'learningpathName' => $lp->getName(),
         ];
       }
       $settings['learningpaths'] = $learningPaths;
@@ -210,7 +210,7 @@ class AnalyticsService
       $concepts = [];
       foreach ($studyArea->getConcepts() as $concept) {
         $concepts[(string)$concept->getId()] = [
-            'timeOnConcept' => random_int(1, 8) * 30,
+          'timeOnConcept' => random_int(1, 8) * 30,
         ];
       }
       $settings['conceptData'] = $concepts;
@@ -231,8 +231,8 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; python SyntheticDataGeneration.py "%s"', self::ENV_DIR, $settingsFile),
-          $this->analyticsDir, null, null, 120);
+        sprintf('. %s/bin/activate; python SyntheticDataGeneration.py "%s"', self::ENV_DIR, $settingsFile),
+        $this->analyticsDir, null, null, 120);
       $process->run();
 
       if (!$process->isSuccessful()) {
@@ -273,16 +273,16 @@ class AnalyticsService
         }
 
         $this->entityManager->persist(
-            (new PageLoad())
-                ->setStudyArea($studyArea)
-                ->setUserId($sheet->getCell(CellAddress::fromColumnAndRow(3, $row->getRowIndex()))->getFormattedValue())
-                ->setTimestamp(DateTime::createFromFormat('Y-m-d H:i:s',
-                    $sheet->getCell(CellAddress::fromColumnAndRow(4, $row->getRowIndex()))->getFormattedValue()))
-                ->setSessionId($sheet->getCell(CellAddress::fromColumnAndRow(5, $row->getRowIndex()))->getFormattedValue())
-                ->setPath($sheet->getCell(CellAddress::fromColumnAndRow(6, $row->getRowIndex()))->getFormattedValue())
-                ->setPathContext(unserialize($sheet->getCell(CellAddress::fromColumnAndRow(7, $row->getRowIndex()))->getFormattedValue()))
-                ->setOrigin($sheet->getCell(CellAddress::fromColumnAndRow(8, $row->getRowIndex()))->getFormattedValue())
-                ->setOriginContext(unserialize($sheet->getCell(CellAddress::fromColumnAndRow(9, $row->getRowIndex()))->getFormattedValue()))
+          (new PageLoad())
+            ->setStudyArea($studyArea)
+            ->setUserId($sheet->getCell(CellAddress::fromColumnAndRow(3, $row->getRowIndex()))->getFormattedValue())
+            ->setTimestamp(DateTime::createFromFormat('Y-m-d H:i:s',
+              $sheet->getCell(CellAddress::fromColumnAndRow(4, $row->getRowIndex()))->getFormattedValue()))
+            ->setSessionId($sheet->getCell(CellAddress::fromColumnAndRow(5, $row->getRowIndex()))->getFormattedValue())
+            ->setPath($sheet->getCell(CellAddress::fromColumnAndRow(6, $row->getRowIndex()))->getFormattedValue())
+            ->setPathContext(unserialize($sheet->getCell(CellAddress::fromColumnAndRow(7, $row->getRowIndex()))->getFormattedValue()))
+            ->setOrigin($sheet->getCell(CellAddress::fromColumnAndRow(8, $row->getRowIndex()))->getFormattedValue())
+            ->setOriginContext(unserialize($sheet->getCell(CellAddress::fromColumnAndRow(9, $row->getRowIndex()))->getFormattedValue()))
         );
       }
 
@@ -296,20 +296,20 @@ class AnalyticsService
    * @return string The output directory, which can be used to load the files
    */
   private function build(
-      StudyAreaFilteredInterface $object,
-      DateTimeInterface $start,
-      DateTimeInterface $end,
-      array $settings = [],
-      bool $forceBuild = false): string
+    StudyAreaFilteredInterface $object,
+    DateTimeInterface $start,
+    DateTimeInterface $end,
+    array $settings = [],
+    bool $forceBuild = false): string
   {
     // Clear the cache on every invocation
     $this->clearCache();
 
     // Set some global settings
     $settings['period']       = [
-        'usePeriod' => true,
-        'startDate' => $this->formatPythonDateTime($start, false),
-        'endDate'   => $this->formatPythonDateTime($end, false),
+      'usePeriod' => true,
+      'startDate' => $this->formatPythonDateTime($start, false),
+      'endDate'   => $this->formatPythonDateTime($end, false),
     ];
     $settings['debug']        = $this->isDebug;
     $settings['heatMapColor'] = 'rainbow';
@@ -370,8 +370,8 @@ class AnalyticsService
 
       // Run the actual build
       $process = Process::fromShellCommandline(
-          sprintf('. %s/bin/activate; python Main.py "%s"', self::ENV_DIR, $settingsFile),
-          $this->analyticsDir, null, null, 120);
+        sprintf('. %s/bin/activate; python Main.py "%s"', self::ENV_DIR, $settingsFile),
+        $this->analyticsDir, null, null, 120);
       $process->run();
 
       if (!$process->isSuccessful()) {
@@ -410,8 +410,8 @@ class AnalyticsService
   {
     $fileName = $outputDir . '/tracking_data.xlsx';
     $this->spreadsheetHelper
-        ->createExcelWriter($this->trackingExportBuilder->buildSpreadsheet($studyArea))
-        ->save($fileName);
+      ->createExcelWriter($this->trackingExportBuilder->buildSpreadsheet($studyArea))
+      ->save($fileName);
 
     return $fileName;
   }
@@ -426,8 +426,8 @@ class AnalyticsService
   {
     $filename = $outputDir . '/concept_names.csv';
     $this->spreadsheetHelper
-        ->createCsvWriter($this->conceptIdNameProvider->getSpreadSheet($studyArea))
-        ->save($filename);
+      ->createCsvWriter($this->conceptIdNameProvider->getSpreadSheet($studyArea))
+      ->save($filename);
 
     return $filename;
   }
@@ -436,8 +436,8 @@ class AnalyticsService
   {
     $filename = $outputDir . '/relations.csv';
     $this->spreadsheetHelper
-        ->createCsvWriter($this->relationProvider->getSpreadsheet($studyArea))
-        ->save($filename);
+      ->createCsvWriter($this->relationProvider->getSpreadsheet($studyArea))
+      ->save($filename);
 
     return $filename;
   }
@@ -451,7 +451,7 @@ class AnalyticsService
       $prefix = 'lp';
     } else {
       throw new InvalidArgumentException(
-          sprintf('Only %s and %s are supported for analytics', StudyArea::class, LearningPath::class));
+        sprintf('Only %s and %s are supported for analytics', StudyArea::class, LearningPath::class));
     }
 
     return $this->baseOutputDir . '/' . $prefix . '_' . $object->getId() . '_' . $hash;
@@ -468,10 +468,10 @@ class AnalyticsService
 
     // Find all directories older than one day
     $finder = (new Finder())
-        ->directories()
-        ->in($this->baseOutputDir)
-        ->depth('== 0')
-        ->date('before today');
+      ->directories()
+      ->in($this->baseOutputDir)
+      ->depth('== 0')
+      ->date('before today');
 
     // Early exit when no directories match
     if (!$finder->hasResults()) {
