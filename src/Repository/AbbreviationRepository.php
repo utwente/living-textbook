@@ -20,28 +20,24 @@ class AbbreviationRepository extends ServiceEntityRepository
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->getQuery()->getResult();
+      ->getQuery()->getResult();
   }
 
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('a')
-        ->where('a.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('a.abbreviation', 'ASC');
+      ->where('a.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->orderBy('a.abbreviation', 'ASC');
   }
 
-  /**
-   * @throws NonUniqueResultException
-   *
-   * @return mixed
-   */
+  /** @throws NonUniqueResultException */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('a')
-        ->select('COUNT(a.id)')
-        ->where('a.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getSingleScalarResult();
+      ->select('COUNT(a.id)')
+      ->where('a.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->getSingleScalarResult();
   }
 }

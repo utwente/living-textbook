@@ -35,13 +35,13 @@ class PrintedTextType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefaults([
-            'access_method' => null,
-            'disabled'      => true,
-            'required'      => false,
-            'text_only'     => false,
-        ])
-        ->setAllowedTypes('text_only', 'bool');
+      ->setDefaults([
+        'access_method' => null,
+        'disabled'      => true,
+        'required'      => false,
+        'text_only'     => false,
+      ])
+      ->setAllowedTypes('text_only', 'bool');
   }
 
   public function getParent()

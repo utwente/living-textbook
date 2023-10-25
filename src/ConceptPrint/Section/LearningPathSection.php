@@ -24,13 +24,13 @@ class LearningPathSection extends LtbSection
    * @throws PandocException
    */
   public function __construct(
-      LearningPath $learningPath, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
+    LearningPath $learningPath, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
   {
     parent::__construct($learningPath->getName(), $router, $projectDir);
 
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
-        $this->router->generateBrowserUrl('app_learningpath_show', ['learningPath' => $learningPath->getId()]),
-        $translator->trans('learning-path.online-source')
+      $this->router->generateBrowserUrl('app_learningpath_show', ['learningPath' => $learningPath->getId()]),
+      $translator->trans('learning-path.online-source')
     )));
 
     // Add learning path data
@@ -48,7 +48,7 @@ class LearningPathSection extends LtbSection
 
     // Add concept list
     $this->addElement((new SubSection($translator->trans('menu.concept')))
-        ->addElement(new Listing($concepts->map(fn (Concept $concept) => $concept->getName())->toArray())));
+      ->addElement(new Listing($concepts->map(fn (Concept $concept) => $concept->getName())->toArray())));
 
     // Add each concept from the learning path
     foreach ($concepts as $concept) {

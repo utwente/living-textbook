@@ -19,53 +19,39 @@ use Symfony\Component\Routing\RouterInterface;
 
 class UrlChecker
 {
-  /** @var FilesystemAdapter */
-  private $bad0UrlCache;
+  private FilesystemAdapter $bad0UrlCache;
 
-  /** @var FilesystemAdapter */
-  private $bad1UrlCache;
+  private FilesystemAdapter $bad1UrlCache;
 
-  /** @var FilesystemAdapter */
-  private $bad2UrlCache;
+  private FilesystemAdapter $bad2UrlCache;
 
-  /** @var FilesystemAdapter */
-  private $bad4UrlCache;
+  private FilesystemAdapter $bad4UrlCache;
 
-  /** @var FilesystemAdapter */
-  private $bad7UrlCache;
+  private FilesystemAdapter $bad7UrlCache;
 
-  /** @var FilesystemAdapter */
-  private $goodUrlsCache;
+  private FilesystemAdapter $goodUrlsCache;
 
-  /** @var FilesystemAdapter */
-  private $studyAreaCache;
+  private FilesystemAdapter $studyAreaCache;
 
-  /** @var ContributorRepository */
-  private $contributorRepository;
+  private ContributorRepository $contributorRepository;
 
-  /** @var ExternalResourceRepository */
-  private $externalResourceRepository;
+  private ExternalResourceRepository $externalResourceRepository;
 
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepository;
+  private LearningOutcomeRepository $learningOutcomeRepository;
 
-  /** @var LearningPathRepository */
-  private $learningPathRepository;
+  private LearningPathRepository $learningPathRepository;
 
-  /** @var StudyAreaRepository */
-  private $studyAreaRepository;
+  private StudyAreaRepository $studyAreaRepository;
 
-  /** @var UrlScanner */
-  private $urlScanner;
+  private UrlScanner $urlScanner;
 
-  /** @var RouterInterface */
-  private $router;
+  private RouterInterface $router;
 
   /** UrlChecker constructor. */
   public function __construct(
-      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-      StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository,
-      ContributorRepository $contributorRepository, UrlScanner $urlScanner, RouterInterface $router)
+    ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
+    StudyAreaRepository $studyAreaRepository, LearningPathRepository $learningPathRepository,
+    ContributorRepository $contributorRepository, UrlScanner $urlScanner, RouterInterface $router)
   {
     $this->contributorRepository      = $contributorRepository;
     $this->externalResourceRepository = $externalResourceRepository;
@@ -266,8 +252,6 @@ class UrlChecker
   /**
    * Cache a URL in the given cache.
    *
-   * @param $expiry
-   *
    * @throws InvalidArgumentException
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
@@ -275,9 +259,9 @@ class UrlChecker
   private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
   {
     $cache->save(
-        $cache->getItem($cacheableUrl->getCachekey())
-            ->set($cacheableUrl)
-            ->expiresAfter($expiry)
+      $cache->getItem($cacheableUrl->getCachekey())
+        ->set($cacheableUrl)
+        ->expiresAfter($expiry)
     );
   }
 

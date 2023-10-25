@@ -34,70 +34,56 @@ use Symfony\Component\Routing\RouterInterface;
 
 class StudyAreaDuplicator
 {
-  /** @var TagRepository */
-  private $tagRepository;
-  /** @var UrlContext */
-  private $urlContext;
+  private TagRepository $tagRepository;
+  private UrlContext $urlContext;
 
-  /** @var string */
-  private $uploadsPath;
+  private string $uploadsPath;
 
-  /** @var EntityManagerInterface */
-  private $em;
+  private EntityManagerInterface $em;
 
-  /** @var UrlScanner */
-  private $urlScanner;
+  private UrlScanner $urlScanner;
 
-  /** @var LtbRouter */
-  private $router;
+  private LtbRouter $router;
 
-  /** @var AbbreviationRepository */
-  private $abbreviationRepo;
+  private AbbreviationRepository $abbreviationRepo;
 
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepo;
+  private ConceptRelationRepository $conceptRelationRepo;
 
-  /** @var ContributorRepository */
-  private $contributorRepo;
+  private ContributorRepository $contributorRepo;
 
-  /** @var ExternalResourceRepository */
-  private $externalResourceRepo;
+  private ExternalResourceRepository $externalResourceRepo;
 
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepo;
+  private LearningOutcomeRepository $learningOutcomeRepo;
 
-  /** @var LearningPathRepository */
-  private $learningPathRepo;
+  private LearningPathRepository $learningPathRepo;
 
-  /** @var StudyArea */
-  private $studyAreaToDuplicate;
+  private StudyArea $studyAreaToDuplicate;
 
-  /** @var StudyArea */
-  private $newStudyArea;
+  private StudyArea $newStudyArea;
 
   /** @var Concept[] */
-  private $concepts;
+  private array $concepts;
 
   /** @var LearningPath[] Array of duplicated learning paths ([original id] = new learning path) */
-  private $newLearningPaths = [];
+  private array $newLearningPaths = [];
 
   /** @var LearningOutcome[] Array of duplicated learning outcomes ([original id] = new learning outcome) */
-  private $newLearningOutcomes = [];
+  private array $newLearningOutcomes = [];
 
   /** @var ExternalResource[] Array of duplicated external resources ([original id] = new external resource) */
-  private $newExternalResources = [];
+  private array $newExternalResources = [];
 
   /** @var Contributor[] Array of duplicated contributors ([original id] = new external resource) */
-  private $newContributors = [];
+  private array $newContributors = [];
 
   /** @var Abbreviation[] Array of duplicated abbreviations ([original id] = new abbreviation) */
-  private $newAbbreviations = [];
+  private array $newAbbreviations = [];
 
   /** @var Tag[] Array of duplicated tags ([original id] = new tag) */
-  private $newTags = [];
+  private array $newTags = [];
 
   /** @var Concept[] Array of duplicated concepts ([original id] = new concept) */
-  private $newConcepts = [];
+  private array $newConcepts = [];
 
   /**
    * StudyAreaDuplicator constructor.
@@ -107,11 +93,11 @@ class StudyAreaDuplicator
    * @param Concept[] $concepts             Concepts to copy
    */
   public function __construct(
-      string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
-      AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-      ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
-      LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepository,
-      TagRepository $tagRepository, StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
+    string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
+    AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
+    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
+    LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepository,
+    TagRepository $tagRepository, StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
   {
     $this->urlContext           = new UrlContext(self::class);
     $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
@@ -197,10 +183,10 @@ class StudyAreaDuplicator
     $learningOutcomes = $this->learningOutcomeRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($learningOutcomes as $learningOutcome) {
       $newLearningOutcome = (new LearningOutcome())
-          ->setStudyArea($this->newStudyArea)
-          ->setNumber($learningOutcome->getNumber())
-          ->setName($learningOutcome->getName())
-          ->setText($learningOutcome->getText());
+        ->setStudyArea($this->newStudyArea)
+        ->setNumber($learningOutcome->getNumber())
+        ->setName($learningOutcome->getName())
+        ->setText($learningOutcome->getText());
 
       $this->em->persist($newLearningOutcome);
       $this->newLearningOutcomes[$learningOutcome->getId()] = $newLearningOutcome;
@@ -213,10 +199,10 @@ class StudyAreaDuplicator
     $learningPaths = $this->learningPathRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($learningPaths as $learningPath) {
       $newLearningPath = (new LearningPath())
-          ->setStudyArea($this->newStudyArea)
-          ->setName($learningPath->getName())
-          ->setIntroduction($learningPath->getIntroduction())
-          ->setQuestion($learningPath->getQuestion());
+        ->setStudyArea($this->newStudyArea)
+        ->setName($learningPath->getName())
+        ->setIntroduction($learningPath->getIntroduction())
+        ->setQuestion($learningPath->getQuestion());
 
       /** @var LearningPathElement $previousElement */
       $previousElement = null;
@@ -234,9 +220,9 @@ class StudyAreaDuplicator
         }
 
         $newElement = (new LearningPathElement())
-            ->setNext($previousElement)
-            ->setConcept($this->newConcepts[$element->getConcept()->getId()])
-            ->setDescription($setNextNull ? null : $element->getDescription());
+          ->setNext($previousElement)
+          ->setConcept($this->newConcepts[$element->getConcept()->getId()])
+          ->setDescription($setNextNull ? null : $element->getDescription());
         $newLearningPath->addElement($newElement);
         $setNextNull     = false;
         $previousElement = $newElement;
@@ -256,11 +242,11 @@ class StudyAreaDuplicator
     $externalResources = $this->externalResourceRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($externalResources as $externalResource) {
       $newExternalResource = (new ExternalResource())
-          ->setStudyArea($this->newStudyArea)
-          ->setTitle($externalResource->getTitle())
-          ->setDescription($externalResource->getDescription())
-          ->setUrl($externalResource->getUrl())
-          ->setBroken($externalResource->isBroken());
+        ->setStudyArea($this->newStudyArea)
+        ->setTitle($externalResource->getTitle())
+        ->setDescription($externalResource->getDescription())
+        ->setUrl($externalResource->getUrl())
+        ->setBroken($externalResource->isBroken());
 
       $this->em->persist($newExternalResource);
       $this->newExternalResources[$externalResource->getId()] = $newExternalResource;
@@ -273,11 +259,11 @@ class StudyAreaDuplicator
     $contributors = $this->contributorRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($contributors as $contributor) {
       $newContributor = (new Contributor())
-          ->setStudyArea($this->newStudyArea)
-          ->setName($contributor->getName())
-          ->setDescription($contributor->getDescription())
-          ->setUrl($contributor->getUrl())
-          ->setBroken($contributor->isBroken());
+        ->setStudyArea($this->newStudyArea)
+        ->setName($contributor->getName())
+        ->setDescription($contributor->getDescription())
+        ->setUrl($contributor->getUrl())
+        ->setBroken($contributor->isBroken());
 
       $this->em->persist($newContributor);
       $this->newContributors[$contributor->getId()] = $newContributor;
@@ -290,9 +276,9 @@ class StudyAreaDuplicator
     $abbreviations = $this->abbreviationRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($abbreviations as $abbreviation) {
       $newAbbreviation = (new Abbreviation())
-          ->setStudyArea($this->newStudyArea)
-          ->setAbbreviation($abbreviation->getAbbreviation())
-          ->setMeaning($abbreviation->getMeaning());
+        ->setStudyArea($this->newStudyArea)
+        ->setAbbreviation($abbreviation->getAbbreviation())
+        ->setMeaning($abbreviation->getMeaning());
 
       $this->em->persist($newAbbreviation);
       $this->newAbbreviations[$abbreviation->getId()] = $newAbbreviation;
@@ -304,9 +290,9 @@ class StudyAreaDuplicator
     $tags = $this->tagRepository->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($tags as $tag) {
       $newTag = (new Tag())
-          ->setStudyArea($this->newStudyArea)
-          ->setName($tag->getName())
-          ->setColor($tag->getColor());
+        ->setStudyArea($this->newStudyArea)
+        ->setName($tag->getName())
+        ->setColor($tag->getColor());
 
       $this->em->persist($newTag);
       $this->newTags[$tag->getId()] = $newTag;
@@ -320,16 +306,16 @@ class StudyAreaDuplicator
     foreach ($this->concepts as $concept) {
       $newConcept = new Concept();
       $newConcept
-          ->setStudyArea($this->newStudyArea)
-          ->setName($concept->getName())
-          ->setInstance($concept->isInstance())
-          ->setDefinition($concept->getDefinition())
-          ->setSynonyms($concept->getSynonyms())
-          ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
-          ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
-          ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
-          ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
-          ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()));
+        ->setStudyArea($this->newStudyArea)
+        ->setName($concept->getName())
+        ->setInstance($concept->isInstance())
+        ->setDefinition($concept->getDefinition())
+        ->setSynonyms($concept->getSynonyms())
+        ->setIntroduction($newConcept->getIntroduction()->setText($concept->getIntroduction()->getText()))
+        ->setTheoryExplanation($newConcept->getTheoryExplanation()->setText($concept->getTheoryExplanation()->getText()))
+        ->setHowTo($newConcept->getHowTo()->setText($concept->getHowTo()->getText()))
+        ->setExamples($newConcept->getExamples()->setText($concept->getExamples()->getText()))
+        ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()));
 
       // Set learning outcomes
       foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
@@ -380,8 +366,8 @@ class StudyAreaDuplicator
       /* @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
       if (!array_key_exists($relationType->getId(), $newRelationTypes)) {
         $newRelationType = (new RelationType())
-            ->setStudyArea($this->newStudyArea)
-            ->setName($relationType->getName());
+          ->setStudyArea($this->newStudyArea)
+          ->setName($relationType->getName());
 
         $newRelationTypes[$relationType->getId()] = $newRelationType;
         $this->em->persist($newRelationType);
@@ -395,11 +381,11 @@ class StudyAreaDuplicator
 
       // Duplicate relation
       $newConceptRelation = (new ConceptRelation())
-          ->setSource($this->newConcepts[$conceptRelation->getSource()->getId()])
-          ->setTarget($this->newConcepts[$conceptRelation->getTarget()->getId()])
-          ->setRelationType($newRelationTypes[$relationType->getId()])
-          ->setIncomingPosition($conceptRelation->getIncomingPosition())
-          ->setOutgoingPosition($conceptRelation->getOutgoingPosition());
+        ->setSource($this->newConcepts[$conceptRelation->getSource()->getId()])
+        ->setTarget($this->newConcepts[$conceptRelation->getTarget()->getId()])
+        ->setRelationType($newRelationTypes[$relationType->getId()])
+        ->setIncomingPosition($conceptRelation->getIncomingPosition())
+        ->setOutgoingPosition($conceptRelation->getOutgoingPosition());
 
       $this->em->persist($newConceptRelation);
     }
@@ -426,29 +412,29 @@ class StudyAreaDuplicator
     // Update external resources
     foreach ($this->newExternalResources as $newExternalResource) {
       $newExternalResource
-          ->setDescription($this->updateUrls($newExternalResource->getDescription()))
-          ->setUrl($this->updateUrls($newExternalResource->getUrl()));
+        ->setDescription($this->updateUrls($newExternalResource->getDescription()))
+        ->setUrl($this->updateUrls($newExternalResource->getUrl()));
     }
 
     // Update contributors
     foreach ($this->newContributors as $newContributor) {
       $newContributor
-          ->setDescription($this->updateUrls($newContributor->getDescription()))
-          ->setUrl($this->updateUrls($newContributor->getUrl()));
+        ->setDescription($this->updateUrls($newContributor->getDescription()))
+        ->setUrl($this->updateUrls($newContributor->getUrl()));
     }
 
     // Update concepts
     foreach ($this->newConcepts as $newConcept) {
       $newConcept->getIntroduction()->setText(
-          $this->updateUrls($newConcept->getIntroduction()->getText()));
+        $this->updateUrls($newConcept->getIntroduction()->getText()));
       $newConcept->getTheoryExplanation()->setText(
-          $this->updateUrls($newConcept->getTheoryExplanation()->getText()));
+        $this->updateUrls($newConcept->getTheoryExplanation()->getText()));
       $newConcept->getHowTo()->setText(
-          $this->updateUrls($newConcept->getHowTo()->getText()));
+        $this->updateUrls($newConcept->getHowTo()->getText()));
       $newConcept->getExamples()->setText(
-          $this->updateUrls($newConcept->getExamples()->getText()));
+        $this->updateUrls($newConcept->getExamples()->getText()));
       $newConcept->getSelfAssessment()->setText(
-          $this->updateUrls($newConcept->getSelfAssessment()->getText()));
+        $this->updateUrls($newConcept->getSelfAssessment()->getText()));
     }
   }
 
@@ -581,16 +567,16 @@ class StudyAreaDuplicator
 
       // Generate new url
       $newUrl = new Url(
-          $this->router->generate($routeName, $matchedRouteData,
-              $url->isPath() || $homePath ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL),
-          true, $this->urlContext
+        $this->router->generate($routeName, $matchedRouteData,
+          $url->isPath() || $homePath ? RouterInterface::ABSOLUTE_PATH : RouterInterface::ABSOLUTE_URL),
+        true, $this->urlContext
       );
 
       // Regenerate route again if _home route was detected
       if ($homePath) {
         $newUrl = new Url(
-            $this->router->generateBrowserUrlForPath($newUrl->getPath()),
-            true, $this->urlContext);
+          $this->router->generateBrowserUrlForPath($newUrl->getPath()),
+          true, $this->urlContext);
       }
 
       // Replace url in text
@@ -609,8 +595,8 @@ class StudyAreaDuplicator
   {
     $pattern = '/(?i)data-' . preg_quote($attribute) . '-id\s*=\s*["\']\s*(\d+)\s*["\']/';
     $matches = [];
-    if (false !== preg_match_all($pattern, $text, $matches) &&
-        isset($matches[0]) && isset($matches[1])) {
+    if (false !== preg_match_all($pattern, $text, $matches)
+        && isset($matches[0]) && isset($matches[1])) {
       // Regex search successful
       foreach ($matches[1] as $key => $match) {
         // Find new id
@@ -640,8 +626,8 @@ class StudyAreaDuplicator
     }
 
     // If _route or _studyArea is not defined, no action is required
-    if (!array_key_exists('_route', $matchedRoute) ||
-        !array_key_exists('_studyArea', $matchedRoute)) {
+    if (!array_key_exists('_route', $matchedRoute)
+        || !array_key_exists('_studyArea', $matchedRoute)) {
       return false;
     }
 

@@ -23,17 +23,13 @@ use Symfony\Component\Routing\RouterInterface;
 
 class RdfProvider implements ProviderInterface
 {
-  /** @var ConceptRepository */
-  private $conceptRepository;
+  private ConceptRepository $conceptRepository;
 
-  /** @var LearningPathRepository */
-  private $learningPathRepository;
+  private LearningPathRepository $learningPathRepository;
 
-  /** @var RouterInterface */
-  private $router;
+  private RouterInterface $router;
 
-  /** @var SerializerInterface */
-  private $serializer;
+  private SerializerInterface $serializer;
 
   public function __construct(ConceptRepository $conceptRepository, LearningPathRepository $learningPathRepository, RouterInterface $router, SerializerInterface $serializer)
   {

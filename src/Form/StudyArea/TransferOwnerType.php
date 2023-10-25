@@ -13,17 +13,17 @@ class TransferOwnerType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('new_owner', EmailType::class, [
-            'label'       => 'study-area.new-owner',
-            'help'        => 'study-area.new-owner-help',
-            'constraints' => [
-                new Email(),
-            ],
-        ])
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_route'         => 'app_studyarea_list',
-        ]);
+      ->add('new_owner', EmailType::class, [
+        'label'       => 'study-area.new-owner',
+        'help'        => 'study-area.new-owner-help',
+        'constraints' => [
+          new Email(),
+        ],
+      ])
+      ->add('submit', SaveType::class, [
+        'enable_save_and_list' => false,
+        'enable_cancel'        => true,
+        'cancel_route'         => 'app_studyarea_list',
+      ]);
   }
 }

@@ -6,8 +6,7 @@ use Symfony\Component\String\Inflector\InflectorInterface;
 
 class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
 {
-  /** @var string */
-  private $obj;
+  private string $obj;
   /** @var string */
   private $objs;
 

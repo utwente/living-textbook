@@ -24,20 +24,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TagController extends AbstractController
 {
   public function __construct(
-      private readonly EntityManagerInterface $em
+    private readonly EntityManagerInterface $em
   ) {
   }
 
   /**
    * @Route("/add")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
    */
   public function add(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      TranslatorInterface $trans): Response|array
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -59,22 +62,25 @@ class TagController extends AbstractController
     }
 
     return [
-        'tag'  => $tag,
-        'form' => $form->createView(),
+      'tag'  => $tag,
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/edit/{tag}", requirements={"tag"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
    */
   public function edit(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      Tag $tag,
-      TranslatorInterface $trans): Response|array
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    Tag $tag,
+    TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -85,7 +91,7 @@ class TagController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditTagType::class, $tag, [
-        'studyArea' => $studyArea,
+      'studyArea' => $studyArea,
     ]);
     $form->handleRequest($request);
 
@@ -101,14 +107,16 @@ class TagController extends AbstractController
     }
 
     return [
-        'tag'  => $tag,
-        'form' => $form->createView(),
+      'tag'  => $tag,
+      'form' => $form->createView(),
     ];
   }
 
   /**
    * @Route("/show/{tag}", requirements={"tag"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function show(RequestStudyArea $requestStudyArea, Tag $tag)
@@ -119,34 +127,39 @@ class TagController extends AbstractController
     }
 
     return [
-        'tag' => $tag,
+      'tag' => $tag,
     ];
   }
 
   /**
    * @Route("/list")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   public function list(RequestStudyArea $requestStudyArea, TagRepository $repo): array
   {
     return [
-        'studyArea' => $requestStudyArea->getStudyArea(),
-        'tags'      => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
+      'studyArea' => $requestStudyArea->getStudyArea(),
+      'tags'      => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{tag}", requirements={"tag"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
    */
   public function remove(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      Tag $tag,
-      TranslatorInterface $trans): Response|array
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    Tag $tag,
+    TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -156,7 +169,7 @@ class TagController extends AbstractController
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_tag_list',
+      'cancel_route' => 'app_tag_list',
     ]);
     $form->handleRequest($request);
 
@@ -170,8 +183,8 @@ class TagController extends AbstractController
     }
 
     return [
-        'tag'  => $tag,
-        'form' => $form->createView(),
+      'tag'  => $tag,
+      'form' => $form->createView(),
     ];
   }
 

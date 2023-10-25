@@ -25,10 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReviewSubmissionType extends AbstractType
 {
-  /** @var EntityManagerInterface */
-  private $entityManager;
-  /** @var ReviewService */
-  private $reviewService;
+  private EntityManagerInterface $entityManager;
+  private ReviewService $reviewService;
 
   public function __construct(EntityManagerInterface $entityManager, ReviewService $reviewService)
   {
@@ -84,13 +82,13 @@ class ReviewSubmissionType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefault('checkboxes', false)
-        ->setDefault('data_class', Review::class)
-        ->setDefault('review', true)
-        ->setDefault('show_comments', false)
-        ->setAllowedTypes('checkboxes', 'bool')
-        ->setAllowedTypes('review', 'bool')
-        ->setAllowedTypes('show_comments', 'bool');
+      ->setDefault('checkboxes', false)
+      ->setDefault('data_class', Review::class)
+      ->setDefault('review', true)
+      ->setDefault('show_comments', false)
+      ->setAllowedTypes('checkboxes', 'bool')
+      ->setAllowedTypes('review', 'bool')
+      ->setAllowedTypes('show_comments', 'bool');
   }
 
   /** @throws EntityNotFoundException */
@@ -108,46 +106,46 @@ class ReviewSubmissionType extends AbstractType
       $changeType = $pendingChange->getChangeType();
 
       $form->add(sprintf('%s__%d_h', $pendingChange->getShortObjectType(), $pendingChange->getId()),
-          ReviewSubmissionObjectHeaderType::class, [
-              'mapped'           => false,
-              'pending_change'   => $pendingChange,
-              'checkbox'         => $options['checkboxes'],
-              'full_change_only' => $changeType !== PendingChange::CHANGE_TYPE_EDIT,
-          ]);
+        ReviewSubmissionObjectHeaderType::class, [
+          'mapped'           => false,
+          'pending_change'   => $pendingChange,
+          'checkbox'         => $options['checkboxes'],
+          'full_change_only' => $changeType !== PendingChange::CHANGE_TYPE_EDIT,
+        ]);
 
       foreach ($pendingChange->getChangedFields() as $changedField) {
         [$formType, $formOptions] = self::getFormTypeForField($pendingChange, $changedField);
 
         $form->add($this->getFieldName($pendingChange, $changedField),
-            $formType, array_merge([
-                'hide_label'      => true,
-                'mapped'          => false,
-                'original_object' => $changeType !== PendingChange::CHANGE_TYPE_ADD
-                    ? $this->reviewService->getOriginalObject($pendingChange)
-                    : null,
-                'pending_change' => $pendingChange,
-                'field'          => $changedField,
-                'review'         => $options['review'],
-                'show_comments'  => $options['show_comments'],
-                'show_original'  => $changeType !== PendingChange::CHANGE_TYPE_ADD,
-                'checkbox'       => $changeType === PendingChange::CHANGE_TYPE_EDIT && $options['checkboxes'],
-            ], $formOptions));
+          $formType, array_merge([
+            'hide_label'      => true,
+            'mapped'          => false,
+            'original_object' => $changeType !== PendingChange::CHANGE_TYPE_ADD
+                ? $this->reviewService->getOriginalObject($pendingChange)
+                : null,
+            'pending_change' => $pendingChange,
+            'field'          => $changedField,
+            'review'         => $options['review'],
+            'show_comments'  => $options['show_comments'],
+            'show_original'  => $changeType !== PendingChange::CHANGE_TYPE_ADD,
+            'checkbox'       => $changeType === PendingChange::CHANGE_TYPE_EDIT && $options['checkboxes'],
+          ], $formOptions));
       }
 
       $form->add(sprintf('%s__%d_f', $pendingChange->getShortObjectType(), $pendingChange->getId()),
-          ReviewSubmissionObjectFooterType::class, [
-              'mapped'         => false,
-              'pending_change' => $pendingChange,
-          ]);
+        ReviewSubmissionObjectFooterType::class, [
+          'mapped'         => false,
+          'pending_change' => $pendingChange,
+        ]);
     }
 
     if ($options['review']) {
       $form
-          ->add('submit', SaveType::class, [
-              'enable_cancel'        => true,
-              'cancel_route'         => 'app_review_submissions',
-              'enable_save_and_list' => false,
-          ]);
+        ->add('submit', SaveType::class, [
+          'enable_cancel'        => true,
+          'cancel_route'         => 'app_review_submissions',
+          'enable_save_and_list' => false,
+        ]);
     }
   }
 

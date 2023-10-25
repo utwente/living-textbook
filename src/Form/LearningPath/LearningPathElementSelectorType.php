@@ -20,15 +20,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathElementSelectorType extends AbstractType
 {
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepository;
-  /** @var NamingService */
-  private $namingService;
-  /** @var SerializerInterface */
-  private $serializer;
+  private LearningOutcomeRepository $learningOutcomeRepository;
+  private NamingService $namingService;
+  private SerializerInterface $serializer;
 
   public function __construct(
-      LearningOutcomeRepository $learningOutcomeRepository, SerializerInterface $serializer, NamingService $namingService)
+    LearningOutcomeRepository $learningOutcomeRepository, SerializerInterface $serializer, NamingService $namingService)
   {
     $this->learningOutcomeRepository = $learningOutcomeRepository;
     $this->serializer                = $serializer;
@@ -40,38 +37,38 @@ class LearningPathElementSelectorType extends AbstractType
     $studyArea = $options['studyArea'];
 
     $builder
-        ->add('concepts', EntityType::class, [
-            'label'               => 'menu.concept',
-            'class'               => Concept::class,
-            'choice_label'        => 'name',
-            'required'            => false,
-            'multiple'            => true,
-            'query_builder'       => fn (ConceptRepository $conceptRepository)       => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
-            'select2'             => true,
-            'select2_placeholder' => 'learning-path.select',
-        ])
-        ->add('learningOutcomes', EntityType::class, [
-            'label'               => ucfirst($this->namingService->get()->learningOutcome()->objs()),
-            'class'               => LearningOutcome::class,
-            'choice_label'        => 'name',
-            'required'            => false,
-            'multiple'            => true,
-            'query_builder'       => fn (LearningOutcomeRepository $learningOutcomeRepository)       => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
-            'select2'             => true,
-            'select2_placeholder' => 'learning-path.select',
-        ])
-        ->add('learningOutcomesConcepts', HiddenType::class, [
-            'data' => $this->serializer->serialize($this->learningOutcomeRepository->findUsedConceptIdsForStudyArea($studyArea), 'json'),
-        ])
-        ->add('add', ButtonType::class, [
-            'label' => 'learning-path.add-element',
-            'icon'  => 'fa-plus',
-            'attr'  => [
-                'class'    => 'btn-outline-success float-right',
-                'disabled' => 'disabled',
-                'onclick'  => 'addLearningPathConcepts_' . $options['sortable_id'] . '();',
-            ],
-        ]);
+      ->add('concepts', EntityType::class, [
+        'label'               => 'menu.concept',
+        'class'               => Concept::class,
+        'choice_label'        => 'name',
+        'required'            => false,
+        'multiple'            => true,
+        'query_builder'       => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
+        'select2'             => true,
+        'select2_placeholder' => 'learning-path.select',
+      ])
+      ->add('learningOutcomes', EntityType::class, [
+        'label'               => ucfirst($this->namingService->get()->learningOutcome()->objs()),
+        'class'               => LearningOutcome::class,
+        'choice_label'        => 'name',
+        'required'            => false,
+        'multiple'            => true,
+        'query_builder'       => fn (LearningOutcomeRepository $learningOutcomeRepository) => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+        'select2'             => true,
+        'select2_placeholder' => 'learning-path.select',
+      ])
+      ->add('learningOutcomesConcepts', HiddenType::class, [
+        'data' => $this->serializer->serialize($this->learningOutcomeRepository->findUsedConceptIdsForStudyArea($studyArea), 'json'),
+      ])
+      ->add('add', ButtonType::class, [
+        'label' => 'learning-path.add-element',
+        'icon'  => 'fa-plus',
+        'attr'  => [
+          'class'    => 'btn-outline-success float-right',
+          'disabled' => 'disabled',
+          'onclick'  => 'addLearningPathConcepts_' . $options['sortable_id'] . '();',
+        ],
+      ]);
   }
 
   public function buildView(FormView $view, FormInterface $form, array $options)
@@ -82,9 +79,9 @@ class LearningPathElementSelectorType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setRequired('studyArea')
-        ->setAllowedTypes('studyArea', StudyArea::class)
-        ->setRequired('sortable_id')
-        ->setAllowedTypes('sortable_id', 'string');
+      ->setRequired('studyArea')
+      ->setAllowedTypes('studyArea', StudyArea::class)
+      ->setRequired('sortable_id')
+      ->setAllowedTypes('sortable_id', 'string');
   }
 }

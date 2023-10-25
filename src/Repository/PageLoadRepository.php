@@ -18,21 +18,21 @@ class PageLoadRepository extends ServiceEntityRepository
   public function getByStudyAreaOrderedOnIds(StudyArea $studyArea): array
   {
     return $this->createQueryBuilder('pl')
-        ->where('pl.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->orderBy('pl.userId')
-        ->addOrderBy('pl.sessionId')
-        ->addOrderBy('pl.timestamp')
-        ->getQuery()->getResult();
+      ->where('pl.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->orderBy('pl.userId')
+      ->addOrderBy('pl.sessionId')
+      ->addOrderBy('pl.timestamp')
+      ->getQuery()->getResult();
   }
 
   /** Remove all page loads for a certain study area. */
   public function purgeForStudyArea(StudyArea $studyArea)
   {
     $this->createQueryBuilder('pl')
-        ->delete()
-        ->where('pl.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->execute();
+      ->delete()
+      ->where('pl.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->execute();
   }
 }

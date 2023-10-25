@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Implements the user interface for easy password hashing and checking.
  *
  * @ORM\Table(indexes={@ORM\Index(columns={"email"})})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserProtoRepository")
  *
  * @UniqueEntity({"email"}, errorPath="email")
@@ -30,25 +31,22 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
   /**
    * The email address that has been invited.
    *
-   * @var string
-   *
    * @ORM\Column(type="string")
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Email()
    */
-  private $email = '';
+  private string $email = '';
 
   /**
    * The invited at timestamp.
-   *
-   * @var DateTime
    *
    * @ORM\Column(type="datetime")
    *
    * @Assert\NotNull()
    */
-  private $invitedAt;
+  private DateTime $invitedAt;
 
   /**
    * Hashed temporary password.
@@ -59,7 +57,7 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
    *
    * @Assert\NotBlank()
    */
-  private $password = '';
+  private string $password = '';
 
   public function __construct()
   {

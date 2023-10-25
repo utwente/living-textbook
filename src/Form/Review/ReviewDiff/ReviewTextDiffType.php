@@ -33,9 +33,9 @@ class ReviewTextDiffType extends AbstractReviewDiffType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setDefault('has_data_object', false)
-        ->setDefault('ckeditor', false)
-        ->setAllowedTypes('has_data_object', 'bool')
-        ->setAllowedTypes('ckeditor', 'bool');
+      ->setDefault('has_data_object', false)
+      ->setDefault('ckeditor', false)
+      ->setAllowedTypes('has_data_object', 'bool')
+      ->setAllowedTypes('ckeditor', 'bool');
   }
 }

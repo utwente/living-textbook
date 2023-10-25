@@ -11,7 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\Data\DataHowToRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class DataHowTo implements DataInterface

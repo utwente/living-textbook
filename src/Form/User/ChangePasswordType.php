@@ -17,21 +17,21 @@ class ChangePasswordType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('current', PasswordType::class, [
-            'label'       => 'user.fallback.current-password',
-            'constraints' => [
-                new UserPassword([
-                    'message' => 'user.wrong-current-password',
-                ]),
-            ],
-        ])
-        ->add('password', NewPasswordType::class)
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_default_dashboard',
-            'cancel_route_params'  => [],
-        ]);
+      ->add('current', PasswordType::class, [
+        'label'       => 'user.fallback.current-password',
+        'constraints' => [
+          new UserPassword([
+            'message' => 'user.wrong-current-password',
+          ]),
+        ],
+      ])
+      ->add('password', NewPasswordType::class)
+      ->add('submit', SaveType::class, [
+        'enable_save_and_list' => false,
+        'enable_cancel'        => true,
+        'cancel_label'         => 'form.discard',
+        'cancel_route'         => 'app_default_dashboard',
+        'cancel_route_params'  => [],
+      ]);
   }
 }

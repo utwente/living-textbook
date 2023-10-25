@@ -19,8 +19,11 @@ class LearningPathVisualisationRequest
    * @var DateTime
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("datetime")
+   *
    * @Assert\GreaterThanOrEqual(propertyPath="periodStart")
+   *
    * @Assert\LessThan(propertyPath="periodEnd")
    */
   public $teachingMoment;
@@ -29,7 +32,9 @@ class LearningPathVisualisationRequest
    * @var DateTime
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("datetime")
+   *
    * @Assert\LessThan(propertyPath="periodEnd")
    */
   public $periodStart;
@@ -38,6 +43,7 @@ class LearningPathVisualisationRequest
    * @var DateTime
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("datetime")
    */
   public $periodEnd;

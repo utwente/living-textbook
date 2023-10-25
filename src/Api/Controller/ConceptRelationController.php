@@ -30,21 +30,22 @@ class ConceptRelationController extends AbstractApiController
    * Retrieve all study area concept relations.
    *
    * @Route(methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area concept relations', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
   ])]
   public function list(
-      RequestStudyArea $requestStudyArea,
-      ConceptRelationRepository $conceptRelationRepository): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    ConceptRelationRepository $conceptRelationRepository): JsonResponse
   {
     return $this->createDataResponse(
-        array_map(
-            [DetailedConceptRelationApiModel::class, 'fromEntity'],
-            $conceptRelationRepository->getByStudyArea($requestStudyArea->getStudyArea())
-        ),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      array_map(
+        [DetailedConceptRelationApiModel::class, 'fromEntity'],
+        $conceptRelationRepository->getByStudyArea($requestStudyArea->getStudyArea())
+      ),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -52,6 +53,7 @@ class ConceptRelationController extends AbstractApiController
    * Retrieve a single study area concept relation.
    *
    * @Route("/{conceptRelation<\d+>}", methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'Single study area concept relation')]
@@ -60,8 +62,8 @@ class ConceptRelationController extends AbstractApiController
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource() ?? $conceptRelation->getTarget());
 
     return $this->createDataResponse(
-        DetailedConceptRelationApiModel::fromEntity($conceptRelation),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
+      DetailedConceptRelationApiModel::fromEntity($conceptRelation),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }
 
@@ -69,16 +71,17 @@ class ConceptRelationController extends AbstractApiController
    * Add a new study area concept relation.
    *
    * @Route(methods={"POST"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The new concept relation', required: true, content: [new Model(type: CreateConceptRelationApiModel::class)])]
   #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
-      RequestStudyArea $requestStudyArea,
-      Request $request,
-      ConceptRepository $conceptRepository,
-      RelationTypeRepository $relationTypeRepository): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Request $request,
+    ConceptRepository $conceptRepository,
+    RelationTypeRepository $relationTypeRepository): JsonResponse
   {
     $studyArea       = $requestStudyArea->getStudyArea();
     $requestRelation = $this->getTypedFromBody($request, CreateConceptRelationApiModel::class);
@@ -102,9 +105,9 @@ class ConceptRelationController extends AbstractApiController
 
     // Create the new relation
     $relation = (new ConceptRelation())
-        ->setSource($source)
-        ->setTarget($target)
-        ->setRelationType($relationType);
+      ->setSource($source)
+      ->setTarget($target)
+      ->setRelationType($relationType);
 
     $this->getHandler()->addRelation($relation);
 
@@ -117,49 +120,51 @@ class ConceptRelationController extends AbstractApiController
    * Update an existing study area concept relation.
    *
    * @Route("/{conceptRelation<\d+>}", methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The concept relation to update', required: true, content: [new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The updated concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
-      RequestStudyArea $requestStudyArea,
-      Request $request,
-      ConceptRelation $conceptRelation,
-      RelationTypeRepository $relationTypeRepository): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Request $request,
+    ConceptRelation $conceptRelation,
+    RelationTypeRepository $relationTypeRepository): JsonResponse
   {
     $requestRelation = $this->getTypedFromBody($request, UpdateConceptRelationApiModel::class);
 
     $conceptRelation = $this->updateRelation(
-        $requestStudyArea,
-        $conceptRelation,
-        $requestRelation,
-        $relationTypeRepository
+      $requestStudyArea,
+      $conceptRelation,
+      $requestRelation,
+      $relationTypeRepository
     );
 
     return $this->createDataResponse(
-        DetailedConceptRelationApiModel::fromEntity($conceptRelation),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
+      DetailedConceptRelationApiModel::fromEntity($conceptRelation),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 
   /**
    * Update a batch of existing study area concept relations.
    *
    * @Route("/batch", methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The concept relations to update', required: true, content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron']))),
-    ])]
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron']))),
+  ])]
   #[OA\Response(response: 200, description: 'The updated concept relations', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
-    ])]
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
+  ])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function batchUpdate(
-      RequestStudyArea $requestStudyArea,
-      Request $request,
-      ConceptRelationRepository $relationRepository,
-      RelationTypeRepository $relationTypeRepository
+    RequestStudyArea $requestStudyArea,
+    Request $request,
+    ConceptRelationRepository $relationRepository,
+    RelationTypeRepository $relationTypeRepository
   ): JsonResponse {
     $requestRelations = $this->getArrayFromBody($request, UpdateConceptRelationApiModel::class);
 
@@ -168,8 +173,8 @@ class ConceptRelationController extends AbstractApiController
     try {
       // Prefetch all relations in a single query
       $dbRelations = new IdMap($relationRepository->findByIds(array_map(
-          fn (UpdateConceptRelationApiModel $requestRelation) => $requestRelation->getId(),
-          $requestRelations
+        fn (UpdateConceptRelationApiModel $requestRelation) => $requestRelation->getId(),
+        $requestRelations
       )));
 
       $conceptRelations = [];
@@ -181,10 +186,10 @@ class ConceptRelationController extends AbstractApiController
         assert($dbRelation instanceof ConceptRelation);
 
         $conceptRelations[] = $this->updateRelation(
-            $requestStudyArea,
-            $dbRelation,
-            $requestRelation,
-            $relationTypeRepository
+          $requestStudyArea,
+          $dbRelation,
+          $requestRelation,
+          $relationTypeRepository
         );
       }
 
@@ -195,14 +200,15 @@ class ConceptRelationController extends AbstractApiController
     }
 
     return $this->createDataResponse(
-        array_map(fn ($conceptRelation) => DetailedConceptRelationApiModel::fromEntity($conceptRelation), $conceptRelations),
-        serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
+      array_map(fn ($conceptRelation) => DetailedConceptRelationApiModel::fromEntity($conceptRelation), $conceptRelations),
+      serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 
   /**
    * Delete an existing study area concept relation.
    *
    * @Route("/{conceptRelation<\d+>}", methods={"DELETE"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The concept relation has been deleted')]
@@ -221,10 +227,10 @@ class ConceptRelationController extends AbstractApiController
   }
 
   private function updateRelation(
-      RequestStudyArea $requestStudyArea,
-      ConceptRelation $conceptRelation,
-      UpdateConceptRelationApiModel $requestRelation,
-      RelationTypeRepository $relationTypeRepository
+    RequestStudyArea $requestStudyArea,
+    ConceptRelation $conceptRelation,
+    UpdateConceptRelationApiModel $requestRelation,
+    RelationTypeRepository $relationTypeRepository
   ): ConceptRelation {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());
 

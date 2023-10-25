@@ -20,16 +20,16 @@ class VisualisationBuildFailed extends Exception
     }
 
     $error = sprintf('The command "%s" failed.' . "\n\nExit Code: %s(%s)\n\nWorking directory: %s",
-        $process->getCommandLine(),
-        $process->getExitCode(),
-        $process->getExitCodeText(),
-        $process->getWorkingDirectory()
+      $process->getCommandLine(),
+      $process->getExitCode(),
+      $process->getExitCodeText(),
+      $process->getWorkingDirectory()
     );
 
     if (!$process->isOutputDisabled()) {
       $error .= sprintf("\n\nOutput:\n================\n%s\n\nError Output:\n================\n%s",
-          $process->getOutput(),
-          $process->getErrorOutput()
+        $process->getOutput(),
+        $process->getErrorOutput()
       );
     }
 

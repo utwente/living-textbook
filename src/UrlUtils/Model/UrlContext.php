@@ -8,16 +8,15 @@ use Stringable;
 class UrlContext implements Stringable
 {
   /** @var string Class name */
-  private $class;
+  private string $class;
 
   /** @var int Class id */
-  private $id;
+  private int $id;
 
   /** @var string Class path */
-  private $path;
+  private string $path;
 
-  /** @var bool */
-  private $inline;
+  private bool $inline;
 
   public function __construct(string $class, int $id = -1, string $path = '')
   {

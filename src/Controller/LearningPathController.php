@@ -34,12 +34,15 @@ class LearningPathController extends AbstractController
 {
   /**
    * @Route("/add")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_learningpath_list", subject="requestStudyArea")
    */
   public function add(
-      Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -48,8 +51,8 @@ class LearningPathController extends AbstractController
     $snapshot     = $reviewService->getSnapshot($learningPath);
 
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'    => $studyArea,
-        'learningPath' => $learningPath,
+      'studyArea'    => $studyArea,
+      'learningPath' => $learningPath,
     ]);
     $form->handleRequest($request);
 
@@ -68,21 +71,24 @@ class LearningPathController extends AbstractController
     }
 
     return [
-        'learningPath' => $learningPath,
-        'form'         => $form->createView(),
+      'learningPath' => $learningPath,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/edit/{learningPath}", requirements={"learningPath"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_learningpath_show",
    *   routeParams={"learningPath"="{learningPath}"}, subject="requestStudyArea")
    */
   public function edit(
-      Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
-      EntityManagerInterface $em, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
+    EntityManagerInterface $em, TranslatorInterface $trans): array|Response
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
     $studyArea = $requestStudyArea->getStudyArea();
@@ -95,7 +101,7 @@ class LearningPathController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $learningPath)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-          '%item%' => $trans->trans('learning-path._name'),
+        '%item%' => $trans->trans('learning-path._name'),
       ]));
 
       return $this->redirectToRoute('app_learningpath_list');
@@ -106,23 +112,23 @@ class LearningPathController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [
-        'studyArea'           => $studyArea,
-        'learningPath'        => $learningPath,
-        'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $learningPath),
+      'studyArea'           => $studyArea,
+      'learningPath'        => $learningPath,
+      'pending_change_info' => $reviewService->getPendingChangeObjectInformation($studyArea, $learningPath),
     ]);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
       $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_EDIT, $snapshot,
-          function (LearningPath $learningPath) use (&$originalElements, &$em) {
-            // Remove elements no longer used
-            foreach ($originalElements as $element) {
-              if (false === $learningPath->getElements()->contains($element)) {
-                $em->remove($element);
-              }
+        function (LearningPath $learningPath) use (&$originalElements, &$em) {
+          // Remove elements no longer used
+          foreach ($originalElements as $element) {
+            if (false === $learningPath->getElements()->contains($element)) {
+              $em->remove($element);
             }
-          });
+          }
+        });
 
       // Return to list
       $this->addFlash('success', $trans->trans('learning-path.updated', ['%item%' => $learningPath->getName()]));
@@ -135,22 +141,24 @@ class LearningPathController extends AbstractController
     }
 
     return [
-        'learningPath' => $learningPath,
-        'form'         => $form->createView(),
+      'learningPath' => $learningPath,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/data/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return JsonResponse
    */
   public function data(
     /* @noinspection PhpUnusedParameterInspection Used for auth */
-      RequestStudyArea $requestStudyArea,
-      LearningPath $learningPath, SerializerInterface $serializer)
+    RequestStudyArea $requestStudyArea,
+    LearningPath $learningPath, SerializerInterface $serializer)
   {
     /** @phan-suppress-next-line PhanTypeMismatchArgument */
     $json = $serializer->serialize($learningPath, 'json', SerializationContext::create()->setGroups(['Default']));
@@ -160,7 +168,9 @@ class LearningPathController extends AbstractController
 
   /**
    * @Route("/list")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
@@ -168,21 +178,24 @@ class LearningPathController extends AbstractController
   public function list(RequestStudyArea $requestStudyArea, LearningPathRepository $repository)
   {
     return [
-        'studyArea'     => $requestStudyArea->getStudyArea(),
-        'learningPaths' => $repository->findForStudyArea($requestStudyArea->getStudyArea()),
+      'studyArea'     => $requestStudyArea->getStudyArea(),
+      'learningPaths' => $repository->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{learningPath}", requirements={"learningPath"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
    *                                                       subject="requestStudyArea")
    */
   public function remove(
-      Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
-      TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
+    TranslatorInterface $trans): array|RedirectResponse
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
     $studyArea = $requestStudyArea->getStudyArea();
@@ -190,15 +203,15 @@ class LearningPathController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $learningPath)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-          '%item%' => $trans->trans('learning-path._name'),
+        '%item%' => $trans->trans('learning-path._name'),
       ]));
 
       return $this->redirectToRoute('app_learningpath_list');
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route'        => 'app_learningpath_show',
-        'cancel_route_params' => ['learningPath' => $learningPath->getId()],
+      'cancel_route'        => 'app_learningpath_show',
+      'cancel_route_params' => ['learningPath' => $learningPath->getId()],
     ]);
     $form->handleRequest($request);
 
@@ -211,14 +224,16 @@ class LearningPathController extends AbstractController
     }
 
     return [
-        'learningPath' => $learningPath,
-        'form'         => $form->createView(),
+      'learningPath' => $learningPath,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/show/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
@@ -228,7 +243,7 @@ class LearningPathController extends AbstractController
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
     return [
-        'learningPath' => $learningPath,
+      'learningPath' => $learningPath,
     ];
   }
 

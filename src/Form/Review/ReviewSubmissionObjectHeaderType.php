@@ -20,11 +20,11 @@ class ReviewSubmissionObjectHeaderType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setDefault('checkbox', false)
-        ->setRequired('full_change_only')
-        ->setRequired('pending_change')
-        ->setAllowedTypes('checkbox', 'bool')
-        ->setAllowedTypes('full_change_only', 'bool')
-        ->setAllowedTypes('pending_change', PendingChange::class);
+      ->setDefault('checkbox', false)
+      ->setRequired('full_change_only')
+      ->setRequired('pending_change')
+      ->setAllowedTypes('checkbox', 'bool')
+      ->setAllowedTypes('full_change_only', 'bool')
+      ->setAllowedTypes('pending_change', PendingChange::class);
   }
 }

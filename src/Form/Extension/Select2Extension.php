@@ -37,9 +37,9 @@ class Select2Extension extends AbstractTypeExtension
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
-        'select2'             => false,
-        'select2_allow_clear' => null,
-        'select2_placeholder' => null,
+      'select2'             => false,
+      'select2_allow_clear' => null,
+      'select2_placeholder' => null,
     ]);
 
     $resolver->setAllowedTypes('select2', ['bool']);

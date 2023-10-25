@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class TrackingEvent.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\TrackingEventRepository")
  */
 class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
@@ -21,73 +22,66 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
 
   /** The supported events */
   final public const SUPPORTED_EVENTS = [
-      'concept_browser_open',
-      'concept_browser_open_concept',
-      'concept_browser_close',
-      'learning_path_browser_open',
-      'learning_path_browser_open_concept',
-      'learning_path_browser_close',
-      'general_link_click',
+    'concept_browser_open',
+    'concept_browser_open_concept',
+    'concept_browser_close',
+    'learning_path_browser_open',
+    'learning_path_browser_open_concept',
+    'learning_path_browser_close',
+    'general_link_click',
   ];
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="user_id", type="string", length=255)
    *
    * @Assert\NotNull()
+   *
    * @Assert\NotBlank()
    */
-  private $userId;
+  private ?string $userId = null;
 
   /**
-   * @var DateTime
-   *
    * @ORM\Column(name="timestamp", type="datetime")
    *
    * @Assert\NotNull()
    */
-  private $timestamp;
+  private ?DateTime $timestamp = null;
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="session_id", type="guid")
    *
    * @Assert\NotNull()
+   *
    * @Assert\NotBlank()
    */
-  private $sessionId;
+  private ?string $sessionId = null;
 
   /**
-   * @var StudyArea
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="event", type="string", length=50)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Choice(choices=TrackingEvent::SUPPORTED_EVENTS)
+   *
    * @Assert\Length(max=50)
    */
-  private $event;
+  private ?string $event = null;
 
   /**
-   * @var array|null
-   *
    * @ORM\Column(name="context", type="array", nullable=true)
    *
    * @Assert\Type("array")
    */
-  private $context;
+  private ?array $context = null;
 
   public function getUserId(): string
   {

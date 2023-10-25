@@ -21,23 +21,23 @@ class LearningPathElementsType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->addModelTransformer(new CallbackTransformer(
-        fn (Collection $modelData): array => LearningPath::OrderElements($modelData)->toArray(),
-        function (array $formData): ArrayCollection {
-          /** @var LearningPathElement[] $formData */
-          $previousElement = null;
-          $formData        = array_values($formData);
-          for ($i = count($formData) - 1; $i >= 0; $i--) {
-            // Update the next element
-            $formData[$i]->setNext($previousElement);
-            if ($previousElement == null) {
-              // Clear description for last element, as it is not possible to have it there
-              $formData[$i]->setDescription(null);
-            }
-            $previousElement = $formData[$i];
+      fn (Collection $modelData): array => LearningPath::OrderElements($modelData)->toArray(),
+      function (array $formData): ArrayCollection {
+        /** @var LearningPathElement[] $formData */
+        $previousElement = null;
+        $formData        = array_values($formData);
+        for ($i = count($formData) - 1; $i >= 0; $i--) {
+          // Update the next element
+          $formData[$i]->setNext($previousElement);
+          if ($previousElement == null) {
+            // Clear description for last element, as it is not possible to have it there
+            $formData[$i]->setDescription(null);
           }
-
-          return new ArrayCollection($formData);
+          $previousElement = $formData[$i];
         }
+
+        return new ArrayCollection($formData);
+      }
     ));
   }
 
@@ -49,18 +49,18 @@ class LearningPathElementsType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
-        ->setRequired('studyArea')
-        ->setAllowedTypes('studyArea', StudyArea::class)
-        ->setRequired('learningPath')
-        ->setAllowedTypes('learningPath', LearningPath::class)
-        ->setRequired('sortable_id')
-        ->setAllowedTypes('sortable_id', 'string')
-        ->setDefaults([
-            'by_reference' => false,
-            'entry_type'   => LearningPathElementType::class,
-            'allow_add'    => true,
-            'allow_delete' => true,
-        ]);
+      ->setRequired('studyArea')
+      ->setAllowedTypes('studyArea', StudyArea::class)
+      ->setRequired('learningPath')
+      ->setAllowedTypes('learningPath', LearningPath::class)
+      ->setRequired('sortable_id')
+      ->setAllowedTypes('sortable_id', 'string')
+      ->setDefaults([
+        'by_reference' => false,
+        'entry_type'   => LearningPathElementType::class,
+        'allow_add'    => true,
+        'allow_delete' => true,
+      ]);
 
     $resolver->setNormalizer('entry_options', function (Options $options, $value) {
       $value['studyArea']    = $options->offsetGet('studyArea');

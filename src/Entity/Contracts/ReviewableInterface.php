@@ -24,10 +24,6 @@ interface ReviewableInterface extends StudyAreaFilteredInterface
   /** The title of the object, used to identify the object. */
   public function getReviewTitle(): string;
 
-  /**
-   * Set the study area.
-   *
-   * @return mixed
-   */
+  /** Set the study area. */
   public function setStudyArea(StudyArea $studyArea);
 }

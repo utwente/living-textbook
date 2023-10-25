@@ -23,6 +23,7 @@ class ElFinderController extends AbstractController
 {
   /**
    * @Route("/load/{instance}", defaults={"instance"="default"}, name="ef_connect", options={"no_login_wrap"=true})
+   *
    * @IsGranted("ROLE_USER")
    *
    * @return Response
@@ -58,6 +59,7 @@ class ElFinderController extends AbstractController
   /**
    * @Route("/show/{instance}/{studyAreaId}", requirements={"studyAreaId"="\d+"},
    *   defaults={"instance"="default"}, name="elfinder", options={"no_login_wrap"=true})
+   *
    * @IsGranted("ROLE_USER")
    *
    * @return Response
@@ -100,8 +102,8 @@ class ElFinderController extends AbstractController
 
     // Forward to the original ELfinder controller
     return $this->forward(sprintf('FM\ElfinderBundle\Controller\ElFinderController::%s', $action), [
-        'instance'   => $instance,
-        'homeFolder' => $folder,
+      'instance'   => $instance,
+      'homeFolder' => $folder,
     ], $query);
   }
 }

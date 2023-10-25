@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaFieldConfigurationRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
@@ -23,67 +24,67 @@ class StudyAreaFieldConfiguration implements IdInterface
   use SoftDeletable;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptDefinitionName;
+  private ?string $conceptDefinitionName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptIntroductionName;
+  private ?string $conceptIntroductionName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptSynonymsName;
+  private ?string $conceptSynonymsName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptPriorKnowledgeName;
+  private ?string $conceptPriorKnowledgeName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptTheoryExplanationName;
+  private ?string $conceptTheoryExplanationName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptHowtoName;
+  private ?string $conceptHowtoName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptExamplesName;
+  private ?string $conceptExamplesName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $conceptSelfAssessmentName;
+  private ?string $conceptSelfAssessmentName = null;
 
   /**
-   * @var string|null
    * @ORM\Column(type="string", length=50, nullable=true)
+   *
    * @Assert\Length(max="50")
    */
-  private $learningOutcomeObjName;
+  private ?string $learningOutcomeObjName = null;
 
   public function getConceptDefinitionName(): ?string
   {

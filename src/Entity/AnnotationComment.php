@@ -16,10 +16,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class TextAnnotation.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\AnnotationCommentRepository")
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class AnnotationComment implements IdInterface
@@ -31,43 +34,35 @@ class AnnotationComment implements IdInterface
   /**
    * The user.
    *
-   * @var User|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annotations")
+   *
    * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $user;
+  private ?User $user = null;
 
   /**
-   * @var Annotation|null
-   *
    * @ORM\ManyToOne(targetEntity="Annotation", inversedBy="comments")
+   *
    * @ORM\JoinColumn(name="annotation_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $annotation;
+  private ?Annotation $annotation = null;
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="text", type="text", nullable=false)
    *
    * @Assert\NotBlank()
    *
    * @JMSA\Expose()
    */
-  private $text;
-
-  /** AnnotationComment constructor. */
-  public function __construct()
-  {
-  }
+  private ?string $text = null;
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getAuthoredTime(): DateTime
@@ -82,6 +77,7 @@ class AnnotationComment implements IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getUserId(): int
@@ -91,6 +87,7 @@ class AnnotationComment implements IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getUserName(): string

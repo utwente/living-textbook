@@ -17,11 +17,9 @@ class CheckUrlCommand extends Command
    */
   protected static $defaultName = 'ltb:check:urls';
 
-  /** @var UrlChecker */
-  private $urlChecker;
+  private UrlChecker $urlChecker;
 
-  /** @var StudyAreaRepository */
-  private $studyAreaRepository;
+  private StudyAreaRepository $studyAreaRepository;
 
   /** CheckUrlCommand constructor. */
   public function __construct(UrlChecker $urlChecker, StudyAreaRepository $studyAreaRepository)
@@ -31,13 +29,11 @@ class CheckUrlCommand extends Command
     parent::__construct();
   }
 
-  /** {@inheritdoc} */
   protected function configure()
   {
     $this->setDescription('Checks all the URLs in the living textbook to see if there are no dead links.');
   }
 
-  /** {@inheritdoc} */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $this->urlChecker->checkAllUrls(false, false);

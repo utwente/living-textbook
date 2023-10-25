@@ -31,7 +31,6 @@ class ButtonUrlType extends AbstractType
     $resolver->setAllowedTypes('route_params', 'array');
   }
 
-  /** @return mixed */
   public function getParent()
   {
     return ButtonType::class;

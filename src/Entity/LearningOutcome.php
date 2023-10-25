@@ -29,8 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\LearningOutcomeRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @UniqueEntity(fields={"studyArea","number"},errorPath="number",message="learning-outcome.number-already-used")
  */
 class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -45,66 +48,64 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="learningOutcomes")
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
-   * @var StudyArea|null
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningOutcomes")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
    * Learning outcome number.
    *
-   * @var int
-   *
    * @ORM\Column(name="number", type="integer", nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Range(min="1", max="9999")
+   *
    * @Serializer\Groups({"Default", "review_change"})
+   *
    * @Serializer\Type("int")
    */
-  private $number;
+  private int $number = 1;
 
   /**
    * Learning outcome name.
    *
-   * @var string
-   *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(max="255")
+   *
    * @Serializer\Groups({"Default", "review_change"})
+   *
    * @Serializer\Type("string")
    */
-  private $name;
+  private string $name = '';
 
   /**
    * Learning outcome text.
    *
-   * @var string
-   *
    * @ORM\Column(name="text", type="text", nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @WordCount(min=1, max=10000)
+   *
    * @Serializer\Groups({"Default", "review_change"})
+   *
    * @Serializer\Type("string")
    */
-  private $text;
+  private string $text = '';
 
   public function __construct()
   {
-    $this->number = 1;
-    $this->name   = '';
-    $this->text   = '';
-
     $this->concepts = new ArrayCollection();
   }
 
@@ -128,9 +129,9 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     }
 
     return [
-        '_id'     => $this->getId(),
-        '_title'  => $this->getName(),
-        'results' => $results,
+      '_id'     => $this->getId(),
+      '_title'  => $this->getName(),
+      'results' => $results,
     ];
   }
 

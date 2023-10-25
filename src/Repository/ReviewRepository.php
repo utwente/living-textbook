@@ -22,11 +22,11 @@ class ReviewRepository extends ServiceEntityRepository
   public function getSubmissions(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('r')
-        ->where('r.studyArea = :studyArea')
-        ->andWhere('r.approvedAt IS NULL')
-        ->orderBy('r.requestedReviewAt', 'ASC')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getResult();
+      ->where('r.studyArea = :studyArea')
+      ->andWhere('r.approvedAt IS NULL')
+      ->orderBy('r.requestedReviewAt', 'ASC')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->getResult();
   }
 
   /**
@@ -37,10 +37,10 @@ class ReviewRepository extends ServiceEntityRepository
   public function getApproved(StudyArea $studyArea)
   {
     return $this->createQueryBuilder('r')
-        ->where('r.studyArea = :studyArea')
-        ->andWhere('r.approvedAt IS NOT NULL')
-        ->orderBy('r.approvedAt', 'ASC')
-        ->setParameter('studyArea', $studyArea)
-        ->getQuery()->getResult();
+      ->where('r.studyArea = :studyArea')
+      ->andWhere('r.approvedAt IS NOT NULL')
+      ->orderBy('r.approvedAt', 'ASC')
+      ->setParameter('studyArea', $studyArea)
+      ->getQuery()->getResult();
   }
 }

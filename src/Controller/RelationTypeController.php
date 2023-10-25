@@ -28,21 +28,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class RelationTypeController extends AbstractController
 {
   public function __construct(
-      private readonly EntityManagerInterface $em,
-      private readonly ReviewService $reviewService,
+    private readonly EntityManagerInterface $em,
+    private readonly ReviewService $reviewService,
   ) {
   }
 
   /**
    * @Route("/add")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
    */
   public function add(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      TranslatorInterface $trans): Response|array
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -64,23 +67,27 @@ class RelationTypeController extends AbstractController
     }
 
     return [
-        'relationType' => $relationType,
-        'form'         => $form->createView(),
+      'relationType' => $relationType,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/edit/{relationType}", requirements={"relationType"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
+   *
    * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
    */
   public function edit(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      RelationType $relationType,
-      TranslatorInterface $trans): Response|array
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    RelationType $relationType,
+    TranslatorInterface $trans): Response|array
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -97,7 +104,7 @@ class RelationTypeController extends AbstractController
     // Verify it can be edited
     if (!$this->reviewService->canObjectBeEdited($studyArea, $relationType)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-          '%item%' => $trans->trans('relation-type._name'),
+        '%item%' => $trans->trans('relation-type._name'),
       ]));
 
       return $this->redirectToRoute('app_relationtype_list');
@@ -108,7 +115,7 @@ class RelationTypeController extends AbstractController
 
     // Create form and handle request
     $form = $this->createForm(EditRelationTypeType::class, $relationType, [
-        'pending_change_info' => $this->reviewService->getPendingChangeObjectInformation($studyArea, $relationType),
+      'pending_change_info' => $this->reviewService->getPendingChangeObjectInformation($studyArea, $relationType),
     ]);
     $form->handleRequest($request);
 
@@ -123,14 +130,16 @@ class RelationTypeController extends AbstractController
     }
 
     return [
-        'relationType' => $relationType,
-        'form'         => $form->createView(),
+      'relationType' => $relationType,
+      'form'         => $form->createView(),
     ];
   }
 
   /**
    * @Route("/list")
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
@@ -138,24 +147,28 @@ class RelationTypeController extends AbstractController
   public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $repo)
   {
     return [
-        'studyArea'     => $requestStudyArea->getStudyArea(),
-        'relationTypes' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
+      'studyArea'     => $requestStudyArea->getStudyArea(),
+      'relationTypes' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
     ];
   }
 
   /**
    * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
+   *
    * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
+   *
    * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
    */
   public function remove(
-      Request $request,
-      RequestStudyArea $requestStudyArea,
-      RelationType $relationType,
-      ConceptRelationRepository $conceptRelationRepository,
-      TranslatorInterface $trans)
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    RelationType $relationType,
+    ConceptRelationRepository $conceptRelationRepository,
+    TranslatorInterface $trans)
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -174,14 +187,14 @@ class RelationTypeController extends AbstractController
     // Verify it can be deleted
     if (!$this->reviewService->canObjectBeRemoved($studyArea, $relationType)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-          '%item%' => $trans->trans('relation-type._name'),
+        '%item%' => $trans->trans('relation-type._name'),
       ]));
 
       return $this->redirectToRoute('app_relationtype_list');
     }
 
     $form = $this->createForm(RemoveType::class, null, [
-        'cancel_route' => 'app_relationtype_list',
+      'cancel_route' => 'app_relationtype_list',
     ]);
     $form->handleRequest($request);
 
@@ -195,9 +208,9 @@ class RelationTypeController extends AbstractController
     }
 
     return [
-        'relationType'     => $relationType,
-        'conceptRelations' => $conceptRelationRepository->getByRelationType($relationType),
-        'form'             => $form->createView(),
+      'relationType'     => $relationType,
+      'conceptRelations' => $conceptRelationRepository->getByRelationType($relationType),
+      'form'             => $form->createView(),
     ];
   }
 

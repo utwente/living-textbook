@@ -25,10 +25,10 @@ class RelationTypeRepository extends ServiceEntityRepository
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('rt')
-        ->where('rt.studyArea = :studyArea')
-        ->andWhere('rt.deletedAt IS NULL')
-        ->orderBy('rt.name', 'ASC')
-        ->setParameter('studyArea', $studyArea);
+      ->where('rt.studyArea = :studyArea')
+      ->andWhere('rt.deletedAt IS NULL')
+      ->orderBy('rt.name', 'ASC')
+      ->setParameter('studyArea', $studyArea);
   }
 
   /**
@@ -41,14 +41,14 @@ class RelationTypeRepository extends ServiceEntityRepository
   {
     try {
       $foundRelation = $this->findForStudyAreaQb($studyArea)
-          ->andWhere('rt.name = :name')
-          ->setParameter('name', $name)
-          ->setMaxResults(1)
-          ->getQuery()->getSingleResult();
+        ->andWhere('rt.name = :name')
+        ->setParameter('name', $name)
+        ->setMaxResults(1)
+        ->getQuery()->getSingleResult();
     } catch (NoResultException) {
       $foundRelation = (new RelationType())
-          ->setStudyArea($studyArea)
-          ->setName($name);
+        ->setStudyArea($studyArea)
+        ->setName($name);
       $this->getEntityManager()->persist($foundRelation);
       $this->getEntityManager()->flush($foundRelation);
     }

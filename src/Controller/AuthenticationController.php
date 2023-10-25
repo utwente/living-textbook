@@ -41,6 +41,7 @@ class AuthenticationController extends AbstractController
    * This route is defined in the routes.yml in order to remove the _locale requirement
    *
    * @Route("/login_check", name="login_check", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @return Response
@@ -59,6 +60,7 @@ class AuthenticationController extends AbstractController
    * or with an local account.
    *
    * @Route("/login", name="login", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    */
   public function login(Request $request, TranslatorInterface $trans): array|RedirectResponse
@@ -79,6 +81,7 @@ class AuthenticationController extends AbstractController
    * 6. Forward to login.
    *
    * @Route("/password/reset", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws TransportExceptionInterface
@@ -88,8 +91,8 @@ class AuthenticationController extends AbstractController
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function resetPassword(
-      Request $request, EntityManagerInterface $em, PasswordHasherFactoryInterface $passwordHasherFactory,
-      UserRepository $userRepository, MailerInterface $mailer, TranslatorInterface $translator)
+    Request $request, EntityManagerInterface $em, PasswordHasherFactoryInterface $passwordHasherFactory,
+    UserRepository $userRepository, MailerInterface $mailer, TranslatorInterface $translator)
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -99,25 +102,25 @@ class AuthenticationController extends AbstractController
     if (!$request->query->has('u') || !$request->query->has('e') || !$request->query->has('r')) {
       // Present user with email form
       $form = $this->createFormBuilder()
-          ->add('email', EmailType::class, [
-              'label'       => 'user.emailaddress',
-              'constraints' => [
-                  new Email(),
-              ],
-          ])
-          ->add('submit', SaveType::class, [
-              'save_label'           => 'auth.request-reset',
-              'enable_save_and_list' => false,
-          ])
-          ->getForm();
+        ->add('email', EmailType::class, [
+          'label'       => 'user.emailaddress',
+          'constraints' => [
+            new Email(),
+          ],
+        ])
+        ->add('submit', SaveType::class, [
+          'save_label'           => 'auth.request-reset',
+          'enable_save_and_list' => false,
+        ])
+        ->getForm();
 
       $form->handleRequest($request);
       if ($form->isSubmitted() && $form->isValid()) {
         $email = $form->getData()['email'];
         // Find matching user
         $user = $userRepository->findOneBy([
-            'username' => $email,
-            'isOidc'   => false,
+          'username' => $email,
+          'isOidc'   => false,
         ]);
 
         // Only continue when the user is found, but we won't tell the user
@@ -130,32 +133,32 @@ class AuthenticationController extends AbstractController
           $passwordHasher = $passwordHasherFactory->getPasswordHasher($user);
 
           $user
-              ->setResetCode($passwordHasher->hash($resetCode, null))
-              ->setResetCodeValid((new DateTime())->modify('+10 minutes'));
+            ->setResetCode($passwordHasher->hash($resetCode, null))
+            ->setResetCodeValid((new DateTime())->modify('+10 minutes'));
 
           // Save and send mail
           $em->flush();
           $mailer->send(
-              (new TemplatedEmail())
-                  ->to($user->getAddress())
-                  ->subject($translator->trans('auth.password-reset.subject', [], 'communication'))
-                  ->htmlTemplate('communication/auth/password_reset.html.twig')
-                  ->context([
-                      'user'       => $user->getFullName(),
-                      'user_id'    => $user->getId(),
-                      'email_hash' => sha1($user->getUserIdentifier()),
-                      'reset_code' => $resetCode,
-                  ])
+            (new TemplatedEmail())
+              ->to($user->getAddress())
+              ->subject($translator->trans('auth.password-reset.subject', [], 'communication'))
+              ->htmlTemplate('communication/auth/password_reset.html.twig')
+              ->context([
+                'user'       => $user->getFullName(),
+                'user_id'    => $user->getId(),
+                'email_hash' => sha1($user->getUserIdentifier()),
+                'reset_code' => $resetCode,
+              ])
           );
         }
 
         return $this->render('authentication/reset_email_sent.html.twig', [
-            'email' => $email,
+          'email' => $email,
         ]);
       }
 
       return $this->render('authentication/reset_email.html.twig', [
-          'form' => $form->createView(),
+        'form' => $form->createView(),
       ]);
     }
 
@@ -203,16 +206,18 @@ class AuthenticationController extends AbstractController
    * Create a password for a user.
    *
    * @Route("/password/create", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws TransportExceptionInterface
    *
    * @return Response
+   *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function createPassword(
-      Request $request, EntityManagerInterface $em, UserRepository $userRepository, MailerInterface $mailer,
-      UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator)
+    Request $request, EntityManagerInterface $em, UserRepository $userRepository, MailerInterface $mailer,
+    UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator)
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -243,19 +248,19 @@ class AuthenticationController extends AbstractController
 
     // Create the password form
     $form = $this->createFormBuilder()
-        ->add('password', NewPasswordType::class)
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => false,
-            'enable_cancel'        => false,
-        ])
-        ->getForm();
+      ->add('password', NewPasswordType::class)
+      ->add('submit', SaveType::class, [
+        'enable_save_and_list' => false,
+        'enable_cancel'        => false,
+      ])
+      ->getForm();
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Store the new password
       $user
-          ->setResetCode(null)
-          ->setPassword($userPasswordHasher->hashPassword($user, $form->getData()['password']));
+        ->setResetCode(null)
+        ->setPassword($userPasswordHasher->hashPassword($user, $form->getData()['password']));
       $em->flush();
 
       // Clear the session
@@ -265,13 +270,13 @@ class AuthenticationController extends AbstractController
       // Notify user
       $this->addFlash('success', $translator->trans('auth.password-changed'));
       $mailer->send(
-          (new TemplatedEmail())
-              ->to($user->getAddress())
-              ->subject($translator->trans('auth.password-reset-success.subject', [], 'communication'))
-              ->htmlTemplate('communication/auth/password_reset_success.html.twig')
-              ->context([
-                  'user' => $user->getFullName(),
-              ])
+        (new TemplatedEmail())
+          ->to($user->getAddress())
+          ->subject($translator->trans('auth.password-reset-success.subject', [], 'communication'))
+          ->htmlTemplate('communication/auth/password_reset_success.html.twig')
+          ->context([
+            'user' => $user->getFullName(),
+          ])
       );
 
       // Forward to login
@@ -279,7 +284,7 @@ class AuthenticationController extends AbstractController
     }
 
     return $this->render('authentication/reset_password.html.twig', [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ]);
   }
 
@@ -287,12 +292,14 @@ class AuthenticationController extends AbstractController
    * Create a new local account. This can only be done based on invite, and the supplied password must match.
    *
    * @Route("/account/create", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
+   *
    * @Template()
    */
   public function createAccount(
-      Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
-      UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator): array|RedirectResponse
+    Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
+    UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator): array|RedirectResponse
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -320,7 +327,7 @@ class AuthenticationController extends AbstractController
 
     // Create new User object
     $user = (new User())
-        ->setUsername($email);
+      ->setUsername($email);
 
     // Create the form
     $form = $this->createForm(AddFallbackUserType::class, $user);
@@ -341,7 +348,7 @@ class AuthenticationController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 
@@ -349,6 +356,7 @@ class AuthenticationController extends AbstractController
    * This controller forward the user to the SURFconext login.
    *
    * @Route("/login_surf", name="login_surf", options={"no_login_wrap"=true})
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws OidcConfigurationException

@@ -31,12 +31,13 @@ class AnnotationController extends AbstractController
 {
   /**
    * @Route("/{concept}/all", requirements={"concept"="\d+"}, options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @return JsonResponse
    */
   public function all(RequestStudyArea $requestStudyArea, Concept $concept,
-                      AnnotationRepository $annotationRepository, SerializerInterface $serializer)
+    AnnotationRepository $annotationRepository, SerializerInterface $serializer)
   {
     // Check study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -55,6 +56,7 @@ class AnnotationController extends AbstractController
 
   /**
    * @Route("/{concept}/add", requirements={"concept"="\d+"}, methods={"POST"}, options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @throws Exception
@@ -62,7 +64,7 @@ class AnnotationController extends AbstractController
    * @return JsonResponse
    */
   public function add(Request $request, RequestStudyArea $requestStudyArea, Concept $concept,
-                      ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -78,15 +80,15 @@ class AnnotationController extends AbstractController
 
     // Create new annotation
     $annotation = (new Annotation())
-        ->setUser($this->getUser())
-        ->setConcept($concept)
-        ->setText($request->request->get('text', null))
-        ->setContext($request->request->get('context', ''))
-        ->setStart($request->request->getInt('start', 0))
-        ->setEnd($request->request->getInt('end', 0))
-        ->setSelectedText($request->request->get('selectedText', null))
-        ->setVersion($version)
-        ->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
+      ->setUser($this->getUser())
+      ->setConcept($concept)
+      ->setText($request->request->get('text', null))
+      ->setContext($request->request->get('context', ''))
+      ->setStart($request->request->getInt('start', 0))
+      ->setEnd($request->request->getInt('end', 0))
+      ->setSelectedText($request->request->get('selectedText', null))
+      ->setVersion($version)
+      ->setVisibility($request->request->get('visibility', Annotation::privateVisibility()));
 
     // Validate data
     if (null !== $result = $this->validate($annotation, $validator, $serializer)) {
@@ -103,17 +105,18 @@ class AnnotationController extends AbstractController
   /**
    * @Route("/{concept}/annotation/{annotation}/comment", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"POST"}, options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @return JsonResponse
    */
   public function addComment(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-                             ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($concept->getStudyArea()->getId() != $studyArea->getId() ||
-        $annotation->getConceptId() != $concept->getId()) {
+    if ($concept->getStudyArea()->getId() != $studyArea->getId()
+        || $annotation->getConceptId() != $concept->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -121,15 +124,15 @@ class AnnotationController extends AbstractController
     assert($user instanceof User);
 
     // Validate whether this is a comment which is actually visible for the user
-    if ($annotation->getVisibility() == Annotation::privateVisibility() &&
-        $annotation->getUserId() != $user->getId()) {
+    if ($annotation->getVisibility() == Annotation::privateVisibility()
+        && $annotation->getUserId() != $user->getId()) {
       // Only owner can reply on private comments
       throw $this->createAccessDeniedException();
     }
 
-    if ($annotation->getUserId() != $user->getId() &&
-        $annotation->getVisibility() == Annotation::teacherVisibility() &&
-        !$studyArea->isEditable($user)) {
+    if ($annotation->getUserId() != $user->getId()
+        && $annotation->getVisibility() == Annotation::teacherVisibility()
+        && !$studyArea->isEditable($user)) {
       // Only teachers can reply on teacher comments
       throw $this->createAccessDeniedException();
     }
@@ -138,9 +141,9 @@ class AnnotationController extends AbstractController
 
     // Create the comment
     $comment = (new AnnotationComment())
-        ->setUser($user)
-        ->setAnnotation($annotation)
-        ->setText($request->request->get('text', null));
+      ->setUser($user)
+      ->setAnnotation($annotation)
+      ->setText($request->request->get('text', null));
 
     // Validate data
     if (null !== $result = $this->validate($comment, $validator, $serializer)) {
@@ -155,25 +158,26 @@ class AnnotationController extends AbstractController
     $em->refresh($annotation);
 
     return new JsonResponse($serializer->serialize([
-        'annotation' => $annotation,
-        'comment'    => $comment,
+      'annotation' => $annotation,
+      'comment'    => $comment,
     ], 'json'), 200, [], true);
   }
 
   /**
    * @Route("/{concept}/annotation/{annotation}/edit", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"POST"}, options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @return JsonResponse
    */
   public function editVisibility(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-                                 ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($concept->getStudyArea()->getId() != $studyArea->getId() ||
-        $annotation->getConceptId() != $concept->getId()) {
+    if ($concept->getStudyArea()->getId() != $studyArea->getId()
+        || $annotation->getConceptId() != $concept->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -207,6 +211,7 @@ class AnnotationController extends AbstractController
   /**
    * @Route("/{concept}/annotation/{annotation}/remove", requirements={"concept"="\d+", "annotation"="\d+"},
    *   methods={"DELETE"}, options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @throws Exception
@@ -216,8 +221,8 @@ class AnnotationController extends AbstractController
   public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em)
   {
     // Check study area
-    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId() ||
-        $annotation->getConceptId() != $concept->getId()) {
+    if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()
+        || $annotation->getConceptId() != $concept->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -239,18 +244,19 @@ class AnnotationController extends AbstractController
    * @Route("/{concept}/annotation/{annotation}/comment/{comment}/remove",
    *   requirements={"concept"="\d+", "annotation"="\d+", "comment"="\d+"},
    *   methods={"DELETE"}, options={"expose"="true"})
+   *
    * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
    *
    * @return JsonResponse
    */
   public function removeComment(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-                                AnnotationComment $comment, EntityManagerInterface $em, SerializerInterface $serializer)
+    AnnotationComment $comment, EntityManagerInterface $em, SerializerInterface $serializer)
   {
     // Check study area/concept/annotation
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($concept->getStudyArea()->getId() != $studyArea->getId() ||
-        $annotation->getConceptId() != $concept->getId() ||
-        $comment->getAnnotation()->getId() != $annotation->getId()) {
+    if ($concept->getStudyArea()->getId() != $studyArea->getId()
+        || $annotation->getConceptId() != $concept->getId()
+        || $comment->getAnnotation()->getId() != $annotation->getId()) {
       throw $this->createNotFoundException();
     }
 
@@ -270,15 +276,11 @@ class AnnotationController extends AbstractController
 
     // Return updated comment to update js state
     return new JsonResponse($serializer->serialize([
-        'annotation' => $annotation,
+      'annotation' => $annotation,
     ], 'json'), 200, [], true);
   }
 
-  /**
-   * @param $object
-   *
-   * @return JsonResponse|null
-   */
+  /** @return JsonResponse|null */
   private function validate($object, ValidatorInterface $validator, SerializerInterface $serializer)
   {
     // Validate data
@@ -287,8 +289,8 @@ class AnnotationController extends AbstractController
       $errors = [];
       foreach ($violations as $violation) {
         $errors[] = [
-            'message' => $violation->getMessage(),
-            'path'    => $violation->getPropertyPath(),
+          'message' => $violation->getMessage(),
+          'path'    => $violation->getPropertyPath(),
         ];
       }
 

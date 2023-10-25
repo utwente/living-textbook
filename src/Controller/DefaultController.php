@@ -46,19 +46,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DefaultController extends AbstractController
 {
   /** @var Concept[] */
-  private $concepts;
+  private ?array $concepts = null;
 
   /** @var Contributor[] */
-  private $contributors;
+  private ?array $contributors = null;
 
   /** @var LearningOutcome[] */
-  private $learningOutcomes;
+  private ?array $learningOutcomes = null;
 
   /** @var ExternalResource[] */
-  private $externalResources;
+  private ?array $externalResources = null;
 
   /** @var LearningPath[] */
-  private $learningPaths;
+  private ?array $learningPaths = null;
 
   /**
    * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},
@@ -66,12 +66,14 @@ class DefaultController extends AbstractController
    *                                        options={"expose"=true, "no_login_wrap"=true})
    * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"},
    *                           name="_home_simple", options={"no_login_wrap"=true})
+   *
    * @Template("double_column.html.twig")
+   *
    * @IsGranted("PUBLIC_ACCESS")
    */
   public function index(
-      Request $request, RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
-      UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
+    UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler): array|RedirectResponse
   {
     // Disable profiler on the home page
     if ($profiler) {
@@ -97,24 +99,26 @@ class DefaultController extends AbstractController
     assert($user === null || $user instanceof User);
 
     return [
-        'studyArea'    => $studyArea,
-        'browserState' => $user ? $userBrowserStateRepository->findForUser($user, $studyArea) : null,
-        'pageUrl'      => $pageUrl != ''
-            ? '/' . $studyArea->getId() . '/' . $pageUrl
-            : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),
-        'openMap' => $request->query->has('open'),
+      'studyArea'    => $studyArea,
+      'browserState' => $user ? $userBrowserStateRepository->findForUser($user, $studyArea) : null,
+      'pageUrl'      => $pageUrl != ''
+          ? '/' . $studyArea->getId() . '/' . $pageUrl
+          : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),
+      'openMap' => $request->query->has('open'),
     ];
   }
 
   /**
    * @Route("/", options={"no_login_wrap"=true})
    * @Route("", name="base_url", options={"no_login_wrap"=true})
+   *
    * @Template()
+   *
    * @IsGranted("PUBLIC_ACCESS")
    */
   public function landing(
-      Request $request, FormFactoryInterface $formFactory, TranslatorInterface $translator,
-      StudyAreaRepository $studyAreaRepository): array|Response
+    Request $request, FormFactoryInterface $formFactory, TranslatorInterface $translator,
+    StudyAreaRepository $studyAreaRepository): array|Response
   {
     $user    = $this->getUser();
     $session = $request->getSession();
@@ -123,9 +127,9 @@ class DefaultController extends AbstractController
     // When there is no user, render the login form
     if (!$user) {
       $loginForm = $this->createForm(LoginType::class, [
-          '_username' => $session->get(Security::LAST_USERNAME, ''),
+        '_username' => $session->get(Security::LAST_USERNAME, ''),
       ], [
-          'action' => $this->generateUrl('login_check'),
+        'action' => $this->generateUrl('login_check'),
       ]);
 
       // Retrieve the error and remove it from the session
@@ -153,18 +157,20 @@ class DefaultController extends AbstractController
         ? $this->createStudyAreaForm($formFactory, $translator, $user, null, 'dashboard.open') : null;
 
     return [
-        'loginForm'       => isset($loginForm) ? $loginForm->createView() : null,
-        'loginFormActive' => $session->get(Security::LAST_USERNAME, '') !== '',
-        'singleStudyArea' => count($studyAreas) === 1 ? reset($studyAreas) : null,
-        'studyAreaCount'  => $studyAreaCount,
-        'studyAreaForm'   => $studyAreaForm ? $studyAreaForm->createView() : null,
+      'loginForm'       => isset($loginForm) ? $loginForm->createView() : null,
+      'loginFormActive' => $session->get(Security::LAST_USERNAME, '') !== '',
+      'singleStudyArea' => count($studyAreas) === 1 ? reset($studyAreas) : null,
+      'studyAreaCount'  => $studyAreaCount,
+      'studyAreaForm'   => $studyAreaForm ? $studyAreaForm->createView() : null,
     ];
   }
 
   /**
    * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
    * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"}, name="app_studyarea_list")
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @throws InvalidArgumentException
@@ -175,12 +181,12 @@ class DefaultController extends AbstractController
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function dashboard(
-      RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
-      ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo,
-      ContributorRepository $contributorRepository, AbbreviationRepository $abbreviationRepository,
-      ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-      LearningPathRepository $learningPathRepo, TagRepository $tagRepository,
-      UrlChecker $urlChecker, TranslatorInterface $translator)
+    RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
+    ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo,
+    ContributorRepository $contributorRepository, AbbreviationRepository $abbreviationRepository,
+    ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
+    LearningPathRepository $learningPathRepo, TagRepository $tagRepository,
+    UrlChecker $urlChecker, TranslatorInterface $translator)
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -193,23 +199,23 @@ class DefaultController extends AbstractController
         ? $this->createStudyAreaForm($formFactory, $translator, $user, $studyArea) : null;
 
     $conceptForm = $formFactory->createNamedBuilder('concept_form')
-        ->add('concept', EntityType::class, [
-            'placeholder'   => 'dashboard.select-one',
-            'hide_label'    => true,
-            'choice_label'  => 'name',
-            'class'         => Concept::class,
-            'select2'       => true,
-            'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
-        ])
-        ->add('submit', SubmitType::class, [
-            'disabled' => true,
-            'label'    => 'browser.search',
-            'icon'     => 'fa-chevron-right',
-            'attr'     => [
-                'class' => 'btn btn-outline-success',
-            ],
-        ])
-        ->getForm();
+      ->add('concept', EntityType::class, [
+        'placeholder'   => 'dashboard.select-one',
+        'hide_label'    => true,
+        'choice_label'  => 'name',
+        'class'         => Concept::class,
+        'select2'       => true,
+        'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
+      ])
+      ->add('submit', SubmitType::class, [
+        'disabled' => true,
+        'label'    => 'browser.search',
+        'icon'     => 'fa-chevron-right',
+        'attr'     => [
+          'class' => 'btn btn-outline-success',
+        ],
+      ])
+      ->getForm();
 
     // Check for urls, if one has edit roles
     $urlData = [];
@@ -219,47 +225,50 @@ class DefaultController extends AbstractController
       $urlsScanned = $urls !== null;
 
       $urlData = [
-          'urlScanned' => $urlsScanned,
+        'urlScanned' => $urlsScanned,
         /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
-          'urlScanProgress' => ($urlsScanned ? $urls['urls'] === null : false),
+        'urlScanProgress' => ($urlsScanned ? $urls['urls'] === null : false),
         /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
-          'urlCount'       => ($urlsScanned ? count($urls['urls']) : -1),
-          'brokenUrlCount' => ($badUrls !== null ? count($badUrls['bad']) : -1),
+        'urlCount'       => ($urlsScanned ? count($urls['urls']) : -1),
+        'brokenUrlCount' => ($badUrls !== null ? count($badUrls['bad']) : -1),
       ];
     }
 
     return array_merge([
-        'conceptForm'           => $conceptForm->createView(),
-        'studyAreaForm'         => $studyAreaForm ? $studyAreaForm->createView() : null,
-        'studyArea'             => $studyArea,
-        'studyAreas'            => $studyAreas,
-        'currentStudyArea'      => $requestStudyArea->getStudyArea(),
-        'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea, true),
-        'instanceCount'         => $conceptRepo->getCountForStudyArea($studyArea, false, true),
-        'relationCount'         => $conceptRelationRepo->getCountForStudyArea($studyArea),
-        'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
-        'contributorCount'      => $contributorRepository->getCountForStudyArea($studyArea),
-        'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
-        'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
-        'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
-        'tagCount'              => $tagRepository->getCountForStudyArea($studyArea),
+      'conceptForm'           => $conceptForm->createView(),
+      'studyAreaForm'         => $studyAreaForm ? $studyAreaForm->createView() : null,
+      'studyArea'             => $studyArea,
+      'studyAreas'            => $studyAreas,
+      'currentStudyArea'      => $requestStudyArea->getStudyArea(),
+      'conceptCount'          => $conceptRepo->getCountForStudyArea($studyArea, true),
+      'instanceCount'         => $conceptRepo->getCountForStudyArea($studyArea, false, true),
+      'relationCount'         => $conceptRelationRepo->getCountForStudyArea($studyArea),
+      'abbreviationCount'     => $abbreviationRepository->getCountForStudyArea($studyArea),
+      'contributorCount'      => $contributorRepository->getCountForStudyArea($studyArea),
+      'externalResourceCount' => $externalResourceRepo->getCountForStudyArea($studyArea),
+      'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
+      'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
+      'tagCount'              => $tagRepository->getCountForStudyArea($studyArea),
     ], $urlData);
   }
 
   /**
    * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"})
+   *
    * @Template
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @throws InvalidArgumentException
    *
    * @return array
+   *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function urlOverview(
-      RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
-      ContributorRepository $contributorRepository, LearningOutcomeRepository $learningOutcomeRepository,
-      ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
+    RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
+    ContributorRepository $contributorRepository, LearningOutcomeRepository $learningOutcomeRepository,
+    ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $urls      = $urlChecker->getUrlsForStudyArea($studyArea);
@@ -284,29 +293,28 @@ class DefaultController extends AbstractController
     [$goodInternalUrls, $goodExternalUrls]           = $this->splitUrlLocation($goodUrls);
 
     return [
-        'lastScanned'           => $urls['lastScanned'],
-        'badInternalUrls'       => $badInternalUrls,
-        'wrongStudyAreaUrls'    => $badUrls['wrongStudyArea'],
-        'badExternalUrls'       => $badExternalUrls,
-        'unscannedInternalUrls' => $unscannedInternalUrls,
-        'unscannedExternalUrls' => $unscannedExternalUrls,
-        'goodInternalUrls'      => $goodInternalUrls,
-        'goodExternalUrls'      => $goodExternalUrls,
-        'objects'               => [
-            'concepts'          => $this->concepts,
-            'contributors'      => $this->contributors,
-            'learningOutcomes'  => $this->learningOutcomes,
-            'externalResources' => $this->externalResources,
-            'learningPaths'     => $this->learningPaths,
-        ],
+      'lastScanned'           => $urls['lastScanned'],
+      'badInternalUrls'       => $badInternalUrls,
+      'wrongStudyAreaUrls'    => $badUrls['wrongStudyArea'],
+      'badExternalUrls'       => $badExternalUrls,
+      'unscannedInternalUrls' => $unscannedInternalUrls,
+      'unscannedExternalUrls' => $unscannedExternalUrls,
+      'goodInternalUrls'      => $goodInternalUrls,
+      'goodExternalUrls'      => $goodExternalUrls,
+      'objects'               => [
+        'concepts'          => $this->concepts,
+        'contributors'      => $this->contributors,
+        'learningOutcomes'  => $this->learningOutcomes,
+        'externalResources' => $this->externalResources,
+        'learningPaths'     => $this->learningPaths,
+      ],
     ];
   }
 
   /**
    * @Route("/{_studyArea}/rescanurl/{url}", requirements={"_studyArea"="\d+"})
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
-   * @param $url
+   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @throws InvalidArgumentException
    *
@@ -327,6 +335,7 @@ class DefaultController extends AbstractController
 
   /**
    * @Route("/{_studyArea}/rescanurls", requirements={"_studyArea"="\d+"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    *
    * @throws InvalidArgumentException
@@ -344,50 +353,46 @@ class DefaultController extends AbstractController
   }
 
   private function createStudyAreaForm(
-      FormFactoryInterface $formFactory, TranslatorInterface $translator,
-      ?User $user, ?StudyArea $studyArea, string $buttonLabel = 'study-area.switch-to'): FormInterface
+    FormFactoryInterface $formFactory, TranslatorInterface $translator,
+    ?User $user, ?StudyArea $studyArea, string $buttonLabel = 'study-area.switch-to'): FormInterface
   {
     $defaultGroupName = $translator->trans('study-area.groups.default-name');
 
     return $formFactory->createNamedBuilder('studyarea_form')
-        ->add('studyArea', EntityType::class, [
-            'placeholder' => 'dashboard.select-one',
-            'hide_label'  => true,
-            'class'       => StudyArea::class,
-            'select2'     => true,
-            'group_by'    => function (StudyArea $studyArea) use ($defaultGroupName) {
-              if (!$studyArea->getGroup()) {
-                return $defaultGroupName;
-              }
+      ->add('studyArea', EntityType::class, [
+        'placeholder' => 'dashboard.select-one',
+        'hide_label'  => true,
+        'class'       => StudyArea::class,
+        'select2'     => true,
+        'group_by'    => function (StudyArea $studyArea) use ($defaultGroupName) {
+          if (!$studyArea->getGroup()) {
+            return $defaultGroupName;
+          }
 
-              return $studyArea->getGroup()->getName();
-            },
-            'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
-              $qb = $studyAreaRepository->getVisibleQueryBuilder($user);
-              if ($studyArea !== null) {
-                $qb->andWhere('sa != :current')
-                    ->setParameter('current', $studyArea);
-              }
+          return $studyArea->getGroup()->getName();
+        },
+        'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
+          $qb = $studyAreaRepository->getVisibleQueryBuilder($user);
+          if ($studyArea !== null) {
+            $qb->andWhere('sa != :current')
+              ->setParameter('current', $studyArea);
+          }
 
-              return $qb;
-            },
-        ])
-        ->add('submit', SubmitType::class, [
-            'disabled' => true,
-            'label'    => $buttonLabel,
-            'icon'     => 'fa-chevron-right',
-            'attr'     => [
-                'class' => 'btn btn-outline-success',
-            ],
-        ])
-        ->getForm();
+          return $qb;
+        },
+      ])
+      ->add('submit', SubmitType::class, [
+        'disabled' => true,
+        'label'    => $buttonLabel,
+        'icon'     => 'fa-chevron-right',
+        'attr'     => [
+          'class' => 'btn btn-outline-success',
+        ],
+      ])
+      ->getForm();
   }
 
-  /**
-   * Filter an Url based on whether it's original object is deleted.
-   *
-   * @param $entry
-   */
+  /** Filter an Url based on whether it's original object is deleted. */
   private function filterDeleted(Url $entry): bool
   {
     $context = $entry->getContext();
@@ -412,21 +417,13 @@ class DefaultController extends AbstractController
     }
   }
 
-  /**
-   * Filter an Url based on it being internal or not.
-   *
-   * @param $entry
-   */
+  /** Filter an Url based on it being internal or not. */
   private function filterInternal(Url $entry): bool
   {
     return $entry->isInternal();
   }
 
-  /**
-   * Get the Id of an object if it exists.
-   *
-   * @param $entry
-   */
+  /** Get the Id of an object if it exists. */
   private function findId($entry): int
   {
     return method_exists($entry, 'getId') ? $entry->getId() : -1;
@@ -454,9 +451,6 @@ class DefaultController extends AbstractController
   /**
    * Sort two urls for in the overview page. First they are ordered based on class, then on entity name or number, then
    * on property name.
-   *
-   * @param $a
-   * @param $b
    */
   private function sortUrls(Url $a, Url $b): int
   {

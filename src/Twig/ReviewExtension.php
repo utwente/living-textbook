@@ -10,8 +10,7 @@ use Twig\TwigFunction;
 
 class ReviewExtension extends AbstractExtension
 {
-  /** @var ReviewService */
-  private $reviewService;
+  private ReviewService $reviewService;
 
   public function __construct(ReviewService $reviewService)
   {
@@ -21,7 +20,7 @@ class ReviewExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('reviewEnabled', $this->reviewEnabled(...)),
+      new TwigFunction('reviewEnabled', $this->reviewEnabled(...)),
     ];
   }
 

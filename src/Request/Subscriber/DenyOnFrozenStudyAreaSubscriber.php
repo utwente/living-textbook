@@ -17,14 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 {
-  /** @var ArgumentNameConverter */
-  private $argumentNameConverter;
+  private ArgumentNameConverter $argumentNameConverter;
 
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
-  /** @var RouterInterface */
-  private $router;
+  private RouterInterface $router;
 
   /** FreezeSubscriber constructor. */
   public function __construct(ArgumentNameConverter $argumentNameConverter, TranslatorInterface $translator, RouterInterface $router)
@@ -38,10 +35,10 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
   public static function getSubscribedEvents()
   {
     return [
-        KernelEvents::CONTROLLER_ARGUMENTS => [
-            'checkFrozenStudyArea',
-            -50,
-        ],
+      KernelEvents::CONTROLLER_ARGUMENTS => [
+        'checkFrozenStudyArea',
+        -50,
+      ],
     ];
   }
 
@@ -70,7 +67,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     // An study area is required
     if ($studyArea === null || !$studyArea instanceof StudyArea) {
       throw new InvalidArgumentException(sprintf('Subject "%s" does not contain the expected study area, but a "%s"',
-          $configuration->getSubject(), $studyArea === null ? 'null' : $studyArea::class));
+        $configuration->getSubject(), $studyArea === null ? 'null' : $studyArea::class));
     }
 
     // Check for frozen

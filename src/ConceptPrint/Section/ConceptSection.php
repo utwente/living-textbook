@@ -20,7 +20,7 @@ class ConceptSection extends LtbSection
    * @throws PandocException
    */
   public function __construct(
-      Concept $concept, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
+    Concept $concept, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
   {
     parent::__construct($concept->getName(), $router, $projectDir);
 
@@ -28,8 +28,8 @@ class ConceptSection extends LtbSection
     $this->addElement(new CustomCommand('\\sloppy'));
 
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
-        $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-        $translator->trans('concept.online-source')
+      $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+      $translator->trans('concept.online-source')
     )));
 
     // Add concept data

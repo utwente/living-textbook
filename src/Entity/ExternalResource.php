@@ -27,7 +27,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ExternalResourceRepository")
+ *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class ExternalResource implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -42,67 +44,64 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="externalResources")
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
-   * @var StudyArea|null
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="externalResources")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
    * @ORM\Column(name="title", type="string", length=512, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=512)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
-  private $title;
+  private string $title = '';
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Assert\Length(max=1024)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
-  private $description;
+  private ?string $description = null;
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
    * @Assert\Url()
+   *
    * @Assert\Length(max=512)
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
-  private $url;
+  private ?string $url = null;
 
   /**
-   * @var bool
-   *
    * @ORM\Column(name="broken", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $broken;
+  private bool $broken = false;
 
   /** ExternalResource constructor. */
   public function __construct()
   {
-    $this->title  = '';
-    $this->broken = false;
-
     $this->concepts = new ArrayCollection();
   }
 
@@ -124,9 +123,9 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     }
 
     return [
-        '_data'   => $this,
-        '_title'  => $this->getTitle(),
-        'results' => $results,
+      '_data'   => $this,
+      '_title'  => $this->getTitle(),
+      'results' => $results,
     ];
   }
 

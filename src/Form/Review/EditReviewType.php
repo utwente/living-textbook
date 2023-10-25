@@ -14,16 +14,16 @@ class EditReviewType extends AbstractReviewType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $this
-        ->addNotes($builder)
-        ->addReviewer($builder, $options);
+      ->addNotes($builder)
+      ->addReviewer($builder, $options);
 
     $builder
-        ->add('submit', SaveType::class, [
-            'enable_cancel'        => true,
-            'cancel_route'         => 'app_review_submissions',
-            'enable_save_and_list' => false,
-            'save_label'           => $options['save_label'],
-        ]);
+      ->add('submit', SaveType::class, [
+        'enable_cancel'        => true,
+        'cancel_route'         => 'app_review_submissions',
+        'enable_save_and_list' => false,
+        'save_label'           => $options['save_label'],
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)
@@ -31,8 +31,8 @@ class EditReviewType extends AbstractReviewType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setDefault('save_label', 'form.save')
-        ->setDefault('data_class', Review::class)
-        ->setAllowedTypes('save_label', 'string');
+      ->setDefault('save_label', 'form.save')
+      ->setDefault('data_class', Review::class)
+      ->setAllowedTypes('save_label', 'string');
   }
 }

@@ -24,18 +24,19 @@ class TagController extends AbstractApiController
    * Retrieve all study area tags.
    *
    * @Route(methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area tags', content: [
-      new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: TagApiModel::class))),
+    new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: TagApiModel::class))),
   ])]
   public function list(
-      RequestStudyArea $requestStudyArea,
-      TagRepository $tagRepository): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    TagRepository $tagRepository): JsonResponse
   {
     return $this->createDataResponse(array_map(
-        [TagApiModel::class, 'fromEntity'],
-        $tagRepository->findForStudyArea($requestStudyArea->getStudyArea())
+      [TagApiModel::class, 'fromEntity'],
+      $tagRepository->findForStudyArea($requestStudyArea->getStudyArea())
     ));
   }
 
@@ -43,12 +44,13 @@ class TagController extends AbstractApiController
    * Retrieve single study area tag.
    *
    * @Route("/{tag<\d+>}", methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'All study area tags', content: [new Model(type: TagApiModel::class)])]
   public function single(
-      RequestStudyArea $requestStudyArea,
-      Tag $tag): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
@@ -59,18 +61,19 @@ class TagController extends AbstractApiController
    * Add a new study area tag.
    *
    * @Route(methods={"POST"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The new tag', required: true, content: [new Model(type: TagApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The new tag', content: [new Model(type: TagApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
-      RequestStudyArea $requestStudyArea,
-      Request $request): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Request $request): JsonResponse
   {
     $tag = $this->getTypedFromBody($request, TagApiModel::class)
-        ->mapToEntity(null)
-        ->setStudyArea($requestStudyArea->getStudyArea());
+      ->mapToEntity(null)
+      ->setStudyArea($requestStudyArea->getStudyArea());
 
     $this->getHandler()->add($tag);
 
@@ -81,20 +84,21 @@ class TagController extends AbstractApiController
    * Update an existing study area tag.
    *
    * @Route("/{tag<\d+>}", methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The tag properties to update', required: true, content: [new Model(type: TagApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated tag', content: [new Model(type: TagApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
-      RequestStudyArea $requestStudyArea,
-      Tag $tag,
-      Request $request): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Tag $tag,
+    Request $request): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 
     $tag = $this->getTypedFromBody($request, TagApiModel::class)
-        ->mapToEntity($tag);
+      ->mapToEntity($tag);
 
     $this->getHandler()->update($tag);
 
@@ -105,12 +109,13 @@ class TagController extends AbstractApiController
    * Delete an existing study area tag.
    *
    * @Route("/{tag<\d+>}", methods={"DELETE"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The tag has been deleted')]
   public function delete(
-      RequestStudyArea $requestStudyArea,
-      Tag $tag): JsonResponse
+    RequestStudyArea $requestStudyArea,
+    Tag $tag): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $tag);
 

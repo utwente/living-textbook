@@ -18,8 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SpreadsheetHelper
 {
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
   /** SpreadsheetHelper constructor. */
   public function __construct(TranslatorInterface $translator)
@@ -43,9 +42,9 @@ class SpreadsheetHelper
     // Create writer
     $writer   = $this->createExcelWriter($spreadsheet);
     $response = new StreamedResponse(
-        function () use ($writer) {
-          $writer->save('php://output');
-        });
+      function () use ($writer) {
+        $writer->save('php://output');
+      });
 
     $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8');
     ExportService::contentDisposition($response, $filename);
@@ -57,9 +56,9 @@ class SpreadsheetHelper
   public function createCsvWriter(Spreadsheet $spreadsheet): Csv
   {
     return (new Csv($spreadsheet))
-        ->setDelimiter(';')
-        ->setUseBOM(true)
-        ->setSheetIndex(0);
+      ->setDelimiter(';')
+      ->setUseBOM(true)
+      ->setSheetIndex(0);
   }
 
   /**

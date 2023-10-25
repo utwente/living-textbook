@@ -23,27 +23,23 @@ class LearningPathRepository extends ServiceEntityRepository
   public function findForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->orderBy('lp.name', 'ASC')
-        ->getQuery()->getResult();
+      ->orderBy('lp.name', 'ASC')
+      ->getQuery()->getResult();
   }
 
-  /**
-   * @throws NonUniqueResultException
-   *
-   * @return mixed
-   */
+  /** @throws NonUniqueResultException */
   public function getCountForStudyArea(StudyArea $studyArea)
   {
     return $this->findForStudyAreaQb($studyArea)
-        ->select('COUNT(lp.id)')
-        ->getQuery()->getSingleScalarResult();
+      ->select('COUNT(lp.id)')
+      ->getQuery()->getSingleScalarResult();
   }
 
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('lp')
-        ->where('lp.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea);
+      ->where('lp.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea);
   }
 
   /**
@@ -54,12 +50,12 @@ class LearningPathRepository extends ServiceEntityRepository
   public function findForConcept(Concept $concept)
   {
     return $this->createQueryBuilder('lp')
-        ->distinct()
-        ->leftJoin('lp.elements', 'lpe')
-        ->where('lpe.concept = :concept')
-        ->andWhere('lpe.id is not null')
-        ->setParameter('concept', $concept)
-        ->getQuery()->getResult();
+      ->distinct()
+      ->leftJoin('lp.elements', 'lpe')
+      ->where('lpe.concept = :concept')
+      ->andWhere('lpe.id is not null')
+      ->setParameter('concept', $concept)
+      ->getQuery()->getResult();
   }
 
   /**

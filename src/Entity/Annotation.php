@@ -22,10 +22,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class TextAnnotation.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\AnnotationRepository")
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class Annotation implements SearchableInterface, IdInterface
@@ -37,90 +40,82 @@ class Annotation implements SearchableInterface, IdInterface
   /**
    * The user.
    *
-   * @var User|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annotations")
+   *
    * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $user;
+  private ?User $user = null;
 
   /**
    * The concept.
    *
-   * @var Concept|null
-   *
    * @ORM\ManyToOne(targetEntity="Concept")
+   *
    * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $concept;
+  private ?Concept $concept = null;
 
   /**
    * Annotation text. If null, it is only a highlight.
-   *
-   * @var string|null
    *
    * @ORM\Column(name="text", type="text", nullable=true)
    *
    * @JMSA\Expose()
    */
-  private $text;
+  private ?string $text = null;
 
   /**
    * Annotation context (section of concept).
    *
-   * @var string
-   *
    * @ORM\Column(name="context", type="string", length=50, nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\NotBlank()
    *
    * @JMSA\Expose()
    */
-  private $context = '';
+  private string $context = '';
 
   /**
    * Annotation start. This is without any HTML tags!
    * If -1, the complete section is annotated.
    *
-   * @var int
-   *
    * @ORM\Column(name="start", type="integer", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min="-1")
    *
    * @JMSA\Expose()
    */
-  private $start = 0;
+  private int $start = 0;
 
   /**
    * Annotation end. This is without any HTML tags!
    * If there is no selection, it means the header/complete context is annotated.
    *
-   * @var int
-   *
    * @ORM\Column(name="end", type="integer", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Range(min="0")
+   *
    * @Assert\Expression(
    *   "value !== this.getStart()",
    *   message="annotation.start-end-identical")
    *
    * @JMSA\Expose()
    */
-  private $end = 0;
+  private int $end = 0;
 
   /**
    * The selected text at time of creation.
    * Should be null when the header is selected.
-   *
-   * @var string|null
    *
    * @ORM\Column(name="selected_text", type="text", nullable=true)
    *
@@ -130,24 +125,20 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @JMSA\Expose()
    */
-  private $selectedText;
+  private ?string $selectedText = null;
 
   /**
    * Annotation version, linked to context version to detect changes since annotation
    * This can only be null if the complete context is annotated.
    *
-   * @var DateTime|null
-   *
    * @ORM\Column(name="version", type="datetime", nullable=true)
    *
    * @JMSA\Expose()
    */
-  private $version;
+  private ?DateTime $version = null;
 
   /**
    * Visibility for the annotation.
-   *
-   * @var string
    *
    * @ORM\Column(name="visibility", type="string", length=10)
    *
@@ -155,7 +146,7 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @Assert\Choice(callback="visibilityOptions")
    */
-  private $visibility;
+  private string $visibility;
 
   /**
    * @var Collection<AnnotationComment>
@@ -166,11 +157,12 @@ class Annotation implements SearchableInterface, IdInterface
    *   "(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)",
    *   message="annotation.comments-incorrect"
    * )
+   *
    * @Assert\Valid()
    *
    * @JMSA\Expose
    */
-  private $comments;
+  private Collection $comments;
 
   /**
    * Annotation constructor.
@@ -205,9 +197,9 @@ class Annotation implements SearchableInterface, IdInterface
     }
 
     return [
-        '_data'   => $this,
-        '_title'  => $this->getSelectedText(),
-        'results' => $results,
+      '_data'   => $this,
+      '_title'  => $this->getSelectedText(),
+      'results' => $results,
     ];
   }
 
@@ -236,9 +228,9 @@ class Annotation implements SearchableInterface, IdInterface
   public static function visibilityOptions(): array
   {
     return [
-        self::privateVisibility(),
-        self::teacherVisibility(),
-        self::everybodyVisibility(),
+      self::privateVisibility(),
+      self::teacherVisibility(),
+      self::everybodyVisibility(),
     ];
   }
 
@@ -249,6 +241,7 @@ class Annotation implements SearchableInterface, IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getUserId(): int
@@ -258,6 +251,7 @@ class Annotation implements SearchableInterface, IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getUserName(): string
@@ -267,6 +261,7 @@ class Annotation implements SearchableInterface, IdInterface
 
   /**
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\Expose()
    */
   public function getAuthoredTime(): DateTime
@@ -288,6 +283,7 @@ class Annotation implements SearchableInterface, IdInterface
 
   /**
    * @JMSA\VirtualProperty("concept")
+   *
    * @JMSA\Expose()
    */
   public function getConceptId(): int
@@ -406,7 +402,7 @@ class Annotation implements SearchableInterface, IdInterface
     $annotation = $this;
 
     return $this->comments
-        ->filter(fn (AnnotationComment $annotationComment) => $annotationComment->getUser()->getId() !== $annotation->getUserId())
-        ->count();
+      ->filter(fn (AnnotationComment $annotationComment) => $annotationComment->getUser()->getId() !== $annotation->getUserId())
+      ->count();
   }
 }

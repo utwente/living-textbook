@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(indexes={@ORM\Index(columns={"token_id"})})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserApiTokenRepository")
  *
  * @JMSA\ExclusionPolicy("all")
@@ -28,6 +29,7 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface,
    * The user linked with this token.
    *
    * @ORM\ManyToOne(targetEntity="User")
+   *
    * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
    */
   private User $user; // Default in constructor

@@ -25,29 +25,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class StudyAreaStatusBuilder
 {
-  /** @var NamingService */
-  private $namingService;
+  private NamingService $namingService;
 
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
-  /** @var RelationTypeRepository */
-  private $relationTypeRepo;
+  private RelationTypeRepository $relationTypeRepo;
 
-  /** @var ConceptRepository */
-  private $conceptRepo;
+  private ConceptRepository $conceptRepo;
 
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepo;
+  private ConceptRelationRepository $conceptRelationRepo;
 
-  /** @var SpreadsheetHelper */
-  private $spreadsheetHelper;
+  private SpreadsheetHelper $spreadsheetHelper;
 
-  /** @var Spreadsheet */
-  private $spreadsheet;
+  private ?Spreadsheet $spreadsheet = null;
 
-  /** @var StudyArea */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /** @var RelationType[]|Collection */
   private $relationTypes;
@@ -57,8 +49,8 @@ class StudyAreaStatusBuilder
 
   /** StudyAreaStatusBuilder constructor. */
   public function __construct(TranslatorInterface $translator, ConceptRepository $conceptRepo,
-                              ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo,
-                              SpreadsheetHelper $spreadsheetHelper, NamingService $namingService)
+    ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo,
+    SpreadsheetHelper $spreadsheetHelper, NamingService $namingService)
   {
     $this->translator          = $translator;
     $this->conceptRelationRepo = $conceptRelationRepo;
@@ -87,9 +79,9 @@ class StudyAreaStatusBuilder
     // Create spreadsheet
     $this->spreadsheet = new Spreadsheet();
     $this->spreadsheet->getProperties()->setCreator($this->studyArea->getOwner()->getDisplayName())
-        ->setTitle($this->studyArea->getName())
-        ->setSubject($this->translator->trans('excel.subject', ['%item%' => $this->studyArea->getName()]))
-        ->setDescription($this->translator->trans('excel.description', ['%item%' => $this->studyArea->getName()]));
+      ->setTitle($this->studyArea->getName())
+      ->setSubject($this->translator->trans('excel.subject', ['%item%' => $this->studyArea->getName()]))
+      ->setDescription($this->translator->trans('excel.description', ['%item%' => $this->studyArea->getName()]));
 
     // Create content
     $this->spreadsheet->removeSheetByIndex(0);
@@ -106,7 +98,7 @@ class StudyAreaStatusBuilder
     $this->spreadsheet->setActiveSheetIndex(0);
 
     return $this->spreadsheetHelper->createExcelResponse($this->spreadsheet,
-        sprintf('%s_status.xlsx', $studyArea->getName()));
+      sprintf('%s_status.xlsx', $studyArea->getName()));
   }
 
   /** @throws Exception */
@@ -143,8 +135,8 @@ class StudyAreaStatusBuilder
     $this->spreadsheetHelper->setCellValue($sheet, $column + 2, $row, $lastEditInfo[1]);
 
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(1, 1),
-        CellAddress::fromColumnAndRow($column + 2, $row)
+      CellAddress::fromColumnAndRow(1, 1),
+      CellAddress::fromColumnAndRow($column + 2, $row)
     ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 
@@ -163,9 +155,9 @@ class StudyAreaStatusBuilder
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.general-concept-statistics.no-introduction', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
     $this->spreadsheetHelper->setCellValue($sheet, $column + 6, $row,
-        $this->translator->trans('excel.sheet.general-concept-statistics.no-learning-outcomes', [
-            '%plural%' => $this->namingService->get()->learningOutcome()->objs(),
-        ]), true);
+      $this->translator->trans('excel.sheet.general-concept-statistics.no-learning-outcomes', [
+        '%plural%' => $this->namingService->get()->learningOutcome()->objs(),
+      ]), true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
@@ -236,13 +228,13 @@ class StudyAreaStatusBuilder
     foreach ($this->relationTypes as $relationType) {
       $row++;
       $this->spreadsheetHelper->setCellValue($sheet, $column, $row, sprintf('  %s',
-          $this->translator->trans('excel.sheet.general-relationship-statistics.type', ['%type%' => $relationType->getName()])));
+        $this->translator->trans('excel.sheet.general-relationship-statistics.type', ['%type%' => $relationType->getName()])));
       $this->spreadsheetHelper->setCellValue($sheet, $column + 1, $row, $this->conceptRelationRepo->getByRelationTypeCount($relationType));
     }
 
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(1, 1),
-        CellAddress::fromColumnAndRow($column + 1, $row)
+      CellAddress::fromColumnAndRow(1, 1),
+      CellAddress::fromColumnAndRow($column + 1, $row)
     ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
     $sheet->getStyle(CellAddress::fromColumnAndRow(1, 1))->getBorders()->getRight()->setBorderStyle(Border::BORDER_NONE);
     $sheet->getStyle(CellAddress::fromColumnAndRow(2, 1))->getBorders()->getLeft()->setBorderStyle(Border::BORDER_NONE);
@@ -275,7 +267,7 @@ class StudyAreaStatusBuilder
       foreach ($concept->getOutgoingRelations() as $conceptRelation) {
         $column++;
         $this->spreadsheetHelper->setCellValue($sheet, $column, $row,
-            sprintf('* %s %s', $conceptRelation->getRelationName(), $conceptRelation->getTarget()->getName()));
+          sprintf('* %s %s', $conceptRelation->getRelationName(), $conceptRelation->getTarget()->getName()));
         if ($column > $maxCol) {
           $maxCol = $column;
         }
@@ -285,7 +277,7 @@ class StudyAreaStatusBuilder
       foreach ($concept->getIncomingRelations() as $conceptRelation) {
         $column++;
         $this->spreadsheetHelper->setCellValue($sheet, $column, $row + $conceptCount,
-            sprintf('%s %s *', $conceptRelation->getSource()->getName(), $conceptRelation->getRelationName()));
+          sprintf('%s %s *', $conceptRelation->getSource()->getName(), $conceptRelation->getRelationName()));
         if ($column > $maxCol) {
           $maxCol = $column;
         }
@@ -297,21 +289,21 @@ class StudyAreaStatusBuilder
     }
 
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(1, 1),
-        CellAddress::fromColumnAndRow($maxCol, $row)
+      CellAddress::fromColumnAndRow(1, 1),
+      CellAddress::fromColumnAndRow($maxCol, $row)
     ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(2, 1),
-        CellAddress::fromColumnAndRow($maxCol, 1)
+      CellAddress::fromColumnAndRow(2, 1),
+      CellAddress::fromColumnAndRow($maxCol, 1)
     ))->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
 
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(1, 1 + $conceptCount),
-        CellAddress::fromColumnAndRow($maxCol, $row + $conceptCount)
+      CellAddress::fromColumnAndRow(1, 1 + $conceptCount),
+      CellAddress::fromColumnAndRow($maxCol, $row + $conceptCount)
     ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(2, 1 + $conceptCount),
-        CellAddress::fromColumnAndRow($maxCol, 1 + $conceptCount)
+      CellAddress::fromColumnAndRow(2, 1 + $conceptCount),
+      CellAddress::fromColumnAndRow($maxCol, 1 + $conceptCount)
     ))->getBorders()->getInside()->setBorderStyle(Border::BORDER_NONE);
   }
 
@@ -361,8 +353,8 @@ class StudyAreaStatusBuilder
     }
 
     $sheet->getStyle(new CellRange(
-        CellAddress::fromColumnAndRow(1, 1),
-        CellAddress::fromColumnAndRow($column + 12, $row)
+      CellAddress::fromColumnAndRow(1, 1),
+      CellAddress::fromColumnAndRow($column + 12, $row)
     ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 }

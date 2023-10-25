@@ -18,9 +18,9 @@ class UserGroupEmailRepository extends ServiceEntityRepository
   {
     return $this->createQueryBuilder('uge')
         // Inner join to filter removed user groups
-        ->innerJoin('uge.userGroup', 'ug')
-        ->where('uge.email = :email')
-        ->setParameter('email', $email)
-        ->getQuery()->getResult();
+      ->innerJoin('uge.userGroup', 'ug')
+      ->where('uge.email = :email')
+      ->setParameter('email', $email)
+      ->getQuery()->getResult();
   }
 }

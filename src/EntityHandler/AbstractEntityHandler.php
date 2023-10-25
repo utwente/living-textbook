@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class AbstractEntityHandler
 {
   public function __construct(
-      protected EntityManagerInterface $em,
-      protected ?ValidatorInterface $validator,
-      protected ?ReviewService $reviewService
+    protected EntityManagerInterface $em,
+    protected ?ValidatorInterface $validator,
+    protected ?ReviewService $reviewService
   ) {
   }
 

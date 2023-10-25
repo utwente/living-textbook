@@ -20,15 +20,12 @@ class HighlightExtension extends AbstractExtension
   public function getFilters()
   {
     return [
-        new TwigFilter('highlight', $this->hilightFilter(...), ['is_safe' => ['html']]),
+      new TwigFilter('highlight', $this->hilightFilter(...), ['is_safe' => ['html']]),
     ];
   }
 
   /**
    * Filter implementation.
-   *
-   * @param $text
-   * @param $search
    *
    * @return string
    */

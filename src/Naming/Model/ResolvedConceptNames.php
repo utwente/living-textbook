@@ -6,26 +6,18 @@ use Symfony\Component\String\Inflector\InflectorInterface;
 
 class ResolvedConceptNames implements ResolvedNamesInterface
 {
-  /** @var string */
-  private $definition;
-  /** @var string */
-  private $examples;
-  /** @var string */
-  private $howTo;
-  /** @var string */
-  private $introduction;
-  /** @var string */
-  private $priorKnowledge;
-  /** @var string */
-  private $selfAssessment;
-  /** @var string */
-  private $synonyms;
-  /** @var string */
-  private $theoryExplanation;
+  private string $definition;
+  private string $examples;
+  private string $howTo;
+  private string $introduction;
+  private string $priorKnowledge;
+  private string $selfAssessment;
+  private string $synonyms;
+  private string $theoryExplanation;
 
   public function __construct(
-      string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
-      string $howTo, string $examples, string $selfAssessment)
+    string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
+    string $howTo, string $examples, string $selfAssessment)
   {
     $this->definition        = strtolower($definition);
     $this->introduction      = strtolower($introduction);

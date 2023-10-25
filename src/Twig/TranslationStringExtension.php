@@ -15,14 +15,12 @@ class TranslationStringExtension extends AbstractExtension
   public function getFilters()
   {
     return [
-        new TwigFilter('trString', $this->trString(...), ['is_safe' => ['html']]),
+      new TwigFilter('trString', $this->trString(...), ['is_safe' => ['html']]),
     ];
   }
 
   /**
    * Filter implementation.
-   *
-   * @param $text
    *
    * @return string
    */

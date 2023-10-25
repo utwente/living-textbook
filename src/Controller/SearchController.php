@@ -26,16 +26,18 @@ class SearchController extends AbstractController
 {
   /**
    * @Route("/{s}", name="search", requirements={"s"=".*"}, defaults={"s"=null})
+   *
    * @Template()
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    *
    * @return array
    */
   public function search(
-      ?string $s, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-      AbbreviationRepository $abbreviationRepository, ConceptRepository $conceptRepository,
-      ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-      AnnotationRepository $annotationRepository)
+    ?string $s, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
+    AbbreviationRepository $abbreviationRepository, ConceptRepository $conceptRepository,
+    ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
+    AnnotationRepository $annotationRepository)
   {
     $result = [];
 
@@ -146,9 +148,9 @@ class SearchController extends AbstractController
   public static function createResult(int $prio, string $property, string|array $data): array
   {
     return [
-        'prio'     => $prio,
-        'property' => $property,
-        'data'     => $data,
+      'prio'     => $prio,
+      'property' => $property,
+      'data'     => $data,
     ];
   }
 }

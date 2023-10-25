@@ -24,9 +24,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class LearningPath.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\LearningPathRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -37,64 +39,65 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   use ReviewableTrait;
 
   /**
-   * @var StudyArea|null
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningPaths")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
    * Learning path name.
    *
-   * @var string
-   *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(max=255)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
-  private $name;
+  private string $name = '';
 
   /**
    * Learning path introduction.
-   *
-   * @var string|null
    *
    * @ORM\Column(name="introduction", type="text", nullable=true)
    *
    * @Assert\NotBlank();
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type("string")
    */
-  private $introduction;
+  private ?string $introduction = null;
 
   /**
    * Learning path question.
    *
-   * @var string
-   *
    * @ORM\Column(name="question", type="string", length=1024, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(max=1024)
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"Default", "review_change"})
+   *
    * @JMSA\Type("string")
    */
-  private $question;
+  private string $question = '';
 
   /**
-   * @var Collection|LearningPathElement[]
+   * @var Collection<LearningPathElement>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath",
    *   cascade={"persist", "remove"})
@@ -102,15 +105,15 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @Assert\Valid()
    *
    * @JMSA\Expose()
+   *
    * @JMSA\Groups({"review_change"})
+   *
    * @JMSA\Type("ArrayCollection<App\Entity\LearningPathElement>")
    */
-  private $elements;
+  private Collection $elements;
 
   public function __construct()
   {
-    $this->name     = '';
-    $this->question = '';
     $this->elements = new ArrayCollection();
   }
 
@@ -236,7 +239,9 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @return Collection<LearningPathElement>
    *
    * @JMSA\Expose()
+   *
    * @JMSA\VirtualProperty()
+   *
    * @JMSA\SerializedName("elements")
    */
   public function getElementsOrdered(): Collection

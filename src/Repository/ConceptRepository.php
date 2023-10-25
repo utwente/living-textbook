@@ -20,16 +20,16 @@ class ConceptRepository extends ServiceEntityRepository
   }
 
   public function findForStudyAreaOrderByNameQb(
-      StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): QueryBuilder
+    StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): QueryBuilder
   {
     if ($conceptsOnly && $instancesOnly) {
       throw new InvalidArgumentException('You cannot select both only options at the same time!');
     }
 
     $qb = $this->createQueryBuilder('c')
-        ->where('c.studyArea = :studyArea')
-        ->setParameter(':studyArea', $studyArea)
-        ->orderBy('c.name', 'ASC');
+      ->where('c.studyArea = :studyArea')
+      ->setParameter(':studyArea', $studyArea)
+      ->orderBy('c.name', 'ASC');
 
     if ($conceptsOnly) {
       $qb->andWhere('c.instance = false');
@@ -43,7 +43,7 @@ class ConceptRepository extends ServiceEntityRepository
 
   /** @return Concept[] */
   public function findForStudyAreaOrderedByName(
-      StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false)
+    StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false)
   {
     $qb = $this->findForStudyAreaOrderByNameQb($studyArea, $conceptsOnly, $instancesOnly);
 
@@ -61,16 +61,16 @@ class ConceptRepository extends ServiceEntityRepository
    * @noinspection PhpUnhandledExceptionInspection
    */
   public function getCountForStudyArea(
-      StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): int
+    StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): int
   {
     if ($conceptsOnly && $instancesOnly) {
       throw new InvalidArgumentException('You cannot select both only options at the same time!');
     }
 
     $qb = $this->createQueryBuilder('c')
-        ->select('COUNT(c.id)')
-        ->where('c.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea);
+      ->select('COUNT(c.id)')
+      ->where('c.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea);
 
     if ($conceptsOnly) {
       $qb->andWhere('c.instance = false');
@@ -86,25 +86,25 @@ class ConceptRepository extends ServiceEntityRepository
   private function loadRelations(QueryBuilder &$qb, string $alias)
   {
     $qb
-        ->leftJoin($alias . '.outgoingRelations', 'r')
-        ->leftJoin($alias . '.incomingRelations', 'ir')
-        ->addSelect('r')
-        ->addSelect('ir');
+      ->leftJoin($alias . '.outgoingRelations', 'r')
+      ->leftJoin($alias . '.incomingRelations', 'ir')
+      ->addSelect('r')
+      ->addSelect('ir');
   }
 
   /** Eagerly load the text data. */
   private function preLoadData(QueryBuilder &$qb, string $alias)
   {
     $qb
-        ->join($alias . '.examples', 'de')
-        ->join($alias . '.introduction', 'di')
-        ->join($alias . '.theoryExplanation', 'dt')
-        ->join($alias . '.howTo', 'dh')
-        ->join($alias . '.selfAssessment', 'ds')
-        ->addSelect('de')
-        ->addSelect('di')
-        ->addSelect('dt')
-        ->addSelect('dh')
-        ->addSelect('ds');
+      ->join($alias . '.examples', 'de')
+      ->join($alias . '.introduction', 'di')
+      ->join($alias . '.theoryExplanation', 'dt')
+      ->join($alias . '.howTo', 'dh')
+      ->join($alias . '.selfAssessment', 'ds')
+      ->addSelect('de')
+      ->addSelect('di')
+      ->addSelect('dt')
+      ->addSelect('dh')
+      ->addSelect('ds');
   }
 }

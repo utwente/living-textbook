@@ -18,15 +18,15 @@ class HtmlDiffExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('htmldiff', $this->htmlDiff(...), ['is_safe' => ['html']]),
+      new TwigFunction('htmldiff', $this->htmlDiff(...), ['is_safe' => ['html']]),
     ];
   }
 
   public function htmlDiff(?string $a, ?string $b): string
   {
     $config = (new HtmlDiffConfig())
-        ->setPurifierEnabled(false);
+      ->setPurifierEnabled(false);
 
-    return (HtmlDiff::create($a ?? '', $b ?? '', $config))->build();
+    return HtmlDiff::create($a ?? '', $b ?? '', $config)->build();
   }
 }

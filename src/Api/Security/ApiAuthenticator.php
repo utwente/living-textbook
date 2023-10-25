@@ -26,9 +26,9 @@ class ApiAuthenticator extends AbstractAuthenticator
   final public const API_TOKEN_HEADER = 'X-LTB-AUTH';
 
   public function __construct(
-      private readonly UserApiTokenRepository $userApiTokenRepository,
-      private readonly UserPasswordHasherInterface $passwordHasher,
-      private readonly EntityManagerInterface $entityManager)
+    private readonly UserApiTokenRepository $userApiTokenRepository,
+    private readonly UserPasswordHasherInterface $passwordHasher,
+    private readonly EntityManagerInterface $entityManager)
   {
   }
 
@@ -49,18 +49,18 @@ class ApiAuthenticator extends AbstractAuthenticator
     }
 
     return new Passport(
-        new UserBadge(
-            $tokenData[0],
-            fn ($userIdentifier): ?UserApiToken => $this->userApiTokenRepository->findOneBy(['tokenId' => $userIdentifier])
-        ),
-        new CustomCredentials(
-            fn (string $password, UserApiToken $apiToken): bool => (!$apiToken->getValidUntil() || $apiToken->getValidUntil() > new DateTimeImmutable())
-            && $this->passwordHasher->isPasswordValid($apiToken, $password),
-            $tokenData[1]
-        ),
-        [
-            new PasswordUpgradeBadge($tokenData[1], $this->userApiTokenRepository),
-        ]
+      new UserBadge(
+        $tokenData[0],
+        fn ($userIdentifier): ?UserApiToken => $this->userApiTokenRepository->findOneBy(['tokenId' => $userIdentifier])
+      ),
+      new CustomCredentials(
+        fn (string $password, UserApiToken $apiToken): bool => (!$apiToken->getValidUntil() || $apiToken->getValidUntil() > new DateTimeImmutable())
+        && $this->passwordHasher->isPasswordValid($apiToken, $password),
+        $tokenData[1]
+      ),
+      [
+        new PasswordUpgradeBadge($tokenData[1], $this->userApiTokenRepository),
+      ]
     );
   }
 

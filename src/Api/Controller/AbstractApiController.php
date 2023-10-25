@@ -22,16 +22,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class AbstractApiController extends AbstractController
 {
   public function __construct(
-      protected SerializerInterface $serializer,
-      protected EntityManagerInterface $em,
-      protected ValidatorInterface $validator,
-      private readonly SerializationContextFactoryInterface $contextFactory)
+    protected SerializerInterface $serializer,
+    protected EntityManagerInterface $em,
+    protected ValidatorInterface $validator,
+    private readonly SerializationContextFactoryInterface $contextFactory)
   {
   }
 
   protected function assertStudyAreaObject(
-      StudyArea|RequestStudyArea $studyArea,
-      StudyAreaFilteredInterface $object): void
+    StudyArea|RequestStudyArea $studyArea,
+    StudyAreaFilteredInterface $object): void
   {
     if ($studyArea instanceof RequestStudyArea) {
       $studyArea = $studyArea->getStudyArea();
@@ -43,10 +43,10 @@ abstract class AbstractApiController extends AbstractController
   }
 
   protected function createDataResponse(
-      mixed $data,
-      ?array $extraData = null,
-      ?array $serializationGroups = null,
-      int $statusCode = Response::HTTP_OK
+    mixed $data,
+    ?array $extraData = null,
+    ?array $serializationGroups = null,
+    int $statusCode = Response::HTTP_OK
   ): JsonResponse {
     $payload         = $extraData ?? [];
     $payload['data'] = $data;

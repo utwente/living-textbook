@@ -9,19 +9,13 @@ use InvalidArgumentException;
 
 class UserPermissions
 {
-  /** @var User|null */
-  private $user;
-  /** @var UserGroupEmail|null */
-  private $userGroupEmail;
+  private ?User $user                     = null;
+  private ?UserGroupEmail $userGroupEmail = null;
 
-  /** @var bool */
-  private $viewer = false;
-  /** @var bool */
-  private $editor = false;
-  /** @var bool */
-  private $reviewer = false;
-  /** @var bool */
-  private $analysis = false;
+  private bool $viewer   = false;
+  private bool $editor   = false;
+  private bool $reviewer = false;
+  private bool $analysis = false;
 
   /** UserPermissions constructor. */
   public function __construct(?User $user, ?UserGroupEmail $userGroupEmail)

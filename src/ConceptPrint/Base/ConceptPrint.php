@@ -16,11 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptPrint extends LatexBase
 {
-  /** @var Parser */
-  private $parser;
+  private Parser $parser;
 
-  /** @var string */
-  private $baseUrl;
+  private ?string $baseUrl = null;
 
   /**
    * Article constructor, sets defaults.
@@ -37,32 +35,32 @@ class ConceptPrint extends LatexBase
     $this->template = 'concept_print/base/concept_print.tex.twig';
 
     $this->params = [
-        'options' => null,
+      'options' => null,
 
-        'licenseimage' => false,
+      'licenseimage' => false,
 
-        'head' => '', // Header
+      'head' => '', // Header
 
-        'lfoot' => $dateTime->format('Y-m-d G:i'), // Bottom left footer
-        'rfoot' => 'Page\ \thepage\ of\ \pageref{LastPage}', // Bottom right footer
+      'lfoot' => $dateTime->format('Y-m-d G:i'), // Bottom left footer
+      'rfoot' => 'Page\ \thepage\ of\ \pageref{LastPage}', // Bottom right footer
 
-        'topmargin'    => '0.5in', // Some document margins
-        'leftmargin'   => '2.4in', // Some document margins
-        'rightmargin'  => '0.8in', // Some document margins
-        'bottommargin' => '0.5in', // Some document margins
+      'topmargin'    => '0.5in', // Some document margins
+      'leftmargin'   => '2.4in', // Some document margins
+      'rightmargin'  => '0.8in', // Some document margins
+      'bottommargin' => '0.5in', // Some document margins
 
-        'headsep'  => '0.3in',
-        'footskip' => '0.2in',
+      'headsep'  => '0.3in',
+      'footskip' => '0.2in',
 
-        'linespread' => '1.1', // Line spacing
+      'linespread' => '1.1', // Line spacing
 
-        'headrulewidth' => '0.4pt', // Header size
-        'footrulewidth' => '0.4pt', // Footer size
+      'headrulewidth' => '0.4pt', // Header size
+      'footrulewidth' => '0.4pt', // Footer size
 
-        'parindent' => '0pt', // Remove parindentation
+      'parindent' => '0pt', // Remove parindentation
 
-        'extra_commands' => [], // Define extra commands if needed
-        'packages'       => [], // Define extra packages to use
+      'extra_commands' => [], // Define extra commands if needed
+      'packages'       => [], // Define extra packages to use
     ];
 
     // Call parent constructor
@@ -107,8 +105,8 @@ class ConceptPrint extends LatexBase
     }
 
     $baseHeader = $translator->trans('print.header', [
-        '%header%' => $studyArea->getPrintHeader() ? $this->parser->parseText($studyArea->getPrintHeader()) : '',
-        '%url%'    => $this->parser->parseText($this->baseUrl),
+      '%header%' => $studyArea->getPrintHeader() ? $this->parser->parseText($studyArea->getPrintHeader()) : '',
+      '%url%'    => $this->parser->parseText($this->baseUrl),
     ]);
 
     $this->setParam('head', $baseHeader);
@@ -128,7 +126,7 @@ class ConceptPrint extends LatexBase
     // Only add the introduction when one is defined
     if ($studyArea->getPrintIntroduction()) {
       $this->addElement((new SubSection($translator->trans('study-area.print-introduction-header')))
-          ->addElement(new Text($studyArea->getPrintIntroduction())));
+        ->addElement(new Text($studyArea->getPrintIntroduction())));
       $this->addElement(new CustomCommand('\\newpage'));
     }
 

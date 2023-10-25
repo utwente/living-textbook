@@ -17,9 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class Tag implements StudyAreaFilteredInterface, IdInterface
@@ -29,49 +31,44 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
   use SoftDeletable;
 
   /**
-   * @var StudyArea|null
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="tags")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
    * @var Collection<Concept>
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="tags")
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
-   * @var string
-   *
    * @ORM\Column(length=25, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(max=25)
    *
    * @JMSA\Expose()
    */
-  private $name;
+  private string $name = '';
 
   /**
-   * @var string
-   *
    * @ORM\Column(length=10, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Color()
    *
    * @JMSA\Expose()
    */
-  private $color;
+  private string $color = '#8FBDAF';
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Assert\Length(max=1024)
@@ -82,9 +79,6 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
 
   public function __construct()
   {
-    $this->name  = '';
-    $this->color = '#8FBDAF';
-
     $this->concepts = new ArrayCollection();
   }
 

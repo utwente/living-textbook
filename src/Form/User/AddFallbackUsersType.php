@@ -12,15 +12,15 @@ class AddFallbackUsersType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('emails', EmailListType::class, [
-            'help' => 'permissions.emails-help-local',
-        ])
-        ->add('submit', SaveType::class, [
-            'enable_save_and_list' => false,
-            'enable_cancel'        => true,
-            'cancel_label'         => 'form.discard',
-            'cancel_route'         => 'app_user_fallbacklist',
-            'cancel_route_params'  => [],
-        ]);
+      ->add('emails', EmailListType::class, [
+        'help' => 'permissions.emails-help-local',
+      ])
+      ->add('submit', SaveType::class, [
+        'enable_save_and_list' => false,
+        'enable_cancel'        => true,
+        'cancel_label'         => 'form.discard',
+        'cancel_route'         => 'app_user_fallbacklist',
+        'cancel_route_params'  => [],
+      ]);
   }
 }

@@ -15,8 +15,8 @@ class OverlappingFieldsChangedException extends Exception
   public function __construct(PendingChange $change1, PendingChange $change2)
   {
     parent::__construct(sprintf(
-        'The changed properties of the supplied pending changes overlap! Overlapping properties: %s',
-        implode(', ', array_intersect($change1->getChangedFields(), $change2->getChangedFields()))
+      'The changed properties of the supplied pending changes overlap! Overlapping properties: %s',
+      implode(', ', array_intersect($change1->getChangedFields(), $change2->getChangedFields()))
     ));
   }
 }

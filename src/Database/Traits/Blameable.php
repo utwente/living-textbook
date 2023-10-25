@@ -12,6 +12,7 @@ trait Blameable
    * @var DateTime
    *
    * @Gedmo\Timestampable(on="create")
+   *
    * @ORM\Column(name="created_at", type="datetime", nullable=false)
    */
   private $createdAt;
@@ -20,6 +21,7 @@ trait Blameable
    * @var string
    *
    * @Gedmo\Blameable(on="create")
+   *
    * @ORM\Column(name="created_by", type="string", length=255, nullable=true)
    */
   private $createdBy;
@@ -28,6 +30,7 @@ trait Blameable
    * @var DateTime
    *
    * @Gedmo\Timestampable(on="update")
+   *
    * @ORM\Column(name="updated_at", type="datetime", nullable=true)
    */
   private $updatedAt;
@@ -36,6 +39,7 @@ trait Blameable
    * @var string
    *
    * @Gedmo\Blameable(on="update")
+   *
    * @ORM\Column(name="updated_by", type="string", length=255, nullable=true)
    */
   private $updatedBy;

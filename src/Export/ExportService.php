@@ -19,10 +19,10 @@ class ExportService
    *
    * @var ProviderInterface[]
    */
-  private $providers = [];
+  private array $providers = [];
 
   public function __construct(
-      LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4, LearningPathProvider $p5)
+    LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4, LearningPathProvider $p5)
   {
     $key = 0;
     foreach (func_get_args() as $provider) {
@@ -80,8 +80,8 @@ class ExportService
     // Set locale required for the iconv conversion to work correctly
     setlocale(LC_CTYPE, 'en_US.UTF-8');
     $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
-        ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        mb_strtolower(preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
+      ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+      mb_strtolower(preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
     ));
   }
 }

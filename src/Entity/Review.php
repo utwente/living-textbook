@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Review.
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ReviewRepository")
  */
 class Review implements IdInterface
@@ -23,14 +24,13 @@ class Review implements IdInterface
   use Blameable;
 
   /**
-   * @var StudyArea
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
    * The pending changes in this review.
@@ -38,101 +38,92 @@ class Review implements IdInterface
    * @var Collection<PendingChange>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\PendingChange", mappedBy="review", cascade={"remove"})
+   *
    * @ORM\OrderBy({"objectType" = "ASC", "changeType" = "ASC"})
    *
    * @Assert\NotNull()
+   *
    * @Assert\Count(min=1)
    */
-  private $pendingChanges;
+  private Collection $pendingChanges;
 
   /**
    * The owner of the pending change (aka, the user who created it).
    *
-   * @var User|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $owner;
+  private ?User $owner = null;
 
   /**
    * Notes left for the reviewer, if any.
-   *
-   * @var string|null
    *
    * @ORM\Column(type="text", nullable=true)
    *
    * @Assert\Length(max=2000)
    */
-  private $notes;
+  private ?string $notes = null;
 
   /**
    * Requested datetime.
    *
-   * @var DateTime|null
-   *
    * @ORM\Column(type="datetime")
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("datetime")
    */
-  private $requestedReviewAt;
+  private ?DateTime $requestedReviewAt = null;
 
   /**
    * The requested reviewer.
    *
-   * @var User|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $requestedReviewBy;
+  private ?User $requestedReviewBy = null;
 
   /**
    * Reviewed at datetime.
    *
-   * @var DateTime|null
-   *
    * @ORM\Column(type="datetime", nullable=true)
    *
    * @Assert\Type("datetime")
    */
-  private $reviewedAt;
+  private ?DateTime $reviewedAt = null;
 
   /**
    * Approved by, can be different than the requested reviewer.
    *
-   * @var User|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
-  private $reviewedBy;
+  private ?User $reviewedBy = null;
 
   /**
    * Approval datetime.
    *
-   * @var DateTime|null
-   *
    * @ORM\Column(type="datetime", nullable=true)
    *
    * @Assert\Type("datetime")
    */
-  private $approvedAt;
+  private ?DateTime $approvedAt = null;
 
   /**
    * Approved by, can be different than the requested reviewer.
    *
-   * @var User|null
-   *
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
-  private $approvedBy;
+  private ?User $approvedBy = null;
 
   /** Review constructor. */
   public function __construct()

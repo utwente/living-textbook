@@ -17,36 +17,36 @@ class SubmitReviewType extends AbstractReviewType
     $builder
         // This field will not be rendered by the SF form component in this field,
         // but by the ReviewSubmissionType field by setting the checkboxes to true
-        ->add('pending_changes', CollectionType::class, [
-            'required'      => false,
-            'allow_add'     => true,
-            'allow_delete'  => true,
-            'entry_type'    => CollectionType::class,
-            'entry_options' => [
-                'required'     => false,
-                'allow_add'    => true,
-                'allow_delete' => true,
-            ],
-        ])
+      ->add('pending_changes', CollectionType::class, [
+        'required'      => false,
+        'allow_add'     => true,
+        'allow_delete'  => true,
+        'entry_type'    => CollectionType::class,
+        'entry_options' => [
+          'required'     => false,
+          'allow_add'    => true,
+          'allow_delete' => true,
+        ],
+      ])
 
         // Re-use review submission type to show changes
-        ->add('review', ReviewSubmissionType::class, [
-            'mapped'     => false,
-            'data'       => $options['review'],
-            'review'     => false,
-            'hide_label' => true,
-            'checkboxes' => true,
-        ]);
+      ->add('review', ReviewSubmissionType::class, [
+        'mapped'     => false,
+        'data'       => $options['review'],
+        'review'     => false,
+        'hide_label' => true,
+        'checkboxes' => true,
+      ]);
 
     $this
-        ->addNotes($builder)
-        ->addReviewer($builder, $options);
+      ->addNotes($builder)
+      ->addReviewer($builder, $options);
 
     $builder
-        ->add('submit', SaveType::class, [
-            'enable_cancel'        => false,
-            'enable_save_and_list' => false,
-        ]);
+      ->add('submit', SaveType::class, [
+        'enable_cancel'        => false,
+        'enable_save_and_list' => false,
+      ]);
   }
 
   public function configureOptions(OptionsResolver $resolver)
@@ -54,7 +54,7 @@ class SubmitReviewType extends AbstractReviewType
     parent::configureOptions($resolver);
 
     $resolver
-        ->setRequired('review')
-        ->setAllowedTypes('review', Review::class);
+      ->setRequired('review')
+      ->setAllowedTypes('review', Review::class);
   }
 }

@@ -11,6 +11,8 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ReadableCollection;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -23,9 +25,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class StudyArea implements Stringable, IdInterface
@@ -41,7 +45,9 @@ class StudyArea implements Stringable, IdInterface
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
+   *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=3, max=255)
    *
    * @JMSA\Expose()
@@ -58,19 +64,20 @@ class StudyArea implements Stringable, IdInterface
    *
    * @JMSA\Expose()
    */
-  private $concepts;
+  private Collection $concepts;
 
   /**
-   * @var Collection<UserGroup>
+   * @var Collection<UserGroup>&Selectable<UserGroup>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\UserGroup", mappedBy="studyArea", cascade={"persist","remove"})
    *
    * @JMSA\Expose()
    */
-  private $userGroups;
+  private Collection&Selectable $userGroups;
 
   /**
    * @ORM\ManyToOne(targetEntity="User")
+   *
    * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -81,6 +88,7 @@ class StudyArea implements Stringable, IdInterface
    * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @StudyAreaAccessType()
    */
   private string $accessType = self::ACCESS_PRIVATE;
@@ -90,49 +98,49 @@ class StudyArea implements Stringable, IdInterface
    *
    * @ORM\OneToMany(targetEntity="App\Entity\RelationType", mappedBy="studyArea")
    */
-  private $relationTypes;
+  private Collection $relationTypes;
 
   /**
    * @var Collection<Abbreviation>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Abbreviation", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $abbreviations;
+  private Collection $abbreviations;
 
   /**
    * @var Collection<ExternalResource>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\ExternalResource", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $externalResources;
+  private Collection $externalResources;
 
   /**
    * @var Collection<Contributor>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Contributor", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $contributors;
+  private Collection $contributors;
 
   /**
    * @var Collection<LearningOutcome>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningOutcome", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $learningOutcomes;
+  private Collection $learningOutcomes;
 
   /**
    * @var Collection<LearningPath>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\LearningPath", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $learningPaths;
+  private Collection $learningPaths;
 
   /**
    * @var Collection<Tag>
    *
    * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="studyArea", fetch="EXTRA_LAZY")
    */
-  private $tags;
+  private Collection $tags;
 
   /** @ORM\Column(name="frozen_on", type="datetime", nullable=true) */
   private ?DateTime $frozenOn = null;
@@ -153,6 +161,7 @@ class StudyArea implements Stringable, IdInterface
    * @ORM\Column(name="track_users", type="boolean", nullable=false)
    *
    * @Assert\NotNull()
+   *
    * @Assert\Type("bool")
    */
   private bool $trackUsers = false;
@@ -161,6 +170,7 @@ class StudyArea implements Stringable, IdInterface
    * Group.
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?StudyAreaGroup $group = null;
@@ -197,6 +207,7 @@ class StudyArea implements Stringable, IdInterface
    * The study area field names object.
    *
    * @ORM\OneToOne(targetEntity="App\Entity\StudyAreaFieldConfiguration", cascade={"all"})
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?StudyAreaFieldConfiguration $fieldConfiguration = null;
@@ -205,6 +216,7 @@ class StudyArea implements Stringable, IdInterface
    * A default tag filter for the browser.
    *
    * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
+   *
    * @ORM\JoinColumn(nullable=true)
    */
   private ?Tag $defaultTagFilter = null;
@@ -257,14 +269,14 @@ class StudyArea implements Stringable, IdInterface
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {
       $context->buildViolation('study-area.api-and-review-mode-enabled')
-          ->atPath('apiEnabled')
-          ->addViolation();
+        ->atPath('apiEnabled')
+        ->addViolation();
     }
 
     if ($this->dotron && !$this->apiEnabled) {
       $context->buildViolation('study-area.api-disabled-and-dotron-enabled')
-          ->atPath('dotron')
-          ->addViolation();
+        ->atPath('dotron')
+        ->addViolation();
     }
   }
 
@@ -299,7 +311,7 @@ class StudyArea implements Stringable, IdInterface
   }
 
   /** Check whether the user is in a certain or one of the groups */
-  public function isUserInGroup(User $user, string $groupType = null): bool
+  public function isUserInGroup(User $user, ?string $groupType = null): bool
   {
     foreach ($this->getUserGroups($groupType) as $userGroup) {
       if ($userGroup->getUsers()->contains($user)) {
@@ -310,11 +322,11 @@ class StudyArea implements Stringable, IdInterface
     return false;
   }
 
-  /** @return Collection<UserGroup> */
-  public function getUserGroups(string $groupType = null): Collection
+  /** @return ReadableCollection<UserGroup>&Selectable<UserGroup> */
+  public function getUserGroups(?string $groupType = null): ReadableCollection&Selectable
   {
     return $groupType === null ? $this->userGroups : $this->userGroups->matching(
-        Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
+      Criteria::create()->where(Criteria::expr()->eq('groupType', $groupType)));
   }
 
   /**

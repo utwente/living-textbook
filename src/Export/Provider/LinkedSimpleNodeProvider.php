@@ -22,33 +22,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
-  /** @var ConceptRepository */
-  private $conceptRepository;
-  /** @var ConceptRelationRepository */
-  private $conceptRelationRepository;
-  /** @var ContributorRepository */
-  private $contributorRepository;
-  /** @var ExternalResourceRepository */
-  private $externalResourceRepository;
-  /** @var LearningOutcomeRepository */
-  private $learningOutcomeRepository;
-  /** @var NamingService */
-  private $namingService;
-  /** @var RelationTypeRepository */
-  private $relationTypeRepository;
-  /** @var TagRepository */
-  private $tagRepository;
-  /** @var LtbRouter */
-  private $router;
-  /** @var SerializerInterface */
-  private $serializer;
+  private ConceptRepository $conceptRepository;
+  private ConceptRelationRepository $conceptRelationRepository;
+  private ContributorRepository $contributorRepository;
+  private ExternalResourceRepository $externalResourceRepository;
+  private LearningOutcomeRepository $learningOutcomeRepository;
+  private NamingService $namingService;
+  private RelationTypeRepository $relationTypeRepository;
+  private TagRepository $tagRepository;
+  private LtbRouter $router;
+  private SerializerInterface $serializer;
 
   public function __construct(
-      ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-      ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
-      LearningOutcomeRepository $learningOutcomeRepository, RelationTypeRepository $relationTypeRepository,
-      TagRepository $tagRepository, SerializerInterface $serializer, NamingService $namingService,
-      LtbRouter $router)
+    ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
+    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
+    LearningOutcomeRepository $learningOutcomeRepository, RelationTypeRepository $relationTypeRepository,
+    TagRepository $tagRepository, SerializerInterface $serializer, NamingService $namingService,
+    LtbRouter $router)
   {
     $this->conceptRepository          = $conceptRepository;
     $this->conceptRelationRepository  = $conceptRelationRepository;
@@ -62,13 +52,11 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->router                     = $router;
   }
 
-  /** {@inheritdoc} */
   public function getName(): string
   {
     return 'linked-simple-node';
   }
 
-  /** {@inheritdoc} */
   public function getPreview(): string
   {
     $names      = $this->namingService->get();
@@ -148,18 +136,17 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     ]
 }
 EOT,
-        $fieldNames->definition(),
-        $fieldNames->theoryExplanation(),
-        $fieldNames->introduction(),
-        $fieldNames->examples(),
-        $fieldNames->selfAssessment(),
-        $fieldNames->howTo(),
-        $names->learningOutcome()->obj(),
-        $fieldNames->priorKnowledge()
+      $fieldNames->definition(),
+      $fieldNames->theoryExplanation(),
+      $fieldNames->introduction(),
+      $fieldNames->examples(),
+      $fieldNames->selfAssessment(),
+      $fieldNames->howTo(),
+      $names->learningOutcome()->obj(),
+      $fieldNames->priorKnowledge()
     );
   }
 
-  /** {@inheritdoc} */
   public function export(StudyArea $studyArea): Response
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
@@ -183,9 +170,9 @@ EOT,
     $mappedLinks = [];
     foreach ($links as &$link) {
       $mappedLinks[] = [
-          'target'       => $idMap[$link->getTargetId()],
-          'source'       => $idMap[$link->getSourceId()],
-          'relationName' => $link->getRelationName(),
+        'target'       => $idMap[$link->getTargetId()],
+        'source'       => $idMap[$link->getSourceId()],
+        'relationName' => $link->getRelationName(),
       ];
     }
 
@@ -193,11 +180,11 @@ EOT,
     $mappedContributors = [];
     foreach ($contributors as $contributor) {
       $mappedContributors[] = [
-          'nodes'       => $contributor->getConcepts()->map(fn (Concept $concept)       => $idMap[$concept->getId()]),
-          'name'        => $contributor->getName(),
-          'description' => $contributor->getDescription(),
-          'url'         => $contributor->getUrl(),
-          'email'       => $contributor->getEmail(),
+        'nodes'       => $contributor->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'name'        => $contributor->getName(),
+        'description' => $contributor->getDescription(),
+        'url'         => $contributor->getUrl(),
+        'email'       => $contributor->getEmail(),
       ];
     }
 
@@ -205,10 +192,10 @@ EOT,
     $mappedExternalResources = [];
     foreach ($externalResources as $externalResource) {
       $mappedExternalResources[] = [
-          'nodes'       => $externalResource->getConcepts()->map(fn (Concept $concept)       => $idMap[$concept->getId()]),
-          'title'       => $externalResource->getTitle(),
-          'description' => $externalResource->getDescription(),
-          'url'         => $externalResource->getUrl(),
+        'nodes'       => $externalResource->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'title'       => $externalResource->getTitle(),
+        'description' => $externalResource->getDescription(),
+        'url'         => $externalResource->getUrl(),
       ];
     }
 
@@ -216,10 +203,10 @@ EOT,
     $mappedLearningOutcomes = [];
     foreach ($learningOutcomes as $learningOutcome) {
       $mappedLearningOutcomes[] = [
-          'nodes'   => $learningOutcome->getConcepts()->map(fn (Concept $concept)   => $idMap[$concept->getId()]),
-          'number'  => $learningOutcome->getNumber(),
-          'name'    => $learningOutcome->getName(),
-          'content' => $learningOutcome->getText(),
+        'nodes'   => $learningOutcome->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'number'  => $learningOutcome->getNumber(),
+        'name'    => $learningOutcome->getName(),
+        'content' => $learningOutcome->getText(),
       ];
     }
 
@@ -227,10 +214,10 @@ EOT,
     $mappedTags = [];
     foreach ($tags as $tag) {
       $mappedTags[] = [
-          'nodes'       => $tag->getConcepts()->map(fn (Concept $concept)       => $idMap[$concept->getId()]),
-          'color'       => $tag->getColor(),
-          'name'        => $tag->getName(),
-          'description' => $tag->getDescription(),
+        'nodes'       => $tag->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'color'       => $tag->getColor(),
+        'name'        => $tag->getName(),
+        'description' => $tag->getDescription(),
       ];
     }
 
@@ -254,37 +241,37 @@ EOT,
     $serializationContext = SerializationContext::create();
     $serializationContext->setSerializeNull(true);
     $json = $this->serializer->serialize(
-          [
-              'nodes' => array_map(fn (Concept $concept) => [
-                  'instance'       => $concept->isInstance(),
-                  'label'          => $concept->getName(),
-                  'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-                  'numberOfLinks'  => $concept->getNumberOfLinks(),
-                  'definition'     => $concept->getDefinition(),
-                  'explanation'    => $concept->getTheoryExplanation()->getText(),
-                  'introduction'   => $concept->getIntroduction()->getText(),
-                  'examples'       => $concept->getExamples()->getText(),
-                  'howTo'          => $concept->getHowTo()->getText(),
-                  'selfAssessment' => $concept->getSelfAssessment()->getText(),
-              ], $concepts),
-              'links'             => $mappedLinks,
-              'contributors'      => $mappedContributors,
-              'externalResources' => $mappedExternalResources,
-              'learningOutcomes'  => $mappedLearningOutcomes,
-              'tags'              => $mappedTags,
-              'priorKnowledge'    => $mappedPriorKnowledge,
-              'aliases'           => [
-                'definition'       => $fieldNames->definition(),
-                'explanation'      => $fieldNames->theoryExplanation(),
-                'introduction'     => $fieldNames->introduction(),
-                'examples'         => $fieldNames->examples(),
-                'selfAssessment'   => $fieldNames->selfAssessment(),
-                'howTo'            => $fieldNames->howTo(),
-                'learningOutcomes' => $names->learningOutcome()->obj(),
-                'priorKnowledge'   => $fieldNames->priorKnowledge(),
-              ],
-          ],
-          'json', $serializationContext);
+      [
+        'nodes' => array_map(fn (Concept $concept) => [
+          'instance'       => $concept->isInstance(),
+          'label'          => $concept->getName(),
+          'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+          'numberOfLinks'  => $concept->getNumberOfLinks(),
+          'definition'     => $concept->getDefinition(),
+          'explanation'    => $concept->getTheoryExplanation()->getText(),
+          'introduction'   => $concept->getIntroduction()->getText(),
+          'examples'       => $concept->getExamples()->getText(),
+          'howTo'          => $concept->getHowTo()->getText(),
+          'selfAssessment' => $concept->getSelfAssessment()->getText(),
+        ], $concepts),
+        'links'             => $mappedLinks,
+        'contributors'      => $mappedContributors,
+        'externalResources' => $mappedExternalResources,
+        'learningOutcomes'  => $mappedLearningOutcomes,
+        'tags'              => $mappedTags,
+        'priorKnowledge'    => $mappedPriorKnowledge,
+        'aliases'           => [
+          'definition'       => $fieldNames->definition(),
+          'explanation'      => $fieldNames->theoryExplanation(),
+          'introduction'     => $fieldNames->introduction(),
+          'examples'         => $fieldNames->examples(),
+          'selfAssessment'   => $fieldNames->selfAssessment(),
+          'howTo'            => $fieldNames->howTo(),
+          'learningOutcomes' => $names->learningOutcome()->obj(),
+          'priorKnowledge'   => $fieldNames->priorKnowledge(),
+        ],
+      ],
+      'json', $serializationContext);
 
     $response = new JsonResponse($json, Response::HTTP_OK, [], true);
     ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));

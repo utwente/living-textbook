@@ -17,8 +17,7 @@ use Twig\TwigFunction;
  */
 class DataTableExtension extends AbstractExtension
 {
-  /** @var TranslatorInterface */
-  private $translator;
+  private TranslatorInterface $translator;
 
   /** DataTableExtension constructor. */
   public function __construct(TranslatorInterface $translator)
@@ -30,12 +29,11 @@ class DataTableExtension extends AbstractExtension
   public function getFunctions()
   {
     return [
-        new TwigFunction('dataTable', $this->dataTable(...), ['is_safe' => ['html']]),
+      new TwigFunction('dataTable', $this->dataTable(...), ['is_safe' => ['html']]),
     ];
   }
 
   /**
-   * @param       $tableId
    * @param array $options
    *
    * @return string
@@ -60,42 +58,42 @@ class DataTableExtension extends AbstractExtension
   private function getDefaultDataTableOptions()
   {
     return [
-        'buttons'    => [],
-        'lengthMenu' => [
-            [10, 25, 50, 100, -1],
-            [10, 25, 50, 100, $this->translator->trans('datatable.all')],
-        ],
-        'pageLength' => 25,
-        'responsive' => true,
+      'buttons'    => [],
+      'lengthMenu' => [
+        [10, 25, 50, 100, -1],
+        [10, 25, 50, 100, $this->translator->trans('datatable.all')],
+      ],
+      'pageLength' => 25,
+      'responsive' => true,
     ];
   }
 
   private function getDutchDataTableTranslation()
   {
     $translations = [
-        'language' => [
-            'sProcessing'     => 'Bezig...',
-            'sLengthMenu'     => '_MENU_ resultaten weergeven',
-            'sZeroRecords'    => 'Geen resultaten gevonden',
-            'sInfo'           => '_START_ tot _END_ van _TOTAL_ resultaten',
-            'sInfoEmpty'      => 'Geen resultaten om weer te geven',
-            'sInfoFiltered'   => ' (gefilterd uit _MAX_ resultaten)',
-            'sInfoPostFix'    => null,
-            'sSearch'         => 'Zoeken:',
-            'sEmptyTable'     => 'Geen resultaten aanwezig in de tabel',
-            'sInfoThousands'  => '.',
-            'sLoadingRecords' => 'Een moment geduld aub - bezig met laden...',
-            'oPaginate'       => [
-                'sFirst'    => 'Eerste',
-                'sLast'     => 'Laatste',
-                'sNext'     => 'Volgende',
-                'sPrevious' => 'Vorige',
-            ],
-            'oAria' => [
-                'sSortAscending'  => ': activeer om kolom oplopend te sorteren',
-                'sSortDescending' => ': activeer om kolom aflopend te sorteren',
-            ],
+      'language' => [
+        'sProcessing'     => 'Bezig...',
+        'sLengthMenu'     => '_MENU_ resultaten weergeven',
+        'sZeroRecords'    => 'Geen resultaten gevonden',
+        'sInfo'           => '_START_ tot _END_ van _TOTAL_ resultaten',
+        'sInfoEmpty'      => 'Geen resultaten om weer te geven',
+        'sInfoFiltered'   => ' (gefilterd uit _MAX_ resultaten)',
+        'sInfoPostFix'    => null,
+        'sSearch'         => 'Zoeken:',
+        'sEmptyTable'     => 'Geen resultaten aanwezig in de tabel',
+        'sInfoThousands'  => '.',
+        'sLoadingRecords' => 'Een moment geduld aub - bezig met laden...',
+        'oPaginate'       => [
+          'sFirst'    => 'Eerste',
+          'sLast'     => 'Laatste',
+          'sNext'     => 'Volgende',
+          'sPrevious' => 'Vorige',
         ],
+        'oAria' => [
+          'sSortAscending'  => ': activeer om kolom oplopend te sorteren',
+          'sSortDescending' => ': activeer om kolom aflopend te sorteren',
+        ],
+      ],
     ];
 
     foreach ($translations['language'] as $key => $value) {

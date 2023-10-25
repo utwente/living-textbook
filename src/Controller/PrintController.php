@@ -40,8 +40,8 @@ class PrintController extends AbstractController
    * @return Response
    */
   public function printSingleConcept(
-      RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
-      TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
+    RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
+    TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
   {
     // Check if correct study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -52,11 +52,11 @@ class PrintController extends AbstractController
 
     // Create LaTeX document
     $document = (new ConceptPrint($this->filename($concept->getName())))
-        ->useLicenseImage($projectDir)
-        ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
-        ->setHeader($concept->getStudyArea(), $translator)
-        ->addIntroduction($concept->getStudyArea(), $translator)
-        ->addElement(new ConceptSection($concept, $router, $translator, $namingService, $projectDir));
+      ->useLicenseImage($projectDir)
+      ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
+      ->setHeader($concept->getStudyArea(), $translator)
+      ->addIntroduction($concept->getStudyArea(), $translator)
+      ->addElement(new ConceptSection($concept, $router, $translator, $namingService, $projectDir));
 
     // Return PDF
     try {
@@ -76,8 +76,8 @@ class PrintController extends AbstractController
    * @return Response
    */
   public function printLearningPath(
-      RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
-      TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
+    RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
+    TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
   {
     // Check if correct study area
     if ($learningPath->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -88,11 +88,11 @@ class PrintController extends AbstractController
 
     // Create LaTeX document
     $document = (new ConceptPrint($this->filename($learningPath->getName())))
-        ->useLicenseImage($projectDir)
-        ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
-        ->setHeader($learningPath->getStudyArea(), $translator)
-        ->addIntroduction($learningPath->getStudyArea(), $translator)
-        ->addElement(new LearningPathSection($learningPath, $router, $translator, $namingService, $projectDir));
+      ->useLicenseImage($projectDir)
+      ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
+      ->setHeader($learningPath->getStudyArea(), $translator)
+      ->addIntroduction($learningPath->getStudyArea(), $translator)
+      ->addElement(new LearningPathSection($learningPath, $router, $translator, $namingService, $projectDir));
 
     // Return PDF
     try {
@@ -114,7 +114,7 @@ class PrintController extends AbstractController
    *
    * @return Response
    */
-  private function parsePrintException(Exception $e, Concept $concept = null, LearningPath $learningPath = null)
+  private function parsePrintException(Exception $e, ?Concept $concept = null, ?LearningPath $learningPath = null)
   {
     // Retrieve study area from one of the given objects
     $studyArea = $concept ? $concept->getStudyArea() : null;
@@ -127,18 +127,18 @@ class PrintController extends AbstractController
         $isUrl         = $this->isUrl($imageLocation);
 
         return $this->render('print/image_not_found.html.twig', [
-            'isUrl'        => $isUrl,
-            'path'         => $isUrl ? $imageLocation : null,
-            'basename'     => $isUrl ? null : $this->getProjectPath($imageLocation, $studyArea),
-            'concept'      => $concept,
-            'learningPath' => $learningPath,
-            'studyArea'    => $studyArea,
+          'isUrl'        => $isUrl,
+          'path'         => $isUrl ? $imageLocation : null,
+          'basename'     => $isUrl ? null : $this->getProjectPath($imageLocation, $studyArea),
+          'concept'      => $concept,
+          'learningPath' => $learningPath,
+          'studyArea'    => $studyArea,
         ]);
       case $e instanceof LatexException:
         assert($e instanceof LatexException);
 
         return $this->render('print/latex_error.html.twig', [
-            'error' => $e,
+          'error' => $e,
         ]);
       default:
         throw $e;

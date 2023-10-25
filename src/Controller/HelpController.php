@@ -28,7 +28,9 @@ class HelpController extends AbstractController
    * Displays the available help documents.
    *
    * @Route()
+   *
    * @Template()
+   *
    * @IsGranted("PUBLIC_ACCESS")
    *
    * @throws NoResultException
@@ -39,7 +41,7 @@ class HelpController extends AbstractController
   public function index(HelpRepository $helpRepository)
   {
     return [
-        'help' => $helpRepository->getCurrent(),
+      'help' => $helpRepository->getCurrent(),
     ];
   }
 
@@ -47,14 +49,16 @@ class HelpController extends AbstractController
    * Edit the help page.
    *
    * @Route("/edit")
+   *
    * @Template()
+   *
    * @IsGranted("ROLE_SUPER_ADMIN")
    *
    * @throws NoResultException
    * @throws NonUniqueResultException
    */
   public function edit(
-      Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
+    Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
   {
     $help = $helpRepository->getCurrent();
     $form = $this->createForm(EditHelpType::class, $help);
@@ -63,7 +67,7 @@ class HelpController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       // Create a new help version
       $newHelp = (new Help())
-          ->setContent($help->getContent());
+        ->setContent($help->getContent());
       $em->persist($newHelp);
 
       // Save the data
@@ -75,7 +79,7 @@ class HelpController extends AbstractController
     }
 
     return [
-        'form' => $form->createView(),
+      'form' => $form->createView(),
     ];
   }
 }

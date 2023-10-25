@@ -49,7 +49,7 @@ class SoftDeletableSubscriber implements EventSubscriber
     // Make sure the unit of works knows about this
     $uow->propertyChanged($object, self::FIELD_NAME, $oldValue, $user);
     $uow->scheduleExtraUpdate($object, [
-        self::FIELD_NAME => [$oldValue, $user],
+      self::FIELD_NAME => [$oldValue, $user],
     ]);
   }
 }

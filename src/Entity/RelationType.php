@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author BobV
  *
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\RelationTypeRepository")
  *
  * We do not enable the soft-deletable extension here, as soft-deleted relations should still work after they have been
@@ -37,43 +38,35 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
   use ReviewableTrait;
 
   /**
-   * @var StudyArea|null
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="relationTypes")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /**
-   * @var string
-   *
    * @ORM\Column(name="name", type="string", length=100, nullable=false)
    *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=3, max=100)
    *
    * @Serializer\Groups({"Default", "review_change", "name_only"})
+   *
    * @Serializer\Type("string")
    */
-  private $name;
+  private string $name = '';
 
   /**
-   * @var string|null
-   *
    * @ORM\Column(name="description", type="text", nullable=true)
    *
    * @Serializer\Groups({"Default", "review_change"})
+   *
    * @Serializer\Type("string")
    */
-  private $description;
-
-  /** RelationType constructor. */
-  public function __construct()
-  {
-    $this->name = '';
-  }
+  private ?string $description = null;
 
   /**
    * @throws IncompatibleChangeException

@@ -8,10 +8,10 @@ use InvalidArgumentException;
 class PendingChangeObjectInfo
 {
   /** @var PendingChange[] */
-  private $pendingChanges;
+  private array $pendingChanges;
 
   /** @var string[] */
-  private $disabledFields = [];
+  private array $disabledFields = [];
 
   /**
    * PendingChangeObjectInfo constructor.
