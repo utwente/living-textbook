@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass()
+ *
  * @Gedmo\SoftDeleteable()
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 abstract class Override implements StudyAreaFilteredInterface
@@ -24,6 +26,7 @@ abstract class Override implements StudyAreaFilteredInterface
 
   /**
    * @ORM\ManyToOne(targetEntity="StudyArea")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
@@ -34,13 +37,14 @@ abstract class Override implements StudyAreaFilteredInterface
    * @ORM\Column(type="json", nullable=true)
    *
    * @JMSA\Expose()
+   *
    * @Assert\NotNull()
    */
   private ?array $override = null;
 
   public function __construct(
-      StudyArea $studyArea,
-      ?array $override
+    StudyArea $studyArea,
+    ?array $override
   ) {
     $this->studyArea = $studyArea;
     $this->override  = $override;

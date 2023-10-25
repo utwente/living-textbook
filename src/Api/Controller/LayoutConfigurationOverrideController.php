@@ -26,14 +26,15 @@ class LayoutConfigurationOverrideController extends AbstractApiController
    * Retrieve single layout override.
    *
    * @Route(methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'A single layout override', content: [new Model(type: LayoutConfigurationOverrideApiModel::class)])]
   public function single(
-      RequestStudyArea $requestStudyArea,
-      LayoutConfiguration $layoutConfiguration,
-      Concept $concept,
-      LayoutConfigurationOverrideRepository $overrideRepository,
+    RequestStudyArea $requestStudyArea,
+    LayoutConfiguration $layoutConfiguration,
+    Concept $concept,
+    LayoutConfigurationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -49,16 +50,17 @@ class LayoutConfigurationOverrideController extends AbstractApiController
    * Add a new layout override.
    *
    * @Route(methods={"POST"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The new override', required: true, content: [new Model(type: LayoutConfigurationOverrideApiModel::class, groups: ['create'])])]
   #[OA\Response(response: 200, description: 'The new override', content: [new Model(type: LayoutConfigurationOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
-      RequestStudyArea $requestStudyArea,
-      LayoutConfiguration $layoutConfiguration,
-      Concept $concept,
-      Request $request,
+    RequestStudyArea $requestStudyArea,
+    LayoutConfiguration $layoutConfiguration,
+    Concept $concept,
+    Request $request,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -66,10 +68,10 @@ class LayoutConfigurationOverrideController extends AbstractApiController
     $requestOverride = $this->getTypedFromBody($request, LayoutConfigurationOverrideApiModel::class);
 
     $override = new LayoutConfigurationOverride(
-        $requestStudyArea->getStudyArea(),
-        $concept,
-        $layoutConfiguration,
-        $requestOverride->getOverride(),
+      $requestStudyArea->getStudyArea(),
+      $concept,
+      $layoutConfiguration,
+      $requestOverride->getOverride(),
     );
 
     $this->getHandler()->add($override);
@@ -81,17 +83,18 @@ class LayoutConfigurationOverrideController extends AbstractApiController
    * Update an existing layout configuration override.
    *
    * @Route(methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The layout configuration override to update', required: true, content: [new Model(type: LayoutConfigurationOverrideApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated layout configuration override', content: [new Model(type: LayoutConfigurationOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
-      RequestStudyArea $requestStudyArea,
-      LayoutConfiguration $layoutConfiguration,
-      Concept $concept,
-      Request $request,
-      LayoutConfigurationOverrideRepository $overrideRepository,
+    RequestStudyArea $requestStudyArea,
+    LayoutConfiguration $layoutConfiguration,
+    Concept $concept,
+    Request $request,
+    LayoutConfigurationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -111,14 +114,15 @@ class LayoutConfigurationOverrideController extends AbstractApiController
    * Delete an existing layout configuration override.
    *
    * @Route(methods={"DELETE"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The layout override has been deleted')]
   public function delete(
-      RequestStudyArea $requestStudyArea,
-      LayoutConfiguration $layoutConfiguration,
-      Concept $concept,
-      LayoutConfigurationOverrideRepository $overrideRepository,
+    RequestStudyArea $requestStudyArea,
+    LayoutConfiguration $layoutConfiguration,
+    Concept $concept,
+    LayoutConfigurationOverrideRepository $overrideRepository,
   ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $concept);

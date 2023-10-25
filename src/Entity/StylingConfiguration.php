@@ -44,7 +44,9 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
+   *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=255)
    *
    * @JMSA\Expose()

@@ -10,13 +10,13 @@ use JMS\Serializer\Annotation\Type;
 class LayoutConfigurationOverrideApiModel implements IdInterface
 {
   protected function __construct(
-      #[Groups(['Default'])]
-      protected readonly int $concept,
-      #[Groups(['Default'])]
-      protected readonly int $layoutConfiguration,
-      #[Groups(['Default', 'mutate', 'create'])]
-      #[Type('array')]
-      protected readonly array $override
+    #[Groups(['Default'])]
+    protected readonly int $concept,
+    #[Groups(['Default'])]
+    protected readonly int $layoutConfiguration,
+    #[Groups(['Default', 'mutate', 'create'])]
+    #[Type('array')]
+    protected readonly array $override
   ) {
   }
 
@@ -43,9 +43,9 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
   public static function fromEntity(LayoutConfigurationOverride $override): self
   {
     return new self(
-        $override->getConcept()->getId(),
-        $override->getLayoutConfiguration()->getId(),
-        $override->getOverride(),
+      $override->getConcept()->getId(),
+      $override->getLayoutConfiguration()->getId(),
+      $override->getOverride(),
     );
   }
 

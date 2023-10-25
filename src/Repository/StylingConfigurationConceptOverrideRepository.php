@@ -27,7 +27,7 @@ class StylingConfigurationConceptOverrideRepository extends ServiceEntityReposit
   public function getForStylingConfigurationQb(StylingConfiguration $stylingConfiguration): QueryBuilder
   {
     return $this->createQueryBuilder('s')
-        ->where('s.stylingConfiguration = :stylingConfiguration')
-        ->setParameter('stylingConfiguration', $stylingConfiguration);
+      ->where('s.stylingConfiguration = :stylingConfiguration')
+      ->setParameter('stylingConfiguration', $stylingConfiguration);
   }
 }

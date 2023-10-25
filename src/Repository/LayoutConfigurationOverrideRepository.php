@@ -27,7 +27,7 @@ class LayoutConfigurationOverrideRepository extends ServiceEntityRepository
   public function getForLayoutConfigurationQb(LayoutConfiguration $layoutConfiguration): QueryBuilder
   {
     return $this->createQueryBuilder('l')
-        ->where('l.layoutConfiguration = :layoutConfiguration')
-        ->setParameter('layoutConfiguration', $layoutConfiguration);
+      ->where('l.layoutConfiguration = :layoutConfiguration')
+      ->setParameter('layoutConfiguration', $layoutConfiguration);
   }
 }

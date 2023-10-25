@@ -10,13 +10,13 @@ use JMS\Serializer\Annotation\Type;
 class StylingConfigurationRelationOverrideApiModel implements IdInterface
 {
   protected function __construct(
-      #[Groups(['Default'])]
-      protected readonly int $relation,
-      #[Groups(['Default'])]
-      protected readonly int $stylingConfiguration,
-      #[Groups(['Default', 'mutate', 'create'])]
-      #[Type('array')]
-      protected readonly array $override
+    #[Groups(['Default'])]
+    protected readonly int $relation,
+    #[Groups(['Default'])]
+    protected readonly int $stylingConfiguration,
+    #[Groups(['Default', 'mutate', 'create'])]
+    #[Type('array')]
+    protected readonly array $override
   ) {
   }
 
@@ -44,9 +44,9 @@ class StylingConfigurationRelationOverrideApiModel implements IdInterface
   public static function fromEntity(StylingConfigurationRelationOverride $override): self
   {
     return new self(
-        $override->getRelation()->getId(),
-        $override->getStylingConfiguration()->getId(),
-        $override->getOverride(),
+      $override->getRelation()->getId(),
+      $override->getStylingConfiguration()->getId(),
+      $override->getOverride(),
     );
   }
 

@@ -26,14 +26,15 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
    * Retrieve single relation style override.
    *
    * @Route(methods={"GET"})
+   *
    * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
    */
   #[OA\Response(response: 200, description: 'A single relation styling override', content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class)])]
   public function singleRelation(
-      RequestStudyArea $requestStudyArea,
-      StylingConfiguration $stylingConfiguration,
-      ConceptRelation $relation,
-      StylingConfigurationRelationOverrideRepository $overrideRepository,
+    RequestStudyArea $requestStudyArea,
+    StylingConfiguration $stylingConfiguration,
+    ConceptRelation $relation,
+    StylingConfigurationRelationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
@@ -49,16 +50,17 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
    * Add a new relation styling override.
    *
    * @Route(methods={"POST"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The new override', required: true, content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class, groups: ['create'])])]
   #[OA\Response(response: 200, description: 'The new override', content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function add(
-      RequestStudyArea $requestStudyArea,
-      StylingConfiguration $stylingConfiguration,
-      ConceptRelation $relation,
-      Request $request,
+    RequestStudyArea $requestStudyArea,
+    StylingConfiguration $stylingConfiguration,
+    ConceptRelation $relation,
+    Request $request,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
@@ -66,10 +68,10 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
     $requestOverride = $this->getTypedFromBody($request, StylingConfigurationRelationOverrideApiModel::class);
 
     $override = new StylingConfigurationRelationOverride(
-        $requestStudyArea->getStudyArea(),
-        $relation,
-        $stylingConfiguration,
-        $requestOverride->getOverride(),
+      $requestStudyArea->getStudyArea(),
+      $relation,
+      $stylingConfiguration,
+      $requestOverride->getOverride(),
     );
 
     $this->getHandler()->add($override);
@@ -81,17 +83,18 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
    * Update an existing relation styling override.
    *
    * @Route(methods={"PATCH"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\RequestBody(description: 'The relation styling override to update', required: true, content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated override', content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   public function update(
-      RequestStudyArea $requestStudyArea,
-      StylingConfiguration $stylingConfiguration,
-      ConceptRelation $relation,
-      Request $request,
-      StylingConfigurationRelationOverrideRepository $overrideRepository,
+    RequestStudyArea $requestStudyArea,
+    StylingConfiguration $stylingConfiguration,
+    ConceptRelation $relation,
+    Request $request,
+    StylingConfigurationRelationOverrideRepository $overrideRepository,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());
@@ -112,14 +115,15 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
    * Delete an existing relation styling override.
    *
    * @Route(methods={"DELETE"})
+   *
    * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
    */
   #[OA\Response(response: 202, description: 'The relation styling override has been deleted')]
   public function delete(
-      RequestStudyArea $requestStudyArea,
-      StylingConfiguration $stylingConfiguration,
-      ConceptRelation $relation,
-      StylingConfigurationRelationOverrideRepository $overrideRepository,
+    RequestStudyArea $requestStudyArea,
+    StylingConfiguration $stylingConfiguration,
+    ConceptRelation $relation,
+    StylingConfigurationRelationOverrideRepository $overrideRepository,
   ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
     $this->assertStudyAreaObject($requestStudyArea, $relation->getSource() ?? $relation->getTarget());

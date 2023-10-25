@@ -14,10 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\LayoutConfigurationRepository")
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @Gedmo\SoftDeleteable()
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class LayoutConfiguration implements StudyAreaFilteredInterface
@@ -27,21 +30,22 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
   use SoftDeletable;
 
   /**
-   * @var StudyArea|null
-   *
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="layoutConfigurations")
+   *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
    *
    * @Assert\NotNull()
    */
-  private $studyArea;
+  private ?StudyArea $studyArea = null;
 
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $layouts = null;
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
+   *
    * @Assert\NotBlank()
+   *
    * @Assert\Length(min=1, max=255)
    *
    * @JMSA\Expose()

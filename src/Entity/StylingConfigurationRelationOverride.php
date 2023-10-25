@@ -9,11 +9,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\StylingConfigurationRelationOverrideRepository",)
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity({"relation", "stylingConfiguration"})
+ *
  * @Gedmo\SoftDeleteable()
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class StylingConfigurationRelationOverride extends Override
@@ -29,10 +33,10 @@ class StylingConfigurationRelationOverride extends Override
   private StylingConfiguration $stylingConfiguration;
 
   public function __construct(
-      StudyArea $studyArea,
-      ConceptRelation $relation,
-      StylingConfiguration $stylingConfiguration,
-      ?array $override
+    StudyArea $studyArea,
+    ConceptRelation $relation,
+    StylingConfiguration $stylingConfiguration,
+    ?array $override
   ) {
     parent::__construct($studyArea, $override);
     $this->relation             = $relation;

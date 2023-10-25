@@ -9,11 +9,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\LayoutConfigurationOverrideRepository")
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity({"concept", "layoutConfiguration"})
+ *
  * @Gedmo\SoftDeleteable()
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class LayoutConfigurationOverride extends Override
@@ -29,10 +33,10 @@ class LayoutConfigurationOverride extends Override
   private LayoutConfiguration $layoutConfiguration;
 
   public function __construct(
-      StudyArea $studyArea,
-      Concept $concept,
-      LayoutConfiguration $layoutConfiguration,
-      ?array $override
+    StudyArea $studyArea,
+    Concept $concept,
+    LayoutConfiguration $layoutConfiguration,
+    ?array $override
   ) {
     parent::__construct($studyArea, $override);
     $this->concept             = $concept;

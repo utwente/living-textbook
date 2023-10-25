@@ -9,11 +9,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table()
+ *
  * @ORM\Entity(repositoryClass="App\Repository\StylingConfigurationConceptOverrideRepository",)
+ *
  * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity({"concept", "stylingConfiguration"})
+ *
  * @Gedmo\SoftDeleteable()
+ *
  * @JMSA\ExclusionPolicy("all")
  */
 class StylingConfigurationConceptOverride extends Override
@@ -29,10 +33,10 @@ class StylingConfigurationConceptOverride extends Override
   private StylingConfiguration $stylingConfiguration;
 
   public function __construct(
-      StudyArea $studyArea,
-      Concept $concept,
-      StylingConfiguration $stylingConfiguration,
-      ?array $override
+    StudyArea $studyArea,
+    Concept $concept,
+    StylingConfiguration $stylingConfiguration,
+    ?array $override
   ) {
     parent::__construct($studyArea, $override);
     $this->concept              = $concept;

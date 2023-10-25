@@ -27,7 +27,7 @@ class LayoutConfigurationRepository extends ServiceEntityRepository
   public function findForStudyAreaQb(StudyArea $studyArea): QueryBuilder
   {
     return $this->createQueryBuilder('t')
-        ->where('t.studyArea = :studyArea')
-        ->setParameter('studyArea', $studyArea);
+      ->where('t.studyArea = :studyArea')
+      ->setParameter('studyArea', $studyArea);
   }
 }
