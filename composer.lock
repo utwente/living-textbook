@@ -3674,16 +3674,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.9.1",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f259e2b15fb95494c83f52d3caad003bbf5ffaa1"
+                "reference": "437cb3628f4cf6042cc10ae97fc2b8472e48ca1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f259e2b15fb95494c83f52d3caad003bbf5ffaa1",
-                "reference": "f259e2b15fb95494c83f52d3caad003bbf5ffaa1",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/437cb3628f4cf6042cc10ae97fc2b8472e48ca1f",
+                "reference": "437cb3628f4cf6042cc10ae97fc2b8472e48ca1f",
                 "shasum": ""
             },
             "require": {
@@ -3760,7 +3760,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.9.1"
+                "source": "https://github.com/Seldaek/monolog/tree/2.9.2"
             },
             "funding": [
                 {
@@ -3772,7 +3772,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-06T13:44:46+00:00"
+            "time": "2023-10-27T15:25:26+00:00"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -4395,31 +4395,26 @@
         },
         {
             "name": "php-http/promise",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/promise.git",
-                "reference": "4c4c1f9b7289a2ec57cde7f1e9762a5789506f88"
+                "reference": "ef4905bfb492ff389eb7f12e26925a0f20073050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/promise/zipball/4c4c1f9b7289a2ec57cde7f1e9762a5789506f88",
-                "reference": "4c4c1f9b7289a2ec57cde7f1e9762a5789506f88",
+                "url": "https://api.github.com/repos/php-http/promise/zipball/ef4905bfb492ff389eb7f12e26925a0f20073050",
+                "reference": "ef4905bfb492ff389eb7f12e26925a0f20073050",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
-                "phpspec/phpspec": "^5.1.2 || ^6.2"
+                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2 || ^6.3",
+                "phpspec/phpspec": "^5.1.2 || ^6.2 || ^7.4"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.1-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Http\\Promise\\": "src/"
@@ -4446,9 +4441,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/promise/issues",
-                "source": "https://github.com/php-http/promise/tree/1.1.0"
+                "source": "https://github.com/php-http/promise/tree/1.2.0"
             },
-            "time": "2020-07-07T09:29:14+00:00"
+            "time": "2023-10-24T09:20:26+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -5572,16 +5567,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.21.0",
+            "version": "3.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "624aafc22b84b089ffa43b71fb01e0096505ec4f"
+                "reference": "c0e3df5a5c1d133cd9461e7672568ff07042c19d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/624aafc22b84b089ffa43b71fb01e0096505ec4f",
-                "reference": "624aafc22b84b089ffa43b71fb01e0096505ec4f",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/c0e3df5a5c1d133cd9461e7672568ff07042c19d",
+                "reference": "c0e3df5a5c1d133cd9461e7672568ff07042c19d",
                 "shasum": ""
             },
             "require": {
@@ -5599,7 +5594,7 @@
                 "psr/http-factory": "^1.0",
                 "psr/http-factory-implementation": "^1.0",
                 "psr/log": "^1.0|^2.0|^3.0",
-                "symfony/options-resolver": "^3.4.43|^4.4.30|^5.0.11|^6.0",
+                "symfony/options-resolver": "^3.4.43|^4.4.30|^5.0.11|^6.0|^7.0",
                 "symfony/polyfill-php80": "^1.17"
             },
             "conflict": {
@@ -5656,7 +5651,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.21.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.22.0"
             },
             "funding": [
                 {
@@ -5668,7 +5663,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-07-31T15:31:24+00:00"
+            "time": "2023-10-23T20:34:53+00:00"
         },
         {
             "name": "sentry/sentry-symfony",
@@ -6827,16 +6822,16 @@
         },
         {
             "name": "symfony/doctrine-messenger",
-            "version": "v5.4.25",
+            "version": "v5.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-messenger.git",
-                "reference": "96bd1e093bfa8587205f4413193545c6685d7cd6"
+                "reference": "132e2a95ef2fa634d3280103f3fb07ab76daf3e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-messenger/zipball/96bd1e093bfa8587205f4413193545c6685d7cd6",
-                "reference": "96bd1e093bfa8587205f4413193545c6685d7cd6",
+                "url": "https://api.github.com/repos/symfony/doctrine-messenger/zipball/132e2a95ef2fa634d3280103f3fb07ab76daf3e1",
+                "reference": "132e2a95ef2fa634d3280103f3fb07ab76daf3e1",
                 "shasum": ""
             },
             "require": {
@@ -6849,7 +6844,7 @@
                 "doctrine/persistence": "<1.3"
             },
             "require-dev": {
-                "doctrine/dbal": "^2.13|^3.0",
+                "doctrine/dbal": "^2.13|^3|^4",
                 "doctrine/persistence": "^1.3|^2|^3",
                 "symfony/property-access": "^4.4|^5.0|^6.0",
                 "symfony/serializer": "^4.4|^5.0|^6.0"
@@ -6880,7 +6875,7 @@
             "description": "Symfony Doctrine Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-messenger/tree/v5.4.25"
+                "source": "https://github.com/symfony/doctrine-messenger/tree/v5.4.30"
             },
             "funding": [
                 {
@@ -6896,7 +6891,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-22T08:06:06+00:00"
+            "time": "2023-10-25T13:42:14+00:00"
         },
         {
             "name": "symfony/dotenv",
@@ -8067,16 +8062,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.4.26",
+            "version": "v5.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "c26c40b64ecdc056810e294ea67ac5b34182cd69"
+                "reference": "cd6cce16151ac871071a3495e7a325460b952b5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/c26c40b64ecdc056810e294ea67ac5b34182cd69",
-                "reference": "c26c40b64ecdc056810e294ea67ac5b34182cd69",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/cd6cce16151ac871071a3495e7a325460b952b5a",
+                "reference": "cd6cce16151ac871071a3495e7a325460b952b5a",
                 "shasum": ""
             },
             "require": {
@@ -8136,7 +8131,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v5.4.26"
+                "source": "https://github.com/symfony/intl/tree/v5.4.30"
             },
             "funding": [
                 {
@@ -8152,7 +8147,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-13T09:02:54+00:00"
+            "time": "2023-10-28T09:19:54+00:00"
         },
         {
             "name": "symfony/lock",
@@ -10345,16 +10340,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v5.4.29",
+            "version": "v5.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "b893175000155839170d589f3a3593f2ce601829"
+                "reference": "ceadb4e08830e69738d313b667cfb426269f67f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/b893175000155839170d589f3a3593f2ce601829",
-                "reference": "b893175000155839170d589f3a3593f2ce601829",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/ceadb4e08830e69738d313b667cfb426269f67f6",
+                "reference": "ceadb4e08830e69738d313b667cfb426269f67f6",
                 "shasum": ""
             },
             "require": {
@@ -10428,7 +10423,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.4.29"
+                "source": "https://github.com/symfony/serializer/tree/v5.4.30"
             },
             "funding": [
                 {
@@ -10444,7 +10439,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-20T07:40:46+00:00"
+            "time": "2023-10-25T18:53:19+00:00"
         },
         {
             "name": "symfony/service-contracts",
