@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5452bbe3f1f9bb4affbc7c0a89dae535",
+    "content-hash": "f20896fe37fec237559a40ac62e340c1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3109,34 +3109,34 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "3.0.4",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "80c5983097fcf9410fbef814266b5e076de05b3b"
+                "reference": "23fa06848f5e7f595d5eef5f463c3d73d944888b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/80c5983097fcf9410fbef814266b5e076de05b3b",
-                "reference": "80c5983097fcf9410fbef814266b5e076de05b3b",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/23fa06848f5e7f595d5eef5f463c3d73d944888b",
+                "reference": "23fa06848f5e7f595d5eef5f463c3d73d944888b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.3",
-                "symfony/config": "~4.4|~5.0",
-                "symfony/dependency-injection": "~4.4|~5.0",
-                "symfony/event-dispatcher": "~4.4|~5.0",
-                "symfony/filesystem": "~4.4|~5.0",
-                "symfony/http-foundation": "~4.4|~5.0",
-                "symfony/http-kernel": "~4.4|~5.0",
-                "symfony/security-core": "~4.4|~5.0",
-                "symfony/twig-bundle": "~4.4|~5.0"
+                "symfony/config": "~4.4|~5.4|~6.3",
+                "symfony/dependency-injection": "~4.4|~5.4|~6.3",
+                "symfony/event-dispatcher": "~4.4|~5.4|~6.3",
+                "symfony/filesystem": "~4.4|~5.4|~6.3",
+                "symfony/http-foundation": "~4.4|~5.4|~6.3",
+                "symfony/http-kernel": "~4.4|~5.4|~6.3",
+                "symfony/security-core": "~4.4|~5.4|~6.3",
+                "symfony/twig-bundle": "~4.4|~5.4|~6.3"
             },
             "conflict": {
                 "twig/twig": "<2.7.0"
             },
             "require-dev": {
-                "symfony/mailer": "~4.4|~5.0",
+                "symfony/mailer": "~4.4|~5.4|~6.3",
                 "symfony/swiftmailer-bundle": ">=2.6.0"
             },
             "suggest": {
@@ -3171,9 +3171,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kick-In/exception-handler-bundle/issues",
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.0.4"
+                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.0.5"
             },
-            "time": "2023-10-31T20:26:49+00:00"
+            "time": "2023-11-04T18:04:50+00:00"
         },
         {
             "name": "laminas/laminas-code",
