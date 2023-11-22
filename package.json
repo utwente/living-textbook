@@ -8,7 +8,7 @@
     "@types/bootstrap": "4.6.6",
     "@types/color": "3.0.6",
     "@types/d3": "5.16.7",
-    "@types/jquery": "3.5.28",
+    "@types/jquery": "3.5.29",
     "@types/uuid": "9.0.7",
     "@types/webpack-env": "1.18.4",
     "browserslist": "4.17.1",
