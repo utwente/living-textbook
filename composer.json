@@ -22,7 +22,7 @@
         "doctrine/doctrine-migrations-bundle": "3.3.0",
         "doctrine/event-manager" : "1.2.0",
         "doctrine/migrations": "3.7.0",
-        "doctrine/orm": "2.17.0",
+        "doctrine/orm": "2.17.1",
         "doctrine/persistence": "3.2.0",
         "drenso/symfony-oidc-bundle": "2.12.0",
         "drenso/symfony-shared": "1.33.2",
