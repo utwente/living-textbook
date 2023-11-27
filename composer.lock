@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60bc817fddf61472226a4a56f4f210d1",
+    "content-hash": "84dcf2de501553c2006709987f4ec62f",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2673,28 +2673,29 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "12.3.3",
+            "version": "12.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "37c3db0cc50b1158d5224acf9da0760881712212"
+                "reference": "add3523940e9482b4fbe09789bb62908e474724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/37c3db0cc50b1158d5224acf9da0760881712212",
-                "reference": "37c3db0cc50b1158d5224acf9da0760881712212",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/add3523940e9482b4fbe09789bb62908e474724d",
+                "reference": "add3523940e9482b4fbe09789bb62908e474724d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": "^7.4 || ^8.0",
-                "studio-42/elfinder": "~2.1",
+                "studio-42/elfinder": "~2.1.62",
                 "symfony/asset": "^4.4 || ^5.0 || ^5.2 || ^6.0",
                 "symfony/form": "^4.4 || ^5.0 || ^5.2 || ^6.0",
                 "symfony/framework-bundle": "^4.4 || ^5.0 || ^5.2 || ^6.0",
                 "symfony/twig-bundle": "^4.4 || ^5.0 || ^5.2 || ^6.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "dev-master",
                 "matthiasnoback/symfony-config-test": "^4.0",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.1",
                 "php-coveralls/php-coveralls": "^2.0",
@@ -2742,15 +2743,9 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.3.3"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.4"
             },
-            "funding": [
-                {
-                    "url": "https://paypal.me/heliosag",
-                    "type": "custom"
-                }
-            ],
-            "time": "2023-06-04T11:58:32+00:00"
+            "time": "2023-11-20T08:19:58+00:00"
         },
         {
             "name": "http-interop/http-factory-guzzle",
