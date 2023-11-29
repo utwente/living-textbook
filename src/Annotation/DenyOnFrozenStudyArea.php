@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
  * attributes.
  *
  * @Annotation
- *
  * @Target("METHOD")
  */
 class DenyOnFrozenStudyArea implements ConfigurationInterface
