@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df30b32681d343690e0d55e1a19cbe8c",
+    "content-hash": "e554dede17b31842a724df465db5ff40",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -6551,16 +6551,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.4.32",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "d5d48f215ed73f7973d01256b9a2fac729bef759"
+                "reference": "14969a558cd6382b2a12b14b20ef9a851a02da79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/d5d48f215ed73f7973d01256b9a2fac729bef759",
-                "reference": "d5d48f215ed73f7973d01256b9a2fac729bef759",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/14969a558cd6382b2a12b14b20ef9a851a02da79",
+                "reference": "14969a558cd6382b2a12b14b20ef9a851a02da79",
                 "shasum": ""
             },
             "require": {
@@ -6620,7 +6620,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.32"
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -6636,7 +6636,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-29T06:58:28+00:00"
+            "time": "2023-11-30T08:15:37+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -7454,16 +7454,16 @@
         },
         {
             "name": "symfony/form",
-            "version": "v5.4.31",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "48d26192c14f4f11802718a8d37bd757bae22c68"
+                "reference": "9c13bf53e728d3f75ce7a36046ffc2cd0e7d25ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/48d26192c14f4f11802718a8d37bd757bae22c68",
-                "reference": "48d26192c14f4f11802718a8d37bd757bae22c68",
+                "url": "https://api.github.com/repos/symfony/form/zipball/9c13bf53e728d3f75ce7a36046ffc2cd0e7d25ec",
+                "reference": "9c13bf53e728d3f75ce7a36046ffc2cd0e7d25ec",
                 "shasum": ""
             },
             "require": {
@@ -7536,7 +7536,7 @@
             "description": "Allows to easily create, process and reuse HTML forms",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/form/tree/v5.4.31"
+                "source": "https://github.com/symfony/form/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -7552,7 +7552,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-02T08:45:35+00:00"
+            "time": "2023-11-30T10:45:54+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -7951,16 +7951,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v5.4.32",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "442472752e3adc9810a7e425824497dc22f75acf"
+                "reference": "892636f9279f953dc266dc088f900b03eecb4ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/442472752e3adc9810a7e425824497dc22f75acf",
-                "reference": "442472752e3adc9810a7e425824497dc22f75acf",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/892636f9279f953dc266dc088f900b03eecb4ffa",
+                "reference": "892636f9279f953dc266dc088f900b03eecb4ffa",
                 "shasum": ""
             },
             "require": {
@@ -8043,7 +8043,7 @@
             "description": "Provides a structured process for converting a Request into a Response",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-kernel/tree/v5.4.32"
+                "source": "https://github.com/symfony/http-kernel/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -8059,7 +8059,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-11-29T10:12:28+00:00"
+            "time": "2023-12-01T16:51:11+00:00"
         },
         {
             "name": "symfony/intl",
@@ -9750,16 +9750,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v5.4.26",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "853fc7df96befc468692de0a48831b38f04d2cb2"
+                "reference": "5b5b86670f947db92ab54cdcff585e76064d0b04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/853fc7df96befc468692de0a48831b38f04d2cb2",
-                "reference": "853fc7df96befc468692de0a48831b38f04d2cb2",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/5b5b86670f947db92ab54cdcff585e76064d0b04",
+                "reference": "5b5b86670f947db92ab54cdcff585e76064d0b04",
                 "shasum": ""
             },
             "require": {
@@ -9820,7 +9820,7 @@
                 "url"
             ],
             "support": {
-                "source": "https://github.com/symfony/routing/tree/v5.4.26"
+                "source": "https://github.com/symfony/routing/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -9836,7 +9836,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-07-24T13:28:37+00:00"
+            "time": "2023-12-01T09:28:00+00:00"
         },
         {
             "name": "symfony/runtime",
@@ -14100,16 +14100,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.4.31",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "30656f441e1c59ea5688dfb11ab449a56dad2925"
+                "reference": "f1428fe4a9977397763e1f63697cc4c24c14e85e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/30656f441e1c59ea5688dfb11ab449a56dad2925",
-                "reference": "30656f441e1c59ea5688dfb11ab449a56dad2925",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/f1428fe4a9977397763e1f63697cc4c24c14e85e",
+                "reference": "f1428fe4a9977397763e1f63697cc4c24c14e85e",
                 "shasum": ""
             },
             "require": {
@@ -14163,7 +14163,7 @@
             "description": "Provides utilities for PHPUnit, especially user deprecation notices management",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v5.4.31"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v5.4.33"
             },
             "funding": [
                 {
@@ -14179,7 +14179,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-31T07:58:33+00:00"
+            "time": "2023-12-01T08:55:03+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
