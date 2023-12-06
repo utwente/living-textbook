@@ -269,7 +269,7 @@ class AnalyticsService
           $this->entityManager->clear();
 
           // Retrieve a new study area reference, as the original object was cleared by the previous call
-          $studyArea = $this->entityManager->getPartialReference(StudyArea::class, $studyArea->getId());
+          $studyArea = $this->entityManager->getReference(StudyArea::class, $studyArea->getId());
         }
 
         $this->entityManager->persist(

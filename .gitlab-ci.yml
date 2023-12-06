@@ -246,7 +246,6 @@ php-analysis:
   before_script: # Fix for new lazy ServiceEntityRepository being detected as redefined
     - |-
       if [[ -f vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php ]]; then
-        sed -i '/LazyServiceEntityRepository/d' vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php
         sed -i '/ServiceEntityRepositoryProxy/d' vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php # Replace with LegacyServiceEntityRepository when moving to ORM3
       fi
   script:
