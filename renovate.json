@@ -118,5 +118,16 @@
             "rebaseWhen": "conflicted",
             "stabilityDays": 0
         }
+    ],
+    "customManagers": [
+        {
+            "customType": "regex",
+            "fileMatch": ["^\\.gitlab-ci\\.yml$"],
+            "matchStrings": [
+                "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_VERSION: (?<currentValue>.*)\\s"
+            ],
+            "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+            "extractVersionTemplate": "^v?(?<version>.*)$"
+        }
     ]
 }
