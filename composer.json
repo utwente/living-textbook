@@ -44,7 +44,7 @@
         "sensio/framework-extra-bundle": "6.2.10",
         "sentry/sentry-symfony": "4.13.1",
         "spatie/pdf-to-image": "2.2.0",
-        "stof/doctrine-extensions-bundle": "1.9.0",
+        "stof/doctrine-extensions-bundle": "1.10.1",
         "symfony/asset": "5.4.31",
         "symfony/cache": "5.4.32",
         "symfony/config": "5.4.31",
