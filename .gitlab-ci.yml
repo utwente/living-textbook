@@ -17,7 +17,7 @@ variables:
   PHAN_VERSION: 5.3-d1
   PHPUNIT_VERSION: 9.5-d3
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
-  PHP_SEC_CHECK_VERSION: 1.2.0
+  PHP_SEC_CHECK_VERSION: 2.0.6
   SASSLINT_VERSION: 1.12.1-d1
   SHELLCHECK_VERSION: v0.7.1
   TSLINT_VERSION: 5.18.0
