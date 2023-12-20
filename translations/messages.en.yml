@@ -27,12 +27,12 @@ analytics:
     usersPerfect: 'This amount of users will be generated as perfect learning path followers'
     usersFlawed: 'This amount of users will be generated as flawed learning path followers'
     usersFlawedTest: 'This amount of the users from the flawed learning path followers will be participating in the test'
-    usersConceptBrowsers: 'This amount of users will be generated as concept browser followers'
-    usersConceptBrowsersTest: 'This amount of the users from the concept browser followers will be participating in the test.'
+    usersConceptBrowsers: 'This amount of users will be generated as topic browser followers'
+    usersConceptBrowsersTest: 'This amount of the users from the topic browser followers will be participating in the test.'
     usersIgnore: 'This amount of users will be ignored'
-    usersTest: 'This amount of users will follow the test (this excludes the users from the learning path and concept browser groups)'
-    flawedDropOffChance: 'The probability a flawed learning path follower stops after each concept'
-    conceptBrowserDropOffChance: 'The probability a concept browser follower stops after each concept'
+    usersTest: 'This amount of users will follow the test (this excludes the users from the learning path and topic browser groups)'
+    flawedDropOffChance: 'The probability a flawed learning path follower stops after each topic'
+    conceptBrowserDropOffChance: 'The probability a topic browser follower stops after each topic'
     daysBetweenLearningPaths: 'The amount of days between the calculated teaching moments of each learning path'
     daysBeforeTest: 'The amount of days between the teaching moment of the last learning path and the test'
     testMoment: 'The test moment, which will be used to simulate cramming students or repetitive study'
@@ -40,12 +40,12 @@ analytics:
     usersPerfect: 'Perfect users'
     usersFlawed: 'Flawed path followers'
     usersFlawedTest: 'Test followers of flawed path followers'
-    usersConceptBrowsers: 'Concept browser users'
-    usersConceptBrowsersTest: 'Test followers of concept browser users'
+    usersConceptBrowsers: 'Topic browser users'
+    usersConceptBrowsersTest: 'Test followers of topic browser users'
     usersIgnore: 'Ignored users'
     usersTest: 'Test followers'
     flawedDropOffChance: 'Flawed user drop off probability'
-    conceptBrowserDropOffChance: 'Concept browser user drop off probability'
+    conceptBrowserDropOffChance: 'Topic browser user drop off probability'
     daysBetweenLearningPaths: 'Days between learning paths'
     daysBeforeTest: 'Days before test'
     testMoment: 'Test moment'
@@ -123,7 +123,7 @@ auth:
 
 browser:
   actions: 'Actions'
-  close: 'Close concept map'
+  close: 'Close topic map'
   filter: 'Display filters'
   filters:
     and: 'AND'
@@ -148,40 +148,40 @@ browser:
 
 concept:
   _type: { }
-  _name: 'Concept'
+  _name: 'Topic'
   add-title: 'Add new'
   additional-resources: 'Additional resources'
-  concept: 'Concept'
+  concept: 'Topic'
   contributors: 'Contributors'
   definition: 'Definition'
   edit-title: 'Edit "%item%"'
   examples: 'Examples'
   external-resources: 'References'
   how-to: 'How to'
-  image-file: 'Concept Image'
+  image-file: 'Topic Image'
   image-file-help: 'Files must be less than 2 MB. Allowed file types: png, gif, jpeg.'
-  image-file-view: 'View current concept image'
+  image-file-view: 'View current topic image'
   image-path: 'Image path'
   incoming-relations: 'Incoming relations'
   indirect-relations: 'Indirect relations'
   instance: 'Instance'
   instance-list-title: 'Instance list'
-  instance-text: 'This is an instance of a concept.'
+  instance-text: 'This is an instance of a topic.'
   instantiate:
     default-relation-name: 'is a'
     instantiate: 'Instantiate'
     instantiate-text: >-
-      Choose the base concept to instantiate a new instance for.
+      Choose the base topic to instantiate a new instance for.
       For all first level relations an instance will be created as well.
       Relevant relations will be added automatically.
-      In order to see the changes in the concept map, you will need to refresh is after the instantiation process is done.
+      In order to see the changes in the topic map, you will need to refresh is after the instantiation process is done.
     not-possible-review-enabled: 'It is not possible to instantiate an instance as review mode is enabled.'
     success: 'The instances have been created! Refresh the browser to see them.'
   introduction: 'Introduction'
-  list-title: 'Concept list'
+  list-title: 'Topic list'
   name: 'Name'
-  new: 'New concept/instance'
-  no-relations-possible-concept: "There are no other concepts or instances available."
+  new: 'New topic/instance'
+  no-relations-possible-concept: "There are no other topics or instances available."
   no-relations-possible-linktype: "There are no link types defined."
   online-source: 'Browse online'
   outgoing-relations: 'Outgoing relations'
@@ -211,22 +211,22 @@ contributor:
   no-url: 'No url'
   saved: 'Contributor "%item%" has been saved successfully.'
   remove: 'Remove contributor "%item%"'
-  remove-concepts: 'Note that the contributor will also be removed from the following concepts/instances:'
+  remove-concepts: 'Note that the contributor will also be removed from the following topics/instances:'
   remove-text: 'Are you sure you want to remove the contributor "%item%"?'
   removed: 'Contributor "%item%" has been removed successfully.'
   updated: 'Contributor "%item%" has been successfully updated.'
   url: 'Url'
 
 data:
-  concepts: 'Concepts'
+  concepts: 'Topics'
   concepts-duplicated: 'The study area has been duplicated successfully. Start browsing it directly!'
-  concepts-to-duplicate: 'Concepts/instances to duplicate'
+  concepts-to-duplicate: 'Topics/instances to duplicate'
   download:
     text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
     title: 'Export'
     type: 'Export type'
     provider:
-      concept-id-name: 'Concept/instance (with id)'
+      concept-id-name: 'Topic/instance (with id)'
       learning-path: 'Learning path'
       linked-simple-node: 'Simple linked node'
       rdf: 'RDF (as JSON-LD)'
@@ -235,7 +235,7 @@ data:
   duplicate-text: >-
     Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
     In order to select an existing area, you need to have write right, and review mode must be disabled.
-    You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
+    You can either select a topic/instance subset, or tick "Select all" to duplicate all topics/instances.
     Note that other elements will always be duplicated fully (e.g. contributors, references).'
   export-to-url-error: 'You get this message because your enabled export to URL in your study area. The system could not export the current study area to'
   export-to-url-success: 'Because you enabled export to URL, this study area was exported successfully to'  
@@ -243,7 +243,7 @@ data:
   json-incorrect: 'JSON data incorrect! %message%'
   json-uploaded: 'JSON data successfully imported!'
   select-all: 'Select all'
-  select-all-info: 'Note that when you do not select all concepts/instances to be copied, some data (such as learning paths) might be adjusted!'
+  select-all-info: 'Note that when you do not select all topics/instances to be copied, some data (such as learning paths) might be adjusted!'
   study-area: 'Study area'
   upload-json: 'Upload JSON file'
   upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
@@ -272,7 +272,7 @@ datatable:
 
 dashboard:
   abbreviation-count: '{0} No abbreviations|{1} One abbreviation|]1,Inf[ %count% abbreviations'
-  concept-count: '{0} No concepts|{1} One concept|]1,Inf[ %count% concepts'
+  concept-count: '{0} No topics|{1} One topic|]1,Inf[ %count% topics'
   contributor-count: '{0} No contributors|{1} One contributor|]1,Inf[ %count% contributors'
   external-resource-count: '{0} No references|{1} One reference|]1,Inf[ %count% references'
   instance-count: '{0} No instances|{1} One instance|]1,Inf[ %count% instances'
@@ -280,7 +280,7 @@ dashboard:
   learning-path-count: '{0} No learning paths|{1} One learning path|]1,Inf[ %count% learning paths'
   open: 'Open dashboard'
   relation-count: '{0} No relations|{1} One relation|]1,Inf[ %count% relations'
-  search-concept: 'Search for concept or instance'
+  search-concept: 'Search for topic or instance'
   select-one: 'Select one...'
   study-area-contains: 'This study area has:'
   study-area-create: 'Create new study area'
@@ -302,14 +302,14 @@ excel:
   boolean:
     no: "No"
     yes: "Yes"
-  concept: "Concept"
+  concept: "Topic"
   count: "Count"
   description: "Excel status export for the study area \"%item%\"."
   incoming-relations: "Incoming relations"
   sheet:
     detailed-concept-overview:
-      _tab: "(Details) Concepts & instances"
-      concept-name: "Concept/instance name"
+      _tab: "(Details) Topics & instances"
+      concept-name: "Topic/instance name"
       definition: "Definition"
       introduction: "Introduction"
       explanation: "Explanation"
@@ -332,7 +332,7 @@ excel:
       name: "Study area name"
       owner: "Study area owner"
     general-concept-statistics:
-      _tab: "(Statistics) Concepts&instances"
+      _tab: "(Statistics) Topics&instances"
       no-text: "Without any (text) content"
       no-definition: "Without definition"
       no-introduction: "Without introduction"
@@ -341,7 +341,7 @@ excel:
       no-relation: "Without relations"
       more-relations-5: "More than 5 relations"
       more-relations-10: "More than 10 relations"
-      total-concepts: "Total concepts/instances"
+      total-concepts: "Total topics/instances"
     general-relationship-statistics:
       _tab: "(Statistics) Relations"
       type: "Relationship \"%type%\""
@@ -373,7 +373,7 @@ external-resource:
   no-url: 'No url'
   saved: 'Reference "%item%" has been saved successfully.'
   remove: 'Remove reference "%item%"'
-  remove-concepts: 'Note that the reference will also be removed from the following concepts/instances:'
+  remove-concepts: 'Note that the reference will also be removed from the following topics/instances:'
   remove-text: 'Are you sure you want to remove the reference "%item%"?'
   removed: 'Reference "%item%" has been removed successfully.'
   title: 'Title'
@@ -427,7 +427,7 @@ learning-outcome:
   no-unused: 'There aren''t any unused %plural%.'
   number: 'Number'
   remove: 'Remove %singular% "%item%"'
-  remove-concepts: 'Note that the %singular% will also be removed from the following concepts/instances:'
+  remove-concepts: 'Note that the %singular% will also be removed from the following topics/instances:'
   remove-text: 'Are you sure you want to remove the %plural% "%item%"?'
   remove-unused: 'Remove unused %plural%'
   remove-unused-short: 'Remove unused'
@@ -445,11 +445,11 @@ learning-path:
   close: 'Close learning path'
   current-elements: 'Current elements'
   edit-title: 'Edit learning path "%item%"'
-  element-concept: 'Concept/instance'
+  element-concept: 'Topic/instance'
   element-description: 'Description'
   element-errors: 'One or more elements contain errors'
   elements: 'Elements'
-  elements-info: 'Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements.'
+  elements-info: 'Select topics/instances and/or %learning_outcomes% (which will add the containing topics/instances) below to add them to the learning path elements.'
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
@@ -499,7 +499,7 @@ menu:
   edit: 'Edit'
   excel-status: 'Progress export'
   external-resources: "References"
-  concept: 'Concepts'
+  concept: 'Topics'
   case-study: 'Case studies'
   fallback-users: 'Local accounts'
   field-configration: 'Object & field naming'
@@ -616,11 +616,11 @@ print:
     internal: |
       We found an image reference (%image%) which does not exist in this study area.
       This might be due to the fact that it has been renamed or removed earlier,
-      a mistake with the image reference in the concept/instance, or a system error.
+      a mistake with the image reference in the topic/instance, or a system error.
       Please verify whether you have this image available.
     title: "Image not found"
   show:
-    concept: "Back to concept/instance"
+    concept: "Back to topic/instance"
 
 relation:
   source: 'Source'
@@ -642,7 +642,7 @@ search:
   result:
     abbreviations: "Abbreviations"
     all-annotations: "All annotations"
-    concepts: "Concepts"
+    concepts: "Topics"
     external-resources: "References"
     instances: "Instances"
     own-annotations: "Own annotations"
@@ -664,7 +664,7 @@ study-area:
   current: 'Current'
   current-area: 'Now browsing "%item%"'
   default-tag-filter: 'Default tag filter'
-  default-tag-filter-help: 'The selected tag will be used as default filter when the concept browser is loaded for the first time.'
+  default-tag-filter-help: 'The selected tag will be used as default filter when the topic browser is loaded for the first time.'
   description: 'Description'
   dotron: "Dotron enabled"
   dotron-help: "When enabled, Dotron visualization will be used."
@@ -720,7 +720,7 @@ study-area:
   print-introduction-header: "Print introduction"
   print-introduction-help: "Value will be displayed as introduction page in any printed content. If empty, it will be skipped."
   remove: 'Remove study area "%item%"'
-  remove-impossible: 'It is impossible to remove this study area, because there are concepts/instances which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
+  remove-impossible: 'It is impossible to remove this study area, because there are topics/instances which will no longer contain a study area after removal. Please assign them to another study area or remove them before removing this study area.'
   remove-text: 'Are you sure you want to remove the study area "%item%"?'
   removed: 'Study area "%item%" has been removed successfully'
   review-mode: 'Review mode'
@@ -730,7 +730,7 @@ study-area:
     can be published! When fields are disabled, there is already a change pending.
   required: "In order to start with the living textbook, you will first need to create your own study area as there are no available study areas for you."
   saved: 'Study area "%item%" has been saved successfully.'
-  show: 'This study area is owned by %owner%. It contains the following concepts/instances:'
+  show: 'This study area is owned by %owner%. It contains the following topics/instances:'
   switch-to: 'Switch'
   track-users: 'Track study area usage'
   track-users-help: >-
@@ -843,7 +843,7 @@ review:
   review-submission: 'Review submission'
   review-submission-text: >-
     Below you can review the changes, and comment on them if required. If you leave comments, the author must resubmit
-    the submission in order to resolve them. Note that it is currently not possible to review the changes in the concept
+    the submission in order to resolve them. Note that it is currently not possible to review the changes in the topic
     map or learning path browser, only this page has the changes available!
   reviewed-at: 'Reviewed at'
   reviewed-by: 'Reviewed by'
@@ -870,7 +870,7 @@ tag:
   edit-title: 'Edit tag "%tag%"'
   list-title: 'Tag list'
   name: 'Name'
-  remove-concepts: 'Note that the tag will also be removed from the following concepts/instances:'
+  remove-concepts: 'Note that the tag will also be removed from the following topics/instances:'
   remove-text: 'Are you sure you want to remove the tag "%item%"?'
   remove-title: 'Remove tag "%item%"'
   removed: 'Tag "%item%" has been removed successfully.'
@@ -879,7 +879,7 @@ tag:
 
 tracking:
   export:
-    concept: 'Concept/instance'
+    concept: 'Topic/instance'
     description: "Tracking detail export for the study area \"%item%\"."
     event: "Event"
     learning-path: 'Learning path'
@@ -899,7 +899,7 @@ url:
   bad-external: 'Broken external URLs'
   bad-internal: 'Broken internal URLs'
   bad-internal-wrong: 'Internal URLs linking to the wrong study area'
-  concept-path: 'Concept/instance: %name% - %path%'
+  concept-path: 'Topic/instance: %name% - %path%'
   contributor-path: 'Contributor: %name% - %path%'
   external-resource-path: 'References: %title% - %path%'
   good: 'Healthy'
