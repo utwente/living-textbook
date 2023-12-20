@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "164343f315ee21d17fd6aa6001de06fb",
+    "content-hash": "ae921e3926de223deaabbf7c1ebca8dd",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2673,34 +2673,34 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "12.4",
+            "version": "12.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "add3523940e9482b4fbe09789bb62908e474724d"
+                "reference": "49a5317b7495da6f16356624d8efa28c8e76661b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/add3523940e9482b4fbe09789bb62908e474724d",
-                "reference": "add3523940e9482b4fbe09789bb62908e474724d",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/49a5317b7495da6f16356624d8efa28c8e76661b",
+                "reference": "49a5317b7495da6f16356624d8efa28c8e76661b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": "^7.4 || ^8.0",
                 "studio-42/elfinder": "~2.1.62",
-                "symfony/asset": "^4.4 || ^5.0 || ^5.2 || ^6.0",
-                "symfony/form": "^4.4 || ^5.0 || ^5.2 || ^6.0",
-                "symfony/framework-bundle": "^4.4 || ^5.0 || ^5.2 || ^6.0",
-                "symfony/twig-bundle": "^4.4 || ^5.0 || ^5.2 || ^6.0"
+                "symfony/asset": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
+                "symfony/form": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
+                "symfony/framework-bundle": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
+                "symfony/twig-bundle": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "dev-master",
                 "matthiasnoback/symfony-config-test": "^4.0",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.1",
                 "php-coveralls/php-coveralls": "^2.0",
-                "symfony/finder": "^4.4 || ^5.0 || ^5.2 || ^6.0",
-                "symfony/phpunit-bridge": "^4.1 || ^5.0 || ^5.2 || ^6.0"
+                "symfony/finder": "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
+                "symfony/phpunit-bridge": "^7.0.1"
             },
             "suggest": {
                 "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
@@ -2743,9 +2743,9 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.4"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/12.5"
             },
-            "time": "2023-11-20T08:19:58+00:00"
+            "time": "2023-12-07T12:14:23+00:00"
         },
         {
             "name": "http-interop/http-factory-guzzle",
@@ -5921,16 +5921,16 @@
         },
         {
             "name": "studio-42/elfinder",
-            "version": "2.1.62",
+            "version": "2.1.64",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "91133c14a341158beca82aede0b2138236a96bc8"
+                "reference": "deaa6797df1c6f288238b47284c9b593174bfc0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/91133c14a341158beca82aede0b2138236a96bc8",
-                "reference": "91133c14a341158beca82aede0b2138236a96bc8",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/deaa6797df1c6f288238b47284c9b593174bfc0f",
+                "reference": "deaa6797df1c6f288238b47284c9b593174bfc0f",
                 "shasum": ""
             },
             "require": {
@@ -5977,7 +5977,7 @@
             "homepage": "http://elfinder.org",
             "support": {
                 "issues": "https://github.com/Studio-42/elFinder/issues",
-                "source": "https://github.com/Studio-42/elFinder/tree/2.1.62"
+                "source": "https://github.com/Studio-42/elFinder/tree/2.1.64"
             },
             "funding": [
                 {
@@ -5985,7 +5985,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-06-13T16:39:07+00:00"
+            "time": "2023-12-20T07:43:10+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
