@@ -8,13 +8,16 @@ stages:
   - deploy
 
 variables:
+  # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
   COMPOSER_REQUIRE_CHECKER_VERSION: 4.0.0
+  # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.7.12
   DRENSO_PHP_VERSION: 8.1-d1
   NODE_VERSION: 16
   PHAN_VERSION: 5.3-d1
   PHPUNIT_VERSION: 9.5-d3
-  PHP_SEC_CHECK_VERSION: 1.2.0
+  # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
+  PHP_SEC_CHECK_VERSION: 2.0.6
   SASSLINT_VERSION: 1.12.1-d1
   SHELLCHECK_VERSION: v0.7.1
   TSLINT_VERSION: 5.18.0
