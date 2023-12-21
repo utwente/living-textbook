@@ -31,7 +31,7 @@
         "friendsofsymfony/jsrouting-bundle": "3.3.0",
         "gedmo/doctrine-extensions": "3.14.0",
         "helios-ag/fm-elfinder-bundle": "12.5",
-        "jms/serializer": "3.29.0",
+        "jms/serializer": "3.29.1",
         "jms/serializer-bundle": "5.4.0",
         "kick-in/exception-handler-bundle": "3.0.5",
         "league/html-to-markdown": "5.1.1",
