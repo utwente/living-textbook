@@ -58,7 +58,7 @@
     "jquery-ui-touch-punch": "0.2.3",
     "mark.js": "8.11.1",
     "popper.js": "1.16.1",
-    "regenerator-runtime": "0.14.0",
+    "regenerator-runtime": "0.14.1",
     "requirejs": "2.3.6",
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
