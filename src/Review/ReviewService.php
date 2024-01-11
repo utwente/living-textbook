@@ -38,8 +38,8 @@ class ReviewService
 {
   // Serializer details
   /** @var SerializerInterface|null */
-  private static ?Serializer $serializer      = null;
-  private const SERIALIZER_FORMAT             = 'json';
+  private static ?Serializer $serializer = null;
+  private const SERIALIZER_FORMAT        = 'json';
 
   public function __construct(
     private readonly EntityManagerInterface $entityManager,
@@ -52,12 +52,8 @@ class ReviewService
   {
   }
 
-  /**
-   * Return whether review mode is enable for this object type.
-   *
-   * @return bool
-   */
-  public function isReviewModeEnabledForObject(StudyArea $studyArea, ReviewableInterface $object)
+  /** Return whether review mode is enabled for this object type. */
+  public function isReviewModeEnabledForObject(StudyArea $studyArea, ReviewableInterface $object): bool
   {
     if (!$studyArea->isReviewModeEnabled()) {
       return false;
@@ -95,14 +91,19 @@ class ReviewService
    *
    * Note that after calling this method, the entity manager will be cleared!
    *
+   * The exceptions can be thrown, but are unlikely. We do not want these exceptions to propagate to every controller.
+   *
    * @param string|null $originalDataSnapshot Can be null in case of remove
    *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
   public function storeChange(
-    StudyArea $studyArea, ReviewableInterface $object, string $changeType, ?string $originalDataSnapshot = null,
-    ?callable $directCallback = null)
+    StudyArea $studyArea,
+    ReviewableInterface $object,
+    string $changeType,
+    ?string $originalDataSnapshot = null,
+    ?callable $directCallback = null): void
   {
     if (!in_array($changeType, PendingChange::CHANGE_TYPES)) {
       throw new InvalidArgumentException(sprintf('Supplied change type %s is not valid', $changeType));
@@ -175,7 +176,10 @@ class ReviewService
    * @throws MappingException
    */
   public function updateChange(
-    StudyArea $studyArea, ReviewableInterface $object, PendingChange $pendingChange, ?string $originalDataSnapshot = null)
+    StudyArea $studyArea,
+    ReviewableInterface $object,
+    PendingChange $pendingChange,
+    ?string $originalDataSnapshot = null): void
   {
     if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_REMOVE) {
       throw new InvalidArgumentException('Remove changes cannot be updated!');
@@ -189,7 +193,7 @@ class ReviewService
     // Determine the new change fields
     $changedFields = array_unique(array_merge(
       $pendingChange->getChangedFields(),
-      $this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot)
+      $this->determineChangedFieldsFromSnapshot($object, $originalDataSnapshot),
     ));
 
     // Update the pending change
@@ -241,7 +245,9 @@ class ReviewService
    * @param PendingChange|null $exclude Exclude this pending change from the object information
    */
   public function getPendingChangeObjectInformation(
-    StudyArea $studyArea, ReviewableInterface $object, ?PendingChange $exclude = null): PendingChangeObjectInfo
+    StudyArea $studyArea,
+    ReviewableInterface $object,
+    ?PendingChange $exclude = null): PendingChangeObjectInfo
   {
     if (!$this->isReviewModeEnabledForObject($studyArea, $object)) {
       return new PendingChangeObjectInfo();
@@ -275,10 +281,12 @@ class ReviewService
    * Create a review from the supplied pending change context.
    * If requested, it will split existing pending changes into multiple ones.
    *
+   * The exceptions can be thrown, but are unlikely. We do not want these exceptions to propagate to every controller.
+   *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
-  public function createReview(StudyArea $studyArea, array $markedChanges, User $reviewer, ?string $notes)
+  public function createReview(StudyArea $studyArea, array $markedChanges, User $reviewer, ?string $notes): void
   {
     /** @var PendingChange[] $pendingChanges */
     $pendingChanges = [];
@@ -340,7 +348,7 @@ class ReviewService
    * @throws ORMException
    * @throws Throwable
    */
-  public function publishReview(Review $review)
+  public function publishReview(Review $review): void
   {
     // Loop the changes to apply them
     foreach ($review->getPendingChanges() as $pendingChange) {
@@ -420,7 +428,7 @@ class ReviewService
    * @throws ORMException
    * @throws InvalidChangeException
    */
-  private function applyChange(PendingChange $pendingChange)
+  private function applyChange(PendingChange $pendingChange): void
   {
     $changeType = $pendingChange->getChangeType();
     $objectType = $pendingChange->getObjectType();
@@ -514,7 +522,7 @@ class ReviewService
   }
 
   /** Adds a flash message to the current session for type. */
-  private function addFlash(string $type, string $message)
+  private function addFlash(string $type, string $message): void
   {
     if (!$request = $this->requestStack->getMainRequest()) {
       $session = $request->getSession();
@@ -529,7 +537,7 @@ class ReviewService
    * @throws ORMException
    * @throws OptimisticLockException
    */
-  private function directSave(ReviewableInterface $object, string $changeType, ?callable $directCallback = null)
+  private function directSave(ReviewableInterface $object, string $changeType, ?callable $directCallback = null): void
   {
     if ($directCallback) {
       $directCallback($object);
