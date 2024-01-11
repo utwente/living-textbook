@@ -95,11 +95,7 @@ class ReviewService
    *
    * Note that after calling this method, the entity manager will be cleared!
    *
-   * @param string|null   $originalDataSnapshot Can be null in case of remove
-   * @param callable|null $directCallback
-   *
-   * The exceptions can be thrown, but are unlikely. We do not want these
-   * exceptions to propagate to every controller.
+   * @param string|null $originalDataSnapshot Can be null in case of remove
    *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
@@ -278,11 +274,6 @@ class ReviewService
   /**
    * Create a review from the supplied pending change context.
    * If requested, it will split existing pending changes into multiple ones.
-   *
-   * @param string|null $notes
-   *
-   * The exceptions can be thrown, but are unlikely. We do not want these
-   * exceptions to propagate to every controller.
    *
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
