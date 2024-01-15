@@ -33,8 +33,7 @@
   },
   "include": [
     "assets/**/*.ts",
-    "assets/**/*.tsx",
-    "assets/**/*.vue"
+    "assets/**/*.tsx"
   ],
   "exclude": [
     "node_modules"

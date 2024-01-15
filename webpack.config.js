@@ -62,7 +62,7 @@ Encore
       },
       {from: './vendor/studio-42/elfinder/css', to: 'els/css/[path][name].[ext]'},
       {from: './vendor/studio-42/elfinder/img', to: 'els/img/[path][name].[ext]'},
-      {from: './vendor/studio-42/elfinder/js', to: 'els/js/[path][name].[ext]'},
+      {from: './vendor/studio-42/elfinder/js', to: 'els/js/[path][name].[ext]', pattern: /^(?!.*[.]html\.js$).*$/},
       {from: './vendor/studio-42/elfinder/sounds', to: 'els/sounds/[path][name].[ext]'},
       {
         from: './node_modules/@utwente/dotron-app/lib/',
@@ -80,6 +80,13 @@ Encore
       {from: './node_modules/ckeditor4/vendor', to: 'ckeditor/vendor/[path][name].[ext]'}
     ])
 
+    .configureMiniCssExtractPlugin(() => {
+    }, (pluginConfig) => {
+      pluginConfig.ignoreOrder = true;
+    })
+
+    .splitEntryChunks()
+
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
@@ -96,8 +103,10 @@ Encore
     .enableSourceMaps()
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
+
     // Enable typescript
-    .enableTypeScriptLoader()
+    .configureBabel(null)
+    .enableBabelTypeScriptPreset({})
 
     // uncomment if you use Sass/SCSS files
     .enableSassLoader()
@@ -107,8 +116,12 @@ Encore
       Popper: ['popper.js', 'default']
     })
 
-    .configureDevServerOptions(function (options) {
-      options.disableHostCheck = true;
+    .configureDevServerOptions(options => {
+      options.allowedHosts = 'all';
+      options.https = {
+        cert: '/etc/apache2/ssl/drenso.dev/fullchain.pem',
+        key: '/etc/apache2/ssl/drenso.dev/privkey.pem',
+      };
     })
 
     // Fixes CSS HMR
@@ -124,6 +137,14 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
+
+    // Enable the webpack build cache
+    .enableBuildCache({
+      // object of "buildDependencies"
+      // https://webpack.js.org/configuration/other-options/#cachebuilddependencies
+      // __filename means that changes to webpack.config.js should invalidate the cache
+      config: [__filename],
+    })
 ;
 
 const webpackConfig = Encore.getWebpackConfig();
