@@ -6,6 +6,9 @@ $(function () {
     return;
   }
 
+  // Disable version check
+  CKEDITOR.config.versionCheck = false;
+
   // Update h1 & h2 styles to use h3 & h4 tags
   CKEDITOR.config.format_h1 = {element: 'h3'};
   CKEDITOR.config.format_h2 = {element: 'h4'};
