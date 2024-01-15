@@ -13,7 +13,7 @@ variables:
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.7.12
   DRENSO_PHP_VERSION: 8.1-d1
-  NODE_VERSION: 16
+  NODE_VERSION: 20
   PHAN_VERSION: 5.3-d1
   PHPUNIT_VERSION: 9.5-d3
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
