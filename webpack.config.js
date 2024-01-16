@@ -109,7 +109,11 @@ Encore
     .enableBabelTypeScriptPreset({})
 
     // uncomment if you use Sass/SCSS files
-    .enableSassLoader()
+    .enableSassLoader(options => {
+      options.sassOptions = {
+        quietDeps: true, // Disabled math.div warning msg (Font Awesome 4.7)
+      }
+    })
 
     // Provide popper global var for bootstrap
     .autoProvideVariables({
@@ -118,9 +122,12 @@ Encore
 
     .configureDevServerOptions(options => {
       options.allowedHosts = 'all';
-      options.https = {
-        cert: '/etc/apache2/ssl/drenso.dev/fullchain.pem',
-        key: '/etc/apache2/ssl/drenso.dev/privkey.pem',
+      options.server = {
+        type: 'https',
+        options: {
+          cert: '/etc/apache2/ssl/drenso.dev/fullchain.pem',
+          key: '/etc/apache2/ssl/drenso.dev/privkey.pem',
+        },
       };
     })
 
