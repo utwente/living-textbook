@@ -41,7 +41,7 @@
     "prHourlyLimit": 10,
     "rangeStrategy": "pin",
     "rebaseWhen": "never",
-    "stabilityDays": 7,
+    "minimumReleaseAge": "7 days",
     "timezone": "Europe/Amsterdam",
     "packageRules": [
         {
@@ -52,12 +52,12 @@
             "enabled": true,
             "matchPackagePrefixes": ["drenso/", "@drenso/"],
             "rebaseWhen": "conflicted",
-            "stabilityDays": 0
+            "minimumReleaseAge": null
         },
         {
             "matchPackagePrefixes": ["twig/"],
             "rebaseWhen": "conflicted",
-            "stabilityDays": 0
+            "minimumReleaseAge": null
         },
         {
             "matchPackagePrefixes": ["symfony/"],
@@ -68,7 +68,7 @@
                 "symfony/maker-bundle",
                 "symfony/webpack-encore-bundle"
             ],
-            "stabilityDays": 0
+            "minimumReleaseAge": null
         },
         {
             "matchPackagePrefixes": ["@types/"],
@@ -79,7 +79,7 @@
             "matchPackagePrefixes": ["@types/"],
             "rebaseWhen": "auto",
             "automerge": true,
-            "stabilityDays": 0
+            "minimumReleaseAge": null
         },
         {
             "matchPackageNames": ["jms/serializer"],
@@ -116,7 +116,7 @@
         {
             "matchPackageNames": ["@utwente/dotron-app"],
             "rebaseWhen": "conflicted",
-            "stabilityDays": 0
+            "minimumReleaseAge": null
         }
     ],
     "customManagers": [
