@@ -95,7 +95,7 @@
         "drenso/phan-extensions": "3.5.1",
         "friendsofphp/php-cs-fixer": "3.46.0",
         "phpunit/phpunit": "10.5.7",
-        "rector/rector": "0.19.0",
+        "rector/rector": "0.19.1",
         "symfony/error-handler": "5.4.29",
         "symfony/phpunit-bridge": "5.4.34",
         "symfony/stopwatch": "5.4.21",
