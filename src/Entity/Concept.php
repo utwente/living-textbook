@@ -9,6 +9,7 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Data\BaseDataTextObject;
+use App\Entity\Data\DataDefinition;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataInterface;
@@ -82,17 +83,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   private $instance;
 
   /**
-   * @var string
+   * @var DataDefinition
    *
-   * @ORM\Column(name="definition", type="text", nullable=false)
+   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataDefinition", cascade={"persist","remove"})
+   * @ORM\JoinColumn(name="definition_id", referencedColumnName="id", nullable=true)
    *
-   * @Assert\NotNull()
+   * @Assert\Valid()
    *
    * @JMSA\Expose()
    * @JMSA\Groups({"review_change"})
-   * @JMSA\Type("string")
+   * @JMSA\Type(DataDefinition::class)
    */
-  private $definition;
+  private ?DataDefinition $definition = null;
 
   /**
    * @var DataIntroduction
@@ -360,8 +362,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   public function __construct()
   {
     $this->name              = '';
-    $this->instance          = false;
-    $this->definition        = '';
+    $this->instance          = false;    
     $this->synonyms          = '';
     $this->outgoingRelations = new ArrayCollection();
     $this->incomingRelations = new ArrayCollection();
@@ -383,6 +384,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->tags = new ArrayCollection();
 
     // Initialize data
+    $this->definition          = new DataDefinition();
     $this->introduction        = new DataIntroduction();
     $this->theoryExplanation   = new DataTheoryExplanation();
     $this->howTo               = new DataHowTo();
@@ -466,13 +468,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    */
   public function isEmpty()
   {
-    return $this->getDefinition() == '' && !$this->getIntroduction()->hasData();
+    return !$this->getDefinition()->hasData() && !$this->getIntroduction()->hasData();
   }
 
   /** @return bool */
   public function hasTextData()
   {
-    return $this->getDefinition() != ''
+    return $this->getDefinition()->hasData()
         || $this->getIntroduction()->hasData()
         || $this->getExamples()->hasData()
         || $this->getHowTo()->hasData()
@@ -539,14 +541,11 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
       $results[] = SearchController::createResult(255, 'name', $this->getName());
     }
 
-    if (stripos($this->getDefinition(), $search) !== false) {
-      $results[] = SearchController::createResult(255, 'definition', $this->getDefinition());
-    }
-
     if (stripos($this->getSynonyms(), $search) !== false) {
       $results[] = SearchController::createResult(200, 'synonyms', $this->getSynonyms());
     }
 
+    $this->filterDataOn($results, $this->getDefinition(), 255, 'definition', $search);
     $this->filterDataOn($results, $this->getIntroduction(), 150, 'introduction', $search);
     $this->filterDataOn($results, $this->getExamples(), 100, 'examples', $search);
     $this->filterDataOn($results, $this->getTheoryExplanation(), 80, 'theory-explanation', $search);
@@ -588,7 +587,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->setInstance($changeObj->isInstance());
           break;
         case 'definition':
-          $this->setDefinition($changeObj->getDefinition());
+          $this->getDefinition()->setText($changeObj->getDefinition()->getText());
           break;
         case 'introduction':
           $this->getIntroduction()->setText($changeObj->getIntroduction()->getText());
@@ -768,12 +767,12 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  public function getDefinition(): string
+  public function getDefinition(): ?DataDefinition
   {
     return $this->definition;
   }
 
-  public function setDefinition(string $definition): Concept
+  public function setDefinition(?DataDefinition $definition): Concept
   {
     $this->definition = $definition;
 

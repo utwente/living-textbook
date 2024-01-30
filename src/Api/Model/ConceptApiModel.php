@@ -4,6 +4,7 @@ namespace App\Api\Model;
 
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
+use App\Entity\Data\DataDefinition;
 use App\Entity\Tag;
 use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
@@ -18,7 +19,7 @@ class ConceptApiModel implements IdInterface
       #[Groups(['Default', 'mutate'])]
       protected readonly string $name,
       #[Groups(['Default', 'mutate'])]
-      protected readonly string $definition,
+      protected readonly DataDefinition $definition,
       #[Groups(['Default', 'mutate'])]
       protected readonly string $synonyms,
       #[OA\Property(description: 'Tag id list', type: 'array', items: new OA\Items(type: 'number'))]
@@ -65,7 +66,7 @@ class ConceptApiModel implements IdInterface
   {
     $concept =  ($concept ?? new Concept())
         ->setName($this->name ?? $concept?->getName() ?? '')
-        ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
+        ->setDefinition($this->definition ?? $concept?->getDefinition() ?? null)
         ->setSynonyms($this->synonyms ?? $concept?->getSynonyms() ?? '')
         ->setDotronConfig($this->dotronConfig ?? $concept?->getDotronConfig() ?? null);
 

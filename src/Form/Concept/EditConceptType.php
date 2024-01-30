@@ -5,6 +5,7 @@ namespace App\Form\Concept;
 use App\Entity\Abbreviation;
 use App\Entity\Concept;
 use App\Entity\Contributor;
+use App\Entity\Data\DataDefinition;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataIntroduction;
@@ -16,7 +17,6 @@ use App\Entity\LearningOutcome;
 use App\Entity\Tag;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Review\DisplayPendingChangeType;
-use App\Form\Type\CkEditorType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
 use App\Naming\NamingService;
@@ -97,10 +97,10 @@ class EditConceptType extends AbstractType
             'field'               => 'instance',
             'pending_change_info' => $pendingChangeObjectInfo,
         ])
-        ->add('definition', CkEditorType::class, [
+        ->add('definition', BaseDataTextType::class, [
             'label'              => ucfirst($fieldNames->definition()),
             'translation_domain' => false,
-            'empty_data'         => '',
+            'data_class'         => DataDefinition::class,
             'studyArea'          => $studyArea,
             'required'           => false,
             'disabled'           => in_array('definition', $disabledFields),

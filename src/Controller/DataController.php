@@ -198,7 +198,13 @@ class DataController extends AbstractController
 
           $concepts[$key] = (new Concept())->setName($jsonNode['label']);
           if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== null) {
-            $concepts[$key]->setDefinition($jsonNode['definition']);
+            $definition = $concepts[$key]->getDefinition();
+            $definition->setText($jsonNode['definition']);
+
+            if ($validator->validate($definition)->count() > 0) {
+              throw new DataImportException(
+                  sprintf('Could not create the concept definition: %s', json_encode($definition)));
+            }
           }
 
           if (array_key_exists('explanation', $jsonNode) && $jsonNode['explanation'] !== null) {

@@ -33,11 +33,11 @@ class ConceptSection extends LtbSection
     )));
 
     // Add concept data
-    if ($concept->getDefinition() != '') {
-      $this->addElement(new CustomCommand('\\\\'));
-      $this->addElement(new Text($concept->getDefinition()));
-    }
     $fieldNames = $namingService->get()->concept();
+    if ($concept->getDefinition()) {
+      $this->addElement(new CustomCommand('\\\\'));
+      $this->addSection($fieldNames->definition(), $concept->getDefinition()->getText());
+    }    
     if ($concept->getIntroduction()->hasData()) {
       $this->addSection($fieldNames->introduction(), $concept->getIntroduction()->getText());
     }

@@ -20,7 +20,7 @@
     <div data-annotations-contains-text="true"
        data-annotations-context="definition"
        data-annotations-version="{{ concept.lastUpdated|default('now'|date)|date('c') }}">
-      {{ concept.definition|striptags(allowed_ckeditor_tags)|raw}}
+      {{ concept.definition.text|striptags(allowed_ckeditor_tags)|raw }}
     </div>
   {% endif %}
 {% endmacro %}
@@ -224,9 +224,9 @@
         <li>
           <a href="{{ path('app_concept_show', { concept: concept.id}) }}"><b>{{ concept.name }}</b></a>
           {# Show definition is available, otherwise introduction if available #}
-          {% if concept.definition|length > 0 %}
+          {% if concept.definition.text|length > 0 %}
             <div class="ltb-text-container">
-              {{ concept.definition|striptags(allowed_ckeditor_tags)|raw }}
+              {{ concept.definition.text|striptags(allowed_ckeditor_tags)|raw }}
             </div>
           {% elseif concept.introduction.text|length > 0 %}
             <div class="ltb-text-container">
@@ -265,9 +265,9 @@
             </div>
           {% endif %}
             {# Show definition is available, otherwise introduction if available #}
-          {% if concept.definition|length > 0 %}
+          {% if concept.definition.text|length > 0 %}
               <div class="ltb-text-container">
-                <p>{{ concept.definition|striptags(allowed_ckeditor_tags)|raw }}</p>
+                <p>{{ concept.definition.text|striptags(allowed_ckeditor_tags)|raw }}</p>
               </div>
           {% elseif concept.introduction.text|length > 0 %}
               <div class="ltb-text-container">

@@ -183,7 +183,7 @@ class StudyAreaStatusBuilder
     foreach ($this->concepts as $concept) {
       $setter($concept, $counts, 0, true);
       $setter($concept, $counts, 1, !$concept->hasTextData());
-      $setter($concept, $counts, 2, $concept->getDefinition() == '');
+      $setter($concept, $counts, 2, !$concept->getDefinition()->hasData());
       $setter($concept, $counts, 3, !$concept->getIntroduction()->hasData());
       $setter($concept, $counts, 4, $concept->getPriorKnowledge()->isEmpty());
       $setter($concept, $counts, 5, $concept->getLearningOutcomes()->isEmpty());
