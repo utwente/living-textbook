@@ -19,7 +19,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     ## Imagick
       imagemagick libmagickwand-dev libmagickcore-dev \
     # Latex
-      texlive-base texlive-latex-base texlive-latex-extra texlive-fonts-recommended poppler-utils \
+      texlive-base texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-fonts-extra-links poppler-utils \
     # Pandoc
       pandoc \
     # Python build dependencies \
