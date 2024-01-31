@@ -28,7 +28,7 @@
         "drenso/symfony-shared": "1.33.2",
         "easyrdf/easyrdf": "1.1.1",
         "friendsofsymfony/ckeditor-bundle": "2.4.0",
-        "friendsofsymfony/jsrouting-bundle": "3.4.1",
+        "friendsofsymfony/jsrouting-bundle": "3.5.0",
         "gedmo/doctrine-extensions": "3.14.0",
         "helios-ag/fm-elfinder-bundle": "12.5",
         "jms/serializer": "3.29.1",
