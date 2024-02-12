@@ -2182,10 +2182,10 @@ ci-info@^3.2.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.9.0.tgz#4279a62028a7b1f262f3473fc9605f5e218c59b4"
   integrity sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==
 
-ckeditor4@4.22.1:
-  version "4.22.1"
-  resolved "https://registry.yarnpkg.com/ckeditor4/-/ckeditor4-4.22.1.tgz#a4e79db1bac2ccb9a672c47e601ba4882afaf455"
-  integrity sha512-Yj4vTHX5YxHwc48gNqUqTm+KLkRr9tuyb4O2VIABu4oKHWRNVIdLdy6vUNe/XNx+RiTavMejfA1MVOU/MxLjqQ==
+ckeditor4-nonlts@4.24.0:
+  version "4.24.0"
+  resolved "https://registry.yarnpkg.com/ckeditor4-nonlts/-/ckeditor4-nonlts-4.24.0.tgz#6c4893715a69710fb8805d1e958e02fccaed3651"
+  integrity sha512-nsC9JFAbOrs/Onz4jL8xeS8HLi0MVVqcef/PB1XndwbmisaYSAXGtMWS3iextpTLipCjoqAItAXCDzSDRCKxVw==
 
 clean-webpack-plugin@^4.0.0:
   version "4.0.0"
