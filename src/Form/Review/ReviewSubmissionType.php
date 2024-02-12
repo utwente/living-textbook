@@ -151,6 +151,6 @@ class ReviewSubmissionType extends AbstractType
 
   private function getFieldName(PendingChange $pendingChange, string $changedField): string
   {
-    return sprintf('%s__%d__%d__%s', strtolower($pendingChange->getShortObjectType()), $pendingChange->getId(), $pendingChange->getObjectId(), $changedField);
+    return sprintf('%s__%d__%d__%s', strtolower($pendingChange->getShortObjectType() ?? ''), $pendingChange->getId(), $pendingChange->getObjectId(), $changedField);
   }
 }

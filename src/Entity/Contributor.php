@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -161,7 +162,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
 
   public function setDescription(?string $description): Contributor
   {
-    $this->description = trim($description);
+    $this->description = StringHelper::emptyToNull($description);
 
     return $this;
   }
@@ -173,7 +174,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
 
   public function setUrl(?string $url): Contributor
   {
-    $this->url = trim($url);
+    $this->url = StringHelper::emptyToNull($url);
 
     return $this;
   }

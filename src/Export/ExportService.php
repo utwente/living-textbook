@@ -81,7 +81,7 @@ class ExportService
     setlocale(LC_CTYPE, 'en_US.UTF-8');
     $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
       ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-      mb_strtolower(preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
+      mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
     ));
   }
 }

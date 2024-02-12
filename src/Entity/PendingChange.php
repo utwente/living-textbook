@@ -166,8 +166,8 @@ class PendingChange implements IdInterface
     }
 
     // Merge the data, by updating the serialized content
-    $origData  = json_decode($this->payload, true);
-    $mergeData = json_decode($merge->payload, true);
+    $origData  = json_decode($this->payload ?? '[]', true);
+    $mergeData = json_decode($merge->payload ?? '[]', true);
     foreach ($merge->getChangedFields() as $changedField) {
       /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
       $origData[$changedField] = $mergeData[$changedField];
@@ -291,6 +291,10 @@ class PendingChange implements IdInterface
 
   public function getShortObjectType(): ?string
   {
+    if ($this->objectType === null) {
+      return null;
+    }
+
     $pos = strrpos($this->objectType, '\\');
     if (!$pos || $pos >= strlen($this->objectType) - 1) {
       return $this->objectType;

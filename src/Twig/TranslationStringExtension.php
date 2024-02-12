@@ -26,6 +26,6 @@ class TranslationStringExtension extends AbstractExtension
    */
   public function trString($text)
   {
-    return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1-\2', (string)$text));
+    return strtolower((string)preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1-\2', (string)$text));
   }
 }

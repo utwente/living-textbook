@@ -70,7 +70,7 @@ class UrlContext implements Stringable
   /** Change the camelCase of the property path to snake-case, as that is used in the translations. */
   public function getPathAsTransKey(): string
   {
-    return strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $this->getPath()));
+    return strtolower((string)preg_replace('/(?<!^)[A-Z]/', '-$0', $this->getPath()));
   }
 
   public function isInline(): bool

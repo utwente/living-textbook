@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -115,10 +116,10 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     if (stripos($this->getTitle(), $search) !== false) {
       $results[] = SearchController::createResult(255, 'title', $this->getTitle());
     }
-    if (stripos($this->getDescription(), $search) !== false) {
+    if ($this->getDescription() && stripos($this->getDescription(), $search) !== false) {
       $results[] = SearchController::createResult(200, 'description', $this->getDescription());
     }
-    if (stripos($this->getUrl(), $search) !== false) {
+    if ($this->getUrl() && stripos($this->getUrl(), $search) !== false) {
       $results[] = SearchController::createResult(150, 'url', $this->getUrl());
     }
 
@@ -178,7 +179,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
 
   public function setDescription(?string $description): ExternalResource
   {
-    $this->description = trim($description);
+    $this->description = StringHelper::emptyToNull($description);
 
     return $this;
   }
@@ -190,7 +191,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
 
   public function setUrl(?string $url): ExternalResource
   {
-    $this->url = trim($url);
+    $this->url = StringHelper::emptyToNull($url);
 
     return $this;
   }
