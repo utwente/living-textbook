@@ -11,9 +11,6 @@
     "clue/stream-filter": {
         "version": "v1.4.1"
     },
-    "composer/package-versions-deprecated": {
-        "version": "1.8.0"
-    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -463,9 +460,6 @@
         "files": [
             "config/packages/sentry.yaml"
         ]
-    },
-    "spatie/pdf-to-image": {
-        "version": "1.6.0"
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.7",

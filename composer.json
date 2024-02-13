@@ -4,7 +4,8 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "8.1.*",
+        "php": "8.3.*",
+        "ext-apcu": "*",
         "ext-curl": "*",
         "ext-dom": "*",
         "ext-iconv": "*",
@@ -13,7 +14,6 @@
         "ext-mbstring": "*",
         "bobv/latex-bundle": "4.1.0",
         "caxy/php-htmldiff": "0.1.15",
-        "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/annotations": "2.0.1",
         "doctrine/collections": "2.1.4",
         "doctrine/common": "3.4.3",
@@ -24,6 +24,7 @@
         "doctrine/migrations": "3.7.2",
         "doctrine/orm": "2.18.0",
         "doctrine/persistence": "3.2.0",
+        "drenso/pdf-to-image": "3.0.0",
         "drenso/symfony-oidc-bundle": "2.13.0",
         "drenso/symfony-shared": "1.33.2",
         "easyrdf/easyrdf": "1.1.1",
@@ -43,7 +44,6 @@
         "ryakad/pandoc-php": "1.0.0",
         "sensio/framework-extra-bundle": "6.2.10",
         "sentry/sentry-symfony": "4.13.2",
-        "spatie/pdf-to-image": "2.2.0",
         "stof/doctrine-extensions-bundle": "1.10.1",
         "symfony/asset": "5.4.35",
         "symfony/cache": "5.4.35",
@@ -106,10 +106,8 @@
             "*": "dist"
         },
         "component-dir": "public/elfinder-assets",
-        "cache-dir": "/var/cache/composer",
         "sort-packages": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
             "symfony/flex": true,
             "symfony/runtime": true,
             "php-http/discovery": false
@@ -127,10 +125,16 @@
     },
     "replace": {
         "symfony/polyfill-apcu": "*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-mbstring": "*",
         "symfony/polyfill-php72": "*",
         "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
         "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php81": "*"
+        "symfony/polyfill-php81": "*",
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*"
     },
     "scripts": {
         "auto-scripts": {
@@ -151,15 +155,6 @@
         "symfony": {
             "allow-contrib": false,
             "require": "5.4.*"
-        },
-        "unused": [
-            "league/html-to-markdown",
-            "symfony/messenger",
-            "symfony/proxy-manager-bridge",
-            "twig/cssinliner-extra",
-            "twig/extensions",
-            "twig/inky-extra",
-            "twig/intl-extra"
-        ]
+        }
     }
 }

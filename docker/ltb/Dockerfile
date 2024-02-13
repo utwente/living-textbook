@@ -1,4 +1,4 @@
-FROM php:8.1.13-fpm as ltb_base
+FROM php:8.3.2-fpm as ltb_base
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update all dependencies, and install required ones

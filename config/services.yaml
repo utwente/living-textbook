@@ -21,6 +21,8 @@ parameters:
   router.request_context.host: '%env(HTTP_HOST)%'
   router.request_context.scheme: '%env(HTTP_SCHEMA)%'
 
+  bobv.latex.pdflatex.location: "/usr/bin/pdflatex"
+
 services:
   # default configuration for services in *this* file
   _defaults:

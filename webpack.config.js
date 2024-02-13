@@ -125,8 +125,8 @@ Encore
       options.server = {
         type: 'https',
         options: {
-          cert: '/etc/apache2/ssl/drenso.dev/fullchain.pem',
-          key: '/etc/apache2/ssl/drenso.dev/privkey.pem',
+          cert: '/etc/certs/ssl/drenso.dev/fullchain.pem',
+          key: '/etc/certs/ssl/drenso.dev/privkey.pem',
         },
       };
     })
