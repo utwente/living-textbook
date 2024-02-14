@@ -61,7 +61,7 @@ install-dependencies:
       else
         export HTTP_HOST="${PRODUCTION_HOST}"
       fi
-    - "sed -i \"s/HTTP_HOST=.*/HTTP_HOST=${HTTP_HOST}/g\" .env" # Set app secret
+    - "sed -i \"s/HTTP_HOST=.*/HTTP_HOST=${HTTP_HOST}/g\" .env" # Set HTTP_HOST in env file, as env only no longer works
     - if [ -z ${COMPOSER_USER+x} ]; then echo "COMPOSER_USER not set, skipping composer auth configuration" ; else composer config http-basic.composer.drenso.dev ${COMPOSER_USER} ${COMPOSER_PASSWORD}; fi
   script:
     - composer validate --no-check-all
