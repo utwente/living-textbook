@@ -115,12 +115,16 @@ FROM ltb_base as ltb_prod_php_build
 COPY . .
 
 # Install php vendors and prepare python environment
+ENV COMPOSER_NO_DEV 1
+ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN cp .secrets.json.dist .secrets.json \
-    && composer install --no-dev --no-scripts \
-    && composer dump-autoload --no-dev --classmap-authoritative \
-    && composer install --no-dev \
+    && composer install --no-scripts \
+    && composer dump-autoload --classmap-authoritative \
+    && composer install \
+    && composer clearcache \
 # todo: Python sources
 #    && bin/console ltb:python:build \
+    && rm -rf var \
     && rm .secrets.json
 
 ######################## Production assets builder ########################
