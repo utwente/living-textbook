@@ -52,7 +52,7 @@ class DataTableExtension extends AbstractExtension
     $return .= '</script>';
 
     // Return JS
-    return trim(preg_replace('/\s+/', ' ', $return));
+    return trim((string)preg_replace('/\s+/', ' ', $return));
   }
 
   private function getDefaultDataTableOptions()

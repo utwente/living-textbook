@@ -40,7 +40,7 @@ class ApiAuthenticator extends AbstractAuthenticator
   public function authenticate(Request $request): Passport
   {
     // Split token into user id and token
-    $token = $request->headers->get(self::API_TOKEN_HEADER);
+    $token = (string)$request->headers->get(self::API_TOKEN_HEADER);
 
     $tokenData = explode('_', $token);
 

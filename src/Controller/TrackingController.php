@@ -61,7 +61,7 @@ class TrackingController extends AbstractController
     ValidatorInterface $validator, RouterInterface $router)
   {
     return $this->processTrackingItem(
-      Pageload::class,
+      PageLoad::class,
       function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
         $pathContext = null;
         try {

@@ -1,4 +1,4 @@
-FROM php:8.1.13-fpm as ltb_base
+FROM php:8.3.2-fpm-bookworm as ltb_base
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update all dependencies, and install required ones
@@ -26,7 +26,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # todo: Python sources
 #      build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev curl libbz2-dev \
     # Wait for script
-      netcat \
+      netcat-openbsd \
     # Supervisor
       supervisor \
     # rsync
@@ -115,12 +115,16 @@ FROM ltb_base as ltb_prod_php_build
 COPY . .
 
 # Install php vendors and prepare python environment
+ENV COMPOSER_NO_DEV 1
+ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN cp .secrets.json.dist .secrets.json \
-    && composer install --no-dev --no-scripts \
-    && composer dump-autoload --no-dev --classmap-authoritative \
-    && composer install --no-dev \
+    && composer install --no-scripts \
+    && composer dump-autoload --classmap-authoritative \
+    && composer install \
+    && composer clearcache \
 # todo: Python sources
 #    && bin/console ltb:python:build \
+    && rm -rf var \
     && rm .secrets.json
 
 ######################## Production assets builder ########################

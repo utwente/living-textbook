@@ -11,6 +11,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -183,14 +184,14 @@ class Annotation implements SearchableInterface, IdInterface
     $results = [];
 
     // Search in different parts
-    if (stripos($this->getText(), $search) !== false) {
+    if ($this->getText() && stripos($this->getText(), $search) !== false) {
       $results[] = SearchController::createResult(255, 'text', ['text' => $this->getText(), 'author' => $this->getUser()->getFullName()]);
     }
 
     // Search in the comments
     $prio = 200;
     foreach ($this->comments as $comment) {
-      if (stripos($comment->getText(), $search) !== false) {
+      if ($comment->getText() && stripos($comment->getText(), $search) !== false) {
         $results[] = SearchController::createResult($prio, 'comment', ['text' => $comment->getText(), 'author' => $comment->getUser()->getFullName()]);
       }
       $prio--;
@@ -305,7 +306,7 @@ class Annotation implements SearchableInterface, IdInterface
 
   public function setText(?string $text): Annotation
   {
-    $this->text = strlen($text) > 0 ? $text : null;
+    $this->text = StringHelper::emptyToNull($text);
 
     return $this;
   }
@@ -353,7 +354,7 @@ class Annotation implements SearchableInterface, IdInterface
 
   public function setSelectedText(?string $selectedText): Annotation
   {
-    $this->selectedText = strlen($selectedText) > 0 ? $selectedText : null;
+    $this->selectedText = StringHelper::emptyToNull($selectedText);
 
     return $this;
   }

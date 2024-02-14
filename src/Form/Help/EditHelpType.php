@@ -14,7 +14,7 @@ class EditHelpType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-      ->add('content', CKEditorType::class, [
+      ->add('content', CkEditorType::class, [
         'label'       => 'help.content',
         'required'    => true,
         'config_name' => 'ltb_help',
