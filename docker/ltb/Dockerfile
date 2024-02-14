@@ -1,4 +1,4 @@
-FROM php:8.3.2-fpm as ltb_base
+FROM php:8.3.2-fpm-bookworm as ltb_base
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update all dependencies, and install required ones
@@ -26,7 +26,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # todo: Python sources
 #      build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev curl libbz2-dev \
     # Wait for script
-      netcat \
+      netcat-openbsd \
     # Supervisor
       supervisor \
     # rsync
