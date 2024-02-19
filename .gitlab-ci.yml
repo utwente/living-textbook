@@ -196,10 +196,14 @@ composer-unused:
     paths:
       - vendor/
     policy: pull
+  artifacts:
+    reports:
+      codequality: composer-unused.json
   before_script:
     - curl -JOL https://github.com/composer-unused/composer-unused/releases/download/${COMPOSER_UNUSED_VERSION}/composer-unused.phar
   script:
-    - php composer-unused.phar --output-format=default
+    - php composer-unused.phar --no-progress --output-format=gitlab > composer-unused.json
+    - cat composer-unused.json
   tags:
     - docker
   except:
