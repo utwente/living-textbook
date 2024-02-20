@@ -44,7 +44,7 @@
         "ryakad/pandoc-php": "1.0.0",
         "sensio/framework-extra-bundle": "6.2.10",
         "sentry/sentry-symfony": "4.13.2",
-        "stof/doctrine-extensions-bundle": "1.10.1",
+        "stof/doctrine-extensions-bundle": "1.11.0",
         "symfony/asset": "5.4.35",
         "symfony/cache": "5.4.35",
         "symfony/config": "5.4.35",
