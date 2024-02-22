@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Naming\NamingService;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use Override;
 use ReflectionException;
 use ReflectionMethod;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -54,6 +55,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
    *
    * @return array
    */
+  #[Override]
   public static function getSubscribedEvents()
   {
     return [

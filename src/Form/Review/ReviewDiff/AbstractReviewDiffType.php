@@ -5,6 +5,7 @@ namespace App\Form\Review\ReviewDiff;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\PendingChange;
 use App\Form\Type\PrintedTextType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AbstractReviewDiffType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     if (!$options['review'] && !$options['show_comments']) {
@@ -76,6 +78,7 @@ class AbstractReviewDiffType extends AbstractType
     ));
   }
 
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $pendingChange = $options['pending_change'];
@@ -91,6 +94,7 @@ class AbstractReviewDiffType extends AbstractType
     $view->vars['field']             = $options['field'];
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -4,11 +4,13 @@ namespace App\Form\User;
 
 use App\Form\Type\EmailListType;
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AddFallbackUsersType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder

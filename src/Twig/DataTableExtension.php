@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use Override;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -26,6 +27,7 @@ class DataTableExtension extends AbstractExtension
   }
 
   /** @return array|TwigFilter[] */
+  #[Override]
   public function getFunctions()
   {
     return [

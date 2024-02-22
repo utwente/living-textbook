@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -77,6 +78,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
   private string $meaning = '';
 
   /** Searches in the abbreviation on the given search, returns an array with search result metadata. */
+  #[Override]
   public function searchIn(string $search): array
   {
     // Create result array
@@ -102,6 +104,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
+  #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
@@ -116,16 +119,19 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     }
   }
 
+  #[Override]
   public function getReviewTitle(): string
   {
     return $this->getAbbreviation();
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
+  #[Override]
   public function setStudyArea(StudyArea $studyArea): Abbreviation
   {
     $this->studyArea = $studyArea;

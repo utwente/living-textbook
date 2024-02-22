@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializerInterface;
+use Override;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -114,6 +115,7 @@ abstract class AbstractApiController extends AbstractController
     }
   }
 
+  #[Override]
   protected function getUser(): User
   {
     $user = parent::getUser();

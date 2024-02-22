@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -41,6 +42,7 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
   /** @ORM\Column(type="json", nullable=true) */
   private ?array $stylings = null;
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

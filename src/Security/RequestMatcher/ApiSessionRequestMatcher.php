@@ -3,6 +3,7 @@
 namespace App\Security\RequestMatcher;
 
 use App\Api\Security\ApiAuthenticator;
+use Override;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
@@ -10,6 +11,7 @@ class ApiSessionRequestMatcher implements RequestMatcherInterface
 {
   final public const SESSION_API_TOKEN = 'session';
 
+  #[Override]
   public function matches(Request $request): bool
   {
     // If a special header value is used, the firewall is bypassed to allow session authentication

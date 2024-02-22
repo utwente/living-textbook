@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -17,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RemoveType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -55,6 +57,7 @@ class RemoveType extends AbstractType
     return false;
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

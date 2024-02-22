@@ -7,6 +7,7 @@ use App\Entity\LearningPathElement;
 use App\Entity\StudyArea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -18,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathElementsType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->addModelTransformer(new CallbackTransformer(
@@ -41,11 +43,13 @@ class LearningPathElementsType extends AbstractType
     ));
   }
 
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['sortable_id'] = $options['sortable_id'];
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
@@ -71,6 +75,7 @@ class LearningPathElementsType extends AbstractType
     });
   }
 
+  #[Override]
   public function getParent()
   {
     return CollectionType::class;

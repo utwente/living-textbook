@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -88,6 +89,7 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
     return $this->concepts;
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

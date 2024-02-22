@@ -5,6 +5,7 @@ namespace App\Form\LearningPath;
 use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use Doctrine\Common\Collections\Collection;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathElementContainerType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -34,6 +36,7 @@ class LearningPathElementContainerType extends AbstractType
     ));
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -9,6 +9,7 @@ use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
+use Override;
 
 class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements IdInterface
 {
@@ -26,6 +27,7 @@ class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements I
     parent::__construct($id, $sourceId, $targetId);
   }
 
+  #[Override]
   public function getId(): int
   {
     return $this->id;
@@ -36,6 +38,7 @@ class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements I
     return $this->relationTypeId ?? null;
   }
 
+  #[Override]
   public static function fromEntity(ConceptRelation $conceptRelation): self
   {
     return new self(

@@ -4,6 +4,7 @@ namespace App\Form\User;
 
 use App\Entity\UserApiToken;
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class GenerateApiTokenType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -40,6 +42,7 @@ class GenerateApiTokenType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefault('data_class', UserApiToken::class);

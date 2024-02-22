@@ -9,6 +9,7 @@ use App\Naming\NamingService;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningOutcomeRepository;
 use JMS\Serializer\SerializerInterface;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -32,6 +33,7 @@ class LearningPathElementSelectorType extends AbstractType
     $this->namingService             = $namingService;
   }
 
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $studyArea = $options['studyArea'];
@@ -71,11 +73,13 @@ class LearningPathElementSelectorType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['sortable_id'] = $options['sortable_id'];
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

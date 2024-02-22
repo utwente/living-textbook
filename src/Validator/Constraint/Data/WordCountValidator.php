@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraint\Data;
 
+use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -19,6 +20,7 @@ class WordCountValidator extends ConstraintValidator
    * @param mixed      $value      The value that should be validated
    * @param Constraint $constraint The constraint for the validation
    */
+  #[Override]
   public function validate($value, Constraint $constraint)
   {
     // Check constraint

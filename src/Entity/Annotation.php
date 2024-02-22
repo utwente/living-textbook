@@ -17,6 +17,7 @@ use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use InvalidArgumentException;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -178,6 +179,7 @@ class Annotation implements SearchableInterface, IdInterface
   }
 
   /** Searches in the annotation on the given search, returns an array with search result metadata. */
+  #[Override]
   public function searchIn(string $search): array
   {
     // Create result array

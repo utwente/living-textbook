@@ -7,6 +7,7 @@ use App\Entity\Contracts\StudyAreaFilteredInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -122,6 +123,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this;
   }
 
+  #[Override]
   public function getStudyArea(): StudyArea
   {
     return $this->studyArea;

@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Override;
 use Rollerworks\Component\PasswordStrength\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +35,7 @@ class AddAccountCommand extends Command
     parent::__construct();
   }
 
+  #[Override]
   protected function configure()
   {
     $this
@@ -41,6 +43,7 @@ class AddAccountCommand extends Command
       ->addOption('with-area', mode: InputOption::VALUE_NONE, description: 'Directly add a area owner by the added user');
   }
 
+  #[Override]
   public function run(InputInterface $input, OutputInterface $output)
   {
     $style  = new SymfonyStyle($input, $output);

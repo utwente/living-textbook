@@ -8,6 +8,7 @@ use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\Type\SaveType;
 use App\Repository\ConceptRepository;
 use App\Repository\StudyAreaRepository;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
@@ -44,6 +45,7 @@ class DuplicateType extends AbstractType
     $this->security            = $security;
   }
 
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $defaultGroupName = $this->translator->trans('study-area.groups.default-name');
@@ -118,6 +120,7 @@ class DuplicateType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

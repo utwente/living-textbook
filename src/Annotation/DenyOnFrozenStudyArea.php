@@ -2,6 +2,7 @@
 
 namespace App\Annotation;
 
+use Override;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
 
 /**
@@ -53,11 +54,13 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
     return $this->subject;
   }
 
+  #[Override]
   public function getAliasName()
   {
     return self::KEY;
   }
 
+  #[Override]
   public function allowArray()
   {
     return false;

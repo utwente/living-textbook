@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
+use Override;
 
 class ConceptApiModel implements IdInterface
 {
@@ -34,6 +35,7 @@ class ConceptApiModel implements IdInterface
   ) {
   }
 
+  #[Override]
   public function getId(): int
   {
     return $this->id;

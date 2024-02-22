@@ -4,6 +4,7 @@ namespace App\Twig;
 
 use Caxy\HtmlDiff\HtmlDiff;
 use Caxy\HtmlDiff\HtmlDiffConfig;
+use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -15,6 +16,7 @@ class HtmlDiffExtension extends AbstractExtension
    *
    * @return array|TwigFilter[]
    */
+  #[Override]
   public function getFunctions()
   {
     return [

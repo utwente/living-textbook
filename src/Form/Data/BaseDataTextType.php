@@ -4,6 +4,7 @@ namespace App\Form\Data;
 
 use App\Entity\StudyArea;
 use App\Form\Type\CkEditorType;
+use Override;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -12,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BaseDataTextType extends AbstractBaseDataType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $formOptions = [
@@ -27,6 +29,7 @@ class BaseDataTextType extends AbstractBaseDataType
       ->add('text', $options['ckeditor'] ? CkEditorType::class : TextareaType::class, $formOptions);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     parent::configureOptions($resolver);

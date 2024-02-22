@@ -6,6 +6,7 @@ use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Repository\LearningPathRepository;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -16,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathAnalyticsType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $studyArea = $options['study_area'];
@@ -55,6 +57,7 @@ class LearningPathAnalyticsType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

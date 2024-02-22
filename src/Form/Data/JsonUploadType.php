@@ -2,6 +2,7 @@
 
 namespace App\Form\Data;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class JsonUploadType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder

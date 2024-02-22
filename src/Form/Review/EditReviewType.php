@@ -5,12 +5,14 @@ namespace App\Form\Review;
 use App\Entity\Review;
 use App\Form\Type\SaveType;
 use Doctrine\ORM\NonUniqueResultException;
+use Override;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditReviewType extends AbstractReviewType
 {
   /** @throws NonUniqueResultException */
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $this
@@ -26,6 +28,7 @@ class EditReviewType extends AbstractReviewType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     parent::configureOptions($resolver);

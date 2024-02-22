@@ -7,6 +7,7 @@ use App\Entity\UserApiToken;
 use App\Repository\UserApiTokenRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +33,13 @@ class ApiAuthenticator extends AbstractAuthenticator
   {
   }
 
+  #[Override]
   public function supports(Request $request): bool
   {
     return $request->headers->has(self::API_TOKEN_HEADER);
   }
 
+  #[Override]
   public function authenticate(Request $request): Passport
   {
     // Split token into user id and token
@@ -64,11 +67,13 @@ class ApiAuthenticator extends AbstractAuthenticator
     );
   }
 
+  #[Override]
   public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
   {
     return $this->createUnauthorizedResponse('Invalid API credentials');
   }
 
+  #[Override]
   public function onAuthenticationSuccess(Request $request, TokenInterface $token, $firewallName): ?Response
   {
     return null;
@@ -79,6 +84,7 @@ class ApiAuthenticator extends AbstractAuthenticator
     return new ApiErrorResponse('Unauthorized', Response::HTTP_UNAUTHORIZED, $description);
   }
 
+  #[Override]
   public function createToken(Passport $passport, $firewallName): TokenInterface
   {
     $apiToken = $passport->getUser();

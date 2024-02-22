@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Drenso\OidcBundle\Model\OidcUserData;
 use Drenso\OidcBundle\Security\UserProvider\OidcUserProviderInterface;
+use Override;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -20,6 +21,7 @@ class UserProvider implements OidcUserProviderInterface
     $this->em = $em;
   }
 
+  #[Override]
   public function ensureUserExists(string $userIdentifier, OidcUserData $userData)
   {
     // Determine whether this user already exists
@@ -39,12 +41,14 @@ class UserProvider implements OidcUserProviderInterface
     $this->em->flush();
   }
 
+  #[Override]
   public function loadOidcUser(string $userIdentifier): UserInterface
   {
     return $this->loadUserByIdentifier($userIdentifier, true);
   }
 
   /** @deprecated */
+  #[Override]
   public function loadUserByUsername(string $username, $isOidc = false)
   {
     return $this->loadUserByIdentifier($username, $isOidc);
@@ -83,6 +87,7 @@ class UserProvider implements OidcUserProviderInterface
    *
    * @return UserInterface
    */
+  #[Override]
   public function refreshUser(UserInterface $user)
   {
     if ($user instanceof User) {
@@ -99,6 +104,7 @@ class UserProvider implements OidcUserProviderInterface
    *
    * @return bool
    */
+  #[Override]
   public function supportsClass($class)
   {
     return $class == User::class;

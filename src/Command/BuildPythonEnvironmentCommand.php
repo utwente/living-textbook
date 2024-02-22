@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Analytics\AnalyticsService;
+use Override;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,6 +23,7 @@ class BuildPythonEnvironmentCommand extends Command
     parent::__construct();
   }
 
+  #[Override]
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $style = new SymfonyStyle($input, $output);

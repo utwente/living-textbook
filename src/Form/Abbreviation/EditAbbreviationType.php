@@ -7,6 +7,7 @@ use App\Entity\StudyArea;
 use App\Form\Review\DisplayPendingChangeType;
 use App\Form\Type\SaveType;
 use App\Review\Model\PendingChangeObjectInfo;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditAbbreviationType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
@@ -45,6 +47,7 @@ class EditAbbreviationType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

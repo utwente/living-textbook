@@ -8,6 +8,7 @@ use App\Review\Model\PendingChangeObjectInfo;
 use App\Review\ReviewService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -30,6 +31,7 @@ class DisplayPendingChangeType extends AbstractType
    * @throws EntityNotFoundException
    * @throws InvalidChangeException
    */
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var PendingChange $pendingChange */
@@ -59,6 +61,7 @@ class DisplayPendingChangeType extends AbstractType
     ], $formOptions));
   }
 
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     /** @var PendingChange $pendingChange */
@@ -71,6 +74,7 @@ class DisplayPendingChangeType extends AbstractType
     }
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -10,6 +10,7 @@ use App\Form\Type\SaveType;
 use App\Repository\StudyAreaGroupRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -28,6 +29,7 @@ class EditStudyAreaType extends AbstractType
   ) {
   }
 
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $studyArea = $options['studyArea'];
@@ -139,6 +141,7 @@ class EditStudyAreaType extends AbstractType
     }
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

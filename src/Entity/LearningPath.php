@@ -18,6 +18,7 @@ use Doctrine\ORM\ORMException;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -122,6 +123,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @throws IncompatibleFieldChangedException
    * @throws ORMException
    */
+  #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
@@ -170,16 +172,19 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     }
   }
 
+  #[Override]
   public function getReviewTitle(): string
   {
     return $this->getName();
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
+  #[Override]
   public function setStudyArea(StudyArea $studyArea): LearningPath
   {
     $this->studyArea = $studyArea;

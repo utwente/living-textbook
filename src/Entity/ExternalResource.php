@@ -20,6 +20,7 @@ use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -107,6 +108,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   }
 
   /** Searches in the external resource on the given search, returns an array with search result metadata. */
+  #[Override]
   public function searchIn(string $search): array
   {
     // Create result array
@@ -134,6 +136,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
+  #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
@@ -149,6 +152,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     }
   }
 
+  #[Override]
   public function getReviewTitle(): string
   {
     return $this->getTitle();
@@ -208,11 +212,13 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this;
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
+  #[Override]
   public function setStudyArea(StudyArea $studyArea): ExternalResource
   {
     $this->studyArea = $studyArea;

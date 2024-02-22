@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\StudyAreaGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Override;
 
 /**
  * @method StudyAreaGroup|null find($id, $lockMode = NULL, $lockVersion = NULL)
@@ -19,6 +20,7 @@ class StudyAreaGroupRepository extends ServiceEntityRepository
   }
 
   /** @return StudyAreaGroup[] */
+  #[Override]
   public function findAll()
   {
     return $this->findBy([], ['name' => 'ASC']);

@@ -7,6 +7,7 @@ use App\Entity\ConceptRelation;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use OpenApi\Attributes as OA;
+use Override;
 
 class DetailedConceptRelationApiModel extends ConceptRelationApiModel
 {
@@ -25,6 +26,7 @@ class DetailedConceptRelationApiModel extends ConceptRelationApiModel
     parent::__construct($id, $sourceId, $targetId);
   }
 
+  #[Override]
   public static function fromEntity(ConceptRelation $conceptRelation): self
   {
     return new self(
