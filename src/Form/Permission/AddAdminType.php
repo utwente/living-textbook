@@ -5,12 +5,14 @@ namespace App\Form\Permission;
 use App\Entity\User;
 use App\Form\Type\SaveType;
 use App\Repository\UserRepository;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AddAdminType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder

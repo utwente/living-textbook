@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Router\LtbRouter;
+use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,6 +16,7 @@ class LtbRouterExtension extends AbstractExtension
     $this->router = $router;
   }
 
+  #[Override]
   public function getFunctions()
   {
     return [

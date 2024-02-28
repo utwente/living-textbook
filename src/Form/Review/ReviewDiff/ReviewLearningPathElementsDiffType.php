@@ -3,11 +3,13 @@
 namespace App\Form\Review\ReviewDiff;
 
 use App\Entity\LearningPath;
+use Override;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 class ReviewLearningPathElementsDiffType extends AbstractReviewDiffType
 {
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     parent::buildView($view, $form, $options);

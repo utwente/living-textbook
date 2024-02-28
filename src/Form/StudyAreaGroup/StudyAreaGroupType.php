@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Entity\StudyAreaGroup;
 use App\Form\Type\SaveType;
 use App\Repository\StudyAreaRepository;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StudyAreaGroupType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $studyAreaGroup = $options['study_area_group'];
@@ -51,6 +53,7 @@ class StudyAreaGroupType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setRequired('study_area_group');

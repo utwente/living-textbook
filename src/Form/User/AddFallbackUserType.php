@@ -5,6 +5,7 @@ namespace App\Form\User;
 use App\Entity\User;
 use App\Form\Type\NewPasswordType;
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -14,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddFallbackUserType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -40,6 +42,7 @@ class AddFallbackUserType extends AbstractType
     $builder->addModelTransformer(new CallbackTransformer(fn (User $user) => $user, fn (User $user) => $user->setDisplayName($user->getFullName())));
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

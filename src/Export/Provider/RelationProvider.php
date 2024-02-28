@@ -9,6 +9,7 @@ use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +30,13 @@ class RelationProvider implements ProviderInterface
     $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
+  #[Override]
   public function getName(): string
   {
     return 'relation';
   }
 
+  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -83,6 +86,7 @@ EOT;
     return $spreadSheet;
   }
 
+  #[Override]
   public function export(StudyArea $studyArea): Response
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadsheet($studyArea),

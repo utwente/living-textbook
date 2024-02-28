@@ -3,6 +3,7 @@
 namespace App\Form\Concept;
 
 use App\Entity\Concept;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConceptRelationsType extends AbstractType
 {
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setRequired('concept');
@@ -40,11 +42,13 @@ class ConceptRelationsType extends AbstractType
   }
 
   /** @suppress PhanTypeMismatchProperty */
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['allow_move'] = false;
   }
 
+  #[Override]
   public function getParent()
   {
     return CollectionType::class;

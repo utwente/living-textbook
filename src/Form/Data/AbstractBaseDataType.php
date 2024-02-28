@@ -3,6 +3,7 @@
 namespace App\Form\Data;
 
 use App\Entity\Data\BaseDataTextObject;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\OptionsResolver\Options;
@@ -10,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractBaseDataType extends AbstractType
 {
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Gedmo\SoftDeleteable\SoftDeleteableListener;
+use Override;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class SoftDeletableSubscriber implements EventSubscriber
@@ -23,6 +24,7 @@ class SoftDeletableSubscriber implements EventSubscriber
    *
    * @return array
    */
+  #[Override]
   public function getSubscribedEvents()
   {
     return [SoftDeleteableListener::PRE_SOFT_DELETE];

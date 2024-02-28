@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -114,6 +115,7 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface,
     return $this;
   }
 
+  #[Override]
   public function getPassword(): ?string
   {
     return $this->token;
@@ -127,17 +129,20 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface,
     return $this;
   }
 
+  #[Override]
   public function getRoles()
   {
     return $this->getUser()->getRoles();
   }
 
+  #[Override]
   public function getSalt()
   {
     return null;
   }
 
   /** @deprecated */
+  #[Override]
   public function getUsername()
   {
     return $this->getUserIdentifier();
@@ -148,6 +153,7 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface,
     return $this->getUser()->getUserIdentifier();
   }
 
+  #[Override]
   public function eraseCredentials()
   {
     // Nothing to do

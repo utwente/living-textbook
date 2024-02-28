@@ -13,6 +13,7 @@ use App\Form\Type\SaveType;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
 use App\Review\Model\PendingChangeObjectInfo;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditLearningPathType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
@@ -103,6 +105,7 @@ class EditLearningPathType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -7,6 +7,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -27,6 +28,7 @@ class ConceptRelationType extends AbstractType
     $this->translator = $translator;
   }
 
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     /** @var Concept $concept */
@@ -141,6 +143,7 @@ class ConceptRelationType extends AbstractType
     ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setRequired('concept');

@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraint;
 
+use Override;
 use Symfony\Component\Validator\Constraints\Regex;
 
 /**
@@ -17,11 +18,13 @@ class Color extends Regex
     parent::__construct($options);
   }
 
+  #[Override]
   public function getRequiredOptions(): array
   {
     return [];
   }
 
+  #[Override]
   public function validatedBy(): string
   {
     return Regex::class . 'Validator';

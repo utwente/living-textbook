@@ -2,6 +2,7 @@
 
 namespace App\Form\Extension;
 
+use Override;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Select2Extension extends AbstractTypeExtension
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->setAttribute('select2', $options['select2']);
@@ -27,6 +29,7 @@ class Select2Extension extends AbstractTypeExtension
     $builder->setAttribute('select2_placeholder', $options['select2_placeholder']);
   }
 
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['select2']             = $options['select2'];
@@ -34,6 +37,7 @@ class Select2Extension extends AbstractTypeExtension
     $view->vars['select2_placeholder'] = $options['select2_placeholder'];
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([
@@ -59,6 +63,7 @@ class Select2Extension extends AbstractTypeExtension
     });
   }
 
+  #[Override]
   public static function getExtendedTypes(): iterable
   {
     return [ChoiceType::class];

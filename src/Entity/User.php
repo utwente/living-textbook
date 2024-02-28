@@ -13,6 +13,7 @@ use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Model\OidcUserData;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Override;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Mime\Address;
@@ -254,6 +255,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @since 5.1.0
    */
+  #[Override]
   public function serialize()
   {
     return serialize($this->__serialize());
@@ -281,6 +283,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @since 5.1.0
    */
+  #[Override]
   public function unserialize($serialized)
   {
     $this->__unserialize(unserialize($serialized));
@@ -313,6 +316,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @return Role[]|string[] The user roles
    */
+  #[Override]
   public function getRoles()
   {
     $roles = ['ROLE_USER'];
@@ -332,6 +336,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @return string|null The salt
    */
+  #[Override]
   public function getSalt()
   {
     return null;
@@ -343,11 +348,13 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * This is important if, at any given point, sensitive information like
    * the plain-text password is stored on this object.
    */
+  #[Override]
   public function eraseCredentials()
   {
   }
 
   /** @deprecated */
+  #[Override]
   public function getUsername()
   {
     return $this->getUserIdentifier();
@@ -382,6 +389,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
+  #[Override]
   public function getPassword(): string
   {
     return $this->password ?? '';

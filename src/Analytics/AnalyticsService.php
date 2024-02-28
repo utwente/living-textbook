@@ -41,7 +41,7 @@ use Symfony\Component\Process\Process;
 
 class AnalyticsService
 {
-  private const ENV_DIR = '.venv';
+  private const string ENV_DIR = '.venv';
 
   /** The directory where the python implementation lives   */
   private string $analyticsDir;

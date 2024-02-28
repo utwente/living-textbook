@@ -3,6 +3,7 @@
 namespace App\ExceptionHandler;
 
 use Kickin\ExceptionHandlerBundle\Configuration\SymfonyMailerConfigurationInterface;
+use Override;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -32,26 +33,31 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
     $this->appVersion        = sprintf('%s+%s', $parameterBag->get('app_version'), $parameterBag->get('commit_hash'));
   }
 
+  #[Override]
   public function isProductionEnvironment(): bool
   {
     return $this->productionServer && $this->exceptionSender && $this->exceptionReceiver;
   }
 
+  #[Override]
   public function getBacktraceFolder(): string
   {
     return $this->cacheDir . '/exception_handler';
   }
 
+  #[Override]
   public function getSender()
   {
     return new Address($this->exceptionSender, 'Living Textbook');
   }
 
+  #[Override]
   public function getReceiver()
   {
     return new Address($this->exceptionReceiver, 'Living Textbook');
   }
 
+  #[Override]
   public function getUserInformation(?TokenInterface $token = null): string
   {
     if ($token !== null) {
@@ -61,6 +67,7 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
     return 'No user (not authenticated)';
   }
 
+  #[Override]
   public function getSystemVersion(): string
   {
     return $this->appVersion;

@@ -4,6 +4,7 @@ namespace App\Form\Analytics;
 
 use App\Analytics\Model\SynthesizeRequest;
 use App\Form\Type\RemoveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -12,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SynthesizeRequestType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $this->addNumberType($builder, 'usersPerfect');
@@ -42,6 +44,7 @@ class SynthesizeRequestType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

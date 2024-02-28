@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation as Serializer;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -72,6 +73,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
+  #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
@@ -86,6 +88,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
     }
   }
 
+  #[Override]
   public function getReviewTitle(): string
   {
     return $this->getName();
@@ -121,11 +124,13 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this;
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
+  #[Override]
   public function setStudyArea(?StudyArea $studyArea): RelationType
   {
     $this->studyArea = $studyArea;

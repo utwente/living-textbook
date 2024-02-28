@@ -8,12 +8,14 @@ use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\Metadata\StaticPropertyMetadata;
 use JMS\Serializer\Visitor\SerializationVisitorInterface;
+use Override;
 use Symfony\Component\Finder\SplFileInfo;
 
 class LearningPathVisualisationResultHandler implements EventSubscriberInterface
 {
-  private const EMPTY = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+  private const string EMPTY = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 
+  #[Override]
   public static function getSubscribedEvents()
   {
     return [

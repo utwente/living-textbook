@@ -3,6 +3,7 @@
 namespace App\Form\Authentication;
 
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -10,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class LoginType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder

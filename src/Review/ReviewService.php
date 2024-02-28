@@ -38,8 +38,8 @@ class ReviewService
 {
   // Serializer details
   /** @var SerializerInterface|null */
-  private static ?Serializer $serializer = null;
-  private const SERIALIZER_FORMAT        = 'json';
+  private static ?Serializer $serializer        = null;
+  private const string SERIALIZER_FORMAT        = 'json';
 
   public function __construct(
     private readonly EntityManagerInterface $entityManager,

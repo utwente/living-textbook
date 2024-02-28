@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Stringable;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -685,6 +686,7 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
+  #[Override]
   public function __toString(): string
   {
     return $this->getName();

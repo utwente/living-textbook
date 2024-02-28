@@ -5,6 +5,7 @@ namespace App\Request\Subscriber;
 use App\Annotation\DenyOnFrozenStudyArea;
 use App\Entity\StudyArea;
 use App\Request\Wrapper\RequestStudyArea;
+use Override;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -32,6 +33,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** @return array */
+  #[Override]
   public static function getSubscribedEvents()
   {
     return [

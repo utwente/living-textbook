@@ -9,6 +9,7 @@ use App\Entity\StudyArea;
 use App\Form\Type\PrintedTextType;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathElementRepository;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -33,6 +34,7 @@ class LearningPathElementType extends AbstractType
     $this->learningPathElementRepository = $learningPathElementRepository;
   }
 
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -83,11 +85,13 @@ class LearningPathElementType extends AbstractType
     ));
   }
 
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['sortable_id'] = $options['sortable_id'];
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

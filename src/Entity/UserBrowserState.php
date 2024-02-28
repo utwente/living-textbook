@@ -9,6 +9,7 @@ use App\Entity\Contracts\StudyAreaFilteredInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -64,6 +65,7 @@ class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
     return $this;
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

@@ -2,6 +2,7 @@
 
 namespace App\Communication;
 
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
@@ -16,6 +17,7 @@ class SetFromSubscriber implements EventSubscriberInterface
     $this->from = $from;
   }
 
+  #[Override]
   public static function getSubscribedEvents()
   {
     return [

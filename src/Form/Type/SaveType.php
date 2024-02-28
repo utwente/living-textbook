@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -20,6 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SaveType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     // Add the save button if required
@@ -58,6 +60,7 @@ class SaveType extends AbstractType
   }
 
   /** Build view. */
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['locate_static'] = $options['locate_static'];
@@ -82,6 +85,7 @@ class SaveType extends AbstractType
     return false;
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

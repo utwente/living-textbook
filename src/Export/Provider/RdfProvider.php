@@ -16,6 +16,7 @@ use EasyRdf\Graph;
 use EasyRdf\RdfNamespace;
 use EasyRdf\Serialiser\JsonLd;
 use JMS\Serializer\SerializerInterface;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -57,11 +58,13 @@ class RdfProvider implements ProviderInterface
     return $this->exportGraph($graph);
   }
 
+  #[Override]
   public function getName(): string
   {
     return 'rdf';
   }
 
+  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -142,6 +145,7 @@ EOT;
   }
 
   /** @throws Exception */
+  #[Override]
   public function export(StudyArea $studyArea): Response
   {
     $response = $this->exportStudyArea($studyArea);

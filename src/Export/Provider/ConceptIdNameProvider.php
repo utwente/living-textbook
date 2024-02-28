@@ -7,6 +7,7 @@ use App\Entity\StudyArea;
 use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
+use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -24,11 +25,13 @@ class ConceptIdNameProvider implements ProviderInterface
     $this->spreadsheetHelper = $spreadsheetHelper;
   }
 
+  #[Override]
   public function getName(): string
   {
     return 'concept-id-name';
   }
 
+  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -64,6 +67,7 @@ EOT;
   }
 
   /** @throws Exception */
+  #[Override]
   public function export(StudyArea $studyArea): Response
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadSheet($studyArea),

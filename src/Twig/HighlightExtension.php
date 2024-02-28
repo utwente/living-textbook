@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -17,6 +18,7 @@ class HighlightExtension extends AbstractExtension
    *
    * @return array|TwigFilter[]
    */
+  #[Override]
   public function getFilters()
   {
     return [

@@ -2,6 +2,7 @@
 
 namespace App\Naming\Model;
 
+use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
 class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
@@ -15,6 +16,7 @@ class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
     $this->obj = strtolower($obj);
   }
 
+  #[Override]
   public function resolvePlurals(InflectorInterface $inflector)
   {
     $this->objs = $inflector->pluralize($this->obj)[0];

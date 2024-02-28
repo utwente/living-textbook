@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Repository\UserGroupRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -71,6 +72,7 @@ class AbstractReviewType extends AbstractType
     return $this;
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraint;
 
+use Override;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
 class StudyAreaAccessType extends Constraint
 {
   /** Sets this validator as class validator. */
+  #[Override]
   public function getTargets(): array|string
   {
     return self::PROPERTY_CONSTRAINT;

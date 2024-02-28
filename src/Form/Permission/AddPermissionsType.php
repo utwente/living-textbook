@@ -4,12 +4,14 @@ namespace App\Form\Permission;
 
 use App\Form\Type\EmailListType;
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddPermissionsType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -25,6 +27,7 @@ class AddPermissionsType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

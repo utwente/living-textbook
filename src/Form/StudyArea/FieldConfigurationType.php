@@ -4,12 +4,14 @@ namespace App\Form\StudyArea;
 
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FieldConfigurationType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $this
@@ -23,6 +25,7 @@ class FieldConfigurationType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults([

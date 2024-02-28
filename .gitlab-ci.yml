@@ -55,13 +55,13 @@ install-dependencies:
     - cp .secrets.json.dist .secrets.json
     - >- # Fix for http-host used in fos-js routing
       if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
-        export HTTP_HOST="${STAGING_HOST}:${STAGING_HOST_PORT}"
+        export HTTP_HOST="${STAGING_HOST}"
       elif [ "$CI_COMMIT_REF_NAME" = "research" ]; then
-        export HTTP_HOST="${RESEARCH_HOST}:${RESEARCH_HOST_PORT}"
+        export HTTP_HOST="${RESEARCH_HOST}"
       else
         export HTTP_HOST="${PRODUCTION_HOST}"
       fi
-    - "sed -i \"s/HTTP_HOST=.*/HTTP_HOST=${HTTP_HOST}/g\" .env" # Set app secret
+    - "sed -i \"s/HTTP_HOST=.*/HTTP_HOST=${HTTP_HOST}/g\" .env" # Set HTTP_HOST in env file, as env only no longer works
     - if [ -z ${COMPOSER_USER+x} ]; then echo "COMPOSER_USER not set, skipping composer auth configuration" ; else composer config http-basic.composer.drenso.dev ${COMPOSER_USER} ${COMPOSER_PASSWORD}; fi
   script:
     - composer validate --no-check-all
@@ -199,10 +199,14 @@ composer-unused:
     paths:
       - vendor/
     policy: pull
+  artifacts:
+    reports:
+      codequality: composer-unused.json
   before_script:
     - curl -JOL https://github.com/composer-unused/composer-unused/releases/download/${COMPOSER_UNUSED_VERSION}/composer-unused.phar
   script:
-    - php composer-unused.phar --output-format=default
+    - php composer-unused.phar --no-progress --output-format=gitlab > composer-unused.json
+    - cat composer-unused.json
   tags:
     - docker
   except:

@@ -2,6 +2,7 @@
 
 namespace App\Form\Review\ReviewDiff;
 
+use Override;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -9,6 +10,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ReviewTextDiffType extends AbstractReviewDiffType
 {
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     parent::buildView($view, $form, $options);
@@ -28,6 +30,7 @@ class ReviewTextDiffType extends AbstractReviewDiffType
     }
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     parent::configureOptions($resolver);

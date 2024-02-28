@@ -3,6 +3,7 @@
 namespace App\UrlUtils\Model;
 
 use InvalidArgumentException;
+use Override;
 use Stringable;
 
 class UrlContext implements Stringable
@@ -34,6 +35,7 @@ class UrlContext implements Stringable
    * Implementation to determine duplicates correctly
    * https://stackoverflow.com/questions/2426557/array-unique-for-objects.
    */
+  #[Override]
   public function __toString(): string
   {
     return $this->class . '.' . $this->path . '.' . ($this->inline ? '1' : '0');

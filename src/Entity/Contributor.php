@@ -18,6 +18,7 @@ use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -117,6 +118,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
+  #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
@@ -132,6 +134,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     }
   }
 
+  #[Override]
   public function getReviewTitle(): string
   {
     return $this->getName();
@@ -203,11 +206,13 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     return $this;
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
+  #[Override]
   public function setStudyArea(StudyArea $studyArea): Contributor
   {
     $this->studyArea = $studyArea;

@@ -17,6 +17,7 @@ use App\Repository\TagRepository;
 use App\Router\LtbRouter;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,11 +53,13 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->router                     = $router;
   }
 
+  #[Override]
   public function getName(): string
   {
     return 'linked-simple-node';
   }
 
+  #[Override]
   public function getPreview(): string
   {
     $names      = $this->namingService->get();
@@ -147,6 +150,7 @@ EOT,
     );
   }
 
+  #[Override]
   public function export(StudyArea $studyArea): Response
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */

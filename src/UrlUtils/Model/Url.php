@@ -2,6 +2,7 @@
 
 namespace App\UrlUtils\Model;
 
+use Override;
 use Stringable;
 
 /**
@@ -35,6 +36,7 @@ class Url extends AbstractUrl implements Stringable
    * Implementation to determine duplicates correctly
    * https://stackoverflow.com/questions/2426557/array-unique-for-objects.
    */
+  #[Override]
   public function __toString(): string
   {
     return $this->url . '.' . ($this->internal ? '1' : '0') . '.' . $this->context->__toString();

@@ -5,6 +5,7 @@ namespace App\Form\Tag;
 use App\Entity\StudyArea;
 use App\Entity\Tag;
 use App\Form\Type\SaveType;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -14,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditTagType extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -35,6 +37,7 @@ class EditTagType extends AbstractType
       ]);
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

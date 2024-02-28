@@ -3,6 +3,7 @@
 namespace App\Form\Permission;
 
 use App\Entity\UserGroup;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -11,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PermissionsTypes extends AbstractType
 {
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     foreach ($options['group_types'] as $groupType) {
@@ -46,6 +48,7 @@ class PermissionsTypes extends AbstractType
     ));
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

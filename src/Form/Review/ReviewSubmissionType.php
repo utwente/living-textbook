@@ -17,6 +17,7 @@ use App\Review\ReviewService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use InvalidArgumentException;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -72,6 +73,7 @@ class ReviewSubmissionType extends AbstractType
     return [$formType, $formOptions];
   }
 
+  #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
@@ -79,6 +81,7 @@ class ReviewSubmissionType extends AbstractType
     });
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver

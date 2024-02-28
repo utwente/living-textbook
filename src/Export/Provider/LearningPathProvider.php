@@ -8,6 +8,7 @@ use App\Export\ProviderInterface;
 use App\Repository\LearningPathRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,11 +24,13 @@ class LearningPathProvider implements ProviderInterface
     $this->serializer             = $serializer;
   }
 
+  #[Override]
   public function getName(): string
   {
     return 'learning-path';
   }
 
+  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'
@@ -53,6 +56,7 @@ class LearningPathProvider implements ProviderInterface
 EOT;
   }
 
+  #[Override]
   public function export(StudyArea $studyArea): Response
   {
     $learningPaths = $this->learningPathRepository->findForStudyArea($studyArea);

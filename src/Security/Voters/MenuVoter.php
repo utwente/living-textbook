@@ -11,6 +11,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use Doctrine\ORM\NonUniqueResultException;
+use Override;
 use RuntimeException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
@@ -63,6 +64,7 @@ class MenuVoter extends Voter
     $this->learningOutcomeRepository  = $learningOutcomeRepository;
   }
 
+  #[Override]
   protected function supports($attribute, $subject)
   {
     if (!in_array($attribute, self::SUPPORTED_ATTRIBUTES)) {
@@ -77,6 +79,7 @@ class MenuVoter extends Voter
   }
 
   /** @throws NonUniqueResultException */
+  #[Override]
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
   {
     // Always allow users who can edit the area

@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\FormInterface;
@@ -15,12 +16,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ButtonUrlType extends AbstractType
 {
+  #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options)
   {
     $view->vars['route']        = $options['route'];
     $view->vars['route_params'] = $options['route_params'];
   }
 
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setRequired('route');
@@ -31,6 +34,7 @@ class ButtonUrlType extends AbstractType
     $resolver->setAllowedTypes('route_params', 'array');
   }
 
+  #[Override]
   public function getParent()
   {
     return ButtonType::class;

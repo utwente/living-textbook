@@ -31,8 +31,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AuthenticationController extends AbstractController
 {
-  private const RESET_PASSWORD_USER  = '_ltb_rpu';
-  private const RESET_PASSWORD_VALID = '_ltb_rpv';
+  private const string RESET_PASSWORD_USER  = '_ltb_rpu';
+  private const string RESET_PASSWORD_VALID = '_ltb_rpv';
 
   /**
    * This route handles every login request

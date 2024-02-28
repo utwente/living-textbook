@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\StudyArea;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CkEditorType extends AbstractType
 {
+  #[Override]
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver
@@ -41,6 +43,7 @@ class CkEditorType extends AbstractType
       });
   }
 
+  #[Override]
   public function getParent()
   {
     return \FOS\CKEditorBundle\Form\Type\CKEditorType::class;

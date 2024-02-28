@@ -20,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class NamingService
 {
-  private const CACHE_TAG = 'studyarea.naming';
+  private const string CACHE_TAG = 'studyarea.naming';
 
   private TagAwareAdapter $cache;
   private StudyAreaFieldConfigurationRepository $fieldConfigurationRepository;

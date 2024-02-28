@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
+use Override;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -115,6 +116,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   }
 
   /** Searches in the external resource on the given search, returns an array with search result metadata. */
+  #[Override]
   public function searchIn(string $search): array
   {
     // Create result array
@@ -139,6 +141,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    * @throws IncompatibleChangeException
    * @throws IncompatibleFieldChangedException
    */
+  #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
     $changeObj = $this->testChange($change);
@@ -154,6 +157,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     }
   }
 
+  #[Override]
   public function getReviewTitle(): string
   {
     return $this->getName();
@@ -201,11 +205,13 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this->concepts;
   }
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;
   }
 
+  #[Override]
   public function setStudyArea(StudyArea $studyArea): LearningOutcome
   {
     $this->studyArea = $studyArea;

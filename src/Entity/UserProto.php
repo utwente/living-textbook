@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
+use Override;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -64,17 +65,20 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
     $this->invitedAt = new DateTime();
   }
 
+  #[Override]
   public function getRoles()
   {
     return [];
   }
 
+  #[Override]
   public function getSalt()
   {
     return null;
   }
 
   /** @deprecated */
+  #[Override]
   public function getUsername()
   {
     return $this->getUserIdentifier();
@@ -85,6 +89,7 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
     return $this->email;
   }
 
+  #[Override]
   public function eraseCredentials()
   {
     // Nothing to do
@@ -121,6 +126,7 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
     return $this;
   }
 
+  #[Override]
   public function getPassword(): string
   {
     return $this->password;

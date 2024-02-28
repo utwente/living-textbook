@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraint;
 
+use Override;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -30,6 +31,7 @@ class ConceptRelation extends Constraint
   public $inversedRelation = 'concept.inversed-relation';
 
   /** Sets this validator as class validator. */
+  #[Override]
   public function getTargets(): array|string
   {
     return self::CLASS_CONSTRAINT;
