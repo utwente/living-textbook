@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
+use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -59,6 +60,7 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
    */
   private Collection $overrides;
 
+  #[Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

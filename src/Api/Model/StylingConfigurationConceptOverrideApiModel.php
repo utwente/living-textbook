@@ -6,6 +6,7 @@ use App\Entity\StylingConfigurationConceptOverride;
 use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
+use Override;
 
 class StylingConfigurationConceptOverrideApiModel implements IdInterface
 {
@@ -21,6 +22,7 @@ class StylingConfigurationConceptOverrideApiModel implements IdInterface
   }
 
   // Used as index when responding with multiple
+  #[Override]
   public function getId(): ?int
   {
     return $this->concept;

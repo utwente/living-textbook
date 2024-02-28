@@ -50,6 +50,7 @@ abstract class Override implements StudyAreaFilteredInterface
     $this->override  = $override;
   }
 
+  #[\Override]
   public function getStudyArea(): ?StudyArea
   {
     return $this->studyArea;

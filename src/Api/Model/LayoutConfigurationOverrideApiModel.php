@@ -6,6 +6,7 @@ use App\Entity\LayoutConfigurationOverride;
 use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
+use Override;
 
 class LayoutConfigurationOverrideApiModel implements IdInterface
 {
@@ -20,6 +21,7 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
   ) {
   }
 
+  #[Override]
   public function getId(): ?int
   {
     return $this->concept;
