@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f18a8934bc2abeda0f7636135f57119a",
+    "content-hash": "5bf183fe89f96c54d67378050bbe9ea2",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1724,16 +1724,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v2.13.0",
+            "version": "v2.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "1a80ecac9797f3735aeb81c4632f5b9fb38f56a5"
+                "reference": "4688db02a4f77841b2e0615ac922b78e6231e6d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/1a80ecac9797f3735aeb81c4632f5b9fb38f56a5",
-                "reference": "1a80ecac9797f3735aeb81c4632f5b9fb38f56a5",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/4688db02a4f77841b2e0615ac922b78e6231e6d6",
+                "reference": "4688db02a4f77841b2e0615ac922b78e6231e6d6",
                 "shasum": ""
             },
             "require": {
@@ -1759,8 +1759,8 @@
             },
             "require-dev": {
                 "drenso/phan-extensions": "^3.0",
-                "friendsofphp/php-cs-fixer": "3.8.0",
-                "rector/rector": "0.14.8",
+                "friendsofphp/php-cs-fixer": "3.49.0",
+                "rector/rector": "1.0.1",
                 "symfony/cache": "^5.4 || ^6.3 || ^7.0",
                 "symfony/translation-contracts": "^2.0 || ^3.0"
             },
@@ -1801,9 +1801,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.13.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v2.13.1"
             },
-            "time": "2023-11-29T15:15:26+00:00"
+            "time": "2024-02-29T20:35:13+00:00"
         },
         {
             "name": "drenso/symfony-shared",
@@ -4723,16 +4723,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.35",
+            "version": "3.0.36",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "4b1827beabce71953ca479485c0ae9c51287f2fe"
+                "reference": "c2fb5136162d4be18fdd4da9980696f3aee96d7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/4b1827beabce71953ca479485c0ae9c51287f2fe",
-                "reference": "4b1827beabce71953ca479485c0ae9c51287f2fe",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/c2fb5136162d4be18fdd4da9980696f3aee96d7b",
+                "reference": "c2fb5136162d4be18fdd4da9980696f3aee96d7b",
                 "shasum": ""
             },
             "require": {
@@ -4813,7 +4813,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.35"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.36"
             },
             "funding": [
                 {
@@ -4829,7 +4829,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-29T01:59:53+00:00"
+            "time": "2024-02-26T05:13:14+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
