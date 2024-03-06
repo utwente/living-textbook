@@ -18,7 +18,7 @@ assets/js/_fos_routes.json
 /public/elfinder-assets
 
 # Uploaded assets
-/public/uploads
+/uploads
 
 ###> symfony/framework-bundle ###
 /.env.local

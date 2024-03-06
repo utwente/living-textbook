@@ -6,7 +6,7 @@ cd /usr/src/app
 # Detect public mirror directory, and update its contents
 if [[ -d public_mirror ]]; then
   rm -rf public_mirror/*
-  rsync -aL --exclude uploads public/ public_mirror/
+  rsync -aL public/ public_mirror/
 fi
 
 # Wait for database

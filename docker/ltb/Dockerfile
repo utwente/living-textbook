@@ -154,10 +154,11 @@ COPY --from=ltb_prod_assets_build /usr/src/app/public/email ./public/email
 
 # Set some permissions
 RUN mkdir -p var \
-    && mkdir -p public\uploads \
+    && mkdir -p uploads \
     && chmod o+r -R public \
     && find public -type d -exec chmod o+x {} \+ \
     && chown -R www-data . \
+    && chmod o+x uploads \
     && chmod u+rwx var
 
 # Mark as production environment

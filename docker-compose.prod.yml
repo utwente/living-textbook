@@ -8,7 +8,7 @@ services:
       dockerfile: docker/ltb/Dockerfile
     restart: always
     volumes:
-      - 'ltb-uploads:/usr/src/app/public/uploads'
+      - 'ltb-uploads:/usr/src/app/uploads'
       - 'ltb-public:/usr/src/app/public_mirror'
       - './.secrets.json:/usr/src/app/.secrets.json:ro'
     environment:

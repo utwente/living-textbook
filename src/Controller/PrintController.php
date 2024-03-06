@@ -154,7 +154,7 @@ class PrintController extends AbstractController
   {
     // Try to match against expected project path
     $matches = [];
-    $regex   = sprintf('@^%s/public/uploads/studyarea/%d/(.+)@', $this->getParameter('kernel.project_dir'), $studyArea->getId());
+    $regex   = sprintf('@^%s/uploads/studyarea/%d/(.+)@', $this->getParameter('kernel.project_dir'), $studyArea->getId());
     if (1 === preg_match($regex, $url, $matches)) {
       return $matches[1];
     }
