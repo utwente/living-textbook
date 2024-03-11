@@ -20,7 +20,7 @@ class DenyOnFrozenStudyArea implements ConfigurationInterface
    *
    * @var string
    */
-  final public const KEY = 'deny_on_frozen_study_area';
+  final public const string KEY = 'deny_on_frozen_study_area';
 
   /**
    * @Required

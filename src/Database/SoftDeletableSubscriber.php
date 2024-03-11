@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class SoftDeletableSubscriber implements EventSubscriber
 {
   /** Field name for deleted by */
-  final public const FIELD_NAME = 'deletedBy';
+  final public const string FIELD_NAME = 'deletedBy';
 
   /** SoftDeletableSubscriber constructor. */
   public function __construct(private readonly TokenStorageInterface $tokenStorage)

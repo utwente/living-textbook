@@ -14,14 +14,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class StudyAreaVoter extends Voter
 {
   // Role constants
-  final public const OWNER                = 'STUDYAREA_OWNER';
-  final public const SHOW                 = 'STUDYAREA_SHOW';
-  final public const EDIT                 = 'STUDYAREA_EDIT';
-  final public const REVIEW               = 'STUDYAREA_REVIEW';
-  final public const ANNOTATE             = 'STUDYAREA_ANNOTATE';
-  final public const PRINTER              = 'STUDYAREA_PRINT';
-  final public const ANALYTICS            = 'STUDYAREA_ANALYTICS';
-  final public const SUPPORTED_ATTRIBUTES = [
+  final public const string OWNER                = 'STUDYAREA_OWNER';
+  final public const string SHOW                 = 'STUDYAREA_SHOW';
+  final public const string EDIT                 = 'STUDYAREA_EDIT';
+  final public const string REVIEW               = 'STUDYAREA_REVIEW';
+  final public const string ANNOTATE             = 'STUDYAREA_ANNOTATE';
+  final public const string PRINTER              = 'STUDYAREA_PRINT';
+  final public const string ANALYTICS            = 'STUDYAREA_ANALYTICS';
+  final public const array SUPPORTED_ATTRIBUTES  = [
     self::OWNER,
     self::SHOW,
     self::EDIT,

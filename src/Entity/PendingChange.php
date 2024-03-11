@@ -30,10 +30,10 @@ class PendingChange implements IdInterface
    * Change types
    * Number are added to force time dependant ordering.
    */
-  final public const CHANGE_TYPE_ADD    = '10_add';
-  final public const CHANGE_TYPE_EDIT   = '20_edit';
-  final public const CHANGE_TYPE_REMOVE = '30_remove';
-  final public const CHANGE_TYPES       = [
+  final public const string CHANGE_TYPE_ADD    = '10_add';
+  final public const string CHANGE_TYPE_EDIT   = '20_edit';
+  final public const string CHANGE_TYPE_REMOVE = '30_remove';
+  final public const array CHANGE_TYPES        = [
     self::CHANGE_TYPE_ADD,
     self::CHANGE_TYPE_EDIT,
     self::CHANGE_TYPE_REMOVE,
