@@ -8,7 +8,7 @@ fm_elfinder:
         roots:
           uploads:
             driver: LocalFileSystem
-            path: uploads
+            path: '%kernel.project_dir%/uploads'
             alias: root
             upload_allow: [ 'all' ]
             upload_max_size: 10M
