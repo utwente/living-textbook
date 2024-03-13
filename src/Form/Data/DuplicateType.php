@@ -25,13 +25,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DuplicateType extends AbstractType
 {
-  final public const CHOICE              = 'type';
-  final public const CHOICE_EXISTING     = 'existing';
-  final public const CHOICE_NEW          = 'new';
-  final public const EXISTING_STUDY_AREA = 'existing_study_area';
-  final public const NEW_STUDY_AREA      = 'new_study_area';
-  final public const CONCEPTS            = 'concepts';
-  final public const SELECT_ALL          = 'select_all';
+  final public const string CHOICE              = 'type';
+  final public const string CHOICE_EXISTING     = 'existing';
+  final public const string CHOICE_NEW          = 'new';
+  final public const string EXISTING_STUDY_AREA = 'existing_study_area';
+  final public const string NEW_STUDY_AREA      = 'new_study_area';
+  final public const string CONCEPTS            = 'concepts';
+  final public const string SELECT_ALL          = 'select_all';
   private Security $security;
   private StudyAreaRepository $studyAreaRepository;
 

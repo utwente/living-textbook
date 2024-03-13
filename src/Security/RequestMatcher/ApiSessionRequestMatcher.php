@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 class ApiSessionRequestMatcher implements RequestMatcherInterface
 {
-  final public const SESSION_API_TOKEN = 'session';
+  final public const string SESSION_API_TOKEN = 'session';
 
   #[Override]
   public function matches(Request $request): bool

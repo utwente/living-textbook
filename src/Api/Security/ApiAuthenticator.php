@@ -24,7 +24,7 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 class ApiAuthenticator extends AbstractAuthenticator
 {
-  final public const API_TOKEN_HEADER = 'X-LTB-AUTH';
+  final public const string API_TOKEN_HEADER = 'X-LTB-AUTH';
 
   public function __construct(
     private readonly UserApiTokenRepository $userApiTokenRepository,

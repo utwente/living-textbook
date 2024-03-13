@@ -40,9 +40,9 @@ class StudyArea implements Stringable, IdInterface
   use SoftDeletable;
 
   // Access types, used to determine if a user can access the study area
-  final public const ACCESS_PUBLIC  = 'public';
-  final public const ACCESS_PRIVATE = 'private';
-  final public const ACCESS_GROUP   = 'group';
+  final public const string ACCESS_PUBLIC  = 'public';
+  final public const string ACCESS_PRIVATE = 'private';
+  final public const string ACCESS_GROUP   = 'group';
 
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)

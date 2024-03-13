@@ -22,7 +22,7 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
   use IdTrait;
 
   /** The supported events */
-  final public const SUPPORTED_EVENTS = [
+  final public const array SUPPORTED_EVENTS = [
     'concept_browser_open',
     'concept_browser_open_concept',
     'concept_browser_close',

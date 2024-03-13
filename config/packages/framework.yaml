@@ -4,6 +4,12 @@ framework:
   csrf_protection: ~
   http_method_override: false
 
+  rate_limiter:
+    latex_generator:
+      policy: sliding_window
+      limit: 600
+      interval: 60 minutes
+
   # Enables session support. Note that the session will ONLY be started if you read or write from it.
   # Remove or comment this section to explicitly disable session support.
   session:

@@ -179,7 +179,7 @@ abstract class LtbSection extends Section
           // Retrieve relevant information
           $image             = $imgElement->getAttribute('src');
           $normalImages[$id] = [
-            'replace' => preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s%spublic$1', $this->projectDir, DIRECTORY_SEPARATOR), $image),
+            'replace' => preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s$1', $this->projectDir), $image),
             'caption' => $caption,
           ];
         }

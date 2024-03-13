@@ -27,13 +27,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class MenuVoter extends Voter
 {
-  final public const CONCEPTS             = 'MENU_CONCEPTS';
-  final public const LEARNING_PATHS       = 'MENU_LEARNING_PATHS';
-  final public const ABBREVIATIONS        = 'MENU_ABBREVIATIONS';
-  final public const CONTRIBUTORS         = 'MENU_CONTRIBUTORS';
-  final public const EXTERNAL_RESOURCES   = 'MENU_EXTERNAL_RESOURCES';
-  final public const LEARNING_OUTCOMES    = 'MENU_LEARNING_OUTCOMES';
-  final public const SUPPORTED_ATTRIBUTES = [
+  final public const string CONCEPTS             = 'MENU_CONCEPTS';
+  final public const string LEARNING_PATHS       = 'MENU_LEARNING_PATHS';
+  final public const string ABBREVIATIONS        = 'MENU_ABBREVIATIONS';
+  final public const string CONTRIBUTORS         = 'MENU_CONTRIBUTORS';
+  final public const string EXTERNAL_RESOURCES   = 'MENU_EXTERNAL_RESOURCES';
+  final public const string LEARNING_OUTCOMES    = 'MENU_LEARNING_OUTCOMES';
+  final public const array SUPPORTED_ATTRIBUTES  = [
     self::CONCEPTS,
     self::LEARNING_PATHS,
     self::ABBREVIATIONS,

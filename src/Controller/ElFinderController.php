@@ -94,7 +94,7 @@ class ElFinderController extends AbstractController
     $folder     = $studyAreaId === 0
         ? 'global'
         : sprintf('studyarea/%d', $studyAreaId);
-    $folderPath = sprintf('%s/public/uploads/%s', $this->getParameter('kernel.project_dir'), $folder);
+    $folderPath = sprintf('%s/uploads/%s', $this->getParameter('kernel.project_dir'), $folder);
     $filesystem = new Filesystem();
     if (!$filesystem->exists($folderPath)) {
       $filesystem->mkdir($folderPath);

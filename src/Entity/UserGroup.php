@@ -30,10 +30,10 @@ class UserGroup implements IdInterface
   use IdTrait;
   use Blameable;
   use SoftDeletable;
-  final public const GROUP_REVIEWER = 'reviewer';
-  final public const GROUP_EDITOR   = 'editor';
-  final public const GROUP_VIEWER   = 'viewer';
-  final public const GROUP_ANALYSIS = 'analysis';
+  final public const string GROUP_REVIEWER = 'reviewer';
+  final public const string GROUP_EDITOR   = 'editor';
+  final public const string GROUP_VIEWER   = 'viewer';
+  final public const string GROUP_ANALYSIS = 'analysis';
 
   /**
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea", inversedBy="userGroups")

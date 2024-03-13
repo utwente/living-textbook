@@ -100,7 +100,7 @@ class StudyAreaDuplicator
     TagRepository $tagRepository, StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
   {
     $this->urlContext           = new UrlContext(self::class);
-    $this->uploadsPath          = $projectDir . '/public/uploads/studyarea';
+    $this->uploadsPath          = $projectDir . '/uploads/studyarea';
     $this->em                   = $em;
     $this->urlScanner           = $urlScanner;
     $this->router               = $router;
