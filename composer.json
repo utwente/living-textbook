@@ -13,7 +13,7 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "bobv/latex-bundle": "5.0.0",
+        "bobv/latex-bundle": "5.0.1",
         "caxy/php-htmldiff": "0.1.15",
         "doctrine/annotations": "2.0.1",
         "doctrine/collections": "2.2.1",
