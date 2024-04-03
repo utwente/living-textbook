@@ -80,7 +80,7 @@
         "symfony/security-http": "5.4.38",
         "symfony/string": "5.4.36",
         "symfony/translation": "5.4.35",
-        "symfony/translation-contracts": "2.5.2",
+        "symfony/translation-contracts": "2.5.3",
         "symfony/twig-bridge": "5.4.38",
         "symfony/twig-bundle": "5.4.36",
         "symfony/validator": "5.4.38",
