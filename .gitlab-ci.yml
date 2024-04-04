@@ -246,8 +246,8 @@ php-analysis:
   interruptible: true
   before_script: # Fix for new lazy ServiceEntityRepository being detected as redefined
     - |-
-      if [[ -f vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php ]]; then
-        sed -i '/ServiceEntityRepositoryProxy/d' vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php # Replace with LegacyServiceEntityRepository when moving to ORM3
+      if [[ -f vendor/doctrine/doctrine-bundle/src/Repository/ServiceEntityRepository.php ]]; then
+        sed -i '/ServiceEntityRepositoryProxy/d' vendor/doctrine/doctrine-bundle/src/Repository/ServiceEntityRepository.php # Replace with LegacyServiceEntityRepository when moving to ORM3
       fi
     - |-
       if [[ -f vendor/myclabs/php-enum/stubs/Stringable.php ]]; then
