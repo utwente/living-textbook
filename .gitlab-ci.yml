@@ -9,7 +9,7 @@ stages:
 
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
-  COMPOSER_REQUIRE_CHECKER_VERSION: 4.10.0
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.11.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.8.11
   DRENSO_PHP_VERSION: 8.3-d1-sury
