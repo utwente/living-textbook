@@ -9,7 +9,7 @@ stages:
 
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
-  COMPOSER_REQUIRE_CHECKER_VERSION: 4.9.0
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.11.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.8.11
   DRENSO_PHP_VERSION: 8.3-d1-sury
@@ -249,8 +249,8 @@ php-analysis:
   interruptible: true
   before_script: # Fix for new lazy ServiceEntityRepository being detected as redefined
     - |-
-      if [[ -f vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php ]]; then
-        sed -i '/ServiceEntityRepositoryProxy/d' vendor/doctrine/doctrine-bundle/Repository/ServiceEntityRepository.php # Replace with LegacyServiceEntityRepository when moving to ORM3
+      if [[ -f vendor/doctrine/doctrine-bundle/src/Repository/ServiceEntityRepository.php ]]; then
+        sed -i '/ServiceEntityRepositoryProxy/d' vendor/doctrine/doctrine-bundle/src/Repository/ServiceEntityRepository.php # Replace with LegacyServiceEntityRepository when moving to ORM3
       fi
     - |-
       if [[ -f vendor/myclabs/php-enum/stubs/Stringable.php ]]; then
