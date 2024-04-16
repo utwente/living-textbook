@@ -8,9 +8,6 @@
     "caxy/php-htmldiff": {
         "version": "0.1.x-dev"
     },
-    "clue/stream-filter": {
-        "version": "v1.4.1"
-    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -164,9 +161,6 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.32"
     },
-    "guzzlehttp/promises": {
-        "version": "v1.3.1"
-    },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
@@ -182,9 +176,6 @@
             "config/packages/fm_elfinder.yaml",
             "config/routes/fm_elfinder.yaml"
         ]
-    },
-    "http-interop/http-factory-guzzle": {
-        "version": "1.0.0"
     },
     "jean85/pretty-package-versions": {
         "version": "1.2"
@@ -281,24 +272,6 @@
     },
     "phar-io/version": {
         "version": "3.1.0"
-    },
-    "php-http/client-common": {
-        "version": "2.1.0"
-    },
-    "php-http/discovery": {
-        "version": "1.7.4"
-    },
-    "php-http/httplug": {
-        "version": "2.1.0"
-    },
-    "php-http/message": {
-        "version": "1.8.0"
-    },
-    "php-http/message-factory": {
-        "version": "v1.0.2"
-    },
-    "php-http/promise": {
-        "version": "v1.0.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -443,9 +416,6 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
-    "sentry/sdk": {
-        "version": "2.1.0"
-    },
     "sentry/sentry": {
         "version": "2.3.0"
     },
@@ -566,12 +536,6 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
-    },
-    "symfony/http-client": {
-        "version": "v4.4.19"
-    },
-    "symfony/http-client-contracts": {
-        "version": "v2.3.1"
     },
     "symfony/http-foundation": {
         "version": "v4.0.2"
