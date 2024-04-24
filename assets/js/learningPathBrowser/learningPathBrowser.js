@@ -928,8 +928,8 @@ import BrowserConfigurationInstance from '../conceptBrowser/BrowserConfiguration
     // Setup sizes
     const contentRect = content.getBoundingClientRect();
     const canvasRect = canvas.getBoundingClientRect();
-    canvasWidth = canvasRect.width;
-    canvasHeight = contentRect.height - (canvasRect.y - contentRect.y) - 5;
+    canvasWidth = Math.max(1, canvasRect.width);
+    canvasHeight = Math.max(1, contentRect.height - (canvasRect.y - contentRect.y) - 5);
     canvas.height = canvasHeight;
     canvas.width = canvasWidth;
 
@@ -939,7 +939,7 @@ import BrowserConfigurationInstance from '../conceptBrowser/BrowserConfiguration
     // Determine element sizes
     elementPadding = Math.round(canvasHeight / 10);
     elementLine = Math.round(canvasHeight / 2);
-    elementRadius = Math.round((canvasHeight / 2) - (elementPadding / 2));
+    elementRadius = Math.max(0, Math.round((canvasHeight / 2) - (elementPadding / 2)));
     pathDescriptionRadius = Math.round(elementRadius / 5);
     elementSpacing = elementRadius * 3;
 

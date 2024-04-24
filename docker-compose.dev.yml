@@ -23,7 +23,7 @@ services:
       - ltb-network
 
   nginx:
-    image: nginx:1.25.4-alpine
+    image: nginx:1.26.0-alpine
     restart: always
     volumes:
       - './:/usr/src/app:ro'

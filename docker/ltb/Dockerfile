@@ -1,4 +1,4 @@
-FROM php:8.3.4-fpm-bookworm as ltb_base
+FROM php:8.3.6-fpm-bookworm as ltb_base
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update all dependencies, and install required ones
@@ -128,7 +128,7 @@ RUN cp .secrets.json.dist .secrets.json \
     && rm .secrets.json
 
 ######################## Production assets builder ########################
-FROM node:20.12.1-slim as ltb_prod_assets_build
+FROM node:20.12.2-slim as ltb_prod_assets_build
 
 # Set the work dir
 WORKDIR /usr/src/app
