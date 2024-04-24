@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f653e91d167a60f98008a831be36cbd",
+    "content-hash": "4c3055d7b9b9a81edb36229acb737753",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2909,16 +2909,16 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "3.0.5",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "23fa06848f5e7f595d5eef5f463c3d73d944888b"
+                "reference": "87893943b05672e5f80dfc6c3ee0e58dd6216a3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/23fa06848f5e7f595d5eef5f463c3d73d944888b",
-                "reference": "23fa06848f5e7f595d5eef5f463c3d73d944888b",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/87893943b05672e5f80dfc6c3ee0e58dd6216a3a",
+                "reference": "87893943b05672e5f80dfc6c3ee0e58dd6216a3a",
                 "shasum": ""
             },
             "require": {
@@ -2971,9 +2971,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kick-In/exception-handler-bundle/issues",
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.0.5"
+                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/3.1.0"
             },
-            "time": "2023-11-04T18:04:50+00:00"
+            "time": "2024-04-24T10:14:19+00:00"
         },
         {
             "name": "laminas/laminas-code",

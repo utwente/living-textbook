@@ -8,19 +8,15 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterface
+readonly class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterface
 {
-  /** @var bool */
-  private $productionServer;
+  private bool $productionServer;
 
-  /** @var string */
-  private $cacheDir;
+  private string $cacheDir;
 
-  /** @var string */
-  private $exceptionSender;
+  private string $exceptionSender;
 
-  /** @var string */
-  private $exceptionReceiver;
+  private string $exceptionReceiver;
 
   private string $appVersion;
 
@@ -46,13 +42,13 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
   }
 
   #[Override]
-  public function getSender()
+  public function getSender(): Address
   {
     return new Address($this->exceptionSender, 'Living Textbook');
   }
 
   #[Override]
-  public function getReceiver()
+  public function getReceiver(): Address
   {
     return new Address($this->exceptionReceiver, 'Living Textbook');
   }
@@ -71,5 +67,11 @@ class ExceptionHandlerConfiguration implements SymfonyMailerConfigurationInterfa
   public function getSystemVersion(): string
   {
     return $this->appVersion;
+  }
+
+  #[Override]
+  public function filterCookieNames(): array
+  {
+    return ['LTB_SID'];
   }
 }
