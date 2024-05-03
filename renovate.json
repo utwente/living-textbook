@@ -71,6 +71,12 @@
             "minimumReleaseAge": null
         },
         {
+            "matchPackagePatterns": ["^symfony/[\\w+-]+-contracts$"],
+            "groupName": "Symfony contracts",
+            "groupSlug": "symfony-contracts",
+            "minimumReleaseAge": null
+        },
+        {
             "matchPackagePrefixes": ["@types/"],
             "enabled": true
         },
