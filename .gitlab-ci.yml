@@ -16,7 +16,7 @@ variables:
   NODE_VERSION: 20
   PHAN_VERSION: 5.4-d3
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
-  PHP_SEC_CHECK_VERSION: 2.0.6
+  PHP_SEC_CHECK_VERSION: 2.1.3
   SASSLINT_VERSION: 1.12.1-d1
   SHELLCHECK_VERSION: v0.7.2
   TSLINT_VERSION: 5.18.0
@@ -146,7 +146,7 @@ php-cve-check:
   needs: []
   interruptible: true
   before_script:
-    - wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SEC_CHECK_VERSION}/local-php-security-checker_${PHP_SEC_CHECK_VERSION}_linux_386
+    - wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SEC_CHECK_VERSION}/local-php-security-checker_linux_amd64
     - chmod +x local-php-security-checker
   script:
     - ./local-php-security-checker
