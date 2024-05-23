@@ -95,7 +95,7 @@
     },
     "require-dev": {
         "drenso/phan-extensions": "3.5.1",
-        "friendsofphp/php-cs-fixer": "3.57.0",
+        "friendsofphp/php-cs-fixer": "3.57.1",
         "phpunit/phpunit": "10.5.20",
         "rector/rector": "1.0.5",
         "symfony/error-handler": "5.4.39",
