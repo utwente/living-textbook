@@ -4333,16 +4333,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.29.0",
+            "version": "1.29.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "536889f2b340489d328f5ffb7b02bb6b183ddedc"
+                "reference": "fcaefacf2d5c417e928405b71b400d4ce10daaf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/536889f2b340489d328f5ffb7b02bb6b183ddedc",
-                "reference": "536889f2b340489d328f5ffb7b02bb6b183ddedc",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fcaefacf2d5c417e928405b71b400d4ce10daaf4",
+                "reference": "fcaefacf2d5c417e928405b71b400d4ce10daaf4",
                 "shasum": ""
             },
             "require": {
@@ -4374,9 +4374,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.29.0"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.29.1"
             },
-            "time": "2024-05-06T12:04:23+00:00"
+            "time": "2024-05-31T08:52:43+00:00"
         },
         {
             "name": "psr/cache",
@@ -5897,16 +5897,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v5.4.39",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "0934c9f1d433776f25c629bdc93f3e157d139e08"
+                "reference": "ea43887e9afd2029509662d4f95e8b5ef6fc9bbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/0934c9f1d433776f25c629bdc93f3e157d139e08",
-                "reference": "0934c9f1d433776f25c629bdc93f3e157d139e08",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ea43887e9afd2029509662d4f95e8b5ef6fc9bbb",
+                "reference": "ea43887e9afd2029509662d4f95e8b5ef6fc9bbb",
                 "shasum": ""
             },
             "require": {
@@ -5943,7 +5943,7 @@
             "description": "Converts CSS selectors to XPath expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/css-selector/tree/v5.4.39"
+                "source": "https://github.com/symfony/css-selector/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -5959,7 +5959,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T08:26:06+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -7310,16 +7310,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.4.39",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "0ae24e7ead0761e3e29e89c3336353b991c90f96"
+                "reference": "75482b3b0aadc7f652d99b4f543b1d21f6562ff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/0ae24e7ead0761e3e29e89c3336353b991c90f96",
-                "reference": "0ae24e7ead0761e3e29e89c3336353b991c90f96",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/75482b3b0aadc7f652d99b4f543b1d21f6562ff4",
+                "reference": "75482b3b0aadc7f652d99b4f543b1d21f6562ff4",
                 "shasum": ""
             },
             "require": {
@@ -7380,7 +7380,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v5.4.39"
+                "source": "https://github.com/symfony/intl/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -7396,7 +7396,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T08:26:06+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/lock",
@@ -7730,16 +7730,16 @@
         },
         {
             "name": "symfony/monolog-bridge",
-            "version": "v5.4.39",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bridge.git",
-                "reference": "c61589f4ba11236cb68433123c99dd2d77ab9b43"
+                "reference": "ac6e0bf2a275e017c1dedd54dd0f1fbf252a9351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bridge/zipball/c61589f4ba11236cb68433123c99dd2d77ab9b43",
-                "reference": "c61589f4ba11236cb68433123c99dd2d77ab9b43",
+                "url": "https://api.github.com/repos/symfony/monolog-bridge/zipball/ac6e0bf2a275e017c1dedd54dd0f1fbf252a9351",
+                "reference": "ac6e0bf2a275e017c1dedd54dd0f1fbf252a9351",
                 "shasum": ""
             },
             "require": {
@@ -7794,7 +7794,7 @@
             "description": "Provides integration for Monolog with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/monolog-bridge/tree/v5.4.39"
+                "source": "https://github.com/symfony/monolog-bridge/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -7810,7 +7810,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T08:26:06+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -9486,16 +9486,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v5.4.39",
+            "version": "v5.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "107d7e0b67f9295098aa7b29b1daeddd6303c658"
+                "reference": "ef0be2b53d4424ad70075eeab74fb61184952ce9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/107d7e0b67f9295098aa7b29b1daeddd6303c658",
-                "reference": "107d7e0b67f9295098aa7b29b1daeddd6303c658",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/ef0be2b53d4424ad70075eeab74fb61184952ce9",
+                "reference": "ef0be2b53d4424ad70075eeab74fb61184952ce9",
                 "shasum": ""
             },
             "require": {
@@ -9569,7 +9569,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.4.39"
+                "source": "https://github.com/symfony/serializer/tree/v5.4.40"
             },
             "funding": [
                 {
@@ -9585,7 +9585,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T08:26:06+00:00"
+            "time": "2024-05-31T14:33:22+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -11997,16 +11997,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.2",
+            "version": "1.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0d5d4294a70deb7547db655c47685d680e39cfec"
+                "reference": "e64220a05c1209fc856d58e789c3b7a32c0bb9a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0d5d4294a70deb7547db655c47685d680e39cfec",
-                "reference": "0d5d4294a70deb7547db655c47685d680e39cfec",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e64220a05c1209fc856d58e789c3b7a32c0bb9a5",
+                "reference": "e64220a05c1209fc856d58e789c3b7a32c0bb9a5",
                 "shasum": ""
             },
             "require": {
@@ -12051,7 +12051,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-24T13:23:04+00:00"
+            "time": "2024-05-31T13:53:37+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
