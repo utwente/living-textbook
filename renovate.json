@@ -88,6 +88,11 @@
             "minimumReleaseAge": null
         },
         {
+            "matchUpdateTypes": ["minor", "patch"],
+            "matchPackageNames": ["@types/node"],
+            "enabled": false
+        },
+        {
             "matchPackageNames": ["jms/serializer"],
             "groupName": "JMS serializer packages",
             "groupSlug": "jms-serializer"
