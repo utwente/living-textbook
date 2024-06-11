@@ -26,7 +26,7 @@
         "doctrine/orm": "2.19.5",
         "doctrine/persistence": "3.3.2",
         "drenso/pdf-to-image": "3.0.0",
-        "drenso/symfony-oidc-bundle": "3.0.1",
+        "drenso/symfony-oidc-bundle": "3.1.0",
         "drenso/symfony-shared": "1.33.2",
         "easyrdf/easyrdf": "1.1.1",
         "friendsofsymfony/ckeditor-bundle": "2.5.0",
