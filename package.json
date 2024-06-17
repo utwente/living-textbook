@@ -71,7 +71,7 @@
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
     "symfony-collection": "ninsuo/symfony-collection",
-    "uuid": "9.0.1"
+    "uuid": "10.0.0"
   },
   "resolutions": {
     "datatables.net": "1.13.11",
