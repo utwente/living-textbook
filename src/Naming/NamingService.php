@@ -7,7 +7,6 @@ use App\Entity\StudyAreaFieldConfiguration;
 use App\Naming\Model\ResolvedConceptNames;
 use App\Naming\Model\ResolvedLearningOutcomeNames;
 use App\Naming\Model\ResolvedNames;
-use App\Repository\StudyAreaFieldConfigurationRepository;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\String\Inflector\EnglishInflector;
@@ -16,28 +15,23 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * The naming service is responsible for the names printed in the application.
- * They either come from the configuration, or from the the default translations.
+ * They either come from the configuration, or from the default translations.
  */
 class NamingService
 {
   private const string CACHE_TAG = 'studyarea.naming';
 
-  private TagAwareAdapter $cache;
-  private StudyAreaFieldConfigurationRepository $fieldConfigurationRepository;
-  private TranslatorInterface $translator;
+  private readonly TagAwareAdapter $cache;
 
   private ?StudyArea $studyArea = null;
 
-  public function __construct(
-    TranslatorInterface $translator, StudyAreaFieldConfigurationRepository $fieldConfigurationRepository)
+  public function __construct(private readonly TranslatorInterface $translator)
   {
-    $this->translator                   = $translator;
-    $this->fieldConfigurationRepository = $fieldConfigurationRepository;
-    $this->cache                        = new TagAwareAdapter(new ApcuAdapter());
+    $this->cache = new TagAwareAdapter(new ApcuAdapter());
   }
 
   /** Injects the current study area into this service. */
-  public function injectStudyArea(?StudyArea $studyArea)
+  public function injectStudyArea(?StudyArea $studyArea): void
   {
     $this->studyArea = $studyArea;
   }
@@ -52,7 +46,7 @@ class NamingService
   }
 
   /** @noinspection PhpUnhandledExceptionInspection */
-  public function clearCache()
+  public function clearCache(): void
   {
     $this->cache->invalidateTags([self::CACHE_TAG]);
   }
@@ -60,14 +54,12 @@ class NamingService
   /**
    * Resolve the naming for a study area.
    * This is cached, which means it must be cleared when editing the name configuration.
-   *
-   * @noinspection PhpDocMissingThrowsInspection
    */
   private function getCached(StudyArea $studyArea): ResolvedNames
   {
-    /* @noinspection PhpUnhandledExceptionInspection */
-    return $this->cache->get(sprintf('studyarea.%d.naming', $studyArea->getId()),
-      function (ItemInterface $item) use ($studyArea) {
+    /** @noinspection PhpUnhandledExceptionInspection */
+    return $this->cache->get(sprintf('studyarea.%d.naming', $studyArea->getId()), // @phan-suppress-current-line PhanTypeMismatchReturn
+      function (ItemInterface $item) use ($studyArea): ResolvedNames {
         $conf = $studyArea->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
 
         $conceptNames = new ResolvedConceptNames(

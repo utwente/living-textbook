@@ -11,6 +11,7 @@ use Override;
 use Rollerworks\Component\PasswordStrength\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,6 +49,7 @@ class AddAccountCommand extends Command
   {
     $style  = new SymfonyStyle($input, $output);
     $helper = $this->getHelper('question');
+    assert($helper instanceof QuestionHelper);
 
     $this->entityManager->beginTransaction();
 

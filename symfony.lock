@@ -131,9 +131,6 @@
             ".php-cs-fixer.dist.php"
         ]
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.5"
-    },
     "friendsofsymfony/ckeditor-bundle": {
         "version": "2.4",
         "recipe": {
@@ -202,9 +199,6 @@
     },
     "kick-in/exception-handler-bundle": {
         "version": "3.0.0"
-    },
-    "laminas/laminas-code": {
-        "version": "4.5.1"
     },
     "league/html-to-markdown": {
         "version": "4.10.0"
@@ -635,9 +629,6 @@
     },
     "symfony/property-info": {
         "version": "v4.4.31"
-    },
-    "symfony/proxy-manager-bridge": {
-        "version": "v4.1.6"
     },
     "symfony/psr-http-message-bridge": {
         "version": "2.1",

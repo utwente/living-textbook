@@ -48,7 +48,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
 
   /** Learning outcome number. */
   #[Assert\NotBlank]
-  #[Assert\Range(min: '1', max: '9999')]
+  #[Assert\Range(min: 1, max: 9999)]
   #[ORM\Column(name: 'number', nullable: false)]
   #[Serializer\Groups(['Default', 'review_change'])]
   #[Serializer\Type('int')]
@@ -56,7 +56,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
 
   /** Learning outcome name. */
   #[Assert\NotBlank]
-  #[Assert\Length(max: '255')]
+  #[Assert\Length(max: 255)]
   #[ORM\Column(name: 'name', length: 255, nullable: false)]
   #[Serializer\Groups(['Default', 'review_change'])]
   #[Serializer\Type('string')]

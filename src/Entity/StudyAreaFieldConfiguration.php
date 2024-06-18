@@ -20,39 +20,39 @@ class StudyAreaFieldConfiguration implements IdInterface
   use Blameable;
   use SoftDeletable;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptDefinitionName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptIntroductionName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptSynonymsName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptPriorKnowledgeName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptTheoryExplanationName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptHowtoName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptExamplesName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $conceptSelfAssessmentName = null;
 
-  #[Assert\Length(max: '50')]
+  #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
   private ?string $learningOutcomeObjName = null;
 

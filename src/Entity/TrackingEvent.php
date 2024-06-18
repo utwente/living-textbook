@@ -12,6 +12,11 @@ use Drenso\Shared\Interfaces\IdInterface;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * TODO Migrate array property to JSON.
+ *
+ * @phan-file-suppress PhanDeprecatedClassConstant
+ */
 #[ORM\Entity(repositoryClass: TrackingEventRepository::class)]
 #[ORM\Table]
 class TrackingEvent implements StudyAreaFilteredInterface, IdInterface

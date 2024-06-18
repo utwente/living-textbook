@@ -6,7 +6,6 @@ use App\Entity\PendingChange;
 use App\Review\Exception\InvalidChangeException;
 use App\Review\Model\PendingChangeObjectInfo;
 use App\Review\ReviewService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Override;
 use Symfony\Component\Form\AbstractType;

@@ -51,8 +51,6 @@ class UserProvider implements OidcUserProviderInterface
    *
    * @param string $identifier The username
    * @param bool   $isOidc     If set, find Oidc users
-   *
-   * @return User
    */
   #[Override]
   public function loadUserByIdentifier(string $identifier, bool $isOidc = false): UserInterface

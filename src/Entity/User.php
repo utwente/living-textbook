@@ -25,6 +25,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * TODO Migrate array properties to JSON.
+ *
+ * @phan-file-suppress PhanDeprecatedClassConstant
+ */
 #[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners([UserListener::class])]
