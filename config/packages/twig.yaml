@@ -2,6 +2,7 @@ twig:
   default_path: '%kernel.project_dir%/templates'
   debug: '%kernel.debug%'
   strict_variables: '%kernel.debug%'
+  file_name_pattern: '*.twig'
   form_themes:
     - "_form/form_layout.html.twig"
     - "_form/_button_layout.html.twig"
@@ -18,3 +19,7 @@ twig:
     naming: '@App\Naming\NamingService'
     sentry_dsn: '%env(SENTRY_JS_DSN)%'
     sentry_release: '%sentry_release%'
+
+when@test:
+  twig:
+    strict_variables: true
