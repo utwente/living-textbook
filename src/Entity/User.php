@@ -23,10 +23,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class User.
- *
- * @author BobV
- *
  * @ORM\Table(name="user__table", indexes={@ORM\Index(columns={"username"})})
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -179,7 +175,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    */
   private Collection $annotations;
 
-  /** User constructor. */
   public function __construct()
   {
     $this->registeredOn  = new DateTime();
@@ -317,7 +312,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @return Role[]|string[] The user roles
    */
   #[Override]
-  public function getRoles()
+  public function getRoles(): array
   {
     $roles = ['ROLE_USER'];
 
@@ -326,20 +321,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     }
 
     return array_merge($roles, $this->securityRoles);
-  }
-
-  /**
-   * Returns the salt that was originally used to encode the password.
-   *
-   * This can return null if the password was not encoded using a salt.
-   * This is the case as we use bcrypt
-   *
-   * @return string|null The salt
-   */
-  #[Override]
-  public function getSalt()
-  {
-    return null;
   }
 
   /**
@@ -353,13 +334,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   {
   }
 
-  /** @deprecated */
   #[Override]
-  public function getUsername()
-  {
-    return $this->getUserIdentifier();
-  }
-
   public function getUserIdentifier(): string
   {
     return $this->username;

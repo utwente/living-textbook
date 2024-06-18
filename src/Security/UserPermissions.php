@@ -17,7 +17,6 @@ class UserPermissions
   private bool $reviewer = false;
   private bool $analysis = false;
 
-  /** UserPermissions constructor. */
   public function __construct(?User $user, ?UserGroupEmail $userGroupEmail)
   {
     if (!$user && !$userGroupEmail) {
@@ -73,12 +72,6 @@ class UserPermissions
     }
 
     return '';
-  }
-
-  /** @deprecated */
-  public function getUsername(): string
-  {
-    return $this->getUserIdentifier();
   }
 
   public function getUserIdentifier(): string

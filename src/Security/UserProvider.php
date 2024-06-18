@@ -13,16 +13,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProvider implements OidcUserProviderInterface
 {
-  /** @var EntityManagerInterface */
-  protected $em;
-
-  public function __construct(EntityManagerInterface $em)
+  public function __construct(private readonly EntityManagerInterface $em)
   {
-    $this->em = $em;
   }
 
   #[Override]
-  public function ensureUserExists(string $userIdentifier, OidcUserData $userData)
+  public function ensureUserExists(string $userIdentifier, OidcUserData $userData): void
   {
     // Determine whether this user already exists
     try {
@@ -45,13 +41,6 @@ class UserProvider implements OidcUserProviderInterface
   public function loadOidcUser(string $userIdentifier): UserInterface
   {
     return $this->loadUserByIdentifier($userIdentifier, true);
-  }
-
-  /** @deprecated */
-  #[Override]
-  public function loadUserByUsername(string $username, $isOidc = false)
-  {
-    return $this->loadUserByIdentifier($username, $isOidc);
   }
 
   /**
@@ -84,11 +73,9 @@ class UserProvider implements OidcUserProviderInterface
    * totally reloaded (e.g. from the database), or if the UserInterface
    * object can just be merged into some internal array of users / identity
    * map.
-   *
-   * @return UserInterface
    */
   #[Override]
-  public function refreshUser(UserInterface $user)
+  public function refreshUser(UserInterface $user): UserInterface
   {
     if ($user instanceof User) {
       return $this->loadUserByIdentifier($user->getUserIdentifier(), $user->isOidc());
@@ -99,13 +86,9 @@ class UserProvider implements OidcUserProviderInterface
 
   /**
    * Whether this provider supports the given user class.
-   *
-   * @param string $class
-   *
-   * @return bool
    */
   #[Override]
-  public function supportsClass($class)
+  public function supportsClass(string $class): bool
   {
     return $class == User::class;
   }

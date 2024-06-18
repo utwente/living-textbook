@@ -25,7 +25,7 @@
     {% for user in users %}
       <tr>
         <td>{{ user.displayName }}</td>
-        <td><a href="mailto:{{ user.username }}">{{ user.username }}</a></td>
+        <td><a href="mailto:{{ user.userIdentifier }}">{{ user.userIdentifier }}</a></td>
         <td class="actions">
           {{ buttons.edit_button(path('app_user_fallbackedit', {'user': user.id})) }}
           {{ buttons._action_button(path('app_user_fallbackresetpassword', {'user': user.id}), 'fa-undo', 'user.fallback.reset-password-short'|trans, 'warning') }}

@@ -18,17 +18,17 @@ class BuildPythonEnvironmentCommand extends Command
    */
   protected static $defaultName = 'ltb:python:build';
 
-  public function __construct(private AnalyticsService $analyticsService)
+  public function __construct(private readonly AnalyticsService $analyticsService)
   {
     parent::__construct();
   }
 
   #[Override]
-  protected function execute(InputInterface $input, OutputInterface $output)
+  protected function execute(InputInterface $input, OutputInterface $output): int
   {
     $style = new SymfonyStyle($input, $output);
     $this->analyticsService->ensurePythonEnvironment($style);
 
-    return 0;
+    return Command::SUCCESS;
   }
 }

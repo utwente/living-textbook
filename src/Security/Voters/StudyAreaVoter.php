@@ -31,24 +31,12 @@ class StudyAreaVoter extends Voter
     self::ANALYTICS,
   ];
 
-  private AccessDecisionManagerInterface $decisionManager;
-
-  /** StudyAreaVoter constructor. */
-  public function __construct(AccessDecisionManagerInterface $decisionManager)
+  public function __construct(private readonly AccessDecisionManagerInterface $decisionManager)
   {
-    $this->decisionManager = $decisionManager;
   }
 
-  /**
-   * Determines if the attribute and subject are supported by this voter.
-   *
-   * @param string $attribute An attribute
-   * @param mixed  $subject   The subject to secure, e.g. an object the user wants to access or any other PHP type
-   *
-   * @return bool True if the attribute and subject are supported, false otherwise
-   */
   #[Override]
-  protected function supports($attribute, $subject)
+  protected function supports(string $attribute, mixed $subject): bool
   {
     if (!in_array($attribute, self::SUPPORTED_ATTRIBUTES)) {
       return false;
@@ -61,16 +49,8 @@ class StudyAreaVoter extends Voter
     return true;
   }
 
-  /**
-   * Perform a single access check operation on a given attribute, subject and token.
-   * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
-   *
-   * @param string $attribute
-   *
-   * @return bool
-   */
   #[Override]
-  protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+  protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
   {
     $user = $token->getUser();
 
@@ -98,13 +78,13 @@ class StudyAreaVoter extends Voter
       $subject = $subject->getStudyArea();
     }
 
-    /* @var StudyArea $subject */
-    assert($subject instanceof StudyArea);
-
     // Always return false for null values
     if ($subject === null) {
       return false;
     }
+
+    /* @var StudyArea $subject */
+    assert($subject instanceof StudyArea);
 
     switch ($attribute) {
       case self::OWNER:

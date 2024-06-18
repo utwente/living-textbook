@@ -7,28 +7,27 @@ use RuntimeException;
 use Symfony\Component\Console\Style\OutputStyle;
 
 /**
- * Class NullStyle
  * Can be used to disable output when the OutputStyle is not provided.
  */
 class NullStyle extends OutputStyle
 {
   #[Override]
-  public function title($message)
+  public function title(string $message): void
   {
   }
 
   #[Override]
-  public function section($message)
+  public function section(string $message): void
   {
   }
 
   #[Override]
-  public function listing(array $elements)
+  public function listing(array $elements): void
   {
   }
 
   #[Override]
-  public function text($message)
+  public function text($message): void
   {
   }
 
@@ -63,41 +62,41 @@ class NullStyle extends OutputStyle
   }
 
   #[Override]
-  public function ask($question, $default = null, $validator = null)
+  public function ask(string $question, ?string $default = null, ?callable $validator = null): never
   {
     throw new RuntimeException(sprintf('"ask" not supported with %s', self::class));
   }
 
   #[Override]
-  public function askHidden($question, $validator = null)
+  public function askHidden(string $question, ?callable $validator = null): never
   {
     throw new RuntimeException(sprintf('"askHidden" not supported with %s', self::class));
   }
 
   #[Override]
-  public function confirm($question, $default = true)
+  public function confirm(string $question, bool $default = true): never
   {
     throw new RuntimeException(sprintf('"confirm" not supported with %s', self::class));
   }
 
   #[Override]
-  public function choice($question, array $choices, $default = null)
+  public function choice(string $question, array $choices, $default = null): never
   {
     throw new RuntimeException(sprintf('"choice" not supported with %s', self::class));
   }
 
   #[Override]
-  public function progressStart($max = 0)
+  public function progressStart(int $max = 0): void
   {
   }
 
   #[Override]
-  public function progressAdvance($step = 1)
+  public function progressAdvance(int $step = 1): void
   {
   }
 
   #[Override]
-  public function progressFinish()
+  public function progressFinish(): void
   {
   }
 }

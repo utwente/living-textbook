@@ -19,7 +19,6 @@ security:
       security: false
     api:
       request_matcher: App\Security\RequestMatcher\ApiSessionRequestMatcher
-      anonymous: false
       stateless: true
       custom_authenticators:
         - App\Api\Security\ApiAuthenticator

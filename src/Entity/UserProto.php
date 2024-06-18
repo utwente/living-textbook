@@ -66,24 +66,12 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
   }
 
   #[Override]
-  public function getRoles()
+  public function getRoles(): array
   {
     return [];
   }
 
   #[Override]
-  public function getSalt()
-  {
-    return null;
-  }
-
-  /** @deprecated */
-  #[Override]
-  public function getUsername()
-  {
-    return $this->getUserIdentifier();
-  }
-
   public function getUserIdentifier(): string
   {
     return $this->email;

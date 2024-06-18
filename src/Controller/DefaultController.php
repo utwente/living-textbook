@@ -40,7 +40,7 @@ use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DefaultController extends AbstractController
@@ -127,15 +127,15 @@ class DefaultController extends AbstractController
     // When there is no user, render the login form
     if (!$user) {
       $loginForm = $this->createForm(LoginType::class, [
-        '_username' => $session->get(Security::LAST_USERNAME, ''),
+        '_username' => $session->get(SecurityRequestAttributes::LAST_USERNAME, ''),
       ], [
         'action' => $this->generateUrl('login_check'),
       ]);
 
       // Retrieve the error and remove it from the session
-      if ($session->has(Security::AUTHENTICATION_ERROR)) {
-        $authError = $session->get(Security::AUTHENTICATION_ERROR);
-        $session->remove(Security::AUTHENTICATION_ERROR);
+      if ($session->has(SecurityRequestAttributes::AUTHENTICATION_ERROR)) {
+        $authError = $session->get(SecurityRequestAttributes::AUTHENTICATION_ERROR);
+        $session->remove(SecurityRequestAttributes::AUTHENTICATION_ERROR);
 
         // Check the actual error
         if ($authError instanceof BadCredentialsException) {
@@ -158,7 +158,7 @@ class DefaultController extends AbstractController
 
     return [
       'loginForm'       => isset($loginForm) ? $loginForm->createView() : null,
-      'loginFormActive' => $session->get(Security::LAST_USERNAME, '') !== '',
+      'loginFormActive' => $session->get(SecurityRequestAttributes::LAST_USERNAME, '') !== '',
       'singleStudyArea' => count($studyAreas) === 1 ? reset($studyAreas) : null,
       'studyAreaCount'  => $studyAreaCount,
       'studyAreaForm'   => $studyAreaForm ? $studyAreaForm->createView() : null,
