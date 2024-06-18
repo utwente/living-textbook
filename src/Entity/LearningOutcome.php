@@ -29,12 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class LearningOutcome.
  *
  * @author BobV
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 #[UniqueEntity(fields: ['studyArea', 'number'], errorPath: 'number', message: 'learning-outcome.number-already-used')]
 #[ORM\Entity(repositoryClass: LearningOutcomeRepository::class)]
 #[ORM\Table]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;

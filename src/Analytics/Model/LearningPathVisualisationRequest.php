@@ -34,9 +34,7 @@ class LearningPathVisualisationRequest
   #[Assert\NotNull]
   public $forceRebuild;
 
-  /**
-   * Fills the object with some default data.
-   */
+  /** Fills the object with some default data. */
   public function __construct()
   {
     $date = new DateTime();

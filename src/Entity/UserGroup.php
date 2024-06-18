@@ -13,12 +13,10 @@ use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: UserGroupRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class UserGroup implements IdInterface
 {
   use IdTrait;

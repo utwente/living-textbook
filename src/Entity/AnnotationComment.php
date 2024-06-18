@@ -14,13 +14,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: AnnotationCommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class AnnotationComment implements IdInterface
 {
   use IdTrait;

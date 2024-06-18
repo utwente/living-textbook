@@ -11,11 +11,9 @@ use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: StudyAreaFieldConfigurationRepository::class)]
 #[ORM\Table]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyAreaFieldConfiguration implements IdInterface
 {
   use IdTrait;

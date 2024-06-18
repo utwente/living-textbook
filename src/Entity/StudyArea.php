@@ -26,12 +26,10 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: StudyAreaRepository::class)]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyArea implements Stringable, IdInterface
 {
   use IdTrait;

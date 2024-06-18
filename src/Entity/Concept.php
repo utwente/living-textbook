@@ -35,14 +35,13 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
  * @ConceptRelationValidator()
  */
 #[ORM\Entity(repositoryClass: ConceptRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;

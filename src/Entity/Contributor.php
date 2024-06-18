@@ -23,10 +23,8 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: ContributorRepository::class)]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;

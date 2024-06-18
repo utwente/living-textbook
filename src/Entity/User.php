@@ -25,14 +25,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners([UserListener::class])]
 #[ORM\Table(name: 'user__table')]
 #[ORM\Index(columns: ['username'])]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;

@@ -18,12 +18,10 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Tag implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;

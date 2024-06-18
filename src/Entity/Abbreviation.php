@@ -21,12 +21,10 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
 #[ORM\Entity(repositoryClass: AbbreviationRepository::class)]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
