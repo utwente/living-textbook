@@ -100,6 +100,5 @@ class FieldConfigurationType extends AbstractType
           'placeholder' => 'learning-outcome._name',
         ],
       ]);
-
   }
 }

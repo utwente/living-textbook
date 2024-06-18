@@ -22,9 +22,7 @@ abstract class LtbSection extends Section
   protected readonly Parser $parser; // Set in constructor
   protected readonly string $baseUrl; // Set in constructor
 
-  /**
-   * @throws LatexException
-   */
+  /** @throws LatexException */
   public function __construct(
     string $name,
     protected readonly LtbRouter $router,
