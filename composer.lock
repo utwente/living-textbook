@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd3838ffa5a2f7873df15f94c7933fa3",
+    "content-hash": "44e5549b7ad1eeaf297d7942c312afab",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4755,41 +4755,36 @@
         },
         {
             "name": "rollerworks/password-strength-validator",
-            "version": "v1.7.3",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
-                "reference": "7ad6e573f506fe7693f83265d858f0f04ffbf97e"
+                "reference": "ab10732d2fa578fd679d0c8ccb31942667830a67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/7ad6e573f506fe7693f83265d858f0f04ffbf97e",
-                "reference": "7ad6e573f506fe7693f83265d858f0f04ffbf97e",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/ab10732d2fa578fd679d0c8ccb31942667830a67",
+                "reference": "ab10732d2fa578fd679d0c8ccb31942667830a67",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.3",
-                "psr/container": "^1.0 || ^2.0",
-                "symfony/deprecation-contracts": "^2.4 || ^3.0",
+                "php": ">=8.2",
+                "symfony/config": "^6.0 || ^7.0",
                 "symfony/polyfill-mbstring": "^1.5.0",
-                "symfony/translation": "^4.4 || ^5.0 || ^6.0",
-                "symfony/validator": "^4.4 || ^5.0 || ^6.0"
+                "symfony/translation": "^6.0 || ^7.0",
+                "symfony/validator": "^6.0 || ^7.0"
             },
             "require-dev": {
-                "guzzlehttp/psr7": "^1.4",
-                "php-http/httplug": "^1.1",
-                "phpspec/prophecy": "^1.10.3",
-                "phpspec/prophecy-phpunit": "^2.0",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpstan/phpstan-symfony": "^1.2",
                 "phpunit/phpunit": "^9.5",
-                "psr/log": "^1.0 || ^2.0",
-                "symfony/config": "^4.4 || ^5.0 || ^6.0",
-                "symfony/console": "^4.4 || ^5.0 || ^6.0",
-                "symfony/phpunit-bridge": "^5.3 || ^6.0"
+                "symfony/phpunit-bridge": "^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.7-dev"
+                    "dev-main": "2.0-dev"
                 }
             },
             "autoload": {
@@ -4822,9 +4817,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rollerworks/PasswordStrengthValidator/issues",
-                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v1.7.3"
+                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v2.0.1"
             },
-            "time": "2022-07-13T09:56:53+00:00"
+            "time": "2024-03-07T20:36:16+00:00"
         },
         {
             "name": "ryakad/pandoc-php",
