@@ -12,36 +12,32 @@ trait Blameable
    * @var DateTime
    *
    * @Gedmo\Timestampable(on="create")
-   *
-   * @ORM\Column(name="created_at", type="datetime", nullable=false)
    */
+  #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
   private $createdAt;
 
   /**
    * @var string
    *
    * @Gedmo\Blameable(on="create")
-   *
-   * @ORM\Column(name="created_by", type="string", length=255, nullable=true)
    */
+  #[ORM\Column(name: 'created_by', type: 'string', length: 255, nullable: true)]
   private $createdBy;
 
   /**
    * @var DateTime
    *
    * @Gedmo\Timestampable(on="update")
-   *
-   * @ORM\Column(name="updated_at", type="datetime", nullable=true)
    */
+  #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
   private $updatedAt;
 
   /**
    * @var string
    *
    * @Gedmo\Blameable(on="update")
-   *
-   * @ORM\Column(name="updated_by", type="string", length=255, nullable=true)
    */
+  #[ORM\Column(name: 'updated_by', type: 'string', length: 255, nullable: true)]
   private $updatedBy;
 
   /** Get the last update time, which is either creation time or update time */

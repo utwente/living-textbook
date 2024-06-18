@@ -5,15 +5,12 @@ namespace App\Entity\Data;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Class BaseDataTextObject.
- *
- * @author BobV
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 trait BaseDataTextObject
@@ -27,12 +24,11 @@ trait BaseDataTextObject
    *
    * @var string|null
    *
-   * @ORM\Column(name="text", type="text", nullable=true)
-   *
    * @Serializer\Groups({"review_change"})
    *
    * @Serializer\Type("string")
    */
+  #[ORM\Column(name: 'text', type: Types::TEXT, nullable: true)]
   private $text;
 
   /** Determine whether this block has data. */

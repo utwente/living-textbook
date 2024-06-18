@@ -5,9 +5,12 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Entity\Listener\UserListener;
+use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Model\OidcUserData;
@@ -23,15 +26,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="user__table", indexes={@ORM\Index(columns={"username"})})
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- *
- * @ORM\EntityListeners({"App\Entity\Listener\UserListener"})
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 #[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\EntityListeners([UserListener::class])]
+#[ORM\Table(name: 'user__table')]
+#[ORM\Index(columns: ['username'])]
 class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
@@ -39,122 +40,81 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   use SoftDeletable;
   public const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
-  /**
-   * Given name.
-   *
-   * @ORM\Column(name="given_name", type="string", length=100)
-   */
+  /** Given name. */
   #[Assert\NotBlank]
   #[Assert\Length(min: 2, max: 100)]
+  #[ORM\Column(name: 'given_name', length: 100)]
   protected string $givenName = '';
 
-  /**
-   * Family name.
-   *
-   * @ORM\Column(name="last_name", type="string", length=100)
-   */
+  /** Family name. */
   #[Assert\NotBlank]
   #[Assert\Length(min: 2, max: 100)]
+  #[ORM\Column(name: 'last_name', length: 100)]
   protected string $familyName = '';
 
-  /**
-   * Full name.
-   *
-   * @ORM\Column(name="full_name", type="string", length=200)
-   */
+  /** Full name. */
   #[Assert\NotBlank]
   #[Assert\Length(min: 4, max: 200)]
+  #[ORM\Column(name: 'full_name', length: 200)]
   protected string $fullName = '';
 
-  /**
-   * Display name.
-   *
-   * @ORM\Column(name="display_name", type="string", length=200)
-   */
+  /** Display name. */
   #[Assert\NotBlank]
   #[Assert\Length(min: 4, max: 200)]
+  #[ORM\Column(name: 'display_name', length: 200)]
   protected ?string $displayName = null;
 
-  /**
-   * Authentication name (username), equal to email address.
-   *
-   * @ORM\Column(name="username", type="string", length=180)
-   */
+  /** Authentication name (username), equal to email address. */
   #[Assert\NotBlank]
   #[Assert\Email]
   #[Assert\Length(min: 5, max: 180)]
+  #[ORM\Column(name: 'username', length: 180)]
   protected ?string $username = null;
 
-  /**
-   * If set, the account was created using OIDC.
-   *
-   * @ORM\Column(name="is_oidc", type="boolean", nullable=false)
-   */
-  #[Assert\NotNull]
+  /** If set, the account was created using OIDC. */
+  #[ORM\Column(name: 'is_oidc')]
   protected bool $isOidc = false;
 
   /**
    * Password, stored encrypted, if any.
    * No password is stored for OIDC authentication.
-   *
-   * @ORM\Column(name="password", type="string", length=255, nullable=true)
    */
+  #[ORM\Column(name: 'password', length: 255, nullable: true)]
   protected ?string $password = null;
 
-  /**
-   * Datetime on which the user registered.
-   *
-   * @ORM\Column(name="registered_on", type="datetime")
-   */
+  /** Datetime on which the user registered. */
   #[Assert\NotNull]
+  #[ORM\Column(name: 'registered_on')]
   protected DateTime $registeredOn;
 
-  /**
-   * DateTime on which the user has lastly logged on.
-   *
-   * @ORM\Column(name="last_used", type="datetime", nullable=true)
-   */
+  /** DateTime on which the user has lastly logged on. */
+  #[ORM\Column(name: 'last_used', nullable: true)]
   protected ?DateTime $lastUsed = null;
 
-  /**
-   * @var array[string]
-   *
-   * @ORM\Column(name="roles", type="array", nullable=false)
-   */
+  /** @var array[string] */
   #[Assert\NotNull]
+  #[ORM\Column(name: 'roles', type: Types::ARRAY, nullable: false)]
   private array $securityRoles = [];
 
-  /** @ORM\Column(name="is_admin", type="boolean", nullable=false) */
   #[Assert\NotNull]
   #[Assert\Type('bool')]
+  #[ORM\Column(name: 'is_admin', nullable: false)]
   private bool $isAdmin = false;
 
-  /**
-   * Hashed reset code, used for resetting the password.
-   *
-   * @ORM\Column(type="string", length=255, nullable=true)
-   */
+  /** Hashed reset code, used for resetting the password. */
+  #[ORM\Column(length: 255, nullable: true)]
   private ?string $resetCode = null;
 
-  /**
-   * Datetime till when the reset code is still valid.
-   *
-   * @ORM\Column(type="datetime", nullable=true)
-   */
+  /** Datetime till when the reset code is still valid. */
+  #[ORM\Column(nullable: true)]
   private ?DateTime $resetCodeValid = null;
 
-  /**
-   * @var Collection<UserGroup>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\UserGroup", mappedBy="users")
-   */
+  /** @var Collection<UserGroup> */
+  #[ORM\ManyToMany(targetEntity: UserGroup::class, mappedBy: 'users')]
   private Collection $userGroups;
 
-  /**
-   * @var Collection<Annotation>
-   *
-   * @ORM\OneToMany(targetEntity="Annotation", mappedBy="user")
-   */
+  /** @var Collection<Annotation> */
+  #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annotation::class)]
   private Collection $annotations;
 
   public function __construct()

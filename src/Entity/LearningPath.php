@@ -8,10 +8,12 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Repository\LearningPathRepository;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
@@ -22,16 +24,12 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LearningPath.
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\LearningPathRepository")
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
  * @JMSA\ExclusionPolicy("all")
  */
+#[ORM\Entity(repositoryClass: LearningPathRepository::class)]
+#[ORM\Table]
 class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
@@ -39,18 +37,13 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   use SoftDeletable;
   use ReviewableTrait;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningPaths")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'learningPaths')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
   /**
    * Learning path name.
-   *
-   * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
    * @JMSA\Expose()
    *
@@ -60,12 +53,11 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    */
   #[Assert\NotBlank]
   #[Assert\Length(max: 255)]
+  #[ORM\Column(name: 'name', length: 255, nullable: false)]
   private string $name = '';
 
   /**
    * Learning path introduction.
-   *
-   * @ORM\Column(name="introduction", type="text", nullable=true)
    *
    * @JMSA\Expose()
    *
@@ -73,13 +65,12 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    *
    * @JMSA\Type("string")
    */
-  #[Assert\NotBlank] // ;
+  #[Assert\NotBlank]
+  #[ORM\Column(name: 'introduction', type: Types::TEXT, nullable: true)] // ;
   private ?string $introduction = null;
 
   /**
    * Learning path question.
-   *
-   * @ORM\Column(name="question", type="string", length=1024, nullable=false)
    *
    * @JMSA\Expose()
    *
@@ -89,13 +80,11 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    */
   #[Assert\NotBlank]
   #[Assert\Length(max: 1024)]
+  #[ORM\Column(name: 'question', length: 1024, nullable: false)]
   private string $question = '';
 
   /**
    * @var Collection<LearningPathElement>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath",
-   *   cascade={"persist", "remove"})
    *
    * @JMSA\Expose()
    *
@@ -104,6 +93,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @JMSA\Type("ArrayCollection<App\Entity\LearningPathElement>")
    */
   #[Assert\Valid]
+  #[ORM\OneToMany(mappedBy: 'learningPath', targetEntity: LearningPathElement::class, cascade: ['persist', 'remove'])]
   private Collection $elements;
 
   public function __construct()

@@ -4,19 +4,16 @@ namespace App\Entity;
 
 use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Repository\TrackingEventRepository;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class TrackingEvent.
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\TrackingEventRepository")
- */
+#[ORM\Entity(repositoryClass: TrackingEventRepository::class)]
+#[ORM\Table]
 class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
@@ -32,36 +29,33 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
     'general_link_click',
   ];
 
-  /** @ORM\Column(name="user_id", type="string", length=255) */
   #[Assert\NotNull]
   #[Assert\NotBlank]
+  #[ORM\Column(name: 'user_id', length: 255)]
   private ?string $userId = null;
 
-  /** @ORM\Column(name="timestamp", type="datetime") */
   #[Assert\NotNull]
+  #[ORM\Column(name: 'timestamp')]
   private ?DateTime $timestamp = null;
 
-  /** @ORM\Column(name="session_id", type="guid") */
   #[Assert\NotNull]
   #[Assert\NotBlank]
+  #[ORM\Column(name: 'session_id', type: Types::GUID)]
   private ?string $sessionId = null;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /** @ORM\Column(name="event", type="string", length=50) */
   #[Assert\NotNull]
   #[Assert\Choice(choices: TrackingEvent::SUPPORTED_EVENTS)]
   #[Assert\Length(max: 50)]
+  #[ORM\Column(name: 'event', length: 50)]
   private ?string $event = null;
 
-  /** @ORM\Column(name="context", type="array", nullable=true) */
   #[Assert\Type('array')]
+  #[ORM\Column(name: 'context', type: Types::ARRAY, nullable: true)]
   private ?array $context = null;
 
   public function getUserId(): string

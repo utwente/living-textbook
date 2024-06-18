@@ -7,9 +7,11 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\SearchableInterface;
+use App\Repository\AnnotationRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -21,136 +23,111 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class TextAnnotation.
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\AnnotationRepository")
- *
- * @ORM\HasLifecycleCallbacks()
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
  * @JMSA\ExclusionPolicy("all")
  */
+#[ORM\Entity(repositoryClass: AnnotationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table]
 class Annotation implements SearchableInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * The user.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annotations")
-   *
-   * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-   */
+  /** The user. */
   #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'annotations')]
+  #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
   private ?User $user = null;
 
-  /**
-   * The concept.
-   *
-   * @ORM\ManyToOne(targetEntity="Concept")
-   *
-   * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
-   */
+  /** The concept. */
   #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id', nullable: false)]
   private ?Concept $concept = null;
 
   /**
    * Annotation text. If null, it is only a highlight.
    *
-   * @ORM\Column(name="text", type="text", nullable=true)
-   *
    * @JMSA\Expose()
    */
+  #[ORM\Column(name: 'text', type: Types::TEXT, nullable: true)]
   private ?string $text = null;
 
   /**
    * Annotation context (section of concept).
    *
-   * @ORM\Column(name="context", type="string", length=50, nullable=false)
-   *
    * @JMSA\Expose()
    */
   #[Assert\NotNull]
   #[Assert\NotBlank]
+  #[ORM\Column(name: 'context', length: 50, nullable: false)]
   private string $context = '';
 
   /**
    * Annotation start. This is without any HTML tags!
    * If -1, the complete section is annotated.
    *
-   * @ORM\Column(name="start", type="integer", nullable=false)
-   *
    * @JMSA\Expose()
    */
   #[Assert\NotNull]
   #[Assert\Range(min: '-1')]
+  #[ORM\Column(name: 'start', nullable: false)]
   private int $start = 0;
 
   /**
    * Annotation end. This is without any HTML tags!
    * If there is no selection, it means the header/complete context is annotated.
    *
-   * @ORM\Column(name="end", type="integer", nullable=false)
-   *
    * @JMSA\Expose()
    */
   #[Assert\NotNull]
   #[Assert\Range(min: '0')]
   #[Assert\Expression('value !== this.getStart()', message: 'annotation.start-end-identical')]
+  #[ORM\Column(name: 'end', nullable: false)]
   private int $end = 0;
 
   /**
    * The selected text at time of creation.
    * Should be null when the header is selected.
    *
-   * @ORM\Column(name="selected_text", type="text", nullable=true)
-   *
    * @JMSA\Expose()
    */
   #[Assert\Expression('(value === null && this.getStart() === -1) || (value !== null && this.getStart() >= 0)', message: 'annotation.selection-incorrect')]
+  #[ORM\Column(name: 'selected_text', type: Types::TEXT, nullable: true)]
   private ?string $selectedText = null;
 
   /**
    * Annotation version, linked to context version to detect changes since annotation
    * This can only be null if the complete context is annotated.
    *
-   * @ORM\Column(name="version", type="datetime", nullable=true)
-   *
    * @JMSA\Expose()
    */
-  private ?DateTime $version = null;
+  #[ORM\Column(name: 'version', nullable: true)]
+  private ?DateTime $version; // Default in constructor
 
   /**
    * Visibility for the annotation.
    *
-   * @ORM\Column(name="visibility", type="string", length=10)
-   *
    * @JMSA\Expose()
    */
   #[Assert\Choice(callback: 'visibilityOptions')]
+  #[ORM\Column(name: 'visibility', length: 10)]
   private string $visibility;
 
   /**
    * @var Collection<AnnotationComment>
    *
-   * @ORM\OneToMany(targetEntity="AnnotationComment", mappedBy="annotation")
-   *
    * @JMSA\Expose
    */
   #[Assert\Expression('(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)', message: 'annotation.comments-incorrect')]
   #[Assert\Valid]
+  #[ORM\OneToMany(mappedBy: 'annotation', targetEntity: AnnotationComment::class)]
   private Collection $comments;
 
-  /**
-   * Annotation constructor.
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
   public function __construct()
   {
     $this->version    = new DateTime();

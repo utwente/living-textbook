@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Repository\UserGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,18 +14,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserGroup.
- *
- * @author BobV
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserGroupRepository")
- *
- * @ORM\HasLifecycleCallbacks()
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
+#[ORM\Entity(repositoryClass: UserGroupRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table]
 class UserGroup implements IdInterface
 {
   use IdTrait;
@@ -35,54 +29,35 @@ class UserGroup implements IdInterface
   final public const string GROUP_VIEWER   = 'viewer';
   final public const string GROUP_ANALYSIS = 'analysis';
 
-  /**
-   * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea", inversedBy="userGroups")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'userGroups')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /** @ORM\Column(name="group_type", type="string", length=10, nullable=false) */
   #[Assert\NotNull]
   #[Assert\Choice(callback: 'getGroupTypes')]
+  #[ORM\Column(name: 'group_type', length: 10, nullable: false)]
   private string $groupType = self::GROUP_VIEWER;
 
-  /**
-   * @var Collection<User>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="userGroups", fetch="EAGER")
-   *
-   * @ORM\JoinTable(name="user_group_users",
-   *   joinColumns={@ORM\JoinColumn(name="user_group_id", referencedColumnName="id")},
-   *   inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-   * )
-   */
+  /** @var Collection<User> */
   #[Assert\NotNull]
+  #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'userGroups', fetch: 'EAGER')]
+  #[ORM\JoinTable(name: 'user_group_users', joinColumns: [new ORM\JoinColumn(name: 'user_group_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')])]
   private Collection $users;
 
-  /**
-   * @var Collection<UserGroupEmail>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\UserGroupEmail",
-   *   mappedBy="userGroup", fetch="EAGER", cascade={"persist", "remove"})
-   */
+  /** @var Collection<UserGroupEmail> */
   #[Assert\NotNull]
+  #[ORM\OneToMany(mappedBy: 'userGroup', targetEntity: UserGroupEmail::class, cascade: ['persist', 'remove'], fetch: 'EAGER')]
   private Collection $emails;
 
-  /** UserGroup constructor. */
   public function __construct()
   {
     $this->users     = new ArrayCollection();
     $this->emails    = new ArrayCollection();
   }
 
-  /**
-   * Possible group types.
-   *
-   * @return array
-   */
-  public static function getGroupTypes()
+  /** Possible group types. */
+  public static function getGroupTypes(): array
   {
     return [self::GROUP_VIEWER, self::GROUP_EDITOR, self::GROUP_REVIEWER, self::GROUP_ANALYSIS];
   }

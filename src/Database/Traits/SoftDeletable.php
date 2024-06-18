@@ -3,22 +3,17 @@
 namespace App\Database\Traits;
 
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeletable
 {
-  /**
-   * @var DateTime
-   *
-   * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
-   */
+  /** @var DateTime */
+  #[ORM\Column(name: 'deleted_at', type: Types::DATETIME_MUTABLE, nullable: true)]
   protected $deletedAt;
 
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="deleted_by", type="string", length=255, nullable=true)
-   */
+  /** @var string */
+  #[ORM\Column(name: 'deleted_by', type: Types::STRING, length: 255, nullable: true)]
   protected $deletedBy;
 
   /**

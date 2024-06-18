@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Repository\StylingConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -14,31 +15,25 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\StylingConfigurationRepository")
- *
- * @ORM\HasLifecycleCallbacks()
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
  * @JMSA\ExclusionPolicy("all")
  */
+#[ORM\Entity(repositoryClass: StylingConfigurationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table]
 class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="stylingConfigurations")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'stylingConfigurations')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /** @ORM\Column(type="json", nullable=true) */
+  #[ORM\Column(nullable: true)]
   private ?array $stylings = null;
 
   #[Override]

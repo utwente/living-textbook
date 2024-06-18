@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Repository\LearningPathElementRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -12,38 +13,26 @@ use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class LearningPathConcept.
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\LearningPathElementRepository")
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  *
  * @JMSA\ExclusionPolicy("all")
  */
+#[ORM\Entity(repositoryClass: LearningPathElementRepository::class)]
+#[ORM\Table]
 class LearningPathElement implements IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * Belongs to a certain learning path.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\LearningPath", inversedBy="elements")
-   *
-   * @ORM\JoinColumn(name="learning_path_id", referencedColumnName="id", nullable=false)
-   */
+  /** Belongs to a certain learning path. */
   #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'elements')]
+  #[ORM\JoinColumn(name: 'learning_path_id', referencedColumnName: 'id', nullable: false)]
   private ?LearningPath $learningPath = null;
 
   /**
    * Linked concept.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\Concept")
-   *
-   * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
    *
    * @JMSA\Expose()
    *
@@ -54,14 +43,12 @@ class LearningPathElement implements IdInterface
    * @JMSA\MaxDepth(2)
    */
   #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id', nullable: false)]
   private ?Concept $concept = null;
 
   /**
    * Transition to the next element, if any.
-   *
-   * @ORM\ManyToOne(targetEntity="LearningPathElement")
-   *
-   * @ORM\JoinColumn(name="next_id", referencedColumnName="id", nullable=true)
    *
    * @JMSA\Expose()
    *
@@ -71,12 +58,12 @@ class LearningPathElement implements IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'next_id', referencedColumnName: 'id', nullable: true)]
   private ?LearningPathElement $next = null;
 
   /**
    * Optional description of the transition to the next element.
-   *
-   * @ORM\Column(type="string", length=1024, nullable=true)
    *
    * @JMSA\Expose()
    *
@@ -85,6 +72,7 @@ class LearningPathElement implements IdInterface
    * @JMSA\Type("string")
    */
   #[Assert\Length(max: 1024)]
+  #[ORM\Column(length: 1024, nullable: true)]
   private ?string $description = null;
 
   public function getLearningPath(): ?LearningPath
@@ -127,7 +115,7 @@ class LearningPathElement implements IdInterface
    */
   public function getNextId(): ?int
   {
-    return $this->next ? $this->next->getId() : null;
+    return $this->next?->getId();
   }
 
   public function setNext(?LearningPathElement $next): LearningPathElement

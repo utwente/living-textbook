@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Repository\UserBrowserStateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -13,42 +14,31 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserBrowserState
  * Holds information about the current browser state for the user, per study area.
- *
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"user_id", "study_area_id"})})
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserBrowserStateRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
+#[ORM\Entity(repositoryClass: UserBrowserStateRepository::class)]
+#[ORM\Table]
+#[ORM\UniqueConstraint(columns: ['user_id', 'study_area_id'])]
 class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="App\Entity\User")
-   *
-   * @ORM\JoinColumn(nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(nullable: false)]
   private ?User $user = null;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea")
-   *
-   * @ORM\JoinColumn(nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * The current filter state.
-   *
-   * @ORM\Column(type="json", nullable=true)
-   */
+  /** The current filter state. */
+  #[ORM\Column(nullable: true)]
   private ?array $filterState = null;
 
   public function getUser(): ?User

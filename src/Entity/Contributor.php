@@ -8,10 +8,12 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Repository\ContributorRepository;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
@@ -22,12 +24,9 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Contributor.
- *
- * @ORM\Entity(repositoryClass="App\Repository\ContributorRepository")
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
+#[ORM\Entity(repositoryClass: ContributorRepository::class)]
 class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
@@ -35,69 +34,58 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
   use SoftDeletable;
   use ReviewableTrait;
 
-  /**
-   * @var Collection<Concept>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="contributors")
-   */
+  /** @var Collection<Concept> */
+  #[ORM\ManyToMany(targetEntity: Concept::class, mappedBy: 'contributors')]
   private Collection $concepts;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="contributors")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   */
   #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'contributors')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
   /**
-   * @ORM\Column(name="name", type="string", length=512, nullable=false)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
   #[Assert\NotBlank]
   #[Assert\Length(min: 1, max: 512)]
+  #[ORM\Column(name: 'name', length: 512, nullable: false)]
   private string $name = '';
 
   /**
-   * @ORM\Column(name="description", type="text", nullable=true)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
   #[Assert\Length(max: 1024)]
+  #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
   private ?string $description = null;
 
   /**
-   * @ORM\Column(name="url", type="string", length=512, nullable=true)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
   #[Assert\Url]
   #[Assert\Length(max: 512)]
+  #[ORM\Column(name: 'url', length: 512, nullable: true)]
   private ?string $url = null;
 
   /**
-   * @ORM\Column(name="email", type="string", length=255, nullable=true)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
   #[Assert\Email]
   #[Assert\Length(max: 255)]
+  #[ORM\Column(name: 'email', length: 255, nullable: true)]
   private ?string $email = null;
 
-  /** @ORM\Column(name="broken", type="boolean", nullable=false) */
   #[Assert\NotNull]
+  #[ORM\Column(name: 'broken', nullable: false)]
   private bool $broken = false;
 
-  /** Contributor constructor. */
   public function __construct()
   {
     $this->concepts = new ArrayCollection();

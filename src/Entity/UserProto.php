@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
+use App\Repository\UserProtoRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -14,45 +15,32 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UserProto
  * These are users who have been invited to create a local account, but have not responded yet
  * Implements the user interface for easy password hashing and checking.
- *
- * @ORM\Table(indexes={@ORM\Index(columns={"email"})})
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserProtoRepository")
  */
 #[UniqueEntity(['email'], errorPath: 'email')]
+#[ORM\Entity(repositoryClass: UserProtoRepository::class)]
+#[ORM\Table]
+#[ORM\Index(columns: ['email'])]
 class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
 
-  /**
-   * The email address that has been invited.
-   *
-   * @ORM\Column(type="string")
-   */
+  /** The email address that has been invited. */
   #[Assert\NotBlank]
   #[Assert\Email]
+  #[ORM\Column]
   private string $email = '';
 
-  /**
-   * The invited at timestamp.
-   *
-   * @ORM\Column(type="datetime")
-   */
+  /** The invited at timestamp. */
   #[Assert\NotNull]
+  #[ORM\Column]
   private DateTime $invitedAt;
 
-  /**
-   * Hashed temporary password.
-   *
-   * @var string;
-   *
-   * @ORM\Column(type="string", unique=true)
-   */
+  /** Hashed temporary password. */
   #[Assert\NotBlank]
+  #[ORM\Column(unique: true)]
   private string $password = '';
 
   public function __construct()

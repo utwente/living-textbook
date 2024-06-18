@@ -4,28 +4,23 @@ namespace App\Entity;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
+use App\Repository\HelpRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 
 /**
- * Class Help.
- *
- * Each update will be saved as a new iteration of the help entity
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\HelpRepository")
+ * Each update will be saved as a new iteration of the help entity.
  */
+#[ORM\Entity(repositoryClass: HelpRepository::class)]
+#[ORM\Table]
 class Help implements IdInterface
 {
   use IdTrait;
   use Blameable;
 
-  /**
-   * The help content.
-   *
-   * @ORM\Column(name="content", type="text", nullable=false)
-   */
+  /** The help content. */
+  #[ORM\Column(name: 'content', type: Types::TEXT, nullable: false)]
   private ?string $content = null;
 
   public function getContent(): string

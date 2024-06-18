@@ -15,10 +15,9 @@ class UserListener
    * This handler ensures that any e-mail addresses that have been granted, will receive the new and functional account
    * that can actually be used for rights.
    *
-   * @ORM\PostPersist()
-   *
    * @throws ORMException
    */
+  #[ORM\PostPersist]
   public function updateStudyAreaRights(User $user, LifecycleEventArgs $event)
   {
     $em = $event->getObjectManager();

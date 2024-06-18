@@ -7,21 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 trait IdTrait
 {
   /**
-   * @var int|null
-   *
-   * @ORM\Column(name="id", type="integer")
-   *
-   * @ORM\Id
-   *
-   * @ORM\GeneratedValue(strategy="AUTO")
-   *
    * @JMS\Serializer\Annotation\Expose()
    *
    * @JMS\Serializer\Annotation\Groups({"Default", "review_change", "id_only"})
    *
    * @JMS\Serializer\Annotation\Type("int")
    */
-  private $id;
+  #[ORM\Column]
+  #[ORM\Id]
+  #[ORM\GeneratedValue]
+  private ?int $id = null;
 
   public function getId(): ?int
   {
