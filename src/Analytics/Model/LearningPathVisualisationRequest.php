@@ -8,51 +8,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class LearningPathVisualisationRequest
 {
-  /**
-   * @var LearningPath
-   *
-   * @Assert\NotNull()
-   */
+  /** @var LearningPath */
+  #[Assert\NotNull]
   public $learningPath;
 
-  /**
-   * @var DateTime
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("datetime")
-   *
-   * @Assert\GreaterThanOrEqual(propertyPath="periodStart")
-   *
-   * @Assert\LessThan(propertyPath="periodEnd")
-   */
+  /** @var DateTime */
+  #[Assert\NotNull]
+  #[Assert\Type('datetime')]
+  #[Assert\GreaterThanOrEqual(propertyPath: 'periodStart')]
+  #[Assert\LessThan(propertyPath: 'periodEnd')]
   public $teachingMoment;
 
-  /**
-   * @var DateTime
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("datetime")
-   *
-   * @Assert\LessThan(propertyPath="periodEnd")
-   */
+  /** @var DateTime */
+  #[Assert\NotNull]
+  #[Assert\Type('datetime')]
+  #[Assert\LessThan(propertyPath: 'periodEnd')]
   public $periodStart;
 
-  /**
-   * @var DateTime
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("datetime")
-   */
+  /** @var DateTime */
+  #[Assert\NotNull]
+  #[Assert\Type('datetime')]
   public $periodEnd;
 
-  /**
-   * @var bool
-   *
-   * @Assert\NotNull()
-   */
+  /** @var bool */
+  #[Assert\NotNull]
   public $forceRebuild;
 
   /**

@@ -8,36 +8,27 @@ use App\Entity\Concept;
 use App\Entity\User;
 use App\Repository\AnnotationRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Class AbbreviationController.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/annotation", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/annotation')]
 class AnnotationController extends AbstractController
 {
-  /**
-   * @Route("/{concept}/all", requirements={"concept"="\d+"}, options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
+  #[Route(path: '/{concept}/all', requirements: ['concept' => '\d+'], options: ['expose' => 'true'])]
+  #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
   public function all(RequestStudyArea $requestStudyArea, Concept $concept,
-    AnnotationRepository $annotationRepository, SerializerInterface $serializer)
+    AnnotationRepository $annotationRepository, SerializerInterface $serializer): Response
   {
     // Check study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -54,17 +45,11 @@ class AnnotationController extends AbstractController
     return new JsonResponse($json, 200, [], true);
   }
 
-  /**
-   * @Route("/{concept}/add", requirements={"concept"="\d+"}, methods={"POST"}, options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @throws Exception
-   *
-   * @return JsonResponse
-   */
+  /** @throws Exception */
+  #[Route('/{concept<\d+>}/add', options: ['expose' => 'true'], methods: ['POST'])]
+  #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
   public function add(Request $request, RequestStudyArea $requestStudyArea, Concept $concept,
-    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer): Response
   {
     // Check study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -102,16 +87,10 @@ class AnnotationController extends AbstractController
     return new JsonResponse($serializer->serialize($annotation, 'json'), 200, [], true);
   }
 
-  /**
-   * @Route("/{concept}/annotation/{annotation}/comment", requirements={"concept"="\d+", "annotation"="\d+"},
-   *   methods={"POST"}, options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
+  #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/comment', options: ['expose' => 'true'], methods: ['POST'])]
+  #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
   public function addComment(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer): Response
   {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
@@ -163,16 +142,10 @@ class AnnotationController extends AbstractController
     ], 'json'), 200, [], true);
   }
 
-  /**
-   * @Route("/{concept}/annotation/{annotation}/edit", requirements={"concept"="\d+", "annotation"="\d+"},
-   *   methods={"POST"}, options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
+  #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/edit', options: ['expose' => 'true'], methods: ['POST'])]
+  #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
   public function editVisibility(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer)
+    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer): Response
   {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
@@ -208,17 +181,10 @@ class AnnotationController extends AbstractController
     return new JsonResponse($serializer->serialize($annotation, 'json'), 200, [], true);
   }
 
-  /**
-   * @Route("/{concept}/annotation/{annotation}/remove", requirements={"concept"="\d+", "annotation"="\d+"},
-   *   methods={"DELETE"}, options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @throws Exception
-   *
-   * @return JsonResponse
-   */
-  public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em)
+  /** @throws Exception */
+  #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/remove', options: ['expose' => 'true'], methods: ['DELETE'])]
+  #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
+  public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em): Response
   {
     // Check study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()
@@ -240,17 +206,10 @@ class AnnotationController extends AbstractController
     return new JsonResponse();
   }
 
-  /**
-   * @Route("/{concept}/annotation/{annotation}/comment/{comment}/remove",
-   *   requirements={"concept"="\d+", "annotation"="\d+", "comment"="\d+"},
-   *   methods={"DELETE"}, options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_ANNOTATE", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
+  #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/comment/{comment<\d+>}/remove', options: ['expose' => 'true'], methods: ['DELETE'])]
+  #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
   public function removeComment(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-    AnnotationComment $comment, EntityManagerInterface $em, SerializerInterface $serializer)
+    AnnotationComment $comment, EntityManagerInterface $em, SerializerInterface $serializer): Response
   {
     // Check study area/concept/annotation
     $studyArea = $requestStudyArea->getStudyArea();
@@ -280,8 +239,7 @@ class AnnotationController extends AbstractController
     ], 'json'), 200, [], true);
   }
 
-  /** @return JsonResponse|null */
-  private function validate($object, ValidatorInterface $validator, SerializerInterface $serializer)
+  private function validate($object, ValidatorInterface $validator, SerializerInterface $serializer): ?JsonResponse
   {
     // Validate data
     $violations = $validator->validate($object);

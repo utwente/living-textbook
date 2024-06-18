@@ -32,44 +32,32 @@ use App\Repository\RelationTypeRepository;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Router\LtbRouter;
+use App\Security\Voters\StudyAreaVoter;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class DataController.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/data", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/data')]
 class DataController extends AbstractController
 {
-  /**
-   * Export for concept browser and search. Search part currently isn't used, but it kept for now.
-   *
-   * @Route("/export", name="app_data_export", options={"expose"=true}, defaults={"export"=true})
-   * @Route("/search", name="app_data_search", options={"expose"=true}, defaults={"export"=false})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
+  /** Export for concept browser and search. Search part currently isn't used, but it kept for now. */
+  #[Route('/export', name: 'app_data_export', options: ['expose' => true], defaults: ['export' => true])]
+  #[Route('/search', name: 'app_data_search', options: ['expose' => true], defaults: ['export' => false])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function export(bool $export, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
-    SerializerInterface $serializer, RequestStudyArea $requestStudyArea)
+    SerializerInterface $serializer, RequestStudyArea $requestStudyArea): Response
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $relationTypeRepo->findBy(['studyArea' => $requestStudyArea->getStudyArea()]);
@@ -88,35 +76,25 @@ class DataController extends AbstractController
     return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
-  /**
-   * @Route("/excel")
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @throws Exception
-   *
-   * @return Response
-   */
-  public function excelStatus(RequestStudyArea $requestStudyArea, StudyAreaStatusBuilder $builder)
+  /** @throws Exception */
+  #[Route('/excel')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  public function excelStatus(RequestStudyArea $requestStudyArea, StudyAreaStatusBuilder $builder): Response
   {
     return $builder->build($requestStudyArea->getStudyArea());
   }
 
   /**
-   * @Route("/upload")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
    * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
    *
    * @throws NonUniqueResultException
    */
+  #[Route('/upload')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function upload(
     Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
     EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
-    LearningOutcomeRepository $learningOutcomeRepository, NamingService $namingService): array|Response
+    LearningOutcomeRepository $learningOutcomeRepository, NamingService $namingService): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -554,19 +532,14 @@ class DataController extends AbstractController
       }
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('data/upload.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/download")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
-  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): array|Response
+  #[Route('/download')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): Response
   {
     $form = $this->createForm(DownloadType::class);
     $form->handleRequest($request);
@@ -576,28 +549,22 @@ class DataController extends AbstractController
       return $exportService->export($studyArea, $form->getData()['type']);
     }
 
-    return [
+    return $this->render('data/download.html.twig', [
       'studyArea' => $studyArea,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 
-  /**
-   * @Route("/duplicate")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @throws \Exception
-   */
+  /** @throws \Exception */
+  #[Route('/duplicate')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function duplicate(
     Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
     EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
     AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
     ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
     LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo,
-    TagRepository $tagRepository): array|Response
+    TagRepository $tagRepository): Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -649,10 +616,10 @@ class DataController extends AbstractController
       ]);
     }
 
-    return [
-      'form'      => $form->createView(),
+    return $this->render('data/duplicate.html.twig', [
+      'form'      => $form,
       'studyArea' => $studyAreaToDuplicate,
-    ];
+    ]);
   }
 
   /* Based on https://stackoverflow.com/a/45241792/1439286 */

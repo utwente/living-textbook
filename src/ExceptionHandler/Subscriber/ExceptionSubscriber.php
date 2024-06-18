@@ -11,9 +11,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
-  /** @return array */
   #[Override]
-  public static function getSubscribedEvents()
+  public static function getSubscribedEvents(): array
   {
     return [KernelEvents::EXCEPTION => [['onKernelException', 0]]];
   }

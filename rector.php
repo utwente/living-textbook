@@ -13,6 +13,14 @@ return RectorConfig::configure()
   ->withImportNames()
   ->withParallel(timeoutSeconds: 180, jobSize: 10)
   ->withPhpSets()
+  ->withSets([
+    \Rector\Symfony\Set\SymfonySetList::SYMFONY_54,
+    \Rector\Symfony\Set\SymfonySetList::SYMFONY_60,
+    \Rector\Symfony\Set\SymfonySetList::SYMFONY_61,
+    \Rector\Symfony\Set\SymfonySetList::SYMFONY_62,
+    \Rector\Symfony\Set\SymfonySetList::SYMFONY_63,
+    \Rector\Symfony\Set\SymfonySetList::SYMFONY_64,
+  ])
   ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml')
   ->withSymfonyContainerPhp(__DIR__ . '/tests/rector/symfony-container.php')
   ->withSkip([

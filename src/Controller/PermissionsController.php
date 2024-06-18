@@ -13,53 +13,33 @@ use App\Repository\UserGroupRepository;
 use App\Repository\UserRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\UserPermissions;
+use App\Security\Voters\StudyAreaVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class PermissionsController
- * This controller is used to edit the permissions.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/permissions", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/permissions')]
 class PermissionsController extends AbstractController
 {
-  /**
-   * @Route("/admins")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array
-   */
-  public function admins(UserRepository $userRepository)
+  #[Route('/admins')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function admins(UserRepository $userRepository): Response
   {
-    return [
+    return $this->render('permissions/admins.html.twig', [
       'admins' => $userRepository->getSuperAdmins(),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/admin/add")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
-  public function addAdmin(Request $request, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
+  #[Route('/admin/add')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function addAdmin(Request $request, EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     $form = $this->createForm(AddAdminType::class);
     $form->handleRequest($request);
@@ -76,19 +56,14 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_admins');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('permissions/add_admin.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/admin/{user}/remove", requirements={"user"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
-  public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
+  #[Route(path: '/admin/{user<\d+>}/remove')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     // Check if not self
     $secUser = $this->getUser();
@@ -122,40 +97,27 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_admins');
     }
 
-    return [
+    return $this->render('permissions/remove_admin.html.twig', [
       'admin' => $user,
-      'form'  => $form->createView(),
-    ];
+      'form'  => $form,
+    ]);
   }
 
-  /**
-   * @Route("/studyarea")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function studyArea(RequestStudyArea $requestStudyArea)
+  #[Route('/studyarea')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  public function studyArea(RequestStudyArea $requestStudyArea): Response
   {
-    return [
+    return $this->render('permissions/study_area.html.twig', [
       'studyArea' => $requestStudyArea->getStudyArea(),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/studyarea/add")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
+  #[Route('/studyarea/add')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function addPermissions(
     Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em,
-    UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans): array|Response
+    UserGroupRepository $userGroupRepository, UserRepository $userRepository, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -206,20 +168,15 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    return [
+    return $this->render('permissions/add_permissions.html.twig', [
       'studyArea' => $studyArea,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 
-  /**
-   * @Route("/studyarea/update/{user}/{groupType}", methods={"POST"},
-   *   requirements={"user"="\d+", "groupType"="editor|reviewer|analysis"}, options={"expose"=true})
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
+  #[Route('/studyarea/update/{user<\d+>}/{groupType<editor|reviewer|analysis>}', options: ['expose' => true], methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function updatePermission(
     Request $request, User $user, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
     UserGroupRepository $userGroupRepository): JsonResponse
@@ -249,14 +206,9 @@ class PermissionsController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/studyarea/update/{email}/{groupType}", methods={"POST"},
-   *   requirements={"groupType"="editor|reviewer|analysis"}, options={"expose"=true})
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
+  #[Route('/studyarea/update/{email}/{groupType<editor|reviewer|analysis>}', options: ['expose' => true], methods: [Request::METHOD_POST])]
+  #[IsGranted('STUDYAREA_OWNER', subject: 'requestStudyArea')]
   public function updateEmailPermission(
     Request $request, string $email, string $groupType, EntityManagerInterface $em, RequestStudyArea $requestStudyArea,
     UserGroupRepository $userGroupRepository): JsonResponse
@@ -294,15 +246,10 @@ class PermissionsController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/studyarea/revoke/all")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   */
+  #[Route('/studyarea/revoke/all')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function removeAllPermissions(
-    Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -325,24 +272,18 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    return [
+    return $this->render('permissions/remove_all_permissions.html.twig', [
       'studyArea' => $studyArea,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 
-  /**
-   * @Route("/studyarea/revoke/all/{groupType}", requirements={"groupType"="viewer|editor|reviewer|analysis"})
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
+  #[Route('/studyarea/revoke/all/{groupType<viewer|editor|reviewer|analysis>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function removeAllPermissionsForType(
     Request $request, RequestStudyArea $requestStudyArea, string $groupType,
-    EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans): array|Response
+    EntityManagerInterface $em, UserGroupRepository $userGroupRepository, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -405,23 +346,18 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    return [
+    return $this->render('permissions/remove_all_permissions_for_type.html.twig', [
       'studyArea' => $studyArea,
       'type'      => $groupType,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 
-  /**
-   * @Route("/studyarea/revoke/self")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  #[Route('/studyarea/revoke/self')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function removeSelf(
     Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-    EntityManagerInterface $entityManager): array|RedirectResponse
+    EntityManagerInterface $entityManager): Response
   {
     $user = $this->getUser();
     if (!$user) {
@@ -456,21 +392,16 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_default_landing');
     }
 
-    return [
-      'form'      => $form->createView(),
+    return $this->render('permissions/remove_self.html.twig', [
+      'form'      => $form,
       'studyArea' => $studyArea,
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/studyarea/revoke/{user}", requirements={"user"="\d+"})
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   */
+  #[Route('/studyarea/revoke/{user<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function removePermissions(
-    Request $request, RequestStudyArea $requestStudyArea, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, User $user, EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -507,22 +438,17 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    return [
+    return $this->render('permissions/remove_permissions.html.twig', [
       'studyArea' => $studyArea,
       'user'      => $user,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 
-  /**
-   * @Route("/studyarea/revoke/{email}")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   */
+  #[Route('/studyarea/revoke/{email}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function removeEmailPermissions(
-    Request $request, RequestStudyArea $requestStudyArea, string $email, EntityManagerInterface $em, TranslatorInterface $trans): array|RedirectResponse
+    Request $request, RequestStudyArea $requestStudyArea, string $email, EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     if ($studyArea->getAccessType() === StudyArea::ACCESS_PRIVATE) {
@@ -567,10 +493,10 @@ class PermissionsController extends AbstractController
       return $this->redirectToRoute('app_permissions_studyarea');
     }
 
-    return [
+    return $this->render('permissions/remove_email_permissions.html.twig', [
       'studyArea' => $studyArea,
       'email'     => $email,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 }

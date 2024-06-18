@@ -27,9 +27,8 @@ class Review implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
@@ -40,11 +39,9 @@ class Review implements IdInterface
    * @ORM\OneToMany(targetEntity="App\Entity\PendingChange", mappedBy="review", cascade={"remove"})
    *
    * @ORM\OrderBy({"objectType" = "ASC", "changeType" = "ASC"})
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Count(min=1)
    */
+  #[Assert\NotNull]
+  #[Assert\Count(min: 1)]
   private Collection $pendingChanges;
 
   /**
@@ -53,29 +50,25 @@ class Review implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
    *
    * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $owner = null;
 
   /**
    * Notes left for the reviewer, if any.
    *
    * @ORM\Column(type="text", nullable=true)
-   *
-   * @Assert\Length(max=2000)
    */
+  #[Assert\Length(max: 2000)]
   private ?string $notes = null;
 
   /**
    * Requested datetime.
    *
    * @ORM\Column(type="datetime")
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("datetime")
    */
+  #[Assert\NotNull]
+  #[Assert\Type('datetime')]
   private ?DateTime $requestedReviewAt = null;
 
   /**
@@ -84,18 +77,16 @@ class Review implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
    *
    * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $requestedReviewBy = null;
 
   /**
    * Reviewed at datetime.
    *
    * @ORM\Column(type="datetime", nullable=true)
-   *
-   * @Assert\Type("datetime")
    */
+  #[Assert\Type('datetime')]
   private ?DateTime $reviewedAt = null;
 
   /**
@@ -111,9 +102,8 @@ class Review implements IdInterface
    * Approval datetime.
    *
    * @ORM\Column(type="datetime", nullable=true)
-   *
-   * @Assert\Type("datetime")
    */
+  #[Assert\Type('datetime')]
   private ?DateTime $approvedAt = null;
 
   /**

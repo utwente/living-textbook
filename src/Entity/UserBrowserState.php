@@ -32,18 +32,16 @@ class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
    *
    * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $user = null;
 
   /**
    * @ORM\ManyToOne(targetEntity="StudyArea")
    *
    * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**

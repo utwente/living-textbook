@@ -35,9 +35,8 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="tags")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
@@ -50,32 +49,28 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
   /**
    * @ORM\Column(length=25, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(max=25)
-   *
    * @JMSA\Expose()
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(max: 25)]
   private string $name = '';
 
   /**
    * @ORM\Column(length=10, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
    * @Color()
    *
    * @JMSA\Expose()
    */
+  #[Assert\NotBlank]
   private string $color = '#8FBDAF';
 
   /**
    * @ORM\Column(name="description", type="text", nullable=true)
    *
-   * @Assert\Length(max=1024)
-   *
    * @JMSA\Expose()
    */
+  #[Assert\Length(max: 1024)]
   private ?string $description = null;
 
   public function __construct()

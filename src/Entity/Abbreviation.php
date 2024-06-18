@@ -42,39 +42,34 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="abbreviations")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
    * @ORM\Column(name="abbreviation", length=25, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=1, max=25)
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 1, max: 25)]
   private string $abbreviation = '';
 
   /**
    * @ORM\Column(name="meaning", length=255, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=1, max=255)
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 1, max: 255)]
   private string $meaning = '';
 
   /** Searches in the abbreviation on the given search, returns an array with search result metadata. */

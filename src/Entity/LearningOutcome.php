@@ -34,9 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\LearningOutcomeRepository")
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @UniqueEntity(fields={"studyArea","number"},errorPath="number",message="learning-outcome.number-already-used")
  */
+#[UniqueEntity(fields: ['studyArea', 'number'], errorPath: 'number', message: 'learning-outcome.number-already-used')]
 class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
@@ -55,9 +54,8 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningOutcomes")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
@@ -65,14 +63,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @ORM\Column(name="number", type="integer", nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Range(min="1", max="9999")
-   *
    * @Serializer\Groups({"Default", "review_change"})
    *
    * @Serializer\Type("int")
    */
+  #[Assert\NotBlank]
+  #[Assert\Range(min: '1', max: '9999')]
   private int $number = 1;
 
   /**
@@ -80,14 +76,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(max="255")
-   *
    * @Serializer\Groups({"Default", "review_change"})
    *
    * @Serializer\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(max: '255')]
   private string $name = '';
 
   /**
@@ -95,14 +89,13 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
    *
    * @ORM\Column(name="text", type="text", nullable=false)
    *
-   * @Assert\NotBlank()
-   *
    * @WordCount(min=1, max=10000)
    *
    * @Serializer\Groups({"Default", "review_change"})
    *
    * @Serializer\Type("string")
    */
+  #[Assert\NotBlank]
   private string $text = '';
 
   public function __construct()

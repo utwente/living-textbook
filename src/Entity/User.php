@@ -30,79 +30,67 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\EntityListeners({"App\Entity\Listener\UserListener"})
  *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @UniqueEntity({"username", "isOidc"}, message="user.email-used", errorPath="username")
  */
+#[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
 class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
+  public const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
   /**
    * Given name.
    *
    * @ORM\Column(name="given_name", type="string", length=100)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=2,max=100)
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 2, max: 100)]
   protected string $givenName = '';
 
   /**
    * Family name.
    *
    * @ORM\Column(name="last_name", type="string", length=100)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=2,max=100)
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 2, max: 100)]
   protected string $familyName = '';
 
   /**
    * Full name.
    *
    * @ORM\Column(name="full_name", type="string", length=200)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=4, max=200)
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 4, max: 200)]
   protected string $fullName = '';
 
   /**
    * Display name.
    *
    * @ORM\Column(name="display_name", type="string", length=200)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=4, max=200)
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 4, max: 200)]
   protected ?string $displayName = null;
 
   /**
    * Authentication name (username), equal to email address.
    *
    * @ORM\Column(name="username", type="string", length=180)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Email()
-   *
-   * @Assert\Length(min=5, max=180)
    */
+  #[Assert\NotBlank]
+  #[Assert\Email]
+  #[Assert\Length(min: 5, max: 180)]
   protected ?string $username = null;
 
   /**
    * If set, the account was created using OIDC.
    *
    * @ORM\Column(name="is_oidc", type="boolean", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   protected bool $isOidc = false;
 
   /**
@@ -117,9 +105,8 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * Datetime on which the user registered.
    *
    * @ORM\Column(name="registered_on", type="datetime")
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   protected DateTime $registeredOn;
 
   /**
@@ -133,18 +120,13 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * @var array[string]
    *
    * @ORM\Column(name="roles", type="array", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private array $securityRoles = [];
 
-  /**
-   * @ORM\Column(name="is_admin", type="boolean", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("bool")
-   */
+  /** @ORM\Column(name="is_admin", type="boolean", nullable=false) */
+  #[Assert\NotNull]
+  #[Assert\Type('bool')]
   private bool $isAdmin = false;
 
   /**
@@ -317,7 +299,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     $roles = ['ROLE_USER'];
 
     if ($this->isAdmin()) {
-      $roles[] = 'ROLE_SUPER_ADMIN';
+      $roles[] = self::ROLE_SUPER_ADMIN;
     }
 
     return array_merge($roles, $this->securityRoles);

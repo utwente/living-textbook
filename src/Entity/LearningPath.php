@@ -43,9 +43,8 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="learningPaths")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
@@ -53,16 +52,14 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    *
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(max=255)
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(max: 255)]
   private string $name = '';
 
   /**
@@ -70,14 +67,13 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    *
    * @ORM\Column(name="introduction", type="text", nullable=true)
    *
-   * @Assert\NotBlank();
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank] // ;
   private ?string $introduction = null;
 
   /**
@@ -85,16 +81,14 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    *
    * @ORM\Column(name="question", type="string", length=1024, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(max=1024)
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(max: 1024)]
   private string $question = '';
 
   /**
@@ -103,14 +97,13 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @ORM\OneToMany(targetEntity="App\Entity\LearningPathElement", mappedBy="learningPath",
    *   cascade={"persist", "remove"})
    *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type("ArrayCollection<App\Entity\LearningPathElement>")
    */
+  #[Assert\Valid]
   private Collection $elements;
 
   public function __construct()

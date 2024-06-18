@@ -21,25 +21,25 @@ use App\Repository\StudyAreaRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserBrowserStateRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -60,25 +60,15 @@ class DefaultController extends AbstractController
   /** @var LearningPath[] */
   private ?array $learningPaths = null;
 
-  /**
-   * @Route("/page/{_studyArea}/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""},
-   *                                        requirements={"_studyArea"="\d+", "pageUrl"=".+"}, name="_home",
-   *                                        options={"expose"=true, "no_login_wrap"=true})
-   * @Route("/page/{pageUrl}", defaults={"_studyArea"=null, "pageUrl"=""}, requirements={"pageUrl"=".+"},
-   *                           name="_home_simple", options={"no_login_wrap"=true})
-   *
-   * @Template("double_column.html.twig")
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   */
+  #[Route('/page/{_studyArea<\d+>}/{pageUrl<.+>}', name: '_home', options: ['expose' => true, 'no_login_wrap' => true], defaults: ['_studyArea' => null, 'pageUrl' => ''])]
+  #[Route('/page/{pageUrl<.+>}', name: '_home_simple', options: ['no_login_wrap' => true], defaults: ['_studyArea' => null, 'pageUrl' => ''])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function index(
     Request $request, RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
-    UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler): array|RedirectResponse
+    UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler): Response
   {
     // Disable profiler on the home page
-    if ($profiler) {
-      $profiler->disable();
-    }
+    $profiler?->disable();
 
     // Check for empty study area
     if (!$requestStudyArea->hasValue()) {
@@ -90,7 +80,7 @@ class DefaultController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Validate authentication
-    if (!$this->isGranted('STUDYAREA_SHOW', $studyArea)) {
+    if (!$this->isGranted(StudyAreaVoter::SHOW, $studyArea)) {
       // Forward to dashboard
       return $this->redirectToRoute('app_default_landing');
     }
@@ -98,27 +88,22 @@ class DefaultController extends AbstractController
     $user = $this->getUser();
     assert($user === null || $user instanceof User);
 
-    return [
+    return $this->render('double_column.html.twig', [
       'studyArea'    => $studyArea,
       'browserState' => $user ? $userBrowserStateRepository->findForUser($user, $studyArea) : null,
       'pageUrl'      => $pageUrl != ''
           ? '/' . $studyArea->getId() . '/' . $pageUrl
           : $router->generate('app_default_dashboard', ['_studyArea' => $studyArea->getId()]),
       'openMap' => $request->query->has('open'),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/", options={"no_login_wrap"=true})
-   * @Route("", name="base_url", options={"no_login_wrap"=true})
-   *
-   * @Template()
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   */
+  #[Route('/', options: ['no_login_wrap' => true])]
+  #[Route('', name: 'base_url', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function landing(
     Request $request, FormFactoryInterface $formFactory, TranslatorInterface $translator,
-    StudyAreaRepository $studyAreaRepository): array|Response
+    StudyAreaRepository $studyAreaRepository): Response
   {
     $user    = $this->getUser();
     $session = $request->getSession();
@@ -156,37 +141,31 @@ class DefaultController extends AbstractController
     $studyAreaForm  = $studyAreaCount > 1
         ? $this->createStudyAreaForm($formFactory, $translator, $user, null, 'dashboard.open') : null;
 
-    return [
+    return $this->render('default/landing.html.twig', [
       'loginForm'       => isset($loginForm) ? $loginForm->createView() : null,
       'loginFormActive' => $session->get(SecurityRequestAttributes::LAST_USERNAME, '') !== '',
       'singleStudyArea' => count($studyAreas) === 1 ? reset($studyAreas) : null,
       'studyAreaCount'  => $studyAreaCount,
-      'studyAreaForm'   => $studyAreaForm ? $studyAreaForm->createView() : null,
-    ];
+      'studyAreaForm'   => $studyAreaForm?->createView(),
+    ]);
   }
 
   /**
-   * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"})
-   * @Route("/{_studyArea}/dashboard", requirements={"_studyArea"="\d+"}, name="app_studyarea_list")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
    * @throws InvalidArgumentException
    * @throws NonUniqueResultException
    *
-   * @return array
-   *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/{_studyArea<\d+>}/dashboard')]
+  #[Route('/{_studyArea<\d+>}/dashboard', name: 'app_studyarea_list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function dashboard(
     RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
     ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo,
     ContributorRepository $contributorRepository, AbbreviationRepository $abbreviationRepository,
     ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
     LearningPathRepository $learningPathRepo, TagRepository $tagRepository,
-    UrlChecker $urlChecker, TranslatorInterface $translator)
+    UrlChecker $urlChecker, TranslatorInterface $translator): Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -234,9 +213,9 @@ class DefaultController extends AbstractController
       ];
     }
 
-    return array_merge([
+    return $this->render('default/dashboard.html.twig', array_merge([
       'conceptForm'           => $conceptForm->createView(),
-      'studyAreaForm'         => $studyAreaForm ? $studyAreaForm->createView() : null,
+      'studyAreaForm'         => $studyAreaForm?->createView(),
       'studyArea'             => $studyArea,
       'studyAreas'            => $studyAreas,
       'currentStudyArea'      => $requestStudyArea->getStudyArea(),
@@ -249,32 +228,26 @@ class DefaultController extends AbstractController
       'learningOutcomeCount'  => $learningOutcomeRepo->getCountForStudyArea($studyArea),
       'learningPathCount'     => $learningPathRepo->getCountForStudyArea($studyArea),
       'tagCount'              => $tagRepository->getCountForStudyArea($studyArea),
-    ], $urlData);
+    ], $urlData));
   }
 
   /**
-   * @Route("/{_studyArea}/urls", requirements={"_studyArea"="\d+"})
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
    * @throws InvalidArgumentException
-   *
-   * @return array
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/{_studyArea<\d+>}/urls')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function urlOverview(
     RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, ConceptRepository $conceptRepository,
     ContributorRepository $contributorRepository, LearningOutcomeRepository $learningOutcomeRepository,
-    ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository)
+    ExternalResourceRepository $externalResourceRepository, LearningPathRepository $learningPathRepository): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $urls      = $urlChecker->getUrlsForStudyArea($studyArea);
     // Not scanned yet, early return
     if ($urls === null) {
-      return ['lastScanned' => null];
+      return $this->render('default/url_overview.html.twig', ['lastScanned' => null]);
     }
     $badUrls = $urlChecker->checkStudyArea($studyArea) ?? ['bad' => [], 'unscanned' => [], 'wrongStudyArea' => []];
     // Get good urls
@@ -292,7 +265,7 @@ class DefaultController extends AbstractController
     [$unscannedInternalUrls, $unscannedExternalUrls] = $this->splitUrlLocation($badUrls['unscanned']);
     [$goodInternalUrls, $goodExternalUrls]           = $this->splitUrlLocation($goodUrls);
 
-    return [
+    return $this->render('default/url_overview.html.twig', [
       'lastScanned'           => $urls['lastScanned'],
       'badInternalUrls'       => $badInternalUrls,
       'wrongStudyAreaUrls'    => $badUrls['wrongStudyArea'],
@@ -308,21 +281,17 @@ class DefaultController extends AbstractController
         'externalResources' => $this->externalResources,
         'learningPaths'     => $this->learningPaths,
       ],
-    ];
+    ]);
   }
 
   /**
-   * @Route("/{_studyArea}/rescanurl/{url}", requirements={"_studyArea"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
    * @throws InvalidArgumentException
-   *
-   * @return RedirectResponse
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
-  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url)
+  #[Route('/{_studyArea<\d+>}/rescanurl/{url}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url): Response
   {
     $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode((string)$url)));
     $result = $urlChecker->checkUrl($url[0], true, false) ?
@@ -334,17 +303,13 @@ class DefaultController extends AbstractController
   }
 
   /**
-   * @Route("/{_studyArea}/rescanurls", requirements={"_studyArea"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
    * @throws InvalidArgumentException
-   *
-   * @return RedirectResponse
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
-  public function urlRescanStudyArea(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, TranslatorInterface $translator)
+  #[Route('/{_studyArea<\d+>}/rescanurls')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  public function urlRescanStudyArea(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, TranslatorInterface $translator): Response
   {
     $urlChecker->checkStudyArea($requestStudyArea->getStudyArea(), false, false);
     $this->addFlash('info', $translator->trans('url.rescanned-study-area'));

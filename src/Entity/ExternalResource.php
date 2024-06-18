@@ -52,53 +52,44 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="externalResources")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
    * @ORM\Column(name="title", type="string", length=512, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=1, max=512)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 1, max: 512)]
   private string $title = '';
 
   /**
    * @ORM\Column(name="description", type="text", nullable=true)
    *
-   * @Assert\Length(max=1024)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\Length(max: 1024)]
   private ?string $description = null;
 
   /**
    * @ORM\Column(name="url", type="string", length=512, nullable=true)
    *
-   * @Assert\Url()
-   *
-   * @Assert\Length(max=512)
-   *
    * @JMSA\Groups({"Default", "review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\Url]
+  #[Assert\Length(max: 512)]
   private ?string $url = null;
 
-  /**
-   * @ORM\Column(name="broken", type="boolean", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  /** @ORM\Column(name="broken", type="boolean", nullable=false) */
+  #[Assert\NotNull]
   private bool $broken = false;
 
   /** ExternalResource constructor. */

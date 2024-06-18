@@ -21,7 +21,7 @@ api_study_area_update:
     _studyArea: \d+
 
 api_controllers:
-  type: annotation
+  type: attribute
   resource: ../../src/Api/Controller/
   schemes: [ https ]
   prefix: /api/studyarea/{_studyArea}

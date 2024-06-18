@@ -3,62 +3,51 @@
 namespace App\Controller;
 
 use App\Entity\Help;
+use App\Entity\User;
 use App\Form\Help\EditHelpType;
 use App\Repository\HelpRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class HelpController
  * Scoped per study area to prevent reload issues.
- *
- * @Route("/{_studyArea}/help", requirements={"_studyArea"="\d+"})
  */
+#[Route('/{_studyArea<\d+>}/help')]
 class HelpController extends AbstractController
 {
   /**
    * Displays the available help documents.
    *
-   * @Route()
-   *
-   * @Template()
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
    * @throws NoResultException
    * @throws NonUniqueResultException
-   *
-   * @return array
    */
-  public function index(HelpRepository $helpRepository)
+  #[Route]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
+  public function index(HelpRepository $helpRepository): Response
   {
-    return [
+    return $this->render('help/index.html.twig', [
       'help' => $helpRepository->getCurrent(),
-    ];
+    ]);
   }
 
   /**
    * Edit the help page.
    *
-   * @Route("/edit")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   *
    * @throws NoResultException
    * @throws NonUniqueResultException
    */
+  #[Route('/edit')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function edit(
-    Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
+    Request $request, HelpRepository $helpRepository, EntityManagerInterface $em, TranslatorInterface $translator): Response
   {
     $help = $helpRepository->getCurrent();
     $form = $this->createForm(EditHelpType::class, $help);
@@ -78,8 +67,8 @@ class HelpController extends AbstractController
       return $this->redirectToRoute('app_help_index');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('help/edit.html.twig', [
+      'form' => $form,
+    ]);
   }
 }

@@ -48,12 +48,8 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface,
    * @ORM\Column(type="string", length=255)
    */
   private string $token; // Default in constructor
-
-  /**
-   * @ORM\Column(type="string", length=255, nullable=true)
-   *
-   * @Assert\Length(max=255)
-   */
+  /** @ORM\Column(type="string", length=255, nullable=true) */
+  #[Assert\Length(max: 255)]
   private ?string $description = null;
 
   /** @ORM\Column(type="datetime_immutable", nullable=true) */

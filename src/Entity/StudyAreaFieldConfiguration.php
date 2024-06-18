@@ -23,67 +23,40 @@ class StudyAreaFieldConfiguration implements IdInterface
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptDefinitionName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptIntroductionName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptSynonymsName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptPriorKnowledgeName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptTheoryExplanationName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptHowtoName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptExamplesName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $conceptSelfAssessmentName = null;
 
-  /**
-   * @ORM\Column(type="string", length=50, nullable=true)
-   *
-   * @Assert\Length(max="50")
-   */
+  /** @ORM\Column(type="string", length=50, nullable=true) */
+  #[Assert\Length(max: '50')]
   private ?string $learningOutcomeObjName = null;
 
   public function getConceptDefinitionName(): ?string

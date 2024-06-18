@@ -20,13 +20,9 @@ class StudyAreaGroup implements IdInterface
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\Column(type="string", length=255)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=5)
-   */
+  /** @ORM\Column(type="string", length=255) */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 5)]
   private ?string $name = null;
 
   /**

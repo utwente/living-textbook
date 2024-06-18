@@ -59,16 +59,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=3, max=255)
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default", "review_change", "name_only"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 3, max: 255)]
   private string $name = '';
 
   /**
@@ -87,14 +85,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /**
    * @ORM\Column(name="definition", type="text", nullable=false)
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotNull]
   private string $definition = '';
 
   /**
@@ -102,24 +99,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\JoinColumn(name="introduction_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\NotNull()
-   *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type(DataIntroduction::class)
    */
+  #[Assert\NotNull]
+  #[Assert\Valid]
   private DataIntroduction $introduction;
 
   /**
    * @ORM\Column(name="synonyms", type="string", length=512, nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Length(max=512)
    *
    * @JMSA\Expose()
    *
@@ -127,6 +118,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\Type("string")
    */
+  #[Assert\NotNull]
+  #[Assert\Length(max: 512)]
   private string $synonyms = '';
 
   /**
@@ -141,10 +134,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\OrderBy({"name" = "ASC"})
    *
-   * @Assert\NotNull()
-   *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -153,6 +142,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
+  #[Assert\Valid]
   private Collection $priorKnowledge;
 
   /**
@@ -174,8 +165,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\OrderBy({"number" = "ASC"})
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -184,6 +173,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private Collection $learningOutcomes;
 
   /**
@@ -191,14 +181,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\JoinColumn(name="theory_explanation_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type(DataTheoryExplanation::class)
    */
+  #[Assert\Valid]
   private DataTheoryExplanation $theoryExplanation;
 
   /**
@@ -206,14 +195,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\JoinColumn(name="how_to_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type(DataHowTo::class)
    */
+  #[Assert\Valid]
   private DataHowTo $howTo;
 
   /**
@@ -221,14 +209,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\JoinColumn(name="examples_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type(DataExamples::class)
    */
+  #[Assert\Valid]
   private DataExamples $examples;
 
   /**
@@ -243,8 +230,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\OrderBy({"title" = "ASC"})
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -253,6 +238,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private Collection $externalResources;
 
   /**
@@ -267,8 +253,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\OrderBy({"name" = "ASC"})
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -277,6 +261,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private Collection $contributors;
 
   /**
@@ -284,14 +269,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="concepts")
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Type("ArrayCollection<App\Entity\Tag>")
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private Collection $tags;
 
   /**
@@ -299,14 +283,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\JoinColumn(name="self_assessment_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
    *
    * @JMSA\Type(DataSelfAssessment::class)
    */
+  #[Assert\Valid]
   private DataSelfAssessment $selfAssessment;
 
   /**
@@ -315,10 +298,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
    *
    * @ORM\OrderBy({"outgoingPosition" = "ASC"})
-   *
-   * @Assert\Valid()
-   *
-   * @Assert\NotNull()
    *
    * @JMSA\Expose()
    *
@@ -330,6 +309,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\MaxDepth(3)
    */
+  #[Assert\Valid]
+  #[Assert\NotNull]
   private Collection $outgoingRelations;
 
   /**
@@ -339,10 +320,6 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @ORM\OrderBy({"incomingPosition" = "ASC"})
    *
-   * @Assert\Valid()
-   *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -351,15 +328,16 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @JMSA\MaxDepth(3)
    */
+  #[Assert\Valid]
+  #[Assert\NotNull]
   private Collection $incomingRelations;
 
   /**
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="concepts")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /** @ORM\Column(type="json", nullable=true) */

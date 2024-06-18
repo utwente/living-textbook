@@ -15,132 +15,105 @@ class SynthesizeRequest
    * Number of users to skip.
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
   public $usersIgnore = 10;
 
   /**
    * Number of perfect followers.
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
   public $usersPerfect = 20;
 
   /**
    * Number of flawed path followers.
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
   public $usersFlawed = 150;
 
   /**
    * Number of test followers of the flawed path followers.
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
-   *
-   * @Assert\LessThanOrEqual(propertyPath="usersFlawed")
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
+  #[Assert\LessThanOrEqual(propertyPath: 'usersFlawed')]
   public $usersFlawedTest = 100;
 
   /**
    * Number of concept browsers followers.
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
   public $usersConceptBrowsers = 30;
 
   /**
    * Number of test followers of the concept browsers followers.
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
-   *
-   * @Assert\LessThanOrEqual(propertyPath="usersConceptBrowsers")
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
+  #[Assert\LessThanOrEqual(propertyPath: 'usersConceptBrowsers')]
   public $usersConceptBrowsersTest = 20;
 
   /**
    * Number of test followers (not including the flawed and conceptBrowsers).
    *
    * @var int
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min=0, max=200)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 200)]
   public $usersTest = 100;
 
-  /**
-   * @var DateTimeImmutable|false
-   *
-   * @Assert\NotNull()
-   */
+  /** @var DateTimeImmutable|false */
+  #[Assert\NotNull]
   public $testMoment;
 
   /**
    * Probability that a flawed path follower stops after each concept.
    *
    * @var float
-   *
-   * @Assert\NotNull
-   *
-   * @Assert\Range(min=0, max=1)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 1)]
   public $flawedDropOffChance = 0.04;
 
   /**
    * Probability that a concept browser follower stops after each concept.
    *
    * @var float
-   *
-   * @Assert\NotNull
-   *
-   * @Assert\Range(min=0, max=1)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 0, max: 1)]
   public $conceptBrowserDropOffChance = 0.08;
 
   /**
    * The amount of days between the teaching moment of each learning path.
    *
    * @var int
-   *
-   * @Assert\NotNull
-   *
-   * @Assert\Range(min=1, max=31)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 1, max: 31)]
   public $daysBetweenLearningPaths = 7;
 
   /**
    * The amount of days between the last learning path and the test moment.
    *
    * @var int
-   *
-   * @Assert\NotNull
-   *
-   * @Assert\Range(min=1, max=31)
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: 1, max: 31)]
   public $daysBeforeTest = 7;
 
   public function __construct(StudyArea $studyArea)
@@ -149,7 +122,7 @@ class SynthesizeRequest
     $this->studyArea  = $studyArea;
   }
 
-  /** @Assert\Callback() */
+  #[Assert\Callback]
   public function validate(ExecutionContextInterface $context)
   {
     if ($this->testMoment >= new DateTimeImmutable()) {

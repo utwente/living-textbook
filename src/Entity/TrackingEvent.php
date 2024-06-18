@@ -32,56 +32,36 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
     'general_link_click',
   ];
 
-  /**
-   * @ORM\Column(name="user_id", type="string", length=255)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\NotBlank()
-   */
+  /** @ORM\Column(name="user_id", type="string", length=255) */
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
   private ?string $userId = null;
 
-  /**
-   * @ORM\Column(name="timestamp", type="datetime")
-   *
-   * @Assert\NotNull()
-   */
+  /** @ORM\Column(name="timestamp", type="datetime") */
+  #[Assert\NotNull]
   private ?DateTime $timestamp = null;
 
-  /**
-   * @ORM\Column(name="session_id", type="guid")
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\NotBlank()
-   */
+  /** @ORM\Column(name="session_id", type="guid") */
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
   private ?string $sessionId = null;
 
   /**
    * @ORM\ManyToOne(targetEntity="StudyArea")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * @ORM\Column(name="event", type="string", length=50)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Choice(choices=TrackingEvent::SUPPORTED_EVENTS)
-   *
-   * @Assert\Length(max=50)
-   */
+  /** @ORM\Column(name="event", type="string", length=50) */
+  #[Assert\NotNull]
+  #[Assert\Choice(choices: TrackingEvent::SUPPORTED_EVENTS)]
+  #[Assert\Length(max: 50)]
   private ?string $event = null;
 
-  /**
-   * @ORM\Column(name="context", type="array", nullable=true)
-   *
-   * @Assert\Type("array")
-   */
+  /** @ORM\Column(name="context", type="array", nullable=true) */
+  #[Assert\Type('array')]
   private ?array $context = null;
 
   public function getUserId(): string

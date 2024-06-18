@@ -20,7 +20,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Stringable;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -47,12 +47,10 @@ class StudyArea implements Stringable, IdInterface
   /**
    * @ORM\Column(name="name", type="string", length=255, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=3, max=255)
-   *
    * @JMSA\Expose()
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 3, max: 255)]
   private string $name = '';
 
   /** @ORM\Column(name="description", type="text", nullable=true) */
@@ -80,18 +78,16 @@ class StudyArea implements Stringable, IdInterface
    * @ORM\ManyToOne(targetEntity="User")
    *
    * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $owner = null;
 
   /**
    * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
    *
-   * @Assert\NotNull()
-   *
    * @StudyAreaAccessType()
    */
+  #[Assert\NotNull]
   private string $accessType = self::ACCESS_PRIVATE;
 
   /**
@@ -146,11 +142,8 @@ class StudyArea implements Stringable, IdInterface
   /** @ORM\Column(name="frozen_on", type="datetime", nullable=true) */
   private ?DateTime $frozenOn = null;
 
-  /**
-   * @ORM\Column(name="print_header", type="string", length=100, nullable=true)
-   *
-   * @Assert\Length(max=100)
-   */
+  /** @ORM\Column(name="print_header", type="string", length=100, nullable=true) */
+  #[Assert\Length(max: 100)]
   private ?string $printHeader = null;
 
   /** @ORM\Column(name="print_introduction", type="text", nullable=true) */
@@ -160,11 +153,9 @@ class StudyArea implements Stringable, IdInterface
    * If set, user interaction will be tracked (with user opt-in).
    *
    * @ORM\Column(name="track_users", type="boolean", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("bool")
    */
+  #[Assert\NotNull]
+  #[Assert\Type('bool')]
   private bool $trackUsers = false;
 
   /**
@@ -254,7 +245,7 @@ class StudyArea implements Stringable, IdInterface
     $this->stylingConfigurations = new ArrayCollection();
   }
 
-  /** @Assert\Callback() */
+  #[Assert\Callback]
   public function validateObject(ExecutionContextInterface $context)
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {

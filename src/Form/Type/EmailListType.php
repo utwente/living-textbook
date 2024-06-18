@@ -39,7 +39,7 @@ class EmailListType extends AbstractType
   }
 
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return TextareaType::class;
   }

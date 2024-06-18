@@ -42,22 +42,19 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="relationTypes")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
    * @ORM\Column(name="name", type="string", length=100, nullable=false)
    *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=3, max=100)
-   *
    * @Serializer\Groups({"Default", "review_change", "name_only"})
    *
    * @Serializer\Type("string")
    */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 3, max: 100)]
   private string $name = '';
 
   /**

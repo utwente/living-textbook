@@ -24,22 +24,18 @@ class UserGroupEmail
    * @ORM\ManyToOne(targetEntity="App\Entity\UserGroup", inversedBy="emails")
    *
    * @ORM\JoinColumn(name="user_group_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?UserGroup $userGroup = null;
 
   /**
    * @ORM\Id()
    *
    * @ORM\Column(name="email", type="string", length=180, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Email()
-   *
-   * @Assert\Length(max=180)
    */
+  #[Assert\NotBlank]
+  #[Assert\Email]
+  #[Assert\Length(max: 180)]
   private string $email = '';
 
   /** Custom sorter, based on email. */

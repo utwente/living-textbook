@@ -35,8 +35,6 @@ class ConceptRelation implements IdInterface
    *
    * @ORM\JoinColumn(name="source_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -45,6 +43,7 @@ class ConceptRelation implements IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private ?Concept $source = null;
 
   /**
@@ -52,8 +51,6 @@ class ConceptRelation implements IdInterface
    *
    * @ORM\JoinColumn(name="target_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"review_change"})
@@ -62,14 +59,13 @@ class ConceptRelation implements IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private ?Concept $target = null;
 
   /**
    * @ORM\ManyToOne(targetEntity="RelationType")
    *
    * @ORM\JoinColumn(name="relation_type", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    *
    * @JMSA\Expose()
    *
@@ -79,6 +75,7 @@ class ConceptRelation implements IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private ?RelationType $relationType = null;
 
   /**
@@ -86,11 +83,9 @@ class ConceptRelation implements IdInterface
    * in order to force the desired positioning.
    *
    * @ORM\Column(name="outgoing_position", type="integer", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\GreaterThanOrEqual(value="0")
    */
+  #[Assert\NotNull]
+  #[Assert\GreaterThanOrEqual(value: '0')]
   private int $outgoingPosition = 0;
 
   /**
@@ -98,11 +93,9 @@ class ConceptRelation implements IdInterface
    * in order to force the desired positioning.
    *
    * @ORM\Column(name="incoming_position", type="integer", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\GreaterThanOrEqual(value="0")
    */
+  #[Assert\NotNull]
+  #[Assert\GreaterThanOrEqual(value: '0')]
   private int $incomingPosition = 0;
 
   /** @ORM\Column(type="json", nullable=true) */

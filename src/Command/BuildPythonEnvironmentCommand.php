@@ -4,20 +4,15 @@ namespace App\Command;
 
 use App\Analytics\AnalyticsService;
 use Override;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand('ltb:python:build')]
 class BuildPythonEnvironmentCommand extends Command
 {
-  /**
-   * Makes the command lazy loaded.
-   *
-   * @var string
-   */
-  protected static $defaultName = 'ltb:python:build';
-
   public function __construct(private readonly AnalyticsService $analyticsService)
   {
     parent::__construct();

@@ -34,9 +34,8 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
    * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="stylingConfigurations")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /** @ORM\Column(type="json", nullable=true) */

@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Override;
 use Rollerworks\Component\PasswordStrength\Validator\Constraints\PasswordStrength;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,10 +23,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
+#[AsCommand('ltb:add:account')]
 class AddAccountCommand extends Command
 {
-  protected static $defaultName = 'ltb:add:account';
-
   public function __construct(
     private readonly EntityManagerInterface $entityManager,
     private readonly UserRepository $userRepository,

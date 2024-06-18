@@ -23,9 +23,8 @@ class OrderedCollectionType extends AbstractType
     $resolver->setDefault('position_selector', 'collection-position');
   }
 
-  /** @return string|null */
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return CollectionType::class;
   }

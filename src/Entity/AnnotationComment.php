@@ -37,27 +37,24 @@ class AnnotationComment implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annotations")
    *
    * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $user = null;
 
   /**
    * @ORM\ManyToOne(targetEntity="Annotation", inversedBy="comments")
    *
    * @ORM\JoinColumn(name="annotation_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?Annotation $annotation = null;
 
   /**
    * @ORM\Column(name="text", type="text", nullable=false)
    *
-   * @Assert\NotBlank()
-   *
    * @JMSA\Expose()
    */
+  #[Assert\NotBlank]
   private ?string $text = null;
 
   /**

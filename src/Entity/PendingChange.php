@@ -43,29 +43,25 @@ class PendingChange implements IdInterface
    * @ORM\ManyToOne(targetEntity="StudyArea")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
   /**
    * The change type of the pending change.
    *
    * @ORM\Column(type="string", length=10)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Choice(choices=PendingChange::CHANGE_TYPES)
    */
+  #[Assert\NotNull]
+  #[Assert\Choice(choices: PendingChange::CHANGE_TYPES)]
   private ?string $changeType = null;
 
   /**
    * The object type of the pending change.
    *
    * @ORM\Column(type="string", length=255)
-   *
-   * @Assert\NotBlank(allowNull=false)
    */
+  #[Assert\NotBlank(allowNull: false)]
   private ?string $objectType = null;
 
   /**
@@ -81,9 +77,8 @@ class PendingChange implements IdInterface
    * @var string|null
    *
    * @ORM\Column(type="text")
-   *
-   * @Assert\NotBlank(allowNull=false)
    */
+  #[Assert\NotBlank(allowNull: false)]
   private $payload;
 
   /**
@@ -92,9 +87,8 @@ class PendingChange implements IdInterface
    * @var array|null
    *
    * @ORM\Column(type="json")
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private $changedFields;
 
   /**
@@ -103,9 +97,8 @@ class PendingChange implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\User")
    *
    * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $owner = null;
 
   /**
@@ -121,9 +114,8 @@ class PendingChange implements IdInterface
    * If any, review comments on particular changes (per field) are stores here.
    *
    * @ORM\Column(type="json", nullable=true)
-   *
-   * @Assert\Type("array")
    */
+  #[Assert\Type('array')]
   private ?array $reviewComments = null;
 
   /** Cached deserialized object. */
@@ -323,11 +315,8 @@ class PendingChange implements IdInterface
     return $this;
   }
 
-  /**
-   * Validates the object id field, which must be empty for new objects, but filled for existing objects.
-   *
-   * @Assert\Callback()
-   */
+  /** Validates the object id field, which must be empty for new objects, but filled for existing objects. */
+  #[Assert\Callback]
   public function validateObjectId(ExecutionContextInterface $context, $payload)
   {
     $violation = null;

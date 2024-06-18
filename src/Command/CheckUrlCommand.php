@@ -2,22 +2,16 @@
 
 namespace App\Command;
 
-use App\Repository\StudyAreaRepository;
 use App\UrlUtils\UrlChecker;
 use Override;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand('ltb:check:urls')]
 class CheckUrlCommand extends Command
 {
-  /**
-   * Makes the command lazy loaded.
-   *
-   * @var string
-   */
-  protected static $defaultName = 'ltb:check:urls';
-
   public function __construct(private readonly UrlChecker $urlChecker)
   {
     parent::__construct();

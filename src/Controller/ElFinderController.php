@@ -4,31 +4,21 @@ namespace App\Controller;
 
 use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class ElFinderController
- * Study area id 0 is used to indicate the global storage space.
- *
- * @author BobV
- *
- * @Route("/elfinder")
- */
+/** Study area id 0 is used to indicate the global storage space. */
+#[Route('/elfinder')]
 class ElFinderController extends AbstractController
 {
-  /**
-   * @Route("/load/{instance}", defaults={"instance"="default"}, name="ef_connect", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("ROLE_USER")
-   *
-   * @return Response
-   */
-  public function load(Request $request, string $instance, StudyAreaRepository $studyAreaRepository)
+  #[Route('/load/{instance}', name: 'ef_connect', options: ['no_login_wrap' => true], defaults: ['instance' => 'default'])]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
+  public function load(Request $request, string $instance, StudyAreaRepository $studyAreaRepository): Response
   {
     // Parse study area from the home folder
     if (null === ($homeFolderString = $request->query->get('homeFolder', null))) {
@@ -56,15 +46,9 @@ class ElFinderController extends AbstractController
     return $this->forwardToElFinder('load', $instance, $studyAreaId, $request->query->all());
   }
 
-  /**
-   * @Route("/show/{instance}/{studyAreaId}", requirements={"studyAreaId"="\d+"},
-   *   defaults={"instance"="default"}, name="elfinder", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("ROLE_USER")
-   *
-   * @return Response
-   */
-  public function show(Request $request, string $instance, int $studyAreaId, StudyAreaRepository $studyAreaRepository)
+  #[Route('/show/{instance}/{studyAreaId<\d+>}', name: 'elfinder', options: ['no_login_wrap' => true], defaults: ['instance' => 'default'])]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
+  public function show(Request $request, string $instance, int $studyAreaId, StudyAreaRepository $studyAreaRepository): Response
   {
     $studyArea = null;
 
@@ -83,12 +67,8 @@ class ElFinderController extends AbstractController
     return $this->forwardToElFinder('show', $instance, $studyArea ? $studyArea->getId() : 0, $request->query->all());
   }
 
-  /**
-   * Forward the request to the correct elfinder controller.
-   *
-   * @return Response
-   */
-  protected function forwardToElFinder(string $action, string $instance, int $studyAreaId, array $query)
+  /** Forward the request to the correct elfinder controller. */
+  protected function forwardToElFinder(string $action, string $instance, int $studyAreaId, array $query): Response
   {
     // Check whether the folder for the study area exists
     $folder     = $studyAreaId === 0

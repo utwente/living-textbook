@@ -50,13 +50,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   {
   }
 
-  /**
-   * Determine the events to subscribe to.
-   *
-   * @return array
-   */
+  /** Determine the events to subscribe to. */
   #[Override]
-  public static function getSubscribedEvents()
+  public static function getSubscribedEvents(): array
   {
     return [
       KernelEvents::CONTROLLER => [

@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 class SingleSubmitType extends AbstractType
 {
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return ButtonType::class;
   }

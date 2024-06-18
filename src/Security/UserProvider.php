@@ -54,6 +54,7 @@ class UserProvider implements OidcUserProviderInterface
    *
    * @return User
    */
+  #[Override]
   public function loadUserByIdentifier(string $identifier, bool $isOidc = false): UserInterface
   {
     $user = $this->em->getRepository(User::class)
@@ -84,9 +85,7 @@ class UserProvider implements OidcUserProviderInterface
     }
   }
 
-  /**
-   * Whether this provider supports the given user class.
-   */
+  /** Whether this provider supports the given user class. */
   #[Override]
   public function supportsClass(string $class): bool
   {

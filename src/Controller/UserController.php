@@ -16,30 +16,23 @@ use App\Repository\UserApiTokenRepository;
 use App\Repository\UserProtoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class UserController.
- *
- * @Route("/{_studyArea}/users", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/users')]
 class UserController extends AbstractController
 {
-  /**
-   * @Route("/api-tokens")
-   *
-   * @IsGranted("ROLE_USER")
-   */
+  #[Route('/api-tokens')]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function apiTokens(UserApiTokenRepository $tokenRepository): Response
   {
     return $this->render('user/api_tokens.html.twig', [
@@ -47,15 +40,12 @@ class UserController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/api-tokens/generate")
-   *
-   * @IsGranted("ROLE_USER")
-   */
+  #[Route('/api-tokens/generate')]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function apiTokensGenerate(
     Request $request,
     EntityManagerInterface $em,
-    UserPasswordEncoderInterface $passwordEncoder): Response
+    UserPasswordHasherInterface $passwordHasher): Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -66,7 +56,7 @@ class UserController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       // Create the actual token, with the actual token in it
       $token       = bin2hex(random_bytes(32));
-      $tokenObject = (new UserApiToken($user, $passwordEncoder->encodePassword($formToken, $token)))
+      $tokenObject = (new UserApiToken($user, $passwordHasher->hashPassword($formToken, $token)))
         ->setDescription($formToken->getDescription())
         ->setValidUntil($formToken->getValidUntil());
 
@@ -79,15 +69,12 @@ class UserController extends AbstractController
     }
 
     return $this->render('user/api_tokens_generate.html.twig', [
-      'form' => $form->createView(),
+      'form' => $form,
     ]);
   }
 
-  /**
-   * @Route("/api-tokens/generated")
-   *
-   * @IsGranted("ROLE_USER")
-   */
+  #[Route('/api-tokens/generated')]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function apiTokensGenerated(Request $request): Response
   {
     if (!$token = $request->getSession()->get('new_token')) {
@@ -102,11 +89,8 @@ class UserController extends AbstractController
     ]);
   }
 
-  /**
-   * @Route("/api-tokens/remove/{userApiToken}", requirements={"userApiToken": "\d+"})
-   *
-   * @IsGranted("ROLE_USER")
-   */
+  #[Route('/api-tokens/remove/{userApiToken<\d+>}')]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function apiTokensRemove(
     Request $request,
     UserApiToken $userApiToken,
@@ -134,21 +118,17 @@ class UserController extends AbstractController
     }
 
     return $this->render('user/api_tokens_remove.html.twig', [
-      'form' => $form->createView(),
+      'form' => $form,
     ]);
   }
 
   /**
-   * @Route("/fallback/add")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   *
    * @throws TransportExceptionInterface
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/fallback/add')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function fallbackAdd(
     Request $request,
     EntityManagerInterface $em,
@@ -156,7 +136,7 @@ class UserController extends AbstractController
     MailerInterface $mailer,
     UserRepository $userRepository,
     UserProtoRepository $userProtoRepository,
-    UserPasswordEncoderInterface $userPasswordEncoder): array|Response
+    UserPasswordHasherInterface $passwordHasher): Response
   {
     $form = $this->createForm(AddFallbackUsersType::class);
     $form->handleRequest($request);
@@ -178,7 +158,7 @@ class UserController extends AbstractController
 
         // Generate a password
         $password = bin2hex(random_bytes(20));
-        $userProto->setPassword($userPasswordEncoder->encodePassword($userProto, $password));
+        $userProto->setPassword($passwordHasher->hashPassword($userProto, $password));
 
         // Persist the new user
         $em->persist($userProto);
@@ -207,23 +187,18 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('user/fallback_add.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/fallback/password/change")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_USER")
-   */
+  #[Route('/fallback/password/change')]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function fallbackChangeOwnPassword(
     Request $request,
     EntityManagerInterface $em,
-    UserPasswordEncoderInterface $encoder,
-    TranslatorInterface $trans): array|Response
+    UserPasswordHasherInterface $passwordHasher,
+    TranslatorInterface $trans): Response
   {
     $user = $this->getUser();
     assert($user instanceof User);
@@ -237,7 +212,7 @@ class UserController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $user->setPassword($encoder->encodePassword($user, $form->getData()['password']));
+      $user->setPassword($passwordHasher->hashPassword($user, $form->getData()['password']));
       $em->flush();
 
       $this->addFlash('success', $trans->trans('user.fallback.password-updated-own'));
@@ -245,19 +220,14 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_default_dashboard');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('user/fallback_change_own_password.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/fallback/edit/{user}", requirements={"user"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
-  public function fallbackEdit(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): array|Response
+  #[Route(path: '/fallback/edit/{user<\d+>}', requirements: ['user' => '\d+'])]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function fallbackEdit(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -275,41 +245,31 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
-    return [
+    return $this->render('user/fallback_edit.html.twig', [
       'user' => $user,
-      'form' => $form->createView(),
-    ];
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/fallback/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
-  public function fallbackList(UserRepository $userRepository, UserProtoRepository $userProtoRepository): array
+  #[Route('/fallback/list')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function fallbackList(UserRepository $userRepository, UserProtoRepository $userProtoRepository): Response
   {
     // Retrieve users
-    return [
+    return $this->render('user/fallback_list.html.twig', [
       'users'        => $userRepository->getFallbackUsers(),
       'open_invites' => $userProtoRepository->findAll(),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/fallback/password/{user}", requirements={"user"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
+  #[Route('/fallback/password/{user<\d+>}')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function fallbackResetPassword(
     Request $request,
     User $user,
     EntityManagerInterface $em,
-    UserPasswordEncoderInterface $encoder,
-    TranslatorInterface $trans): array|Response
+    UserPasswordHasherInterface $passwordHasher,
+    TranslatorInterface $trans): Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -320,7 +280,7 @@ class UserController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $user->setPassword($encoder->encodePassword($user, $form->getData()['password']));
+      $user->setPassword($passwordHasher->hashPassword($user, $form->getData()['password']));
       $em->flush();
 
       $this->addFlash('success', $trans->trans('user.fallback.password-updated', [
@@ -332,25 +292,20 @@ class UserController extends AbstractController
 
     $this->addFlash('warning', $trans->trans('user.fallback.reset-password-warning'));
 
-    return [
+    return $this->render('user/fallback_reset_password.html.twig', [
       'user' => $user,
-      'form' => $form->createView(),
-    ];
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/fallback/remove/{user}", requirements={"user"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
+  #[Route('/fallback/remove/{user<\d+>}')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function fallbackRemove(
     Request $request,
     User $user,
     EntityManagerInterface $em,
     TranslatorInterface $trans,
-    StudyAreaRepository $studyAreaRepository): array|Response
+    StudyAreaRepository $studyAreaRepository): Response
   {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
@@ -388,25 +343,20 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
-    return [
+    return $this->render('user/fallback_remove.html.twig', [
       'user'       => $user,
       'studyAreas' => $studyAreas,
-      'form'       => $form->createView(),
-    ];
+      'form'       => $form,
+    ]);
   }
 
-  /**
-   * @Route("/invite/remove/{user}", requirements={"user"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
+  #[Route('/invite/remove/{user<\d+>}')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function fallbackInviteRemove(
     Request $request,
     UserProto $user,
     EntityManagerInterface $em,
-    TranslatorInterface $trans): array|Response
+    TranslatorInterface $trans): Response
   {
     $form = $this->createForm(RemoveType::class, null, [
       'cancel_route' => 'app_user_fallbacklist',
@@ -424,9 +374,9 @@ class UserController extends AbstractController
       return $this->redirectToRoute('app_user_fallbacklist');
     }
 
-    return [
+    return $this->render('user/fallback_invite_remove.html.twig', [
       'userProto' => $user,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 }

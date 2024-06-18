@@ -34,9 +34,8 @@ class LearningPathElement implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\LearningPath", inversedBy="elements")
    *
    * @ORM\JoinColumn(name="learning_path_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?LearningPath $learningPath = null;
 
   /**
@@ -46,8 +45,6 @@ class LearningPathElement implements IdInterface
    *
    * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
    *
-   * @Assert\NotNull()
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default", "review_change"})
@@ -56,6 +53,7 @@ class LearningPathElement implements IdInterface
    *
    * @JMSA\MaxDepth(2)
    */
+  #[Assert\NotNull]
   private ?Concept $concept = null;
 
   /**
@@ -80,14 +78,13 @@ class LearningPathElement implements IdInterface
    *
    * @ORM\Column(type="string", length=1024, nullable=true)
    *
-   * @Assert\Length(max=1024)
-   *
    * @JMSA\Expose()
    *
    * @JMSA\Groups({"Default","review_change"})
    *
    * @JMSA\Type("string")
    */
+  #[Assert\Length(max: 1024)]
   private ?string $description = null;
 
   public function getLearningPath(): ?LearningPath

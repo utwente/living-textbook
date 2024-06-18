@@ -39,18 +39,13 @@ class UserGroup implements IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea", inversedBy="userGroups")
    *
    * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * @ORM\Column(name="group_type", type="string", length=10, nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Choice(callback="getGroupTypes")
-   */
+  /** @ORM\Column(name="group_type", type="string", length=10, nullable=false) */
+  #[Assert\NotNull]
+  #[Assert\Choice(callback: 'getGroupTypes')]
   private string $groupType = self::GROUP_VIEWER;
 
   /**
@@ -62,9 +57,8 @@ class UserGroup implements IdInterface
    *   joinColumns={@ORM\JoinColumn(name="user_group_id", referencedColumnName="id")},
    *   inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
    * )
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private Collection $users;
 
   /**
@@ -72,9 +66,8 @@ class UserGroup implements IdInterface
    *
    * @ORM\OneToMany(targetEntity="App\Entity\UserGroupEmail",
    *   mappedBy="userGroup", fetch="EAGER", cascade={"persist", "remove"})
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private Collection $emails;
 
   /** UserGroup constructor. */

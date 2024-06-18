@@ -45,9 +45,8 @@ class Annotation implements SearchableInterface, IdInterface
    * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="annotations")
    *
    * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?User $user = null;
 
   /**
@@ -56,9 +55,8 @@ class Annotation implements SearchableInterface, IdInterface
    * @ORM\ManyToOne(targetEntity="Concept")
    *
    * @ORM\JoinColumn(name="concept_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private ?Concept $concept = null;
 
   /**
@@ -75,12 +73,10 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @ORM\Column(name="context", type="string", length=50, nullable=false)
    *
-   * @Assert\NotNull()
-   *
-   * @Assert\NotBlank()
-   *
    * @JMSA\Expose()
    */
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
   private string $context = '';
 
   /**
@@ -89,12 +85,10 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @ORM\Column(name="start", type="integer", nullable=false)
    *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min="-1")
-   *
    * @JMSA\Expose()
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: '-1')]
   private int $start = 0;
 
   /**
@@ -103,16 +97,11 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @ORM\Column(name="end", type="integer", nullable=false)
    *
-   * @Assert\NotNull()
-   *
-   * @Assert\Range(min="0")
-   *
-   * @Assert\Expression(
-   *   "value !== this.getStart()",
-   *   message="annotation.start-end-identical")
-   *
    * @JMSA\Expose()
    */
+  #[Assert\NotNull]
+  #[Assert\Range(min: '0')]
+  #[Assert\Expression('value !== this.getStart()', message: 'annotation.start-end-identical')]
   private int $end = 0;
 
   /**
@@ -121,12 +110,9 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @ORM\Column(name="selected_text", type="text", nullable=true)
    *
-   * @Assert\Expression(
-   *   "(value === null && this.getStart() === -1) || (value !== null && this.getStart() >= 0)",
-   *   message="annotation.selection-incorrect")
-   *
    * @JMSA\Expose()
    */
+  #[Assert\Expression('(value === null && this.getStart() === -1) || (value !== null && this.getStart() >= 0)', message: 'annotation.selection-incorrect')]
   private ?string $selectedText = null;
 
   /**
@@ -145,9 +131,8 @@ class Annotation implements SearchableInterface, IdInterface
    * @ORM\Column(name="visibility", type="string", length=10)
    *
    * @JMSA\Expose()
-   *
-   * @Assert\Choice(callback="visibilityOptions")
    */
+  #[Assert\Choice(callback: 'visibilityOptions')]
   private string $visibility;
 
   /**
@@ -155,15 +140,10 @@ class Annotation implements SearchableInterface, IdInterface
    *
    * @ORM\OneToMany(targetEntity="AnnotationComment", mappedBy="annotation")
    *
-   * @Assert\Expression(
-   *   "(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)",
-   *   message="annotation.comments-incorrect"
-   * )
-   *
-   * @Assert\Valid()
-   *
    * @JMSA\Expose
    */
+  #[Assert\Expression('(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)', message: 'annotation.comments-incorrect')]
+  #[Assert\Valid]
   private Collection $comments;
 
   /**

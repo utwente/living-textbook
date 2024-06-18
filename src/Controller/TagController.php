@@ -9,18 +9,16 @@ use App\Form\Tag\EditTagType;
 use App\Form\Type\RemoveType;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/{_studyArea}/tag", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/tag')]
 class TagController extends AbstractController
 {
   public function __construct(
@@ -28,19 +26,13 @@ class TagController extends AbstractController
   ) {
   }
 
-  /**
-   * @Route("/add")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
-   */
+  /** @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea") */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function add(
     Request $request,
     RequestStudyArea $requestStudyArea,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -61,26 +53,20 @@ class TagController extends AbstractController
       return $this->redirectToRoute('app_tag_list');
     }
 
-    return [
+    return $this->render('tag/add.html.twig', [
       'tag'  => $tag,
-      'form' => $form->createView(),
-    ];
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{tag}", requirements={"tag"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
-   */
+  /** @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea") */
+  #[Route('/edit/{tag<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
     Tag $tag,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -106,60 +92,44 @@ class TagController extends AbstractController
       return $this->redirectToRoute('app_tag_list');
     }
 
-    return [
+    return $this->render('tag/edit.html.twig', [
       'tag'  => $tag,
-      'form' => $form->createView(),
-    ];
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/show/{tag}", requirements={"tag"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
-  public function show(RequestStudyArea $requestStudyArea, Tag $tag)
+  #[Route('/show/{tag<\d+>}')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function show(RequestStudyArea $requestStudyArea, Tag $tag): Response
   {
     // Check if correct study area
     if ($tag->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
-    return [
+    return $this->render('tag/show.html.twig', [
       'tag' => $tag,
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
-  public function list(RequestStudyArea $requestStudyArea, TagRepository $repo): array
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function list(RequestStudyArea $requestStudyArea, TagRepository $repo): Response
   {
-    return [
+    return $this->render('tag/list.html.twig', [
       'studyArea' => $requestStudyArea->getStudyArea(),
       'tags'      => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{tag}", requirements={"tag"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea")
-   */
+  /** @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea") */
+  #[Route('/remove/{tag<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,
     Tag $tag,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -182,10 +152,10 @@ class TagController extends AbstractController
       return $this->redirectToRoute('app_tag_list');
     }
 
-    return [
+    return $this->render('tag/remove.html.twig', [
       'tag'  => $tag,
-      'form' => $form->createView(),
-    ];
+      'form' => $form,
+    ]);
   }
 
   private function getHandler(): TagHandler

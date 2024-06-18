@@ -17,26 +17,20 @@ use App\Repository\LearningPathRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use App\Security\Voters\StudyAreaVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class ConceptController.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/concept", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/concept')]
 class ConceptController extends AbstractController
 {
   public function __construct(
@@ -45,19 +39,13 @@ class ConceptController extends AbstractController
   ) {
   }
 
-  /**
-   * @Route("/add")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_concept_list", subject="requestStudyArea")
-   */
+  /** @DenyOnFrozenStudyArea(route="app_concept_list", subject="requestStudyArea") */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function add(
     Request $request,
     RequestStudyArea $requestStudyArea,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -90,26 +78,20 @@ class ConceptController extends AbstractController
       return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
     }
 
-    return [
+    return $this->render('concept/add.html.twig', [
       'concept' => $concept,
-      'form'    => $form->createView(),
-    ];
+      'form'    => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{concept}", requirements={"concept"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea")
-   */
+  /** @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea") */
+  #[Route(path: '/edit/{concept<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
     Concept $concept,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -162,29 +144,25 @@ class ConceptController extends AbstractController
       return $this->redirectToRoute('app_concept_show', ['concept' => $concept->getId()]);
     }
 
-    return [
+    return $this->render('concept/edit.html.twig', [
       'concept' => $concept,
-      'form'    => $form->createView(),
-    ];
+      'form'    => $form,
+    ]);
   }
 
   /**
    * Endpoint to re-edit the changes that are pending for submission. Fields that have already been submitted
    * in another pending change cannot be edited from here.
    *
-   * @Route("/edit/pending/{pendingChange}", requirements={"pendingChange"="\d+"})
-   *
-   * @Template("concept/edit.html.twig")
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
    * @DenyOnFrozenStudyArea(route="app_review_submit", subject="requestStudyArea")
    */
+  #[Route(path: '/edit/pending/{pendingChange}', requirements: ['pendingChange' => '\d+'])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function editPending(
     Request $request,
     RequestStudyArea $requestStudyArea,
     PendingChange $pendingChange,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -248,29 +226,25 @@ class ConceptController extends AbstractController
       $this->addFlash('review', $trans->trans('review.edit-pending'));
     }
 
-    return [
+    return $this->render('concept/edit.html.twig', [
       'concept' => $concept,
-      'form'    => $form->createView(),
-    ];
+      'form'    => $form,
+    ]);
   }
 
   /**
    * Instantiate an instance from a selected base concept.
    *
-   * @Route("/instantiate/{concept<\d+>?null}", options={"expose"=true})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
    * @DenyOnFrozenStudyArea(route="app_concept_listinstances", subject="requestStudyArea")
    */
+  #[Route('/instantiate/{concept<\d+>?null}', options: ['expose' => true])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function instantiate(
     Request $request,
     RequestStudyArea $requestStudyArea,
     ?Concept $concept,
     RelationTypeRepository $relationRepository,
-    TranslatorInterface $translator): Response|array
+    TranslatorInterface $translator): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -371,22 +345,17 @@ class ConceptController extends AbstractController
       return $this->redirectToRoute('app_concept_listinstances');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('concept/instantiate.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function list(
     ConceptRepository $repo,
     RequestStudyArea $requestStudyArea,
-    AnnotationRepository $annotationRepository): array
+    AnnotationRepository $annotationRepository): Response
   {
     /** @var User $user */
     $user      = $this->getUser();
@@ -397,24 +366,19 @@ class ConceptController extends AbstractController
         ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
         : null;
 
-    return [
+    return $this->render('concept/list.html.twig', [
       'annotationCounts' => $annotationCounts,
       'studyArea'        => $studyArea,
       'concepts'         => $concepts,
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/list/instances")
-   *
-   * @Template("concept/list.html.twig")
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  #[Route('/list/instances')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function listInstances(
     ConceptRepository $repo,
     RequestStudyArea $requestStudyArea,
-    AnnotationRepository $annotationRepository): array
+    AnnotationRepository $annotationRepository): Response
   {
     /** @var User $user */
     $user      = $this->getUser();
@@ -425,29 +389,23 @@ class ConceptController extends AbstractController
         ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
         : null;
 
-    return [
+    return $this->render('concept/list.html.twig', [
       'instances'        => true,
       'annotationCounts' => $annotationCounts,
       'studyArea'        => $studyArea,
       'concepts'         => $concepts,
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{concept}", requirements={"concept"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea")
-   */
+  /** @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea") */
+  #[Route(path: '/remove/{concept<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,
     Concept $concept,
     LearningPathRepository $learningPathRepository,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -479,34 +437,29 @@ class ConceptController extends AbstractController
       return $this->redirectToRoute($concept->isInstance() ? 'app_concept_listinstances' : 'app_concept_list');
     }
 
-    return [
+    return $this->render('concept/remove.html.twig', [
       'concept'       => $concept,
       'learningPaths' => $learningPathRepository->findForConcept($concept),
-      'form'          => $form->createView(),
-    ];
+      'form'          => $form,
+    ]);
   }
 
-  /**
-   * @Route("/{concept}", requirements={"concept"="\d+"}, options={"expose"=true})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  #[Route('/{concept<\d+>}', options: ['expose' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function show(
     Concept $concept,
     RequestStudyArea $requestStudyArea,
-    LearningPathRepository $learningPathRepository): array
+    LearningPathRepository $learningPathRepository): Response
   {
     // Check study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
-    return [
+    return $this->render('concept/show.html.twig', [
       'concept'       => $concept,
       'learningPaths' => $learningPathRepository->findForConcept($concept),
-    ];
+    ]);
   }
 
   private function getHandler(): ConceptEntityHandler

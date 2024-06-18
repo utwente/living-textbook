@@ -21,9 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(indexes={@ORM\Index(columns={"email"})})
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserProtoRepository")
- *
- * @UniqueEntity({"email"}, errorPath="email")
  */
+#[UniqueEntity(['email'], errorPath: 'email')]
 class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
@@ -33,20 +32,17 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
    * The email address that has been invited.
    *
    * @ORM\Column(type="string")
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Email()
    */
+  #[Assert\NotBlank]
+  #[Assert\Email]
   private string $email = '';
 
   /**
    * The invited at timestamp.
    *
    * @ORM\Column(type="datetime")
-   *
-   * @Assert\NotNull()
    */
+  #[Assert\NotNull]
   private DateTime $invitedAt;
 
   /**
@@ -55,9 +51,8 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
    * @var string;
    *
    * @ORM\Column(type="string", unique=true)
-   *
-   * @Assert\NotBlank()
    */
+  #[Assert\NotBlank]
   private string $password = '';
 
   public function __construct()

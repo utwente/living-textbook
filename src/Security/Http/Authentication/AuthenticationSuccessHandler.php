@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessH
 use Symfony\Component\Security\Http\HttpUtils;
 
 /**
- * Verifies the original target url, and insert the map if required
+ * Verifies the original target url, and insert the map if required.
  */
 class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 {

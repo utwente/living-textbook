@@ -32,9 +32,8 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     $this->router                = $router;
   }
 
-  /** @return array */
   #[Override]
-  public static function getSubscribedEvents()
+  public static function getSubscribedEvents(): array
   {
     return [
       KernelEvents::CONTROLLER_ARGUMENTS => [

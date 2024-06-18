@@ -25,9 +25,8 @@ class OrderedCollectionElementType extends AbstractType
     $view->vars['attr']['class'] .= ' collection-position';
   }
 
-  /** @return string|null */
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return HiddenType::class;
   }

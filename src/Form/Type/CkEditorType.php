@@ -44,7 +44,7 @@ class CkEditorType extends AbstractType
   }
 
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return \FOS\CKEditorBundle\Form\Type\CKEditorType::class;
   }

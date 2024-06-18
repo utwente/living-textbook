@@ -6,12 +6,12 @@ use App\Entity\Concept;
 use App\Entity\PendingChange;
 use App\Entity\User;
 use Override;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
 
 class ReviewSubmissionObjectFooterType extends AbstractType
 {
