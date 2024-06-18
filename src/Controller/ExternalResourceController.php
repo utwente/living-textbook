@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\ExternalResource;
 use App\Entity\PendingChange;
 use App\Form\ExternalResource\EditExternalResourceType;
@@ -21,9 +21,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/{_studyArea<\d+>}/externalresource')]
 class ExternalResourceController extends AbstractController
 {
-  /** @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_externalresource_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
@@ -53,9 +53,9 @@ class ExternalResourceController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea") */
   #[Route('/edit/{externalResource<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_externalresource_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
     ReviewService $reviewService, TranslatorInterface $trans): Response
@@ -113,9 +113,9 @@ class ExternalResourceController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea") */
   #[Route('/remove/{externalResource<\d+>}', requirements: ['externalResource' => '\d+'])]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_externalresource_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
     ReviewService $reviewService, TranslatorInterface $trans): Response

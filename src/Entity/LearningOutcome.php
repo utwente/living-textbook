@@ -66,15 +66,12 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   #[Serializer\Type('string')]
   private string $name = '';
 
-  /**
-   * Learning outcome text.
-   *
-   * @WordCount(min=1, max=10000)
-   */
+  /** Learning outcome text. */
   #[Assert\NotBlank]
   #[ORM\Column(name: 'text', type: 'text', nullable: false)]
   #[Serializer\Groups(['Default', 'review_change'])]
   #[Serializer\Type('string')]
+  #[WordCount(min: 1, max: 10000)]
   private string $text = '';
 
   public function __construct()

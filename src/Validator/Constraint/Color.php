@@ -2,12 +2,11 @@
 
 namespace App\Validator\Constraint;
 
+use Attribute;
 use Override;
 use Symfony\Component\Validator\Constraints\Regex;
 
-/**
- * @Annotation
- */
+#[Attribute(Attribute::TARGET_PROPERTY)]
 class Color extends Regex
 {
   public function __construct($options = null)

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\DuplicationUtils\StudyAreaDuplicator;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
@@ -84,13 +84,10 @@ class DataController extends AbstractController
     return $builder->build($requestStudyArea->getStudyArea());
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
-   *
-   * @throws NonUniqueResultException
-   */
+  /** @throws NonUniqueResultException */
   #[Route('/upload')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'requestStudyArea')]
   public function upload(
     Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
     EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,

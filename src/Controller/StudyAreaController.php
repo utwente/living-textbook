@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
@@ -130,9 +130,9 @@ class StudyAreaController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea") */
   #[Route('/edit/{studyArea<\d+>}')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'studyArea')]
   public function edit(
     Request $request, StudyArea $studyArea, EntityManagerInterface $em, UserGroupRepository $userGroupRepo,
     PageLoadRepository $pageLoadRepository, TrackingEventRepository $trackingEventRepository, TranslatorInterface $trans): Response
@@ -237,13 +237,10 @@ class StudyAreaController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
   #[Route('/freeze/{studyArea<\d+>}')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'studyArea')]
   public function freeze(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $translator): Response
   {
     $form = $this->createForm(RemoveType::class, null, [

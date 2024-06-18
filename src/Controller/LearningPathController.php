@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\LearningPath;
 use App\Entity\PendingChange;
 use App\Form\LearningPath\EditLearningPathType;
@@ -27,9 +27,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/{_studyArea<\d+>}/learningpath')]
 class LearningPathController extends AbstractController
 {
-  /** @DenyOnFrozenStudyArea(route="app_learningpath_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningpath_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
@@ -65,12 +65,9 @@ class LearningPathController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_learningpath_show",
-   *   routeParams={"learningPath"="{learningPath}"}, subject="requestStudyArea")
-   */
   #[Route('/edit/{learningPath<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningpath_show', routeParams: ['learningPath' => '{learningPath}'], subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
     EntityManagerInterface $em, TranslatorInterface $trans): Response
@@ -155,12 +152,9 @@ class LearningPathController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
-   *                                                       subject="requestStudyArea")
-   */
   #[Route('/remove/{learningPath<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningpath_show', routeParams: ['learningPath' => '{learningPath}'], subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
     TranslatorInterface $trans): Response

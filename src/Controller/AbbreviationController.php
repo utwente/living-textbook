@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\Abbreviation;
 use App\Entity\PendingChange;
 use App\Form\Abbreviation\EditAbbreviationType;
@@ -23,9 +23,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/{_studyArea<\d+>}/abbreviation')]
 class AbbreviationController extends AbstractController
 {
-  /** @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_abbreviation_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
@@ -70,9 +70,9 @@ class AbbreviationController extends AbstractController
     return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea") */
   #[Route('/edit/{abbreviation<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_abbreviation_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
     TranslatorInterface $trans): Response
@@ -130,9 +130,9 @@ class AbbreviationController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea") */
   #[Route('/remove/{abbreviation<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_abbreviation_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
     TranslatorInterface $trans): Response

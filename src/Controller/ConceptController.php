@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
 use App\Entity\PendingChange;
@@ -39,9 +39,9 @@ class ConceptController extends AbstractController
   ) {
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_concept_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_concept_list', subject: 'requestStudyArea')]
   public function add(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -84,9 +84,9 @@ class ConceptController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea") */
   #[Route(path: '/edit/{concept<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_concept_show', routeParams: ['concept' => '{concept}'], subject: 'requestStudyArea')]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -153,11 +153,10 @@ class ConceptController extends AbstractController
   /**
    * Endpoint to re-edit the changes that are pending for submission. Fields that have already been submitted
    * in another pending change cannot be edited from here.
-   *
-   * @DenyOnFrozenStudyArea(route="app_review_submit", subject="requestStudyArea")
    */
   #[Route(path: '/edit/pending/{pendingChange}', requirements: ['pendingChange' => '\d+'])]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_review_submit', subject: 'requestStudyArea')]
   public function editPending(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -232,13 +231,10 @@ class ConceptController extends AbstractController
     ]);
   }
 
-  /**
-   * Instantiate an instance from a selected base concept.
-   *
-   * @DenyOnFrozenStudyArea(route="app_concept_listinstances", subject="requestStudyArea")
-   */
+  /** Instantiate an instance from a selected base concept. */
   #[Route('/instantiate/{concept<\d+>?null}', options: ['expose' => true])]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_concept_listinstances', subject: 'requestStudyArea')]
   public function instantiate(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -397,9 +393,9 @@ class ConceptController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_concept_show", routeParams={"concept"="{concept}"}, subject="requestStudyArea") */
   #[Route(path: '/remove/{concept<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_concept_show', routeParams: ['concept' => '{concept}'], subject: 'requestStudyArea')]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,

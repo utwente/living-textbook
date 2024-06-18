@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\EntityHandler\RelationTypeHandler;
 use App\Form\RelationType\EditRelationTypeType;
@@ -29,9 +29,9 @@ class RelationTypeController extends AbstractController
   ) {
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_relationtype_list', subject: 'requestStudyArea')]
   public function add(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -62,13 +62,10 @@ class RelationTypeController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
-   *
-   * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
-   */
+  /** @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector */
   #[Route('/edit/{relationType<\d+>}')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_relationtype_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -131,13 +128,10 @@ class RelationTypeController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
-   *
-   * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
-   */
+  /** @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector */
   #[Route(path: '/remove/{relationType<\d+>}', requirements: ['relationType' => '\d+'])]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_relationtype_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,

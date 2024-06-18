@@ -2,42 +2,25 @@
 
 namespace App\Validator\Constraint\Data;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class WordCount.
- *
- * @author BobV
- *
- * @Annotation
- */
+#[Attribute(Attribute::TARGET_PROPERTY)]
 class WordCount extends Constraint
 {
-  /**
-   * Minimum word count.
-   *
-   * @var int
-   */
-  public $min = 10;
-
-  /**
-   * Maximum word count.
-   *
-   * @var int
-   */
-  public $max = 1000;
-
-  /**
-   * Minimum word count error message.
-   *
-   * @var string
-   */
-  public $minMessage = 'data.word-count-min';
-
-  /**
-   * Maximum word count error message.
-   *
-   * @var string
-   */
-  public $maxMessage = 'data.word-count-max';
+  public function __construct(
+    /** Minimum word count. */
+    public int $min = 10,
+    /** Maximum word count. */
+    public int $max = 1000,
+    /** Minimum word count error message. */
+    public string $minMessage = 'data.word-count-min',
+    /** Maximum word count error message. */
+    public string $maxMessage = 'data.word-count-max',
+    mixed $options = null,
+    ?array $groups = null,
+    mixed $payload = null)
+  {
+    parent::__construct($options, $groups, $payload);
+  }
 }

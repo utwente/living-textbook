@@ -67,9 +67,9 @@ class StudyArea implements Stringable, IdInterface
   #[ORM\JoinColumn(name: 'owner_user_id', referencedColumnName: 'id', nullable: false)]
   private ?User $owner = null;
 
-  /** @StudyAreaAccessType() */
   #[Assert\NotNull]
   #[ORM\Column(name: 'access_type', length: 10, nullable: false)]
+  #[StudyAreaAccessType]
   private string $accessType = self::ACCESS_PRIVATE;
 
   /** @var Collection<RelationType> */

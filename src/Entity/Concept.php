@@ -34,14 +34,12 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ConceptRelationValidator()
- */
 #[ORM\Entity(repositoryClass: ConceptRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
+#[ConceptRelationValidator]
 class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;

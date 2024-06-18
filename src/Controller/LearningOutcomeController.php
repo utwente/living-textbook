@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\LearningOutcome;
 use App\Entity\PendingChange;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
@@ -23,9 +23,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/{_studyArea<\d+>}/learningoutcome')]
 class LearningOutcomeController extends AbstractController
 {
-  /** @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans,
     NamingService $namingService): Response
@@ -65,12 +65,9 @@ class LearningOutcomeController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
-   *                                                          subject="requestStudyArea")
-   */
   #[Route('/edit/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -134,12 +131,9 @@ class LearningOutcomeController extends AbstractController
     ]);
   }
 
-  /**
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show",
-   *   routeParams={"learningOutcome"="{learningOutcome}"}, subject="requestStudyArea")
-   */
   #[Route('/remove/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -184,9 +178,9 @@ class LearningOutcomeController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea") */
   #[Route('/remove/unused')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
   public function removeUnused(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcomeRepository $learningOutcomeRepository,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response

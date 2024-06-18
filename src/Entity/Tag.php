@@ -43,10 +43,10 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
   #[JMSA\Expose]
   private string $name = '';
 
-  /** @Color() */
   #[Assert\NotBlank]
   #[ORM\Column(length: 10, nullable: false)]
   #[JMSA\Expose]
+  #[Color]
   private string $color = '#8FBDAF';
 
   #[Assert\Length(max: 1024)]

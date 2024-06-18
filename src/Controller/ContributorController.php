@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\Contributor;
 use App\Entity\PendingChange;
 use App\Form\Contributor\EditContributorType;
@@ -21,9 +21,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/{_studyArea<\d+>}/contributor')]
 class ContributorController extends AbstractController
 {
-  /** @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_contributor_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
@@ -53,9 +53,9 @@ class ContributorController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea") */
   #[Route('/edit/{contributor<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_contributor_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, Contributor $contributor,
     ReviewService $reviewService, TranslatorInterface $trans): Response
@@ -113,9 +113,9 @@ class ContributorController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_contributor_list", subject="requestStudyArea") */
   #[Route('/remove/{contributor<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_contributor_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, Contributor $contributor,
     ReviewService $reviewService, TranslatorInterface $trans): Response

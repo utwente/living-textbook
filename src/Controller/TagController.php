@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\Tag;
 use App\EntityHandler\TagHandler;
 use App\Form\Tag\EditTagType;
@@ -26,9 +26,9 @@ class TagController extends AbstractController
   ) {
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea") */
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_tag_list', subject: 'requestStudyArea')]
   public function add(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -59,9 +59,9 @@ class TagController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea") */
   #[Route('/edit/{tag<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_tag_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -122,9 +122,9 @@ class TagController extends AbstractController
     ]);
   }
 
-  /** @DenyOnFrozenStudyArea(route="app_tag_list", subject="requestStudyArea") */
   #[Route('/remove/{tag<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_tag_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,

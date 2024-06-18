@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Review;
 use App\Entity\StudyArea;
@@ -69,13 +69,10 @@ class ReviewController extends AbstractController
     ]);
   }
 
-  /**
-   * Publish reviews after review approval.
-   *
-   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
-   */
+  /** Publish reviews after review approval. */
   #[Route('/publish')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'requestStudyArea')]
   public function publish(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository): Response
   {
     return $this->render('review/publish.html.twig', [
