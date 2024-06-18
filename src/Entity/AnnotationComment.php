@@ -16,12 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: AnnotationCommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class AnnotationComment implements IdInterface
 {
   use IdTrait;
@@ -38,16 +37,13 @@ class AnnotationComment implements IdInterface
   #[ORM\JoinColumn(name: 'annotation_id', referencedColumnName: 'id', nullable: false)]
   private ?Annotation $annotation = null;
 
-  /** @JMSA\Expose() */
   #[Assert\NotBlank]
   #[ORM\Column(name: 'text', type: Types::TEXT, nullable: false)]
+  #[JMSA\Expose]
   private ?string $text = null;
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getAuthoredTime(): DateTime
   {
     return $this->createdAt;
@@ -58,21 +54,15 @@ class AnnotationComment implements IdInterface
     return $this->user;
   }
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getUserId(): int
   {
     return $this->user->getId();
   }
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getUserName(): string
   {
     return $this->user->getDisplayName();

@@ -24,12 +24,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: AnnotationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class Annotation implements SearchableInterface, IdInterface
 {
   use IdTrait;
@@ -48,83 +47,66 @@ class Annotation implements SearchableInterface, IdInterface
   #[ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id', nullable: false)]
   private ?Concept $concept = null;
 
-  /**
-   * Annotation text. If null, it is only a highlight.
-   *
-   * @JMSA\Expose()
-   */
+  /** Annotation text. If null, it is only a highlight. */
   #[ORM\Column(name: 'text', type: Types::TEXT, nullable: true)]
+  #[JMSA\Expose]
   private ?string $text = null;
 
-  /**
-   * Annotation context (section of concept).
-   *
-   * @JMSA\Expose()
-   */
+  /** Annotation context (section of concept). */
   #[Assert\NotNull]
   #[Assert\NotBlank]
   #[ORM\Column(name: 'context', length: 50, nullable: false)]
+  #[JMSA\Expose]
   private string $context = '';
 
   /**
    * Annotation start. This is without any HTML tags!
    * If -1, the complete section is annotated.
-   *
-   * @JMSA\Expose()
    */
   #[Assert\NotNull]
   #[Assert\Range(min: '-1')]
   #[ORM\Column(name: 'start', nullable: false)]
+  #[JMSA\Expose]
   private int $start = 0;
 
   /**
    * Annotation end. This is without any HTML tags!
    * If there is no selection, it means the header/complete context is annotated.
-   *
-   * @JMSA\Expose()
    */
   #[Assert\NotNull]
   #[Assert\Range(min: '0')]
   #[Assert\Expression('value !== this.getStart()', message: 'annotation.start-end-identical')]
   #[ORM\Column(name: 'end', nullable: false)]
+  #[JMSA\Expose]
   private int $end = 0;
 
   /**
    * The selected text at time of creation.
    * Should be null when the header is selected.
-   *
-   * @JMSA\Expose()
    */
   #[Assert\Expression('(value === null && this.getStart() === -1) || (value !== null && this.getStart() >= 0)', message: 'annotation.selection-incorrect')]
   #[ORM\Column(name: 'selected_text', type: Types::TEXT, nullable: true)]
+  #[JMSA\Expose]
   private ?string $selectedText = null;
 
   /**
    * Annotation version, linked to context version to detect changes since annotation
    * This can only be null if the complete context is annotated.
-   *
-   * @JMSA\Expose()
    */
   #[ORM\Column(name: 'version', nullable: true)]
+  #[JMSA\Expose]
   private ?DateTime $version; // Default in constructor
-
-  /**
-   * Visibility for the annotation.
-   *
-   * @JMSA\Expose()
-   */
+  /** Visibility for the annotation. */
   #[Assert\Choice(callback: 'visibilityOptions')]
   #[ORM\Column(name: 'visibility', length: 10)]
+  #[JMSA\Expose]
   private string $visibility;
 
-  /**
-   * @var Collection<AnnotationComment>
-   *
-   * @JMSA\Expose
-   */
+  /** @var Collection<AnnotationComment> */
   #[Assert\Expression('(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)', message: 'annotation.comments-incorrect')]
   #[Assert\Valid]
   #[ORM\OneToMany(mappedBy: 'annotation', targetEntity: AnnotationComment::class)]
+  #[JMSA\Expose]
   private Collection $comments;
 
   /** @throws Exception */
@@ -199,31 +181,22 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->user;
   }
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getUserId(): int
   {
     return $this->user->getId();
   }
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getUserName(): string
   {
     return $this->user->getDisplayName();
   }
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getAuthoredTime(): DateTime
   {
     return $this->createdAt;
@@ -241,11 +214,8 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->concept;
   }
 
-  /**
-   * @JMSA\VirtualProperty("concept")
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty('concept')]
+  #[JMSA\Expose]
   public function getConceptId(): int
   {
     return $this->concept->getId();

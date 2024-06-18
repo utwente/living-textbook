@@ -28,11 +28,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: StudyAreaRepository::class)]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class StudyArea implements Stringable, IdInterface
 {
   use IdTrait;
@@ -44,29 +43,25 @@ class StudyArea implements Stringable, IdInterface
   final public const string ACCESS_PRIVATE = 'private';
   final public const string ACCESS_GROUP   = 'group';
 
-  /** @JMSA\Expose() */
   #[Assert\NotBlank]
   #[Assert\Length(min: 3, max: 255)]
   #[ORM\Column(name: 'name', length: 255, nullable: false)]
+  #[JMSA\Expose]
   private string $name = '';
 
   #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
   private ?string $description = null;
 
-  /**
-   * @var Collection<Concept>
-   *
-   * @JMSA\Expose()
-   */
+  /** @var Collection<Concept> */
   #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Concept::class, cascade: ['persist', 'remove'])]
+  #[JMSA\Expose]
   private Collection $concepts;
 
   /**
    * @var Collection<UserGroup>&Selectable<UserGroup>
-   *
-   * @JMSA\Expose()
    */
   #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: UserGroup::class, cascade: ['persist', 'remove'])]
+  #[JMSA\Expose]
   private Collection&Selectable $userGroups;
 
   #[Assert\NotNull]

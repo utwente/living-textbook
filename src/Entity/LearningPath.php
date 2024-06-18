@@ -25,11 +25,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: LearningPathRepository::class)]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
@@ -42,58 +41,38 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * Learning path name.
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  /** Learning path name. */
   #[Assert\NotBlank]
   #[Assert\Length(max: 255)]
   #[ORM\Column(name: 'name', length: 255, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private string $name = '';
 
-  /**
-   * Learning path introduction.
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  /** Learning path introduction. */
   #[Assert\NotBlank]
-  #[ORM\Column(name: 'introduction', type: Types::TEXT, nullable: true)] // ;
+  #[ORM\Column(name: 'introduction', type: Types::TEXT, nullable: true)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('string')] // ;
   private ?string $introduction = null;
 
-  /**
-   * Learning path question.
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  /** Learning path question. */
   #[Assert\NotBlank]
   #[Assert\Length(max: 1024)]
   #[ORM\Column(name: 'question', length: 1024, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private string $question = '';
 
-  /**
-   * @var Collection<LearningPathElement>
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\LearningPathElement>")
-   */
+  /** @var Collection<LearningPathElement> */
   #[Assert\Valid]
   #[ORM\OneToMany(mappedBy: 'learningPath', targetEntity: LearningPathElement::class, cascade: ['persist', 'remove'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('ArrayCollection<App\Entity\LearningPathElement>')]
   private Collection $elements;
 
   public function __construct()
@@ -225,13 +204,10 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
    * Get the elements ordered.
    *
    * @return Collection<LearningPathElement>
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\SerializedName("elements")
    */
+  #[JMSA\Expose]
+  #[JMSA\VirtualProperty]
+  #[JMSA\SerializedName('elements')]
   public function getElementsOrdered(): Collection
   {
     return self::OrderElements($this->elements);

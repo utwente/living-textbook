@@ -35,9 +35,7 @@ class LearningPathVisualisationRequest
   public $forceRebuild;
 
   /**
-   * LearningPathVisualisationRequest constructor.
-   *
-   * Fills the object with some default data
+   * Fills the object with some default data.
    */
   public function __construct()
   {

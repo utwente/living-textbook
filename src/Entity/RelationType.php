@@ -34,22 +34,16 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * @Serializer\Groups({"Default", "review_change", "name_only"})
-   *
-   * @Serializer\Type("string")
-   */
   #[Assert\NotBlank]
   #[Assert\Length(min: 3, max: 100)]
   #[ORM\Column(name: 'name', length: 100, nullable: false)]
+  #[Serializer\Groups(['Default', 'review_change', 'name_only'])]
+  #[Serializer\Type('string')]
   private string $name = '';
 
-  /**
-   * @Serializer\Groups({"Default", "review_change"})
-   *
-   * @Serializer\Type("string")
-   */
   #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+  #[Serializer\Groups(['Default', 'review_change'])]
+  #[Serializer\Type('string')]
   private ?string $description = null;
 
   /**

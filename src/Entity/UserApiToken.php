@@ -15,12 +15,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @JMSA\ExclusionPolicy("all")
- */
 #[ORM\Entity(repositoryClass: UserApiTokenRepository::class)]
 #[ORM\Table]
 #[ORM\Index(columns: ['token_id'])]
+#[JMSA\ExclusionPolicy('all')]
 class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;

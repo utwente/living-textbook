@@ -43,43 +43,31 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
   #[Assert\NotBlank]
   #[Assert\Length(min: 1, max: 512)]
   #[ORM\Column(name: 'name', length: 512, nullable: false)]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private string $name = '';
 
-  /**
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
   #[Assert\Length(max: 1024)]
   #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private ?string $description = null;
 
-  /**
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
   #[Assert\Url]
   #[Assert\Length(max: 512)]
   #[ORM\Column(name: 'url', length: 512, nullable: true)]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private ?string $url = null;
 
-  /**
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
   #[Assert\Email]
   #[Assert\Length(max: 255)]
   #[ORM\Column(name: 'email', length: 255, nullable: true)]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private ?string $email = null;
 
   #[Assert\NotNull]

@@ -14,57 +14,41 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: ConceptRelationRepository::class)]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class ConceptRelation implements IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(Concept::class)
-   *
-   * @JMSA\MaxDepth(2)
-   */
   #[Assert\NotNull]
   #[ORM\ManyToOne(inversedBy: 'outgoingRelations')]
   #[ORM\JoinColumn(name: 'source_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(Concept::class)]
+  #[JMSA\MaxDepth(2)]
   private ?Concept $source = null;
 
-  /**
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(Concept::class)
-   *
-   * @JMSA\MaxDepth(2)
-   */
   #[Assert\NotNull]
   #[ORM\ManyToOne(inversedBy: 'incomingRelations')]
   #[ORM\JoinColumn(name: 'target_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(Concept::class)]
+  #[JMSA\MaxDepth(2)]
   private ?Concept $target = null;
 
-  /**
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(RelationType::class)
-   *
-   * @JMSA\MaxDepth(2)
-   */
   #[Assert\NotNull]
   #[ORM\ManyToOne]
   #[ORM\JoinColumn(name: 'relation_type', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(RelationType::class)]
+  #[JMSA\MaxDepth(2)]
   private ?RelationType $relationType = null;
 
   /**
@@ -88,13 +72,9 @@ class ConceptRelation implements IdInterface
   #[ORM\Column(nullable: true)]
   private ?array $dotronConfig = null;
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\SerializedName("target")
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\SerializedName('target')]
+  #[JMSA\Expose]
   public function getTargetId(): ?int
   {
     return $this->getTarget()?->getId();
@@ -105,11 +85,8 @@ class ConceptRelation implements IdInterface
     return $this->getSource()?->getId();
   }
 
-  /**
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Expose()
-   */
+  #[JMSA\VirtualProperty]
+  #[JMSA\Expose]
   public function getRelationName(): string
   {
     return $this->relationType ? $this->relationType->getName() : '';

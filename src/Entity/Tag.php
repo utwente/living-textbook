@@ -20,11 +20,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class Tag implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
@@ -40,24 +39,21 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
   #[ORM\ManyToMany(targetEntity: Concept::class, mappedBy: 'tags')]
   private Collection $concepts;
 
-  /** @JMSA\Expose() */
   #[Assert\NotBlank]
   #[Assert\Length(max: 25)]
   #[ORM\Column(length: 25, nullable: false)]
+  #[JMSA\Expose]
   private string $name = '';
 
-  /**
-   * @Color()
-   *
-   * @JMSA\Expose()
-   */
+  /** @Color() */
   #[Assert\NotBlank]
   #[ORM\Column(length: 10, nullable: false)]
+  #[JMSA\Expose]
   private string $color = '#8FBDAF';
 
-  /** @JMSA\Expose() */
   #[Assert\Length(max: 1024)]
   #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
+  #[JMSA\Expose]
   private ?string $description = null;
 
   public function __construct()

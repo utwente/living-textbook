@@ -51,41 +51,31 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * Learning outcome number.
-   *
-   * @Serializer\Groups({"Default", "review_change"})
-   *
-   * @Serializer\Type("int")
-   */
+  /** Learning outcome number. */
   #[Assert\NotBlank]
   #[Assert\Range(min: '1', max: '9999')]
   #[ORM\Column(name: 'number', type: 'integer', nullable: false)]
+  #[Serializer\Groups(['Default', 'review_change'])]
+  #[Serializer\Type('int')]
   private int $number = 1;
 
-  /**
-   * Learning outcome name.
-   *
-   * @Serializer\Groups({"Default", "review_change"})
-   *
-   * @Serializer\Type("string")
-   */
+  /** Learning outcome name. */
   #[Assert\NotBlank]
   #[Assert\Length(max: '255')]
   #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
+  #[Serializer\Groups(['Default', 'review_change'])]
+  #[Serializer\Type('string')]
   private string $name = '';
 
   /**
    * Learning outcome text.
    *
    * @WordCount(min=1, max=10000)
-   *
-   * @Serializer\Groups({"Default", "review_change"})
-   *
-   * @Serializer\Type("string")
    */
   #[Assert\NotBlank]
   #[ORM\Column(name: 'text', type: 'text', nullable: false)]
+  #[Serializer\Groups(['Default', 'review_change'])]
+  #[Serializer\Type('string')]
   private string $text = '';
 
   public function __construct()

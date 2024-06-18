@@ -21,6 +21,7 @@ return RectorConfig::configure()
     \Rector\Symfony\Set\SymfonySetList::SYMFONY_63,
     \Rector\Symfony\Set\SymfonySetList::SYMFONY_64,
     \Rector\Doctrine\Set\DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
+    \Rector\Symfony\Set\JMSSetList::ANNOTATIONS_TO_ATTRIBUTES,
   ])
   ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml')
   ->withSymfonyContainerPhp(__DIR__ . '/tests/rector/symfony-container.php')

@@ -16,12 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
  */
 #[ORM\Entity(repositoryClass: StylingConfigurationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
 class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;

@@ -23,12 +23,10 @@ trait BaseDataTextObject
    * Learning outcomes.
    *
    * @var string|null
-   *
-   * @Serializer\Groups({"review_change"})
-   *
-   * @Serializer\Type("string")
    */
   #[ORM\Column(name: 'text', type: Types::TEXT, nullable: true)]
+  #[Serializer\Groups(['review_change'])]
+  #[Serializer\Type('string')]
   private $text;
 
   /** Determine whether this block has data. */
