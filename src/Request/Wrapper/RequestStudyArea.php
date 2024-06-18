@@ -6,11 +6,8 @@ use App\Entity\StudyArea;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class RequestStudyArea
  * A wrapper class to enable automatic study area injection into controllers,
  * without messing with the Doctrine injector.
- *
- * @author BobV
  */
 class RequestStudyArea
 {

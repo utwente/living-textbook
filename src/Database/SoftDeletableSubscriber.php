@@ -2,36 +2,24 @@
 
 namespace App\Database;
 
-use Doctrine\Common\EventSubscriber;
+use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Gedmo\SoftDeleteable\SoftDeleteableListener;
-use Override;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class SoftDeletableSubscriber implements EventSubscriber
+#[AsDoctrineListener(SoftDeleteableListener::PRE_SOFT_DELETE)]
+class SoftDeletableSubscriber
 {
   /** Field name for deleted by */
   final public const string FIELD_NAME = 'deletedBy';
 
-  /** SoftDeletableSubscriber constructor. */
   public function __construct(private readonly TokenStorageInterface $tokenStorage)
   {
   }
 
-  /**
-   * Returns an array of events this subscriber wants to listen to.
-   *
-   * @return array
-   */
-  #[Override]
-  public function getSubscribedEvents()
-  {
-    return [SoftDeleteableListener::PRE_SOFT_DELETE];
-  }
-
   /** Sets the deletedBy field. */
-  public function preSoftDelete(LifecycleEventArgs $args)
+  public function preSoftDelete(LifecycleEventArgs $args): void
   {
     // Get needed objects
     $object = $args->getObject();

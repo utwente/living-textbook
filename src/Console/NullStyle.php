@@ -32,32 +32,32 @@ class NullStyle extends OutputStyle
   }
 
   #[Override]
-  public function success($message)
+  public function success($message): void
   {
   }
 
   #[Override]
-  public function error($message)
+  public function error($message): void
   {
   }
 
   #[Override]
-  public function warning($message)
+  public function warning($message): void
   {
   }
 
   #[Override]
-  public function note($message)
+  public function note($message): void
   {
   }
 
   #[Override]
-  public function caution($message)
+  public function caution($message): void
   {
   }
 
   #[Override]
-  public function table(array $headers, array $rows)
+  public function table(array $headers, array $rows): void
   {
   }
 

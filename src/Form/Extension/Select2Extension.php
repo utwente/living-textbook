@@ -12,17 +12,13 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class Select2Extension.
- *
  * This class provides a Select2 form extension, to be able to easily set
- * select 2 options on the form
- *
- * @author BobV
+ * select2 options on the form.
  */
 class Select2Extension extends AbstractTypeExtension
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder->setAttribute('select2', $options['select2']);
     $builder->setAttribute('select2_allow_clear', $options['select2_allow_clear']);
@@ -30,7 +26,7 @@ class Select2Extension extends AbstractTypeExtension
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['select2']             = $options['select2'];
     $view->vars['select2_allow_clear'] = $options['select2_allow_clear'];
@@ -38,7 +34,7 @@ class Select2Extension extends AbstractTypeExtension
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'select2'             => false,

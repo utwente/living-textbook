@@ -8,25 +8,17 @@ use Twig\TwigFilter;
 
 class TranslationStringExtension extends AbstractExtension
 {
-  /**
-   * Register filters.
-   *
-   * @return array|TwigFilter[]
-   */
+  /** @return TwigFilter[] */
   #[Override]
-  public function getFilters()
+  public function getFilters(): array
   {
     return [
       new TwigFilter('trString', $this->trString(...), ['is_safe' => ['html']]),
     ];
   }
 
-  /**
-   * Filter implementation.
-   *
-   * @return string
-   */
-  public function trString($text)
+  /** Filter implementation. */
+  public function trString($text): string
   {
     return strtolower((string)preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\1-\2', (string)$text));
   }

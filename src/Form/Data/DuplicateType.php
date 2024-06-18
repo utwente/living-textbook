@@ -32,21 +32,15 @@ class DuplicateType extends AbstractType
   final public const string NEW_STUDY_AREA      = 'new_study_area';
   final public const string CONCEPTS            = 'concepts';
   final public const string SELECT_ALL          = 'select_all';
-  private Security $security;
-  private StudyAreaRepository $studyAreaRepository;
-
-  private TranslatorInterface $translator;
-
   public function __construct(
-    TranslatorInterface $translator, StudyAreaRepository $studyAreaRepository, Security $security)
+    private readonly TranslatorInterface $translator,
+    private readonly StudyAreaRepository $studyAreaRepository,
+    private readonly Security $security)
   {
-    $this->translator          = $translator;
-    $this->studyAreaRepository = $studyAreaRepository;
-    $this->security            = $security;
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $defaultGroupName = $this->translator->trans('study-area.groups.default-name');
 
@@ -121,7 +115,7 @@ class DuplicateType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setDefaults([
@@ -138,7 +132,7 @@ class DuplicateType extends AbstractType
   }
 
   /** Check if there is at least 1 concept selected to duplicate. */
-  public function checkConcepts($data, ExecutionContextInterface $context)
+  public function checkConcepts($data, ExecutionContextInterface $context): void
   {
     if ($data['select_all'] === false && (is_countable($data['concepts']) ? count($data['concepts']) : 0) === 0) {
       $context->buildViolation('data.concepts-no-selection')
@@ -148,7 +142,7 @@ class DuplicateType extends AbstractType
   }
 
   /** Check if the new study area is valid. */
-  public function checkNewStudyArea($data, ExecutionContextInterface $context)
+  public function checkNewStudyArea($data, ExecutionContextInterface $context): void
   {
     if ($context->getGroup() === self::CHOICE_NEW) {
       $context

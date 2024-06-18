@@ -128,7 +128,6 @@ class LearningPathController extends AbstractController
     ]);
   }
 
-  /** @return JsonResponse */
   #[Route('/data/{learningPath<\d+>}', options: ['expose' => true])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function data(

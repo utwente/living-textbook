@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class AddFallbackUsersType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('emails', EmailListType::class, [

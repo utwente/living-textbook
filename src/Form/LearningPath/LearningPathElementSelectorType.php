@@ -21,20 +21,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LearningPathElementSelectorType extends AbstractType
 {
-  private LearningOutcomeRepository $learningOutcomeRepository;
-  private NamingService $namingService;
-  private SerializerInterface $serializer;
-
   public function __construct(
-    LearningOutcomeRepository $learningOutcomeRepository, SerializerInterface $serializer, NamingService $namingService)
+    private readonly LearningOutcomeRepository $learningOutcomeRepository,
+    private readonly SerializerInterface $serializer,
+    private readonly NamingService $namingService)
   {
-    $this->learningOutcomeRepository = $learningOutcomeRepository;
-    $this->serializer                = $serializer;
-    $this->namingService             = $namingService;
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $studyArea = $options['studyArea'];
 
@@ -74,13 +69,13 @@ class LearningPathElementSelectorType extends AbstractType
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['sortable_id'] = $options['sortable_id'];
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setRequired('studyArea')

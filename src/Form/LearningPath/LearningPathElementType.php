@@ -24,18 +24,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class LearningPathElementType extends AbstractType
 {
-  private ConceptRepository $conceptRepository;
-
-  private LearningPathElementRepository $learningPathElementRepository;
-
-  public function __construct(ConceptRepository $conceptRepository, LearningPathElementRepository $learningPathElementRepository)
+  public function __construct(
+    private readonly ConceptRepository $conceptRepository,
+    private readonly LearningPathElementRepository $learningPathElementRepository)
   {
-    $this->conceptRepository             = $conceptRepository;
-    $this->learningPathElementRepository = $learningPathElementRepository;
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('id', HiddenType::class)
@@ -61,13 +57,13 @@ class LearningPathElementType extends AbstractType
 
     $builder->addModelTransformer(new CallbackTransformer(
       function (?LearningPathElement $modelData): array {
-        $concept = $modelData == null ? null : $modelData->getConcept();
+        $concept = $modelData?->getConcept();
 
         return [
-          'id'          => $modelData == null ? null : $modelData->getId(),
-          'conceptId'   => $concept == null ? null : $concept->getId(),
-          'concept'     => $concept == null ? null : $concept->getName(),
-          'description' => $modelData == null ? null : $modelData->getDescription(),
+          'id'          => $modelData?->getId(),
+          'conceptId'   => $concept?->getId(),
+          'concept'     => $concept?->getName(),
+          'description' => $modelData?->getDescription(),
         ];
       },
       function (array $viewData) use ($options): ?LearningPathElement {
@@ -86,13 +82,13 @@ class LearningPathElementType extends AbstractType
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['sortable_id'] = $options['sortable_id'];
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setRequired('studyArea')

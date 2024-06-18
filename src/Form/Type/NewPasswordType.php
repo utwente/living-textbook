@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 class NewPasswordType extends AbstractType
 {
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'type'        => PasswordType::class,

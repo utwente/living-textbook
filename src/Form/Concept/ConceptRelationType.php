@@ -20,16 +20,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConceptRelationType extends AbstractType
 {
-  private TranslatorInterface $translator;
-
-  /** ConceptRelationType constructor. */
-  public function __construct(TranslatorInterface $translator)
+  public function __construct(private readonly TranslatorInterface $translator)
   {
-    $this->translator = $translator;
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     /** @var Concept $concept */
     $concept  = $options['concept'];
@@ -115,7 +111,7 @@ class ConceptRelationType extends AbstractType
     }));
   }
 
-  private function addConceptType(FormBuilderInterface $builder, string $field, Concept $concept)
+  private function addConceptType(FormBuilderInterface $builder, string $field, Concept $concept): void
   {
     $builder
       ->add($field, EntityType::class, [
@@ -132,7 +128,7 @@ class ConceptRelationType extends AbstractType
       ]);
   }
 
-  private function addTextType(FormBuilderInterface $builder, string $field, string $name)
+  private function addTextType(FormBuilderInterface $builder, string $field, string $name): void
   {
     $builder->add($field, TextType::class, [
       'label'    => 'relation.' . $field,
@@ -144,7 +140,7 @@ class ConceptRelationType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([

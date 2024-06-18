@@ -12,7 +12,7 @@ class OrderedCollectionElementType extends AbstractType
 {
   /** Add the 'collection-position' class as last var in the view. */
   #[Override]
-  public function finishView(FormView $view, FormInterface $form, array $options)
+  public function finishView(FormView $view, FormInterface $form, array $options): void
   {
     if (!array_key_exists('attr', $view->vars)) {
       $view->vars['attr'] = [];

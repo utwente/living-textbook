@@ -14,15 +14,10 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class SaveType.
- *
- * @author BobV
- */
 class SaveType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     // Add the save button if required
     if ($options['enable_save']) {
@@ -59,19 +54,14 @@ class SaveType extends AbstractType
     }
   }
 
-  /** Build view. */
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['locate_static'] = $options['locate_static'];
   }
 
-  /**
-   * Check whether the "save and list" button is clicked.
-   *
-   * @return bool
-   */
-  public static function isListClicked(FormInterface $form)
+  /** Check whether the "save and list" button is clicked. */
+  public static function isListClicked(FormInterface $form): bool
   {
     assert($form instanceof Form);
     $clickedButton = $form->getClickedButton();
@@ -86,7 +76,7 @@ class SaveType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'mapped'               => false,

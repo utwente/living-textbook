@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class UpdatePasswordType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('password', NewPasswordType::class)

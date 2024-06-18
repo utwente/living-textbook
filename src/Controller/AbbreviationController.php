@@ -55,7 +55,6 @@ class AbbreviationController extends AbstractController
     ]);
   }
 
-  /** @return JsonResponse */
   #[Route('/data', options: ['expose' => 'true'])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function data(Request $request, RequestStudyArea $requestStudyArea, AbbreviationRepository $abbreviationRepo, SerializerInterface $serializer): Response

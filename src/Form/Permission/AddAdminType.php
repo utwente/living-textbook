@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class AddAdminType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('admin', EntityType::class, [

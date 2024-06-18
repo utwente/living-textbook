@@ -18,13 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DisplayPendingChangeType extends AbstractType
 {
-  private EntityManagerInterface $entityManager;
-  private ReviewService $reviewService;
-
-  public function __construct(EntityManagerInterface $entityManager, ReviewService $reviewService)
+  public function __construct(private readonly ReviewService $reviewService)
   {
-    $this->entityManager = $entityManager;
-    $this->reviewService = $reviewService;
   }
 
   /**
@@ -32,7 +27,7 @@ class DisplayPendingChangeType extends AbstractType
    * @throws InvalidChangeException
    */
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     /** @var PendingChange $pendingChange */
     $pendingChange = $options['pending_change'];
@@ -42,8 +37,8 @@ class DisplayPendingChangeType extends AbstractType
       return;
     }
 
-    $changeType                   = $pendingChange->getChangeType();
-    [$formType, $formOptions]     = ReviewSubmissionType::getFormTypeForField($pendingChange, $field);
+    $changeType               = $pendingChange->getChangeType();
+    [$formType, $formOptions] = ReviewSubmissionType::getFormTypeForField($pendingChange, $field);
 
     $builder->add('preview', $formType, array_merge([
       'hide_label'      => true,
@@ -62,7 +57,7 @@ class DisplayPendingChangeType extends AbstractType
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     /** @var PendingChange $pendingChange */
     $pendingChange = $options['pending_change'];
@@ -75,7 +70,7 @@ class DisplayPendingChangeType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setDefault('label', false)

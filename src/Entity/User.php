@@ -270,7 +270,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * the plain-text password is stored on this object.
    */
   #[Override]
-  public function eraseCredentials()
+  public function eraseCredentials(): void
   {
   }
 

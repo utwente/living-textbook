@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class StudyAreaGroupType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $studyAreaGroup = $options['study_area_group'];
     assert($studyAreaGroup instanceof StudyAreaGroup);
@@ -54,7 +54,7 @@ class StudyAreaGroupType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setRequired('study_area_group');
     $resolver->setDefault('data_class', StudyAreaGroup::class);

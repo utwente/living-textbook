@@ -6,18 +6,13 @@ use Caxy\HtmlDiff\HtmlDiff;
 use Caxy\HtmlDiff\HtmlDiffConfig;
 use Override;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class HtmlDiffExtension extends AbstractExtension
 {
-  /**
-   * Register functions.
-   *
-   * @return array|TwigFilter[]
-   */
+  /** @return TwigFunction[] */
   #[Override]
-  public function getFunctions()
+  public function getFunctions(): array
   {
     return [
       new TwigFunction('htmldiff', $this->htmlDiff(...), ['is_safe' => ['html']]),

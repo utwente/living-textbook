@@ -37,17 +37,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EditConceptType extends AbstractType
 {
-  private NamingService $namingService;
-  private TranslatorInterface $translator;
-
-  public function __construct(TranslatorInterface $translator, NamingService $namingService)
+  public function __construct(
+    private readonly TranslatorInterface $translator,
+    private readonly NamingService $namingService)
   {
-    $this->translator    = $translator;
-    $this->namingService = $namingService;
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $names      = $this->namingService->get();
     $fieldNames = $names->concept();
@@ -315,7 +312,7 @@ class EditConceptType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([

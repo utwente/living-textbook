@@ -30,7 +30,7 @@ class EditStudyAreaType extends AbstractType
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $studyArea = $options['studyArea'];
     assert($studyArea instanceof StudyArea);
@@ -142,7 +142,7 @@ class EditStudyAreaType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setDefaults([

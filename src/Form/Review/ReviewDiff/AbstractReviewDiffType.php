@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class AbstractReviewDiffType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     if (!$options['review'] && !$options['show_comments']) {
       return;
@@ -79,7 +79,7 @@ class AbstractReviewDiffType extends AbstractType
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $pendingChange = $options['pending_change'];
     assert($pendingChange instanceof PendingChange);
@@ -95,7 +95,7 @@ class AbstractReviewDiffType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setDefault('checkbox', false)

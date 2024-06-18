@@ -12,15 +12,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DownloadType extends AbstractType
 {
-  private ExportService $exportService;
-
-  public function __construct(ExportService $exportService)
+  public function __construct(private readonly ExportService $exportService)
   {
-    $this->exportService = $exportService;
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('type', ChoiceType::class, [
@@ -41,7 +38,7 @@ class DownloadType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'attr' => [

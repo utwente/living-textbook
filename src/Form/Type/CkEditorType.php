@@ -9,15 +9,12 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class CkEditorType
  * Extended CkEditorType to control default configuration.
- *
- * @author BobV
  */
 class CkEditorType extends AbstractType
 {
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setDefault('studyArea', null)

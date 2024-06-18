@@ -16,6 +16,7 @@ use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\Data\WordCount;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -25,12 +26,7 @@ use Override;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class LearningOutcome.
- *
- * @author BobV
- */
-#[UniqueEntity(fields: ['studyArea', 'number'], errorPath: 'number', message: 'learning-outcome.number-already-used')]
+#[UniqueEntity(fields: ['studyArea', 'number'], message: 'learning-outcome.number-already-used', errorPath: 'number')]
 #[ORM\Entity(repositoryClass: LearningOutcomeRepository::class)]
 #[ORM\Table]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
@@ -46,14 +42,14 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   private Collection $concepts;
 
   #[Assert\NotNull]
-  #[ORM\ManyToOne(targetEntity: \StudyArea::class, inversedBy: 'learningOutcomes')]
+  #[ORM\ManyToOne(inversedBy: 'learningOutcomes')]
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
   /** Learning outcome number. */
   #[Assert\NotBlank]
   #[Assert\Range(min: '1', max: '9999')]
-  #[ORM\Column(name: 'number', type: 'integer', nullable: false)]
+  #[ORM\Column(name: 'number', nullable: false)]
   #[Serializer\Groups(['Default', 'review_change'])]
   #[Serializer\Type('int')]
   private int $number = 1;
@@ -61,14 +57,14 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   /** Learning outcome name. */
   #[Assert\NotBlank]
   #[Assert\Length(max: '255')]
-  #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
+  #[ORM\Column(name: 'name', length: 255, nullable: false)]
   #[Serializer\Groups(['Default', 'review_change'])]
   #[Serializer\Type('string')]
   private string $name = '';
 
   /** Learning outcome text. */
   #[Assert\NotBlank]
-  #[ORM\Column(name: 'text', type: 'text', nullable: false)]
+  #[ORM\Column(name: 'text', type: Types::TEXT, nullable: false)]
   #[Serializer\Groups(['Default', 'review_change'])]
   #[Serializer\Type('string')]
   #[WordCount(min: 1, max: 10000)]

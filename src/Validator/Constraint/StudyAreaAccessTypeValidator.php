@@ -11,9 +11,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 
-/**
- * Class StudyAreaAccessTypeValidator.
- */
 class StudyAreaAccessTypeValidator extends ChoiceValidator
 {
   public function __construct(
@@ -29,7 +26,7 @@ class StudyAreaAccessTypeValidator extends ChoiceValidator
    * @param Constraint $constraint The constraint for the validation
    */
   #[Override]
-  public function validate($value, Constraint $constraint)
+  public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
     if (!($constraint instanceof StudyAreaAccessType)) {
