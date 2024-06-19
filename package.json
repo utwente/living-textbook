@@ -42,7 +42,7 @@
     "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
   },
   "dependencies": {
-    "@sentry/browser": "8.6.0",
+    "@sentry/browser": "8.9.2",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
@@ -71,7 +71,7 @@
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
     "symfony-collection": "ninsuo/symfony-collection",
-    "uuid": "9.0.1"
+    "uuid": "10.0.0"
   },
   "resolutions": {
     "datatables.net": "1.13.11",
