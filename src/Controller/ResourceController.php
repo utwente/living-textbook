@@ -7,28 +7,21 @@ use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
 use App\Export\Provider\RdfProvider;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use EasyRdf\Exception;
 use EasyRdf\Graph;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * Class ResourceController.
- *
- * @Route("/resource/{_studyArea}", requirements={"_studyArea"="\d+"})
- */
+#[Route('/resource/{_studyArea<\d+>}')]
 class ResourceController extends AbstractController
 {
-  /**
-   * @Route("/concept/{concept}", requirements={"concept"="\d+"}, options={"no_login_wrap"=true})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
+  #[Route('/concept/{concept<\d+>}', options: ['no_login_wrap' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function concept(RequestStudyArea $requestStudyArea, Concept $concept, RdfProvider $provider): JsonResponse
   {
     if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
@@ -40,13 +33,9 @@ class ResourceController extends AbstractController
     return $provider->exportGraph($graph);
   }
 
-  /**
-   * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"}, options={"no_login_wrap"=true})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
+  #[Route('/learningpath/{learningPath<\d+>}', options: ['no_login_wrap' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function learningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, RdfProvider $provider): JsonResponse
   {
     if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
@@ -58,14 +47,9 @@ class ResourceController extends AbstractController
     return $provider->exportGraph($graph);
   }
 
-  /**
-   * @Route("/learningoutcome/{learningOutcome}", requirements={"learningOutcome"="\d+"},
-   *                                              options={"no_login_wrap"=true})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
+  #[Route('/learningoutcome/{learningOutcome<\d+>}', options: ['no_login_wrap' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
   {
     if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
@@ -77,13 +61,9 @@ class ResourceController extends AbstractController
     return $provider->exportGraph($graph);
   }
 
-  /**
-   * @Route("/studyarea", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @throws Exception
-   */
+  /** @throws Exception */
+  #[Route('/studyarea', options: ['no_login_wrap' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function studyArea(RequestStudyArea $requestStudyArea, RdfProvider $provider): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();

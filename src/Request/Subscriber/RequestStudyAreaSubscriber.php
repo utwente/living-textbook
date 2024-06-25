@@ -24,10 +24,7 @@ use Twig\Environment;
 use function Symfony\Component\String\b;
 
 /**
- * Class RequestStudyAreaSubscriber
  * Subscriber for KernelEvents related to controllers.
- *
- * @author BobV
  */
 class RequestStudyAreaSubscriber implements EventSubscriberInterface
 {
@@ -50,13 +47,9 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   {
   }
 
-  /**
-   * Determine the events to subscribe to.
-   *
-   * @return array
-   */
+  /** Determine the events to subscribe to. */
   #[Override]
-  public static function getSubscribedEvents()
+  public static function getSubscribedEvents(): array
   {
     return [
       KernelEvents::CONTROLLER => [
@@ -72,7 +65,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** Determine the study area for this request. */
-  public function determineStudyArea(ControllerEvent $event)
+  public function determineStudyArea(ControllerEvent $event): void
   {
     $request = $event->getRequest();
     $session = $request->getSession();
@@ -105,7 +98,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
       if ($studyAreaId === null) {
         // Resolve the user
         $token = $this->tokenStorage->getToken();
-        $user  = $token !== null ? $token->getUser() : null;
+        $user  = $token?->getUser();
         $user  = is_object($user) ? $user : null;
         assert($user === null || $user instanceof User);
 
@@ -132,7 +125,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** Inject the StudyArea in the controller arguments when required. */
-  public function injectStudyAreaInControllerArguments(ControllerArgumentsEvent $event)
+  public function injectStudyAreaInControllerArguments(ControllerArgumentsEvent $event): void
   {
     if ($this->studyAreaId === null) {
       // Check for session value
@@ -188,14 +181,14 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** Inject the StudyArea in the twig variables for the view */
-  public function injectStudyAreaInView()
+  public function injectStudyAreaInView(): void
   {
     $this->testCache();
     $this->twig->addGlobal(self::TWIG_STUDY_AREA_KEY, $this->studyArea);
   }
 
   /** Inject the StudyArea in the naming service */
-  public function injectStudyAreaInNamingService()
+  public function injectStudyAreaInNamingService(): void
   {
     $this->testCache();
     $this->namingService->injectStudyArea($this->studyArea);

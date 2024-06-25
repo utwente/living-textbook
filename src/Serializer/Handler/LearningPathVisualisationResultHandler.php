@@ -16,7 +16,7 @@ class LearningPathVisualisationResultHandler implements EventSubscriberInterface
   private const string EMPTY = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 
   #[Override]
-  public static function getSubscribedEvents()
+  public static function getSubscribedEvents(): array
   {
     return [
       [
@@ -28,7 +28,7 @@ class LearningPathVisualisationResultHandler implements EventSubscriberInterface
     ];
   }
 
-  public function onPostSerialize(ObjectEvent $event)
+  public function onPostSerialize(ObjectEvent $event): void
   {
     $visitor = $event->getVisitor();
     if (!$visitor instanceof SerializationVisitorInterface) {
@@ -58,7 +58,7 @@ class LearningPathVisualisationResultHandler implements EventSubscriberInterface
       json_decode($object->metaDataFile->getContents(), true));
   }
 
-  private static function toBase64(?SplFileInfo $file)
+  private static function toBase64(?SplFileInfo $file): string
   {
     if (!$file) {
       return self::EMPTY;

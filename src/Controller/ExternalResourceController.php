@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\ExternalResource;
 use App\Entity\PendingChange;
 use App\Form\ExternalResource\EditExternalResourceType;
@@ -10,34 +10,22 @@ use App\Form\Type\RemoveType;
 use App\Repository\ExternalResourceRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Security\Voters\StudyAreaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class ExternalResourceController.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/externalresource", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/externalresource')]
 class ExternalResourceController extends AbstractController
 {
-  /**
-   * @Route("/add")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_externalresource_list', subject: 'requestStudyArea')]
   public function add(
-    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -59,24 +47,18 @@ class ExternalResourceController extends AbstractController
       return $this->redirectToRoute('app_externalresource_list');
     }
 
-    return [
+    return $this->render('external_resource/add.html.twig', [
       'externalResource' => $externalResource,
-      'form'             => $form->createView(),
-    ];
+      'form'             => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{externalResource}", requirements={"externalResource"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   */
+  #[Route('/edit/{externalResource<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_externalresource_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
-    ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    ReviewService $reviewService, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -115,41 +97,28 @@ class ExternalResourceController extends AbstractController
       return $this->redirectToRoute('app_externalresource_list');
     }
 
-    return [
+    return $this->render('external_resource/edit.html.twig', [
       'externalResource' => $externalResource,
-      'form'             => $form->createView(),
-    ];
+      'form'             => $form,
+    ]);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function list(RequestStudyArea $requestStudyArea, ExternalResourceRepository $repo)
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function list(RequestStudyArea $requestStudyArea, ExternalResourceRepository $repo): Response
   {
-    return [
+    return $this->render('external_resource/list.html.twig', [
       'studyArea'         => $requestStudyArea->getStudyArea(),
       'externalResources' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{externalResource}", requirements={"externalResource"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_externalresource_list", subject="requestStudyArea")
-   */
+  #[Route('/remove/{externalResource<\d+>}', requirements: ['externalResource' => '\d+'])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_externalresource_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, ExternalResource $externalResource,
-    ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    ReviewService $reviewService, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -181,9 +150,9 @@ class ExternalResourceController extends AbstractController
       return $this->redirectToRoute('app_externalresource_list');
     }
 
-    return [
+    return $this->render('external_resource/remove.html.twig', [
       'externalResource' => $externalResource,
-      'form'             => $form->createView(),
-    ];
+      'form'             => $form,
+    ]);
   }
 }

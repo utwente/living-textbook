@@ -1,6 +1,4 @@
 security:
-  enable_authenticator_manager: true
-
   # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
   password_hashers:
     Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
@@ -19,7 +17,6 @@ security:
       security: false
     api:
       request_matcher: App\Security\RequestMatcher\ApiSessionRequestMatcher
-      anonymous: false
       stateless: true
       custom_authenticators:
         - App\Api\Security\ApiAuthenticator

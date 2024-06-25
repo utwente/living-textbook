@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\LearningOutcome;
 use App\Entity\PendingChange;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
@@ -12,35 +12,23 @@ use App\Naming\NamingService;
 use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Security\Voters\StudyAreaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class LearningOutcomeController.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/learningoutcome", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/learningoutcome')]
 class LearningOutcomeController extends AbstractController
 {
-  /**
-   * @Route("/add")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
-   */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans,
-    NamingService $namingService): array|Response
+    NamingService $namingService): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -71,25 +59,18 @@ class LearningOutcomeController extends AbstractController
       return $this->redirectToRoute('app_learningoutcome_show', ['learningOutcome' => $learningOutcome->getId()]);
     }
 
-    return [
+    return $this->render('learning_outcome/add.html.twig', [
       'learningOutcome' => $learningOutcome,
-      'form'            => $form->createView(),
-    ];
+      'form'            => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{learningOutcome}", requirements={"learningOutcome"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show", routeParams={"learningOutcome"="{learningOutcome}"},
-   *                                                          subject="requestStudyArea")
-   */
+  #[Route('/edit/{learningOutcome<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
-    ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): array|Response
+    ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
   {
     // Check if correct study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -134,42 +115,28 @@ class LearningOutcomeController extends AbstractController
       return $this->redirectToRoute('app_learningoutcome_show', ['learningOutcome' => $learningOutcome->getId()]);
     }
 
-    return [
+    return $this->render('learning_outcome/edit.html.twig', [
       'learningOutcome' => $learningOutcome,
-      'form'            => $form->createView(),
-    ];
+      'form'            => $form,
+    ]);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function list(RequestStudyArea $requestStudyArea, LearningOutcomeRepository $repo)
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function list(RequestStudyArea $requestStudyArea, LearningOutcomeRepository $repo): Response
   {
-    return [
+    return $this->render('learning_outcome/list.html.twig', [
       'studyArea'        => $requestStudyArea->getStudyArea(),
       'learningOutcomes' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{learningOutcome}", requirements={"learningOutcome"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_show",
-   *   routeParams={"learningOutcome"="{learningOutcome}"}, subject="requestStudyArea")
-   */
+  #[Route('/remove/{learningOutcome<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
-    ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): array|Response
+    ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -205,24 +172,18 @@ class LearningOutcomeController extends AbstractController
       return $this->redirectToRoute('app_learningoutcome_list');
     }
 
-    return [
+    return $this->render('learning_outcome/remove.html.twig', [
       'learningOutcome' => $learningOutcome,
-      'form'            => $form->createView(),
-    ];
+      'form'            => $form,
+    ]);
   }
 
-  /**
-   * @Route("/remove/unused")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningoutcome_list", subject="requestStudyArea")
-   */
+  #[Route('/remove/unused')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
   public function removeUnused(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcomeRepository $learningOutcomeRepository,
-    ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): array|Response
+    ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -264,30 +225,23 @@ class LearningOutcomeController extends AbstractController
       return $this->redirectToRoute('app_learningoutcome_list');
     }
 
-    return [
+    return $this->render('learning_outcome/remove_unused.html.twig', [
       'unusedLearningOutcome' => $unusedLearningOutcomes,
-      'form'                  => $form->createView(),
-    ];
+      'form'                  => $form,
+    ]);
   }
 
-  /**
-   * @Route("/show/{learningOutcome}", requirements={"learningOurcome"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function show(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome)
+  #[Route('/show/{learningOutcome<\d+>}')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function show(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome): Response
   {
     // Check if correct study area
     if ($learningOutcome->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
     }
 
-    return [
+    return $this->render('learning_outcome/show.html.twig', [
       'learningOutcome' => $learningOutcome,
-    ];
+    ]);
   }
 }

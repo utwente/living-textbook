@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\Abbreviation;
 use App\Entity\PendingChange;
 use App\Form\Abbreviation\EditAbbreviationType;
@@ -10,36 +10,24 @@ use App\Form\Type\RemoveType;
 use App\Repository\AbbreviationRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use App\Security\Voters\StudyAreaVoter;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class AbbreviationController.
- *
- * @author BobV
- *
- * @Route("/{_studyArea}/abbreviation", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/abbreviation')]
 class AbbreviationController extends AbstractController
 {
-  /**
-   * @Route("/add")
-   *
-   * @Template
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_abbreviation_list', subject: 'requestStudyArea')]
   public function add(
-    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -61,23 +49,18 @@ class AbbreviationController extends AbstractController
       return $this->redirectToRoute('app_abbreviation_list');
     }
 
-    return [
+    return $this->render('abbreviation/add.html.twig', [
       'abbreviation' => $abbreviation,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 
-  /**
-   * @Route("/data", options={"expose"="true"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
-  public function data(Request $request, RequestStudyArea $requestStudyArea, AbbreviationRepository $abbreviationRepo, SerializerInterface $serializer)
+  #[Route('/data', options: ['expose' => 'true'])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function data(Request $request, RequestStudyArea $requestStudyArea, AbbreviationRepository $abbreviationRepo, SerializerInterface $serializer): Response
   {
     // Retrieve the abbreviations
-    $ids           = $request->query->get('ids');
+    $ids           = $request->query->all('ids');
     $ids           = array_filter($ids, fn ($id) => is_numeric($id));
     $abbreviations = $abbreviationRepo->findBy(['id' => $ids, 'studyArea' => $requestStudyArea->getStudyArea()]);
 
@@ -86,18 +69,12 @@ class AbbreviationController extends AbstractController
     return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
-  /**
-   * @Route("/edit/{abbreviation}", requirements={"abbreviation"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   */
+  #[Route('/edit/{abbreviation<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_abbreviation_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
-    TranslatorInterface $trans): array|Response
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -136,41 +113,28 @@ class AbbreviationController extends AbstractController
       return $this->redirectToRoute('app_abbreviation_list');
     }
 
-    return [
+    return $this->render('abbreviation/edit.html.twig', [
       'abbreviation' => $abbreviation,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function list(RequestStudyArea $requestStudyArea, AbbreviationRepository $repo)
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function list(RequestStudyArea $requestStudyArea, AbbreviationRepository $repo): Response
   {
-    return [
+    return $this->render('abbreviation/list.html.twig', [
       'studyArea'     => $requestStudyArea->getStudyArea(),
       'abbreviations' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{abbreviation}", requirements={"abbreviation"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_abbreviation_list", subject="requestStudyArea")
-   */
+  #[Route('/remove/{abbreviation<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_abbreviation_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, Abbreviation $abbreviation, ReviewService $reviewService,
-    TranslatorInterface $trans): array|Response
+    TranslatorInterface $trans): Response
   {
     $studyArea = $abbreviation->getStudyArea();
 
@@ -201,9 +165,9 @@ class AbbreviationController extends AbstractController
       return $this->redirectToRoute('app_abbreviation_list');
     }
 
-    return [
+    return $this->render('abbreviation/remove.html.twig', [
       'abbreviation' => $abbreviation,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 }

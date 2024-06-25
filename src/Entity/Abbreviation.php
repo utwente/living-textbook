@@ -10,6 +10,7 @@ use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\Traits\ReviewableTrait;
+use App\Repository\AbbreviationRepository;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,17 +21,10 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class Abbreviation.
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\AbbreviationRepository")
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: AbbreviationRepository::class)]
+#[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
@@ -38,43 +32,25 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
   use SoftDeletable;
   use ReviewableTrait;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="abbreviations")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'abbreviations')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * @ORM\Column(name="abbreviation", length=25, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=1, max=25)
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 1, max: 25)]
+  #[ORM\Column(name: 'abbreviation', length: 25, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private string $abbreviation = '';
 
-  /**
-   * @ORM\Column(name="meaning", length=255, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=1, max=255)
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 1, max: 255)]
+  #[ORM\Column(name: 'meaning', length: 255, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('string')]
   private string $meaning = '';
 
   /** Searches in the abbreviation on the given search, returns an array with search result metadata. */

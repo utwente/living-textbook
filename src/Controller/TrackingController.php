@@ -8,37 +8,29 @@ use App\Entity\TrackingEvent;
 use App\Entity\User;
 use App\Excel\TrackingExportBuilder;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Closure;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * Class TrackingController.
- *
- * @Route("/{_studyArea}/track", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/track')]
 class TrackingController extends AbstractController
 {
-  /**
-   * @Route("/export")
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @throws Exception
-   *
-   * @return Response
-   */
-  public function export(RequestStudyArea $requestStudyArea, TrackingExportBuilder $builder)
+  /** @throws Exception */
+  #[Route('/export')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  public function export(RequestStudyArea $requestStudyArea, TrackingExportBuilder $builder): Response
   {
     // Verify whether tracking is actually enabled
     $studyArea = $requestStudyArea->getStudyArea();
@@ -49,16 +41,11 @@ class TrackingController extends AbstractController
     return $builder->buildResponse($studyArea);
   }
 
-  /**
-   * @Route("/pageload", methods={"POST"}, options={"expose"="true"})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @return Response
-   */
+  #[Route('/pageload', options: ['expose' => 'true'], methods: [Request::METHOD_POST])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function pageload(
     Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
-    ValidatorInterface $validator, RouterInterface $router)
+    ValidatorInterface $validator, RouterInterface $router): Response
   {
     return $this->processTrackingItem(
       PageLoad::class,
@@ -89,16 +76,11 @@ class TrackingController extends AbstractController
       $request, $requestStudyArea, $em, $serializer, $validator);
   }
 
-  /**
-   * @Route("/event", methods={"POST"}, options={"expose"="true"})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @return Response
-   */
+  #[Route('/event', options: ['expose' => 'true'], methods: [Request::METHOD_POST])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function event(
     Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $em, SerializerInterface $serializer,
-    ValidatorInterface $validator)
+    ValidatorInterface $validator): Response
   {
     return $this->processTrackingItem(
       TrackingEvent::class,
@@ -110,14 +92,10 @@ class TrackingController extends AbstractController
       $request, $requestStudyArea, $em, $serializer, $validator);
   }
 
-  /**
-   * Process a tracking item request.
-   *
-   * @return Response
-   */
+  /** Process a tracking item request. */
   private function processTrackingItem(
     string $clazz, Closure $callback, Request $request, RequestStudyArea $requestStudyArea,
-    EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator)
+    EntityManagerInterface $em, SerializerInterface $serializer, ValidatorInterface $validator): Response
   {
     // Verify whether tracking is actually enabled
     $studyArea = $requestStudyArea->getStudyArea();

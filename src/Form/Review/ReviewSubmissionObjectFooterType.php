@@ -6,26 +6,23 @@ use App\Entity\Concept;
 use App\Entity\PendingChange;
 use App\Entity\User;
 use Override;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
 
 class ReviewSubmissionObjectFooterType extends AbstractType
 {
-  private RouterInterface $router;
-  private Security $security;
-
-  public function __construct(RouterInterface $router, Security $security)
+  public function __construct(
+    private readonly RouterInterface $router,
+    private readonly Security $security)
   {
-    $this->router   = $router;
-    $this->security = $security;
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $pendingChange = $options['pending_change'];
     assert($pendingChange instanceof PendingChange);
@@ -47,7 +44,7 @@ class ReviewSubmissionObjectFooterType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setRequired('pending_change')

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PermissionsTypes extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     foreach ($options['group_types'] as $groupType) {
       $groupOptions = [
@@ -49,7 +49,7 @@ class PermissionsTypes extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setRequired('group_types')

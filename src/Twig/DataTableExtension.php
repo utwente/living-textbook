@@ -5,42 +5,28 @@ namespace App\Twig;
 use Override;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
- * Class DataTableExtension.
- *
  * This extension ensures that the correct options are loaded for
- * the DataTable extension
- *
- * @author BobV
+ * the DataTable extension.
  */
 class DataTableExtension extends AbstractExtension
 {
-  private TranslatorInterface $translator;
-
-  /** DataTableExtension constructor. */
-  public function __construct(TranslatorInterface $translator)
+  public function __construct(private readonly TranslatorInterface $translator)
   {
-    $this->translator = $translator;
   }
 
-  /** @return array|TwigFilter[] */
+  /** @return TwigFunction[] */
   #[Override]
-  public function getFunctions()
+  public function getFunctions(): array
   {
     return [
       new TwigFunction('dataTable', $this->dataTable(...), ['is_safe' => ['html']]),
     ];
   }
 
-  /**
-   * @param array $options
-   *
-   * @return string
-   */
-  public function dataTable($tableId, $options = [])
+  public function dataTable($tableId, array $options = []): string
   {
     // Merge options with default ones
     $options = array_merge($this->getDefaultDataTableOptions(), $options);
@@ -57,7 +43,7 @@ class DataTableExtension extends AbstractExtension
     return trim((string)preg_replace('/\s+/', ' ', $return));
   }
 
-  private function getDefaultDataTableOptions()
+  private function getDefaultDataTableOptions(): array
   {
     return [
       'buttons'    => [],
@@ -70,7 +56,7 @@ class DataTableExtension extends AbstractExtension
     ];
   }
 
-  private function getDutchDataTableTranslation()
+  private function getDutchDataTableTranslation(): array
   {
     $translations = [
       'language' => [

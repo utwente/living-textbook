@@ -10,15 +10,12 @@ use Symfony\Component\Form\FormView;
 
 class DownloadPreviewType extends AbstractType
 {
-  private ExportService $exportService;
-
-  public function __construct(ExportService $exportService)
+  public function __construct(private readonly ExportService $exportService)
   {
-    $this->exportService = $exportService;
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['preview_data'] = $this->exportService->getPreviews();
   }

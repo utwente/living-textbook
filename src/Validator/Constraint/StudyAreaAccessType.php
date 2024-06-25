@@ -2,19 +2,16 @@
 
 namespace App\Validator\Constraint;
 
+use Attribute;
 use Override;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class StudyAreaAccessType.
- *
- * @Annotation
- */
+#[Attribute(Attribute::TARGET_PROPERTY)]
 class StudyAreaAccessType extends Constraint
 {
   /** Sets this validator as class validator. */
   #[Override]
-  public function getTargets(): array|string
+  public function getTargets(): string
   {
     return self::PROPERTY_CONSTRAINT;
   }

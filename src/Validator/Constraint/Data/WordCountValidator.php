@@ -7,11 +7,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class WordCountValidator.
- *
- * @author BobV
- */
 class WordCountValidator extends ConstraintValidator
 {
   /**
@@ -21,7 +16,7 @@ class WordCountValidator extends ConstraintValidator
    * @param Constraint $constraint The constraint for the validation
    */
   #[Override]
-  public function validate($value, Constraint $constraint)
+  public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
     if (!($constraint instanceof WordCount)) {

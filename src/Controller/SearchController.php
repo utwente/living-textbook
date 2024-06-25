@@ -11,38 +11,28 @@ use App\Repository\ConceptRepository;
 use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Security\Voters\StudyAreaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class SearchController.
- *
- * @Route("/{_studyArea}/search", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/search')]
 class SearchController extends AbstractController
 {
-  /**
-   * @Route("/{s}", name="search", requirements={"s"=".*"}, defaults={"s"=null})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
+  #[Route('/{s<.*>?}', name: 'search')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function search(
     ?string $s, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
     AbbreviationRepository $abbreviationRepository, ConceptRepository $conceptRepository,
     ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-    AnnotationRepository $annotationRepository)
+    AnnotationRepository $annotationRepository): Response
   {
     $result = [];
 
     if (null === $s) {
-      return $result;
+      return $this->render('search/search.html.twig', $result);
     }
 
     // Verify data
@@ -53,7 +43,7 @@ class SearchController extends AbstractController
     }
 
     if (array_key_exists('error', $result)) {
-      return $result;
+      return $this->render('search/search.html.twig', $result);
     }
 
     $studyArea        = $requestStudyArea->getStudyArea();
@@ -69,8 +59,8 @@ class SearchController extends AbstractController
 
     // Retrieve annotation data, which is easier to do here
     $user = $this->getUser();
-    assert($user instanceof User);
     if ($user) {
+      assert($user instanceof User);
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
       $ownAnnotations = array_filter($allAnnotations, fn (Annotation $annotation) => $annotation->getUserId() == $userId);
@@ -79,7 +69,7 @@ class SearchController extends AbstractController
       $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
     }
 
-    return $result;
+    return $this->render('search/search.html.twig', $result);
   }
 
   /** @param SearchableInterface[] $data */
@@ -123,9 +113,9 @@ class SearchController extends AbstractController
     return array_key_exists('results', $element) && (is_countable($element['results']) ? count($element['results']) : 0) > 0;
   }
 
-  public static function sortSearchData($a, $b)
+  public static function sortSearchData($a, $b): int
   {
-    $reduceFunction = fn ($carry, $item) => $item['prio'] > $carry ? $item['prio'] : $carry;
+    $reduceFunction = fn ($carry, $item) => max($item['prio'], $carry);
 
     $ap = array_reduce($a['results'], $reduceFunction, 0);
     $bp = array_reduce($b['results'], $reduceFunction, 0);

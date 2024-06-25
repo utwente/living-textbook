@@ -2,37 +2,32 @@
 
 namespace App\Validator\Constraint;
 
+use Attribute;
 use Override;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class ConceptRelation.
- *
- * @author BobV
- *
- * @Annotation
- */
+#[Attribute(Attribute::TARGET_CLASS)]
 class ConceptRelation extends Constraint
 {
-  /**
-   * Error when a relation is made twice.
-   *
-   * @var string
-   */
-  public $duplicatedRelation = 'concept.duplicated-relation';
-
-  /**
-   * Error when a relation is mirrored
-   *   a -> b
-   *   b <- a.
-   *
-   * @var string
-   */
-  public $inversedRelation = 'concept.inversed-relation';
+  public function __construct(
+    /** Error when a relation is made twice. */
+    public string $duplicatedRelation = 'concept.duplicated-relation',
+    /**
+     * Error when a relation is mirrored
+     *   a -> b
+     *   b <- a.
+     */
+    public string $inversedRelation = 'concept.inversed-relation',
+    mixed $options = null,
+    ?array $groups = null,
+    mixed $payload = null)
+  {
+    parent::__construct($options, $groups, $payload);
+  }
 
   /** Sets this validator as class validator. */
   #[Override]
-  public function getTargets(): array|string
+  public function getTargets(): string
   {
     return self::CLASS_CONSTRAINT;
   }

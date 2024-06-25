@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FieldConfigurationType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $this
       ->conceptFields($builder)
@@ -26,7 +26,7 @@ class FieldConfigurationType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'data_class' => StudyAreaFieldConfiguration::class,
@@ -89,7 +89,7 @@ class FieldConfigurationType extends AbstractType
     return $this;
   }
 
-  private function learningOutcomeFields(FormBuilderInterface $builder): self
+  private function learningOutcomeFields(FormBuilderInterface $builder): void
   {
     $builder
       ->add('learningOutcomeObjName', null, [
@@ -100,7 +100,5 @@ class FieldConfigurationType extends AbstractType
           'placeholder' => 'learning-outcome._name',
         ],
       ]);
-
-    return $this;
   }
 }

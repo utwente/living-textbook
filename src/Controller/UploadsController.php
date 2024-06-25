@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use DateTime;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -12,23 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * @Route("/uploads")
- */
+#[Route('/uploads')]
 class UploadsController extends AbstractController
 {
-  /**
-   * @Route("/studyarea/{_studyArea}/{path}",
-   *   requirements={"_studyArea"="\d+", "path"=".+"}, options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   */
+  #[Route('/studyarea/{_studyArea<\d+>}/{path<.+>}', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function load(Request $request, RequestStudyArea $requestStudyArea, string $path): Response
   {
     // Manual check to not trigger login forward
-    if (!$this->isGranted('STUDYAREA_SHOW', $requestStudyArea)) {
+    if (!$this->isGranted(StudyAreaVoter::SHOW, $requestStudyArea)) {
       return new Response(status: Response::HTTP_FORBIDDEN);
     }
 
@@ -41,11 +37,8 @@ class UploadsController extends AbstractController
     return $this->getFile($request, $requestedFile);
   }
 
-  /**
-   * @Route("/global/{path}", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   */
+  #[Route('/global/{path}', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function loadGlobal(Request $request, string $path): Response
   {
     // Create path from request

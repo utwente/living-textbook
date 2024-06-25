@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class LearningPathAnalyticsType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $studyArea = $options['study_area'];
     assert($studyArea instanceof StudyArea);
@@ -58,7 +58,7 @@ class LearningPathAnalyticsType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setRequired('study_area')

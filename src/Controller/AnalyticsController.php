@@ -7,59 +7,47 @@ use App\Analytics\Exception\VisualisationBuildFailed;
 use App\Analytics\Exception\VisualisationDependenciesFailed;
 use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Analytics\Model\SynthesizeRequest;
+use App\Entity\User;
 use App\Form\Analytics\LearningPathAnalyticsType;
 use App\Form\Analytics\SynthesizeRequestType;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class AnalyticsController.
- *
- * @Route("/{_studyArea}/analytics", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/analytics')]
 class AnalyticsController extends AbstractController
 {
-  /**
-   * The analytics dashboard.
-   *
-   * @Route("/")
-   *
-   * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
-   *
-   * @Template()
-   *
-   * @return array
-   */
-  public function dashboard(RequestStudyArea $requestStudyArea)
+  /** The analytics dashboard. */
+  #[Route('/')]
+  #[IsGranted(StudyAreaVoter::ANALYTICS, subject: 'requestStudyArea')]
+  public function dashboard(RequestStudyArea $requestStudyArea): Response
   {
     $form = $this->createForm(LearningPathAnalyticsType::class, new LearningPathVisualisationRequest(), [
       'study_area' => $requestStudyArea->getStudyArea(),
     ]);
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('analytics/dashboard.html.twig', [
+      'form' => $form,
+    ]);
   }
 
   /**
    * Generate the analytics.
    *
-   * @Route("/generate", methods={"POST"}, options={"expose"=true})
-   *
-   * @IsGranted("STUDYAREA_ANALYTICS", subject="requestStudyArea")
-   *
    * @throws VisualisationBuildFailed
    * @throws VisualisationDependenciesFailed
    */
+  #[Route('/generate', options: ['expose' => true], methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::ANALYTICS, subject: 'requestStudyArea')]
   public function generate(
     Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
     SerializerInterface $serializer): JsonResponse
@@ -92,16 +80,11 @@ class AnalyticsController extends AbstractController
     return JsonResponse::fromJsonString($serializer->serialize($result, 'json'));
   }
 
-  /**
-   * @Route("/synthesize")
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @Template
-   */
+  #[Route(path: '/synthesize')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function synthesize(
     Request $request, RequestStudyArea $requestStudyArea, AnalyticsService $analyticsService,
-    TranslatorInterface $translator, LearningPathRepository $learningPathRepository)
+    TranslatorInterface $translator, LearningPathRepository $learningPathRepository): Response
   {
     if ($learningPathRepository->getCountForStudyArea($requestStudyArea->getStudyArea()) === 0) {
       $this->addFlash('error', $translator->trans('analytics.synthesize-not-possible'));
@@ -121,8 +104,8 @@ class AnalyticsController extends AbstractController
       return $this->redirectToRoute('app_analytics_dashboard');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('analytics/synthesize.html.twig', [
+      'form' => $form,
+    ]);
   }
 }

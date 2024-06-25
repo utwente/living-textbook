@@ -9,34 +9,35 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Override;
 use Rollerworks\Component\PasswordStrength\Validator\Constraints\PasswordStrength;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
+#[AsCommand('ltb:add:account')]
 class AddAccountCommand extends Command
 {
-  protected static $defaultName = 'ltb:add:account';
-
   public function __construct(
     private readonly EntityManagerInterface $entityManager,
     private readonly UserRepository $userRepository,
     private readonly ValidatorInterface $validator,
-    private readonly UserPasswordEncoderInterface $passwordEncoder,
+    private readonly UserPasswordHasherInterface $passwordHasher,
   ) {
     parent::__construct();
   }
 
   #[Override]
-  protected function configure()
+  protected function configure(): void
   {
     $this
       ->setDescription('Directly add a new local user to the database')
@@ -44,10 +45,11 @@ class AddAccountCommand extends Command
   }
 
   #[Override]
-  public function run(InputInterface $input, OutputInterface $output)
+  public function run(InputInterface $input, OutputInterface $output): int
   {
     $style  = new SymfonyStyle($input, $output);
     $helper = $this->getHelper('question');
+    assert($helper instanceof QuestionHelper);
 
     $this->entityManager->beginTransaction();
 
@@ -72,7 +74,7 @@ class AddAccountCommand extends Command
               return $answer;
             })
         ))
-        ->setPassword($this->passwordEncoder->encodePassword($user, $helper->ask($input, $output,
+        ->setPassword($this->passwordHasher->hashPassword($user, $helper->ask($input, $output,
           (new Question('Provide a password: '))
             ->setHidden(true)
             ->setValidator(function ($answer) {
@@ -96,7 +98,7 @@ class AddAccountCommand extends Command
         ->setFullName($user->getDisplayName());
 
       if (!$this->validateObject($user, $style)) {
-        return 1; // Command::FAILURE (Symfony 5.1+)
+        return Command::FAILURE;
       }
 
       $this->entityManager->persist($user);
@@ -112,7 +114,7 @@ class AddAccountCommand extends Command
           ));
 
         if (!$this->validateObject($area, $style)) {
-          return 1; // Command::FAILURE (Symfony 5.1+)
+          return Command::FAILURE;
         }
 
         $this->entityManager->persist($area);
@@ -128,7 +130,7 @@ class AddAccountCommand extends Command
       throw $e;
     }
 
-    return 0; // Command::SUCCESS (Symfony 5.1+)
+    return Command::SUCCESS;
   }
 
   private function buildQuestion(string $question, string $default): Question

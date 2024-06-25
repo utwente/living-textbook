@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\Email;
 class TransferOwnerType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('new_owner', EmailType::class, [

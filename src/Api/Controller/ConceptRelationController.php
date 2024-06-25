@@ -12,30 +12,27 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\IdMap\IdMap;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/** @Route("/conceptrelation") */
 #[OA\Tag('Concept relation')]
+#[Route('/conceptrelation')]
 class ConceptRelationController extends AbstractApiController
 {
-  /**
-   * Retrieve all study area concept relations.
-   *
-   * @Route(methods={"GET"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve all study area concept relations. */
   #[OA\Response(response: 200, description: 'All study area concept relations', content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
   ])]
+  #[Route(methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function list(
     RequestStudyArea $requestStudyArea,
     ConceptRelationRepository $conceptRelationRepository): JsonResponse
@@ -49,14 +46,10 @@ class ConceptRelationController extends AbstractApiController
     );
   }
 
-  /**
-   * Retrieve a single study area concept relation.
-   *
-   * @Route("/{conceptRelation<\d+>}", methods={"GET"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve a single study area concept relation. */
   #[OA\Response(response: 200, description: 'Single study area concept relation')]
+  #[Route('/{conceptRelation<\d+>}', methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function single(RequestStudyArea $requestStudyArea, ConceptRelation $conceptRelation): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource() ?? $conceptRelation->getTarget());
@@ -67,16 +60,12 @@ class ConceptRelationController extends AbstractApiController
     );
   }
 
-  /**
-   * Add a new study area concept relation.
-   *
-   * @Route(methods={"POST"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Add a new study area concept relation. */
   #[OA\RequestBody(description: 'The new concept relation', required: true, content: [new Model(type: CreateConceptRelationApiModel::class)])]
   #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route(methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function add(
     RequestStudyArea $requestStudyArea,
     Request $request,
@@ -116,16 +105,12 @@ class ConceptRelationController extends AbstractApiController
     return $this->createDataResponse(DetailedConceptRelationApiModel::fromEntity($relation));
   }
 
-  /**
-   * Update an existing study area concept relation.
-   *
-   * @Route("/{conceptRelation<\d+>}", methods={"PATCH"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Update an existing study area concept relation. */
   #[OA\RequestBody(description: 'The concept relation to update', required: true, content: [new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The updated concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route('/{conceptRelation<\d+>}', methods: [Request::METHOD_PATCH])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
     Request $request,
@@ -146,13 +131,7 @@ class ConceptRelationController extends AbstractApiController
       serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 
-  /**
-   * Update a batch of existing study area concept relations.
-   *
-   * @Route("/batch", methods={"PATCH"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Update a batch of existing study area concept relations. */
   #[OA\RequestBody(description: 'The concept relations to update', required: true, content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron']))),
   ])]
@@ -160,6 +139,8 @@ class ConceptRelationController extends AbstractApiController
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: DetailedConceptRelationApiModel::class))),
   ])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route('/batch', methods: [Request::METHOD_PATCH])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function batchUpdate(
     RequestStudyArea $requestStudyArea,
     Request $request,
@@ -204,14 +185,10 @@ class ConceptRelationController extends AbstractApiController
       serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 
-  /**
-   * Delete an existing study area concept relation.
-   *
-   * @Route("/{conceptRelation<\d+>}", methods={"DELETE"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Delete an existing study area concept relation. */
   #[OA\Response(response: 202, description: 'The concept relation has been deleted')]
+  #[Route('/{conceptRelation<\d+>}', methods: [Request::METHOD_DELETE])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function delete(RequestStudyArea $requestStudyArea, ConceptRelation $conceptRelation): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $conceptRelation->getSource());

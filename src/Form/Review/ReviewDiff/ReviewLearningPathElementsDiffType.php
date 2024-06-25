@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormView;
 class ReviewLearningPathElementsDiffType extends AbstractReviewDiffType
 {
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     parent::buildView($view, $form, $options);
 

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Repository\StudyAreaRepository;
 use App\Security\UserPermissions;
 use App\Validator\Constraint\StudyAreaAccessType;
 use DateTime;
@@ -13,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ReadableCollection;
 use Doctrine\Common\Collections\Selectable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -20,19 +22,14 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Stringable;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\StudyAreaRepository")
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: StudyAreaRepository::class)]
+#[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyArea implements Stringable, IdInterface
 {
   use IdTrait;
@@ -44,212 +41,129 @@ class StudyArea implements Stringable, IdInterface
   final public const string ACCESS_PRIVATE = 'private';
   final public const string ACCESS_GROUP   = 'group';
 
-  /**
-   * @ORM\Column(name="name", type="string", length=255, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=3, max=255)
-   *
-   * @JMSA\Expose()
-   */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 3, max: 255)]
+  #[ORM\Column(name: 'name', length: 255, nullable: false)]
+  #[JMSA\Expose]
   private string $name = '';
 
-  /** @ORM\Column(name="description", type="text", nullable=true) */
+  #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
   private ?string $description = null;
 
-  /**
-   * @var Collection<Concept>
-   *
-   * @ORM\OneToMany(targetEntity="Concept", mappedBy="studyArea", cascade={"persist","remove"})
-   *
-   * @JMSA\Expose()
-   */
+  /** @var Collection<Concept> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Concept::class, cascade: ['persist', 'remove'])]
+  #[JMSA\Expose]
   private Collection $concepts;
 
   /**
    * @var Collection<UserGroup>&Selectable<UserGroup>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\UserGroup", mappedBy="studyArea", cascade={"persist","remove"})
-   *
-   * @JMSA\Expose()
    */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: UserGroup::class, cascade: ['persist', 'remove'])]
+  #[JMSA\Expose]
   private Collection&Selectable $userGroups;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="User")
-   *
-   * @ORM\JoinColumn(name="owner_user_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'owner_user_id', referencedColumnName: 'id', nullable: false)]
   private ?User $owner = null;
 
-  /**
-   * @ORM\Column(name="access_type", type="string", length=10, nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @StudyAreaAccessType()
-   */
+  #[Assert\NotNull]
+  #[ORM\Column(name: 'access_type', length: 10, nullable: false)]
+  #[StudyAreaAccessType]
   private string $accessType = self::ACCESS_PRIVATE;
 
-  /**
-   * @var Collection<RelationType>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\RelationType", mappedBy="studyArea")
-   */
+  /** @var Collection<RelationType> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: RelationType::class)]
   private Collection $relationTypes;
 
-  /**
-   * @var Collection<Abbreviation>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\Abbreviation", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<Abbreviation> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Abbreviation::class, fetch: 'EXTRA_LAZY')]
   private Collection $abbreviations;
 
-  /**
-   * @var Collection<ExternalResource>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\ExternalResource", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<ExternalResource> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: ExternalResource::class, fetch: 'EXTRA_LAZY')]
   private Collection $externalResources;
 
-  /**
-   * @var Collection<Contributor>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\Contributor", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<Contributor> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Contributor::class, fetch: 'EXTRA_LAZY')]
   private Collection $contributors;
 
-  /**
-   * @var Collection<LearningOutcome>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\LearningOutcome", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<LearningOutcome> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LearningOutcome::class, fetch: 'EXTRA_LAZY')]
   private Collection $learningOutcomes;
 
-  /**
-   * @var Collection<LearningPath>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\LearningPath", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<LearningPath> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LearningPath::class, fetch: 'EXTRA_LAZY')]
   private Collection $learningPaths;
 
-  /**
-   * @var Collection<Tag>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<Tag> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
   private Collection $tags;
 
-  /** @ORM\Column(name="frozen_on", type="datetime", nullable=true) */
+  #[ORM\Column(name: 'frozen_on', nullable: true)]
   private ?DateTime $frozenOn = null;
 
-  /**
-   * @ORM\Column(name="print_header", type="string", length=100, nullable=true)
-   *
-   * @Assert\Length(max=100)
-   */
+  #[Assert\Length(max: 100)]
+  #[ORM\Column(name: 'print_header', length: 100, nullable: true)]
   private ?string $printHeader = null;
 
-  /** @ORM\Column(name="print_introduction", type="text", nullable=true) */
+  #[ORM\Column(name: 'print_introduction', type: Types::TEXT, nullable: true)]
   private ?string $printIntroduction = null;
 
-  /**
-   * If set, user interaction will be tracked (with user opt-in).
-   *
-   * @ORM\Column(name="track_users", type="boolean", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("bool")
-   */
+  /** If set, user interaction will be tracked (with user opt-in). */
+  #[Assert\NotNull]
+  #[ORM\Column(name: 'track_users', nullable: false)]
   private bool $trackUsers = false;
 
-  /**
-   * Group.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\StudyAreaGroup", inversedBy="studyAreas")
-   *
-   * @ORM\JoinColumn(nullable=true)
-   */
+  /** Group. */
+  #[ORM\ManyToOne(inversedBy: 'studyAreas')]
+  #[ORM\JoinColumn(nullable: true)]
   private ?StudyAreaGroup $group = null;
 
-  /**
-   * Open access.
-   *
-   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
-   */
+  /** Open access. */
+  #[ORM\Column(options: ['default' => false])]
   private bool $openAccess = false;
 
-  /**
-   * Analytics dashboard enabled.
-   *
-   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
-   */
+  /** Analytics dashboard enabled. */
+  #[ORM\Column(options: ['default' => false])]
   private bool $analyticsDashboardEnabled = false;
 
-  /**
-   * Whether the review mode has been enabled for this study area.
-   *
-   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
-   */
+  /** Whether the review mode has been enabled for this study area. */
+  #[ORM\Column(options: ['default' => false])]
   private bool $reviewModeEnabled = false;
 
-  /**
-   * Whether the API is enabled for this study area.
-   *
-   * @ORM\Column(type="boolean", nullable=false, options={"default": false})
-   */
+  /** Whether the API is enabled for this study area. */
+  #[ORM\Column(options: ['default' => false])]
   private bool $apiEnabled = false;
 
-  /**
-   * The study area field names object.
-   *
-   * @ORM\OneToOne(targetEntity="App\Entity\StudyAreaFieldConfiguration", cascade={"all"})
-   *
-   * @ORM\JoinColumn(nullable=true)
-   */
+  /** The study area field names object. */
+  #[ORM\OneToOne(cascade: ['all'])]
+  #[ORM\JoinColumn]
   private ?StudyAreaFieldConfiguration $fieldConfiguration = null;
 
-  /**
-   * A default tag filter for the browser.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
-   *
-   * @ORM\JoinColumn(nullable=true)
-   */
+  /** A default tag filter for the browser. */
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn]
   private ?Tag $defaultTagFilter = null;
 
-  /**
-   * If set the Dotron visualisation will be used.
-   *
-   * @ORM\Column(type="boolean")
-   */
+  /** If set the Dotron visualisation will be used. */
+  #[ORM\Column]
   private bool $dotron = false;
 
-  /** @ORM\OneToOne(targetEntity="App\Entity\StylingConfiguration") */
+  #[ORM\OneToOne]
   private ?StylingConfiguration $defaultStylingConfiguration = null;
 
-  /**
-   * @var Collection<int, StylingConfiguration>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfiguration", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<int, StylingConfiguration> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: StylingConfiguration::class, fetch: 'EXTRA_LAZY')]
   private Collection $stylingConfigurations;
 
-  /** @ORM\OneToOne(targetEntity="App\Entity\LayoutConfiguration") */
+  #[ORM\OneToOne]
   private ?LayoutConfiguration $defaultLayoutConfiguration = null;
 
-  /**
-   * @var Collection<int, LayoutConfiguration>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfiguration", mappedBy="studyArea", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<int, LayoutConfiguration> */
+  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LayoutConfiguration::class, fetch: 'EXTRA_LAZY')]
   private Collection $layoutConfigurations;
 
-  /** StudyArea constructor. */
   public function __construct()
   {
     $this->concepts              = new ArrayCollection();
@@ -265,7 +179,7 @@ class StudyArea implements Stringable, IdInterface
     $this->layoutConfigurations  = new ArrayCollection();
   }
 
-  /** @Assert\Callback() */
+  #[Assert\Callback]
   public function validateObject(ExecutionContextInterface $context)
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {

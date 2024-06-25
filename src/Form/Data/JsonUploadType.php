@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 class JsonUploadType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('json', FileType::class, [

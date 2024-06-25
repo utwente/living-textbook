@@ -4,87 +4,60 @@ namespace App\Entity;
 
 use App\Database\Traits\IdTrait;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Repository\PageLoadRepository;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class PageRequest.
+ * TODO Migrate array properties to JSON.
  *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\PageLoadRepository")
+ * @phan-file-suppress PhanDeprecatedClassConstant
  */
+#[ORM\Entity(repositoryClass: PageLoadRepository::class)]
+#[ORM\Table]
 class PageLoad implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
 
-  /**
-   * @ORM\Column(name="user_id", type="string", length=255)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\NotBlank()
-   */
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[ORM\Column(name: 'user_id', length: 255)]
   private ?string $userId = null;
 
-  /**
-   * @ORM\Column(name="timestamp", type="datetime")
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\Column(name: 'timestamp')]
   private ?DateTime $timestamp = null;
 
-  /**
-   * @ORM\Column(name="session_id", type="guid")
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\NotBlank()
-   */
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[ORM\Column(name: 'session_id', type: Types::GUID)]
   private ?string $sessionId = null;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /**
-   * @ORM\Column(name="path", type="string", length=1024)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(max=1024)
-   */
+  #[Assert\NotNull]
+  #[Assert\NotBlank]
+  #[Assert\Length(max: 1024)]
+  #[ORM\Column(name: 'path', length: 1024)]
   private ?string $path = null;
 
-  /**
-   * @ORM\Column(name="path_context", type="array", nullable=true)
-   *
-   * @Assert\Type("array")
-   */
+  #[Assert\Type('array')]
+  #[ORM\Column(name: 'path_context', type: Types::ARRAY, nullable: true)]
   private ?array $pathContext = null;
 
-  /**
-   * @ORM\Column(name="origin", type="string", length=1024, nullable=true)
-   *
-   * @Assert\Length(max=1024)
-   */
+  #[Assert\Length(max: 1024)]
+  #[ORM\Column(name: 'origin', length: 1024, nullable: true)]
   private ?string $origin = null;
 
-  /**
-   * @ORM\Column(name="origin_context", type="array")
-   *
-   * @Assert\Type("array")
-   */
+  #[Assert\Type('array')]
+  #[ORM\Column(name: 'origin_context', type: Types::ARRAY)]
   private ?array $originContext = null;
 
   public function getUserId(): string

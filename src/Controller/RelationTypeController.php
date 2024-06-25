@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\EntityHandler\RelationTypeHandler;
 use App\Form\RelationType\EditRelationTypeType;
@@ -11,20 +11,16 @@ use App\Repository\ConceptRelationRepository;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use App\Security\Voters\StudyAreaVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class RelationTypeController.
- *
- * @Route("/{_studyArea}/relationtype", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/relationtype')]
 class RelationTypeController extends AbstractController
 {
   public function __construct(
@@ -33,19 +29,13 @@ class RelationTypeController extends AbstractController
   ) {
   }
 
-  /**
-   * @Route("/add")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
-   */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_relationtype_list', subject: 'requestStudyArea')]
   public function add(
     Request $request,
     RequestStudyArea $requestStudyArea,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -66,28 +56,21 @@ class RelationTypeController extends AbstractController
       return $this->redirectToRoute('app_relationtype_list');
     }
 
-    return [
+    return $this->render('relation_type/add.html.twig', [
       'relationType' => $relationType,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{relationType}", requirements={"relationType"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
-   *
-   * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
-   */
+  /** @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector */
+  #[Route('/edit/{relationType<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_relationtype_list', subject: 'requestStudyArea')]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
     RelationType $relationType,
-    TranslatorInterface $trans): Response|array
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -129,46 +112,32 @@ class RelationTypeController extends AbstractController
       return $this->redirectToRoute('app_relationtype_list');
     }
 
-    return [
+    return $this->render('relation_type/edit.html.twig', [
       'relationType' => $relationType,
       'form'         => $form->createView(),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $repo)
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function list(RequestStudyArea $requestStudyArea, RelationTypeRepository $repo): Response
   {
-    return [
+    return $this->render('relation_type/list.html.twig', [
       'studyArea'     => $requestStudyArea->getStudyArea(),
       'relationTypes' => $repo->findForStudyArea($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{relationType}", requirements={"relationType"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_relationtype_list", subject="requestStudyArea")
-   *
-   * @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector
-   */
+  /** @noRector Rector\Php56\Rector\FunctionLike\AddDefaultValueForUndefinedVariableRector */
+  #[Route(path: '/remove/{relationType<\d+>}', requirements: ['relationType' => '\d+'])]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_relationtype_list', subject: 'requestStudyArea')]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,
     RelationType $relationType,
     ConceptRelationRepository $conceptRelationRepository,
-    TranslatorInterface $trans)
+    TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -207,11 +176,11 @@ class RelationTypeController extends AbstractController
       return $this->redirectToRoute('app_relationtype_list');
     }
 
-    return [
+    return $this->render('relation_type/remove.html.twig', [
       'relationType'     => $relationType,
       'conceptRelations' => $conceptRelationRepository->getByRelationType($relationType),
       'form'             => $form->createView(),
-    ];
+    ]);
   }
 
   private function getHandler(): RelationTypeHandler

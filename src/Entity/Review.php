@@ -4,128 +4,78 @@ namespace App\Entity;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
+use App\Repository\ReviewRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class Review.
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\ReviewRepository")
- */
+#[ORM\Entity(repositoryClass: ReviewRepository::class)]
+#[ORM\Table]
 class Review implements IdInterface
 {
   use IdTrait;
   use Blameable;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="App\Entity\StudyArea")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
   /**
    * The pending changes in this review.
    *
    * @var Collection<PendingChange>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\PendingChange", mappedBy="review", cascade={"remove"})
-   *
-   * @ORM\OrderBy({"objectType" = "ASC", "changeType" = "ASC"})
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Count(min=1)
    */
+  #[Assert\NotNull]
+  #[Assert\Count(min: 1)]
+  #[ORM\OneToMany(mappedBy: 'review', targetEntity: PendingChange::class, cascade: ['remove'])]
+  #[ORM\OrderBy(['objectType' => 'ASC', 'changeType' => 'ASC'])]
   private Collection $pendingChanges;
 
-  /**
-   * The owner of the pending change (aka, the user who created it).
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\User")
-   *
-   * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  /** The owner of the pending change (aka, the user who created it). */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(nullable: false)]
   private ?User $owner = null;
 
-  /**
-   * Notes left for the reviewer, if any.
-   *
-   * @ORM\Column(type="text", nullable=true)
-   *
-   * @Assert\Length(max=2000)
-   */
+  /** Notes left for the reviewer, if any. */
+  #[Assert\Length(max: 2000)]
+  #[ORM\Column(type: Types::TEXT, nullable: true)]
   private ?string $notes = null;
 
-  /**
-   * Requested datetime.
-   *
-   * @ORM\Column(type="datetime")
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Type("datetime")
-   */
+  /** Requested datetime. */
+  #[Assert\NotNull]
+  #[ORM\Column]
   private ?DateTime $requestedReviewAt = null;
 
-  /**
-   * The requested reviewer.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\User")
-   *
-   * @ORM\JoinColumn(nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  /** The requested reviewer. */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(nullable: false)]
   private ?User $requestedReviewBy = null;
 
-  /**
-   * Reviewed at datetime.
-   *
-   * @ORM\Column(type="datetime", nullable=true)
-   *
-   * @Assert\Type("datetime")
-   */
+  /** Reviewed at datetime. */
+  #[ORM\Column(nullable: true)]
   private ?DateTime $reviewedAt = null;
 
-  /**
-   * Approved by, can be different than the requested reviewer.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\User")
-   *
-   * @ORM\JoinColumn(nullable=true)
-   */
+  /** Approved by, can be different than the requested reviewer. */
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(nullable: true)]
   private ?User $reviewedBy = null;
 
-  /**
-   * Approval datetime.
-   *
-   * @ORM\Column(type="datetime", nullable=true)
-   *
-   * @Assert\Type("datetime")
-   */
+  /** Approval datetime. */
+  #[ORM\Column(nullable: true)]
   private ?DateTime $approvedAt = null;
 
-  /**
-   * Approved by, can be different than the requested reviewer.
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\User")
-   *
-   * @ORM\JoinColumn(nullable=true)
-   */
+  /** Approved by, can be different than the requested reviewer. */
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(nullable: true)]
   private ?User $approvedBy = null;
 
-  /** Review constructor. */
   public function __construct()
   {
     $this->pendingChanges = new ArrayCollection();

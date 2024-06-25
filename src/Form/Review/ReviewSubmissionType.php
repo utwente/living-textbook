@@ -13,8 +13,8 @@ use App\Form\Review\ReviewDiff\ReviewRelationDiffType;
 use App\Form\Review\ReviewDiff\ReviewSimpleListDiffType;
 use App\Form\Review\ReviewDiff\ReviewTextDiffType;
 use App\Form\Type\SaveType;
+use App\Review\Exception\InvalidChangeException;
 use App\Review\ReviewService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use InvalidArgumentException;
 use Override;
@@ -26,16 +26,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReviewSubmissionType extends AbstractType
 {
-  private EntityManagerInterface $entityManager;
-  private ReviewService $reviewService;
-
-  public function __construct(EntityManagerInterface $entityManager, ReviewService $reviewService)
+  public function __construct(private readonly ReviewService $reviewService)
   {
-    $this->entityManager = $entityManager;
-    $this->reviewService = $reviewService;
   }
 
-  public static function getFormTypeForField(PendingChange $pendingChange, string $field)
+  public static function getFormTypeForField(PendingChange $pendingChange, string $field): array
   {
     $formType    = ReviewTextDiffType::class;
     $formOptions = [];
@@ -74,7 +69,7 @@ class ReviewSubmissionType extends AbstractType
   }
 
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
       $this->buildFields($formEvent);
@@ -82,7 +77,7 @@ class ReviewSubmissionType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setDefault('checkboxes', false)
@@ -94,7 +89,7 @@ class ReviewSubmissionType extends AbstractType
       ->setAllowedTypes('show_comments', 'bool');
   }
 
-  /** @throws EntityNotFoundException */
+  /** @throws EntityNotFoundException|InvalidChangeException */
   private function buildFields(FormEvent $formEvent): void
   {
     $form    = $formEvent->getForm();

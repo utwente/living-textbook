@@ -9,23 +9,22 @@ use App\Repository\LayoutConfigurationRepository;
 use App\Repository\StudyAreaRepository;
 use App\Repository\StylingConfigurationRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag('Study area')]
 class StudyAreaController extends AbstractApiController
 {
-  /**
-   * Retrieve all API enabled study areas available for the current token.
-   *
-   * @IsGranted("ROLE_USER")
-   */
+  /** Retrieve all API enabled study areas available for the current token. */
   #[OA\Response(response: 200, description: 'The list of study areas available for the current token', content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: StudyAreaApiModel::class, groups: ['Default', 'dotron']))),
   ])]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function list(StudyAreaRepository $studyAreaRepository): JsonResponse
   {
     return $this->createDataResponse(
@@ -40,14 +39,11 @@ class StudyAreaController extends AbstractApiController
     );
   }
 
-  /**
-   * Retrieve information for a single study area.
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve information for a single study area. */
   #[OA\Response(response: 200, description: 'The study area information', content: [
     new Model(type: StudyAreaApiModel::class, groups: ['Default', 'dotron']),
   ])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function single(RequestStudyArea $requestStudyArea): JsonResponse
   {
     return $this->createDataResponse(
@@ -56,14 +52,11 @@ class StudyAreaController extends AbstractApiController
     );
   }
 
-  /**
-   * Update an existing study area concept.
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Update an existing study area concept. */
   #[OA\RequestBody(description: 'The study area properties to update', required: true, content: [new Model(type: StudyAreaApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The updated study area', content: [new Model(type: StudyAreaApiModel::class, groups: ['Default', 'dotron'])])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
     Request $request,

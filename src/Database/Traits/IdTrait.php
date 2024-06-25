@@ -3,25 +3,17 @@
 namespace App\Database\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 trait IdTrait
 {
-  /**
-   * @var int|null
-   *
-   * @ORM\Column(name="id", type="integer")
-   *
-   * @ORM\Id
-   *
-   * @ORM\GeneratedValue(strategy="AUTO")
-   *
-   * @JMS\Serializer\Annotation\Expose()
-   *
-   * @JMS\Serializer\Annotation\Groups({"Default", "review_change", "id_only"})
-   *
-   * @JMS\Serializer\Annotation\Type("int")
-   */
-  private $id;
+  #[Serializer\Expose]
+  #[Serializer\Groups(['Default', 'review_change', 'id_only'])]
+  #[Serializer\Type('int')]
+  #[ORM\Column]
+  #[ORM\Id]
+  #[ORM\GeneratedValue]
+  private ?int $id = null;
 
   public function getId(): ?int
   {

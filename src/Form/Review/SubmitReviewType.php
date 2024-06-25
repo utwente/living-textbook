@@ -14,7 +14,7 @@ class SubmitReviewType extends AbstractReviewType
 {
   /** @throws NonUniqueResultException */
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
         // This field will not be rendered by the SF form component in this field,
@@ -52,7 +52,7 @@ class SubmitReviewType extends AbstractReviewType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     parent::configureOptions($resolver);
 

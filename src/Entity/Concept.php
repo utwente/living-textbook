@@ -16,12 +16,14 @@ use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\Traits\ReviewableTrait;
+use App\Repository\ConceptRepository;
 use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
 use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
@@ -32,23 +34,12 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class Concept.
- *
- * @author BobV
- *
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\ConceptRepository")
- *
- * @ORM\HasLifecycleCallbacks()
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
- *
- * @ConceptRelationValidator()
- */
+#[ORM\Entity(repositoryClass: ConceptRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
+#[ConceptRelationValidator]
 class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 {
   use IdTrait;
@@ -56,330 +47,173 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   use SoftDeletable;
   use ReviewableTrait;
 
-  /**
-   * @ORM\Column(name="name", type="string", length=255, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=3, max=255)
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"Default", "review_change", "name_only"})
-   *
-   * @JMSA\Type("string")
-   */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 3, max: 255)]
+  #[ORM\Column(name: 'name', length: 255, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['Default', 'review_change', 'name_only'])]
+  #[JMSA\Type('string')]
   private string $name = '';
 
-  /**
-   * Whether this concept should be seen as an instance.
-   *
-   * @ORM\Column(name="instance", type="boolean")
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"Default", "review_change"})
-   *
-   * @JMSA\Type("boolean")
-   */
+  /** Whether this concept should be seen as an instance. */
+  #[ORM\Column(name: 'instance')]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['Default', 'review_change'])]
+  #[JMSA\Type('boolean')]
   private bool $instance = false;
 
-  /**
-   * @ORM\Column(name="definition", type="text", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  #[Assert\NotNull]
+  #[ORM\Column(name: 'definition', type: Types::TEXT, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('string')]
   private string $definition = '';
 
-  /**
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataIntroduction", cascade={"persist","remove"})
-   *
-   * @ORM\JoinColumn(name="introduction_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Valid()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(DataIntroduction::class)
-   */
+  #[Assert\NotNull]
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'introduction_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataIntroduction::class)]
   private DataIntroduction $introduction;
 
-  /**
-   * @ORM\Column(name="synonyms", type="string", length=512, nullable=false)
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Length(max=512)
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("string")
-   */
+  #[Assert\NotNull]
+  #[Assert\Length(max: 512)]
+  #[ORM\Column(name: 'synonyms', length: 512, nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('string')]
   private string $synonyms = '';
 
-  /**
-   * @var Collection<Concept>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\Concept", inversedBy="priorKnowledgeOf")
-   *
-   * @ORM\JoinTable(name="concepts_prior_knowledge",
-   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
-   *      inverseJoinColumns={@ORM\JoinColumn(name="prior_knowledge_id", referencedColumnName="id")}
-   *      )
-   *
-   * @ORM\OrderBy({"name" = "ASC"})
-   *
-   * @Assert\NotNull()
-   *
-   * @Assert\Valid()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\Concept>")
-   *
-   * @JMSA\MaxDepth(2)
-   */
+  /** @var Collection<Concept> */
+  #[Assert\NotNull]
+  #[Assert\Valid]
+  #[ORM\ManyToMany(targetEntity: Concept::class, inversedBy: 'priorKnowledgeOf')]
+  #[ORM\JoinTable(name: 'concepts_prior_knowledge', joinColumns: [new ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'prior_knowledge_id', referencedColumnName: 'id')])]
+  #[ORM\OrderBy(['name' => 'ASC'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('ArrayCollection<App\Entity\Concept>')]
+  #[JMSA\MaxDepth(2)]
   private Collection $priorKnowledge;
 
-  /**
-   * @var Collection<Concept>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\Concept", mappedBy="priorKnowledge")
-   */
+  /** @var Collection<Concept> */
+  #[ORM\ManyToMany(targetEntity: Concept::class, mappedBy: 'priorKnowledge')]
   private Collection $priorKnowledgeOf;
 
-  /**
-   * @var Collection<LearningOutcome>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\LearningOutcome", inversedBy="concepts")
-   *
-   * @ORM\JoinTable(name="concepts_learning_outcomes",
-   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
-   *      inverseJoinColumns={@ORM\JoinColumn(name="learning_outcome_id", referencedColumnName="id")}
-   *      )
-   *
-   * @ORM\OrderBy({"number" = "ASC"})
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\LearningOutcome>")
-   *
-   * @JMSA\MaxDepth(2)
-   */
+  /** @var Collection<LearningOutcome> */
+  #[Assert\NotNull]
+  #[ORM\ManyToMany(targetEntity: LearningOutcome::class, inversedBy: 'concepts')]
+  #[ORM\JoinTable(name: 'concepts_learning_outcomes', joinColumns: [new ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'learning_outcome_id', referencedColumnName: 'id')])]
+  #[ORM\OrderBy(['number' => 'ASC'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('ArrayCollection<App\Entity\LearningOutcome>')]
+  #[JMSA\MaxDepth(2)]
   private Collection $learningOutcomes;
 
-  /**
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataTheoryExplanation", cascade={"persist","remove"})
-   *
-   * @ORM\JoinColumn(name="theory_explanation_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\Valid()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(DataTheoryExplanation::class)
-   */
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'theory_explanation_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataTheoryExplanation::class)]
   private DataTheoryExplanation $theoryExplanation;
 
-  /**
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataHowTo", cascade={"persist", "remove"})
-   *
-   * @ORM\JoinColumn(name="how_to_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\Valid()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(DataHowTo::class)
-   */
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'how_to_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataHowTo::class)]
   private DataHowTo $howTo;
 
-  /**
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataExamples", cascade={"persist", "remove"})
-   *
-   * @ORM\JoinColumn(name="examples_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\Valid()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(DataExamples::class)
-   */
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'examples_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataExamples::class)]
   private DataExamples $examples;
 
-  /**
-   * @var Collection<ExternalResource>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\ExternalResource", inversedBy="concepts")
-   *
-   * @ORM\JoinTable(name="concepts_external_resources",
-   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
-   *      inverseJoinColumns={@ORM\JoinColumn(name="external_resource_id", referencedColumnName="id")}
-   *      )
-   *
-   * @ORM\OrderBy({"title" = "ASC"})
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\ExternalResource>")
-   *
-   * @JMSA\MaxDepth(2)
-   */
+  /** @var Collection<ExternalResource> */
+  #[Assert\NotNull]
+  #[ORM\ManyToMany(targetEntity: ExternalResource::class, inversedBy: 'concepts')]
+  #[ORM\JoinTable(name: 'concepts_external_resources', joinColumns: [new ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'external_resource_id', referencedColumnName: 'id')])]
+  #[ORM\OrderBy(['title' => 'ASC'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('ArrayCollection<App\Entity\ExternalResource>')]
+  #[JMSA\MaxDepth(2)]
   private Collection $externalResources;
 
-  /**
-   * @var Collection<Contributor>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\Contributor", inversedBy="concepts")
-   *
-   * @ORM\JoinTable(name="concepts_contributors",
-   *      joinColumns={@ORM\JoinColumn(name="concept_id", referencedColumnName="id")},
-   *      inverseJoinColumns={@ORM\JoinColumn(name="contributor_id", referencedColumnName="id")}
-   *      )
-   *
-   * @ORM\OrderBy({"name" = "ASC"})
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\Contributor>")
-   *
-   * @JMSA\MaxDepth(2)
-   */
+  /** @var Collection<Contributor> */
+  #[Assert\NotNull]
+  #[ORM\ManyToMany(targetEntity: Contributor::class, inversedBy: 'concepts')]
+  #[ORM\JoinTable(name: 'concepts_contributors', joinColumns: [new ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'contributor_id', referencedColumnName: 'id')])]
+  #[ORM\OrderBy(['name' => 'ASC'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('ArrayCollection<App\Entity\Contributor>')]
+  #[JMSA\MaxDepth(2)]
   private Collection $contributors;
 
-  /**
-   * @var Collection<Tag>
-   *
-   * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="concepts")
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\Tag>")
-   *
-   * @JMSA\MaxDepth(2)
-   */
+  /** @var Collection<Tag> */
+  #[Assert\NotNull]
+  #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'concepts')]
+  #[JMSA\Expose]
+  #[JMSA\Type('ArrayCollection<App\Entity\Tag>')]
+  #[JMSA\MaxDepth(2)]
   private Collection $tags;
 
-  /**
-   * @ORM\OneToOne(targetEntity="App\Entity\Data\DataSelfAssessment", cascade={"persist", "remove"})
-   *
-   * @ORM\JoinColumn(name="self_assessment_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\Valid()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type(DataSelfAssessment::class)
-   */
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'self_assessment_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataSelfAssessment::class)]
   private DataSelfAssessment $selfAssessment;
 
-  /**
-   * @var Collection<ConceptRelation>
-   *
-   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="source", cascade={"persist","remove"})
-   *
-   * @ORM\OrderBy({"outgoingPosition" = "ASC"})
-   *
-   * @Assert\Valid()
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"relations", "review_change"})
-   *
-   * @JMSA\SerializedName("relations")
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
-   *
-   * @JMSA\MaxDepth(3)
-   */
+  /** @var Collection<ConceptRelation> */
+  #[Assert\Valid]
+  #[Assert\NotNull]
+  #[ORM\OneToMany(mappedBy: 'source', targetEntity: ConceptRelation::class, cascade: ['persist', 'remove'])]
+  #[ORM\OrderBy(['outgoingPosition' => 'ASC'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['relations', 'review_change'])]
+  #[JMSA\SerializedName('relations')]
+  #[JMSA\Type('ArrayCollection<App\Entity\ConceptRelation>')]
+  #[JMSA\MaxDepth(3)]
   private Collection $outgoingRelations;
 
-  /**
-   * @var Collection<ConceptRelation>
-   *
-   * @ORM\OneToMany(targetEntity="ConceptRelation", mappedBy="target", cascade={"persist","remove"})
-   *
-   * @ORM\OrderBy({"incomingPosition" = "ASC"})
-   *
-   * @Assert\Valid()
-   *
-   * @Assert\NotNull()
-   *
-   * @JMSA\Expose()
-   *
-   * @JMSA\Groups({"review_change"})
-   *
-   * @JMSA\Type("ArrayCollection<App\Entity\ConceptRelation>")
-   *
-   * @JMSA\MaxDepth(3)
-   */
+  /** @var Collection<ConceptRelation> */
+  #[Assert\Valid]
+  #[Assert\NotNull]
+  #[ORM\OneToMany(mappedBy: 'target', targetEntity: ConceptRelation::class, cascade: ['persist', 'remove'])]
+  #[ORM\OrderBy(['incomingPosition' => 'ASC'])]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type('ArrayCollection<App\Entity\ConceptRelation>')]
+  #[JMSA\MaxDepth(3)]
   private Collection $incomingRelations;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="concepts")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'concepts')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /** @ORM\Column(type="json", nullable=true) */
+  #[ORM\Column(type: 'json', nullable: true)]
   private ?array $dotronConfig = null;
 
-  /**
-   * @var Collection<int, LayoutConfigurationOverride>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\LayoutConfigurationOverride", mappedBy="concept", fetch="EXTRA_LAZY", cascade={"remove"})
-   */
+  /** @var Collection<int, LayoutConfigurationOverride> */
+  #[ORM\OneToMany(mappedBy: 'concept', targetEntity: LayoutConfigurationOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
   private Collection $layoutOverrides;
 
-  /**
-   * @var Collection<int, StylingConfigurationConceptOverride>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationConceptOverride", mappedBy="concept", fetch="EXTRA_LAZY", cascade={"remove"})
-   */
+  /** @var Collection<int, StylingConfigurationConceptOverride> */
+  #[ORM\OneToMany(mappedBy: 'concept', targetEntity: StylingConfigurationConceptOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
   private Collection $stylingOverrides;
 
-  /** Concept constructor. */
   public function __construct()
   {
     $this->outgoingRelations = new ArrayCollection();
@@ -409,11 +243,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->selfAssessment    = new DataSelfAssessment();
   }
 
-  /**
-   * Check whether the relations have the correct owning data.
-   *
-   * @ORM\PreFlush()
-   */
+  /** Check whether the relations have the correct owning data. */
+  #[ORM\PreFlush]
   public function checkEntityRelations()
   {
     // Check relations
@@ -432,12 +263,11 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /**
    * This method wil order the concept relations on flush.
    *
-   * @ORM\PreFlush()
-   *
    * @noinspection PhpUnused
    *
    * @throws Exception
    */
+  #[ORM\PreFlush]
   public function fixConceptRelationOrder()
   {
     $this->doFixConceptRelationOrder($this->getOutgoingRelations(), 'getTarget', 'setOutgoingPosition');
@@ -466,25 +296,17 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     }
   }
 
-  /**
-   * @JMSA\Expose()
-   *
-   * @JMSA\VirtualProperty()
-   *
-   * @JMSA\Groups({"relations"})
-   *
-   * @noinspection PhpUnused
-   */
+  /** @noinspection PhpUnused */
+  #[JMSA\Expose]
+  #[JMSA\VirtualProperty]
+  #[JMSA\Groups(['relations'])]
   public function getNumberOfLinks(): int
   {
     return count($this->outgoingRelations) + count($this->incomingRelations);
   }
 
-  /**
-   * @return bool
-   *
-   * @JMSA\VirtualProperty()
-   */
+  /** @return bool */
+  #[JMSA\VirtualProperty]
   public function isEmpty()
   {
     return $this->getDefinition() == '' && !$this->getIntroduction()->hasData();

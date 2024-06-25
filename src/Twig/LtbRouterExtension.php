@@ -9,22 +9,19 @@ use Twig\TwigFunction;
 
 class LtbRouterExtension extends AbstractExtension
 {
-  private LtbRouter $router;
-
-  public function __construct(LtbRouter $router)
+  public function __construct(private readonly LtbRouter $router)
   {
-    $this->router = $router;
   }
 
   #[Override]
-  public function getFunctions()
+  public function getFunctions(): array
   {
     return [
       new TwigFunction('browserPath', $this->browserPath(...)),
     ];
   }
 
-  public function browserPath($name, $parameters = [])
+  public function browserPath($name, $parameters = []): string
   {
     return $this->router->generateBrowserUrl($name, $parameters);
   }

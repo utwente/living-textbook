@@ -5,35 +5,27 @@ namespace App\Entity;
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
+use App\Repository\StudyAreaGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\StudyAreaGroupRepository")
- */
+#[ORM\Entity(repositoryClass: StudyAreaGroupRepository::class)]
 class StudyAreaGroup implements IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\Column(type="string", length=255)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=5)
-   */
+  #[Assert\NotBlank]
+  #[Assert\Length(min: 5)]
+  #[ORM\Column(length: 255)]
   private ?string $name = null;
 
-  /**
-   * @var Collection<StudyArea>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\StudyArea", mappedBy="group", fetch="EXTRA_LAZY")
-   */
+  /** @var Collection<StudyArea> */
+  #[ORM\OneToMany(mappedBy: 'group', targetEntity: StudyArea::class, fetch: 'EXTRA_LAZY')]
   private Collection $studyAreas;
 
   public function __construct()

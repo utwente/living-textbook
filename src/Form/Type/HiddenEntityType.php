@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 class HiddenEntityType extends AbstractType
 {
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return EntityType::class;
   }

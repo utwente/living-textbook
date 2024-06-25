@@ -5,15 +5,12 @@ namespace App\Validator\Constraint;
 use App\Entity\StudyArea;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 
-/**
- * Class StudyAreaAccessTypeValidator.
- */
 class StudyAreaAccessTypeValidator extends ChoiceValidator
 {
   public function __construct(
@@ -29,7 +26,7 @@ class StudyAreaAccessTypeValidator extends ChoiceValidator
    * @param Constraint $constraint The constraint for the validation
    */
   #[Override]
-  public function validate($value, Constraint $constraint)
+  public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
     if (!($constraint instanceof StudyAreaAccessType)) {

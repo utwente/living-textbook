@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\LearningPath;
 use App\Entity\PendingChange;
 use App\Form\LearningPath\EditLearningPathType;
@@ -11,38 +11,27 @@ use App\Form\Type\SaveType;
 use App\Repository\LearningPathRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use App\Security\Voters\StudyAreaVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class LearningPathController.
- *
- * @Route("/{_studyArea}/learningpath", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/learningpath')]
 class LearningPathController extends AbstractController
 {
-  /**
-   * @Route("/add")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningpath_list", subject="requestStudyArea")
-   */
+  #[Route('/add')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningpath_list', subject: 'requestStudyArea')]
   public function add(
-    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): array|Response
+    Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -70,25 +59,18 @@ class LearningPathController extends AbstractController
       return $this->redirectToRoute('app_learningpath_show', ['learningPath' => $learningPath->getId()]);
     }
 
-    return [
+    return $this->render('learning_path/add.html.twig', [
       'learningPath' => $learningPath,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{learningPath}", requirements={"learningPath"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningpath_show",
-   *   routeParams={"learningPath"="{learningPath}"}, subject="requestStudyArea")
-   */
+  #[Route('/edit/{learningPath<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningpath_show', routeParams: ['learningPath' => '{learningPath}'], subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
-    EntityManagerInterface $em, TranslatorInterface $trans): array|Response
+    EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
     $studyArea = $requestStudyArea->getStudyArea();
@@ -140,25 +122,18 @@ class LearningPathController extends AbstractController
       return $this->redirectToRoute('app_learningpath_show', ['learningPath' => $learningPath->getId()]);
     }
 
-    return [
+    return $this->render('learning_path/edit.html.twig', [
       'learningPath' => $learningPath,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 
-  /**
-   * @Route("/data/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return JsonResponse
-   */
+  #[Route('/data/{learningPath<\d+>}', options: ['expose' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function data(
     /* @noinspection PhpUnusedParameterInspection Used for auth */
     RequestStudyArea $requestStudyArea,
-    LearningPath $learningPath, SerializerInterface $serializer)
+    LearningPath $learningPath, SerializerInterface $serializer): Response
   {
     /** @phan-suppress-next-line PhanTypeMismatchArgument */
     $json = $serializer->serialize($learningPath, 'json', SerializationContext::create()->setGroups(['Default']));
@@ -166,36 +141,22 @@ class LearningPathController extends AbstractController
     return new JsonResponse($json, Response::HTTP_OK, [], true);
   }
 
-  /**
-   * @Route("/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function list(RequestStudyArea $requestStudyArea, LearningPathRepository $repository)
+  #[Route('/list')]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function list(RequestStudyArea $requestStudyArea, LearningPathRepository $repository): Response
   {
-    return [
+    return $this->render('learning_path/list.html.twig', [
       'studyArea'     => $requestStudyArea->getStudyArea(),
       'learningPaths' => $repository->findForStudyArea($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{learningPath}", requirements={"learningPath"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_learningpath_show", routeParams={"learningPath"="{learningPath}"},
-   *                                                       subject="requestStudyArea")
-   */
+  #[Route('/remove/{learningPath<\d+>}')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningpath_show', routeParams: ['learningPath' => '{learningPath}'], subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningPath $learningPath, ReviewService $reviewService,
-    TranslatorInterface $trans): array|RedirectResponse
+    TranslatorInterface $trans): Response
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
     $studyArea = $requestStudyArea->getStudyArea();
@@ -223,31 +184,24 @@ class LearningPathController extends AbstractController
       return $this->redirectToRoute('app_learningpath_list');
     }
 
-    return [
+    return $this->render('learning_path/remove.html.twig', [
       'learningPath' => $learningPath,
-      'form'         => $form->createView(),
-    ];
+      'form'         => $form,
+    ]);
   }
 
-  /**
-   * @Route("/show/{learningPath}", options={"expose"=true}, requirements={"learningPath"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function show(RequestStudyArea $requestStudyArea, LearningPath $learningPath)
+  #[Route('/show/{learningPath<\d+>}', options: ['expose' => true])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  public function show(RequestStudyArea $requestStudyArea, LearningPath $learningPath): Response
   {
     $this->verifyCorrectStudyArea($requestStudyArea, $learningPath);
 
-    return [
+    return $this->render('learning_path/show.html.twig', [
       'learningPath' => $learningPath,
-    ];
+    ]);
   }
 
-  private function verifyCorrectStudyArea(RequestStudyArea $requestStudyArea, LearningPath $learningPath)
+  private function verifyCorrectStudyArea(RequestStudyArea $requestStudyArea, LearningPath $learningPath): void
   {
     // Check if correct study area
     if ($learningPath->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {

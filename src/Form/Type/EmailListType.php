@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class EmailListType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->addModelTransformer(new CallbackTransformer(
@@ -39,13 +39,13 @@ class EmailListType extends AbstractType
   }
 
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return TextareaType::class;
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'required'    => true,

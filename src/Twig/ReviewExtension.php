@@ -11,15 +11,12 @@ use Twig\TwigFunction;
 
 class ReviewExtension extends AbstractExtension
 {
-  private ReviewService $reviewService;
-
-  public function __construct(ReviewService $reviewService)
+  public function __construct(private readonly ReviewService $reviewService)
   {
-    $this->reviewService = $reviewService;
   }
 
   #[Override]
-  public function getFunctions()
+  public function getFunctions(): array
   {
     return [
       new TwigFunction('reviewEnabled', $this->reviewEnabled(...)),

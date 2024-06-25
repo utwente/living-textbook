@@ -6,12 +6,9 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * Class LearningPathVisualisationResult.
- *
- * Serialization of this class is managed in the LearningPathVisualisationResultHandler
- *
- * @Serializer\ExclusionPolicy("all")
+ * Serialization of this class is managed in the LearningPathVisualisationResultHandler.
  */
+#[Serializer\ExclusionPolicy('all')]
 class LearningPathVisualisationResult
 {
   /** @var SplFileInfo */

@@ -2,44 +2,27 @@
 
 namespace App\Entity;
 
+use App\Repository\UserGroupEmailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class UserGroupEmail.
- *
- * @author BobV
- *
- * @ORM\Table(indexes={@ORM\Index(name="user_group_idx", columns={"user_group_id"}),
- *
- *                     @ORM\Index(name="email_idx", columns={"email"})})
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserGroupEmailRepository")
- */
+#[ORM\Entity(repositoryClass: UserGroupEmailRepository::class)]
+#[ORM\Table]
+#[ORM\Index(columns: ['user_group_id'], name: 'user_group_idx')]
+#[ORM\Index(columns: ['email'], name: 'email_idx')]
 class UserGroupEmail
 {
-  /**
-   * @ORM\Id()
-   *
-   * @ORM\ManyToOne(targetEntity="App\Entity\UserGroup", inversedBy="emails")
-   *
-   * @ORM\JoinColumn(name="user_group_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\Id]
+  #[ORM\ManyToOne(inversedBy: 'emails')]
+  #[ORM\JoinColumn(name: 'user_group_id', referencedColumnName: 'id', nullable: false)]
   private ?UserGroup $userGroup = null;
 
-  /**
-   * @ORM\Id()
-   *
-   * @ORM\Column(name="email", type="string", length=180, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Email()
-   *
-   * @Assert\Length(max=180)
-   */
+  #[Assert\NotBlank]
+  #[Assert\Email]
+  #[Assert\Length(max: 180)]
+  #[ORM\Id]
+  #[ORM\Column(name: 'email', length: 180, nullable: false)]
   private string $email = '';
 
   /** Custom sorter, based on email. */

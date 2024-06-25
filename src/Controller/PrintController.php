@@ -11,37 +11,28 @@ use App\Entity\StudyArea;
 use App\Naming\NamingService;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Router\LtbRouter;
+use App\Security\Voters\StudyAreaVoter;
 use Bobv\LatexBundle\Exception\ImageNotFoundException;
 use Bobv\LatexBundle\Exception\LatexException;
 use Bobv\LatexBundle\Generator\LatexGeneratorInterface;
 use Bobv\LatexBundle\Helper\Sanitize;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class PrintController.
- *
- * @Route("/{_studyArea}/print", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/print')]
 class PrintController extends AbstractController
 {
-  /**
-   * @Route("/concept/{concept}", requirements={"concept"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_PRINT", subject="requestStudyArea")
-   *
-   * @throws Exception
-   *
-   * @return Response
-   */
+  /** @throws Exception */
+  #[Route('/concept/{concept<\d+>}')]
+  #[IsGranted(StudyAreaVoter::PRINTER, subject: 'requestStudyArea')]
   public function printSingleConcept(
     RequestStudyArea $requestStudyArea, Concept $concept, LatexGeneratorInterface $generator,
-    TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
+    TranslatorInterface $translator, LtbRouter $router, NamingService $namingService): Response
   {
     // Check if correct study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -66,18 +57,12 @@ class PrintController extends AbstractController
     }
   }
 
-  /**
-   * @Route("/learningpath/{learningPath}", requirements={"learningPath"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_PRINT", subject="requestStudyArea")
-   *
-   * @throws Exception
-   *
-   * @return Response
-   */
+  /** @throws Exception */
+  #[Route('/learningpath/{learningPath<\d+>}')]
+  #[IsGranted(StudyAreaVoter::PRINTER, subject: 'requestStudyArea')]
   public function printLearningPath(
     RequestStudyArea $requestStudyArea, LearningPath $learningPath, LatexGeneratorInterface $generator,
-    TranslatorInterface $translator, LtbRouter $router, NamingService $namingService)
+    TranslatorInterface $translator, LtbRouter $router, NamingService $namingService): Response
   {
     // Check if correct study area
     if ($learningPath->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()) {
@@ -102,7 +87,7 @@ class PrintController extends AbstractController
     }
   }
 
-  private function filename(string $name)
+  private function filename(string $name): array|false|string|null
   {
     return str_replace(' ', '-', mb_strtolower(Sanitize::sanitizeText($name)));
   }
@@ -111,14 +96,12 @@ class PrintController extends AbstractController
    * Tries to parse the thrown exception into something that might be usable for the user.
    *
    * @throws Exception
-   *
-   * @return Response
    */
-  private function parsePrintException(Exception $e, ?Concept $concept = null, ?LearningPath $learningPath = null)
+  private function parsePrintException(Exception $e, ?Concept $concept = null, ?LearningPath $learningPath = null): Response
   {
     // Retrieve study area from one of the given objects
-    $studyArea = $concept ? $concept->getStudyArea() : null;
-    $studyArea ??= $learningPath ? $learningPath->getStudyArea() : null;
+    $studyArea = $concept?->getStudyArea();
+    $studyArea ??= $learningPath?->getStudyArea();
 
     switch (true) {
       case $e instanceof ImageNotFoundException:

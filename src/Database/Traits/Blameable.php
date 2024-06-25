@@ -8,40 +8,24 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 trait Blameable
 {
-  /**
-   * @var DateTime
-   *
-   * @Gedmo\Timestampable(on="create")
-   *
-   * @ORM\Column(name="created_at", type="datetime", nullable=false)
-   */
+  /** @var DateTime */
+  #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
+  #[Gedmo\Timestampable(on: 'create')]
   private $createdAt;
 
-  /**
-   * @var string
-   *
-   * @Gedmo\Blameable(on="create")
-   *
-   * @ORM\Column(name="created_by", type="string", length=255, nullable=true)
-   */
+  /** @var string */
+  #[ORM\Column(name: 'created_by', type: 'string', length: 255, nullable: true)]
+  #[Gedmo\Blameable(on: 'create')]
   private $createdBy;
 
-  /**
-   * @var DateTime
-   *
-   * @Gedmo\Timestampable(on="update")
-   *
-   * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-   */
+  /** @var DateTime */
+  #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+  #[Gedmo\Timestampable(on: 'update')]
   private $updatedAt;
 
-  /**
-   * @var string
-   *
-   * @Gedmo\Blameable(on="update")
-   *
-   * @ORM\Column(name="updated_by", type="string", length=255, nullable=true)
-   */
+  /** @var string */
+  #[ORM\Column(name: 'updated_by', type: 'string', length: 255, nullable: true)]
+  #[Gedmo\Blameable(on: 'update')]
   private $updatedBy;
 
   /** Get the last update time, which is either creation time or update time */

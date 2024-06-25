@@ -17,37 +17,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class LtbSection extends Section
 {
-  /** @var Pandoc */
-  protected $pandoc;
+  protected readonly Pandoc $pandoc; // Set in constructor
+  protected readonly Filesystem $fileSystem; // Set in constructor
+  protected readonly Parser $parser; // Set in constructor
+  protected readonly string $baseUrl; // Set in constructor
 
-  /** @var Filesystem */
-  protected $fileSystem;
-
-  /** @var Parser */
-  protected $parser;
-
-  /** @var LtbRouter */
-  protected $router;
-
-  /** @var string */
-  protected $projectDir;
-
-  /** @var string */
-  protected $baseUrl;
-
-  /**
-   * LtbSection constructor.
-   *
-   * @throws LatexException
-   */
-  public function __construct(string $name, LtbRouter $router, string $projectDir)
+  /** @throws LatexException */
+  public function __construct(
+    string $name,
+    protected readonly LtbRouter $router,
+    protected readonly string $projectDir)
   {
     $this->pandoc     = new Pandoc($_ENV['PANDOC_PATH']);
     $this->fileSystem = new Filesystem();
     $this->parser     = new Parser();
-
-    $this->router     = $router;
-    $this->projectDir = $projectDir;
 
     // Generate base url
     $this->baseUrl = $router->generate('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL);

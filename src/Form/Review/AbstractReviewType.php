@@ -8,24 +8,20 @@ use App\Entity\UserGroup;
 use App\Repository\UserGroupRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Override;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class AbstractReviewType extends AbstractType
 {
-  private Security $security;
-  private UserGroupRepository $userGroupRepository;
-
-  /** AbstractReviewType constructor. */
-  public function __construct(UserGroupRepository $userGroupRepository, Security $security)
+  public function __construct(
+    private readonly UserGroupRepository $userGroupRepository,
+    private readonly Security $security)
   {
-    $this->userGroupRepository = $userGroupRepository;
-    $this->security            = $security;
   }
 
   protected function addNotes(FormBuilderInterface $builder): AbstractReviewType
@@ -73,7 +69,7 @@ class AbstractReviewType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
       ->setRequired('study_area')

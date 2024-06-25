@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\Length;
 class GenerateApiTokenType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('description', TextareaType::class, [
@@ -43,7 +43,7 @@ class GenerateApiTokenType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefault('data_class', UserApiToken::class);
   }

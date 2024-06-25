@@ -12,20 +12,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class OrderedCollectionType extends AbstractType
 {
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['position_selector'] = $options['position_selector'];
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefault('position_selector', 'collection-position');
   }
 
-  /** @return string|null */
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return CollectionType::class;
   }

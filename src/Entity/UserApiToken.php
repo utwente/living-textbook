@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
+use App\Repository\UserApiTokenRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Helper\StringHelper;
@@ -14,52 +15,36 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(indexes={@ORM\Index(columns={"token_id"})})
- *
- * @ORM\Entity(repositoryClass="App\Repository\UserApiTokenRepository")
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: UserApiTokenRepository::class)]
+#[ORM\Table]
+#[ORM\Index(columns: ['token_id'])]
+#[JMSA\ExclusionPolicy('all')]
 class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
 
-  /**
-   * The user linked with this token.
-   *
-   * @ORM\ManyToOne(targetEntity="User")
-   *
-   * @ORM\JoinColumn(referencedColumnName="id", nullable=false)
-   */
+  /** The user linked with this token. */
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(referencedColumnName: 'id', nullable: false)]
   private User $user; // Default in constructor
 
-  /**
-   * The token id.
-   *
-   * @ORM\Column(type="string", length=255, unique=true)
-   */
+  /** The token id. */
+  #[ORM\Column(length: 255, unique: true)]
   private string $tokenId; // Default in constructor
 
-  /**
-   * The encoded token.
-   *
-   * @ORM\Column(type="string", length=255)
-   */
+  /** The encoded token. */
+  #[ORM\Column(length: 255)]
   private string $token; // Default in constructor
 
-  /**
-   * @ORM\Column(type="string", length=255, nullable=true)
-   *
-   * @Assert\Length(max=255)
-   */
+  #[Assert\Length(max: 255)]
+  #[ORM\Column(length: 255, nullable: true)]
   private ?string $description = null;
 
-  /** @ORM\Column(type="datetime_immutable", nullable=true) */
+  #[ORM\Column(nullable: true)]
   private ?DateTimeImmutable $validUntil = null;
 
-  /** @ORM\Column(type="datetime_immutable", nullable=true) */
+  #[ORM\Column(nullable: true)]
   private ?DateTimeImmutable $lastUsed = null;
 
   public function __construct(User $user, string $token)
@@ -130,31 +115,19 @@ class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface,
   }
 
   #[Override]
-  public function getRoles()
+  public function getRoles(): array
   {
     return $this->getUser()->getRoles();
   }
 
   #[Override]
-  public function getSalt()
-  {
-    return null;
-  }
-
-  /** @deprecated */
-  #[Override]
-  public function getUsername()
-  {
-    return $this->getUserIdentifier();
-  }
-
   public function getUserIdentifier(): string
   {
     return $this->getUser()->getUserIdentifier();
   }
 
   #[Override]
-  public function eraseCredentials()
+  public function eraseCredentials(): void
   {
     // Nothing to do
   }

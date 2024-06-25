@@ -14,15 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * This class provides our extra form extension, such as:
  *  - hide_label
  *  - form_header.
- *
- * Class FormExtension
- *
- * @author BobV
  */
 class FormExtension extends AbstractTypeExtension
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder->setAttribute('hide_label', $options['hide_label']);
     $builder->setAttribute('full_width_label', $options['full_width_label']);
@@ -30,7 +26,7 @@ class FormExtension extends AbstractTypeExtension
   }
 
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['hide_label']       = $options['hide_label'];
     $view->vars['full_width_label'] = $options['full_width_label'];
@@ -38,7 +34,7 @@ class FormExtension extends AbstractTypeExtension
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setDefaults([
       'hide_label'       => false,

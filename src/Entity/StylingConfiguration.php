@@ -6,6 +6,7 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
+use App\Repository\StylingConfigurationRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
@@ -14,58 +15,36 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\StylingConfigurationRepository")
- *
- * @ORM\HasLifecycleCallbacks()
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: StylingConfigurationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table]
+#[JMSA\ExclusionPolicy('all')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea", inversedBy="stylingConfigurations")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[Assert\NotNull]
+  #[ORM\ManyToOne(inversedBy: 'stylingConfigurations')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  /** @ORM\Column(type="json", nullable=true) */
+  #[ORM\Column(nullable: true)]
   private ?array $stylings = null;
 
-  /**
-   * @ORM\Column(name="name", type="string", length=255, nullable=false)
-   *
-   * @Assert\NotBlank()
-   *
-   * @Assert\Length(min=1, max=255)
-   *
-   * @JMSA\Expose()
-   */
+  #[ORM\Column(name: 'name', length: 255)]
+  #[Assert\Length(min: 1, max: 255)]
+  #[JMSA\Expose]
   private string $name = '';
 
-  /**
-   * @var Collection<int, StylingConfigurationConceptOverride>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationConceptOverride", mappedBy="stylingConfiguration", fetch="EXTRA_LAZY", cascade={"remove"})
-   */
+  /** @var Collection<int, StylingConfigurationConceptOverride> */
+  #[ORM\OneToMany(mappedBy: 'stylingConfiguration', targetEntity: StylingConfigurationConceptOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
   private Collection $conceptOverrides;
 
-  /**
-   * @var Collection<int, StylingConfigurationRelationOverride>
-   *
-   * @ORM\OneToMany(targetEntity="App\Entity\StylingConfigurationRelationOverride", mappedBy="stylingConfiguration", fetch="EXTRA_LAZY", cascade={"remove"})
-   */
+  /** @var Collection<int, StylingConfigurationRelationOverride> */
+  #[ORM\OneToMany(mappedBy: 'stylingConfiguration', targetEntity: StylingConfigurationRelationOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
   private Collection $relationOverrides;
 
   #[Override]

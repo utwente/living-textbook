@@ -11,7 +11,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 class ReviewSimpleListDiffType extends AbstractReviewDiffType
 {
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     parent::buildView($view, $form, $options);
 
@@ -24,7 +24,7 @@ class ReviewSimpleListDiffType extends AbstractReviewDiffType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     parent::configureOptions($resolver);
 

@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Entity\StudyAreaGroup;
+use App\Entity\User;
 use App\Form\StudyArea\EditStudyAreaType;
 use App\Form\StudyArea\FieldConfigurationType;
 use App\Form\StudyArea\TransferOwnerType;
@@ -20,38 +21,25 @@ use App\Repository\TrackingEventRepository;
 use App\Repository\UserGroupRepository;
 use App\Repository\UserRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class StudyAreaController.
- *
- * @author TobiasF
- *
- * @Route("/{_studyArea}/studyarea", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/studyarea')]
 class StudyAreaController extends AbstractController
 {
-  /**
-   * @Route("/add")
-   * @Route("/add/first", defaults={"first" = true}, name="app_studyarea_add_first")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_USER")
-   *
-   * @param bool $first
-   */
-  public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans, $first = false): array|Response
+  #[Route('/add')]
+  #[Route('/add/first', name: 'app_studyarea_add_first', defaults: ['first' => true])]
+  #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
+  public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans, bool $first = false): Response
   {
     // Create new StudyArea
     $studyArea = (new StudyArea())->setOwner($this->getUser());
@@ -111,17 +99,12 @@ class StudyAreaController extends AbstractController
       return $this->render('study_area/add_first.html.twig', $params);
     }
 
-    return $params;
+    return $this->render('study_area/add.html.twig', $params);
   }
 
-  /**
-   * @Route("/group/add")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
-  public function addGroup(Request $request, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
+  #[Route('/group/add')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function addGroup(Request $request, EntityManagerInterface $em, TranslatorInterface $translator): Response
   {
     // Create a new group
     $group = new StudyAreaGroup();
@@ -142,23 +125,17 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_studyarea_editgroup', ['group' => $group->getId()]);
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('study_area/add_group.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/edit/{studyArea}", requirements={"studyArea"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
-   */
+  #[Route('/edit/{studyArea<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'studyArea')]
   public function edit(
     Request $request, StudyArea $studyArea, EntityManagerInterface $em, UserGroupRepository $userGroupRepo,
-    PageLoadRepository $pageLoadRepository, TrackingEventRepository $trackingEventRepository, TranslatorInterface $trans): Response|array
+    PageLoadRepository $pageLoadRepository, TrackingEventRepository $trackingEventRepository, TranslatorInterface $trans): Response
   {
     // Check whether permissions flag is set
     $permissions = $request->query->get('permissions', false);
@@ -202,22 +179,17 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute($permissions ? 'app_permissions_studyarea' : 'app_studyarea_list');
     }
 
-    return [
+    return $this->render('study_area/edit.html.twig', [
       'studyArea'       => $studyArea,
-      'form'            => $form->createView(),
+      'form'            => $form,
       'list_route'      => $permissions ? 'app_permissions_studyarea' : 'app_studyarea_list',
       'trackingEnabled' => $studyArea->isTrackUsers(),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/group/{group}/edit", requirements={"group": "\d+"})
-   *
-   * @Template
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
-  public function editGroup(Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
+  #[Route('/group/{group<\d+>}/edit')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function editGroup(Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator): Response
   {
     $form = $this->createForm(StudyAreaGroupType::class, $group, [
       'study_area_group' => $group,
@@ -234,22 +206,17 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_studyarea_editgroup', ['group' => $group->getId()]);
     }
 
-    return [
+    return $this->render('study_area/edit_group.html.twig', [
       'group' => $group,
-      'form'  => $form->createView(),
-    ];
+      'form'  => $form,
+    ]);
   }
 
-  /**
-   * @Route("/fields")
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @Template
-   */
+  #[Route('/fields')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function fieldConfiguration(
     Request $request, RequestStudyArea $requestStudyArea, EntityManagerInterface $entityManager,
-    TranslatorInterface $translator, NamingService $namingService): array|RedirectResponse
+    TranslatorInterface $translator, NamingService $namingService): Response
   {
     $studyAreaConfiguration = $requestStudyArea->getStudyArea()->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
     $form                   = $this->createForm(FieldConfigurationType::class, $studyAreaConfiguration)
@@ -265,23 +232,16 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_studyarea_fieldconfiguration');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('study_area/field_configuration.html.twig', [
+      'form' => $form,
+    ]);
   }
 
-  /**
-   * @Route("/freeze/{studyArea}", requirements={"studyArea"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="studyArea")
-   *
-   * @throws Exception
-   */
-  public function freeze(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
+  /** @throws Exception */
+  #[Route('/freeze/{studyArea<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'studyArea')]
+  public function freeze(Request $request, StudyArea $studyArea, EntityManagerInterface $em, TranslatorInterface $translator): Response
   {
     $form = $this->createForm(RemoveType::class, null, [
       'cancel_route'        => 'app_default_dashboard',
@@ -299,39 +259,26 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_default_dashboard', ['studyArea' => $studyArea]);
     }
 
-    return [
-      'form'      => $form->createView(),
+    return $this->render('study_area/freeze.html.twig', [
+      'form'      => $form,
       'studyArea' => $studyArea,
-    ];
+    ]);
   }
 
-  /**
-   * List the study area groups.
-   *
-   * @Route("/group/list")
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   *
-   * @return array
-   */
-  public function listGroups(StudyAreaGroupRepository $repository)
+  /** List the study area groups. */
+  #[Route('/group/list')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
+  public function listGroups(StudyAreaGroupRepository $repository): Response
   {
-    return [
+    return $this->render('study_area/list_groups.html.twig', [
       'groups' => $repository->findAll(),
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/remove/{studyArea}", requirements={"studyArea"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   */
+  #[Route('/remove/{studyArea<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
   public function remove(Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea,
-    EntityManagerInterface $em, TranslatorInterface $trans): array|Response
+    EntityManagerInterface $em, TranslatorInterface $trans): Response
   {
     $form = $this->createForm(RemoveType::class, null, [
       'cancel_route'        => 'app_default_dashboard',
@@ -354,21 +301,16 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_studyarea_list');
     }
 
-    return [
-      'form'      => $form->createView(),
+    return $this->render('study_area/remove.html.twig', [
+      'form'      => $form,
       'studyArea' => $studyArea,
-    ];
+    ]);
   }
 
-  /**
-   * @Route("/group/{group}/remove", requirements={"group":"\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("ROLE_SUPER_ADMIN")
-   */
+  #[Route('/group/{group<\d+>}/remove')]
+  #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function removeGroup(
-    Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator): array|Response
+    Request $request, StudyAreaGroup $group, EntityManagerInterface $em, TranslatorInterface $translator): Response
   {
     // Do not allow removal when it still contains study areas
     if ($group->studyAreaCount() > 0) {
@@ -393,22 +335,17 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_studyarea_listgroups');
     }
 
-    return [
+    return $this->render('study_area/remove_group.html.twig', [
       'group' => $group,
-      'form'  => $form->createView(),
-    ];
+      'form'  => $form,
+    ]);
   }
 
-  /**
-   * @Route("/transfer/{studyArea}", requirements={"studyArea"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   */
+  #[Route('/transfer/{studyArea<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
   public function transferOwner(
     Request $request, RequestStudyArea $requestStudyArea, StudyArea $studyArea, EntityManagerInterface $em,
-    TranslatorInterface $trans, UserRepository $userRepository): array|Response
+    TranslatorInterface $trans, UserRepository $userRepository): Response
   {
     $form = $this->createForm(TransferOwnerType::class);
     $form->handleRequest($request);
@@ -440,20 +377,15 @@ class StudyAreaController extends AbstractController
       $this->addFlash('error', $trans->trans('study-area.new-owner-not-found'));
     }
 
-    return [
+    return $this->render('study_area/transfer_owner.html.twig', [
       'studyArea' => $studyArea,
-      'form'      => $form->createView(),
-    ];
+      'form'      => $form,
+    ]);
   }
 
-  /**
-   * @Route("/unfreeze/{studyArea}", requirements={"studyArea"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="studyArea")
-   */
-  public function unfreeze(StudyArea $studyArea, Request $request, TranslatorInterface $translator, EntityManagerInterface $em): array|Response
+  #[Route('/unfreeze/{studyArea<\d+>}')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'studyArea')]
+  public function unfreeze(StudyArea $studyArea, Request $request, TranslatorInterface $translator, EntityManagerInterface $em): Response
   {
     $form = $this->createForm(RemoveType::class, null, [
       'cancel_route'        => 'app_default_dashboard',
@@ -471,9 +403,9 @@ class StudyAreaController extends AbstractController
       return $this->redirectToRoute('app_default_dashboard', ['studyArea' => $studyArea]);
     }
 
-    return [
-      'form'      => $form->createView(),
+    return $this->render('study_area/unfreeze.html.twig', [
+      'form'      => $form,
       'studyArea' => $studyArea,
-    ];
+    ]);
   }
 }

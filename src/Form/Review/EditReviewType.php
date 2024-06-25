@@ -13,7 +13,7 @@ class EditReviewType extends AbstractReviewType
 {
   /** @throws NonUniqueResultException */
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $this
       ->addNotes($builder)
@@ -29,7 +29,7 @@ class EditReviewType extends AbstractReviewType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     parent::configureOptions($resolver);
 

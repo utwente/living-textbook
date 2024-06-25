@@ -118,8 +118,12 @@ code-style-fixer:
   script:
     - >-
       if [[ "skip" == $(php -r "echo (str_starts_with('$CI_COMMIT_REF_NAME', 'renovate/') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'rector-rector') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'friendsofphp-php-cs-fixer')) ? 'skip' : '';") ]]; then echo "Skipping automated rector"; exit 0; fi
+    - if [[ -f .secrets.json.dist ]]; then cp .secrets.json.dist .secrets.json; fi
+    - "[[ -d public/email/ ]] || mkdir public/email" # Create email folder for cache clear.
+    - if [[ -f bin/console ]]; then bin/console cache:clear --env=dev; fi # Build cache so it can be used by Rector
     - vendor/bin/rector --no-progress-bar --no-diffs
     - vendor/bin/php-cs-fixer fix
+    - "[[ -f vendor/bin/twig-cs-fixer ]] && vendor/bin/twig-cs-fixer lint --fix --report junit > twigcs.xml || echo 'Twig CS Fixer not installed, skipping'"
     - if [[ $(git status --porcelain | wc -l) -eq "0" ]]; then echo "All looks good 👍🏻"; exit 0; fi
     - echo "Changes required 👎🏻"
     - git config gc.auto 0 # Disable automatic GC
@@ -134,6 +138,9 @@ code-style-fixer:
     - eval $(ssh-agent -s)
     - ssh-add <(echo "${CS_FIXER_KEY}")
     - git push -u origin ${CS_FIX_BRANCH}:${CI_COMMIT_REF_NAME}
+  artifacts:
+    reports:
+      junit: twigcs.xml
   tags:
     - docker
   except:

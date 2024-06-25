@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Annotation\DenyOnFrozenStudyArea;
+use App\Attribute\DenyOnFrozenStudyArea;
 use App\Communication\Notification\ReviewNotificationService;
 use App\Entity\Review;
 use App\Entity\StudyArea;
@@ -15,39 +15,29 @@ use App\Repository\PendingChangeRepository;
 use App\Repository\ReviewRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Review\ReviewService;
+use App\Security\Voters\StudyAreaVoter;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
-/**
- * Class ReviewController.
- *
- * @Route("/{_studyArea}/review", requirements={"_studyArea"="\d+"})
- */
+#[Route('/{_studyArea<\d+>}/review')]
 class ReviewController extends AbstractController
 {
-  /**
-   * Edit the pending review. It is only possible to edit the notes and requested reviewer.
-   *
-   * @Route("/{review}/edit", requirements={"review"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @Template()
-   */
+  /** Edit the pending review. It is only possible to edit the notes and requested reviewer. */
+  #[Route('/{review<\d+>}/edit')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function editReview(
     Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-    TranslatorInterface $translator): array|Response
+    TranslatorInterface $translator): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $this->checkAccess($studyArea, $review);
@@ -72,48 +62,35 @@ class ReviewController extends AbstractController
       'show_comments' => $review->getReviewedAt() !== null,
     ]);
 
-    return [
-      'form'        => $form->createView(),
-      'changesForm' => $changesForm->createView(),
+    return $this->render('review/edit_review.html.twig', [
+      'form'        => $form,
+      'changesForm' => $changesForm,
       'review'      => $review,
-    ];
+    ]);
   }
 
-  /**
-   * Publish reviews after review approval.
-   *
-   * @Route("/publish")
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @DenyOnFrozenStudyArea(route="app_default_dashboard", subject="requestStudyArea")
-   *
-   * @return array
-   */
-  public function publish(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository)
+  /** Publish reviews after review approval. */
+  #[Route('/publish')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'requestStudyArea')]
+  public function publish(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository): Response
   {
-    return [
+    return $this->render('review/publish.html.twig', [
       'reviews' => $reviewRepository->getApproved($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
   /**
    * Publish the clicked review.
    *
-   * @Route("/{review}/publish", requirements={"review"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_OWNER", subject="requestStudyArea")
-   *
-   * @Template()
-   *
    * @throws ORMException
    * @throws Throwable
    */
+  #[Route('/{review<\d+>}/publish')]
+  #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function publishReview(
     Request $request, RequestStudyArea $requestStudyArea, Review $review, ReviewService $reviewService,
-    TranslatorInterface $translator): array|Response
+    TranslatorInterface $translator): Response
   {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
@@ -138,25 +115,19 @@ class ReviewController extends AbstractController
       return $this->redirectToRoute('app_review_publish');
     }
 
-    return [
-      'form'            => $form->createView(),
-      'submission_form' => $submissionForm->createView(),
+    return $this->render('review/publish_review.html.twig', [
+      'form'            => $form,
+      'submission_form' => $submissionForm,
       'review'          => $review,
-    ];
+    ]);
   }
 
-  /**
-   * Remove the pending review.
-   *
-   * @Route("/{review}/remove", requirements={"review"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @Template()
-   */
+  /** Remove the pending review. */
+  #[Route('/{review<\d+>}/remove')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function removeReview(
     Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-    TranslatorInterface $translator): array|Response
+    TranslatorInterface $translator): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $this->checkAccess($studyArea, $review);
@@ -176,28 +147,24 @@ class ReviewController extends AbstractController
       return $this->redirectToRoute('app_review_submissions');
     }
 
-    return [
-      'form'   => $form->createView(),
+    return $this->render('review/remove_review.html.twig', [
+      'form'   => $form,
       'review' => $review,
-    ];
+    ]);
   }
 
   /**
    * Resubmits the review.
    *
-   * @Route("/{review}/resubmit", requirements={"review"="\d+"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @Template()
-   *
    * @throws TransportExceptionInterface
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/{review<\d+>}/resubmit')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function resubmitSubmission(
     Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-    ReviewNotificationService $reviewNotificationService, TranslatorInterface $translator): array|Response
+    ReviewNotificationService $reviewNotificationService, TranslatorInterface $translator): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
@@ -230,27 +197,23 @@ class ReviewController extends AbstractController
       return $this->redirectToRoute('app_review_submissions');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('review/resubmit_submission.html.twig', [
+      'form' => $form,
+    ]);
   }
 
   /**
    * Review a submission.
    *
-   * @Route("/{review}", requirements={"review"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
-   *
    * @throws TransportExceptionInterface
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/{review<\d+>}')]
+  #[IsGranted(StudyAreaVoter::REVIEW, subject: 'requestStudyArea')]
   public function reviewSubmission(
     Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-    TranslatorInterface $translator, ReviewNotificationService $reviewNotificationService): array|Response
+    TranslatorInterface $translator, ReviewNotificationService $reviewNotificationService): Response
   {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
@@ -302,22 +265,16 @@ class ReviewController extends AbstractController
       return $this->redirectToRoute('app_review_submissions');
     }
 
-    return [
-      'form'   => $form->createView(),
+    return $this->render('review/review_submission.html.twig', [
+      'form'   => $form,
       'review' => $review,
-    ];
+    ]);
   }
 
-  /**
-   * Show a submission.
-   *
-   * @Route("/{review}/show", requirements={"review"="\d+"})
-   *
-   * @Template()
-   *
-   * @IsGranted("STUDYAREA_REVIEW", subject="requestStudyArea")
-   */
-  public function showSubmission(RequestStudyArea $requestStudyArea, Review $review): array|Response
+  /** Show a submission. */
+  #[Route('/{review<\d+>}/show')]
+  #[IsGranted(StudyAreaVoter::REVIEW, subject: 'requestStudyArea')]
+  public function showSubmission(RequestStudyArea $requestStudyArea, Review $review): Response
   {
     // Check study area
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
@@ -328,42 +285,30 @@ class ReviewController extends AbstractController
       'show_comments' => $review->getReviewedAt() !== null,
     ]);
 
-    return [
-      'form'   => $form->createView(),
+    return $this->render('review/show_submission.html.twig', [
+      'form'   => $form,
       'review' => $review,
-    ];
+    ]);
   }
 
-  /**
-   * Show the pending reviews for the current user.
-   *
-   * @Route("/submissions")
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @Template
-   */
-  public function submissions(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository): array|Response
+  /** Show the pending reviews for the current user. */
+  #[Route('/submissions')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
+  public function submissions(RequestStudyArea $requestStudyArea, ReviewRepository $reviewRepository): Response
   {
     $this->isReviewable($requestStudyArea);
 
-    return [
+    return $this->render('review/submissions.html.twig', [
       'reviews' => $reviewRepository->getSubmissions($requestStudyArea->getStudyArea()),
-    ];
+    ]);
   }
 
-  /**
-   * Shows the pending changes of the current user which haven't been submitted for review.
-   *
-   * @Route("/submit")
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   *
-   * @Template()
-   */
+  /** Shows the pending changes of the current user which haven't been submitted for review. */
+  #[Route('/submit')]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function submit(
     Request $request, RequestStudyArea $requestStudyArea, PendingChangeRepository $pendingChangeRepository,
-    ReviewService $reviewService, TranslatorInterface $translator): array|Response
+    ReviewService $reviewService, TranslatorInterface $translator): Response
   {
     $this->isReviewable($requestStudyArea);
 
@@ -405,10 +350,10 @@ class ReviewController extends AbstractController
       if (0 === count($markedChanges)) {
         $this->addFlash('warning', $translator->trans('review.nothing-selected-for-submit'));
 
-        return [
-          'form'           => $form->createView(),
+        return $this->render('review/submit.html.twig', [
+          'form'           => $form,
           'pendingChanges' => $pendingChanges,
-        ];
+        ]);
       }
 
       // Retrieve the form data
@@ -423,14 +368,14 @@ class ReviewController extends AbstractController
       return $this->redirectToRoute('app_review_submissions');
     }
 
-    return [
-      'form'           => $form->createView(),
+    return $this->render('review/submit.html.twig', [
+      'form'           => $form,
       'pendingChanges' => $pendingChanges,
-    ];
+    ]);
   }
 
   /** Verify whether the study area has access to review mode. */
-  private function isReviewable(StudyArea|RequestStudyArea $studyArea)
+  private function isReviewable(StudyArea|RequestStudyArea $studyArea): void
   {
     if ($studyArea instanceof RequestStudyArea) {
       $studyArea = $studyArea->getStudyArea();
@@ -442,7 +387,7 @@ class ReviewController extends AbstractController
   }
 
   /** Checks access for the supplied review. */
-  private function checkAccess(StudyArea $studyArea, Review $review, bool $checkOwner = true)
+  private function checkAccess(StudyArea $studyArea, Review $review, bool $checkOwner = true): void
   {
     // Check study area
     if ($studyArea->getId() !== $review->getStudyArea()->getId()) {

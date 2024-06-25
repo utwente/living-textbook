@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ConceptRelationsType extends AbstractType
 {
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver->setRequired('concept');
     $resolver->setDefaults([
@@ -43,13 +43,13 @@ class ConceptRelationsType extends AbstractType
 
   /** @suppress PhanTypeMismatchProperty */
   #[Override]
-  public function buildView(FormView $view, FormInterface $form, array $options)
+  public function buildView(FormView $view, FormInterface $form, array $options): void
   {
     $view->vars['allow_move'] = false;
   }
 
   #[Override]
-  public function getParent()
+  public function getParent(): ?string
   {
     return CollectionType::class;
   }

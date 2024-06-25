@@ -10,11 +10,10 @@ use App\Repository\UserProtoRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Drenso\OidcBundle\Exception\OidcCodeChallengeMethodNotSupportedException;
 use Drenso\OidcBundle\Exception\OidcConfigurationException;
 use Drenso\OidcBundle\Exception\OidcConfigurationResolveException;
 use Drenso\OidcBundle\OidcClientInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -25,7 +24,9 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -39,14 +40,10 @@ class AuthenticationController extends AbstractController
    * Only this route is listened to by the security services, so another route is not possible.
    *
    * This route is defined in the routes.yml in order to remove the _locale requirement
-   *
-   * @Route("/login_check", name="login_check", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @return Response
    */
-  public function checkLogin()
+  #[Route('/login_check', name: 'login_check', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
+  public function checkLogin(): Response
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirect($this->generateUrl('_home'));
@@ -57,13 +54,11 @@ class AuthenticationController extends AbstractController
 
   /**
    * This controller render the default login page, which shows the option to login with SURFconext
-   * or with an local account.
-   *
-   * @Route("/login", name="login", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
+   * or with a local account.
    */
-  public function login(Request $request, TranslatorInterface $trans): array|RedirectResponse
+  #[Route('/login', name: 'login', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
+  public function login(): RedirectResponse
   {
     // Forward to landing for urls backwards compatibility
     return $this->redirectToRoute('app_default_landing');
@@ -80,19 +75,15 @@ class AuthenticationController extends AbstractController
    * 5. New password can be entered
    * 6. Forward to login.
    *
-   * @Route("/password/reset", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
    * @throws TransportExceptionInterface
-   *
-   * @return Response
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/password/reset', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function resetPassword(
     Request $request, EntityManagerInterface $em, PasswordHasherFactoryInterface $passwordHasherFactory,
-    UserRepository $userRepository, MailerInterface $mailer, TranslatorInterface $translator)
+    UserRepository $userRepository, MailerInterface $mailer, TranslatorInterface $translator): Response
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -158,7 +149,7 @@ class AuthenticationController extends AbstractController
       }
 
       return $this->render('authentication/reset_email.html.twig', [
-        'form' => $form->createView(),
+        'form' => $form,
       ]);
     }
 
@@ -205,19 +196,15 @@ class AuthenticationController extends AbstractController
   /**
    * Create a password for a user.
    *
-   * @Route("/password/create", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
    * @throws TransportExceptionInterface
-   *
-   * @return Response
    *
    * @suppress PhanTypeInvalidThrowsIsInterface
    */
+  #[Route('/password/create', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function createPassword(
     Request $request, EntityManagerInterface $em, UserRepository $userRepository, MailerInterface $mailer,
-    UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator)
+    UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator): Response
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -284,22 +271,16 @@ class AuthenticationController extends AbstractController
     }
 
     return $this->render('authentication/reset_password.html.twig', [
-      'form' => $form->createView(),
+      'form' => $form,
     ]);
   }
 
-  /**
-   * Create a new local account. This can only be done based on invite, and the supplied password must match.
-   *
-   * @Route("/account/create", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
-   * @Template()
-   */
+  /** Create a new local account. This can only be done based on invite, and the supplied password must match. */
+  #[Route('/account/create', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function createAccount(
     Request $request, EntityManagerInterface $em, UserProtoRepository $userProtoRepository,
-    UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator): array|RedirectResponse
+    UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator): Response
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirectToRoute('app_default_landing');
@@ -347,24 +328,21 @@ class AuthenticationController extends AbstractController
       return $this->redirectToRoute('login');
     }
 
-    return [
-      'form' => $form->createView(),
-    ];
+    return $this->render('authentication/create_account.html.twig', [
+      'form' => $form,
+    ]);
   }
 
   /**
    * This controller forward the user to the SURFconext login.
    *
-   * @Route("/login_surf", name="login_surf", options={"no_login_wrap"=true})
-   *
-   * @IsGranted("PUBLIC_ACCESS")
-   *
    * @throws OidcConfigurationException
    * @throws OidcConfigurationResolveException
-   *
-   * @return RedirectResponse
+   * @throws OidcCodeChallengeMethodNotSupportedException
    */
-  public function surfconext(OidcClientInterface $oidc)
+  #[Route('/login_surf', name: 'login_surf', options: ['no_login_wrap' => true])]
+  #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
+  public function surfconext(OidcClientInterface $oidc): Response
   {
     // Redirect to authorization @ surfconext
     return $oidc->generateAuthorizationRedirect();

@@ -11,30 +11,27 @@ use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\IdMap\IdMap;
 use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/** @Route("/concept") */
 #[OA\Tag('Concept')]
+#[Route('/concept')]
 class ConceptController extends AbstractApiController
 {
-  /**
-   * Retrieve all study area concepts.
-   *
-   * @Route(methods={"GET"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve all study area concepts. */
   #[OA\Response(response: 200, description: 'All study area concepts', content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
   ])]
+  #[Route(methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function list(RequestStudyArea $requestStudyArea, ConceptRepository $conceptRepository): JsonResponse
   {
     return $this->createDataResponse(
@@ -46,16 +43,12 @@ class ConceptController extends AbstractApiController
     );
   }
 
-  /**
-   * Retrieve a single study area concept.
-   *
-   * @Route("/{concept<\d+>}", methods={"GET"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve a single study area concept. */
   #[OA\Response(response: 200, description: 'A single study area concept', content: [
     new Model(type: ConceptApiModel::class),
   ])]
+  #[Route('/{concept<\d+>}', methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function single(RequestStudyArea $requestStudyArea, Concept $concept): JsonResponse
   {
     $this->assertStudyAreaObject($requestStudyArea, $concept);
@@ -66,16 +59,12 @@ class ConceptController extends AbstractApiController
     );
   }
 
-  /**
-   * Add a new study area concept.
-   *
-   * @Route(methods={"POST"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Add a new study area concept. */
   #[OA\RequestBody(description: 'The new concept', required: true, content: [new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The new concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route(methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function add(
     RequestStudyArea $requestStudyArea,
     Request $request): JsonResponse
@@ -92,16 +81,12 @@ class ConceptController extends AbstractApiController
     );
   }
 
-  /**
-   * Update an existing study area concept.
-   *
-   * @Route("/{concept<\d+>}", methods={"PATCH"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Update an existing study area concept. */
   #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route('/{concept<\d+>}', methods: [Request::METHOD_PATCH])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
     Concept $concept,
@@ -125,13 +110,7 @@ class ConceptController extends AbstractApiController
     );
   }
 
-  /**
-   * Update a batch of existing study area concepts.
-   *
-   * @Route("/batch", methods={"PATCH"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Update a batch of existing study area concepts. */
   #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron']))),
   ])]
@@ -139,6 +118,8 @@ class ConceptController extends AbstractApiController
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: ConceptApiModel::class))),
   ])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route('/batch', methods: [Request::METHOD_PATCH])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function batchUpdate(
     RequestStudyArea $requestStudyArea,
     Request $request,
@@ -177,14 +158,10 @@ class ConceptController extends AbstractApiController
     );
   }
 
-  /**
-   * Delete an existing study area concept.
-   *
-   * @Route("/{concept<\d+>}", methods={"DELETE"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Delete an existing study area concept. */
   #[OA\Response(response: 202, description: 'The concept has been deleted')]
+  #[Route('/{concept<\d+>}', methods: [Request::METHOD_DELETE])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function delete(
     RequestStudyArea $requestStudyArea,
     Concept $concept,
@@ -197,16 +174,12 @@ class ConceptController extends AbstractApiController
     return new JsonResponse(null, Response::HTTP_ACCEPTED);
   }
 
-  /**
-   * Add a tag to an existing study area concept.
-   *
-   * @Route("/{concept<\d+>}/tag", methods={"POST"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Add a tag to an existing study area concept. */
   #[OA\RequestBody(description: 'The new tag id', required: true, content: [new OA\JsonContent(type: 'number')])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route(path: '/{concept<\d+>}/tag', methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function addTag(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -227,16 +200,12 @@ class ConceptController extends AbstractApiController
     return $this->createDataResponse(ConceptApiModel::fromEntity($concept));
   }
 
-  /**
-   * Replace the tags for an existing study area concept.
-   *
-   * @Route("/{concept<\d+>}/tag", methods={"PUT"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Replace the tags for an existing study area concept. */
   #[OA\RequestBody(description: 'The tag ids', required: true, content: [new OA\JsonContent(type: 'array', items: new OA\Items(type: 'number'))])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route('/{concept<\d+>}/tag', methods: [Request::METHOD_PUT])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function putTags(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -259,15 +228,11 @@ class ConceptController extends AbstractApiController
     return $this->createDataResponse(ConceptApiModel::fromEntity($concept));
   }
 
-  /**
-   * Remove an existing study area concept tag.
-   *
-   * @Route("/{concept<\d+>}/tag/{tag<\d+>}", methods={"DELETE"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Remove an existing study area concept tag. */
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route('/{concept<\d+>}/tag/{tag<\d+>}', methods: [Request::METHOD_DELETE])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function deleteTag(
     RequestStudyArea $requestStudyArea,
     Concept $concept,

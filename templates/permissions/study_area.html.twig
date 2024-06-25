@@ -79,7 +79,7 @@
         {% for userPermission in studyArea.userPermissions %}
           <tr>
             <td>{{ userPermission.displayName }}</td>
-            <td>{{ userPermission.username }}</td>
+            <td>{{ userPermission.userIdentifier }}</td>
             {% for type in studyArea.availableUserGroupTypes %}
               {{ has_permission(userPermission, type) }}
             {% endfor %}

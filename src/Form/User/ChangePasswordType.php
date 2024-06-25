@@ -10,13 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
-/**
- * Class ChangePasswordType.
- */
 class ChangePasswordType extends AbstractType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('current', PasswordType::class, [

@@ -20,7 +20,7 @@ class ConceptRelationValidator extends ConstraintValidator
    * @param Constraint $constraint The constraint for the validation
    */
   #[Override]
-  public function validate($value, Constraint $constraint)
+  public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
     if (!($constraint instanceof ConceptRelation)) {
@@ -79,7 +79,7 @@ class ConceptRelationValidator extends ConstraintValidator
   }
 
   /** Builds the violation and places it at the correct path. */
-  private function addViolation(string $message, Concept $value, Concept $source, Concept $target)
+  private function addViolation(string $message, Concept $value, Concept $source, Concept $target): void
   {
     // Calculate direction
     $direction = $value->getId() === $source->getId();

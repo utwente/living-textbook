@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class BaseDataTextType extends AbstractBaseDataType
 {
   #[Override]
-  public function buildForm(FormBuilderInterface $builder, array $options)
+  public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $formOptions = [
       'label'    => $options['label'],
@@ -30,7 +30,7 @@ class BaseDataTextType extends AbstractBaseDataType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver)
+  public function configureOptions(OptionsResolver $resolver): void
   {
     parent::configureOptions($resolver);
 
