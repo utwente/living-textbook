@@ -50,19 +50,19 @@ class AnalyticsService
   private string $baseOutputDir;
 
   public function __construct(
-    private TrackingExportBuilder $trackingExportBuilder,
-    private ConceptIdNameProvider $conceptIdNameProvider,
-    private SpreadsheetHelper $spreadsheetHelper,
+    private readonly TrackingExportBuilder $trackingExportBuilder,
+    private readonly ConceptIdNameProvider $conceptIdNameProvider,
+    private readonly SpreadsheetHelper $spreadsheetHelper,
     string $projectDir,
     string $cacheDir,
-    private TrackingEventRepository $trackingEventRepository,
-    private PageLoadRepository $pageLoadRepository,
-    private LearningPathRepository $learningPathRepository,
-    private RelationProvider $relationProvider,
-    private EntityManagerInterface $entityManager,
-    private string $host,
-    private bool $isDebug,
-    private string $pythonPath)
+    private readonly TrackingEventRepository $trackingEventRepository,
+    private readonly PageLoadRepository $pageLoadRepository,
+    private readonly LearningPathRepository $learningPathRepository,
+    private readonly RelationProvider $relationProvider,
+    private readonly EntityManagerInterface $entityManager,
+    private readonly string $host,
+    private readonly bool $isDebug,
+    private readonly string $pythonPath)
   {
     $this->analyticsDir  = $projectDir . '/python/data-visualisation';
     $this->baseOutputDir = $cacheDir . '/data-visualisation';
@@ -70,7 +70,7 @@ class AnalyticsService
   }
 
   /** This function ensures that the python environment is functional. */
-  public function ensurePythonEnvironment(?OutputStyle $output)
+  public function ensurePythonEnvironment(?OutputStyle $output): void
   {
     $output = $output ?: new NullStyle(new NullOutput());
 
