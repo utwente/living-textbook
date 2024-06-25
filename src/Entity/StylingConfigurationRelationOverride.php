@@ -2,34 +2,25 @@
 
 namespace App\Entity;
 
+use App\Repository\StylingConfigurationRelationOverrideRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\StylingConfigurationRelationOverrideRepository",)
- *
- * @ORM\HasLifecycleCallbacks()
- *
- * @UniqueEntity({"relation", "stylingConfiguration"})
- *
- * @Gedmo\SoftDeleteable()
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: StylingConfigurationRelationOverrideRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(['relation', 'stylingConfiguration'])]
+#[Gedmo\SoftDeleteable]
+#[JMSA\ExclusionPolicy('all')]
+#[ORM\Table]
 class StylingConfigurationRelationOverride extends Override
 {
-  /**
-   * @ORM\ManyToOne(targetEntity="App\Entity\ConceptRelation", inversedBy="stylingOverrides")
-   *
-   * @JMSA\Expose()
-   */
+  #[ORM\ManyToOne(targetEntity: ConceptRelation::class, inversedBy: 'stylingOverrides')]
+  #[JMSA\Expose]
   private ConceptRelation $relation;
 
-  /** @ORM\ManyToOne(targetEntity="StylingConfiguration", inversedBy="relationOverrides") */
+  #[ORM\ManyToOne(targetEntity: \StylingConfiguration::class, inversedBy: 'relationOverrides')]
   private StylingConfiguration $stylingConfiguration;
 
   public function __construct(

@@ -10,25 +10,21 @@ use App\Request\Wrapper\RequestStudyArea;
 use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/** @Route("/layoutconfiguration") */
 #[OA\Tag('Layout Configuration')]
+#[Route(path: '/layoutconfiguration')]
 class LayoutConfigurationController extends AbstractApiController
 {
-  /**
-   * Retrieve all study area layout configurations.
-   *
-   * @Route(methods={"GET"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve all study area layout configurations. */
   #[OA\Response(response: 200, description: 'All study area layout configurations', content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: LayoutConfigurationApiModel::class))),
   ])]
+  #[Route(methods: ['GET'])]
+  #[IsGranted('STUDYAREA_SHOW', subject: 'requestStudyArea')]
   public function list(RequestStudyArea $requestStudyArea): JsonResponse
   {
     return $this->createDataResponse(
@@ -37,14 +33,10 @@ class LayoutConfigurationController extends AbstractApiController
     );
   }
 
-  /**
-   * Retrieve single study layout configuration.
-   *
-   * @Route("/{layoutConfiguration<\d+>}", methods={"GET"})
-   *
-   * @IsGranted("STUDYAREA_SHOW", subject="requestStudyArea")
-   */
+  /** Retrieve single study layout configuration. */
   #[OA\Response(response: 200, description: 'A single study area layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
+  #[Route(path: '/{layoutConfiguration<\d+>}', methods: ['GET'])]
+  #[IsGranted('STUDYAREA_SHOW', subject: 'requestStudyArea')]
   public function single(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration): JsonResponse
@@ -54,16 +46,12 @@ class LayoutConfigurationController extends AbstractApiController
     return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($layoutConfiguration));
   }
 
-  /**
-   * Add a new study area layout configuration.
-   *
-   * @Route(methods={"POST"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Add a new study area layout configuration. */
   #[OA\RequestBody(description: 'The new layout configuration', required: true, content: [new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The new layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route(methods: ['POST'])]
+  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
   public function add(
     RequestStudyArea $requestStudyArea,
     Request $request): JsonResponse
@@ -80,16 +68,12 @@ class LayoutConfigurationController extends AbstractApiController
     return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($layoutConfiguration));
   }
 
-  /**
-   * Update an existing study area layout configuration.
-   *
-   * @Route("/{layoutConfiguration<\d+>}", methods={"PATCH"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Update an existing study area layout configuration. */
   #[OA\RequestBody(description: 'The layout configuration properties to update', required: true, content: [new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
+  #[Route(path: '/{layoutConfiguration<\d+>}', methods: ['PATCH'])]
+  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration,
@@ -105,14 +89,10 @@ class LayoutConfigurationController extends AbstractApiController
     return $this->createDataResponse(LayoutConfigurationApiModel::fromEntity($layoutConfiguration));
   }
 
-  /**
-   * Delete an existing study area layout configuration.
-   *
-   * @Route("/{layoutConfiguration<\d+>}", methods={"DELETE"})
-   *
-   * @IsGranted("STUDYAREA_EDIT", subject="requestStudyArea")
-   */
+  /** Delete an existing study area layout configuration. */
   #[OA\Response(response: 202, description: 'The layout configuration has been deleted')]
+  #[Route(path: '/{layoutConfiguration<\d+>}', methods: ['DELETE'])]
+  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
   public function delete(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration

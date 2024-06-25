@@ -11,35 +11,23 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass()
- *
- * @Gedmo\SoftDeleteable()
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\MappedSuperclass]
+#[Gedmo\SoftDeleteable]
+#[JMSA\ExclusionPolicy('all')]
 abstract class Override implements StudyAreaFilteredInterface
 {
   use IdTrait;
   use Blameable;
   use SoftDeletable;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="StudyArea")
-   *
-   * @ORM\JoinColumn(name="study_area_id", referencedColumnName="id", nullable=false)
-   *
-   * @Assert\NotNull()
-   */
+  #[ORM\ManyToOne(targetEntity: \StudyArea::class)]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
+  #[Assert\NotNull]
   private StudyArea $studyArea;
 
-  /**
-   * @ORM\Column(type="json", nullable=true)
-   *
-   * @JMSA\Expose()
-   *
-   * @Assert\NotNull()
-   */
+  #[ORM\Column(type: 'json', nullable: true)]
+  #[JMSA\Expose]
+  #[Assert\NotNull]
   private ?array $override = null;
 
   public function __construct(

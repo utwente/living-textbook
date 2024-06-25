@@ -2,34 +2,25 @@
 
 namespace App\Entity;
 
+use App\Repository\LayoutConfigurationOverrideRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Table()
- *
- * @ORM\Entity(repositoryClass="App\Repository\LayoutConfigurationOverrideRepository")
- *
- * @ORM\HasLifecycleCallbacks()
- *
- * @UniqueEntity({"concept", "layoutConfiguration"})
- *
- * @Gedmo\SoftDeleteable()
- *
- * @JMSA\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: LayoutConfigurationOverrideRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(['concept', 'layoutConfiguration'])]
+#[Gedmo\SoftDeleteable]
+#[JMSA\ExclusionPolicy('all')]
+#[ORM\Table]
 class LayoutConfigurationOverride extends Override
 {
-  /**
-   * @ORM\ManyToOne(targetEntity="Concept", inversedBy="layoutOverrides")
-   *
-   * @JMSA\Expose()
-   */
+  #[ORM\ManyToOne(targetEntity: \Concept::class, inversedBy: 'layoutOverrides')]
+  #[JMSA\Expose]
   private Concept $concept;
 
-  /** @ORM\ManyToOne(targetEntity="LayoutConfiguration", inversedBy="overrides") */
+  #[ORM\ManyToOne(targetEntity: \LayoutConfiguration::class, inversedBy: 'overrides')]
   private LayoutConfiguration $layoutConfiguration;
 
   public function __construct(
