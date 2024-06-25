@@ -33,7 +33,7 @@
           <td>{{ token.validUntil ? token.validUntil|format_datetime('medium', 'short') : '-' }}</td>
           <td>{{ token.lastUsed ? token.lastUsed|format_datetime('medium', 'short') : '-' }}</td>
           <td class="actions">
-            {{ buttons.remove_button(path('app_user_apitokensremove', {'userApiToken': token.id})) }}
+            {{ buttons.remove_button(path('app_user_apitokensremove', {userApiToken: token.id})) }}
           </td>
         </tr>
       {% else %}

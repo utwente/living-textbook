@@ -5,8 +5,8 @@
   {% endif %}
 
   {# specific review messages #}
-  {% for flashMessage in app.session.flashbag.get('review') %}
-    {{ flashbag_alert('info', flashMessage, 'fa-info-circle', true) }}
+  {% for flash_message in app.session.flashbag.get('review') %}
+    {{ flashbag_alert('info', flash_message, 'fa-info-circle', true) }}
   {% endfor %}
 {% endmacro %}
 

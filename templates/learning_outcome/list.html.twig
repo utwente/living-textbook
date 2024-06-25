@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block title %}
-  {{ 'learning-outcome.list-title'|trans({'%singular%': naming.get.learningOutcome.obj|capitalize }) }}
+  {{ 'learning-outcome.list-title'|trans({'%singular%': naming.get.learningOutcome.obj|capitalize}) }}
 {% endblock %}
 
 {% block content %}
@@ -26,15 +26,15 @@
     </tr>
     </thead>
     <tbody>
-    {% for learningOutcome in learningOutcomes %}
+    {% for learning_outcome in learningOutcomes %}
       <tr>
-        <td>{{ learningOutcome.number }}</td>
-        <td>{{ learningOutcome.name }}</td>
+        <td>{{ learning_outcome.number }}</td>
+        <td>{{ learning_outcome.name }}</td>
         <td class="actions">
-          {{ buttons.show_button(path('app_learningoutcome_show', {'learningOutcome': learningOutcome.id})) }}
+          {{ buttons.show_button(path('app_learningoutcome_show', {learningOutcome: learning_outcome.id})) }}
           {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {{ buttons.edit_button_disabled_when_frozen(path('app_learningoutcome_edit', {'learningOutcome': learningOutcome.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_learningoutcome_remove', {'learningOutcome': learningOutcome.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_learningoutcome_edit', {learningOutcome: learning_outcome.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_learningoutcome_remove', {learningOutcome: learning_outcome.id})) }}
           {% endif %}
         </td>
       </tr>
@@ -45,6 +45,6 @@
 
 {% block javascripts_bottom %}
   {{ dataTable('learning-outcome-table', {
-    columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+    columnDefs: [{searchable: false, orderable: false, targets: -1}]
   }) }}
 {% endblock %}

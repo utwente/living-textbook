@@ -1,7 +1,7 @@
 {% macro flashbag_alert(type, message, icon, close, raw) %}
   <div class="alert alert-{{ type }}{% if close %} alert-dismissible{% endif %} fade-in" role="alert">
     {% if close %}
-      <button type="button" class="close" data-dismiss="alert" aria-label="{{ "general.close"|trans }}">
+      <button type="button" class="close" data-dismiss="alert" aria-label="{{ 'general.close'|trans }}">
         <span aria-hidden="true">&times;</span>
       </button>
     {% endif %}
@@ -28,26 +28,26 @@
       {% from _self import flashbag_alert %}
 
       {# General error messages #}
-      {% for flashMessage in app.session.flashbag.get('error') %}
-        {{ flashbag_alert('danger', flashMessage, 'fa-exclamation-triangle', true) }}
+      {% for flash_message in app.session.flashbag.get('error') %}
+        {{ flashbag_alert('danger', flash_message, 'fa-exclamation-triangle', true) }}
       {% endfor %}
 
       {# General notice message #}
-      {% for flashMessage in app.session.flashbag.get('warning') %}
-        {{ flashbag_alert('warning', flashMessage, 'fa-exclamation', true) }}
+      {% for flash_message in app.session.flashbag.get('warning') %}
+        {{ flashbag_alert('warning', flash_message, 'fa-exclamation', true) }}
       {% endfor %}
 
       {# General success messages #}
-      {% for flashMessage in app.session.flashbag.get('success') %}
-        {{ flashbag_alert('success', flashMessage, 'fa-check', true) }}
+      {% for flash_message in app.session.flashbag.get('success') %}
+        {{ flashbag_alert('success', flash_message, 'fa-check', true) }}
       {% endfor %}
 
       {# General info messages #}
-      {% for flashMessage in app.session.flashbag.get('info') %}
-        {{ flashbag_alert('info', flashMessage, 'fa-info', true) }}
+      {% for flash_message in app.session.flashbag.get('info') %}
+        {{ flashbag_alert('info', flash_message, 'fa-info', true) }}
       {% endfor %}
-      {% for flashMessage in app.session.flashbag.get('notice') %}
-        {{ flashbag_alert('info', flashMessage, 'fa-info', true) }}
+      {% for flash_message in app.session.flashbag.get('notice') %}
+        {{ flashbag_alert('info', flash_message, 'fa-info', true) }}
       {% endfor %}
 
     {% endblock %}

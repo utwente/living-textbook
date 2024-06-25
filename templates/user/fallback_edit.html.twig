@@ -3,8 +3,8 @@
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {{ buttons.header() }}
-  {{ buttons._action_button(path('app_user_fallbackresetpassword', {'user': user.id}), 'fa-undo', 'user.fallback.reset-password-short') }}
-  {{ buttons.remove_button(path('app_user_fallbackremove', {'user': user.id})) }}
+  {{ buttons._action_button(path('app_user_fallbackresetpassword', {user: user.id}), 'fa-undo', 'user.fallback.reset-password-short') }}
+  {{ buttons.remove_button(path('app_user_fallbackremove', {user: user.id})) }}
   {{ buttons.list_button(path('app_user_fallbacklist')) }}
   {{ buttons.footer() }}
 {% endblock %}

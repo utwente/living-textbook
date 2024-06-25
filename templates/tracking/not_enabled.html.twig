@@ -6,6 +6,6 @@
 
 {% block content %}
   <p>
-    {{ 'study-area.tracking-disabled-text'|trans({'%url_start%': '<a href="' ~ browserPath('app_studyarea_edit', {'studyArea': studyArea.id}) ~ '">', '%url_end%': '</a>'})|striptags('<a>')|raw }}
+    {{ 'study-area.tracking-disabled-text'|trans({'%url_start%': '<a href="' ~ browserPath('app_studyarea_edit', {studyArea: studyArea.id}) ~ '">', '%url_end%': '</a>'})|striptags('<a>')|raw }}
   </p>
 {% endblock %}

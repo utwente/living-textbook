@@ -8,7 +8,7 @@
   {% from '_layout/flashbags.html.twig' import flashbag_alert %}
 
   {% if isUrl %}
-    {% set message ='print.image-not-found.external'|trans({'%image%': path}) %}
+    {% set message = 'print.image-not-found.external'|trans({'%image%': path}) %}
   {% else %}
     {% set message = 'print.image-not-found.internal'|trans({'%image%': basename}) %}
   {% endif %}

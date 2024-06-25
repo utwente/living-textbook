@@ -1,11 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'study-area.groups.remove'|trans({"%item%": group.name}) }}
+  {{ 'study-area.groups.remove'|trans({'%item%': group.name}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'study-area.groups.remove-text'|trans({"%item%": group.name}) }}</p>
+  <p>{{ 'study-area.groups.remove-text'|trans({'%item%': group.name}) }}</p>
 
   {{ form(form) }}
 {% endblock %}

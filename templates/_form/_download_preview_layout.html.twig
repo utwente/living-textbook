@@ -1,5 +1,5 @@
 {% block download_preview_widget %}
-  {% for key,preview in preview_data %}
+  {% for key, preview in preview_data %}
     <pre class="download-preview" data-id="{{ id }}" data-pid="{{ key }}">{{ preview }}</pre>
   {% endfor %}
   <script type="text/javascript">

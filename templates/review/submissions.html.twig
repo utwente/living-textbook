@@ -53,10 +53,10 @@
 {% endblock %}
 
 {% macro reviews_page_part(reviews, title, alertType, icon, notOwn, reviewed) %}
-  {% set closeLoop = false %}
+  {% set close_loop = false %}
   {% for review in reviews %}
     {% if loop.first %}
-      {% set closeLoop = true %}
+      {% set close_loop = true %}
       {{ block('review_table') }}
     {% endif %}
     {{ block('review') }}
@@ -114,26 +114,26 @@
             {% endif %}
             <td class="actions text-right">
               {% if review.reviewedAt is null and (not own or is_granted('STUDYAREA_OWNER', _twigStudyArea)) %}
-                {{ _action_button(path('app_review_reviewsubmission', {'review': review.id}), 'fa-search',
+                {{ _action_button(path('app_review_reviewsubmission', {review: review.id}), 'fa-search',
                   'review.start-review'|trans, 'success', false, false) }}
               {% endif %}
               {% if review.reviewedAt is not null and (own or is_granted('STUDYAREA_OWNER', _twigStudyArea)) %}
-                {{ _action_button(path('app_review_resubmitsubmission', {'review': review.id}), 'fa-repeat',
+                {{ _action_button(path('app_review_resubmitsubmission', {review: review.id}), 'fa-repeat',
                   'review.resubmit-review'|trans, 'success', false, false) }}
               {% endif %}
 
-              {{ show_button(path('app_review_showsubmission', {'review': review.id})) }}
+              {{ show_button(path('app_review_showsubmission', {review: review.id})) }}
 
               {% if own or is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
-                {{ edit_button(path('app_review_editreview', {'review': review.id})) }}
-                {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
+                {{ edit_button(path('app_review_editreview', {review: review.id})) }}
+                {{ remove_button(path('app_review_removereview', {review: review.id})) }}
               {% endif %}
             </td>
           </tr>
         {% endblock %}
 
         {% block review_table_end %}
-        {% if closeLoop %}
+        {% if close_loop %}
         </tbody>
       </table>
     </div>

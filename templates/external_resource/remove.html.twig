@@ -1,11 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'external-resource.remove'|trans({"%item%": externalResource.title}) }}
+  {{ 'external-resource.remove'|trans({'%item%': externalResource.title}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'external-resource.remove-text'|trans({"%item%": externalResource.title}) }}</p>
+  <p>{{ 'external-resource.remove-text'|trans({'%item%': externalResource.title}) }}</p>
 
   {% if externalResource.concepts|length > 0 %}
     <p>{{ 'external-resource.remove-concepts'|trans }}</p>

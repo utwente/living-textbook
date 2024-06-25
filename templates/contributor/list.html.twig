@@ -46,8 +46,8 @@
         </td>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <td class="actions">
-            {{ buttons.edit_button_disabled_when_frozen(path('app_contributor_edit', {'contributor': contributor.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_contributor_remove', {'contributor': contributor.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_contributor_edit', {contributor: contributor.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_contributor_remove', {contributor: contributor.id})) }}
           </td>
         {% endif %}
       </tr>
@@ -59,7 +59,7 @@
 {% block javascripts_bottom %}
   {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {{ dataTable('contributor-table', {
-      columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+      columnDefs: [{searchable: false, orderable: false, targets: -1}]
     }) }}
   {% else %}
     {{ dataTable('contributor-table') }}

@@ -9,7 +9,7 @@
         <div class="card">
           <div class="card-body {{ block('extra_card_class') -}}">
             <h1>{{ block('title') }}</h1>
-            {% include '_layout/flashbags.html.twig' %}
+            {{ include('_layout/flashbags.html.twig') }}
             {% block content %}
             {% endblock %}
           </div>

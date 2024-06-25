@@ -35,9 +35,9 @@
         </td>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <td class="actions">
-            {{ buttons.show_button(path('app_tag_show', {'tag': tag.id})) }}
-            {{ buttons.edit_button_disabled_when_frozen(path('app_tag_edit', {'tag': tag.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_tag_remove', {'tag': tag.id})) }}
+            {{ buttons.show_button(path('app_tag_show', {tag: tag.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_tag_edit', {tag: tag.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_tag_remove', {tag: tag.id})) }}
           </td>
         {% endif %}
       </tr>
@@ -49,7 +49,7 @@
 {% block javascripts_bottom %}
   {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {{ dataTable('tag-table', {
-      columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+      columnDefs: [{searchable: false, orderable: false, targets: -1}]
     }) }}
   {% else %}
     {{ dataTable('tag-table') }}

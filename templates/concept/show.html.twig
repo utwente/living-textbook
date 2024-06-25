@@ -16,14 +16,14 @@
   {% endif %}
   {{ buttons.browser_button(concept.id) }}
   {% if is_granted('STUDYAREA_PRINT', concept.studyArea) %}
-    {{ buttons.print_button(path('app_print_printsingleconcept', {'concept': concept.id})) }}
+    {{ buttons.print_button(path('app_print_printsingleconcept', {concept: concept.id})) }}
   {% endif %}
   {% if is_granted('STUDYAREA_EDIT', concept.studyArea) %}
     {{ buttons.add_button(path('app_concept_add'), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
-    {{ buttons.edit_button(path('app_concept_edit', {'concept': concept.id}), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
-    {{ buttons.remove_button(path('app_concept_remove', {'concept': concept.id}), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {{ buttons.edit_button(path('app_concept_edit', {concept: concept.id}), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
+    {{ buttons.remove_button(path('app_concept_remove', {concept: concept.id}), concept.studyArea.isFrozen ? 'study-area.frozen'|trans : '') }}
   {% endif %}
-  {{ buttons.list_button(path(concept.instance ? 'app_concept_listinstances': 'app_concept_list')) }}
+  {{ buttons.list_button(path(concept.instance ? 'app_concept_listinstances' : 'app_concept_list')) }}
   {{ buttons.footer() }}
 {% endblock %}
 
@@ -46,7 +46,7 @@
         data-annotations-study-area-id="{{ concept.studyArea.id }}"
         data-annotations-concept-id="{{ concept.id }}"
         data-annotations-user-id="{{ app.user.id }}"
-        data-annotations-is-study-area-owner="{{ is_granted("STUDYAREA_OWNER", concept.studyArea) ? 'true' : 'false' }}"
+        data-annotations-is-study-area-owner="{{ is_granted('STUDYAREA_OWNER', concept.studyArea) ? 'true' : 'false' }}"
       {% endif %}
   >
 

@@ -33,7 +33,7 @@
 {% from _self import buttons %}
 
 <div class="global-search-form">
-  {% include('search/search_form.html.twig') only %}
+  {{ include('search/search_form.html.twig', [], false) }}
 </div>
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
@@ -72,42 +72,42 @@
           {{ 'menu.show'|trans }}
         </a>
         <div class="dropdown-menu" aria-labelledby="edit-dropdown">
-          {% set anyContent = false %}
+          {% set any_content = false %}
           {% if is_granted('MENU_CONCEPTS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_concept_list') }}">{{ 'menu.concept'|trans }}</a>
             <a class="dropdown-item"
                href="{{ path('app_concept_listinstances') }}">{{ 'menu.instances'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_LEARNING_PATHS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_learningpath_list') }}">{{ 'menu.learning-paths'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_ABBREVIATIONS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_abbreviation_list') }}">{{ 'menu.abbreviations'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_CONTRIBUTORS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_contributor_list') }}">{{ 'menu.contributors'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_EXTERNAL_RESOURCES', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_externalresource_list') }}">{{ 'menu.external-resources'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_LEARNING_OUTCOMES', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_learningoutcome_list') }}">{{ naming.get.learningOutcome.objs|capitalize }}</a>
           {% endif %}
         </div>
       </li>
-      {% if not anyContent %}
+      {% if not any_content %}
         <script type="text/javascript">
           {# Remove the menu if there is absolutely no content #}
           $('#show-content-menu').remove();
@@ -133,7 +133,7 @@
         </li>
       {% endif %}
 
-      {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+      {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="data-dropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
@@ -150,7 +150,7 @@
                target="_blank">{{ 'menu.excel-status'|trans }}</a>
             <a class="dropdown-item"
                href="{{ path('app_default_urloverview') }}">{{ 'menu.urls'|trans }}</a>
-            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+            {% if is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
               {% if _twigStudyArea.trackUsers %}
                 <a class="dropdown-item" href="{{ path('app_tracking_export') }}"
                    target="_blank">{{ 'menu.tracking-export'|trans }}</a>
@@ -163,31 +163,31 @@
         </li>
       {% endif %}
 
-      {% if app.user or is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+      {% if app.user or is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="config-dropdown" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             {{ 'menu.config'|trans }}
           </a>
           <div class="dropdown-menu" aria-labelledby="config-dropdown">
-            {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+            {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_relationtype_list') }}">{{ 'menu.relation-type'|trans }}</a>
             {% endif %}
 
-            {% if is_granted("STUDYAREA_EDIT", _twigStudyArea) %}
+            {% if is_granted('STUDYAREA_EDIT', _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_tag_list') }}">{{ 'menu.tags'|trans }}</a>
             {% endif %}
 
-            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+            {% if is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
               <a class="dropdown-item"
                  href="{{ path('app_studyarea_fieldconfiguration') }}">{{ 'menu.field-configration'|trans }}</a>
             {% endif %}
 
-            {% if is_granted("STUDYAREA_OWNER", _twigStudyArea) %}
+            {% if is_granted('STUDYAREA_OWNER', _twigStudyArea) %}
               <a class="dropdown-item" href="{{ path('app_permissions_studyarea') }}">{{ 'menu.permissions'|trans }}</a>
             {% endif %}
 
-            {% if is_granted("ROLE_SUPER_ADMIN") %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
               <a class="dropdown-item"
                  href="{{ path('app_studyarea_listgroups') }}">{{ 'menu.study-area-groups'|trans }}</a>
               <a class="dropdown-item" href="{{ path('app_permissions_admins') }}">{{ 'menu.admin'|trans }}</a>

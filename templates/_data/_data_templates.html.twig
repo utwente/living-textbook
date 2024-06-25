@@ -2,13 +2,13 @@
   {% if data.hasData %}
     {% if title is defined %}
       <h2 data-annotations-contains-text="false"
-          data-annotations-context="{{ annotationContext|default('') }}">
+          data-annotations-context="{{ annotation_context|default('') }}">
         {{ title }}<span class="header-marker">&#xfeff;</span>
       </h2>
     {% endif %}
     <div class="ltb-text-container"
          data-annotations-contains-text="true"
-         data-annotations-context="{{ annotationContext|default('') }}"
+         data-annotations-context="{{ annotation_context|default('') }}"
          data-annotations-version="{{ data.lastUpdated|default('now'|date)|date('c') }}">
       {{ data.text|striptags(allowed_ckeditor_tags)|raw }}
     </div>
@@ -27,7 +27,7 @@
 
 {% macro data_introduction(data) %}
   {% set title = naming.get.concept.introduction|capitalize %}
-  {% set annotationContext = 'introduction' %}
+  {% set annotation_context = 'introduction' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
@@ -40,19 +40,19 @@
 
 {% macro data_theory_explanation(data) %}
   {% set title = naming.get.concept.theoryExplanation|capitalize %}
-  {% set annotationContext = 'theory_explanation' %}
+  {% set annotation_context = 'theory_explanation' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_how_to(data) %}
   {% set title = naming.get.concept.howTo|capitalize %}
-  {% set annotationContext = 'how-to' %}
+  {% set annotation_context = 'how-to' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
 {% macro data_examples(data) %}
   {% set title = naming.get.concept.examples|capitalize %}
-  {% set annotationContext = 'examples' %}
+  {% set annotation_context = 'examples' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
@@ -111,7 +111,7 @@
 
 {% macro data_self_assessment(data) %}
   {% set title = naming.get.concept.selfAssessment|capitalize %}
-  {% set annotationContext = 'self-assessment' %}
+  {% set annotation_context = 'self-assessment' %}
   {{ block('data_display_block') }}
 {% endmacro %}
 
@@ -158,9 +158,9 @@
     <h2>{{ naming.get.concept.priorKnowledge|capitalize }}</h2>
     <ul>
       {% from _self import render_prior_knowledge %}
-      {% for priorKnowledge in data %}
+      {% for prior_knowledge in data %}
         <li>
-          {{ render_prior_knowledge(priorKnowledge) }}
+          {{ render_prior_knowledge(prior_knowledge) }}
         </li>
       {% endfor %}
     </ul>
@@ -168,7 +168,7 @@
 {% endmacro %}
 
 {% macro render_prior_knowledge(priorKnowledge) %}
-  <a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
+  <a href="{{ path('app_concept_show', {concept: priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
 {% endmacro %}
 
 {% macro data_learning_outcomes(data) %}
@@ -176,9 +176,9 @@
     <h2>{{ naming.get.learningOutcome.objs|capitalize }}</h2>
     <ul>
       {% from _self import render_learning_outcome %}
-      {% for learningOutcome in data %}
+      {% for learning_outcome in data %}
         <li>
-          {{ render_learning_outcome(learningOutcome) }}
+          {{ render_learning_outcome(learning_outcome) }}
         </li>
       {% endfor %}
     </ul>
@@ -186,7 +186,7 @@
 {% endmacro %}
 
 {% macro render_learning_outcome(learningOutcome) %}
-  <a href="{{ path('app_learningoutcome_show', { learningOutcome: learningOutcome.id }) }}"><b>{{ learningOutcome.shortName }}</b></a>
+  <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome.id}) }}"><b>{{ learningOutcome.shortName }}</b></a>
   <div class="ltb-text-container">
     {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
   </div>
@@ -204,7 +204,7 @@
 {% endmacro %}
 
 {% macro render_tag(tag) %}
-  <div class="concept-tag" data-color="{{ tag.color }}" data-link="{{ path ('app_tag_show', { tag: tag.id }) }}">
+  <div class="concept-tag" data-color="{{ tag.color }}" data-link="{{ path ('app_tag_show', {tag: tag.id}) }}">
     <span>{{ tag.name }}</span>
   </div>
 {% endmacro %}
@@ -215,7 +215,7 @@
     <ul>
       {% for concept in data %}
         <li>
-          <a href="{{ path('app_concept_show', { concept: concept.id}) }}"><b>{{ concept.name }}</b></a>
+          <a href="{{ path('app_concept_show', {concept: concept.id}) }}"><b>{{ concept.name }}</b></a>
           {# Show definition is available, otherwise introduction if available #}
           {% if concept.definition|length > 0 %}
             <div class="ltb-text-container">
@@ -236,9 +236,9 @@
   {% if data|length > 0 %}
     <h2>{{ 'menu.learning-paths'|trans }}</h2>
     <ul>
-      {% for learningPath in data %}
+      {% for learning_path in data %}
         <li>
-          <a href="{{ path('app_learningpath_show', { learningPath: learningPath.id }) }}">{{ learningPath.name }}</a>
+          <a href="{{ path('app_learningpath_show', {learningPath: learning_path.id}) }}">{{ learning_path.name }}</a>
         </li>
       {% endfor %}
     </ul>

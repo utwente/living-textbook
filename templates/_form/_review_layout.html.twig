@@ -4,13 +4,13 @@
     <h4 class="review-header">
       {%- if checkbox -%}
         <div class="custom-control custom-checkbox">
-          {% if- full_change_only -%}
-            {% set formField = '_all' %}
-            <input type="checkbox" id="pc_{{ pendingChange.id }}_{{ formField }}"
-                   name="{{ form.parent.parent.vars.id }}[pending_changes][{{ pendingChange.id }}][{{ formField }}]"
+          {%- if full_change_only -%}
+            {% set form_field = '_all' %}
+            <input type="checkbox" id="pc_{{ pendingChange.id }}_{{ form_field }}"
+                   name="{{ form.parent.parent.vars.id }}[pending_changes][{{ pendingChange.id }}][{{ form_field }}]"
                    class="custom-control-input change-input change-input-{{ pendingChange.id }}">
             <label class="checkbox-custom custom-control-label"
-                   for="pc_{{ pendingChange.id }}_{{ formField }}"></label>
+                   for="pc_{{ pendingChange.id }}_{{ form_field }}"></label>
           {%- else -%}
             <input type="checkbox" id="pc_{{ pendingChange.id }}" class="custom-control-input change-input">
             <label class="checkbox-custom custom-control-label" for="pc_{{ pendingChange.id }}"></label>
@@ -206,12 +206,12 @@
 <li class="list-group-item review-item{% if checkbox %} with-checkbox{% endif %}">
   {% if checkbox %}
     <div class="custom-control custom-checkbox">
-      {% set formField = field|default(change_type) %}
-      <input type="checkbox" id="pc_{{ pending_change_id }}_{{ formField }}"
-             name="{{ form.parent.parent.vars.id }}[pending_changes][{{ pending_change_id }}][{{ formField }}]"
+      {% set form_field = field|default(change_type) %}
+      <input type="checkbox" id="pc_{{ pending_change_id }}_{{ form_field }}"
+             name="{{ form.parent.parent.vars.id }}[pending_changes][{{ pending_change_id }}][{{ form_field }}]"
              class="custom-control-input change-input change-input-{{ pending_change_id }}">
       <label class="checkbox-custom custom-control-label"
-             for="pc_{{ pending_change_id }}_{{ formField }}">
+             for="pc_{{ pending_change_id }}_{{ form_field }}">
         {{ (short_object_type|trString ~ '.' ~ field|trString)|trans }}
       </label>
     </div>

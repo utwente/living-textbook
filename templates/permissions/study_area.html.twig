@@ -33,7 +33,7 @@
 {% macro type_footer_cell(type) %}
   <td scope="col" class="text-center">
     {% import '_macro/_action_buttons.html.twig' as buttons %}
-    {{ buttons.remove_button(path('app_permissions_removeallpermissionsfortype', {'groupType': type}), false, 'permissions.revoke-type'|trans) }}
+    {{ buttons.remove_button(path('app_permissions_removeallpermissionsfortype', {groupType: type}), false, 'permissions.revoke-type'|trans) }}
   </td>
 {% endmacro %}
 
@@ -54,7 +54,7 @@
 {% block content %}
   {% if studyArea.accessType == constant('App\\Entity\\StudyArea::ACCESS_PRIVATE') %}
     {{ 'permissions.study-area-not-group-or-public'|trans({'%item%': studyArea.name}) }}
-    <a href="{{ path('app_studyarea_edit', {'studyArea': studyArea.id, 'permissions': true}) }}">
+    <a href="{{ path('app_studyarea_edit', {studyArea: studyArea.id, permissions: true}) }}">
       {{ 'permissions.change-now'|trans }}.
     </a>
   {% else %}
@@ -76,18 +76,18 @@
         </tr>
         </thead>
         <tbody>
-        {% for userPermission in studyArea.userPermissions %}
+        {% for user_permission in studyArea.userPermissions %}
           <tr>
-            <td>{{ userPermission.displayName }}</td>
-            <td>{{ userPermission.userIdentifier }}</td>
+            <td>{{ user_permission.displayName }}</td>
+            <td>{{ user_permission.userIdentifier }}</td>
             {% for type in studyArea.availableUserGroupTypes %}
               {{ has_permission(userPermission, type) }}
             {% endfor %}
             <td class="actions">
-              {% if userPermission.user %}
-                {{ buttons.remove_button(path('app_permissions_removepermissions', {'user': userPermission.user.id}), false, 'permissions.revoke-user'|trans) }}
+              {% if user_permission.user %}
+                {{ buttons.remove_button(path('app_permissions_removepermissions', {user: user_permission.user.id}), false, 'permissions.revoke-user'|trans) }}
               {% else %}
-                {{ buttons.remove_button(path('app_permissions_removeemailpermissions', {'email': userPermission.email.email|url_encode}), false, 'permissions.revoke-user'|trans) }}
+                {{ buttons.remove_button(path('app_permissions_removeemailpermissions', {email: user_permission.email.email|url_encode}), false, 'permissions.revoke-user'|trans) }}
               {% endif %}
             </td>
           </tr>
@@ -124,7 +124,7 @@
 
 {% block javascripts_bottom %}
   {{ dataTable('permissions-table', {
-    columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+    columnDefs: [{searchable: false, orderable: false, targets: -1}]
   }) }}
   <script type="text/javascript">
     $dataTable.on('search.dt', function () {
@@ -148,7 +148,6 @@
 
       $el.find('.fa').hide();
       $el.find('.fa-spin').show();
-
 
       var sortValue = $td.data('sort');
       var actualValue = !sortValue;
