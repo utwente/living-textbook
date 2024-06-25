@@ -38,14 +38,14 @@
         {% if attribute(error, 'filteredLogSource') is defined %}
           {{ error.filteredLogSource|nl2br }}
         {% else %}
-          {{ "print.error.log-not-found"|trans }}
+          {{ 'print.error.log-not-found'|trans }}
         {% endif %}
       </div>
       <div class="tab-pane" id="tex">
         {% if attribute(error, 'filteredTexSource') is defined %}
           {{ error.filteredTexSource|nl2br }}
         {% else %}
-          {{ "print.error.tex-not-found"|trans }}
+          {{ 'print.error.tex-not-found'|trans }}
         {% endif %}
       </div>
     </div>

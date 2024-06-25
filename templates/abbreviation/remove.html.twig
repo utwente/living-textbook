@@ -1,11 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'abbreviation.remove'|trans({"%item%": abbreviation.abbreviation}) }}
+  {{ 'abbreviation.remove'|trans({'%item%': abbreviation.abbreviation}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'abbreviation.remove-text'|trans({"%item%": abbreviation.abbreviation}) }}</p>
+  <p>{{ 'abbreviation.remove-text'|trans({'%item%': abbreviation.abbreviation}) }}</p>
 
   {% from '_macro/_review.html.twig' import reviewNotice %}
   {{ reviewNotice(abbreviation) }}

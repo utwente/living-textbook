@@ -1,11 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'permissions.remove-admin'|trans({"%user%": admin.displayName}) }}
+  {{ 'permissions.remove-admin'|trans({'%user%': admin.displayName}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'permissions.remove-admin-text'|trans({"%user%": admin.displayName}) }}</p>
+  <p>{{ 'permissions.remove-admin-text'|trans({'%user%': admin.displayName}) }}</p>
 
   {{ form(form) }}
 {% endblock %}

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-  {% include('search/search_form.html.twig') %}
+  {{ include(('search/search_form.html.twig')) }}
 
   {% if search is defined %}
 
@@ -85,7 +85,7 @@
     <div class="tab-pane{% if conceptData|length != 0 %} active{% endif %}" id="tab-concepts" role="tabpanel"
          aria-labelledby="tab-concepts-button">
       {% if conceptData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.concepts'|trans|lower }) }}</p>
+        <p>{{ 'search.no-results'|trans({'%item%': 'search.result.concepts'|trans|lower}) }}</p>
       {% else %}
         <div class="table-responsive">
           <table class="table table-hover">
@@ -102,7 +102,7 @@
                 <tr>
                   {% if loop.first %}
                     <td rowspan="{{ concept.results|length }}">
-                      <a href="{{ path('app_concept_show', { 'concept': concept._id }) }}">{{ concept._title }}</a>
+                      <a href="{{ path('app_concept_show', {concept: concept._id}) }}">{{ concept._title }}</a>
                     </td>
                   {% endif %}
                   <td>{{ ('concept.' ~ result.property)|trans }}</td>
@@ -120,7 +120,7 @@
          id="tab-instances" role="tabpanel"
          aria-labelledby="tab-instances-button">
       {% if instanceData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.instances'|trans|lower }) }}</p>
+        <p>{{ 'search.no-results'|trans({'%item%': 'search.result.instances'|trans|lower}) }}</p>
       {% else %}
         <div class="table-responsive">
           <table class="table table-hover">
@@ -137,7 +137,7 @@
                 <tr>
                   {% if loop.first %}
                     <td rowspan="{{ concept.results|length }}">
-                      <a href="{{ path('app_concept_show', { 'concept': concept._id }) }}">{{ concept._title }}</a>
+                      <a href="{{ path('app_concept_show', {concept: concept._id}) }}">{{ concept._title }}</a>
                     </td>
                   {% endif %}
                   <td>{{ ('concept.' ~ result.property)|trans }}</td>
@@ -155,7 +155,7 @@
         class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length != 0 %} active{% endif %}"
         id="tab-abbreviations" role="tabpanel" aria-labelledby="tab-abbreviations-button">
       {% if abbreviationData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.abbreviations'|trans|lower }) }}</p>
+        <p>{{ 'search.no-results'|trans({'%item%': 'search.result.abbreviations'|trans|lower}) }}</p>
       {% else %}
         <div class="table-responsive">
           <table class="table table-hover">
@@ -188,7 +188,7 @@
         class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length != 0 %} active{% endif %}"
         id="tab-external-resources" role="tabpanel" aria-labelledby="tab-external-resources-button">
       {% if externalResourceData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.external-resources'|trans|lower }) }}</p>
+        <p>{{ 'search.no-results'|trans({'%item%': 'search.result.external-resources'|trans|lower}) }}</p>
       {% else %}
         <div class="table-responsive">
           <table class="table table-hover">
@@ -229,7 +229,7 @@
           and learningOutcomeData|length != 0 %} active{% endif %}"
         id="tab-learning-outcomes" role="tabpanel" aria-labelledby="tab-learning-outcomes-button">
       {% if learningOutcomeData|length == 0 %}
-        <p>{{ 'search.no-results'|trans({'%item%' : naming.get.learningOutcome.objs }) }}</p>
+        <p>{{ 'search.no-results'|trans({'%item%': naming.get.learningOutcome.objs}) }}</p>
       {% else %}
         <div class="table-responsive">
           <table class="table table-hover">
@@ -246,7 +246,7 @@
                 <tr>
                   {% if loop.first %}
                     <td rowspan="{{ learningOutcome.results|length }}">
-                      <a href="{{ path('app_learningoutcome_show', { 'learningOutcome': learningOutcome._id }) }}">{{ learningOutcome._title }}</a>
+                      <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome._id}) }}">{{ learningOutcome._title }}</a>
                     </td>
                   {% endif %}
                   <td>{{ ('learning-outcome.' ~ result.property)|trans }}</td>
@@ -266,7 +266,7 @@
             and learningOutcomeData|length == 0 and ownAnnotationsData|length != 0 %} active{% endif %}"
           id="tab-own-annotations" role="tabpanel" aria-labelledby="tab-own-annotations-button">
         {% if ownAnnotationsData|length == 0 %}
-          <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.own-annotations'|trans|lower }) }}</p>
+          <p>{{ 'search.no-results'|trans({'%item%': 'search.result.own-annotations'|trans|lower}) }}</p>
         {% else %}
           {{ annotationResults(search, ownAnnotationsData) }}
         {% endif %}
@@ -277,7 +277,7 @@
             and learningOutcomeData|length == 0 and ownAnnotationsData|length == 0 and allAnnotationsData|length != 0 %} active{% endif %}"
           id="tab-all-annotations" role="tabpanel" aria-labelledby="tab-all-annotations-button">
         {% if allAnnotationsData|length == 0 %}
-          <p>{{ 'search.no-results'|trans({'%item%' : 'search.result.all-annotations'|trans|lower }) }}</p>
+          <p>{{ 'search.no-results'|trans({'%item%': 'search.result.all-annotations'|trans|lower}) }}</p>
         {% else %}
           {{ annotationResults(search, allAnnotationsData) }}
         {% endif %}
@@ -308,14 +308,14 @@
               {% if renderConcept %}
                 {% set renderConcept = false %}
                 <td rowspan="{{ annotationsDataPerConcept.count }}">
-                  <a href="{{ path('app_concept_show', { 'concept': annotation._data.concept.id }) }}">{{ annotation._data.concept.name }}</a>
+                  <a href="{{ path('app_concept_show', {concept: annotation._data.concept.id}) }}">{{ annotation._data.concept.name }}</a>
                 </td>
               {% endif %}
 
               {% if loop.first %}
                 <td rowspan="{{ annotation.results|length }}">{{ ('concept.' ~ annotation._data.context)|trans }}</td>
                 <td rowspan="{{ annotation.results|length }}">
-                  {% if  annotation._data.selectedText %}
+                  {% if annotation._data.selectedText %}
                     {{ annotation._data.selectedText }}
                   {% else %}
                     <i>{{ 'annotations.section-header'|trans }}</i>

@@ -1,6 +1,6 @@
 {# Collection widget to add collection edit support #}
 {% block collection_row -%}
-  {{- block("form_header") -}}
+  {{- block('form_header') -}}
 
   {%- if expanded is defined and expanded -%}
     {{ block('fieldset_form_row') }}
@@ -21,7 +21,7 @@
     {%- set attr = attr|merge({'data-prototype-name': prototype.vars.name}) -%}
   {%- endif -%}
   {%- set attr = attr|merge({'data-allow-add': allow_add ? 1 : 0}) -%}
-  {%- set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0 }) -%}
+  {%- set attr = attr|merge({'data-allow-remove': allow_delete ? 1 : 0}) -%}
   {%- set attr = attr|merge({'data-name-prefix': full_name}) -%}
 
   {%- if errors|length > 0 -%}

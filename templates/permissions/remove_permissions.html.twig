@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'permissions.remove-permission-text'|trans({"%user%": user.displayName, '%item%': studyArea.name }) }}</p>
+  <p>{{ 'permissions.remove-permission-text'|trans({'%user%': user.displayName, '%item%': studyArea.name}) }}</p>
 
   {{ form(form) }}
 {% endblock %}

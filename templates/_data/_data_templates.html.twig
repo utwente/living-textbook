@@ -168,7 +168,7 @@
 {% endmacro %}
 
 {% macro render_prior_knowledge(priorKnowledge) %}
-  <a href="{{ path('app_concept_show', {'concept': priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
+  <a href="{{ path('app_concept_show', {concept: priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
 {% endmacro %}
 
 {% macro data_learning_outcomes(data) %}
@@ -186,7 +186,7 @@
 {% endmacro %}
 
 {% macro render_learning_outcome(learningOutcome) %}
-  <a href="{{ path('app_learningoutcome_show', { learningOutcome: learningOutcome.id }) }}"><b>{{ learningOutcome.shortName }}</b></a>
+  <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome.id}) }}"><b>{{ learningOutcome.shortName }}</b></a>
   <div class="ltb-text-container">
     {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
   </div>
@@ -204,7 +204,7 @@
 {% endmacro %}
 
 {% macro render_tag(tag) %}
-  <div class="concept-tag" data-color="{{ tag.color }}" data-link="{{ path ('app_tag_show', { tag: tag.id }) }}">
+  <div class="concept-tag" data-color="{{ tag.color }}" data-link="{{ path ('app_tag_show', {tag: tag.id}) }}">
     <span>{{ tag.name }}</span>
   </div>
 {% endmacro %}
@@ -215,7 +215,7 @@
     <ul>
       {% for concept in data %}
         <li>
-          <a href="{{ path('app_concept_show', { concept: concept.id}) }}"><b>{{ concept.name }}</b></a>
+          <a href="{{ path('app_concept_show', {concept: concept.id}) }}"><b>{{ concept.name }}</b></a>
           {# Show definition is available, otherwise introduction if available #}
           {% if concept.definition|length > 0 %}
             <div class="ltb-text-container">
@@ -238,7 +238,7 @@
     <ul>
       {% for learningPath in data %}
         <li>
-          <a href="{{ path('app_learningpath_show', { learningPath: learningPath.id }) }}">{{ learningPath.name }}</a>
+          <a href="{{ path('app_learningpath_show', {learningPath: learningPath.id}) }}">{{ learningPath.name }}</a>
         </li>
       {% endfor %}
     </ul>

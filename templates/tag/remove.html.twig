@@ -1,11 +1,11 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'tag.remove-title'|trans({"%item%": tag.name}) }}
+  {{ 'tag.remove-title'|trans({'%item%': tag.name}) }}
 {% endblock %}
 
 {% block content %}
-  <p>{{ 'tag.remove-text'|trans({"%item%": tag.name}) }}</p>
+  <p>{{ 'tag.remove-text'|trans({'%item%': tag.name}) }}</p>
 
   {% if tag.concepts|length > 0 %}
     <p>{{ 'tag.remove-concepts'|trans }}</p>

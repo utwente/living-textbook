@@ -4,7 +4,7 @@
     <h4 class="review-header">
       {%- if checkbox -%}
         <div class="custom-control custom-checkbox">
-          {% if- full_change_only -%}
+          {% if -full_change_only -%}
             {% set formField = '_all' %}
             <input type="checkbox" id="pc_{{ pendingChange.id }}_{{ formField }}"
                    name="{{ form.parent.parent.vars.id }}[pending_changes][{{ pendingChange.id }}][{{ formField }}]"

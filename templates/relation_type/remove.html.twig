@@ -1,13 +1,13 @@
 {% extends 'single_column.html.twig' %}
 
 {% block title %}
-  {{ 'relation-type.remove'|trans({"%item%": relationType.name}) }}
+  {{ 'relation-type.remove'|trans({'%item%': relationType.name}) }}
 {% endblock %}
 
 {% block content %}
   {% import '_data/_data_templates.html.twig' as macros %}
 
-  <p>{{ 'relation-type.remove-text'|trans({"%item%": relationType.name}) }}</p>
+  <p>{{ 'relation-type.remove-text'|trans({'%item%': relationType.name}) }}</p>
 
   {% if conceptRelations|length > 0 %}
     <p>{{ 'relation-type.remove-relations'|trans }}</p>

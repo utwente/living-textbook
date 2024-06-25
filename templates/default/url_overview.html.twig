@@ -29,27 +29,27 @@
         {% for url in urls %}
           {% if url.context.class == 'App\\Entity\\StudyArea' %}
             {% set description = 'url.study-area-path' %}
-            {% set editUrl = path('app_studyarea_edit', {'studyArea': url.context.id}) %}
+            {% set editUrl = path('app_studyarea_edit', {studyArea: url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('study-area.' ~ url.context.pathAsTransKey)|trans} %}
           {% elseif url.context.class == 'App\\Entity\\Concept' %}
             {% set description = 'url.concept-path' %}
-            {% set editUrl = path('app_concept_edit', {'concept': url.context.id}) %}
+            {% set editUrl = path('app_concept_edit', {concept: url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('concept.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['concepts'][url.context.id].name} %}
           {% elseif url.context.class == 'App\\Entity\\LearningOutcome' %}
             {% set description = 'url.learning-outcome-path' %}
-            {% set editUrl = path('app_learningoutcome_edit', {'learningOutcome': url.context.id}) %}
+            {% set editUrl = path('app_learningoutcome_edit', {learningOutcome: url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('learning-outcome.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['learningOutcomes'][url.context.id].name, '%singular%': naming.get.learningOutcome.obj} %}
           {% elseif url.context.class == 'App\\Entity\\ExternalResource' %}
             {% set description = 'url.external-resource-path' %}
-            {% set editUrl = path('app_externalresource_edit', {'externalResource': url.context.id}) %}
+            {% set editUrl = path('app_externalresource_edit', {externalResource: url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('external-resource.' ~ url.context.pathAsTransKey)|trans, '%title%': objects['externalResources'][url.context.id].title} %}
           {% elseif url.context.class == 'App\\Entity\\Contributor' %}
             {% set description = 'url.contributor-path' %}
-            {% set editUrl = path('app_contributor_edit', {'contributor': url.context.id}) %}
+            {% set editUrl = path('app_contributor_edit', {contributor: url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('contributor.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['contributors'][url.context.id].name} %}
           {% elseif url.context.class == 'App\\Entity\\LearningPath' %}
             {% set description = 'url.learning-path-path' %}
-            {% set editUrl = path('app_learningpath_edit', {'learningPath': url.context.id}) %}
+            {% set editUrl = path('app_learningpath_edit', {learningPath: url.context.id}) %}
             {% set descriptionArgs = {'%path%': ('learning-path.' ~ url.context.pathAsTransKey)|trans, '%name%': objects['learningPaths'][url.context.id].name} %}
           {% else %}
             {% set description = 'url.unknown' %}
@@ -70,7 +70,7 @@
               {% endif %}
             </td>
             <td>
-              {{ buttons._action_button(path('app_default_urlrescan', {'url': url.url|url_encode}), 'fa-repeat', 'url.rescan', 'primary') }}
+              {{ buttons._action_button(path('app_default_urlrescan', {url: url.url|url_encode}), 'fa-repeat', 'url.rescan', 'primary') }}
             </td>
           </tr>
         {% endfor %}

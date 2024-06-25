@@ -10,7 +10,7 @@
     <ul>
         {% for learningOutcome in unusedLearningOutcome %}
             <li>
-                <a href="{{ path('app_learningoutcome_show', {'learningOutcome': learningOutcome.id}) }}">
+                <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome.id}) }}">
                     {{ learningOutcome.number }} - {{ learningOutcome.name }}
                 </a>
             </li>

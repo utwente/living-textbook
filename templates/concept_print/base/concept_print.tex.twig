@@ -69,7 +69,7 @@
   % Limit image width globally
   \let\oldincludegraphics\includegraphics
   \renewcommand{\includegraphics}[2][]{ %
-  \oldincludegraphics[#1,max width=\linewidth]{{ "{#2}}"|raw }} {# Print with twig due to conflicts #}
+  \oldincludegraphics[#1,max width=\linewidth]{{ '{#2}}'|raw }} {# Print with twig due to conflicts #}
 
   % Custom commands for pandoc conversion
   \providecommand{\tightlist}{ %
@@ -82,7 +82,7 @@
   \DeclareUnicodeCharacter{FB01}{fi}
   \DeclareUnicodeCharacter{2011}{-}
 
-  {% include '@BobvLatex/extra_commands.twig.twig' %}
+  {{ include('@BobvLatex/extra_commands.twig.twig') }}
 
   \begin{document}
   {% if licenseimage %}
@@ -92,7 +92,7 @@
     \end{tabular}
   {% endif %}
 
-  {% include '@BobvLatex/elements.twig.twig' %}
+  {{ include('@BobvLatex/elements.twig.twig') }}
 
   \end{document}
 {% endblock bobv_latex_article %}

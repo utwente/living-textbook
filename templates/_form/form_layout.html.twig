@@ -29,7 +29,7 @@
 {%- endblock %}
 
 {% block form_row -%}
-  {{- block("form_header") -}}
+  {{- block('form_header') -}}
 
   {%- if expanded is defined and expanded -%}
     {{ block('fieldset_form_row') }}
@@ -60,23 +60,23 @@
 {%- endblock fieldset_form_row %}
 
 {% block checkbox_row -%}
-  {{- block("form_header") -}}
+  {{- block('form_header') -}}
   {{- parent() -}}
 {% endblock %}
 
 {% block submit_row -%}
-  {{- block("form_header") -}}
+  {{- block('form_header') -}}
   {{- parent() -}}
 {%- endblock submit_row %}
 
 {% block reset_row -%}
-  {{- block("form_header") -}}
+  {{- block('form_header') -}}
   {{- parent() -}}
 {%- endblock reset_row %}
 
 {% block file_row %}
-  {{- block("form_header") -}}
-  {{ block("form_row") }}
+  {{- block('form_header') -}}
+  {{ block('form_row') }}
 {% endblock %}
 
 {% block form_label -%}
@@ -118,7 +118,7 @@
         $('#{{ id }}').select2({
           width: '100%',
           theme: 'bootstrap',
-          allowClear: {{ select2_allow_clear ? 'true': 'false' }},
+          allowClear: {{ select2_allow_clear ? 'true' : 'false' }},
           {% if select2_placeholder is not none %}placeholder: '{{ translation_domain is same as(false) ? select2_placeholder : select2_placeholder|trans({}, translation_domain) }}',{% endif %}
         });
       </script>

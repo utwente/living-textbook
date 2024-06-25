@@ -34,13 +34,13 @@
 {% endblock %}
 
 {% block base_content %}
-  {% block _menu %}{% include '_layout/menu.html.twig' %}{% endblock %}
+  {% block _menu %}{{ include('_layout/menu.html.twig') }}{% endblock %}
   <div class="container-fluid with-menu">
     <div class="card container-card">
       <div class="card-body">
         {% block before_title %}{% endblock %}
         {% block content_title %}<h1>{{ block('title') }}</h1>{% endblock %}
-        {% block _flashbags %}{% include '_layout/flashbags.html.twig' %}{% endblock %}
+        {% block _flashbags %}{{ include('_layout/flashbags.html.twig') }}{% endblock %}
         <div id="no-browser-warning" style="display: none">
           {% from '_layout/flashbags.html.twig' import flashbag_alert %}
           {{ flashbag_alert('warning', 'general.no-browser-warning'|trans({'%url%': '/page' ~ app.request.pathinfo})|striptags('<a>'), 'fa-exclamation-triangle', true, true) }}

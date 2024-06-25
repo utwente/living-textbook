@@ -2,7 +2,7 @@
 
 {% block before_title %}
   {% import '_macro/_action_buttons.html.twig' as buttons %}
-  {{ buttons.add_row(path(concept.instance ? 'app_concept_listinstances': 'app_concept_list')) }}
+  {{ buttons.add_row(path(concept.instance ? 'app_concept_listinstances' : 'app_concept_list')) }}
 {% endblock %}
 
 {% block title %}

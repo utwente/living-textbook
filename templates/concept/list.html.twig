@@ -53,12 +53,12 @@
         {% endif %}
         <td class="actions">
           {% if is_granted('STUDYAREA_PRINT', studyArea) %}
-            {{ buttons.print_button(path('app_print_printsingleconcept', {'concept': concept.id})) }}
+            {{ buttons.print_button(path('app_print_printsingleconcept', {concept: concept.id})) }}
           {% endif %}
-          {{ buttons.show_button(path('app_concept_show', {'concept': concept.id})) }}
+          {{ buttons.show_button(path('app_concept_show', {concept: concept.id})) }}
           {% if is_granted('STUDYAREA_EDIT', studyArea) %}
-            {{ buttons.edit_button_disabled_when_frozen(path('app_concept_edit', {'concept': concept.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_concept_remove', {'concept': concept.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_concept_edit', {concept: concept.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_concept_remove', {concept: concept.id})) }}
           {% endif %}
         </td>
       </tr>
@@ -74,6 +74,6 @@
 
 {% block javascripts_bottom %}
   {{ dataTable('concept-table', {
-    columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+    columnDefs: [{searchable: false, orderable: false, targets: -1}]
   }) }}
 {% endblock %}

@@ -43,8 +43,8 @@
           <td>{{ review.approvedAt|format_datetime('medium', 'short') }}</td>
           <td>{{ review.approvedBy.displayName }}</td>
           <td class="actions">
-            {{ remove_button(path('app_review_removereview', {'review': review.id})) }}
-            {{ _action_button(path('app_review_publishreview', {'review': review.id}), 'fa-cloud-upload', 'review.publish'|trans, 'success') }}
+            {{ remove_button(path('app_review_removereview', {review: review.id})) }}
+            {{ _action_button(path('app_review_publishreview', {review: review.id}), 'fa-cloud-upload', 'review.publish'|trans, 'success') }}
           </td>
         </tr>
       {% endfor %}

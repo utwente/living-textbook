@@ -28,7 +28,7 @@
         <td>{{ admin.userIdentifier }}</td>
         <td>
           {% if app.user.id != admin.id %}
-            {{ buttons.remove_button(path('app_permissions_removeadmin', {'user': admin.id})) }}
+            {{ buttons.remove_button(path('app_permissions_removeadmin', {user: admin.id})) }}
           {% endif %}
         </td>
       </tr>
@@ -39,6 +39,6 @@
 
 {% block javascripts_bottom %}
   {{ dataTable('admin-table', {
-    columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+    columnDefs: [{searchable: false, orderable: false, targets: -1}]
   }) }}
 {% endblock %}

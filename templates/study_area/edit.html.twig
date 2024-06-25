@@ -15,7 +15,7 @@
   {{ form(form) }}
 
   {# The fields requiring JS are only available for admins, so remove JS to prevent errors when this is not the case #}
-  {% if is_granted("ROLE_SUPER_ADMIN") %}
+  {% if is_granted('ROLE_SUPER_ADMIN') %}
     <script type="text/javascript">
       $(function () {
         $('#{{ form.openAccess.vars.id }}')

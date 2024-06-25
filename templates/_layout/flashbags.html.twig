@@ -1,7 +1,7 @@
 {% macro flashbag_alert(type, message, icon, close, raw) %}
   <div class="alert alert-{{ type }}{% if close %} alert-dismissible{% endif %} fade-in" role="alert">
     {% if close %}
-      <button type="button" class="close" data-dismiss="alert" aria-label="{{ "general.close"|trans }}">
+      <button type="button" class="close" data-dismiss="alert" aria-label="{{ 'general.close'|trans }}">
         <span aria-hidden="true">&times;</span>
       </button>
     {% endif %}

@@ -30,8 +30,8 @@
         <td>{{ relationType.name }}</td>
         {% if is_granted('STUDYAREA_OWNER', studyArea) %}
           <td class="actions">
-            {{ buttons.edit_button_disabled_when_frozen(path('app_relationtype_edit', {'relationType': relationType.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_relationtype_remove', {'relationType': relationType.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_relationtype_edit', {relationType: relationType.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_relationtype_remove', {relationType: relationType.id})) }}
           </td>
         {% endif %}
       </tr>
@@ -43,7 +43,7 @@
 {% block javascripts_bottom %}
   {% if is_granted('STUDYAREA_OWNER', studyArea) %}
     {{ dataTable('relation-type-table', {
-      columnDefs: [{ searchable: false, orderable: false, targets: -1 }]
+      columnDefs: [{searchable: false, orderable: false, targets: -1}]
     }) }}
   {% else %}
     {{ dataTable('relation-type-table') }}
