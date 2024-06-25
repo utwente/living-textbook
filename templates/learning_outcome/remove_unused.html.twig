@@ -8,10 +8,10 @@
     <p>{{ 'learning-outcome.remove-unused-text'|trans({'%plural%': naming.get.learningOutcome.objs}) }}</p>
 
     <ul>
-        {% for learningOutcome in unusedLearningOutcome %}
+        {% for learning_outcome in unusedLearningOutcome %}
             <li>
-                <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome.id}) }}">
-                    {{ learningOutcome.number }} - {{ learningOutcome.name }}
+                <a href="{{ path('app_learningoutcome_show', {learningOutcome: learning_outcome.id}) }}">
+                    {{ learning_outcome.number }} - {{ learning_outcome.name }}
                 </a>
             </li>
         {% endfor %}

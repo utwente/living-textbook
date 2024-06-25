@@ -53,10 +53,10 @@
 {% endblock %}
 
 {% macro reviews_page_part(reviews, title, alertType, icon, notOwn, reviewed) %}
-  {% set closeLoop = false %}
+  {% set close_loop = false %}
   {% for review in reviews %}
     {% if loop.first %}
-      {% set closeLoop = true %}
+      {% set close_loop = true %}
       {{ block('review_table') }}
     {% endif %}
     {{ block('review') }}
@@ -133,7 +133,7 @@
         {% endblock %}
 
         {% block review_table_end %}
-        {% if closeLoop %}
+        {% if close_loop %}
         </tbody>
       </table>
     </div>

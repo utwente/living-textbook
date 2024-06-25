@@ -100,8 +100,8 @@
     {% from '_layout/flashbags.html.twig' import flashbag_alert %}
 
     {# Authentication error messages #}
-    {% for flashMessage in app.session.flashbag.get('authError') %}
-      {{ flashbag_alert('danger', flashMessage, 'fa-exclamation-triangle', false) }}
+    {% for flash_message in app.session.flashbag.get('authError') %}
+      {{ flashbag_alert('danger', flash_message, 'fa-exclamation-triangle', false) }}
     {% endfor %}
 
     <ul class="nav nav-tabs nav-fill">

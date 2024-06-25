@@ -199,21 +199,21 @@
             </tr>
             </thead>
             <tbody>
-            {% for externalResource in externalResourceData %}
-              {% for result in externalResource.results %}
+            {% for external_resource in externalResourceData %}
+              {% for result in external_resource.results %}
                 <tr>
                   {% if loop.first %}
-                    <td rowspan="{{ externalResource.results|length }}">
-                      {{ externalResource._title|highlight(search) }}
+                    <td rowspan="{{ external_resource.results|length }}">
+                      {{ external_resource._title|highlight(search) }}
                     </td>
                   {% endif %}
                   <td>
-                    {% if externalResource._data.url %}
-                      <a href="{{ externalResource._data.url }}" target="_blank">
-                        {{ externalResource._data.url|highlight(search) }}
+                    {% if external_resource._data.url %}
+                      <a href="{{ external_resource._data.url }}" target="_blank">
+                        {{ external_resource._data.url|highlight(search) }}
                       </a><br/>
                     {% endif %}
-                    {{ externalResource._data.description|highlight(search) }}
+                    {{ external_resource._data.description|highlight(search) }}
                   </td>
                 </tr>
               {% endfor %}
@@ -241,12 +241,12 @@
             </tr>
             </thead>
             <tbody>
-            {% for learningOutcome in learningOutcomeData %}
-              {% for result in learningOutcome.results %}
+            {% for learning_outcome in learningOutcomeData %}
+              {% for result in learning_outcome.results %}
                 <tr>
                   {% if loop.first %}
-                    <td rowspan="{{ learningOutcome.results|length }}">
-                      <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome._id}) }}">{{ learningOutcome._title }}</a>
+                    <td rowspan="{{ learning_outcome.results|length }}">
+                      <a href="{{ path('app_learningoutcome_show', {learningOutcome: learning_outcome._id}) }}">{{ learning_outcome._title }}</a>
                     </td>
                   {% endif %}
                   <td>{{ ('learning-outcome.' ~ result.property)|trans }}</td>
@@ -300,14 +300,14 @@
       </tr>
       </thead>
       <tbody>
-      {% for annotationsDataPerConcept in annotationsData %}
-        {% set renderConcept = true %}
-        {% for annotation in annotationsDataPerConcept.items %}
+      {% for annotations_data_per_concept in annotationsData %}
+        {% set render_concept = true %}
+        {% for annotation in annotations_data_per_concept.items %}
           {% for result in annotation.results %}
             <tr>
-              {% if renderConcept %}
-                {% set renderConcept = false %}
-                <td rowspan="{{ annotationsDataPerConcept.count }}">
+              {% if render_concept %}
+                {% set render_concept = false %}
+                <td rowspan="{{ annotations_data_per_concept.count }}">
                   <a href="{{ path('app_concept_show', {concept: annotation._data.concept.id}) }}">{{ annotation._data.concept.name }}</a>
                 </td>
               {% endif %}

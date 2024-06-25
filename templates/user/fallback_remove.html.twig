@@ -15,8 +15,8 @@
   {% if studyAreas|length > 0 %}
     <p>{{ 'user.remove-studyareas-list'|trans }}</p>
     <ul>
-      {% for studyArea in studyAreas %}
-        <li>{{ studyArea.name }}</li>
+      {% for study_area in studyAreas %}
+        <li>{{ study_area.name }}</li>
       {% endfor %}
     </ul>
   {% endif %}

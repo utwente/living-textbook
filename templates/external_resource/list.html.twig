@@ -27,20 +27,20 @@
     </tr>
     </thead>
     <tbody>
-    {% for externalResource in externalResources %}
+    {% for external_resource in externalResources %}
       <tr>
-        <td>{{ externalResource.title }}</td>
+        <td>{{ external_resource.title }}</td>
         <td>
-          {% if externalResource.url is not empty %}
-            <a href="{{ externalResource.url }}" target="_blank">{{ externalResource.url }}</a>
+          {% if external_resource.url is not empty %}
+            <a href="{{ external_resource.url }}" target="_blank">{{ external_resource.url }}</a>
           {% else %}
             {{ 'external-resource.no-url'|trans }}
           {% endif %}
         </td>
         {% if is_granted('STUDYAREA_EDIT', studyArea) %}
           <td class="actions">
-            {{ buttons.edit_button_disabled_when_frozen(path('app_externalresource_edit', {externalResource: externalResource.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_externalresource_remove', {externalResource: externalResource.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_externalresource_edit', {externalResource: external_resource.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_externalresource_remove', {externalResource: external_resource.id})) }}
           </td>
         {% endif %}
       </tr>

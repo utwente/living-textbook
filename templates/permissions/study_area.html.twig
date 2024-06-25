@@ -76,18 +76,18 @@
         </tr>
         </thead>
         <tbody>
-        {% for userPermission in studyArea.userPermissions %}
+        {% for user_permission in studyArea.userPermissions %}
           <tr>
-            <td>{{ userPermission.displayName }}</td>
-            <td>{{ userPermission.userIdentifier }}</td>
+            <td>{{ user_permission.displayName }}</td>
+            <td>{{ user_permission.userIdentifier }}</td>
             {% for type in studyArea.availableUserGroupTypes %}
               {{ has_permission(userPermission, type) }}
             {% endfor %}
             <td class="actions">
-              {% if userPermission.user %}
-                {{ buttons.remove_button(path('app_permissions_removepermissions', {user: userPermission.user.id}), false, 'permissions.revoke-user'|trans) }}
+              {% if user_permission.user %}
+                {{ buttons.remove_button(path('app_permissions_removepermissions', {user: user_permission.user.id}), false, 'permissions.revoke-user'|trans) }}
               {% else %}
-                {{ buttons.remove_button(path('app_permissions_removeemailpermissions', {email: userPermission.email.email|url_encode}), false, 'permissions.revoke-user'|trans) }}
+                {{ buttons.remove_button(path('app_permissions_removeemailpermissions', {email: user_permission.email.email|url_encode}), false, 'permissions.revoke-user'|trans) }}
               {% endif %}
             </td>
           </tr>

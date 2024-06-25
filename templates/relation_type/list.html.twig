@@ -25,13 +25,13 @@
     </tr>
     </thead>
     <tbody>
-    {% for relationType in relationTypes %}
+    {% for relation_type in relationTypes %}
       <tr>
-        <td>{{ relationType.name }}</td>
+        <td>{{ relation_type.name }}</td>
         {% if is_granted('STUDYAREA_OWNER', studyArea) %}
           <td class="actions">
-            {{ buttons.edit_button_disabled_when_frozen(path('app_relationtype_edit', {relationType: relationType.id})) }}
-            {{ buttons.remove_button_disabled_when_frozen(path('app_relationtype_remove', {relationType: relationType.id})) }}
+            {{ buttons.edit_button_disabled_when_frozen(path('app_relationtype_edit', {relationType: relation_type.id})) }}
+            {{ buttons.remove_button_disabled_when_frozen(path('app_relationtype_remove', {relationType: relation_type.id})) }}
           </td>
         {% endif %}
       </tr>

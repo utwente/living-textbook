@@ -363,14 +363,14 @@
             </thead>
             <tbody>
             {% set group = -1 %}
-            {% for studyArea in studyAreas %}
-              {% if group != studyArea.groupId %}
-                {% set group = studyArea.groupId %}
+            {% for study_area in studyAreas %}
+              {% if group != study_area.groupId %}
+                {% set group = study_area.groupId %}
                 <tr>
                   <th colspan="3">
                     <i class="fa fa-fw fa-folder-open d-none"></i>
                     <i class="fa fa-fw fa-folder"></i>
-                    {{ studyArea.group ? studyArea.group.name : 'study-area.groups.default-name'|trans }}
+                    {{ study_area.group ? study_area.group.name : 'study-area.groups.default-name'|trans }}
                   </th>
                   <td class="actions">
                     <button class="btn btn-outline-primary concept-group-toggle collapsed collapsed-show"
@@ -388,33 +388,33 @@
               <tr class="collapse collapse-group-{{ group }}">
                 <td>
                   <div class="collapse collapse-group-{{ group }} pl-4">
-                    {{ studyArea.name }}
+                    {{ study_area.name }}
                   </div>
                 </td>
                 <td>
                   <div class="collapse collapse-group-{{ group }}">
-                    {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-                      <a href="{{ path('app_studyarea_transferowner', {studyArea: studyArea.id}) }}"
+                    {% if is_granted('STUDYAREA_OWNER', study_area) %}
+                      <a href="{{ path('app_studyarea_transferowner', {studyArea: study_area.id}) }}"
                          data-toggle="tooltip" title="{{ 'study-area.transfer-ownership'|trans }}">
-                        {{ studyArea.owner.displayName }}</a>
+                        {{ study_area.owner.displayName }}</a>
                     {% else %}
-                      {{ studyArea.owner.displayName }}
+                      {{ study_area.owner.displayName }}
                     {% endif %}
                   </div>
                 </td>
                 <td>
-                  <div class="collapse collapse-group-{{ group }}">{{ studyArea.accessType|capitalize }}</div>
+                  <div class="collapse collapse-group-{{ group }}">{{ study_area.accessType|capitalize }}</div>
                 </td>
                 <td class="actions">
                   <div class="collapse collapse-group-{{ group }}">
                     {{ buttons._action_button(
-                      path('_home', {_studyArea: studyArea.id}), 'fa-exchange', 'study-area.switch-to',
-                      'primary top-level', false, false, studyArea.id == currentStudyArea.id ? 'study-area.current'|trans : false
+                      path('_home', {_studyArea: study_area.id}), 'fa-exchange', 'study-area.switch-to',
+                      'primary top-level', false, false, study_area.id == currentStudyArea.id ? 'study-area.current'|trans : false
                     ) }}
 
-                    {% if is_granted('STUDYAREA_OWNER', studyArea) %}
-                      {{ buttons.edit_button(path('app_studyarea_edit', {studyArea: studyArea.id}), studyArea.isFrozen ? 'study-area.frozen'|trans : false) }}
-                      {{ buttons.remove_button(path('app_studyarea_remove', {studyArea: studyArea.id})) }}
+                    {% if is_granted('STUDYAREA_OWNER', study_area) %}
+                      {{ buttons.edit_button(path('app_studyarea_edit', {studyArea: study_area.id}), study_area.isFrozen ? 'study-area.frozen'|trans : false) }}
+                      {{ buttons.remove_button(path('app_studyarea_remove', {studyArea: study_area.id})) }}
                     {% endif %}
                   </div>
                 </td>

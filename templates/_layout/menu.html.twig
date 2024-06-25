@@ -72,42 +72,42 @@
           {{ 'menu.show'|trans }}
         </a>
         <div class="dropdown-menu" aria-labelledby="edit-dropdown">
-          {% set anyContent = false %}
+          {% set any_content = false %}
           {% if is_granted('MENU_CONCEPTS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_concept_list') }}">{{ 'menu.concept'|trans }}</a>
             <a class="dropdown-item"
                href="{{ path('app_concept_listinstances') }}">{{ 'menu.instances'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_LEARNING_PATHS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_learningpath_list') }}">{{ 'menu.learning-paths'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_ABBREVIATIONS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_abbreviation_list') }}">{{ 'menu.abbreviations'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_CONTRIBUTORS', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_contributor_list') }}">{{ 'menu.contributors'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_EXTERNAL_RESOURCES', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_externalresource_list') }}">{{ 'menu.external-resources'|trans }}</a>
           {% endif %}
           {% if is_granted('MENU_LEARNING_OUTCOMES', _twigStudyArea) %}
-            {% set anyContent = true %}
+            {% set any_content = true %}
             <a class="dropdown-item"
                href="{{ path('app_learningoutcome_list') }}">{{ naming.get.learningOutcome.objs|capitalize }}</a>
           {% endif %}
         </div>
       </li>
-      {% if not anyContent %}
+      {% if not any_content %}
         <script type="text/javascript">
           {# Remove the menu if there is absolutely no content #}
           $('#show-content-menu').remove();

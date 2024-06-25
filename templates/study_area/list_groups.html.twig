@@ -23,14 +23,14 @@
     </thead>
     <tbody>
     {% for group in groups %}
-      {% set areaCount = group.studyAreaCount %}
+      {% set area_count = group.studyAreaCount %}
       <tr>
         <td>{{ group.name }}</td>
-        <td>{{ areaCount }}</td>
+        <td>{{ area_count }}</td>
         <td class="actions">
           {{ buttons.edit_button(path('app_studyarea_editgroup', {group: group.id})) }}
           {{ buttons.remove_button(path('app_studyarea_removegroup', {group: group.id}),
-            areaCount > 0 ? 'study-area.groups.remove-not-possible'|trans({'%item%': group.name}) : '') }}
+            area_count > 0 ? 'study-area.groups.remove-not-possible'|trans({'%item%': group.name}) : '') }}
         </td>
       </tr>
     {% endfor %}

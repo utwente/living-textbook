@@ -20,9 +20,9 @@
       {{ 'concept.remove-in-learning-path'|trans({'%count%': learningPaths|length, '%type%': concept.instance ? 'concept.instance'|trans|lower : 'concept._name'|trans|lower}) }}
       {{ 'concept.remove-in-learning-path-warning'|trans({'%type%': concept.instance ? 'concept.instance'|trans|lower : 'concept._name'|trans|lower}) }}
       <ul style="margin-bottom: 0">
-        {% for learningPath in learningPaths %}
+        {% for learning_path in learningPaths %}
           <li>
-            <a href="{{ path('app_learningpath_show', {learningPath: learningPath.id}) }}">{{ learningPath.name }}</a>
+            <a href="{{ path('app_learningpath_show', {learningPath: learning_path.id}) }}">{{ learning_path.name }}</a>
           </li>
         {% endfor %}
       </ul>
