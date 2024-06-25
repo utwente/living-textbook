@@ -10,6 +10,7 @@ use App\Entity\StylingConfigurationRelationOverride;
 use App\EntityHandler\StylingConfigurationRelationOverrideHandler;
 use App\Repository\StylingConfigurationRelationOverrideRepository;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -19,13 +20,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag('Styling Configuration Override')]
-#[Route(path: '/stylingconfiguration/{stylingConfiguration<\d+>}/relationoverride/{relation<\d+>}')]
+#[Route('/stylingconfiguration/{stylingConfiguration<\d+>}/relationoverride/{relation<\d+>}')]
 class StylingConfigurationRelationOverrideController extends AbstractApiController
 {
   /** Retrieve single relation style override. */
   #[OA\Response(response: 200, description: 'A single relation styling override', content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class)])]
-  #[Route(methods: ['GET'])]
-  #[IsGranted('STUDYAREA_SHOW', subject: 'requestStudyArea')]
+  #[Route(methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function singleRelation(
     RequestStudyArea $requestStudyArea,
     StylingConfiguration $stylingConfiguration,
@@ -46,8 +47,8 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
   #[OA\RequestBody(description: 'The new override', required: true, content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class, groups: ['create'])])]
   #[OA\Response(response: 200, description: 'The new override', content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
-  #[Route(methods: ['POST'])]
-  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
+  #[Route(methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function add(
     RequestStudyArea $requestStudyArea,
     StylingConfiguration $stylingConfiguration,
@@ -75,8 +76,8 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
   #[OA\RequestBody(description: 'The relation styling override to update', required: true, content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated override', content: [new Model(type: StylingConfigurationRelationOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
-  #[Route(methods: ['PATCH'])]
-  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
+  #[Route(methods: [Request::METHOD_PATCH])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
     StylingConfiguration $stylingConfiguration,
@@ -101,8 +102,8 @@ class StylingConfigurationRelationOverrideController extends AbstractApiControll
 
   /** Delete an existing relation styling override. */
   #[OA\Response(response: 202, description: 'The relation styling override has been deleted')]
-  #[Route(methods: ['DELETE'])]
-  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
+  #[Route(methods: [Request::METHOD_DELETE])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function delete(
     RequestStudyArea $requestStudyArea,
     StylingConfiguration $stylingConfiguration,

@@ -20,12 +20,12 @@ abstract class Override implements StudyAreaFilteredInterface
   use Blameable;
   use SoftDeletable;
 
-  #[ORM\ManyToOne(targetEntity: \StudyArea::class)]
-  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
+  #[ORM\ManyToOne]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id')]
   #[Assert\NotNull]
   private StudyArea $studyArea;
 
-  #[ORM\Column(type: 'json', nullable: true)]
+  #[ORM\Column(nullable: true)]
   #[JMSA\Expose]
   #[Assert\NotNull]
   private ?array $override = null;

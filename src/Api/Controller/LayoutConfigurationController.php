@@ -7,6 +7,7 @@ use App\Api\Model\Validation\ValidationFailedData;
 use App\Entity\LayoutConfiguration;
 use App\EntityHandler\LayoutConfigurationHandler;
 use App\Request\Wrapper\RequestStudyArea;
+use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\Http\AcceptedResponse;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use OpenApi\Attributes as OA;
@@ -16,15 +17,15 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag('Layout Configuration')]
-#[Route(path: '/layoutconfiguration')]
+#[Route('/layoutconfiguration')]
 class LayoutConfigurationController extends AbstractApiController
 {
   /** Retrieve all study area layout configurations. */
   #[OA\Response(response: 200, description: 'All study area layout configurations', content: [
     new OA\JsonContent(type: 'array', items: new OA\Items(new Model(type: LayoutConfigurationApiModel::class))),
   ])]
-  #[Route(methods: ['GET'])]
-  #[IsGranted('STUDYAREA_SHOW', subject: 'requestStudyArea')]
+  #[Route(methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function list(RequestStudyArea $requestStudyArea): JsonResponse
   {
     return $this->createDataResponse(
@@ -35,8 +36,8 @@ class LayoutConfigurationController extends AbstractApiController
 
   /** Retrieve single study layout configuration. */
   #[OA\Response(response: 200, description: 'A single study area layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
-  #[Route(path: '/{layoutConfiguration<\d+>}', methods: ['GET'])]
-  #[IsGranted('STUDYAREA_SHOW', subject: 'requestStudyArea')]
+  #[Route('/{layoutConfiguration<\d+>}', methods: [Request::METHOD_GET])]
+  #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function single(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration): JsonResponse
@@ -50,8 +51,8 @@ class LayoutConfigurationController extends AbstractApiController
   #[OA\RequestBody(description: 'The new layout configuration', required: true, content: [new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The new layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
-  #[Route(methods: ['POST'])]
-  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
+  #[Route(methods: [Request::METHOD_POST])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function add(
     RequestStudyArea $requestStudyArea,
     Request $request): JsonResponse
@@ -72,8 +73,8 @@ class LayoutConfigurationController extends AbstractApiController
   #[OA\RequestBody(description: 'The layout configuration properties to update', required: true, content: [new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])])]
   #[OA\Response(response: 200, description: 'The updated layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
-  #[Route(path: '/{layoutConfiguration<\d+>}', methods: ['PATCH'])]
-  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
+  #[Route('/{layoutConfiguration<\d+>}', methods: [Request::METHOD_PATCH])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration,
@@ -91,8 +92,8 @@ class LayoutConfigurationController extends AbstractApiController
 
   /** Delete an existing study area layout configuration. */
   #[OA\Response(response: 202, description: 'The layout configuration has been deleted')]
-  #[Route(path: '/{layoutConfiguration<\d+>}', methods: ['DELETE'])]
-  #[IsGranted('STUDYAREA_EDIT', subject: 'requestStudyArea')]
+  #[Route('/{layoutConfiguration<\d+>}', methods: [Request::METHOD_DELETE])]
+  #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function delete(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration

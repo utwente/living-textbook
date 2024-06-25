@@ -25,22 +25,22 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
   use Blameable;
   use SoftDeletable;
 
-  #[ORM\ManyToOne(targetEntity: \StudyArea::class, inversedBy: 'layoutConfigurations')]
+  #[ORM\ManyToOne(inversedBy: 'layoutConfigurations')]
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
-  #[ORM\Column(type: 'json', nullable: true)]
+  #[ORM\Column(nullable: true)]
   private ?array $layouts = null;
 
-  #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: false)]
+  #[ORM\Column(name: 'name', length: 255)]
   #[Assert\NotBlank]
   #[Assert\Length(min: 1, max: 255)]
   #[JMSA\Expose]
   private string $name = '';
 
   /** @var Collection<int, LayoutConfigurationOverride> */
-  #[ORM\OneToMany(targetEntity: LayoutConfigurationOverride::class, mappedBy: 'layoutConfiguration', fetch: 'EXTRA_LAZY', cascade: ['remove'])]
+  #[ORM\OneToMany(mappedBy: 'layoutConfiguration', targetEntity: LayoutConfigurationOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
   private Collection $overrides;
 
   #[Override]

@@ -16,11 +16,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table]
 class StylingConfigurationRelationOverride extends Override
 {
-  #[ORM\ManyToOne(targetEntity: ConceptRelation::class, inversedBy: 'stylingOverrides')]
+  #[ORM\ManyToOne(inversedBy: 'stylingOverrides')]
   #[JMSA\Expose]
   private ConceptRelation $relation;
 
-  #[ORM\ManyToOne(targetEntity: \StylingConfiguration::class, inversedBy: 'relationOverrides')]
+  #[ORM\ManyToOne(inversedBy: 'relationOverrides')]
   private StylingConfiguration $stylingConfiguration;
 
   public function __construct(

@@ -16,11 +16,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Table]
 class LayoutConfigurationOverride extends Override
 {
-  #[ORM\ManyToOne(targetEntity: \Concept::class, inversedBy: 'layoutOverrides')]
+  #[ORM\ManyToOne(inversedBy: 'layoutOverrides')]
   #[JMSA\Expose]
   private Concept $concept;
 
-  #[ORM\ManyToOne(targetEntity: \LayoutConfiguration::class, inversedBy: 'overrides')]
+  #[ORM\ManyToOne(inversedBy: 'overrides')]
   private LayoutConfiguration $layoutConfiguration;
 
   public function __construct(
