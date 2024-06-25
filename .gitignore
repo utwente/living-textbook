@@ -54,3 +54,8 @@ docker/nginx/server.cert
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> vincentlanglet/twig-cs-fixer ###
+/.twig-cs-fixer.cache
+twigcs.xml
+###< vincentlanglet/twig-cs-fixer ###

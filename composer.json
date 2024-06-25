@@ -99,7 +99,8 @@
         "symfony/error-handler": "6.4.8",
         "symfony/phpunit-bridge": "6.4.8",
         "symfony/stopwatch": "6.4.8",
-        "symfony/web-profiler-bundle": "6.4.8"
+        "symfony/web-profiler-bundle": "6.4.8",
+        "vincentlanglet/twig-cs-fixer": "2.11.0"
     },
     "config": {
         "preferred-install": {
