@@ -6,7 +6,6 @@ use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\StudyArea;
 use App\Request\Wrapper\RequestStudyArea;
 use Override;
-use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,19 +37,13 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
   /** Check if a study area is frozen, and if so, prevent editing. */
   public function checkFrozenStudyArea(ControllerArgumentsEvent $event): void
   {
-    $controller = $event->getController();
-    // We only care about methods
-    if (!is_array($controller)) {
-      return;
-    }
-
-    $attributes = (new ReflectionMethod($controller[0], $controller[1]))->getAttributes(DenyOnFrozenStudyArea::class);
+    $attributes = $event->getAttributes(DenyOnFrozenStudyArea::class);
 
     if (empty($attributes)) {
       return;
     }
 
-    $configuration = $attributes[0]->newInstance();
+    $configuration = $attributes[0];
     assert($configuration instanceof DenyOnFrozenStudyArea);
 
     // Retrieve subject
