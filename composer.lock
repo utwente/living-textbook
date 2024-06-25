@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "61bc88bcb32d35c78c3814e48447d1a3",
+    "content-hash": "ce986656ceb176b37056462e9b15b217",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1672,16 +1672,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "4.5.1",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "45a550bbcca6a0a5b3e97ee6009ccfbf546719c7"
+                "reference": "bebd1a8d514aa073223b8b35d6d907e040aeb7b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/45a550bbcca6a0a5b3e97ee6009ccfbf546719c7",
-                "reference": "45a550bbcca6a0a5b3e97ee6009ccfbf546719c7",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/bebd1a8d514aa073223b8b35d6d907e040aeb7b0",
+                "reference": "bebd1a8d514aa073223b8b35d6d907e040aeb7b0",
                 "shasum": ""
             },
             "require": {
@@ -1706,7 +1706,7 @@
                 "doctrine/orm": "^2.7",
                 "drenso/phan-extensions": "~3.0",
                 "eluceo/ical": "^2.7",
-                "friendsofphp/php-cs-fixer": "3.56.1",
+                "friendsofphp/php-cs-fixer": "3.58.1",
                 "jms/serializer-bundle": "^5.0",
                 "maennchen/zipstream-php": "^3.0",
                 "php-decimal/php-decimal": "^1.1",
@@ -1783,9 +1783,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/4.5.1"
+                "source": "https://github.com/Drenso/symfony-shared/tree/4.6.0"
             },
-            "time": "2024-05-22T18:52:13+00:00"
+            "time": "2024-06-21T14:21:10+00:00"
         },
         {
             "name": "easyrdf/easyrdf",
