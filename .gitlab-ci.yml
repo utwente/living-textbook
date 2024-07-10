@@ -7,6 +7,10 @@ stages:
   - sentry
   - deploy
 
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "merge_request_event" && $CI_COMMIT_TAG == null
+
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
   COMPOSER_REQUIRE_CHECKER_VERSION: 4.11.0
@@ -144,7 +148,6 @@ code-style-fixer:
     - schedules
     - master
     - production
-    - tags
 
 # Lint
 php-cve-check:
@@ -457,7 +460,7 @@ sentry-release-production:
 # Deploy
 deploy-staging:
   stage: deploy
-  image: registry.gitlab.utwente.nl/idb/docker-images/ssh:1.2.0
+  image: registry.drenso.dev/open/docker-images/release:1.0
   resource_group: deploy-staging
   dependencies: []
   variables:
@@ -482,7 +485,7 @@ deploy-staging:
 
 deploy-research:
   stage: deploy
-  image: registry.gitlab.utwente.nl/idb/docker-images/ssh:1.2.0
+  image: registry.drenso.dev/open/docker-images/release:1.0
   resource_group: deploy-staging
   dependencies: []
   variables:
@@ -509,7 +512,7 @@ deploy-research:
 
 deploy-production:
   stage: deploy
-  image: registry.gitlab.utwente.nl/idb/docker-images/ssh:1.2.0
+  image: registry.drenso.dev/open/docker-images/release:1.0
   resource_group: deploy-production
   dependencies: []
   variables:
@@ -524,6 +527,10 @@ deploy-production:
     - ssh-add <(echo "${JUMP_HOST_SSH_PRIVATE_KEY}")
   script:
     - ssh -tt -J ${JUMP_USER}@${JUMP_HOST} ${PRODUCTION_USER}@${PRODUCTION_HOST_SSH} -p ${PRODUCTION_HOST_SSH_PORT} ${CI_PIPELINE_ID}
+  release:
+    name: Release ${CI_COMMIT_SHORT_SHA}
+    tag_name: release-$(date "+%Y%m%d")-${CI_COMMIT_SHORT_SHA}
+    description: Production release
   environment:
     name: Production
     url: https://${PRODUCTION_HOST}
