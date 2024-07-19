@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "afd45fd8273c58b9090095748a70bd42",
+    "content-hash": "d3c29a3af87972ce91f41170911d43d4",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -13598,16 +13598,16 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "2.12.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "2af4cd3bf926b7dcea5e90a3307d340cec38744f"
+                "reference": "2daadf3dc01cd8bd507ec75f3fa4904df37bb6be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/2af4cd3bf926b7dcea5e90a3307d340cec38744f",
-                "reference": "2af4cd3bf926b7dcea5e90a3307d340cec38744f",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/2daadf3dc01cd8bd507ec75f3fa4904df37bb6be",
+                "reference": "2daadf3dc01cd8bd507ec75f3fa4904df37bb6be",
                 "shasum": ""
             },
             "require": {
@@ -13666,7 +13666,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/2.12.0"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/2.12.1"
             },
             "funding": [
                 {
@@ -13674,7 +13674,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-11T21:37:18+00:00"
+            "time": "2024-07-12T10:35:51+00:00"
         }
     ],
     "aliases": [],
