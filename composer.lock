@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3c29a3af87972ce91f41170911d43d4",
+    "content-hash": "a72468e45eba941f0d2122c244d1c334",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -12402,16 +12402,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "1.1.1",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "c930cdb21294f10955ddfc31b720971e8333943d"
+                "reference": "b38a3eed3ce2046f40c001255e2fec9d2746bacf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/c930cdb21294f10955ddfc31b720971e8333943d",
-                "reference": "c930cdb21294f10955ddfc31b720971e8333943d",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/b38a3eed3ce2046f40c001255e2fec9d2746bacf",
+                "reference": "b38a3eed3ce2046f40c001255e2fec9d2746bacf",
                 "shasum": ""
             },
             "require": {
@@ -12449,7 +12449,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.1.1"
+                "source": "https://github.com/rectorphp/rector/tree/1.2.1"
             },
             "funding": [
                 {
@@ -12457,7 +12457,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-21T07:51:17+00:00"
+            "time": "2024-07-16T00:22:54+00:00"
         },
         {
             "name": "sebastian/cli-parser",
