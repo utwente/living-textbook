@@ -37,7 +37,7 @@
         "kick-in/exception-handler-bundle": "4.0.0",
         "league/html-to-markdown": "5.1.1",
         "ml/json-ld": "1.2.1",
-        "nelmio/api-doc-bundle": "4.28.0",
+        "nelmio/api-doc-bundle": "4.29.0",
         "nelmio/cors-bundle": "2.5.0",
         "phpoffice/phpspreadsheet": "2.1.0",
         "rollerworks/password-strength-validator": "2.0.1",
