@@ -89,7 +89,7 @@
         "twig/inky-extra": "3.10.0",
         "twig/intl-extra": "3.10.0",
         "twig/twig": "3.10.3",
-        "zircote/swagger-php": "4.10.5"
+        "zircote/swagger-php": "4.10.6"
     },
     "require-dev": {
         "drenso/phan-extensions": "3.5.1",
