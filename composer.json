@@ -39,7 +39,7 @@
         "ml/json-ld": "1.2.1",
         "nelmio/api-doc-bundle": "4.29.1",
         "nelmio/cors-bundle": "2.5.0",
-        "phpoffice/phpspreadsheet": "2.2.1",
+        "phpoffice/phpspreadsheet": "2.2.2",
         "rollerworks/password-strength-validator": "2.0.1",
         "ryakad/pandoc-php": "1.0.0",
         "sentry/sentry-symfony": "5.0.1",
