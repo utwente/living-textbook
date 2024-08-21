@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a1552a22edd51751b995b268cb85df4",
+    "content-hash": "78d21934ea10922603623c0b242d5e3b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -13614,16 +13614,16 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "3954bbfece3dfd5881f1437e72334e089595d5de"
+                "reference": "ac11c63f17322e31dc6d8c5e8dada54423d66fe0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/3954bbfece3dfd5881f1437e72334e089595d5de",
-                "reference": "3954bbfece3dfd5881f1437e72334e089595d5de",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/ac11c63f17322e31dc6d8c5e8dada54423d66fe0",
+                "reference": "ac11c63f17322e31dc6d8c5e8dada54423d66fe0",
                 "shasum": ""
             },
             "require": {
@@ -13682,7 +13682,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.0.0"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.0.1"
             },
             "funding": [
                 {
@@ -13690,7 +13690,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-28T11:46:49+00:00"
+            "time": "2024-08-13T16:27:40+00:00"
         }
     ],
     "aliases": [],
