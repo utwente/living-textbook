@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f95ecfd7f0c6d44c0a478d22d8436ff",
+    "content-hash": "f3083d21e60198aa4d6e1c22fb88a7f1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2767,16 +2767,16 @@
         },
         {
             "name": "kick-in/exception-handler-bundle",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "6df452ff0c051548408a5aa88a4cfd214d705b39"
+                "reference": "3a7af125ed6677ab80de07007a31f788ec465a00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/6df452ff0c051548408a5aa88a4cfd214d705b39",
-                "reference": "6df452ff0c051548408a5aa88a4cfd214d705b39",
+                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/3a7af125ed6677ab80de07007a31f788ec465a00",
+                "reference": "3a7af125ed6677ab80de07007a31f788ec465a00",
                 "shasum": ""
             },
             "require": {
@@ -2829,9 +2829,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kick-In/exception-handler-bundle/issues",
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/4.0.0"
+                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/4.0.1"
             },
-            "time": "2024-05-21T21:13:04+00:00"
+            "time": "2024-08-20T17:40:37+00:00"
         },
         {
             "name": "lcobucci/jwt",
