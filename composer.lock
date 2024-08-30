@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03e02aa719d07d97d2f1abe29d6b56b3",
+    "content-hash": "7b091ea6fdf080a331bc6a2af2d56cf9",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -13614,16 +13614,16 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "ac11c63f17322e31dc6d8c5e8dada54423d66fe0"
+                "reference": "1730c3610470446146abdee50417b4094788ef3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/ac11c63f17322e31dc6d8c5e8dada54423d66fe0",
-                "reference": "ac11c63f17322e31dc6d8c5e8dada54423d66fe0",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/1730c3610470446146abdee50417b4094788ef3c",
+                "reference": "1730c3610470446146abdee50417b4094788ef3c",
                 "shasum": ""
             },
             "require": {
@@ -13635,7 +13635,7 @@
                 "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
                 "symfony/finder": "^5.4 || ^6.4 || ^7.0",
                 "symfony/string": "^5.4.42 || ^6.4.10 || ~7.0.10 || ^7.1.3",
-                "twig/twig": "^3.10",
+                "twig/twig": "^3.4",
                 "webmozart/assert": "^1.10"
             },
             "require-dev": {
@@ -13682,7 +13682,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.0.1"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.0.2"
             },
             "funding": [
                 {
@@ -13690,7 +13690,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-13T16:27:40+00:00"
+            "time": "2024-08-22T16:39:23+00:00"
         }
     ],
     "aliases": [],
