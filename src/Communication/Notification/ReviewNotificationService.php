@@ -20,11 +20,9 @@ class ReviewNotificationService
   }
 
   /**
-   *Notify the requested reviewer there is a new review waiting.
+   * Notify the requested reviewer there is a new review waiting.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function reviewRequested(Review $review)
   {
@@ -54,8 +52,6 @@ class ReviewNotificationService
    * Notify the editor that his/her submission has been denied.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function submissionDenied(Review $review)
   {
@@ -79,8 +75,6 @@ class ReviewNotificationService
    * Notify the study area owner that there is a submission that needs to be published.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function submissionApproved(Review $review)
   {
@@ -112,11 +106,7 @@ class ReviewNotificationService
     );
   }
 
-  /**
-   * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws TransportExceptionInterface */
   public function submissionPublished(Review $review)
   {
     $this->mailer->send(

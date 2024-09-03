@@ -21,7 +21,6 @@ class OrderedCollectionElementType extends AbstractType
       $view->vars['attr']['class'] = '';
     }
 
-    /* @phan-suppress-next-line PhanTypeInvalidDimOffset, PhanTypeArraySuspiciousNullable */
     $view->vars['attr']['class'] .= ' collection-position';
   }
 

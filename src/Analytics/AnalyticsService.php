@@ -169,7 +169,6 @@ class AnalyticsService
 
     // Synthesize new data
     // Acquire a lock, only a single build can be run at the same time due to memory constraints
-    // Phan doesn't like the Symfony way of deprecating the StoreInterface @phan-suppress-next-line PhanDeprecatedInterface
     $lockFactory = new LockFactory(new SemaphoreStore());
     $lock        = $lockFactory->createLock('data-synthesizing');
     $lock->acquire(true);
@@ -323,7 +322,6 @@ class AnalyticsService
     $settings['outputDir'] = $outputDir;
 
     // Acquire a lock, only a single build can be run at the same time due to memory constraints
-    // Phan doesn't like the Symfony way of deprecating the StoreInterface @phan-suppress-next-line PhanDeprecatedInterface
     $lockFactory = new LockFactory(new SemaphoreStore());
     $lock        = $lockFactory->createLock('data-visualisation');
     $lock->acquire(true);

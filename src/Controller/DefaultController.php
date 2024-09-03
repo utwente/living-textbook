@@ -153,8 +153,6 @@ class DefaultController extends AbstractController
   /**
    * @throws InvalidArgumentException
    * @throws NonUniqueResultException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   #[Route('/{_studyArea<\d+>}/dashboard')]
   #[Route('/{_studyArea<\d+>}/dashboard', name: 'app_studyarea_list')]
@@ -204,12 +202,10 @@ class DefaultController extends AbstractController
       $urlsScanned = $urls !== null;
 
       $urlData = [
-        'urlScanned' => $urlsScanned,
-        /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
+        'urlScanned'      => $urlsScanned,
         'urlScanProgress' => ($urlsScanned ? $urls['urls'] === null : false),
-        /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
-        'urlCount'       => ($urlsScanned ? count($urls['urls']) : -1),
-        'brokenUrlCount' => ($badUrls !== null ? count($badUrls['bad']) : -1),
+        'urlCount'        => ($urlsScanned ? count($urls['urls']) : -1),
+        'brokenUrlCount'  => ($badUrls !== null ? count($badUrls['bad']) : -1),
       ];
     }
 
@@ -231,11 +227,7 @@ class DefaultController extends AbstractController
     ], $urlData));
   }
 
-  /**
-   * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws InvalidArgumentException */
   #[Route('/{_studyArea<\d+>}/urls')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function urlOverview(
@@ -284,11 +276,7 @@ class DefaultController extends AbstractController
     ]);
   }
 
-  /**
-   * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws InvalidArgumentException */
   #[Route('/{_studyArea<\d+>}/rescanurl/{url}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url): Response
@@ -302,11 +290,7 @@ class DefaultController extends AbstractController
     return $this->redirect($this->generateUrl('app_default_urloverview'));
   }
 
-  /**
-   * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws InvalidArgumentException */
   #[Route('/{_studyArea<\d+>}/rescanurls')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function urlRescanStudyArea(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, TranslatorInterface $translator): Response

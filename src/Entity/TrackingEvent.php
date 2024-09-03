@@ -14,8 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TODO Migrate array property to JSON.
- *
- * @phan-file-suppress PhanDeprecatedClassConstant
  */
 #[ORM\Entity(repositoryClass: TrackingEventRepository::class)]
 #[ORM\Table]

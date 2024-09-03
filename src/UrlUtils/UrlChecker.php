@@ -10,6 +10,7 @@ use App\Repository\LearningPathRepository;
 use App\Repository\StudyAreaRepository;
 use App\UrlUtils\Model\CacheableUrl;
 use App\UrlUtils\Model\Url;
+use DateMalformedStringException;
 use DateTime;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
@@ -75,8 +76,6 @@ class UrlChecker
    * @throws InvalidArgumentException
    *
    * @return array Returns an array with structure [studyarea_id]['bad'|'unscanned'][url]
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function checkAllUrls(bool $force = false, bool $fromCache = true): array
   {
@@ -94,8 +93,6 @@ class UrlChecker
    * Check the URLs used within one study area.
    *
    * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function checkStudyArea(StudyArea $studyArea, bool $force = false, bool $fromCache = true): ?array
   {
@@ -115,8 +112,6 @@ class UrlChecker
    *
    * @return array|null Returns array with urls and last scanned time if it is cached or not retrieved from cache,
    *                    null if cache doesn't contain urls for this study area
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function getUrlsForStudyArea(StudyArea $studyArea, bool $fromCache = true): ?array
   {
@@ -150,8 +145,6 @@ class UrlChecker
    * @throws InvalidArgumentException
    *
    * @return array Returns two arrays, one with unscanned urls and one with bad urls
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   public function findBadUrls(array $urls, StudyArea $studyArea, bool $force, bool $fromCache): array
   {
@@ -253,8 +246,6 @@ class UrlChecker
    * Cache a URL in the given cache.
    *
    * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
   {
@@ -268,9 +259,7 @@ class UrlChecker
   /**
    * Check a URL and cache it.
    *
-   * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
+   * @throws InvalidArgumentException|DateMalformedStringException
    */
   private function checkAndCacheUrl(Url $url, AdapterInterface $newCache, bool $fromCache = false, string $modifyTime = '', ?AdapterInterface $oldCache = null): bool
   {
@@ -324,11 +313,7 @@ class UrlChecker
     return true;
   }
 
-  /**
-   * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws InvalidArgumentException|DateMalformedStringException */
   public function checkUrl(Url $url, bool $force, bool $fromCache = true): ?bool
   {
     // Force recheck, don't use the cache

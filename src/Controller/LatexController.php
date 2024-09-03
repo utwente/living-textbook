@@ -27,11 +27,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 #[Route('/latex')]
 class LatexController extends AbstractController
 {
-  /**
-   * @throws InvalidArgumentException
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws InvalidArgumentException */
   #[Route('/render', options: ['expose' => true, 'no_login_wrap' => true], methods: [Request::METHOD_GET])]
   #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function renderLatex(
@@ -119,7 +115,6 @@ class LatexController extends AbstractController
     $response = $this->file($imageLocation, null, ResponseHeaderBag::DISPOSITION_INLINE);
     if ($cached) {
       // Disable symfony's automatic cache control header
-      /* @phan-suppress-next-line PhanAccessClassConstantInternal */
       $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
       // Setup cache headers

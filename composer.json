@@ -91,7 +91,6 @@
         "zircote/swagger-php": "4.10.6"
     },
     "require-dev": {
-        "drenso/phan-extensions": "3.5.1",
         "friendsofphp/php-cs-fixer": "3.63.1",
         "phpunit/phpunit": "11.3.1",
         "rector/rector": "1.2.4",

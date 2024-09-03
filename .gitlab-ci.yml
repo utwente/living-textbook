@@ -237,41 +237,6 @@ shellcheck:
     - master
     - production
 
-php-analysis:
-  stage: lint
-  image:
-    name: "registry.drenso.dev/open/docker-images/phan:${PHAN_VERSION}"
-    entrypoint: [""]
-  needs:
-    - job: install-dependencies
-      artifacts: false
-  cache:
-    key:
-      files:
-        - composer.lock
-      prefix: ${CI_PROJECT_PATH_SLUG}_composer
-    paths:
-      - vendor/
-    policy: pull
-  interruptible: true
-  before_script: # Fix for new lazy ServiceEntityRepository being detected as redefined
-    - |-
-      if [[ -f vendor/doctrine/doctrine-bundle/src/Repository/ServiceEntityRepository.php ]]; then
-        sed -i '/ServiceEntityRepositoryProxy/d' vendor/doctrine/doctrine-bundle/src/Repository/ServiceEntityRepository.php # Replace with LegacyServiceEntityRepository when moving to ORM3
-      fi
-    - |-
-      if [[ -f vendor/myclabs/php-enum/stubs/Stringable.php ]]; then
-        rm vendor/myclabs/php-enum/stubs/Stringable.php
-      fi
-  script:
-    - phan -k tests/phan/config.php
-  tags:
-    - docker
-  except:
-    - schedules
-    - master
-    - production
-
 js-analysis:
   stage: lint
   image:

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e9967a261f3e1c2b97c878c60dfbdc0",
+    "content-hash": "0e598b2c92b13bbdef2459dcac7f6585",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -10839,55 +10839,6 @@
                 }
             ],
             "time": "2024-05-06T16:37:16+00:00"
-        },
-        {
-            "name": "drenso/phan-extensions",
-            "version": "v3.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Drenso/PhanExtensions.git",
-                "reference": "848a4f2d8c52a29a14320df5452c1558f44b2cfe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/PhanExtensions/zipball/848a4f2d8c52a29a14320df5452c1558f44b2cfe",
-                "reference": "848a4f2d8c52a29a14320df5452c1558f44b2cfe",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phan/phan": "~2|~3"
-            },
-            "type": "project",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bob van de Vijver",
-                    "email": "bob@drenso.nl"
-                },
-                {
-                    "name": "Tobias Feijten",
-                    "email": "tobias@drenso.nl"
-                }
-            ],
-            "description": "This project contains several extensions (stubs/plugins) to be used with Phan for static PHP analysis",
-            "homepage": "https://github.com/Drenso/PhanExtensions",
-            "keywords": [
-                "phan",
-                "plugin",
-                "plugins",
-                "stub",
-                "stubs",
-                "symfony"
-            ],
-            "support": {
-                "issues": "https://github.com/Drenso/PhanExtensions/issues",
-                "source": "https://github.com/Drenso/PhanExtensions/tree/v3.5.1"
-            },
-            "abandoned": true,
-            "time": "2021-06-08T10:46:31+00:00"
         },
         {
             "name": "evenement/evenement",
