@@ -183,9 +183,6 @@
             "config/packages/jms_serializer.yaml"
         ]
     },
-    "kick-in/exception-handler-bundle": {
-        "version": "3.0.0"
-    },
     "league/html-to-markdown": {
         "version": "4.10.0"
     },

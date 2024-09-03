@@ -9,11 +9,7 @@ parameters:
   database_password: '%env(string:key:database:json:file:resolve:SECRETS_FILE)%'
 
   env(COMMIT_HASH): '0'
-  app_version: '%env(APP_VERSION)%'
   commit_hash: '%env(COMMIT_HASH)%'
-  production_server: '%env(bool:PRODUCTION_SERVER)%'
-  exception_receiver: '%env(EXCEPTION_RECEIVER)%'
-  exception_sender: '%env(EXCEPTION_SENDER)%'
 
   sentry_release: '013-living-textbook@%commit_hash%'
 
@@ -59,10 +55,6 @@ services:
   jms_serializer.naming_strategy:
     alias: App\Serializer\Metadata\PropertyMetadata\SerializedNameWithIdenticalPropertyNamingStrategy
 
-  # Register this service explicitly, as it is not autowired
-  Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter:
-    alias: framework_extra_bundle.argument_name_convertor
-
   App\Analytics\AnalyticsService:
     lazy: true
     arguments:
@@ -86,6 +78,3 @@ services:
 
   App\UrlUtils\UrlScanner:
     lazy: true
-
-  Kickin\ExceptionHandlerBundle\Configuration\SymfonyMailerConfigurationInterface:
-    alias: 'App\ExceptionHandler\ExceptionHandlerConfiguration'

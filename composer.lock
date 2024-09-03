@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d6a7b46109da888121bad357de40ad2",
+    "content-hash": "2e9967a261f3e1c2b97c878c60dfbdc0",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2764,74 +2764,6 @@
                 }
             ],
             "time": "2023-12-12T15:33:15+00:00"
-        },
-        {
-            "name": "kick-in/exception-handler-bundle",
-            "version": "4.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Kick-In/exception-handler-bundle.git",
-                "reference": "3a7af125ed6677ab80de07007a31f788ec465a00"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Kick-In/exception-handler-bundle/zipball/3a7af125ed6677ab80de07007a31f788ec465a00",
-                "reference": "3a7af125ed6677ab80de07007a31f788ec465a00",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.3",
-                "symfony/config": "~4.4|~5.4|~6.3",
-                "symfony/dependency-injection": "~4.4|~5.4|~6.3",
-                "symfony/event-dispatcher": "~4.4|~5.4|~6.3",
-                "symfony/filesystem": "~4.4|~5.4|~6.3",
-                "symfony/http-foundation": "~4.4|~5.4|~6.3",
-                "symfony/http-kernel": "~4.4|~5.4|~6.3",
-                "symfony/security-core": "~4.4|~5.4|~6.3",
-                "symfony/twig-bundle": "~4.4|~5.4|~6.3"
-            },
-            "conflict": {
-                "twig/twig": "<2.7.0"
-            },
-            "require-dev": {
-                "symfony/mailer": "~4.4|~5.4|~6.3",
-                "symfony/swiftmailer-bundle": ">=2.6.0"
-            },
-            "suggest": {
-                "symfony/mailer": "When you want to use the Symfony Mailer, install this bundle",
-                "symfony/swiftmailer-bundle": "When you want to use Swiftmailer, install this bundle"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-4": {
-                    "Kickin\\ExceptionHandlerBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Wendo Beuker",
-                    "email": "wendo@kick-in.nl"
-                },
-                {
-                    "name": "Bob van de Vijver",
-                    "email": "bob@kick-in.nl"
-                }
-            ],
-            "description": "This bundles integrates an simple Exception Handler in your Symfony Application, which is capable of mailing the exact problem.",
-            "homepage": "https://github.com/kick-in/exception-handler-bundle",
-            "keywords": [
-                "exception handler",
-                "symfony"
-            ],
-            "support": {
-                "issues": "https://github.com/Kick-In/exception-handler-bundle/issues",
-                "source": "https://github.com/Kick-In/exception-handler-bundle/tree/4.0.1"
-            },
-            "time": "2024-08-20T17:40:37+00:00"
         },
         {
             "name": "lcobucci/jwt",
