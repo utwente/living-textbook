@@ -16,9 +16,8 @@ variables:
   COMPOSER_REQUIRE_CHECKER_VERSION: 4.11.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.8.11
-  DRENSO_PHP_VERSION: 8.3-d1-sury
+  DRENSO_PHP_VERSION: 8.3-d3-sury
   NODE_VERSION: 20
-  PHAN_VERSION: 5.4-d3
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
   PHP_SEC_CHECK_VERSION: 2.1.3
   SASSLINT_VERSION: 1.12.1-d1
@@ -236,6 +235,47 @@ shellcheck:
     - schedules
     - master
     - production
+
+phpstan:
+  stage: lint
+  image: "registry.drenso.dev/open/docker-images/php:${DRENSO_PHP_VERSION}"
+  interruptible: true
+  needs:
+    - job: install-dependencies
+      artifacts: false
+  cache:
+    - key:
+        files:
+          - composer.lock
+        prefix: ${CI_PROJECT_PATH_SLUG}_composer
+      paths:
+        - vendor/
+      policy: pull
+    - key:
+        files:
+          - composer.lock
+          - phpstan.dist.neon
+        prefix: ${CI_PROJECT_PATH_SLUG}_phpstan
+      paths:
+        - var/cache/phpstan
+  script:
+    - if [[ -f .secrets.json.dist ]]; then cp .secrets.json.dist .secrets.json; fi
+    - if [[ -f bin/console ]]; then bin/console cache:clear --env=dev; fi # Build cache so it can be used by PHPStan
+    - sed -i "s/OIDC_WELL_KNOWN=.*/OIDC_WELL_KNOWN=https:\/\/connect.surfconext.nl\/\.well-known\/openid-configuration/g" .env # Set OIDC_WELL_KNOWN to a known good url in env file
+    - vendor/bin/phpstan analyse --error-format gitlab > phpstan.json
+  after_script:
+    - if [[ -f phpstan.json ]]; then cat phpstan.json; fi
+  artifacts:
+    reports:
+      codequality: phpstan.json
+  tags:
+    - docker
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
+      when: never
+    - if: $CI_COMMIT_REF_NAME != "master" && $CI_COMMIT_REF_NAME != "production"
+      when: on_success
+    - when: never
 
 js-analysis:
   stage: lint
