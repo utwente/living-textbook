@@ -111,6 +111,18 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(object\\)\\: mixed\\)\\|null, Closure\\(App\\\\Entity\\\\Concept\\)\\: App\\\\Entity\\\\Concept given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$objects of class Drenso\\\\Shared\\\\IdMap\\\\IdMap constructor expects array\\<Drenso\\\\Shared\\\\Interfaces\\\\IdInterface\\>, array\\<object\\> given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$tag of method App\\\\Entity\\\\Concept\\:\\:addTag\\(\\) expects App\\\\Entity\\\\Tag, object given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
@@ -126,6 +138,12 @@ $ignoreErrors[] = [
 	'message' => '#^Variable \\$requestTag in PHPDoc tag @var does not match assigned variable \\$requestTags\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$objects of class Drenso\\\\Shared\\\\IdMap\\\\IdMap constructor expects array\\<Drenso\\\\Shared\\\\Interfaces\\\\IdInterface\\>, array\\<object\\> given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
@@ -4244,6 +4262,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/ConceptRelationRepository.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Class App\\\\Repository\\\\ConceptRelationRepository uses generic trait Drenso\\\\Shared\\\\Database\\\\RepositoryTraits\\\\FindIdsTrait but does not specify its types\\: T$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Repository/ConceptRelationRepository.php',
+];
+$ignoreErrors[] = [
 	// identifier: return.type
 	'message' => '#^Method App\\\\Repository\\\\ConceptRelationRepository\\:\\:getByRelationTypeCount\\(\\) should return int but returns bool\\|float\\|int\\|string\\|null\\.$#',
 	'count' => 1,
@@ -4258,6 +4282,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: missingType.generics
 	'message' => '#^Class App\\\\Repository\\\\ConceptRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Class App\\\\Repository\\\\ConceptRepository uses generic trait Drenso\\\\Shared\\\\Database\\\\RepositoryTraits\\\\FindIdsTrait but does not specify its types\\: T$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
 ];
