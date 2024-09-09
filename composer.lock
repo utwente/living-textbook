@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72b30ae586dfcdb2c541f89f0ce4980d",
+    "content-hash": "8055143b71385c27e5949cb57e9b7ae4",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -13741,16 +13741,16 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "3.0.2",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "1730c3610470446146abdee50417b4094788ef3c"
+                "reference": "a0e552fbd6fe264f09f6389a950347a7bf70cfb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/1730c3610470446146abdee50417b4094788ef3c",
-                "reference": "1730c3610470446146abdee50417b4094788ef3c",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/a0e552fbd6fe264f09f6389a950347a7bf70cfb9",
+                "reference": "a0e552fbd6fe264f09f6389a950347a7bf70cfb9",
                 "shasum": ""
             },
             "require": {
@@ -13766,7 +13766,7 @@
                 "webmozart/assert": "^1.10"
             },
             "require-dev": {
-                "composer/semver": "^3.4.2",
+                "composer/semver": "^3.2.0",
                 "dereuromark/composer-prefer-lowest": "^0.1.10",
                 "ergebnis/composer-normalize": "^2.29",
                 "friendsofphp/php-cs-fixer": "^3.13.0",
@@ -13809,7 +13809,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.0.2"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.1.0"
             },
             "funding": [
                 {
@@ -13817,7 +13817,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-22T16:39:23+00:00"
+            "time": "2024-08-30T11:23:49+00:00"
         }
     ],
     "aliases": [],

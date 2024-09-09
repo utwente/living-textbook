@@ -103,7 +103,7 @@
         "symfony/phpunit-bridge": "6.4.11",
         "symfony/stopwatch": "6.4.8",
         "symfony/web-profiler-bundle": "6.4.11",
-        "vincentlanglet/twig-cs-fixer": "3.0.2"
+        "vincentlanglet/twig-cs-fixer": "3.1.0"
     },
     "config": {
         "preferred-install": {
