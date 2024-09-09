@@ -31,7 +31,7 @@ class ConceptApiModel implements IdInterface
     #[OA\Property(description: 'Specific Dotron configuration for a concept, only returned when Dotron is been enabled', type: 'object', nullable: true)]
     #[Type('array')]
     #[Groups(['dotron'])]
-    protected readonly ?array $dotronConfig
+    protected readonly ?array $dotronConfig,
   ) {
   }
 

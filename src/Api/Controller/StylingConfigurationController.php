@@ -75,7 +75,7 @@ class StylingConfigurationController extends AbstractApiController
   public function update(
     RequestStudyArea $requestStudyArea,
     StylingConfiguration $stylingConfiguration,
-    Request $request
+    Request $request,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
 
@@ -93,7 +93,7 @@ class StylingConfigurationController extends AbstractApiController
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function delete(
     RequestStudyArea $requestStudyArea,
-    StylingConfiguration $stylingConfiguration
+    StylingConfiguration $stylingConfiguration,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $stylingConfiguration);
 

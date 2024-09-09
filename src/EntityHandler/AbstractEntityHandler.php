@@ -13,7 +13,7 @@ abstract class AbstractEntityHandler
   public function __construct(
     protected EntityManagerInterface $em,
     protected ?ValidatorInterface $validator,
-    protected ?ReviewService $reviewService
+    protected ?ReviewService $reviewService,
   ) {
   }
 

@@ -47,7 +47,7 @@ abstract class AbstractApiController extends AbstractController
     mixed $data,
     ?array $extraData = null,
     ?array $serializationGroups = null,
-    int $statusCode = Response::HTTP_OK
+    int $statusCode = Response::HTTP_OK,
   ): JsonResponse {
     $payload         = $extraData ?? [];
     $payload['data'] = $data;

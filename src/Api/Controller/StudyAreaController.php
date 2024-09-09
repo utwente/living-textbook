@@ -57,7 +57,7 @@ class StudyAreaController extends AbstractApiController
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function update(
     RequestStudyArea $requestStudyArea,
-    Request $request
+    Request $request,
   ): JsonResponse {
     $studyArea = $requestStudyArea->getStudyArea();
 

@@ -91,7 +91,7 @@ class ConceptController extends AbstractApiController
     RequestStudyArea $requestStudyArea,
     Concept $concept,
     Request $request,
-    TagRepository $tagRepository
+    TagRepository $tagRepository,
   ): JsonResponse {
     $requestConcept = $this->getTypedFromBody($request, ConceptApiModel::class);
 
@@ -124,7 +124,7 @@ class ConceptController extends AbstractApiController
     RequestStudyArea $requestStudyArea,
     Request $request,
     ConceptRepository $conceptRepository,
-    TagRepository $tagRepository
+    TagRepository $tagRepository,
   ): JsonResponse {
     $requestConcepts = new IdMap($this->getArrayFromBody($request, ConceptApiModel::class));
 
