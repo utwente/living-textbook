@@ -97,7 +97,7 @@
         "phpstan/phpstan-doctrine": "1.5.3",
         "phpstan/phpstan-phpunit": "1.4.0",
         "phpstan/phpstan-symfony": "1.4.8",
-        "phpunit/phpunit": "11.3.1",
+        "phpunit/phpunit": "11.3.2",
         "rector/rector": "1.2.4",
         "symfony/error-handler": "6.4.10",
         "symfony/phpunit-bridge": "6.4.11",
