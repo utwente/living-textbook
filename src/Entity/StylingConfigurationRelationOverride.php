@@ -27,7 +27,7 @@ class StylingConfigurationRelationOverride extends Override
     StudyArea $studyArea,
     ConceptRelation $relation,
     StylingConfiguration $stylingConfiguration,
-    ?array $override
+    ?array $override,
   ) {
     parent::__construct($studyArea, $override);
     $this->relation             = $relation;

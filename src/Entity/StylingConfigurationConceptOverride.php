@@ -27,7 +27,7 @@ class StylingConfigurationConceptOverride extends Override
     StudyArea $studyArea,
     Concept $concept,
     StylingConfiguration $stylingConfiguration,
-    ?array $override
+    ?array $override,
   ) {
     parent::__construct($studyArea, $override);
     $this->concept              = $concept;

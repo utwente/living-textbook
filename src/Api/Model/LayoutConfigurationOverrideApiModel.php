@@ -17,7 +17,7 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
     protected readonly int $layoutConfiguration,
     #[Groups(['Default', 'mutate', 'create'])]
     #[Type('array')]
-    protected readonly array $override
+    protected readonly array $override,
   ) {
   }
 

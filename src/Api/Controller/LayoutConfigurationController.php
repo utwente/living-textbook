@@ -78,7 +78,7 @@ class LayoutConfigurationController extends AbstractApiController
   public function update(
     RequestStudyArea $requestStudyArea,
     LayoutConfiguration $layoutConfiguration,
-    Request $request
+    Request $request,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
 
@@ -96,7 +96,7 @@ class LayoutConfigurationController extends AbstractApiController
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function delete(
     RequestStudyArea $requestStudyArea,
-    LayoutConfiguration $layoutConfiguration
+    LayoutConfiguration $layoutConfiguration,
   ): AcceptedResponse {
     $this->assertStudyAreaObject($requestStudyArea, $layoutConfiguration);
 

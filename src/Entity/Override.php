@@ -32,7 +32,7 @@ abstract class Override implements StudyAreaFilteredInterface
 
   public function __construct(
     StudyArea $studyArea,
-    ?array $override
+    ?array $override,
   ) {
     $this->studyArea = $studyArea;
     $this->override  = $override;

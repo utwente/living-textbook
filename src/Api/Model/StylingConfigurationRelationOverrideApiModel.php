@@ -17,7 +17,7 @@ class StylingConfigurationRelationOverrideApiModel implements IdInterface
     protected readonly int $stylingConfiguration,
     #[Groups(['Default', 'mutate', 'create'])]
     #[Type('array')]
-    protected readonly array $override
+    protected readonly array $override,
   ) {
   }
 

@@ -27,7 +27,7 @@ class LayoutConfigurationOverride extends Override
     StudyArea $studyArea,
     Concept $concept,
     LayoutConfiguration $layoutConfiguration,
-    ?array $override
+    ?array $override,
   ) {
     parent::__construct($studyArea, $override);
     $this->concept             = $concept;
