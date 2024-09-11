@@ -185,6 +185,18 @@ $ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
 	'count' => 2,
+	'path' => __DIR__ . '/src/Api/Controller/LayoutConfigurationController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/src/Api/Controller/LayoutConfigurationOverrideController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
+	'count' => 2,
 	'path' => __DIR__ . '/src/Api/Controller/RelationTypeController.php',
 ];
 $ignoreErrors[] = [
@@ -197,7 +209,25 @@ $ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
 	'count' => 2,
+	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationConceptOverrideController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
+	'count' => 2,
 	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#2 \\$object of method App\\\\Api\\\\Controller\\\\AbstractApiController\\:\\:assertStudyAreaObject\\(\\) expects App\\\\Entity\\\\Contracts\\\\StudyAreaFilteredInterface, App\\\\Entity\\\\Concept\\|null given\\.$#',
+	'count' => 4,
+	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationRelationOverrideController.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationRelationOverrideController.php',
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
@@ -272,14 +302,74 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Model/Detailed/DetailedConceptRelationApiModel.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\LayoutConfigurationApiModel\\:\\:__construct\\(\\) has parameter \\$layouts with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Method App\\\\Api\\\\Model\\\\LayoutConfigurationApiModel\\:\\:__construct\\(\\) has parameter \\$overrides with generic class Drenso\\\\Shared\\\\IdMap\\\\IdMap but does not specify its types\\: T$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\LayoutConfigurationApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel\\:\\:getOverride\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: return.type
+	'message' => '#^Method App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel\\:\\:mapToEntity\\(\\) should return App\\\\Entity\\\\LayoutConfigurationOverride but returns App\\\\Entity\\\\Override\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$concept of class App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#2 \\$layoutConfiguration of class App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#3 \\$override of class App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel constructor expects array, array\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
 	// identifier: argument.type
 	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\RelationTypeApiModel constructor expects int, int\\|null given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/RelationTypeApiModel.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method App\\\\Api\\\\Model\\\\StudyAreaApiModel\\:\\:__construct\\(\\) has parameter \\$dotronConfig with no value type specified in iterable type array\\.$#',
+	// identifier: method.nonObject
+	'message' => '#^Cannot call method getDefaultLayoutConfiguration\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StudyAreaApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: method.nonObject
+	'message' => '#^Cannot call method getDefaultStylingConfiguration\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/StudyAreaApiModel.php',
 ];
@@ -290,8 +380,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Model/StudyAreaApiModel.php',
 ];
 $ignoreErrors[] = [
-	// identifier: method.nonObject
-	'message' => '#^Cannot call method getStylings\\(\\) on App\\\\Entity\\\\StylingConfiguration\\|null\\.$#',
+	// identifier: missingType.generics
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationApiModel\\:\\:__construct\\(\\) has parameter \\$conceptOverrides with generic class Drenso\\\\Shared\\\\IdMap\\\\IdMap but does not specify its types\\: T$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationApiModel\\:\\:__construct\\(\\) has parameter \\$relationOverrides with generic class Drenso\\\\Shared\\\\IdMap\\\\IdMap but does not specify its types\\: T$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationApiModel.php',
 ];
@@ -306,6 +402,78 @@ $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\StylingConfigurationApiModel constructor expects int, int\\|null given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationConceptOverrideApiModel\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationConceptOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationConceptOverrideApiModel\\:\\:getOverride\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationConceptOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: return.type
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationConceptOverrideApiModel\\:\\:mapToEntity\\(\\) should return App\\\\Entity\\\\StylingConfigurationConceptOverride but returns App\\\\Entity\\\\Override\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationConceptOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$concept of class App\\\\Api\\\\Model\\\\StylingConfigurationConceptOverrideApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationConceptOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#2 \\$stylingConfiguration of class App\\\\Api\\\\Model\\\\StylingConfigurationConceptOverrideApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationConceptOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#3 \\$override of class App\\\\Api\\\\Model\\\\StylingConfigurationConceptOverrideApiModel constructor expects array, array\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationConceptOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationRelationOverrideApiModel\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationRelationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationRelationOverrideApiModel\\:\\:getOverride\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationRelationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: return.type
+	'message' => '#^Method App\\\\Api\\\\Model\\\\StylingConfigurationRelationOverrideApiModel\\:\\:mapToEntity\\(\\) should return App\\\\Entity\\\\StylingConfigurationRelationOverride but returns App\\\\Entity\\\\Override\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationRelationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#1 \\$relation of class App\\\\Api\\\\Model\\\\StylingConfigurationRelationOverrideApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationRelationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#2 \\$stylingConfiguration of class App\\\\Api\\\\Model\\\\StylingConfigurationRelationOverrideApiModel constructor expects int, int\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationRelationOverrideApiModel.php',
+];
+$ignoreErrors[] = [
+	// identifier: argument.type
+	'message' => '#^Parameter \\#3 \\$override of class App\\\\Api\\\\Model\\\\StylingConfigurationRelationOverrideApiModel constructor expects array, array\\|null given\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationRelationOverrideApiModel.php',
 ];
 $ignoreErrors[] = [
 	// identifier: argument.type
@@ -1694,6 +1862,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
+	// identifier: property.onlyRead
+	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$layoutOverrides is never written, only read\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Concept.php',
+];
+$ignoreErrors[] = [
 	// identifier: missingType.generics
 	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$learningOutcomes with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'count' => 1,
@@ -1714,6 +1888,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: missingType.generics
 	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$priorKnowledgeOf with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Concept.php',
+];
+$ignoreErrors[] = [
+	// identifier: property.onlyRead
+	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$stylingOverrides is never written, only read\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -1792,6 +1972,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue
 	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$dotronConfig type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
+];
+$ignoreErrors[] = [
+	// identifier: property.onlyRead
+	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$stylingOverrides is never written, only read\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
 ];
@@ -2294,6 +2480,102 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Help.php',
 ];
 $ignoreErrors[] = [
+	// identifier: nullCoalesce.expr
+	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\Entity\\\\LayoutConfiguration\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\Entity\\\\LayoutConfiguration\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\LayoutConfiguration\\:\\:getLayouts\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\LayoutConfiguration\\:\\:setLayouts\\(\\) has parameter \\$layouts with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: assign.propertyType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$layouts type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: property.onlyRead
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$overrides is never written, only read\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfiguration\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\LayoutConfigurationOverride\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfigurationOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfigurationOverride\\:\\:\\$concept type mapping mismatch\\: database can contain App\\\\Entity\\\\Concept\\|null but property expects App\\\\Entity\\\\Concept\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfigurationOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\LayoutConfigurationOverride\\:\\:\\$layoutConfiguration type mapping mismatch\\: database can contain App\\\\Entity\\\\LayoutConfiguration\\|null but property expects App\\\\Entity\\\\LayoutConfiguration\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/LayoutConfigurationOverride.php',
+];
+$ignoreErrors[] = [
 	// identifier: foreach.nonIterable
 	'message' => '#^Argument of an invalid type array\\|null supplied for foreach, only iterables are supported\\.$#',
 	'count' => 1,
@@ -2550,6 +2832,90 @@ $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Listener\\\\UserListener\\:\\:updateStudyAreaRights\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
+];
+$ignoreErrors[] = [
+	// identifier: nullCoalesce.expr
+	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
+	'count' => 2,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\Override\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\Entity\\\\Override\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\Entity\\\\Override\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\Override\\:\\:getOverride\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\Override\\:\\:setOverride\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: assign.propertyType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$override type has no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$studyArea type mapping mismatch\\: database can contain App\\\\Entity\\\\StudyArea\\|null but property expects App\\\\Entity\\\\StudyArea\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.columnType
+	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/Override.php',
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue
@@ -2919,12 +3285,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.iterableValue
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getDotronConfig\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
 	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getLastEditInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
@@ -2950,12 +3310,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: missingType.generics
 	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getUserGroups\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\ReadableCollection does not specify its types\\: TKey, T$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:setDotronConfig\\(\\) has parameter \\$dotronConfig with no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
@@ -3022,12 +3376,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	// identifier: doctrine.columnType
 	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	// identifier: missingType.iterableValue
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$dotronConfig type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
@@ -3236,6 +3584,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
 ];
 $ignoreErrors[] = [
+	// identifier: property.onlyRead
+	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$conceptOverrides is never written, only read\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
+];
+$ignoreErrors[] = [
 	// identifier: doctrine.columnType
 	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
 	'count' => 1,
@@ -3260,6 +3614,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
 ];
 $ignoreErrors[] = [
+	// identifier: property.onlyRead
+	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$relationOverrides is never written, only read\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
+];
+$ignoreErrors[] = [
 	// identifier: missingType.iterableValue
 	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$stylings type has no value type specified in iterable type array\\.$#',
 	'count' => 1,
@@ -3276,6 +3636,42 @@ $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\StylingConfigurationConceptOverride\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfigurationConceptOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\StylingConfigurationConceptOverride\\:\\:\\$concept type mapping mismatch\\: database can contain App\\\\Entity\\\\Concept\\|null but property expects App\\\\Entity\\\\Concept\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfigurationConceptOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\StylingConfigurationConceptOverride\\:\\:\\$stylingConfiguration type mapping mismatch\\: database can contain App\\\\Entity\\\\StylingConfiguration\\|null but property expects App\\\\Entity\\\\StylingConfiguration\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfigurationConceptOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.iterableValue
+	'message' => '#^Method App\\\\Entity\\\\StylingConfigurationRelationOverride\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfigurationRelationOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\StylingConfigurationRelationOverride\\:\\:\\$relation type mapping mismatch\\: database can contain App\\\\Entity\\\\ConceptRelation\\|null but property expects App\\\\Entity\\\\ConceptRelation\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfigurationRelationOverride.php',
+];
+$ignoreErrors[] = [
+	// identifier: doctrine.associationType
+	'message' => '#^Property App\\\\Entity\\\\StylingConfigurationRelationOverride\\:\\:\\$stylingConfiguration type mapping mismatch\\: database can contain App\\\\Entity\\\\StylingConfiguration\\|null but property expects App\\\\Entity\\\\StylingConfiguration\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Entity/StylingConfigurationRelationOverride.php',
 ];
 $ignoreErrors[] = [
 	// identifier: nullCoalesce.expr
@@ -3788,6 +4184,24 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/EntityHandler/ConceptEntityHandler.php',
 ];
 $ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\LayoutConfigurationOverrideHandler\\:\\:add\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/LayoutConfigurationOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\LayoutConfigurationOverrideHandler\\:\\:delete\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/LayoutConfigurationOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\LayoutConfigurationOverrideHandler\\:\\:update\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/LayoutConfigurationOverrideHandler.php',
+];
+$ignoreErrors[] = [
 	// identifier: method.nonObject
 	'message' => '#^Cannot call method storeChange\\(\\) on App\\\\Review\\\\ReviewService\\|null\\.$#',
 	'count' => 1,
@@ -3798,6 +4212,42 @@ $ignoreErrors[] = [
 	'message' => '#^Unreachable statement \\- code above always terminates\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/src/EntityHandler/RelationTypeHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\StylingConfigurationConceptOverrideHandler\\:\\:add\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/StylingConfigurationConceptOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\StylingConfigurationConceptOverrideHandler\\:\\:delete\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/StylingConfigurationConceptOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\StylingConfigurationConceptOverrideHandler\\:\\:update\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/StylingConfigurationConceptOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\StylingConfigurationRelationOverrideHandler\\:\\:add\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/StylingConfigurationRelationOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\StylingConfigurationRelationOverrideHandler\\:\\:delete\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/StylingConfigurationRelationOverrideHandler.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.return
+	'message' => '#^Method App\\\\EntityHandler\\\\StylingConfigurationRelationOverrideHandler\\:\\:update\\(\\) has no return type specified\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/EntityHandler/StylingConfigurationRelationOverrideHandler.php',
 ];
 $ignoreErrors[] = [
 	// identifier: method.nonObject
@@ -4383,6 +4833,18 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.generics
+	'message' => '#^Class App\\\\Repository\\\\LayoutConfigurationOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Repository/LayoutConfigurationOverrideRepository.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Class App\\\\Repository\\\\LayoutConfigurationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Repository/LayoutConfigurationRepository.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
 	'message' => '#^Class App\\\\Repository\\\\LearningOutcomeRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
@@ -4518,6 +4980,18 @@ $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\StudyAreaRepository\\:\\:getVisibleCount\\(\\) has no return type specified\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Class App\\\\Repository\\\\StylingConfigurationConceptOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Repository/StylingConfigurationConceptOverrideRepository.php',
+];
+$ignoreErrors[] = [
+	// identifier: missingType.generics
+	'message' => '#^Class App\\\\Repository\\\\StylingConfigurationRelationOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Repository/StylingConfigurationRelationOverrideRepository.php',
 ];
 $ignoreErrors[] = [
 	// identifier: missingType.generics
