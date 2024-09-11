@@ -1,2 +1,0 @@
-kickin_exception_handler:
-  mail_backend: 'symfony'

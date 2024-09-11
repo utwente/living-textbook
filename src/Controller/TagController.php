@@ -22,7 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TagController extends AbstractController
 {
   public function __construct(
-    private readonly EntityManagerInterface $em
+    private readonly EntityManagerInterface $em,
   ) {
   }
 

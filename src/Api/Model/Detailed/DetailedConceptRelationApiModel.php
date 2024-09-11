@@ -21,7 +21,7 @@ class DetailedConceptRelationApiModel extends ConceptRelationApiModel
     #[OA\Property(description: 'Specific Dotron configuration for a concept relation, only returned when Dotron is been enabled', type: 'object', nullable: true)]
     #[Type('array')]
     #[Groups(['dotron'])]
-    protected readonly ?array $dotronConfig
+    protected readonly ?array $dotronConfig,
   ) {
     parent::__construct($id, $sourceId, $targetId);
   }

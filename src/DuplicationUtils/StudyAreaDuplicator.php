@@ -363,7 +363,6 @@ class StudyAreaDuplicator
     foreach ($conceptRelations as $conceptRelation) {
       // Duplicate relation type, if not done yet
       $relationType = $conceptRelation->getRelationType();
-      /* @phan-suppress-next-line PhanPossiblyUndeclaredVariable */
       if (!array_key_exists($relationType->getId(), $newRelationTypes)) {
         $newRelationType = (new RelationType())
           ->setStudyArea($this->newStudyArea)

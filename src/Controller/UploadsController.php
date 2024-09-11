@@ -66,7 +66,6 @@ class UploadsController extends AbstractController
     // Only cache when not downloading
     if (!$download) {
       // Disable symfony's automatic cache control header
-      /* @phan-suppress-next-line PhanAccessClassConstantInternal */
       $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
 
       // Setup cache headers

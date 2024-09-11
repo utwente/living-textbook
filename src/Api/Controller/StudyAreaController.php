@@ -61,7 +61,7 @@ class StudyAreaController extends AbstractApiController
     RequestStudyArea $requestStudyArea,
     Request $request,
     LayoutConfigurationRepository $layoutConfigurationRepository,
-    StylingConfigurationRepository $stylingConfigurationRepository
+    StylingConfigurationRepository $stylingConfigurationRepository,
   ): JsonResponse {
     $studyArea = $requestStudyArea->getStudyArea();
 

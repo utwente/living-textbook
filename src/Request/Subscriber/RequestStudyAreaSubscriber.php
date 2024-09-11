@@ -151,7 +151,6 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         if (!$reflParam->hasType()) {
           continue;
         }
-        /* @phan-suppress-next-line PhanUndeclaredMethod */
         if ($reflParam->getType()->getName() != RequestStudyArea::class) {
           continue;
         }

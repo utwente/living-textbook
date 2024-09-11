@@ -63,7 +63,6 @@ EOT;
 
     // Create JSON data
     $json = $this->serializer->serialize($learningPaths, 'json',
-      /* @phan-suppress-next-line PhanTypeMismatchArgument */
       SerializationContext::create()->setGroups(['Default', 'lp_export']));
 
     $response = new JsonResponse($json, Response::HTTP_OK, [], true);

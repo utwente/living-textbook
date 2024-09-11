@@ -132,7 +132,6 @@ class PendingChange implements IdInterface
     $origData  = json_decode($this->payload ?? '[]', true);
     $mergeData = json_decode($merge->payload ?? '[]', true);
     foreach ($merge->getChangedFields() as $changedField) {
-      /* @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
       $origData[$changedField] = $mergeData[$changedField];
       $this->changedFields[]   = $changedField;
     }

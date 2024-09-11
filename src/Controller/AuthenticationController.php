@@ -76,8 +76,6 @@ class AuthenticationController extends AbstractController
    * 6. Forward to login.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   #[Route('/password/reset', options: ['no_login_wrap' => true])]
   #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
@@ -197,8 +195,6 @@ class AuthenticationController extends AbstractController
    * Create a password for a user.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   #[Route('/password/create', options: ['no_login_wrap' => true])]
   #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]

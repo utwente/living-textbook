@@ -188,7 +188,6 @@ abstract class LtbSection extends Section
 
     // Restore errors
     libxml_clear_errors();
-    /* @phan-suppress-next-line PhanDeprecatedFunctionInternal */
     libxml_disable_entity_loader(false);
 
     $latex = $this->pandoc->convert($html, 'html', 'latex');

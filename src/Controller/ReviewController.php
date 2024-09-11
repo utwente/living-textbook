@@ -157,8 +157,6 @@ class ReviewController extends AbstractController
    * Resubmits the review.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   #[Route('/{review<\d+>}/resubmit')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
@@ -206,8 +204,6 @@ class ReviewController extends AbstractController
    * Review a submission.
    *
    * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
    */
   #[Route('/{review<\d+>}')]
   #[IsGranted(StudyAreaVoter::REVIEW, subject: 'requestStudyArea')]

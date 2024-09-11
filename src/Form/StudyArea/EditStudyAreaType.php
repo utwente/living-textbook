@@ -25,7 +25,7 @@ class EditStudyAreaType extends AbstractType
 {
   public function __construct(
     private readonly Security $security,
-    private readonly EntityManagerInterface $em
+    private readonly EntityManagerInterface $em,
   ) {
   }
 

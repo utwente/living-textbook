@@ -16,6 +16,7 @@ use App\Repository\UserApiTokenRepository;
 use App\Repository\UserProtoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Random\RandomException;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -122,11 +123,7 @@ class UserController extends AbstractController
     ]);
   }
 
-  /**
-   * @throws TransportExceptionInterface
-   *
-   * @suppress PhanTypeInvalidThrowsIsInterface
-   */
+  /** @throws TransportExceptionInterface|RandomException */
   #[Route('/fallback/add')]
   #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function fallbackAdd(

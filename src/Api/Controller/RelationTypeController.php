@@ -76,7 +76,7 @@ class RelationTypeController extends AbstractApiController
   public function update(
     RequestStudyArea $requestStudyArea,
     RelationType $relationType,
-    Request $request
+    Request $request,
   ): JsonResponse {
     $this->assertStudyAreaObject($requestStudyArea, $relationType);
 

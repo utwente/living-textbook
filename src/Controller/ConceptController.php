@@ -35,7 +35,7 @@ class ConceptController extends AbstractController
 {
   public function __construct(
     private readonly EntityManagerInterface $em,
-    private readonly ReviewService $reviewService
+    private readonly ReviewService $reviewService,
   ) {
   }
 
