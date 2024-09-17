@@ -1,6 +1,7 @@
 stages:
   - prepare
   - cs-fix
+  - audit
   - lint
   - build
   - tests
@@ -148,9 +149,9 @@ code-style-fixer:
     - master
     - production
 
-# Lint
+# Security audit
 php-cve-check:
-  stage: lint
+  stage: audit
   image: alpine:latest
   needs: []
   interruptible: true
@@ -162,6 +163,27 @@ php-cve-check:
   tags:
     - docker
 
+composer-audit:
+  stage: audit
+  image: "registry.drenso.dev/open/docker-images/php:${DRENSO_PHP_VERSION}"
+  interruptible: true
+  script:
+    - composer audit --locked
+  tags:
+    - docker
+
+yarn-audit:
+  stage: audit
+  image: "node:${NODE_VERSION}"
+  needs: []
+  interruptible: true
+  script:
+    - yarn global add improved-yarn-audit
+    - improved-yarn-audit --ignore-dev-deps --exclude ${YARN_AUDIT_EXCLUDE_LIST}
+  tags:
+    - docker
+
+# Lint
 composer-require-checker:
   stage: lint
   image: "registry.drenso.dev/open/docker-images/php:${DRENSO_PHP_VERSION}"
@@ -321,17 +343,6 @@ yaml-analysis:
     - schedules
     - master
     - production
-
-yarn-audit:
-  stage: lint
-  image: "node:${NODE_VERSION}"
-  needs: []
-  interruptible: true
-  script:
-    - yarn global add improved-yarn-audit
-    - improved-yarn-audit --ignore-dev-deps --exclude ${YARN_AUDIT_EXCLUDE_LIST}
-  tags:
-    - docker
 
 sass-analysis:
   stage: lint
