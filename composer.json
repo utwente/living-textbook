@@ -31,7 +31,7 @@
         "friendsofsymfony/ckeditor-bundle": "2.5.0",
         "friendsofsymfony/jsrouting-bundle": "3.5.0",
         "gedmo/doctrine-extensions": "3.16.1",
-        "helios-ag/fm-elfinder-bundle": "12.5",
+        "helios-ag/fm-elfinder-bundle": "12.6",
         "jms/serializer": "3.30.0",
         "jms/serializer-bundle": "5.4.0",
         "league/html-to-markdown": "5.1.1",
