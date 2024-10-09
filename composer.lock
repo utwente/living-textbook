@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a237d31c65bb3deff9d6b31dbdcc932c",
+    "content-hash": "6dc170d8218a783a3da0791d33686864",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -10473,16 +10473,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.10.6",
+            "version": "4.10.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "e462ff5269ea0ec91070edd5d51dc7215bdea3b6"
+                "reference": "589821f0f1e2c083443749b52a31f077c524dbe6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/e462ff5269ea0ec91070edd5d51dc7215bdea3b6",
-                "reference": "e462ff5269ea0ec91070edd5d51dc7215bdea3b6",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/589821f0f1e2c083443749b52a31f077c524dbe6",
+                "reference": "589821f0f1e2c083443749b52a31f077c524dbe6",
                 "shasum": ""
             },
             "require": {
@@ -10496,7 +10496,7 @@
             "require-dev": {
                 "composer/package-versions-deprecated": "^1.11",
                 "doctrine/annotations": "^1.7 || ^2.0",
-                "friendsofphp/php-cs-fixer": "^2.17 || ^3.47.1",
+                "friendsofphp/php-cs-fixer": "^2.17 || 3.62.0",
                 "phpstan/phpstan": "^1.6",
                 "phpunit/phpunit": ">=8",
                 "vimeo/psalm": "^4.23"
@@ -10548,9 +10548,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.10.6"
+                "source": "https://github.com/zircote/swagger-php/tree/4.10.7"
             },
-            "time": "2024-07-26T03:04:43+00:00"
+            "time": "2024-10-02T01:43:50+00:00"
         }
     ],
     "packages-dev": [
