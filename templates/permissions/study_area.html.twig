@@ -136,7 +136,7 @@
       }
     });
 
-    $('.toggle-permission:not(.viewer)').click(function () {
+    $('#permissions-table').on('click', '.toggle-permission:not(.viewer)', function() {
       var $el = $(this);
       var $td = $el.parent();
 
