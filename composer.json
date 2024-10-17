@@ -17,7 +17,7 @@
         "caxy/php-htmldiff": "0.1.15",
         "doctrine/collections": "2.2.2",
         "doctrine/common": "3.4.5",
-        "doctrine/dbal": "3.9.1",
+        "doctrine/dbal": "3.9.2",
         "doctrine/doctrine-bundle": "2.13.0",
         "doctrine/doctrine-migrations-bundle": "3.3.1",
         "doctrine/event-manager": "2.0.1",
