@@ -81,7 +81,7 @@
             <td>{{ user_permission.displayName }}</td>
             <td>{{ user_permission.userIdentifier }}</td>
             {% for type in studyArea.availableUserGroupTypes %}
-              {{ has_permission(userPermission, type) }}
+              {{ has_permission(user_permission, type) }}
             {% endfor %}
             <td class="actions">
               {% if user_permission.user %}
@@ -136,7 +136,7 @@
       }
     });
 
-    $('.toggle-permission:not(.viewer)').click(function () {
+    $('#permissions-table').on('click', '.toggle-permission:not(.viewer)', function() {
       var $el = $(this);
       var $td = $el.parent();
 
