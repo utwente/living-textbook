@@ -14,6 +14,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\OidcBundle\Exception\OidcException;
 use Drenso\OidcBundle\Model\OidcUserData;
+use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Override;
@@ -283,14 +284,14 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->username;
   }
 
-  /**
-   * @param string $username
-   *
-   * @return $this
-   */
-  public function setUsername($username)
+  public function getUsername(): ?string
   {
-    $this->username = mb_strtolower($username);
+    return $this->username;
+  }
+
+  public function setUsername(?string $username): self
+  {
+    $this->username = StringHelper::emptyToNull(mb_strtolower($username ?? ''));
 
     return $this;
   }
