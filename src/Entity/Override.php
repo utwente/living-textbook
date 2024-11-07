@@ -21,7 +21,7 @@ abstract class Override implements StudyAreaFilteredInterface
   use SoftDeletable;
 
   #[ORM\ManyToOne]
-  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id')]
+  #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   #[Assert\NotNull]
   private StudyArea $studyArea;
 

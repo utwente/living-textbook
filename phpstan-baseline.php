@@ -2900,12 +2900,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Override.php',
 ];
 $ignoreErrors[] = [
-	// identifier: doctrine.associationType
-	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$studyArea type mapping mismatch\\: database can contain App\\\\Entity\\\\StudyArea\\|null but property expects App\\\\Entity\\\\StudyArea\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Override.php',
-];
-$ignoreErrors[] = [
 	// identifier: doctrine.columnType
 	'message' => '#^Property App\\\\Entity\\\\Override\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
 	'count' => 1,
