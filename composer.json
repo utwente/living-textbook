@@ -23,7 +23,7 @@
         "doctrine/event-manager": "2.0.1",
         "doctrine/migrations": "3.8.2",
         "doctrine/orm": "2.20.0",
-        "doctrine/persistence": "3.3.3",
+        "doctrine/persistence": "3.4.0",
         "drenso/pdf-to-image": "3.0.0",
         "drenso/symfony-oidc-bundle": "3.4.0",
         "drenso/symfony-shared": "4.9.0",
