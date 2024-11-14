@@ -2960,12 +2960,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
 $ignoreErrors[] = [
-	// identifier: missingType.return
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:validateObject\\(\\) has no return type specified\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
 	// identifier: booleanNot.alwaysFalse
 	'message' => '#^Negated boolean expression is always false\\.$#',
 	'count' => 1,

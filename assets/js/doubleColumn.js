@@ -8,6 +8,7 @@ global.d3 = d3;
 import Tracker from './tracking/tracker';
 import ConceptBrowser from './conceptBrowser/ConceptBrowser';
 
+global.cb = undefined;
 global.tracker = new Tracker(_studyArea, _trackUser);
 
 /**
@@ -21,8 +22,6 @@ $(function () {
   require('./doubleColumn/draggebleWindow');
   require('./search/conceptSearch');
   require('./learningPathBrowser/learningPathBrowser');
-
-  global.cb = undefined;
 
   if (!_isDotronStudyArea) {
     global.cb = new ConceptBrowser('graph_container_canvas');

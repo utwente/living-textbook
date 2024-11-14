@@ -146,6 +146,13 @@ class StudyArea implements Stringable, IdInterface
   #[ORM\JoinColumn]
   private ?Tag $defaultTagFilter = null;
 
+  /** Map size to use in the concept browser renderer. */
+  #[ORM\Column(options: ['default' => 3000])]
+  private int $mapWidth = 3000;
+
+  #[ORM\Column(options: ['default' => 2000])]
+  private int $mapHeight = 2000;
+
   /** If set the Dotron visualisation will be used. */
   #[ORM\Column]
   private bool $dotron = false;
@@ -172,12 +179,20 @@ class StudyArea implements Stringable, IdInterface
   }
 
   #[Assert\Callback]
-  public function validateObject(ExecutionContextInterface $context)
+  public function validateObject(ExecutionContextInterface $context): void
   {
     if ($this->reviewModeEnabled && $this->apiEnabled) {
       $context->buildViolation('study-area.api-and-review-mode-enabled')
         ->atPath('apiEnabled')
         ->addViolation();
+    }
+
+    if (!$this->dotron) {
+      $context->getValidator()->inContext($context)
+        ->atPath('mapWidth')
+        ->validate($this->mapWidth, [new Assert\Range(min: 500, max: 15000)])
+        ->atPath('mapHeight')
+        ->validate($this->mapHeight, [new Assert\Range(min: 500, max: 10000)]);
     }
 
     if ($this->dotron && !$this->apiEnabled) {
@@ -770,6 +785,26 @@ class StudyArea implements Stringable, IdInterface
     $this->defaultTagFilter = $defaultTagFilter;
 
     return $this;
+  }
+
+  public function getMapWidth(): int
+  {
+    return $this->mapWidth;
+  }
+
+  public function setMapWidth(int $mapWidth): void
+  {
+    $this->mapWidth = $mapWidth;
+  }
+
+  public function getMapHeight(): int
+  {
+    return $this->mapHeight;
+  }
+
+  public function setMapHeight(int $mapHeight): void
+  {
+    $this->mapHeight = $mapHeight;
   }
 
   public function isDotron(): bool

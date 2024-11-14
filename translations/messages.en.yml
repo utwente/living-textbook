@@ -692,6 +692,10 @@ study-area:
     show-contents: "Show group contents"
     updated: 'Study area group "%item%" has been successfully updated.'
   list-title: 'Study area list'
+  map-height: 'Map height'
+  map-height-help: 'The height of the rendered concept map in pixels. Larger values will negatively impact performance.'
+  map-width: 'Map width'
+  map-width-help: 'The width of the rendered concept map in pixel. Larger values will negatively impact performance.'
   name: 'Name'
   new: 'New study area'
   new-owner: 'New owner e-mail address'
