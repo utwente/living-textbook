@@ -28,6 +28,10 @@ framework:
   php_errors:
     log: true
 
+when@dev:
+  framework:
+    ide: '%env(resolve:phpstorm:PHPSTORM_PROJECT)%'
+
 when@test:
   framework:
     test: true
