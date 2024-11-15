@@ -298,7 +298,7 @@
 {% block display_pending_change_widget %}
   <div class="review-item below-input">
     <label class="col-form-label font-italic">{{ 'review.current-change'|trans({
-        '%owner%': owner
+        '%owner%': owner,
       }) }}
       <a href="#collapse-{{ form.vars.id }}" data-toggle="collapse">({{ 'review.toggle-preview'|trans|lower }})</a>
     </label>

@@ -4,7 +4,7 @@
   {% import '_macro/_action_buttons.html.twig' as buttons %}
   {{ buttons.edit_row(
     path('app_learningoutcome_remove', {learningOutcome: learningOutcome.id}),
-    path('app_learningoutcome_list')
+    path('app_learningoutcome_list'),
   ) }}
 {% endblock %}
 

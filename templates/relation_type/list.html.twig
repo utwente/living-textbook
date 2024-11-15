@@ -43,7 +43,7 @@
 {% block javascripts_bottom %}
   {% if is_granted('STUDYAREA_OWNER', studyArea) %}
     {{ dataTable('relation-type-table', {
-      columnDefs: [{searchable: false, orderable: false, targets: -1}]
+      columnDefs: [{searchable: false, orderable: false, targets: -1}],
     }) }}
   {% else %}
     {{ dataTable('relation-type-table') }}

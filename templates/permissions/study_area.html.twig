@@ -124,7 +124,7 @@
 
 {% block javascripts_bottom %}
   {{ dataTable('permissions-table', {
-    columnDefs: [{searchable: false, orderable: false, targets: -1}]
+    columnDefs: [{searchable: false, orderable: false, targets: -1}],
   }) }}
   <script type="text/javascript">
     $dataTable.on('search.dt', function () {

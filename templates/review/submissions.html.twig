@@ -25,13 +25,13 @@
   {# Own submissions, with review comments #}
   {{ reviews_page_part(
     reviews|filter((review) => review.owner.id == app.user.id and review.reviewedAt is not null),
-  'review.list-own-rework-flash'|trans, 'warning', 'fa-exclamation', false, true
+  'review.list-own-rework-flash'|trans, 'warning', 'fa-exclamation', false, true,
   ) }}
 
   {# Own submissions, pending for review #}
   {{ reviews_page_part(
     reviews|filter((review) => review.owner.id == app.user.id and review.reviewedAt is null),
-  'review.list-own-flash'|trans, 'info', 'fa-info', false, false
+  'review.list-own-flash'|trans, 'info', 'fa-info', false, false,
   ) }}
 
   {# Other submissions, header #}
@@ -42,13 +42,13 @@
   {# Other submissions, pending for review #}
   {{ reviews_page_part(
     reviews|filter((review) => review.owner.id != app.user.id and review.reviewedAt is null),
-  'review.list-other-flash'|trans, 'warning', 'fa-exclamation', true, false
+  'review.list-other-flash'|trans, 'warning', 'fa-exclamation', true, false,
   ) }}
 
   {# Other submissions, with review comments #}
   {{ reviews_page_part(
     reviews|filter((review) => review.owner.id != app.user.id and review.reviewedAt is not null),
-  'review.list-other-pending-flash'|trans, 'info', 'fa-info', true, true
+  'review.list-other-pending-flash'|trans, 'info', 'fa-info', true, true,
   ) }}
 {% endblock %}
 
