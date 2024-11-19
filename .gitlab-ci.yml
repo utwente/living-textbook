@@ -116,9 +116,30 @@ code-style-fixer:
       paths:
         - vendor/
       policy: pull
+    - key: # See https://getrector.com/documentation/cache-in-ci
+        files:
+          - composer.lock
+          - rector.php
+        prefix: ${CI_PROJECT_PATH_SLUG}_rector
+      paths:
+        - var/cache/rector
+    - key:
+        files:
+          - composer.lock
+          - .php-cs-fixer.dist.php
+        prefix: ${CI_PROJECT_PATH_SLUG}_phpcsfixer
+      paths:
+        - .php-cs-fixer.cache
+    - key:
+        files:
+          - composer.lock
+          - .twig-cs-fixer.dist.php
+        prefix: ${CI_PROJECT_PATH_SLUG}_twigcsfixer
+      paths:
+        - .twig-cs-fixer.cache
   script:
     - >-
-      if [[ "skip" == $(php -r "echo (str_starts_with('$CI_COMMIT_REF_NAME', 'renovate/') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'rector-rector') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'friendsofphp-php-cs-fixer')) ? 'skip' : '';") ]]; then echo "Skipping automated rector"; exit 0; fi
+      if [[ "skip" == $(php -r "echo (str_starts_with('$CI_COMMIT_REF_NAME', 'renovate/') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'rector-rector') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'friendsofphp-php-cs-fixer') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'vincentlanglet-twig-cs-fixer') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'intern-runner-templates')) ? 'skip' : '';") ]]; then echo "Skipping automated code style fix tasks"; exit 0; fi
     - if [[ -f .secrets.json.dist ]]; then cp .secrets.json.dist .secrets.json; fi
     - "[[ -d public/email/ ]] || mkdir public/email" # Create email folder for cache clear.
     - if [[ -f bin/console ]]; then bin/console cache:clear --env=dev; fi # Build cache so it can be used by Rector
