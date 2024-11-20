@@ -162,7 +162,7 @@
       <li>
         {% if learningOutcomeCount > 0 %}<a href="{{ path('app_learningoutcome_list') }}">{% endif %}
           {{ 'dashboard.learning-outcome-count'|trans({
-            '%count%': learningOutcomeCount, '%singular%': naming.get.learningOutcome.obj, '%plural%': naming.get.learningOutcome.objs
+            '%count%': learningOutcomeCount, '%singular%': naming.get.learningOutcome.obj, '%plural%': naming.get.learningOutcome.objs,
           }) }}
           {% if learningOutcomeCount > 0 %}</a>{% endif %}
       </li>
@@ -409,7 +409,7 @@
                   <div class="collapse collapse-group-{{ group }}">
                     {{ buttons._action_button(
                       path('_home', {_studyArea: study_area.id}), 'fa-exchange', 'study-area.switch-to',
-                      'primary top-level', false, false, study_area.id == currentStudyArea.id ? 'study-area.current'|trans : false
+                      'primary top-level', false, false, study_area.id == currentStudyArea.id ? 'study-area.current'|trans : false,
                     ) }}
 
                     {% if is_granted('STUDYAREA_OWNER', study_area) %}

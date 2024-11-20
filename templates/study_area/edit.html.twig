@@ -14,10 +14,12 @@
 {% block content %}
   {{ form(form) }}
 
-  {# The fields requiring JS are only available for admins, so remove JS to prevent errors when this is not the case #}
-  {% if is_granted('ROLE_SUPER_ADMIN') %}
     <script type="text/javascript">
       $(function () {
+
+        {# Some fields requiring JS are only available for admins, so remove JS to prevent errors when this is not the case #}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+
         $('#{{ form.openAccess.vars.id }}')
             .on('change', function () {
               var openAccess = $(this).is(':checked');
@@ -78,6 +80,8 @@
             });
         {% endif %}
 
+        {% endif %}
+
         $('#{{ form.reviewModeEnabled.vars.id }}')
             .on('change', function () {
               if ($(this).is(':checked')) {
@@ -97,12 +101,20 @@
 
         $('#{{ form.dotron.vars.id }}')
             .on('change', function () {
+              var $mapWidthForm = $('#{{ form.mapWidth.vars.id }}').closest('.form-group');
+              var $mapHeightForm = $('#{{ form.mapHeight.vars.id }}').closest('.form-group');
+
               if ($(this).is(':checked')) {
                 $('#{{ form.apiEnabled.vars.id }}').prop('checked', true);
                 $('#{{ form.reviewModeEnabled.vars.id }}').prop('checked', false);
+                $mapWidthForm.hide();
+                $mapHeightForm.hide();
+              } else {
+                $mapWidthForm.show();
+                $mapHeightForm.show();
               }
-            });
+            })
+            .trigger('change');
       });
     </script>
-  {% endif %}
 {% endblock %}

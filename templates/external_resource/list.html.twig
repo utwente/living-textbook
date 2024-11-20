@@ -52,7 +52,7 @@
 {% block javascripts_bottom %}
   {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {{ dataTable('external-resource-table', {
-      columnDefs: [{searchable: false, orderable: false, targets: -1}]
+      columnDefs: [{searchable: false, orderable: false, targets: -1}],
     }) }}
   {% else %}
     {{ dataTable('external-resource-table') }}

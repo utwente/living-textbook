@@ -59,7 +59,7 @@
 {% block javascripts_bottom %}
   {% if is_granted('STUDYAREA_EDIT', studyArea) %}
     {{ dataTable('contributor-table', {
-      columnDefs: [{searchable: false, orderable: false, targets: -1}]
+      columnDefs: [{searchable: false, orderable: false, targets: -1}],
     }) }}
   {% else %}
     {{ dataTable('contributor-table') }}

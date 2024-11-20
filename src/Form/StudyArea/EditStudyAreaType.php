@@ -16,6 +16,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -108,6 +109,14 @@ class EditStudyAreaType extends AbstractType
         'label'    => 'study-area.api-enabled',
         'help'     => 'study-area.api-enabled-help',
         'required' => false,
+      ])
+      ->add('mapWidth', NumberType::class, [
+        'label' => 'study-area.map-width',
+        'help'  => 'study-area.map-width-help',
+      ])
+      ->add('mapHeight', NumberType::class, [
+        'label' => 'study-area.map-height',
+        'help'  => 'study-area.map-height-help',
       ])
       ->add('dotron', CheckboxType::class, [
         'required' => false,

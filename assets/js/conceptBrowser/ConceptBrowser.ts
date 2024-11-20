@@ -70,9 +70,9 @@ export default class ConceptBrowser {
     private readonly renderer!: ConceptBrowserRenderer;
 
     // Display settings
-    private readonly mapWidth: number = 3000;
+    private readonly mapWidth: number = (window as any)._conceptMapWidth;
     private readonly mapWidthDragMargin: number = this.mapWidth / 30;
-    private readonly mapHeight: number = 2000;
+    private readonly mapHeight: number = (window as any)._conceptMapHeight;
     private readonly mapHeightDragMargin: number = this.mapHeight / 20;
     private readonly zoomMargin: number = 25;
 
