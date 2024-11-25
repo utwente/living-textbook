@@ -482,12 +482,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/ConceptPrint/Section/LearningPathSection.php',
 ];
 $ignoreErrors[] = [
-	// identifier: argument.type
-	'message' => '#^Parameter \\#1 \\$html of method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:convertHtmlToLatex\\(\\) expects string, string\\|null given\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ConceptPrint/Section/LearningPathSection.php',
-];
-$ignoreErrors[] = [
 	// identifier: property.nonObject
 	'message' => '#^Cannot access property \\$childNodes on DOMElement\\|null\\.$#',
 	'count' => 2,
