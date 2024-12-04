@@ -95,9 +95,6 @@
             "ref": "cef2554f9f54ca6ad5c007f4e2bc6b8b0382dba5"
         }
     },
-    "easyrdf/easyrdf": {
-        "version": "0.9.1"
-    },
     "egulias/email-validator": {
         "version": "2.1.3"
     },

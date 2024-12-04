@@ -34,12 +34,12 @@ class LearningPathSection extends LtbSection
     )));
 
     // Add learning path data
-    if ($learningPath->getIntroduction() != '') {
+    if ($learningPath->getIntroduction()) {
       $this->addElement(new CustomCommand('\\\\' . $this->convertHtmlToLatex($learningPath->getIntroduction())));
     }
 
     // Add question
-    if ($learningPath->getQuestion() != '') {
+    if ($learningPath->getQuestion()) {
       $this->addSection($translator->trans('learning-path.question'), $learningPath->getQuestion());
     }
 
