@@ -547,7 +547,7 @@ class DataController extends AbstractController
 
   #[Route('/download')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService, TranslatorInterface $translator): array|Response
+  public function download(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator, ExportService $exportService): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
     $form = $this->createForm(DownloadType::class, null, [

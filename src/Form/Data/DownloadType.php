@@ -39,12 +39,15 @@ class DownloadType extends AbstractType
   }
 
   #[Override]
-  public function configureOptions(OptionsResolver $resolver): void
-  {
-    $resolver->setDefaults([
-      'attr' => [
-        'target' => '_blank',
-      ],
+  public function configureOptions(OptionsResolver $resolver)
+  {  
+    $resolver
+      ->setRequired('current_study_area')
+      ->setAllowedTypes('current_study_area', StudyArea::class)
+      ->setDefaults([
+        'attr' => [
+            'target' => '_blank',
+        ],
     ]);
 
     $resolver->setNormalizer('attr', function (OptionsResolver $optionsResolver, $attr) {
