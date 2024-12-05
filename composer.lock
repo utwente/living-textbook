@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d32d4f0794818cea91b5baf30f8f3f1",
+    "content-hash": "3355af7ded546e449ee9d9aaa4102683",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1673,16 +1673,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "4.10.0",
+            "version": "4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "3384235ecd5ea4f48828a99e7cbaf6ced3111aba"
+                "reference": "3602dc82b1b09473228898235839b905dd27bfcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/3384235ecd5ea4f48828a99e7cbaf6ced3111aba",
-                "reference": "3384235ecd5ea4f48828a99e7cbaf6ced3111aba",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/3602dc82b1b09473228898235839b905dd27bfcc",
+                "reference": "3602dc82b1b09473228898235839b905dd27bfcc",
                 "shasum": ""
             },
             "require": {
@@ -1718,6 +1718,7 @@
                 "symfony/console": "~6.4 || ~7.0",
                 "symfony/deprecation-contracts": "^2.1 || ^3.0",
                 "symfony/doctrine-bridge": "~6.4 || ~7.0",
+                "symfony/doctrine-messenger": "~6.4 || ~7.0",
                 "symfony/framework-bundle": "~6.4 || ~7.0",
                 "symfony/http-client": "~6.4 || ~7.0",
                 "symfony/lock": "~6.4 || ~7.0",
@@ -1727,7 +1728,8 @@
                 "symfony/security-http": "~6.4 || ~7.0",
                 "symfony/translation-contracts": "~1.1 || ~2.0 || ~3.0",
                 "symfony/twig-bridge": "~6.4 || ~7.0",
-                "symfony/validator": "~6.4 || ~7.0"
+                "symfony/validator": "~6.4 || ~7.0",
+                "zenstruck/messenger-monitor-bundle": "~0.5"
             },
             "suggest": {
                 "doctrine/orm": "Needed to use the Database traits",
@@ -1739,6 +1741,7 @@
                 "stof/doctrine-extensions-bundle": "Needed to use the Blameable trait",
                 "symfony/console": "Needed to use the action security command",
                 "symfony/doctrine-bridge": "Needed to use the HiddenEntityType, the Database traits and the action security command",
+                "symfony/doctrine-messenger": "Needed to use the messenger monitor command",
                 "symfony/framework-bundle": "Needed to use the Sentry tunnel",
                 "symfony/http-client": "Needed to use the Sentry tunnel",
                 "symfony/lock": "Needed to use the UseLock attribute",
@@ -1748,7 +1751,8 @@
                 "symfony/twig-bundle": "Needed to use the MailService",
                 "symfony/validator": "Use EntityValidationFailedException for nice exception messages when validation failed",
                 "twig/cssinliner-extra": "Needed to use the MailService when inlining CSS styles",
-                "twig/extra-bundle": "Needed to use the MailService when inlining CSS styles"
+                "twig/extra-bundle": "Needed to use the MailService when inlining CSS styles",
+                "zenstruck/messenger-monitor-bundle": "Needed to use the messenger monitor command"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1784,9 +1788,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/4.10.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/4.11.0"
             },
-            "time": "2024-12-03T21:19:04+00:00"
+            "time": "2024-12-04T20:13:31+00:00"
         },
         {
             "name": "egulias/email-validator",
