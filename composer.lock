@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4f40042ff0fa5f52f6e5a2975585426",
+    "content-hash": "e98b188e3b7f027cba8f644ebd219989",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1586,16 +1586,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v3.4.0",
+            "version": "v3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "3ab815a166cc4872d308e1c5f45727905520ded6"
+                "reference": "7bcc8587c8c0a3268528f7adf4ac3184b380968d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/3ab815a166cc4872d308e1c5f45727905520ded6",
-                "reference": "3ab815a166cc4872d308e1c5f45727905520ded6",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/7bcc8587c8c0a3268528f7adf4ac3184b380968d",
+                "reference": "7bcc8587c8c0a3268528f7adf4ac3184b380968d",
                 "shasum": ""
             },
             "require": {
@@ -1623,8 +1623,8 @@
             },
             "require-dev": {
                 "drenso/phan-extensions": "^3.0",
-                "friendsofphp/php-cs-fixer": "3.64.0",
-                "rector/rector": "1.2.4",
+                "friendsofphp/php-cs-fixer": "3.65.0",
+                "rector/rector": "1.2.10",
                 "symfony/cache": "^5.4 || ^6.3 || ^7.0",
                 "symfony/translation-contracts": "^2.0 || ^3.0"
             },
@@ -1665,9 +1665,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v3.4.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v3.5.0"
             },
-            "time": "2024-09-10T07:23:14+00:00"
+            "time": "2024-12-09T19:21:37+00:00"
         },
         {
             "name": "drenso/symfony-shared",
