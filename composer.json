@@ -31,7 +31,7 @@
         "friendsofsymfony/jsrouting-bundle": "3.5.2",
         "gedmo/doctrine-extensions": "3.17.1",
         "helios-ag/fm-elfinder-bundle": "12.6",
-        "jms/serializer": "3.31.1",
+        "jms/serializer": "3.32.1",
         "jms/serializer-bundle": "5.5.1",
         "league/html-to-markdown": "5.1.1",
         "ml/json-ld": "1.2.1",
