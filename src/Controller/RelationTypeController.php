@@ -114,7 +114,7 @@ class RelationTypeController extends AbstractController
 
     return $this->render('relation_type/edit.html.twig', [
       'relationType' => $relationType,
-      'form'         => $form->createView(),
+      'form'         => $form,
     ]);
   }
 
@@ -179,7 +179,7 @@ class RelationTypeController extends AbstractController
     return $this->render('relation_type/remove.html.twig', [
       'relationType'     => $relationType,
       'conceptRelations' => $conceptRelationRepository->getByRelationType($relationType),
-      'form'             => $form->createView(),
+      'form'             => $form,
     ]);
   }
 
