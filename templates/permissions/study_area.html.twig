@@ -37,13 +37,13 @@
   </td>
 {% endmacro %}
 
-{% macro has_permission(userPermission, type) %}
-  {% set value = attribute(userPermission, type) %}
+{% macro has_permission(user_permission, type) %}
+  {% set value = attribute(user_permission, type) %}
   <td data-sort="{{ value ? 0 : 1 }}" class="text-center">
     <div class="toggle-permission {{ type }}"
          data-group-type="{{ type }}"
-         data-user="{{ userPermission.user.id|default('') }}"
-         data-email="{{ userPermission.email.email|default('') }}">
+         data-user="{{ user_permission.user.id|default('') }}"
+         data-email="{{ user_permission.email.email|default('') }}">
       <i class="fa fa-fw fa-check text-success" {% if not value %}style="display: none"{% endif %}></i>
       <i class="fa fa-fw fa-times text-danger" {% if value %}style="display: none"{% endif %}></i>
       <i class="fa fa-fw fa-circle-o-notch fa-spin" style="display: none"></i>

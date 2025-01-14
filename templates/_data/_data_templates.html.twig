@@ -129,8 +129,8 @@
   </ul>
 {% endblock %}
 
-{% macro link_to_relation(concept, createLink) %}
-  {% if createLink %}
+{% macro link_to_relation(concept, create_link) %}
+  {% if create_link %}
     <a href="{{ path('app_concept_show', {concept: concept.id}) }}">{{ concept.name }}</a>
   {% else %}
     {{ concept.name }}
@@ -167,8 +167,8 @@
   {% endif %}
 {% endmacro %}
 
-{% macro render_prior_knowledge(priorKnowledge) %}
-  <a href="{{ path('app_concept_show', {concept: priorKnowledge.id}) }}">{{ priorKnowledge.name }}</a>
+{% macro render_prior_knowledge(prior_knowledge) %}
+  <a href="{{ path('app_concept_show', {concept: prior_knowledge.id}) }}">{{ prior_knowledge.name }}</a>
 {% endmacro %}
 
 {% macro data_learning_outcomes(data) %}
@@ -185,10 +185,10 @@
   {% endif %}
 {% endmacro %}
 
-{% macro render_learning_outcome(learningOutcome) %}
-  <a href="{{ path('app_learningoutcome_show', {learningOutcome: learningOutcome.id}) }}"><b>{{ learningOutcome.shortName }}</b></a>
+{% macro render_learning_outcome(learning_outcome) %}
+  <a href="{{ path('app_learningoutcome_show', {learningOutcome: learning_outcome.id}) }}"><b>{{ learning_outcome.shortName }}</b></a>
   <div class="ltb-text-container">
-    {{ learningOutcome.text|striptags(allowed_ckeditor_tags)|raw }}
+    {{ learning_outcome.text|striptags(allowed_ckeditor_tags)|raw }}
   </div>
 {% endmacro %}
 
