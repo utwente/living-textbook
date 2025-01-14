@@ -41,7 +41,7 @@
         "rollerworks/password-strength-validator": "2.0.3",
         "ryakad/pandoc-php": "1.0.0",
         "sentry/sentry-symfony": "5.1.0",
-        "stof/doctrine-extensions-bundle": "1.12.0",
+        "stof/doctrine-extensions-bundle": "1.13.0",
         "sweetrdf/easyrdf": "1.15.0",
         "symfony/asset": "6.4.13",
         "symfony/cache": "6.4.16",
