@@ -145,7 +145,7 @@ code-style-fixer:
     - if [[ -f bin/console ]]; then bin/console cache:clear --env=dev; fi # Build cache so it can be used by Rector
     - vendor/bin/rector --no-progress-bar --no-diffs
     - vendor/bin/php-cs-fixer fix
-    - "[[ -f vendor/bin/twig-cs-fixer ]] && vendor/bin/twig-cs-fixer lint --fix --report junit > twigcs.xml || echo 'Twig CS Fixer not installed, skipping'"
+    - if [[ -f vendor/bin/twig-cs-fixer ]]; then vendor/bin/twig-cs-fixer lint --fix --report junit > twigcs.xml; else echo 'Twig CS Fixer not installed, skipping'; fi
     - if [[ $(git status --porcelain | wc -l) -eq "0" ]]; then echo "All looks good 👍🏻"; exit 0; fi
     - echo "Changes required 👎🏻"
     - git config gc.auto 0 # Disable automatic GC
