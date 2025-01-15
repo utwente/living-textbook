@@ -91,17 +91,17 @@
   <div class="clearfix d-lg-none mb-1"></div>
 {% endmacro %}
 
-{% macro add_row(listUrl) %}
+{% macro add_row(list_url) %}
   {% from _self import header, footer, list_button %}
   {{ header() }}
-  {{ list_button(listUrl) }}
+  {{ list_button(list_url) }}
   {{ footer() }}
 {% endmacro %}
 
-{% macro edit_row(removeUrl, listUrl) %}
+{% macro edit_row(remove_url, list_url) %}
   {% from _self import header, footer, show_button, remove_button, list_button %}
   {{ header() }}
-  {{ remove_button(removeUrl) }}
-  {{ list_button(listUrl) }}
+  {{ remove_button(remove_url) }}
+  {{ list_button(list_url) }}
   {{ footer() }}
 {% endmacro %}

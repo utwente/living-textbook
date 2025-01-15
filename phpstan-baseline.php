@@ -1310,12 +1310,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/UploadsController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Trait App\\\\Database\\\\Migration\\\\ContainerAwareMigration is used zero times and is not analysed\\.$#',
-	'identifier' => 'trait.unused',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Database/Migration/ContainerAwareMigration.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getUserIdentifier\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
