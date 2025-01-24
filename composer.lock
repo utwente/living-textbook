@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60ac23df8aeb8208071830b489894026",
+    "content-hash": "43047c0aac768048168ad84a0177c4d1",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -57,16 +57,16 @@
         },
         {
             "name": "bobv/latex-bundle",
-            "version": "v5.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "61d842ddb038cd8de10fb1f2a12df5e8af6bf075"
+                "reference": "a28f5a455fca4ebf659e091c1a2b6102021987c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/61d842ddb038cd8de10fb1f2a12df5e8af6bf075",
-                "reference": "61d842ddb038cd8de10fb1f2a12df5e8af6bf075",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/a28f5a455fca4ebf659e091c1a2b6102021987c8",
+                "reference": "a28f5a455fca4ebf659e091c1a2b6102021987c8",
                 "shasum": ""
             },
             "require": {
@@ -121,9 +121,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobvandevijver/latex-bundle/issues",
-                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v5.1.0"
+                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v5.2.0"
             },
-            "time": "2024-08-22T07:44:39+00:00"
+            "time": "2025-01-17T09:31:43+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
