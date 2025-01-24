@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "acd1545f233622e0536d2793e8d2db80",
+    "content-hash": "60ac23df8aeb8208071830b489894026",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3298,16 +3298,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v4.34.0",
+            "version": "v4.34.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "ff9139576376695d2c3febc23a5e7eab91866d83"
+                "reference": "a2497e108281f28f2d79a9ddc2d1795e6c2777e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/ff9139576376695d2c3febc23a5e7eab91866d83",
-                "reference": "ff9139576376695d2c3febc23a5e7eab91866d83",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/a2497e108281f28f2d79a9ddc2d1795e6c2777e9",
+                "reference": "a2497e108281f28f2d79a9ddc2d1795e6c2777e9",
                 "shasum": ""
             },
             "require": {
@@ -3328,7 +3328,7 @@
                 "symfony/options-resolver": "^5.4 || ^6.4 || ^7.1",
                 "symfony/property-info": "^5.4.10 || ^6.4 || ^7.1",
                 "symfony/routing": "^5.4 || ^6.4 || ^7.1",
-                "zircote/swagger-php": "^4.6.1"
+                "zircote/swagger-php": "^4.11.1 || ^5.0"
             },
             "conflict": {
                 "zircote/swagger-php": "4.8.7"
@@ -3408,7 +3408,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.34.0"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v4.34.1"
             },
             "funding": [
                 {
@@ -3416,7 +3416,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-08T11:43:02+00:00"
+            "time": "2025-01-17T12:19:57+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
