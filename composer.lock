@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aeb68728e2b383a18d30c0b6d3529e29",
+    "content-hash": "cbe29a97043b766034106862c1227e6c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5035,16 +5035,16 @@
         },
         {
             "name": "sweetrdf/easyrdf",
-            "version": "1.15.0",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/easyrdf.git",
-                "reference": "dfa88cd56ac9f4e4beb774771f52651572e8ec69"
+                "reference": "c47c72d2216eec102ae2f8693ce6505c61f1c08e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/dfa88cd56ac9f4e4beb774771f52651572e8ec69",
-                "reference": "dfa88cd56ac9f4e4beb774771f52651572e8ec69",
+                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/c47c72d2216eec102ae2f8693ce6505c61f1c08e",
+                "reference": "c47c72d2216eec102ae2f8693ce6505c61f1c08e",
                 "shasum": ""
             },
             "require": {
@@ -5068,6 +5068,10 @@
                 "phpunit/phpunit": "^9.5.0|^10.0.0",
                 "semsol/arc2": "^3",
                 "zendframework/zend-http": "^2"
+            },
+            "suggest": {
+                "ml/json-ld": "^1.0",
+                "semsol/arc2": "^3"
             },
             "type": "library",
             "autoload": {
@@ -5110,9 +5114,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/easyrdf/issues",
-                "source": "https://github.com/sweetrdf/easyrdf/tree/1.15.0"
+                "source": "https://github.com/sweetrdf/easyrdf/tree/1.16.0"
             },
-            "time": "2024-10-24T12:43:11+00:00"
+            "time": "2025-01-18T09:09:35+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
