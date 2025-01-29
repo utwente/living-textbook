@@ -1446,10 +1446,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/webpack-env@1.18.7":
-  version "1.18.7"
-  resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.18.7.tgz#ee712d3b1eb1bd5abbc5986c4996ba061fae7365"
-  integrity sha512-EUenEZ8xpaNKJnVbwEZq406UjWXskrNQj3l1KVCSqEPM6J4ItRxPJHgstdo6qSYSxgz677GOoAHVU0nIZiPIww==
+"@types/webpack-env@1.18.8":
+  version "1.18.8"
+  resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.18.8.tgz#71f083718c094204d7b64443701d32f1db3989e3"
+  integrity sha512-G9eAoJRMLjcvN4I08wB5I7YofOb/kaJNd5uoCMX+LbKXTPCF+ZIHuqTnFaK9Jz1rgs035f9JUPUhNFtqgucy/A==
 
 "@types/ws@^8.5.5":
   version "8.5.14"
