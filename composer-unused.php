@@ -10,7 +10,6 @@ return static function (Configuration $config): Configuration {
   return $config
       ->addNamedFilter(NamedFilter::fromString('ext-apcu'))
       ->addNamedFilter(NamedFilter::fromString('league/html-to-markdown'))
-      ->addNamedFilter(NamedFilter::fromString('ml/json-ld')) // Used by sweetrdf/easyrdf
       ->addNamedFilter(NamedFilter::fromString('symfony/dotenv'))
       ->addNamedFilter(NamedFilter::fromString('symfony/flex'))
       ->addNamedFilter(NamedFilter::fromString('symfony/runtime'))
