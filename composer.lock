@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a94c683c42501afbb68787afbd18f89a",
+    "content-hash": "7950caf0e4dcd05e56055cb43b360248",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1661,16 +1661,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "4.12.1",
+            "version": "4.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "93c73b380c1a82385003f2edb7523810a989a279"
+                "reference": "fc59a325fc45842b1225a41dc7e8a824381dac4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/93c73b380c1a82385003f2edb7523810a989a279",
-                "reference": "93c73b380c1a82385003f2edb7523810a989a279",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/fc59a325fc45842b1225a41dc7e8a824381dac4a",
+                "reference": "fc59a325fc45842b1225a41dc7e8a824381dac4a",
                 "shasum": ""
             },
             "require": {
@@ -1694,13 +1694,14 @@
             "require-dev": {
                 "doctrine/orm": "^2.7",
                 "eluceo/ical": "^2.7",
-                "friendsofphp/php-cs-fixer": "3.68.0",
+                "friendsofphp/php-cs-fixer": "3.68.1",
                 "jms/serializer-bundle": "^5.0",
                 "maennchen/zipstream-php": "^3.0",
+                "monolog/monolog": "^3.8",
                 "php-decimal/php-decimal": "^1.1",
                 "phpoffice/phpspreadsheet": "^1.23 || ^2.0 || ^3.0",
-                "phpstan/phpstan": "2.1.1",
-                "rector/rector": "2.0.6",
+                "phpstan/phpstan": "2.1.2",
+                "rector/rector": "2.0.7",
                 "sebastian/comparator": "^5.0 || ^6.0",
                 "stof/doctrine-extensions-bundle": "^1.3",
                 "symfony/console": "~6.4 || ~7.0",
@@ -1725,6 +1726,7 @@
                 "eluceo/ical": "Needed for the IcalBuilder",
                 "jms/serializer-bundle": "Needed to use the Database traits and the Decimal serialization handler",
                 "maennchen/zipstream-php": "Needed to use the zipped spreadsheet responses",
+                "monolog/monolog": "To be able to use the Zenstruck monolog filters",
                 "php-decimal/php-decimal": "Needed to use the Decimal serialization handler and the form transformer",
                 "phpoffice/phpspreadsheet": "Needed to use the SpreadsheetHelper",
                 "stof/doctrine-extensions-bundle": "Needed to use the Blameable trait",
@@ -1778,9 +1780,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/4.12.1"
+                "source": "https://github.com/Drenso/symfony-shared/tree/4.13.0"
             },
-            "time": "2025-01-21T09:59:04+00:00"
+            "time": "2025-01-31T11:27:01+00:00"
         },
         {
             "name": "egulias/email-validator",
