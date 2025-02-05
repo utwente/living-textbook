@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b2a5937ccb272bc263ec461f8508e7f",
+    "content-hash": "30f16a53f3859849e52614b48689c84b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5117,16 +5117,16 @@
         },
         {
             "name": "sweetrdf/easyrdf",
-            "version": "1.16.0",
+            "version": "1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/easyrdf.git",
-                "reference": "c47c72d2216eec102ae2f8693ce6505c61f1c08e"
+                "reference": "f42130dc7188f89f5fc9539e3be0dc854145dd77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/c47c72d2216eec102ae2f8693ce6505c61f1c08e",
-                "reference": "c47c72d2216eec102ae2f8693ce6505c61f1c08e",
+                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/f42130dc7188f89f5fc9539e3be0dc854145dd77",
+                "reference": "f42130dc7188f89f5fc9539e3be0dc854145dd77",
                 "shasum": ""
             },
             "require": {
@@ -5196,9 +5196,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/easyrdf/issues",
-                "source": "https://github.com/sweetrdf/easyrdf/tree/1.16.0"
+                "source": "https://github.com/sweetrdf/easyrdf/tree/1.16.1"
             },
-            "time": "2025-01-18T09:09:35+00:00"
+            "time": "2025-01-28T18:31:07+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
