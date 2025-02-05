@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30f16a53f3859849e52614b48689c84b",
+    "content-hash": "34924715e8c69a67a84033342c85271c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1740,16 +1740,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "4.13.0",
+            "version": "4.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "fc59a325fc45842b1225a41dc7e8a824381dac4a"
+                "reference": "28a9855eebbcd3c56925a94001497dd859199afa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/fc59a325fc45842b1225a41dc7e8a824381dac4a",
-                "reference": "fc59a325fc45842b1225a41dc7e8a824381dac4a",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/28a9855eebbcd3c56925a94001497dd859199afa",
+                "reference": "28a9855eebbcd3c56925a94001497dd859199afa",
                 "shasum": ""
             },
             "require": {
@@ -1771,9 +1771,10 @@
                 "maennchen/zipstream-php": "<3"
             },
             "require-dev": {
+                "doctrine/doctrine-bundle": "^2.13",
                 "doctrine/orm": "^2.7",
                 "eluceo/ical": "^2.7",
-                "friendsofphp/php-cs-fixer": "3.68.1",
+                "friendsofphp/php-cs-fixer": "3.68.3",
                 "jms/serializer-bundle": "^5.0",
                 "maennchen/zipstream-php": "^3.0",
                 "monolog/monolog": "^3.8",
@@ -1859,9 +1860,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/4.13.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/4.14.0"
             },
-            "time": "2025-01-31T11:27:01+00:00"
+            "time": "2025-02-05T08:32:14+00:00"
         },
         {
             "name": "egulias/email-validator",
