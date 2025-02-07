@@ -221,7 +221,7 @@ composer-require-checker:
       - vendor/
     policy: pull
   before_script:
-    - curl -JOL https://github.com/maglnet/ComposerRequireChecker/releases/download/${COMPOSER_REQUIRE_CHECKER_VERSION}/composer-require-checker.phar
+    - curl -JOL --silent --show-error --fail-with-body https://github.com/maglnet/ComposerRequireChecker/releases/download/${COMPOSER_REQUIRE_CHECKER_VERSION}/composer-require-checker.phar
     # Remove files that are not used but break due to the usage of reserved keywords
     - rm vendor/jms/serializer/src/Annotation/ReadOnly.php
   script:
@@ -252,7 +252,7 @@ composer-unused:
     reports:
       codequality: composer-unused.json
   before_script:
-    - curl -JOL https://github.com/composer-unused/composer-unused/releases/download/${COMPOSER_UNUSED_VERSION}/composer-unused.phar
+    - curl -JOL --silent --show-error --fail-with-body https://github.com/composer-unused/composer-unused/releases/download/${COMPOSER_UNUSED_VERSION}/composer-unused.phar
   script:
     - php composer-unused.phar --no-progress --output-format=gitlab > composer-unused.json
     - cat composer-unused.json
