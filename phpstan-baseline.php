@@ -5900,18 +5900,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Security/UserPermissions.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:setLastUsed\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Security/UserProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\:\\:update\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Security/UserProvider.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Security\\\\Voters\\\\MenuVoter extends generic class Symfony\\\\Component\\\\Security\\\\Core\\\\Authorization\\\\Voter\\\\Voter but does not specify its types\\: TAttribute, TSubject$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,

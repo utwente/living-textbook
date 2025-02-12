@@ -5,12 +5,14 @@ namespace App\Security;
 use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Drenso\OidcBundle\Model\OidcTokens;
 use Drenso\OidcBundle\Model\OidcUserData;
 use Drenso\OidcBundle\Security\UserProvider\OidcUserProviderInterface;
 use Override;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/** @implements OidcUserProviderInterface<User> */
 class UserProvider implements OidcUserProviderInterface
 {
   public function __construct(private readonly EntityManagerInterface $em)
@@ -18,7 +20,7 @@ class UserProvider implements OidcUserProviderInterface
   }
 
   #[Override]
-  public function ensureUserExists(string $userIdentifier, OidcUserData $userData): void
+  public function ensureUserExists(string $userIdentifier, OidcUserData $userData, OidcTokens $tokens): void
   {
     // Determine whether this user already exists
     try {
