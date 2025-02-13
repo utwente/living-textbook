@@ -83,11 +83,11 @@
         "symfony/validator": "6.4.18",
         "symfony/webpack-encore-bundle": "2.2.0",
         "symfony/yaml": "6.4.18",
-        "twig/cssinliner-extra": "3.19.0",
-        "twig/extra-bundle": "3.19.0",
-        "twig/inky-extra": "3.19.0",
-        "twig/intl-extra": "3.19.0",
-        "twig/twig": "3.19.0",
+        "twig/cssinliner-extra": "3.20.0",
+        "twig/extra-bundle": "3.20.0",
+        "twig/inky-extra": "3.20.0",
+        "twig/intl-extra": "3.20.0",
+        "twig/twig": "3.20.0",
         "zircote/swagger-php": "5.0.3"
     },
     "require-dev": {
