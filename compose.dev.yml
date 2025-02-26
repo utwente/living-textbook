@@ -21,7 +21,7 @@ services:
       - ltb-network
 
   nginx:
-    image: nginx:1.27.3-alpine
+    image: nginx:1.27.4-alpine
     restart: always
     volumes:
       - './:/usr/src/app:ro'
@@ -36,7 +36,7 @@ services:
       - ltb-network
 
   db:
-    image: mariadb:10.11.10
+    image: mariadb:10.11.11
     command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
     restart: always
     environment:
