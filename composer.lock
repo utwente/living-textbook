@@ -4779,6 +4779,7 @@
                 "issues": "https://github.com/ryakad/pandoc-php/issues",
                 "source": "https://github.com/ryakad/pandoc-php/tree/master"
             },
+            "abandoned": true,
             "time": "2015-01-07T05:07:16+00:00"
         },
         {
