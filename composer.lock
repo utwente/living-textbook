@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6664832383baae3ac67b57130314945c",
+    "content-hash": "7f740dcd7ab384f9b43cf8c2b62b085b",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2146,16 +2146,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.19.0",
+            "version": "v3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine-extensions/DoctrineExtensions.git",
-                "reference": "5b0b8a442d19e6701ae64535dc08f7944e2895d2"
+                "reference": "ea1d37586b8e4bae2a815feb38b177894b12c44c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/5b0b8a442d19e6701ae64535dc08f7944e2895d2",
-                "reference": "5b0b8a442d19e6701ae64535dc08f7944e2895d2",
+                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/ea1d37586b8e4bae2a815feb38b177894b12c44c",
+                "reference": "ea1d37586b8e4bae2a815feb38b177894b12c44c",
                 "shasum": ""
             },
             "require": {
@@ -2250,10 +2250,9 @@
                 "uploadable"
             ],
             "support": {
-                "email": "gediminas.morkevicius@gmail.com",
+                "docs": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/main/doc",
                 "issues": "https://github.com/doctrine-extensions/DoctrineExtensions/issues",
-                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.19.0",
-                "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
+                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.20.0"
             },
             "funding": [
                 {
@@ -2273,7 +2272,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-24T22:12:57+00:00"
+            "time": "2025-04-04T17:19:27+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
