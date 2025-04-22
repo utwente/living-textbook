@@ -5054,12 +5054,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/UserApiTokenRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserApiTokenRepository implements generic interface Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\PasswordUpgraderInterface but does not specify its types\\: TUser$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserApiTokenRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Repository\\\\UserBrowserStateRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
