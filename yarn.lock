@@ -914,51 +914,51 @@
     error-stack-parser "^2.1.4"
     string-width "^4.2.3"
 
-"@sentry-internal/browser-utils@9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/browser-utils/-/browser-utils-9.5.0.tgz#47feeb57ecf245d08bad30b5f808f61a789a971b"
-  integrity sha512-AE9jgeI5+KyGvLR0vf1I6sesi0NZXZe6pDlZNXyg+pWZB2vkE9dksE8ZsoU+YiD9zjUqazgPcVyb3O0VvmaCGw==
+"@sentry-internal/browser-utils@9.12.0":
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/browser-utils/-/browser-utils-9.12.0.tgz#6efef1489cbe7cb19b5227ab4c37b015fde1fbc4"
+  integrity sha512-GXuDEG2Ix8DmVtTkjsItWdusk2CvJ6EPWKYVqFKifxt+IAT3ZbhGZd99Rg3wdRmt9xhCNuS4QrDzDTPMPgfdCw==
   dependencies:
-    "@sentry/core" "9.5.0"
+    "@sentry/core" "9.12.0"
 
-"@sentry-internal/feedback@9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-9.5.0.tgz#5d7450bf25292326e6864e6600a9472a717dc067"
-  integrity sha512-p+yOTufEYHP1RLwkD+aZwpCNS4/2l6t4uHgphjYrEC2U/U2mtZQh+EvlBAt0wY/eiKC4/acPNrF5yFD/4A7a0A==
+"@sentry-internal/feedback@9.12.0":
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-9.12.0.tgz#fc26bf1cd0abfeb249b941c1c943469775d056ad"
+  integrity sha512-3+UxoT97QIXNSUQS4ATL1FFws0RkUb6PeaQN8CPndI6mFlqTW5tuVVLNg9Eo1seNg7R/dfk6WHCWrYN1NbFFKQ==
   dependencies:
-    "@sentry/core" "9.5.0"
+    "@sentry/core" "9.12.0"
 
-"@sentry-internal/replay-canvas@9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/replay-canvas/-/replay-canvas-9.5.0.tgz#f63fc4e027189d7e2d1a9de7e535591e8399a143"
-  integrity sha512-W7MS7/9Z8uP2i0pbndxqz2VcGlFPc7Bv6gCoxRdGIWUWSBS9rsRbryO0sM0PwwuHt2mQtWMqwjYykcR441RBRA==
+"@sentry-internal/replay-canvas@9.12.0":
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay-canvas/-/replay-canvas-9.12.0.tgz#41d4b0e85bad8f5491f0168a0396ae54d8128142"
+  integrity sha512-p8LuKZgWT/CoQBbDOXkSGjWWnc8WsnAayWgna8M/ZFWNITCNEM2rCuqZOyWOElIlrni+M7qoEA3jS7MZe8Ejxw==
   dependencies:
-    "@sentry-internal/replay" "9.5.0"
-    "@sentry/core" "9.5.0"
+    "@sentry-internal/replay" "9.12.0"
+    "@sentry/core" "9.12.0"
 
-"@sentry-internal/replay@9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/replay/-/replay-9.5.0.tgz#1527d77c25b1d8a7ea606d6fbf4faa9bd8cb70bb"
-  integrity sha512-fBBNimElAnu865HT3MJ6xH2P26KvkZvAYt+yRrWr+x5zS5KvjBYUPsSI+F0FTE14XmLW9q7DlNUl5iAZhXSy3g==
+"@sentry-internal/replay@9.12.0":
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay/-/replay-9.12.0.tgz#fa20b509dc534d57a19500690c2141e9cec4c767"
+  integrity sha512-njEQosFeO/UX+gG+DMRANkPUuz6OIJLb+A1GVylhq9adUgFQydQ9Ay3v7/x1gMhdfHVP6Jeb27qkti0BWYbzBQ==
   dependencies:
-    "@sentry-internal/browser-utils" "9.5.0"
-    "@sentry/core" "9.5.0"
+    "@sentry-internal/browser-utils" "9.12.0"
+    "@sentry/core" "9.12.0"
 
-"@sentry/browser@9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-9.5.0.tgz#0ea3e00013bb1b133a1a37f4c79b1648f238befc"
-  integrity sha512-HYSPW8GjknuYykJgOialKFyWg7ldmrbD1AKTIhksqdsNXLER07YeVWFAbe+xSYa1ZwwC8/s6vQJP9ZOoH1BaVg==
+"@sentry/browser@9.12.0":
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-9.12.0.tgz#f39c5e05ea9dd31b54ccf27a9d49f8de9d9ff7f2"
+  integrity sha512-4xQYoZqi+VVhNvlhWiwRd57+SMr3Og4sLjuayAA+zIp1Wx/bDcIld697cugLwml/BR+mVJI2eokkgh1CBl6zag==
   dependencies:
-    "@sentry-internal/browser-utils" "9.5.0"
-    "@sentry-internal/feedback" "9.5.0"
-    "@sentry-internal/replay" "9.5.0"
-    "@sentry-internal/replay-canvas" "9.5.0"
-    "@sentry/core" "9.5.0"
+    "@sentry-internal/browser-utils" "9.12.0"
+    "@sentry-internal/feedback" "9.12.0"
+    "@sentry-internal/replay" "9.12.0"
+    "@sentry-internal/replay-canvas" "9.12.0"
+    "@sentry/core" "9.12.0"
 
-"@sentry/core@9.5.0":
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-9.5.0.tgz#09fc38e3bf0b107c721d21351b8702ca2f012922"
-  integrity sha512-NMqyFdyg26ECAfnibAPKT8vvAt4zXp4R7dYtQnwJKhEJEVkgAshcNYeJ2D95ZLMVOqlqhTtTPnw1vqf+v9ePZg==
+"@sentry/core@9.12.0":
+  version "9.12.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-9.12.0.tgz#164a88af070cd77191ca14c88914e008c7ce7716"
+  integrity sha512-jOqQK/90uzHmsBvkPTj/DAEFvA5poX4ZRyC7LE1zjg4F5jdOp3+M4W3qCy0CkSTu88Zu5VWBoppCU2Bs34XEqg==
 
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
@@ -1290,17 +1290,7 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.6.tgz#628effeeae2064a1b4e79f78e81d87b7e5fc7b50"
   integrity sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==
 
-"@types/express-serve-static-core@*":
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-5.0.6.tgz#41fec4ea20e9c7b22f024ab88a95c6bb288f51b8"
-  integrity sha512-3xhRnjJPkULekpSzgtoNYYcTWgEZkp4myc+Saevii5JPnHNvHMRlBSHDbs7Bh1iPPoVTERHEZXyhyLbMEsExsA==
-  dependencies:
-    "@types/node" "*"
-    "@types/qs" "*"
-    "@types/range-parser" "*"
-    "@types/send" "*"
-
-"@types/express-serve-static-core@^4.17.33":
+"@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.33":
   version "4.19.6"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.19.6.tgz#e01324c2a024ff367d92c66f48553ced0ab50267"
   integrity sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==
@@ -4618,12 +4608,12 @@ rw@1:
   resolved "https://registry.yarnpkg.com/rw/-/rw-1.3.3.tgz#3f862dfa91ab766b14885ef4d01124bfda074fb4"
   integrity sha512-PdhdWy89SiZogBLaw42zdeqtRJ//zFd2PgQavcICDUgJT5oW10QCRKbJ6bg4r0/UY2M6BWd5tkxuGFRvCkgfHQ==
 
-safe-buffer@5.2.1, safe-buffer@>=5.1.0, safe-buffer@^5.1.0:
+safe-buffer@5.2.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
 
-safe-buffer@~5.1.0, safe-buffer@~5.1.1:
+safe-buffer@>=5.1.0, safe-buffer@^5.1.0, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
   integrity sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==
