@@ -12,7 +12,7 @@ use App\Repository\StylingConfigurationConceptOverrideRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\Http\AcceptedResponse;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +44,9 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
   }
 
   /** Add a new concept styling override. */
-  #[OA\RequestBody(description: 'The new override', required: true, content: [new Model(type: StylingConfigurationConceptOverrideApiModel::class, groups: ['create'])])]
+  #[OA\RequestBody(description: 'The new override', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: StylingConfigurationConceptOverrideApiModel::class, groups: ['create'])),
+  ])]
   #[OA\Response(response: 200, description: 'The new override', content: [new Model(type: StylingConfigurationConceptOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_POST])]
@@ -73,7 +75,9 @@ class StylingConfigurationConceptOverrideController extends AbstractApiControlle
   }
 
   /** Update an existing concept styling override. */
-  #[OA\RequestBody(description: 'The concept styling override to update', required: true, content: [new Model(type: StylingConfigurationConceptOverrideApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The concept styling override to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: StylingConfigurationConceptOverrideApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated override', content: [new Model(type: StylingConfigurationConceptOverrideApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_PATCH])]

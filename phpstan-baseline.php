@@ -128,12 +128,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$requestTag in PHPDoc tag @var does not match assigned variable \\$requestTags\\.$#',
 	'identifier' => 'varTag.differentVariable',
 	'count' => 1,
@@ -176,64 +170,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/LayoutConfigurationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/LayoutConfigurationOverrideController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/RelationTypeController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/StudyAreaController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationConceptOverrideController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$object of method App\\\\Api\\\\Controller\\\\AbstractApiController\\:\\:assertStudyAreaObject\\(\\) expects App\\\\Entity\\\\Contracts\\\\StudyAreaFilteredInterface, App\\\\Entity\\\\Concept\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 4,
 	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationRelationOverrideController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationRelationOverrideController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/TagController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Api\\\\Model\\\\ConceptApiModel\\:\\:__construct\\(\\) has parameter \\$dotronConfig with no value type specified in iterable type array\\.$#',
@@ -5517,12 +5457,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Repository\\\\UserApiTokenRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserApiTokenRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserApiTokenRepository implements generic interface Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\PasswordUpgraderInterface but does not specify its types\\: TUser$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/UserApiTokenRepository.php',

@@ -9,7 +9,7 @@ use App\EntityHandler\LayoutConfigurationHandler;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\Http\AcceptedResponse;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +48,9 @@ class LayoutConfigurationController extends AbstractApiController
   }
 
   /** Add a new study area layout configuration. */
-  #[OA\RequestBody(description: 'The new layout configuration', required: true, content: [new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The new layout configuration', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The new layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_POST])]
@@ -70,7 +72,9 @@ class LayoutConfigurationController extends AbstractApiController
   }
 
   /** Update an existing study area layout configuration. */
-  #[OA\RequestBody(description: 'The layout configuration properties to update', required: true, content: [new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The layout configuration properties to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: LayoutConfigurationApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated layout configuration', content: [new Model(type: LayoutConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route('/{layoutConfiguration<\d+>}', methods: [Request::METHOD_PATCH])]

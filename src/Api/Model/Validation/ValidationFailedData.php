@@ -2,7 +2,7 @@
 
 namespace App\Api\Model\Validation;
 
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;
 

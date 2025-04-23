@@ -9,7 +9,7 @@ use App\EntityHandler\RelationTypeHandler;
 use App\Repository\RelationTypeRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +49,9 @@ class RelationTypeController extends AbstractApiController
   }
 
   /** Add a new study area relation type. */
-  #[OA\RequestBody(description: 'The new relation type', required: true, content: [new Model(type: RelationTypeApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The new relation type', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: RelationTypeApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The new relation type', content: [new Model(type: RelationTypeApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_POST])]
@@ -68,7 +70,9 @@ class RelationTypeController extends AbstractApiController
   }
 
   /** Update an existing study area relation type. */
-  #[OA\RequestBody(description: 'The relation type properties to update', required: true, content: [new Model(type: RelationTypeApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The relation type properties to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: RelationTypeApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated relation type', content: [new Model(type: RelationTypeApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route('/{relationType<\d+>}', methods: [Request::METHOD_PATCH])]

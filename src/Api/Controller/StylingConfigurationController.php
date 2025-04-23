@@ -8,7 +8,7 @@ use App\Entity\StylingConfiguration;
 use App\EntityHandler\StylingConfigurationHandler;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +48,9 @@ class StylingConfigurationController extends AbstractApiController
   }
 
   /** Add a new study area styling configuration. */
-  #[OA\RequestBody(description: 'The new styling configuration', required: true, content: [new Model(type: StylingConfigurationApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The new styling configuration', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: StylingConfigurationApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The new styling configuration', content: [new Model(type: StylingConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_POST])]
@@ -67,7 +69,9 @@ class StylingConfigurationController extends AbstractApiController
   }
 
   /** Update an existing study area styling configuration. */
-  #[OA\RequestBody(description: 'The styling configuration properties to update', required: true, content: [new Model(type: StylingConfigurationApiModel::class, groups: ['mutate'])])]
+  #[OA\RequestBody(description: 'The styling configuration properties to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: StylingConfigurationApiModel::class, groups: ['mutate'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated styling configuration', content: [new Model(type: StylingConfigurationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route('/{stylingConfiguration<\d+>}', methods: [Request::METHOD_PATCH])]

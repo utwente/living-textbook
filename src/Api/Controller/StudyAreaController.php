@@ -10,7 +10,7 @@ use App\Repository\StudyAreaRepository;
 use App\Repository\StylingConfigurationRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +53,9 @@ class StudyAreaController extends AbstractApiController
   }
 
   /** Update an existing study area concept. */
-  #[OA\RequestBody(description: 'The study area properties to update', required: true, content: [new Model(type: StudyAreaApiModel::class, groups: ['mutate', 'dotron'])])]
+  #[OA\RequestBody(description: 'The study area properties to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: StudyAreaApiModel::class, groups: ['mutate', 'dotron'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated study area', content: [new Model(type: StudyAreaApiModel::class, groups: ['Default', 'dotron'])])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
