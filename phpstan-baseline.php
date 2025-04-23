@@ -128,12 +128,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$requestTag in PHPDoc tag @var does not match assigned variable \\$requestTags\\.$#',
 	'identifier' => 'varTag.differentVariable',
 	'count' => 1,
@@ -174,36 +168,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/RelationTypeController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/StudyAreaController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/StylingConfigurationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$content of attribute class OpenApi\\\\Attributes\\\\RequestBody constructor expects array\\<OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\>\\|OpenApi\\\\Attributes\\\\Attachable\\|OpenApi\\\\Attributes\\\\JsonContent\\|OpenApi\\\\Attributes\\\\MediaType\\|OpenApi\\\\Attributes\\\\XmlContent\\|null, array\\<int, Nelmio\\\\ApiDocBundle\\\\Annotation\\\\Model\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Api/Controller/TagController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Api\\\\Model\\\\ConceptApiModel\\:\\:__construct\\(\\) has parameter \\$dotronConfig with no value type specified in iterable type array\\.$#',

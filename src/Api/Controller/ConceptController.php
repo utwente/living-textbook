@@ -60,7 +60,9 @@ class ConceptController extends AbstractApiController
   }
 
   /** Add a new study area concept. */
-  #[OA\RequestBody(description: 'The new concept', required: true, content: [new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])])]
+  #[OA\RequestBody(description: 'The new concept', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])),
+  ])]
   #[OA\Response(response: 200, description: 'The new concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_POST])]
@@ -82,7 +84,9 @@ class ConceptController extends AbstractApiController
   }
 
   /** Update an existing study area concept. */
-  #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])])]
+  #[OA\RequestBody(description: 'The concept properties to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: ConceptApiModel::class, groups: ['mutate', 'dotron'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated concept', content: [new Model(type: ConceptApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route('/{concept<\d+>}', methods: [Request::METHOD_PATCH])]

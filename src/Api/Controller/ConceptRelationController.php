@@ -61,7 +61,9 @@ class ConceptRelationController extends AbstractApiController
   }
 
   /** Add a new study area concept relation. */
-  #[OA\RequestBody(description: 'The new concept relation', required: true, content: [new Model(type: CreateConceptRelationApiModel::class)])]
+  #[OA\RequestBody(description: 'The new concept relation', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: CreateConceptRelationApiModel::class)),
+  ])]
   #[OA\Response(response: 200, description: 'The new concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route(methods: [Request::METHOD_POST])]
@@ -106,7 +108,9 @@ class ConceptRelationController extends AbstractApiController
   }
 
   /** Update an existing study area concept relation. */
-  #[OA\RequestBody(description: 'The concept relation to update', required: true, content: [new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron'])])]
+  #[OA\RequestBody(description: 'The concept relation to update', required: true, content: [
+    new OA\JsonContent(ref: new Model(type: UpdateConceptRelationApiModel::class, groups: ['mutate', 'dotron'])),
+  ])]
   #[OA\Response(response: 200, description: 'The updated concept relation', content: [new Model(type: DetailedConceptRelationApiModel::class)])]
   #[OA\Response(response: 400, description: 'Validation failed', content: [new Model(type: ValidationFailedData::class)])]
   #[Route('/{conceptRelation<\d+>}', methods: [Request::METHOD_PATCH])]
