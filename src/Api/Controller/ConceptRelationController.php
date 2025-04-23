@@ -15,7 +15,7 @@ use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
 use Drenso\Shared\IdMap\IdMap;
 use Exception;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

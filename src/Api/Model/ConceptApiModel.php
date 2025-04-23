@@ -8,7 +8,7 @@ use App\Entity\Tag;
 use Drenso\Shared\Interfaces\IdInterface;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Override;
 

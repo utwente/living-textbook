@@ -9,7 +9,7 @@ use App\EntityHandler\TagHandler;
 use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
-use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
