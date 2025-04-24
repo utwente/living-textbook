@@ -23,16 +23,19 @@ class CreateConceptRelationApiModel
 
   public function getSourceId(): ?int
   {
+    /* @phpstan-ignore nullCoalesce.initializedProperty (Needs fallback for old values) */
     return $this->sourceId ?? null;
   }
 
   public function getTargetId(): ?int
   {
+    /* @phpstan-ignore nullCoalesce.initializedProperty (Needs fallback for old values) */
     return $this->targetId ?? null;
   }
 
   public function getRelationTypeId(): ?int
   {
+    /* @phpstan-ignore nullCoalesce.initializedProperty (Needs fallback for old values) */
     return $this->relationTypeId ?? null;
   }
 }

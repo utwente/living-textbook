@@ -218,6 +218,7 @@ class PendingChange implements IdInterface
         return 0;
       }
 
+      /* @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
       return $sortOrder[$b] <=> $sortOrder[$a];
     });
   }

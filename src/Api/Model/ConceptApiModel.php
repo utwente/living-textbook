@@ -44,6 +44,7 @@ class ConceptApiModel implements IdInterface
   /** @return int[]|null */
   public function getTags(): ?array
   {
+    /* @phpstan-ignore nullCoalesce.initializedProperty (Needs fallback for old values) */
     return $this->tags ?? null;
   }
 
@@ -65,6 +66,7 @@ class ConceptApiModel implements IdInterface
   /** @param Tag[]|null $tags */
   public function mapToEntity(?Concept $concept, ?array $tags): Concept
   {
+    /*  */
     $concept =  ($concept ?? new Concept())
       ->setName($this->name ?? $concept?->getName() ?? '')
       ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
