@@ -66,7 +66,6 @@ class ConceptApiModel implements IdInterface
   /** @param Tag[]|null $tags */
   public function mapToEntity(?Concept $concept, ?array $tags): Concept
   {
-    /*  */
     $concept =  ($concept ?? new Concept())
       ->setName($this->name ?? $concept?->getName() ?? '')
       ->setDefinition($this->definition ?? $concept?->getDefinition() ?? '')
