@@ -200,6 +200,24 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Model/ConceptApiModel.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\ConceptApiModel\\:\\:\\$definition on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/ConceptApiModel.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\ConceptApiModel\\:\\:\\$name on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/ConceptApiModel.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\ConceptApiModel\\:\\:\\$synonyms on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/ConceptApiModel.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\ConceptRelationApiModel constructor expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -260,6 +278,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationApiModel.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\LayoutConfigurationApiModel\\:\\:\\$name on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/LayoutConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Api\\\\Model\\\\LayoutConfigurationOverrideApiModel\\:\\:__construct\\(\\) has parameter \\$override with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -302,6 +326,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Model/RelationTypeApiModel.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\RelationTypeApiModel\\:\\:\\$name on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/RelationTypeApiModel.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDefaultLayoutConfiguration\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -316,6 +346,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\StudyAreaApiModel constructor expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StudyAreaApiModel.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\StudyAreaApiModel\\:\\:\\$name on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/StudyAreaApiModel.php',
 ];
@@ -340,6 +376,12 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\StylingConfigurationApiModel constructor expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationApiModel.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\StylingConfigurationApiModel\\:\\:\\$name on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/StylingConfigurationApiModel.php',
 ];
@@ -418,6 +460,18 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$id of class App\\\\Api\\\\Model\\\\TagApiModel constructor expects int, int\\|null given\\.$#',
 	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/TagApiModel.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\TagApiModel\\:\\:\\$color on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Api/Model/TagApiModel.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property App\\\\Api\\\\Model\\\\TagApiModel\\:\\:\\$name on left side of \\?\\? is not nullable nor uninitialized\\.$#',
+	'identifier' => 'nullCoalesce.initializedProperty',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Model/TagApiModel.php',
 ];

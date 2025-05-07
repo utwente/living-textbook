@@ -44,6 +44,7 @@ class ConceptApiModel implements IdInterface
   /** @return int[]|null */
   public function getTags(): ?array
   {
+    /* @phpstan-ignore nullCoalesce.initializedProperty (Needs fallback for old values) */
     return $this->tags ?? null;
   }
 
