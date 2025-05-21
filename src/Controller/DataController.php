@@ -118,7 +118,11 @@ class DataController extends AbstractController
         set_time_limit(600); // 10 minutes
 
         try {
-          $contents = mb_convert_encoding(file_get_contents($json->getPathname()), 'UTF-8', 'UTF-8');
+          $jsonFile = file_get_contents($json->getPathname());
+          if ($jsonFile === false) {
+            throw new DataImportException('Could not open file');
+          }
+          $contents = mb_convert_encoding($jsonFile, 'UTF-8', 'UTF-8');
 
           // Extra json check as we now allow text/html uploads
           if (!$this->couldBeJson($contents)) {
@@ -613,7 +617,11 @@ class DataController extends AbstractController
     ]);
   }
 
-  /* Based on https://stackoverflow.com/a/45241792/1439286 */
+  /**
+   * Based on https://stackoverflow.com/a/45241792/1439286.
+   *
+   * @phpstan-assert-if-true string $value
+   */
   private function couldBeJson(mixed $value): bool
   {
     // Numeric strings are always valid JSON.

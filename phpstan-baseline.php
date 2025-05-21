@@ -758,12 +758,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/DataController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function mb_convert_encoding expects array\\<int, string\\>\\|string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/DataController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on class\\-string\\|object\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
