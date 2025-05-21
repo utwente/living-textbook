@@ -16,7 +16,7 @@ variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
   COMPOSER_REQUIRE_CHECKER_VERSION: 4.16.1
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
-  COMPOSER_UNUSED_VERSION: 0.9.2
+  COMPOSER_UNUSED_VERSION: 0.9.3
   DRENSO_PHP_VERSION: 8.3-d3-sury
   NODE_VERSION: 20
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
