@@ -5,7 +5,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "8.3.*",
+        "php": "8.4.*",
         "ext-apcu": "*",
         "ext-curl": "*",
         "ext-dom": "*",
@@ -142,7 +142,8 @@
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*",
-        "symfony/polyfill-php83": "*"
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*"
     },
     "scripts": {
         "auto-scripts": {
