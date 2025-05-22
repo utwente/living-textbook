@@ -33,7 +33,7 @@ class LearningOutcomeController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new object
-    $learningOutcome = (new LearningOutcome())->setStudyArea($studyArea);
+    $learningOutcome = new LearningOutcome()->setStudyArea($studyArea);
     $snapshot        = $reviewService->getSnapshot($learningOutcome);
 
     $form = $this->createForm(EditLearningOutcomeType::class, $learningOutcome, [

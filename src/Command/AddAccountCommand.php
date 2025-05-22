@@ -75,7 +75,7 @@ class AddAccountCommand extends Command
             })
         ))
         ->setPassword($this->passwordHasher->hashPassword($user, $helper->ask($input, $output,
-          (new Question('Provide a password: '))
+          new Question('Provide a password: ')
             ->setHidden(true)
             ->setValidator(function ($answer) {
               $violations = $this->validator->validate($answer, [

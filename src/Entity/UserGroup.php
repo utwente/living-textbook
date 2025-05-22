@@ -123,7 +123,7 @@ class UserGroup implements IdInterface
       }
     }
 
-    $this->emails->add((new UserGroupEmail())->setEmail($email)->setUserGroup($this));
+    $this->emails->add(new UserGroupEmail()->setEmail($email)->setUserGroup($this));
 
     return $this;
   }

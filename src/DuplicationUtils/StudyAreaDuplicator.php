@@ -182,7 +182,7 @@ class StudyAreaDuplicator
   {
     $learningOutcomes = $this->learningOutcomeRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($learningOutcomes as $learningOutcome) {
-      $newLearningOutcome = (new LearningOutcome())
+      $newLearningOutcome = new LearningOutcome()
         ->setStudyArea($this->newStudyArea)
         ->setNumber($learningOutcome->getNumber())
         ->setName($learningOutcome->getName())
@@ -198,7 +198,7 @@ class StudyAreaDuplicator
   {
     $learningPaths = $this->learningPathRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($learningPaths as $learningPath) {
-      $newLearningPath = (new LearningPath())
+      $newLearningPath = new LearningPath()
         ->setStudyArea($this->newStudyArea)
         ->setName($learningPath->getName())
         ->setIntroduction($learningPath->getIntroduction())
@@ -219,7 +219,7 @@ class StudyAreaDuplicator
           continue;
         }
 
-        $newElement = (new LearningPathElement())
+        $newElement = new LearningPathElement()
           ->setNext($previousElement)
           ->setConcept($this->newConcepts[$element->getConcept()->getId()])
           ->setDescription($setNextNull ? null : $element->getDescription());
@@ -241,7 +241,7 @@ class StudyAreaDuplicator
   {
     $externalResources = $this->externalResourceRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($externalResources as $externalResource) {
-      $newExternalResource = (new ExternalResource())
+      $newExternalResource = new ExternalResource()
         ->setStudyArea($this->newStudyArea)
         ->setTitle($externalResource->getTitle())
         ->setDescription($externalResource->getDescription())
@@ -258,7 +258,7 @@ class StudyAreaDuplicator
   {
     $contributors = $this->contributorRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($contributors as $contributor) {
-      $newContributor = (new Contributor())
+      $newContributor = new Contributor()
         ->setStudyArea($this->newStudyArea)
         ->setName($contributor->getName())
         ->setDescription($contributor->getDescription())
@@ -275,7 +275,7 @@ class StudyAreaDuplicator
   {
     $abbreviations = $this->abbreviationRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($abbreviations as $abbreviation) {
-      $newAbbreviation = (new Abbreviation())
+      $newAbbreviation = new Abbreviation()
         ->setStudyArea($this->newStudyArea)
         ->setAbbreviation($abbreviation->getAbbreviation())
         ->setMeaning($abbreviation->getMeaning());
@@ -289,7 +289,7 @@ class StudyAreaDuplicator
   {
     $tags = $this->tagRepository->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($tags as $tag) {
-      $newTag = (new Tag())
+      $newTag = new Tag()
         ->setStudyArea($this->newStudyArea)
         ->setName($tag->getName())
         ->setColor($tag->getColor());
@@ -364,7 +364,7 @@ class StudyAreaDuplicator
       // Duplicate relation type, if not done yet
       $relationType = $conceptRelation->getRelationType();
       if (!array_key_exists($relationType->getId(), $newRelationTypes)) {
-        $newRelationType = (new RelationType())
+        $newRelationType = new RelationType()
           ->setStudyArea($this->newStudyArea)
           ->setName($relationType->getName());
 
@@ -379,7 +379,7 @@ class StudyAreaDuplicator
       }
 
       // Duplicate relation
-      $newConceptRelation = (new ConceptRelation())
+      $newConceptRelation = new ConceptRelation()
         ->setSource($this->newConcepts[$conceptRelation->getSource()->getId()])
         ->setTarget($this->newConcepts[$conceptRelation->getTarget()->getId()])
         ->setRelationType($newRelationTypes[$relationType->getId()])

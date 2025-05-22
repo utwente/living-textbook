@@ -125,7 +125,7 @@ class ConceptPrint extends LatexBase
   {
     // Only add the introduction when one is defined
     if ($studyArea->getPrintIntroduction()) {
-      $this->addElement((new SubSection($translator->trans('study-area.print-introduction-header')))
+      $this->addElement(new SubSection($translator->trans('study-area.print-introduction-header'))
         ->addElement(new Text($studyArea->getPrintIntroduction())));
       $this->addElement(new CustomCommand('\\newpage'));
     }

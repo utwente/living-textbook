@@ -95,7 +95,7 @@ class PendingChange implements IdInterface
   /** Duplicated the pending change, while setting the new marked fields as supplied. */
   public function duplicate(array $changedFields): PendingChange
   {
-    $new = (new PendingChange())
+    $new = new PendingChange()
       ->setStudyArea($this->getStudyArea())
       ->setChangeType($this->getChangeType())
       ->setObjectType($this->getObjectType())

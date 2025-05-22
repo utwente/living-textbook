@@ -158,7 +158,7 @@ class DataController extends AbstractController
               $linkTypes[$linkName] = $linkType;
             } else {
               // Create new link type
-              $linkTypes[$linkName] = (new RelationType())->setStudyArea($studyArea)->setName($linkName);
+              $linkTypes[$linkName] = new RelationType()->setStudyArea($studyArea)->setName($linkName);
               if ($validator->validate($linkTypes[$linkName])->count() > 0) {
                 throw new DataImportException(
                   sprintf('Could not create the relation type: %s', json_encode($jsonLink)));
@@ -178,7 +178,7 @@ class DataController extends AbstractController
               sprintf('Missing required "label" property on node: %s', json_encode($jsonNode)));
           }
 
-          $concepts[$key] = (new Concept())->setName($jsonNode['label']);
+          $concepts[$key] = new Concept()->setName($jsonNode['label']);
           if (array_key_exists('definition', $jsonNode) && $jsonNode['definition'] !== null) {
             $concepts[$key]->setDefinition($jsonNode['definition']);
           }
@@ -328,7 +328,7 @@ class DataController extends AbstractController
             }
 
             // Create the external resource
-            $externalResource = (new ExternalResource())
+            $externalResource = new ExternalResource()
               ->setTitle($jsonExternalResource['title'])
               ->setStudyArea($studyArea);
             if (array_key_exists('description', $jsonExternalResource)) {
@@ -375,7 +375,7 @@ class DataController extends AbstractController
             }
 
             // Create the tag
-            $tag = (new Tag())
+            $tag = new Tag()
               ->setName($jsonTag['name'])
               ->setStudyArea($studyArea);
 
@@ -444,7 +444,7 @@ class DataController extends AbstractController
             }
 
             // Create the contributor
-            $contributor = (new Contributor())
+            $contributor = new Contributor()
               ->setName($jsonContributor['name'])
               ->setStudyArea($studyArea);
 
@@ -566,7 +566,7 @@ class DataController extends AbstractController
 
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
-    $newStudyArea         = (new StudyArea())
+    $newStudyArea         = new StudyArea()
       ->setOwner($user)
       ->setAccessType(StudyArea::ACCESS_PRIVATE)
       ->setDescription($studyAreaToDuplicate->getDescription())

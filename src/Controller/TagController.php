@@ -37,7 +37,7 @@ class TagController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new object
-    $tag = (new Tag())->setStudyArea($studyArea);
+    $tag = new Tag()->setStudyArea($studyArea);
 
     $form = $this->createForm(EditTagType::class, $tag, ['studyArea' => $studyArea]);
     $form->handleRequest($request);

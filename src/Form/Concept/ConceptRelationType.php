@@ -93,7 +93,7 @@ class ConceptRelationType extends AbstractType
         'relationType' => null,
       ];
     }, function ($data) use ($concept, $incoming) {
-      $conceptRelation = (new ConceptRelation())
+      $conceptRelation = new ConceptRelation()
         ->setRelationType($data['relationType']);
 
       // Create correct data

@@ -117,7 +117,7 @@ class ReviewService
     }
 
     // Create the pending change entity
-    $pendingChange = (new PendingChange())
+    $pendingChange = new PendingChange()
       ->setStudyArea($studyArea)
       ->setChangeType($changeType)
       ->setObject($object)
@@ -295,7 +295,7 @@ class ReviewService
     }
 
     // Create the review
-    $review = (new Review())
+    $review = new Review()
       ->setOwner($this->getUser())
       ->setNotes($notes)
       ->setStudyArea($studyArea)

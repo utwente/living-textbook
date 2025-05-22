@@ -84,7 +84,7 @@ class AnalyticsService
     $progressBar->display();
 
     // Create the virtual environment directory
-    (new Process([$this->pythonPath, '-m', 'venv', self::ENV_DIR], $this->analyticsDir))
+    new Process([$this->pythonPath, '-m', 'venv', self::ENV_DIR], $this->analyticsDir)
       ->mustRun();
 
     $progressBar->clear();
@@ -143,7 +143,7 @@ class AnalyticsService
       ->build($learningPath, $request->periodStart, $request->periodEnd, $settings, $request->forceRebuild);
 
     // Return the data
-    $finder = fn () => (new Finder())
+    $finder = fn () => new Finder()
       ->files()
       ->in($outputDirectory)
       ->depth(0);
@@ -261,7 +261,7 @@ class AnalyticsService
       $this->pageLoadRepository->purgeForStudyArea($studyArea);
 
       // Load new data into db
-      $sheet = (new Csv())->load($settings['outputFileName'])->getActiveSheet();
+      $sheet = new Csv()->load($settings['outputFileName'])->getActiveSheet();
       foreach ($sheet->getRowIterator(2) as $i => $row) {
         if ($i % 1000 === 0) {
           $this->entityManager->flush();
@@ -272,7 +272,7 @@ class AnalyticsService
         }
 
         $this->entityManager->persist(
-          (new PageLoad())
+          new PageLoad()
             ->setStudyArea($studyArea)
             ->setUserId($sheet->getCell(CellAddress::fromColumnAndRow(3, $row->getRowIndex()))->getFormattedValue())
             ->setTimestamp(DateTime::createFromFormat('Y-m-d H:i:s',
@@ -465,7 +465,7 @@ class AnalyticsService
     }
 
     // Find all directories older than one day
-    $finder = (new Finder())
+    $finder = new Finder()
       ->directories()
       ->in($this->baseOutputDir)
       ->depth('== 0')

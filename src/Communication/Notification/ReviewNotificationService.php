@@ -32,7 +32,7 @@ class ReviewNotificationService
     }
 
     $this->mailer->send(
-      (new TemplatedEmail())
+      new TemplatedEmail()
         ->to($review->getRequestedReviewBy()->getAddress())
         ->subject($this->trans('review.requested.subject'))
         ->htmlTemplate($this->template('review_requested'))
@@ -56,7 +56,7 @@ class ReviewNotificationService
   public function submissionDenied(Review $review)
   {
     $this->mailer->send(
-      (new TemplatedEmail())
+      new TemplatedEmail()
         ->to($review->getOwner()->getAddress())
         ->subject($this->trans('review.submission.denied.subject'))
         ->htmlTemplate($this->template('submission_denied'))
@@ -79,7 +79,7 @@ class ReviewNotificationService
   public function submissionApproved(Review $review)
   {
     $this->mailer->send(
-      (new TemplatedEmail())
+      new TemplatedEmail()
         ->to($review->getOwner()->getAddress())
         ->subject($this->trans('review.submission.approved.subject'))
         ->htmlTemplate($this->template('submission_approved'))
@@ -92,7 +92,7 @@ class ReviewNotificationService
     );
 
     $this->mailer->send(
-      (new TemplatedEmail())
+      new TemplatedEmail()
         ->to($review->getStudyArea()->getOwner()->getAddress())
         ->subject($this->trans('review.submission.approved-owner.subject'))
         ->htmlTemplate($this->template('submission_approved_owner'))
@@ -110,7 +110,7 @@ class ReviewNotificationService
   public function submissionPublished(Review $review)
   {
     $this->mailer->send(
-      (new TemplatedEmail())
+      new TemplatedEmail()
         ->to($review->getOwner()->getAddress())
         ->subject($this->trans('review.submission.published.subject'))
         ->htmlTemplate($this->template('submission_published'))

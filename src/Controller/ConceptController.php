@@ -50,7 +50,7 @@ class ConceptController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new concept
-    $concept  = (new Concept())->setStudyArea($studyArea);
+    $concept  = new Concept()->setStudyArea($studyArea);
     $snapshot = $this->reviewService->getSnapshot($concept);
 
     if ($request->query->has('instance')) {
@@ -173,7 +173,7 @@ class ConceptController extends AbstractController
 
     // We can either edit new concepts, or re-edit an existing concept
     if ($pendingChange->getChangeType() === PendingChange::CHANGE_TYPE_ADD) {
-      $concept = (new Concept())
+      $concept = new Concept()
         ->setStudyArea($studyArea);
     } else {
       $concept = $this->reviewService->getOriginalObject($pendingChange);
@@ -290,12 +290,12 @@ class ConceptController extends AbstractController
       $instanceRelationType = $relationRepository->getOrCreateRelation(
         $studyArea, $translator->trans('concept.instantiate.default-relation-name'));
 
-      $createInstance = fn (Concept $base): Concept => (new Concept())
+      $createInstance = fn (Concept $base): Concept => new Concept()
         ->setStudyArea($studyArea)
         ->setInstance(true)
         ->setName($base->getName())
         ->addOutgoingRelation(
-          (new ConceptRelation())
+          new ConceptRelation()
             ->setRelationType($instanceRelationType)
             ->setTarget($base)
         );
@@ -313,7 +313,7 @@ class ConceptController extends AbstractController
         $this->em->persist($instance);
 
         $baseInstance->addIncomingRelation(
-          (new ConceptRelation())
+          new ConceptRelation()
             ->setRelationType($incomingRelation->getRelationType())
             ->setSource($instance)
         );
@@ -328,7 +328,7 @@ class ConceptController extends AbstractController
         $this->em->persist($instance);
 
         $baseInstance->addOutgoingRelation(
-          (new ConceptRelation())
+          new ConceptRelation()
             ->setRelationType($outgoingRelation->getRelationType())
             ->setTarget($instance)
         );

@@ -46,7 +46,7 @@ class RelationTypeRepository extends ServiceEntityRepository
         ->setMaxResults(1)
         ->getQuery()->getSingleResult();
     } catch (NoResultException) {
-      $foundRelation = (new RelationType())
+      $foundRelation = new RelationType()
         ->setStudyArea($studyArea)
         ->setName($name);
       $this->getEntityManager()->persist($foundRelation);

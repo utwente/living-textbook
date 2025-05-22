@@ -55,7 +55,7 @@ class SpreadsheetHelper
   /** Creates a CSV writer. */
   public function createCsvWriter(Spreadsheet $spreadsheet): Csv
   {
-    return (new Csv($spreadsheet))
+    return new Csv($spreadsheet)
       ->setDelimiter(';')
       ->setUseBOM(true)
       ->setSheetIndex(0);
