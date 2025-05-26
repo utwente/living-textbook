@@ -77,7 +77,7 @@
         "symfony/security-http": "6.4.21",
         "symfony/string": "6.4.21",
         "symfony/translation": "6.4.21",
-        "symfony/translation-contracts": "3.5.1",
+        "symfony/translation-contracts": "3.6.0",
         "symfony/twig-bridge": "6.4.21",
         "symfony/twig-bundle": "6.4.13",
         "symfony/validator": "6.4.21",
