@@ -14,7 +14,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "bobv/latex-bundle": "5.2.0",
-        "caxy/php-htmldiff": "0.1.16",
+        "caxy/php-htmldiff": "0.1.17",
         "doctrine/collections": "2.3.0",
         "doctrine/common": "3.5.0",
         "doctrine/dbal": "3.9.4",
