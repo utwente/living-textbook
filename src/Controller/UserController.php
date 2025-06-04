@@ -57,7 +57,7 @@ class UserController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       // Create the actual token, with the actual token in it
       $token       = bin2hex(random_bytes(32));
-      $tokenObject = (new UserApiToken($user, $passwordHasher->hashPassword($formToken, $token)))
+      $tokenObject = new UserApiToken($user, $passwordHasher->hashPassword($formToken, $token))
         ->setDescription($formToken->getDescription())
         ->setValidUntil($formToken->getValidUntil());
 
@@ -150,7 +150,7 @@ class UserController extends AbstractController
         }
 
         // Create the proto user
-        $userProto = (new UserProto())
+        $userProto = new UserProto()
           ->setEmail($email);
 
         // Generate a password
@@ -171,7 +171,7 @@ class UserController extends AbstractController
       // Schedule emails
       foreach ($notificationContexts as $notificationContext) {
         $mailer->send(
-          (new TemplatedEmail())
+          new TemplatedEmail()
             ->to($notificationContext['user_email'])
             ->subject($trans->trans('auth.new-local-account.subject', [], 'communication'))
             ->htmlTemplate('communication/auth/new_local_account.html.twig')

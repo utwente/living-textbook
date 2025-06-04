@@ -219,7 +219,7 @@ EOT;
   /** @throws Exception */
   public function exportGraph(Graph $graph): JsonResponse
   {
-    $jsonLd = (new JsonLd())->serialise($graph, 'jsonld');
+    $jsonLd = new JsonLd()->serialise($graph, 'jsonld');
     // Pretty print JSON
     $jsonLd = $this->serializer->deserialize($jsonLd, 'array', 'json');
     $jsonLd = $this->serializer->serialize($jsonLd, 'json');

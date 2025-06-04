@@ -51,7 +51,7 @@ class BrowserStateController extends AbstractController
     assert($user instanceof User);
 
     if (!$state = $repository->findForUser($user, $requestStudyArea->getStudyArea())) {
-      $state = (new UserBrowserState())
+      $state = new UserBrowserState()
         ->setUser($user)
         ->setStudyArea($requestStudyArea->getStudyArea());
     }

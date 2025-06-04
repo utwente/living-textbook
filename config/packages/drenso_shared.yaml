@@ -9,6 +9,11 @@ drenso_shared:
       enabled: true
       controller_prefix: App\Api\Controller
       data_field: violations
+  database:
+    softdeletable:
+      enabled: true
+      use_gedmo_workaround:
+        enabled: false
   serializer:
     handlers:
       id_map: ~

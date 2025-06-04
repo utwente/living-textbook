@@ -95,7 +95,7 @@ class ConceptRelationController extends AbstractApiController
     }
 
     // Create the new relation
-    $relation = (new ConceptRelation())
+    $relation = new ConceptRelation()
       ->setSource($source)
       ->setTarget($target)
       ->setRelationType($relationType);

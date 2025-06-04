@@ -40,7 +40,7 @@ class RelationTypeController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new
-    $relationType = (new RelationType())->setStudyArea($studyArea);
+    $relationType = new RelationType()->setStudyArea($studyArea);
     $snapshot     = $this->reviewService->getSnapshot($relationType);
 
     $form = $this->createForm(EditRelationTypeType::class, $relationType);

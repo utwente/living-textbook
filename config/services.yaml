@@ -68,10 +68,6 @@ services:
     arguments:
       $from: '%env(MAIL_FROM)%'
 
-  App\Database\SoftDeletableSubscriber:
-    tags:
-      - { name: doctrine.event_subscriber, connection: default }
-
   App\Twig\HighlightExtension:
     tags:
       - { name: twig.extension }

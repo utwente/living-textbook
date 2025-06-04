@@ -148,7 +148,7 @@ class PermissionsController extends AbstractController
 
         // Retrieve or create the user group
         $userGroup = $userGroupRepository->getForType($studyArea, $groupType)
-            ?? (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
+            ?? new UserGroup()->setStudyArea($studyArea)->setGroupType($groupType);
 
         // Add the users
         foreach ($foundUsers as $foundUser) {
@@ -187,7 +187,7 @@ class PermissionsController extends AbstractController
     }
 
     $userGroup = $userGroupRepository->getForType($studyArea, $groupType)
-        ?? (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
+        ?? new UserGroup()->setStudyArea($studyArea)->setGroupType($groupType);
 
     $newPermission = null;
     if ($userGroup->getUsers()->contains($user)) {
@@ -219,7 +219,7 @@ class PermissionsController extends AbstractController
     }
 
     $userGroup = $userGroupRepository->getForType($studyArea, $groupType)
-        ?? (new UserGroup())->setStudyArea($studyArea)->setGroupType($groupType);
+        ?? new UserGroup()->setStudyArea($studyArea)->setGroupType($groupType);
 
     $email = mb_strtolower(trim(urldecode($email)));
 

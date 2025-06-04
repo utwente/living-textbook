@@ -36,7 +36,7 @@ class LearningPathController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new object
-    $learningPath = (new LearningPath())->setStudyArea($studyArea);
+    $learningPath = new LearningPath()->setStudyArea($studyArea);
     $snapshot     = $reviewService->getSnapshot($learningPath);
 
     $form = $this->createForm(EditLearningPathType::class, $learningPath, [

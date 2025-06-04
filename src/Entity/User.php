@@ -150,7 +150,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
       throw new OidcException('Retrieved username from OIDC is empty!');
     }
 
-    return (new User())
+    return new User()
       ->setUsername($username)
       ->setIsOidc(true)
       ->update($userData);

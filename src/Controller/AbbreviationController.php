@@ -32,7 +32,7 @@ class AbbreviationController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new object
-    $abbreviation = (new Abbreviation())->setStudyArea($studyArea);
+    $abbreviation = new Abbreviation()->setStudyArea($studyArea);
     $snapshot     = $reviewService->getSnapshot($abbreviation);
 
     $form = $this->createForm(EditAbbreviationType::class, $abbreviation, ['studyArea' => $studyArea]);

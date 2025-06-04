@@ -42,7 +42,7 @@ class StudyAreaController extends AbstractController
   public function add(Request $request, EntityManagerInterface $em, TranslatorInterface $trans, bool $first = false): Response
   {
     // Create new StudyArea
-    $studyArea = (new StudyArea())->setOwner($this->getUser());
+    $studyArea = new StudyArea()->setOwner($this->getUser());
     if ($first) {
       $studyArea->setAccessType(StudyArea::ACCESS_PRIVATE);
     }
@@ -63,7 +63,7 @@ class StudyAreaController extends AbstractController
       // Add default relation types
       for ($i = 1; $i <= 3; $i++) {
         $name         = $trans->trans('relation.default-' . $i);
-        $relationType = (new RelationType())
+        $relationType = new RelationType()
           ->setStudyArea($studyArea)
           ->setName($name);
 

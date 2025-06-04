@@ -118,7 +118,7 @@ class SynthesizeRequest
 
   public function __construct(StudyArea $studyArea)
   {
-    $this->testMoment = (new DateTimeImmutable())->modify('-1 day')->setTime(14, 30);
+    $this->testMoment = new DateTimeImmutable()->modify('-1 day')->setTime(14, 30);
     $this->studyArea  = $studyArea;
   }
 

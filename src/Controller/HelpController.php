@@ -55,7 +55,7 @@ class HelpController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       // Create a new help version
-      $newHelp = (new Help())
+      $newHelp = new Help()
         ->setContent($help->getContent());
       $em->persist($newHelp);
 

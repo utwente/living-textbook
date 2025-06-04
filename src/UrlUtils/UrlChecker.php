@@ -271,7 +271,7 @@ class UrlChecker
       assert($cachedUrl instanceof CacheableUrl);
 
       // Test whether it is expired, always return false if forced from cache
-      if ($cachedUrl->getTimestamp() < (new DateTime())->modify($modifyTime) && !$fromCache) {
+      if ($cachedUrl->getTimestamp() < new DateTime()->modify($modifyTime) && !$fromCache) {
         $oldCache->deleteItem($cachekey);
       } else {
         return false;

@@ -1298,18 +1298,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/UploadsController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getUserIdentifier\\(\\) on Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Database/SoftDeletableSubscriber.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Database\\\\SoftDeletableSubscriber\\:\\:preSoftDelete\\(\\) has parameter \\$args with generic class Doctrine\\\\Persistence\\\\Event\\\\LifecycleEventArgs but does not specify its types\\: TObjectManager$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Database/SoftDeletableSubscriber.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'_route\' on non\\-empty\\-array\\|true\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 2,

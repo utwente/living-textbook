@@ -42,7 +42,7 @@ class PrintController extends AbstractController
     $projectDir = $this->getParameter('kernel.project_dir');
 
     // Create LaTeX document
-    $document = (new ConceptPrint($this->filename($concept->getName())))
+    $document = new ConceptPrint($this->filename($concept->getName()))
       ->useLicenseImage($projectDir)
       ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
       ->setHeader($concept->getStudyArea(), $translator)
@@ -72,7 +72,7 @@ class PrintController extends AbstractController
     $projectDir = $this->getParameter('kernel.project_dir');
 
     // Create LaTeX document
-    $document = (new ConceptPrint($this->filename($learningPath->getName())))
+    $document = new ConceptPrint($this->filename($learningPath->getName()))
       ->useLicenseImage($projectDir)
       ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
       ->setHeader($learningPath->getStudyArea(), $translator)

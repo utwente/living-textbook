@@ -49,7 +49,7 @@ abstract class LtbSection extends Section
   {
     // See https://tex.stackexchange.com/a/282/110054
     $this->addElement(new CustomCommand('\\FloatBarrier'));
-    $this->addElement((new SubSection($title))->addElement(new CustomCommand($this->convertHtmlToLatex($html))));
+    $this->addElement(new SubSection($title)->addElement(new CustomCommand($this->convertHtmlToLatex($html))));
   }
 
   /**

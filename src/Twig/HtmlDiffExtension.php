@@ -21,7 +21,7 @@ class HtmlDiffExtension extends AbstractExtension
 
   public function htmlDiff(?string $a, ?string $b): string
   {
-    $config = (new HtmlDiffConfig())
+    $config = new HtmlDiffConfig()
       ->setPurifierEnabled(false);
 
     return HtmlDiff::create($a ?? '', $b ?? '', $config)->build();

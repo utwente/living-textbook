@@ -30,7 +30,7 @@ class ExternalResourceController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new object
-    $externalResource = (new ExternalResource())->setStudyArea($studyArea);
+    $externalResource = new ExternalResource()->setStudyArea($studyArea);
     $snapshot         = $reviewService->getSnapshot($externalResource);
 
     $form = $this->createForm(EditExternalResourceType::class, $externalResource, ['studyArea' => $studyArea]);

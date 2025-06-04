@@ -30,7 +30,7 @@ class ContributorController extends AbstractController
     $studyArea = $requestStudyArea->getStudyArea();
 
     // Create new object
-    $contributor = (new Contributor())->setStudyArea($studyArea);
+    $contributor = new Contributor()->setStudyArea($studyArea);
     $snapshot    = $reviewService->getSnapshot($contributor);
 
     $form = $this->createForm(EditContributorType::class, $contributor, ['studyArea' => $studyArea]);

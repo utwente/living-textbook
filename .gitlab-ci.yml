@@ -17,7 +17,7 @@ variables:
   COMPOSER_REQUIRE_CHECKER_VERSION: 4.16.1
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.9.3
-  DRENSO_PHP_VERSION: 8.3-d3-sury
+  DRENSO_PHP_VERSION: 8.4
   NODE_VERSION: 20
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
   PHP_SEC_CHECK_VERSION: 2.1.3
