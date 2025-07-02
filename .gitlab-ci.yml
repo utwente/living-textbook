@@ -58,7 +58,7 @@ install-dependencies:
   before_script:
     - cp .secrets.json.dist .secrets.json
     - >- # Fix for http-host used in fos-js routing
-      if [ "$CI_COMMIT_REF_NAME" = "master" ]; then
+      if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
         export HTTP_HOST="${STAGING_HOST}"
       elif [ "$CI_COMMIT_REF_NAME" = "research" ]; then
         export HTTP_HOST="${RESEARCH_HOST}"
@@ -170,7 +170,7 @@ code-style-fixer:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 # Security audit
@@ -233,7 +233,7 @@ composer-require-checker:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 composer-unused:
@@ -263,7 +263,7 @@ composer-unused:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 shellcheck:
@@ -279,7 +279,7 @@ shellcheck:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 phpstan:
@@ -319,7 +319,7 @@ phpstan:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_TAG != null
       when: never
-    - if: $CI_COMMIT_REF_NAME != "master" && $CI_COMMIT_REF_NAME != "production"
+    - if: $CI_COMMIT_REF_NAME != "main" && $CI_COMMIT_REF_NAME != "production"
       when: on_success
     - when: never
 
@@ -337,7 +337,7 @@ js-analysis:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 ts-analysis:
@@ -351,7 +351,7 @@ ts-analysis:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 yaml-analysis:
@@ -365,7 +365,7 @@ yaml-analysis:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 sass-analysis:
@@ -379,7 +379,7 @@ sass-analysis:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 # Build
@@ -443,7 +443,7 @@ phpunit:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 action-security-check:
@@ -466,7 +466,7 @@ action-security-check:
     - docker
   except:
     - schedules
-    - master
+    - main
     - production
 
 # Sentry
@@ -479,7 +479,7 @@ sentry-release-staging:
   tags:
     - docker
   only:
-    - master
+    - main
   except:
     - schedules
 
@@ -519,7 +519,7 @@ deploy-staging:
   tags:
     - docker-deploy
   only:
-    - master
+    - main
   except:
     - schedules
 
