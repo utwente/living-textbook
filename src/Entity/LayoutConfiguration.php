@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table]
 class LayoutConfiguration implements StudyAreaFilteredInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   #[ORM\ManyToOne(inversedBy: 'layoutConfigurations')]

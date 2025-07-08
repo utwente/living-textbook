@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[JMSA\ExclusionPolicy('all')]
 abstract class Override implements StudyAreaFilteredInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   #[ORM\ManyToOne]

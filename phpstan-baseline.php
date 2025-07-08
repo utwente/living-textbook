@@ -5108,18 +5108,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/ExternalResourceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\LayoutConfigurationOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LayoutConfigurationOverrideRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\LayoutConfigurationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LayoutConfigurationRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findForConcepts\\(\\) has parameter \\$concepts with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5184,18 +5172,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StylingConfigurationConceptOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StylingConfigurationConceptOverrideRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StylingConfigurationRelationOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StylingConfigurationRelationOverrideRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\TagRepository\\:\\:findForStudyArea\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#',
