@@ -14,6 +14,10 @@ use Exception;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function sprintf;
+use function strlen;
+use function substr;
+
 class ConceptPrint extends LatexBase
 {
   private Parser $parser;

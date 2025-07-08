@@ -16,6 +16,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 
+use function array_filter;
+use function array_merge;
+use function assert;
+
 class AbstractReviewType extends AbstractType
 {
   public function __construct(
@@ -24,7 +28,7 @@ class AbstractReviewType extends AbstractType
   {
   }
 
-  protected function addNotes(FormBuilderInterface $builder): AbstractReviewType
+  protected function addNotes(FormBuilderInterface $builder): self
   {
     $builder
       ->add('notes', TextareaType::class, [
@@ -37,7 +41,7 @@ class AbstractReviewType extends AbstractType
   }
 
   /** @throws NonUniqueResultException */
-  protected function addReviewer(FormBuilderInterface $builder, array $options): AbstractReviewType
+  protected function addReviewer(FormBuilderInterface $builder, array $options): self
   {
     $self = $this->security->getUser();
     assert($self instanceof User);

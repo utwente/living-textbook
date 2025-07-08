@@ -11,6 +11,9 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function bin2hex;
+use function random_bytes;
+
 class LearningPathElementContainerType extends AbstractType
 {
   #[Override]

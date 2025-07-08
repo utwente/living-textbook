@@ -23,6 +23,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_key_exists;
+
 #[Route('/{_studyArea<\d+>}/analytics')]
 class AnalyticsController extends AbstractController
 {

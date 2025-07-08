@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use function array_map;
+
 #[OA\Tag('Study area')]
 class StudyAreaController extends AbstractApiController
 {

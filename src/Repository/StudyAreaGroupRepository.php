@@ -8,9 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Override;
 
 /**
- * @method StudyAreaGroup|null find($id, $lockMode = NULL, $lockVersion = NULL)
- * @method StudyAreaGroup|null findOneBy(array $criteria, array $orderBy = NULL)
- * @method StudyAreaGroup[]    findBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
+ * @extends ServiceEntityRepository<StudyAreaGroup>
  */
 class StudyAreaGroupRepository extends ServiceEntityRepository
 {

@@ -5,6 +5,13 @@ namespace App\Review\Model;
 use App\Entity\PendingChange;
 use InvalidArgumentException;
 
+use function array_filter;
+use function array_merge;
+use function array_values;
+use function count;
+use function in_array;
+use function sprintf;
+
 class PendingChangeObjectInfo
 {
   /** @var PendingChange[] */

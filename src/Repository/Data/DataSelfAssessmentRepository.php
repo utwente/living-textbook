@@ -6,6 +6,9 @@ use App\Entity\Data\DataSelfAssessment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<DataSelfAssessment>
+ */
 class DataSelfAssessmentRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

@@ -8,6 +8,9 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Help>
+ */
 class HelpRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

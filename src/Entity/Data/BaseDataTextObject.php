@@ -15,8 +15,8 @@ use JMS\Serializer\Annotation as Serializer;
  */
 trait BaseDataTextObject
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   /**

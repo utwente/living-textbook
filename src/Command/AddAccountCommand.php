@@ -24,6 +24,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
 
+use function assert;
+use function sprintf;
+
 #[AsCommand('ltb:add:account')]
 class AddAccountCommand extends Command
 {

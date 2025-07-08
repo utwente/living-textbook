@@ -11,6 +11,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+use function assert;
+use function in_array;
+use function is_object;
+
 class StudyAreaVoter extends Voter
 {
   // Role constants

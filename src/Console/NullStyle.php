@@ -6,6 +6,8 @@ use Override;
 use RuntimeException;
 use Symfony\Component\Console\Style\OutputStyle;
 
+use function sprintf;
+
 /**
  * Can be used to disable output when the OutputStyle is not provided.
  */

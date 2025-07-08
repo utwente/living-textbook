@@ -6,6 +6,8 @@ use App\Repository\UserGroupEmailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function strcmp;
+
 #[ORM\Entity(repositoryClass: UserGroupEmailRepository::class)]
 #[ORM\Table]
 #[ORM\Index(columns: ['user_group_id'], name: 'user_group_idx')]
@@ -26,7 +28,7 @@ class UserGroupEmail
   private string $email = '';
 
   /** Custom sorter, based on email. */
-  public static function sortOnEmail(UserGroupEmail $a, UserGroupEmail $b): int
+  public static function sortOnEmail(self $a, self $b): int
   {
     return strcmp($a->getEmail(), $b->getEmail());
   }
@@ -36,7 +38,7 @@ class UserGroupEmail
     return $this->userGroup;
   }
 
-  public function setUserGroup(UserGroup $userGroup): UserGroupEmail
+  public function setUserGroup(UserGroup $userGroup): self
   {
     $this->userGroup = $userGroup;
 
@@ -48,7 +50,7 @@ class UserGroupEmail
     return $this->email;
   }
 
-  public function setEmail(string $email): UserGroupEmail
+  public function setEmail(string $email): self
   {
     $this->email = $email;
 

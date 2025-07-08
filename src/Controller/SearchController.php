@@ -18,6 +18,20 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_filter;
+use function array_key_exists;
+use function array_map;
+use function array_reduce;
+use function assert;
+use function count;
+use function is_countable;
+use function ksort;
+use function max;
+use function mb_strtolower;
+use function strcmp;
+use function strlen;
+use function usort;
+
 #[Route('/{_studyArea<\d+>}/search')]
 class SearchController extends AbstractController
 {
@@ -79,7 +93,7 @@ class SearchController extends AbstractController
 
     $data = array_filter($data, fn ($element) => $this->filterSortData($element));
 
-    usort($data, SearchController::sortSearchData(...));
+    usort($data, self::sortSearchData(...));
 
     return $data;
   }

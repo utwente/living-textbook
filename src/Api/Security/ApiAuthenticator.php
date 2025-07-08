@@ -22,6 +22,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCre
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
+use function count;
+use function explode;
+
 class ApiAuthenticator extends AbstractAuthenticator
 {
   final public const string API_TOKEN_HEADER = 'X-LTB-AUTH';

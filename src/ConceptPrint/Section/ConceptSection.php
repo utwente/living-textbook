@@ -11,6 +11,8 @@ use Bobv\LatexBundle\Latex\Element\Text;
 use Pandoc\PandocException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function sprintf;
+
 class ConceptSection extends LtbSection
 {
   /**

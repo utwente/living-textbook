@@ -11,6 +11,11 @@ use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Override;
 use Symfony\Component\Finder\SplFileInfo;
 
+use function assert;
+use function base64_encode;
+use function json_decode;
+use function mb_strtolower;
+
 class LearningPathVisualisationResultHandler implements EventSubscriberInterface
 {
   private const string EMPTY = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';

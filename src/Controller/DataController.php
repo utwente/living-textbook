@@ -49,6 +49,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_key_exists;
+use function assert;
+use function file_get_contents;
+use function is_array;
+use function is_numeric;
+use function is_string;
+use function json_encode;
+use function mb_convert_encoding;
+use function set_time_limit;
+use function sprintf;
+use function strlen;
+
 #[Route('/{_studyArea<\d+>}/data')]
 class DataController extends AbstractController
 {
@@ -271,7 +283,7 @@ class DataController extends AbstractController
 
         if (array_key_exists('learningOutcomes', $jsonData)) {
           if (!is_array($jsonData['learningOutcomes'])) {
-            throw new DataImportException(sprintf('When set, the "learningOutcomes" property must be an array!'));
+            throw new DataImportException('When set, the "learningOutcomes" property must be an array!');
           }
 
           $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
@@ -312,7 +324,7 @@ class DataController extends AbstractController
 
         if (array_key_exists('externalResources', $jsonData)) {
           if (!is_array($jsonData['externalResources'])) {
-            throw new DataImportException(sprintf('When set, the "externalResources" property must be an array!'));
+            throw new DataImportException('When set, the "externalResources" property must be an array!');
           }
 
           foreach ($jsonData['externalResources'] as $jsonExternalResource) {
@@ -360,7 +372,7 @@ class DataController extends AbstractController
         // Tags
         if (array_key_exists('tags', $jsonData)) {
           if (!is_array($jsonData['tags'])) {
-            throw new DataImportException(sprintf('When set, the "tags" property must be an array!'));
+            throw new DataImportException('When set, the "tags" property must be an array!');
           }
 
           foreach ($jsonData['tags'] as $jsonTag) {

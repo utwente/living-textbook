@@ -6,6 +6,10 @@ use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+use function preg_quote;
+use function preg_replace;
+use function sprintf;
+
 /**
  * Register a filter in Twig to highlight parts of text, useful for search.
  */

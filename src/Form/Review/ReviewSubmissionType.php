@@ -24,6 +24,11 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_merge;
+use function in_array;
+use function sprintf;
+use function strtolower;
+
 class ReviewSubmissionType extends AbstractType
 {
   public function __construct(private readonly ReviewService $reviewService)

@@ -5,9 +5,12 @@ namespace App\Entity\Listener;
 use App\Entity\User;
 use App\Entity\UserGroupEmail;
 use App\Repository\UserGroupEmailRepository;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
+
+use function assert;
+use function count;
 
 class UserListener
 {
@@ -18,7 +21,7 @@ class UserListener
    * @throws ORMException
    */
   #[ORM\PostPersist]
-  public function updateStudyAreaRights(User $user, LifecycleEventArgs $event)
+  public function updateStudyAreaRights(User $user, PostPersistEventArgs $event)
   {
     $em = $event->getObjectManager();
 

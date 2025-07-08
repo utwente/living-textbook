@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['email'])]
 class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
 
   /** The email address that has been invited. */
   #[Assert\NotBlank]

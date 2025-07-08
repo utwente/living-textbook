@@ -18,8 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class LearningPathElement implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   /** Belongs to a certain learning path. */
@@ -43,7 +43,7 @@ class LearningPathElement implements IdInterface
   #[ORM\JoinColumn(name: 'next_id', referencedColumnName: 'id', nullable: true)]
   #[JMSA\Expose]
   #[JMSA\Groups(['review_change'])]
-  #[JMSA\Type(LearningPathElement::class)]
+  #[JMSA\Type(self::class)]
   #[JMSA\MaxDepth(2)]
   private ?LearningPathElement $next = null;
 
@@ -60,7 +60,7 @@ class LearningPathElement implements IdInterface
     return $this->learningPath;
   }
 
-  public function setLearningPath(?LearningPath $learningPath): LearningPathElement
+  public function setLearningPath(?LearningPath $learningPath): self
   {
     $this->learningPath = $learningPath;
 
@@ -72,14 +72,14 @@ class LearningPathElement implements IdInterface
     return $this->concept;
   }
 
-  public function setConcept(?Concept $concept): LearningPathElement
+  public function setConcept(?Concept $concept): self
   {
     $this->concept = $concept;
 
     return $this;
   }
 
-  public function getNext(): ?LearningPathElement
+  public function getNext(): ?self
   {
     return $this->next;
   }
@@ -93,7 +93,7 @@ class LearningPathElement implements IdInterface
     return $this->next?->getId();
   }
 
-  public function setNext(?LearningPathElement $next): LearningPathElement
+  public function setNext(?self $next): self
   {
     $this->next = $next;
 
@@ -105,7 +105,7 @@ class LearningPathElement implements IdInterface
     return $this->description;
   }
 
-  public function setDescription(?string $description): LearningPathElement
+  public function setDescription(?string $description): self
   {
     $this->description = $description;
 

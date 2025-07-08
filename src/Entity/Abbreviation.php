@@ -21,16 +21,20 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function assert;
+use function stripos;
+use function trim;
+
 #[ORM\Entity(repositoryClass: AbbreviationRepository::class)]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
-  use SoftDeletable;
+  use IdTrait;
   use ReviewableTrait;
+  use SoftDeletable;
 
   #[Assert\NotNull]
   #[ORM\ManyToOne(inversedBy: 'abbreviations')]
@@ -108,7 +112,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
   }
 
   #[Override]
-  public function setStudyArea(StudyArea $studyArea): Abbreviation
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 
@@ -120,7 +124,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this->abbreviation;
   }
 
-  public function setAbbreviation(string $abbreviation): Abbreviation
+  public function setAbbreviation(string $abbreviation): self
   {
     $this->abbreviation = trim($abbreviation);
 
@@ -132,7 +136,7 @@ class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, R
     return $this->meaning;
   }
 
-  public function setMeaning(string $meaning): Abbreviation
+  public function setMeaning(string $meaning): self
   {
     $this->meaning = trim($meaning);
 

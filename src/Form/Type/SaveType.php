@@ -14,6 +14,8 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function assert;
+
 class SaveType extends AbstractType
 {
   #[Override]

@@ -13,6 +13,8 @@ use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class ConceptIdNameProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;

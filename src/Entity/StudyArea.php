@@ -26,14 +26,20 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+use function array_filter;
+use function array_key_exists;
+use function array_merge;
+use function array_values;
+use function usort;
+
 #[ORM\Entity(repositoryClass: StudyAreaRepository::class)]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyArea implements Stringable, IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   // Access types, used to determine if a user can access the study area
@@ -232,7 +238,7 @@ class StudyArea implements Stringable, IdInterface
     $prevValue = array_key_exists('accessType', $origObj) ? $origObj['accessType'] : null;
 
     // Get choices, remove public type when not administrator, and field has changed
-    $choices = StudyArea::getAccessTypes();
+    $choices = self::getAccessTypes();
     if (!$security->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
       $choices = array_filter($choices, fn ($item) => $item !== StudyArea::ACCESS_PUBLIC);
     }
@@ -266,12 +272,12 @@ class StudyArea implements Stringable, IdInterface
    */
   public function getAvailableUserGroupTypes(): array
   {
-    if ($this->getAccessType() === StudyArea::ACCESS_PRIVATE) {
+    if ($this->getAccessType() === self::ACCESS_PRIVATE) {
       return [];
     }
 
     $result = [];
-    if ($this->getAccessType() !== StudyArea::ACCESS_PUBLIC) {
+    if ($this->getAccessType() !== self::ACCESS_PUBLIC) {
       $result[] = UserGroup::GROUP_VIEWER;
     }
 
@@ -453,10 +459,10 @@ class StudyArea implements Stringable, IdInterface
     }
 
     return match ($this->accessType) {
-      StudyArea::ACCESS_PUBLIC  => true,
-      StudyArea::ACCESS_PRIVATE => $this->isOwner($user),
-      StudyArea::ACCESS_GROUP   => $this->isOwner($user) || $this->isUserInGroup($user),
-      default                   => false,
+      self::ACCESS_PUBLIC  => true,
+      self::ACCESS_PRIVATE => $this->isOwner($user),
+      self::ACCESS_GROUP   => $this->isOwner($user) || $this->isUserInGroup($user),
+      default              => false,
     };
   }
 

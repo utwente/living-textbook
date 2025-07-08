@@ -6,6 +6,8 @@ use Exception;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 use Symfony\Component\Process\Process;
 
+use function sprintf;
+
 /**
  * Class VisualisationBuildFailed.
  *

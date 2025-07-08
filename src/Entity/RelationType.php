@@ -20,14 +20,20 @@ use JMS\Serializer\Annotation as Serializer;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function assert;
+use function lcfirst;
+use function str_replace;
+use function trim;
+use function ucwords;
+
 #[ORM\Entity(repositoryClass: RelationTypeRepository::class)] // We do not enable the soft-deletable extension here, as soft-deleted relations should still work after they have been
 #[ORM\Table]
 class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
-  use SoftDeletable;
+  use IdTrait;
   use ReviewableTrait;
+  use SoftDeletable;
 
   #[Assert\NotNull]
   #[ORM\ManyToOne(inversedBy: 'relationTypes')]
@@ -82,7 +88,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this->description;
   }
 
-  public function setDescription(?string $description): RelationType
+  public function setDescription(?string $description): self
   {
     $this->description = StringHelper::emptyToNull($description);
 
@@ -94,7 +100,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this->name;
   }
 
-  public function setName(string $name): RelationType
+  public function setName(string $name): self
   {
     $this->name = trim($name);
 
@@ -108,7 +114,7 @@ class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, I
   }
 
   #[Override]
-  public function setStudyArea(?StudyArea $studyArea): RelationType
+  public function setStudyArea(?StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 

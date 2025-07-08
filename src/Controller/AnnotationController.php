@@ -22,6 +22,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+use function assert;
+use function count;
+
 #[Route('/{_studyArea<\d+>}/annotation')]
 class AnnotationController extends AbstractController
 {

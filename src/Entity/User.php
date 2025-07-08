@@ -26,6 +26,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function array_merge;
+use function mb_strtolower;
+use function serialize;
+use function sort;
+use function strcmp;
+use function unserialize;
+
 /**
  * TODO Migrate array properties to JSON.
  */
@@ -37,8 +44,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class User implements UserInterface, Serializable, PasswordAuthenticatedUserInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
   public const string ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
@@ -141,7 +148,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @throws OidcException
    */
-  public static function createFromOidcUserData(OidcUserData $userData): User
+  public static function createFromOidcUserData(OidcUserData $userData): self
   {
     $username = $userData->getEmail();
 
@@ -150,14 +157,14 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
       throw new OidcException('Retrieved username from OIDC is empty!');
     }
 
-    return new User()
+    return new self()
       ->setUsername($username)
       ->setIsOidc(true)
       ->update($userData);
   }
 
   /** Custom sorter, based on display name. */
-  public static function sortOnDisplayName(User $a, User $b): int
+  public static function sortOnDisplayName(self $a, self $b): int
   {
     return strcmp($a->getDisplayName(), $b->getDisplayName());
   }
@@ -166,7 +173,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    * Update the user with the latest information from the token
    * Do not update the username, this should be the same anyways.
    */
-  public function update(OidcUserData $userData): User
+  public function update(OidcUserData $userData): self
   {
     return $this
       ->setDisplayName($userData->getDisplayName())
@@ -301,7 +308,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->isOidc;
   }
 
-  public function setIsOidc(bool $isOidc): User
+  public function setIsOidc(bool $isOidc): self
   {
     $this->isOidc = $isOidc;
 
@@ -341,7 +348,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->lastUsed;
   }
 
-  public function setLastUsed(DateTime $lastUsed): User
+  public function setLastUsed(DateTime $lastUsed): self
   {
     $this->lastUsed = $lastUsed;
 
@@ -378,7 +385,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->givenName;
   }
 
-  public function setGivenName(string $givenName): User
+  public function setGivenName(string $givenName): self
   {
     $this->givenName = $givenName;
 
@@ -390,7 +397,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->familyName;
   }
 
-  public function setFamilyName(string $familyName): User
+  public function setFamilyName(string $familyName): self
   {
     $this->familyName = $familyName;
 
@@ -402,7 +409,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->fullName;
   }
 
-  public function setFullName(string $fullName): User
+  public function setFullName(string $fullName): self
   {
     $this->fullName = $fullName;
 
@@ -414,7 +421,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->displayName;
   }
 
-  public function setDisplayName(string $displayName): User
+  public function setDisplayName(string $displayName): self
   {
     $this->displayName = $displayName;
 
@@ -426,7 +433,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->isAdmin;
   }
 
-  public function setIsAdmin(bool $isAdmin): User
+  public function setIsAdmin(bool $isAdmin): self
   {
     $this->isAdmin = $isAdmin;
 

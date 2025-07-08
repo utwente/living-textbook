@@ -17,6 +17,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_values;
+use function count;
+
 class LearningPathElementsType extends AbstractType
 {
   #[Override]

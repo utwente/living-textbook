@@ -10,6 +10,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Drenso\Shared\Database\RepositoryTraits\FindIdsTrait;
 use InvalidArgumentException;
 
+/**
+ * @extends ServiceEntityRepository<Concept>
+ */
 class ConceptRepository extends ServiceEntityRepository
 {
   use FindIdsTrait;

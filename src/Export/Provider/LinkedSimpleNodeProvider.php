@@ -21,6 +21,9 @@ use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+use function array_map;
+use function sprintf;
+
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -124,7 +127,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     "priorKnowledge": [
       {
           "node": "<node-id>",
-          "isPriorKnowledgeOf": [<node-ids>],          
+          "isPriorKnowledgeOf": [<node-ids>],
       }
     ],
     "aliases" : [

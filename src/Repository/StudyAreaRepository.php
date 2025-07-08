@@ -11,19 +11,17 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+/**
+ * @extends ServiceEntityRepository<StudyArea>
+ */
 class StudyAreaRepository extends ServiceEntityRepository
 {
-  private AuthorizationCheckerInterface $auth;
-  private TokenStorageInterface $tokenStorage;
-
   public function __construct(
-    ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker,
-    TokenStorageInterface $tokenStorage)
+    ManagerRegistry $registry,
+    private readonly AuthorizationCheckerInterface $authorizationChecker,
+    private readonly TokenStorageInterface $tokenStorage)
   {
     parent::__construct($registry, StudyArea::class);
-
-    $this->auth         = $authorizationChecker;
-    $this->tokenStorage = $tokenStorage;
   }
 
   /** @throws NonUniqueResultException */
@@ -62,16 +60,6 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the amount of visible study area's.
-   *
-   * @throws NonUniqueResultException
-   */
-  public function getVisibleCount(User $user)
-  {
-    return $this->getVisibleQueryBuilder($user)->select('COUNT(sa.id)')->getQuery()->getSingleScalarResult();
-  }
-
-  /**
    * Retrieve QueryBuilder for the visible study area's.
    *
    * @return QueryBuilder
@@ -89,7 +77,7 @@ class StudyAreaRepository extends ServiceEntityRepository
       ->addOrderBy('sa.name', 'ASC');
 
     // Return everything for super admins
-    if ($this->tokenStorage->getToken() && $this->auth->isGranted('ROLE_SUPER_ADMIN')) {
+    if ($this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
       return $qb;
     }
 

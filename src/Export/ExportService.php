@@ -12,6 +12,18 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+use function array_key_exists;
+use function func_get_args;
+use function iconv;
+use function ksort;
+use function mb_strtolower;
+use function preg_replace;
+use function setlocale;
+use function sprintf;
+use function strtolower;
+
+use const LC_CTYPE;
+
 class ExportService
 {
   /**

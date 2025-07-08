@@ -5,6 +5,8 @@ namespace App\Naming\Model;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
+use function strtolower;
+
 class ResolvedConceptNames implements ResolvedNamesInterface
 {
   private string $definition;

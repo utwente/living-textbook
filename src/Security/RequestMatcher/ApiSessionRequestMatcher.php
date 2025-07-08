@@ -7,6 +7,8 @@ use Override;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
+use function preg_match;
+
 class ApiSessionRequestMatcher implements RequestMatcherInterface
 {
   final public const string SESSION_API_TOKEN = 'session';

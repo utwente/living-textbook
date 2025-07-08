@@ -122,12 +122,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$tag of method App\\\\Entity\\\\Concept\\:\\:addTag\\(\\) expects App\\\\Entity\\\\Tag, object given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$requestTag in PHPDoc tag @var does not match assigned variable \\$requestTags\\.$#',
 	'identifier' => 'varTag.differentVariable',
 	'count' => 1,
@@ -140,33 +134,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$relationType of method App\\\\Entity\\\\ConceptRelation\\:\\:setRelationType\\(\\) expects App\\\\Entity\\\\RelationType\\|null, object given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$source of method App\\\\Entity\\\\ConceptRelation\\:\\:setSource\\(\\) expects App\\\\Entity\\\\Concept, object given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$target of method App\\\\Entity\\\\ConceptRelation\\:\\:setTarget\\(\\) expects App\\\\Entity\\\\Concept, object given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$object of method App\\\\Api\\\\Controller\\\\AbstractApiController\\:\\:assertStudyAreaObject\\(\\) expects App\\\\Entity\\\\Contracts\\\\StudyAreaFilteredInterface, App\\\\Entity\\\\Concept\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 3,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$relationType of method App\\\\Api\\\\Model\\\\Update\\\\UpdateConceptRelationApiModel\\:\\:mapToEntity\\(\\) expects App\\\\Entity\\\\RelationType\\|null, object\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
 ];
 $ignoreErrors[] = [
@@ -554,12 +524,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Model/Validation/ValidationFailedData.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Anonymous function should return App\\\\Entity\\\\UserApiToken\\|null but returns object\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Security/ApiAuthenticator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Api\\\\Security\\\\ApiAuthenticator\\:\\:createToken\\(\\) has parameter \\$firewallName with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -908,12 +872,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/ContributorController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$relationType of method App\\\\Entity\\\\ConceptRelation\\:\\:setRelationType\\(\\) expects App\\\\Entity\\\\RelationType\\|null, object given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/DataController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on class\\-string\\|object\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -1026,12 +984,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Controller/DefaultController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method object\\:\\:getId\\(\\)\\.$#',
-	'identifier' => 'method.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/ElFinderController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Controller\\\\ElFinderController\\:\\:forwardToElFinder\\(\\) has parameter \\$query with no value type specified in iterable type array\\.$#',
@@ -4388,30 +4340,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:\\$concepts \\(Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<App\\\\Entity\\\\Concept\\>\\) does not accept array\\<App\\\\Entity\\\\Concept\\>\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:\\$concepts with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:\\$relationTypes \\(Doctrine\\\\Common\\\\Collections\\\\Collection&iterable\\<App\\\\Entity\\\\RelationType\\>\\) does not accept list\\<object\\>\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:\\$relationTypes with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -4658,12 +4586,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$callback of function array_filter expects \\(callable\\(object\\)\\: bool\\)\\|null, Closure\\(App\\\\Entity\\\\StudyArea\\)\\: bool given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Data\\\\JsonUploadType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -4722,12 +4644,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/LearningPath/LearningPathElementSelectorType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setLearningPath\\(\\) on object\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/LearningPath/LearningPathElementType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\LearningPath\\\\LearningPathElementType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -5102,28 +5018,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Naming/NamingService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\AbbreviationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/AbbreviationRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\AbbreviationRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/AbbreviationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\AnnotationCommentRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/AnnotationCommentRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\AnnotationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/AnnotationRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\AnnotationRepository\\:\\:getCountsForUserInStudyArea\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -5144,12 +5042,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/AnnotationRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ConceptRelationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ConceptRelationRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Repository\\\\ConceptRelationRepository uses generic trait Drenso\\\\Shared\\\\Database\\\\RepositoryTraits\\\\FindIdsTrait but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -5166,12 +5058,6 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/ConceptRelationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ConceptRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Repository\\\\ConceptRepository uses generic trait Drenso\\\\Shared\\\\Database\\\\RepositoryTraits\\\\FindIdsTrait but does not specify its types\\: T$#',
@@ -5198,12 +5084,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ContributorRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ContributorRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\ContributorRepository\\:\\:findForConcepts\\(\\) has parameter \\$concepts with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5214,42 +5094,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/ContributorRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\Data\\\\DataExamplesRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/Data/DataExamplesRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\Data\\\\DataHowToRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/Data/DataHowToRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\Data\\\\DataIntroductionRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/Data/DataIntroductionRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\Data\\\\DataSelfAssessmentRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/Data/DataSelfAssessmentRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\Data\\\\DataTheoryExplanationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/Data/DataTheoryExplanationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ExternalResourceRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ExternalResourceRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\ExternalResourceRepository\\:\\:findForConcepts\\(\\) has parameter \\$concepts with no value type specified in iterable type array\\.$#',
@@ -5264,12 +5108,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/ExternalResourceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\HelpRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/HelpRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Repository\\\\LayoutConfigurationOverrideRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -5280,12 +5118,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/LayoutConfigurationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\LearningOutcomeRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findForConcepts\\(\\) has parameter \\$concepts with no value type specified in iterable type array\\.$#',
@@ -5312,20 +5144,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\LearningPathElementRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningPathElementRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningPathRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\LearningPathRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/LearningPathRepository.php',
 ];
@@ -5342,28 +5162,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/LearningPathRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\PageLoadRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/PageLoadRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\PageLoadRepository\\:\\:purgeForStudyArea\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/PageLoadRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\PendingChangeRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/PendingChangeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\PendingChangeRepository\\:\\:getForUser\\(\\) should return array\\<App\\\\Entity\\\\PendingChange\\> but returns list\\<object\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/PendingChangeRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\PendingChangeRepository\\:\\:getMultiple\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#',
@@ -5372,73 +5174,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/PendingChangeRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\RelationTypeRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/RelationTypeRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Doctrine\\\\Persistence\\\\ObjectManager\\:\\:flush\\(\\) invoked with 1 parameter, 0 required\\.$#',
 	'identifier' => 'arguments.count',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/RelationTypeRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ReviewRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ReviewRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaFieldConfigurationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaFieldConfigurationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaGroupRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaGroupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaGroupRepository has PHPDoc tag @method for method findBy\\(\\) parameter \\#1 \\$criteria with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaGroupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaGroupRepository has PHPDoc tag @method for method findBy\\(\\) parameter \\#2 \\$orderBy with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaGroupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaGroupRepository has PHPDoc tag @method for method findOneBy\\(\\) parameter \\#1 \\$criteria with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaGroupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaGroupRepository has PHPDoc tag @method for method findOneBy\\(\\) parameter \\#2 \\$orderBy with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaGroupRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StudyAreaRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\StudyAreaRepository\\:\\:getOwnerAmount\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\StudyAreaRepository\\:\\:getVisibleCount\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
@@ -5456,18 +5198,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/StylingConfigurationRelationOverrideRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\StylingConfigurationRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StylingConfigurationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\TagRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/TagRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\TagRepository\\:\\:findForStudyArea\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -5480,46 +5210,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/TagRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\TrackingEventRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/TrackingEventRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\TrackingEventRepository\\:\\:purgeForStudyArea\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/TrackingEventRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserApiTokenRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserApiTokenRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserBrowserStateRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserBrowserStateRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\UserBrowserStateRepository\\:\\:findForUser\\(\\) should return App\\\\Entity\\\\UserBrowserState\\|null but returns object\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserBrowserStateRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserGroupEmailRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserGroupEmailRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserGroupRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserGroupRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\UserGroupRepository\\:\\:removeObsoleteGroups\\(\\) has no return type specified\\.$#',
@@ -5528,46 +5222,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/UserGroupRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserProtoRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserProtoRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserProtoRepository has PHPDoc tag @method for method findOneBy\\(\\) parameter \\#1 \\$criteria with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserProtoRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserProtoRepository has PHPDoc tag @method for method findOneBy\\(\\) parameter \\#2 \\$orderBy with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserProtoRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\UserProtoRepository\\:\\:getForEmail\\(\\) has parameter \\$email with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/UserProtoRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserRepository extends generic class Doctrine\\\\Bundle\\\\DoctrineBundle\\\\Repository\\\\ServiceEntityRepository but does not specify its types\\: TEntityClass$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserRepository has PHPDoc tag @method for method findOneBy\\(\\) parameter \\#1 \\$criteria with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\UserRepository has PHPDoc tag @method for method findOneBy\\(\\) parameter \\#2 \\$orderBy with no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\UserRepository\\:\\:getFallbackUsers\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -5603,12 +5261,6 @@ $ignoreErrors[] = [
 	'message' => '#^Left side of && is always true\\.$#',
 	'identifier' => 'booleanAnd.leftAlwaysTrue',
 	'count' => 1,
-	'path' => __DIR__ . '/src/Request/Subscriber/RequestStudyAreaSubscriber.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Request\\\\Subscriber\\\\RequestStudyAreaSubscriber\\:\\:\\$studyArea \\(App\\\\Entity\\\\StudyArea\\|null\\) does not accept object\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 2,
 	'path' => __DIR__ . '/src/Request/Subscriber/RequestStudyAreaSubscriber.php',
 ];
 $ignoreErrors[] = [
@@ -5679,12 +5331,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getSession\\(\\) on null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Review/ReviewService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method setObject\\(\\) on object\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
@@ -5988,18 +5634,6 @@ $ignoreErrors[] = [
 	'identifier' => 'nullCoalesce.variable',
 	'count' => 1,
 	'path' => __DIR__ . '/src/UrlUtils/Model/UrlContext.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UrlUtils/UrlChecker.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\UrlUtils\\\\Model\\\\Url and App\\\\UrlUtils\\\\Model\\\\Url will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UrlUtils/UrlChecker.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\UrlUtils\\\\UrlChecker\\:\\:cacheUrl\\(\\) has parameter \\$expiry with no type specified\\.$#',

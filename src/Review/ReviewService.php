@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\Mapping\MappingException;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use InvalidArgumentException;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -33,6 +34,22 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
+
+use function array_diff;
+use function array_filter;
+use function array_key_exists;
+use function array_keys;
+use function array_merge;
+use function array_unique;
+use function array_values;
+use function assert;
+use function count;
+use function in_array;
+use function is_numeric;
+use function is_string;
+use function json_decode;
+use function json_encode;
+use function sprintf;
 
 class ReviewService
 {
@@ -212,8 +229,8 @@ class ReviewService
 
     // Reapply the changes in a fresh pending change object, as we just cleared the EM
     /** @var PendingChange $pendingChange */
-    $pendingChange = $this->pendingChangeRepository->find($pendingChange->getId())
-      ->setObject($object)
+    $pendingChange = $this->pendingChangeRepository->find($pendingChange->getId()) ?? throw new ObjectRequiredException();
+    $pendingChange->setObject($object)
       ->setChangedFields($changedFields);
 
     // If the review was already reviewed, clear its approval status
@@ -435,7 +452,7 @@ class ReviewService
 
     if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       // Create a new instance of the object
-      assert(is_string($objectType) && strlen($objectType) > 0);
+      assert(is_string($objectType) && $objectType !== '');
       $object = new $objectType();
       assert($object instanceof ReviewableInterface);
       $object->setStudyArea($pendingChange->getStudyArea());

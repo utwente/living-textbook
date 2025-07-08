@@ -18,6 +18,26 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 
+use function array_filter;
+use function array_key_exists;
+use function array_merge;
+use function assert;
+use function curl_close;
+use function curl_exec;
+use function curl_getinfo;
+use function curl_init;
+use function curl_setopt;
+use function sprintf;
+use function str_replace;
+use function strstr;
+use function strtolower;
+
+use const CURLOPT_FOLLOWLOCATION;
+use const CURLOPT_HEADER;
+use const CURLOPT_HTTPHEADER;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_URL;
+
 class UrlChecker
 {
   private FilesystemAdapter $bad0UrlCache;
@@ -82,7 +102,6 @@ class UrlChecker
     $studyAreas = $this->studyAreaRepository->findAll();
     $badUrls    = [];
     foreach ($studyAreas as $studyArea) {
-      assert($studyArea instanceof StudyArea);
       $badUrls[$studyArea->getId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
     }
 
@@ -152,7 +171,6 @@ class UrlChecker
     $wrongStudyAreaUrls = [];
     $unscannedUrls      = [];
     foreach ($urls as $url) {
-      assert($url instanceof Url);
       if ($url->isInternal()) {
         $urlStatus = $this->checkInternalUrl($url, $studyArea);
         if ($urlStatus === false) {

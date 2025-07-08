@@ -16,12 +16,22 @@ use RuntimeException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+use function array_intersect;
+use function array_key_exists;
+use function count;
+use function json_decode;
+use function json_encode;
+use function strlen;
+use function strrpos;
+use function substr;
+use function usort;
+
 #[ORM\Entity(repositoryClass: PendingChangeRepository::class)]
 #[ORM\Table]
 class PendingChange implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
 
   /**
    * Change types
@@ -43,7 +53,7 @@ class PendingChange implements IdInterface
 
   /** The change type of the pending change. */
   #[Assert\NotNull]
-  #[Assert\Choice(choices: PendingChange::CHANGE_TYPES)]
+  #[Assert\Choice(choices: self::CHANGE_TYPES)]
   #[ORM\Column(length: 10)]
   private ?string $changeType = null;
 
@@ -93,9 +103,9 @@ class PendingChange implements IdInterface
   private ?ReviewableInterface $cachedObject = null;
 
   /** Duplicated the pending change, while setting the new marked fields as supplied. */
-  public function duplicate(array $changedFields): PendingChange
+  public function duplicate(array $changedFields): self
   {
-    $new = new PendingChange()
+    $new = new self()
       ->setStudyArea($this->getStudyArea())
       ->setChangeType($this->getChangeType())
       ->setObjectType($this->getObjectType())
@@ -115,7 +125,7 @@ class PendingChange implements IdInterface
    * @throws IncompatibleChangeMergeException
    * @throws OverlappingFieldsChangedException
    */
-  public function merge(PendingChange $merge): self
+  public function merge(self $merge): self
   {
     // Validate whether the pending change to be merged is of the same type
     if ($this->getObjectType() !== $merge->getObjectType()

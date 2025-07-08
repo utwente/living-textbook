@@ -23,16 +23,21 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function array_reverse;
+use function assert;
+use function count;
+use function end;
+
 #[ORM\Entity(repositoryClass: LearningPathRepository::class)]
 #[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
-  use SoftDeletable;
+  use IdTrait;
   use ReviewableTrait;
+  use SoftDeletable;
 
   #[Assert\NotNull]
   #[ORM\ManyToOne(inversedBy: 'learningPaths')]
@@ -145,7 +150,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   }
 
   #[Override]
-  public function setStudyArea(StudyArea $studyArea): LearningPath
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 
@@ -157,7 +162,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this->name;
   }
 
-  public function setName(string $name): LearningPath
+  public function setName(string $name): self
   {
     $this->name = $name;
 
@@ -169,7 +174,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this->question;
   }
 
-  public function setQuestion(string $question): LearningPath
+  public function setQuestion(string $question): self
   {
     $this->question = $question;
 
@@ -181,7 +186,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this->introduction;
   }
 
-  public function setIntroduction(?string $introduction): LearningPath
+  public function setIntroduction(?string $introduction): self
   {
     $this->introduction = $introduction;
 
@@ -240,7 +245,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     return new ArrayCollection(array_reverse($result));
   }
 
-  public function addElement(LearningPathElement $element): LearningPath
+  public function addElement(LearningPathElement $element): self
   {
     if (!$element->getLearningPath()) {
       $element->setLearningPath($this);
@@ -251,7 +256,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     return $this;
   }
 
-  public function removeElement(LearningPathElement $element): LearningPath
+  public function removeElement(LearningPathElement $element): self
   {
     $this->elements->removeElement($element);
 

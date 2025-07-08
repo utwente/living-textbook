@@ -15,6 +15,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_key_exists;
+use function assert;
+use function is_object;
+use function method_exists;
+use function sprintf;
+use function stripos;
+use function strlen;
+use function substr;
+
 class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 {
   public function __construct(

@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
+use Drenso\Shared\Exception\NullGuard\IdRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use function preg_match;
+use function sprintf;
 
 /** Study area id 0 is used to indicate the global storage space. */
 #[Route('/elfinder')]
@@ -28,12 +31,11 @@ class ElFinderController extends AbstractController
 
     // Match for study area id
     if (1 === preg_match("/^studyarea\/(\d+)/", $homeFolderString, $result)) {
-      $studyAreaId = intval($result[1]);
+      $studyAreaId = (int)$result[1];
 
       if (!($studyArea = $studyAreaRepository->find($studyAreaId))) {
         throw $this->createNotFoundException();
       }
-      assert($studyArea instanceof StudyArea);
 
       $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
     } elseif (1 === preg_match('/^global/', $homeFolderString, $result)) {
@@ -64,7 +66,7 @@ class ElFinderController extends AbstractController
       $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
     }
 
-    return $this->forwardToElFinder('show', $instance, $studyArea ? $studyArea->getId() : 0, $request->query->all());
+    return $this->forwardToElFinder('show', $instance, $studyArea ? ($studyArea->getId() ?? throw new IdRequiredException()) : 0, $request->query->all());
   }
 
   /** Forward the request to the correct elfinder controller. */

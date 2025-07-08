@@ -22,6 +22,10 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function in_array;
+use function sprintf;
+use function stripos;
+
 #[ORM\Entity(repositoryClass: AnnotationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
@@ -29,8 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Annotation implements SearchableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   /** The user. */
@@ -200,7 +204,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->createdAt;
   }
 
-  public function setUser(?User $user): Annotation
+  public function setUser(?User $user): self
   {
     $this->user = $user;
 
@@ -219,7 +223,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->concept->getId();
   }
 
-  public function setConcept(?Concept $concept): Annotation
+  public function setConcept(?Concept $concept): self
   {
     $this->concept = $concept;
 
@@ -231,7 +235,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->text;
   }
 
-  public function setText(?string $text): Annotation
+  public function setText(?string $text): self
   {
     $this->text = StringHelper::emptyToNull($text);
 
@@ -243,7 +247,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->context;
   }
 
-  public function setContext(string $context): Annotation
+  public function setContext(string $context): self
   {
     $this->context = $context;
 
@@ -255,7 +259,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->start;
   }
 
-  public function setStart(int $start): Annotation
+  public function setStart(int $start): self
   {
     $this->start = $start;
 
@@ -267,7 +271,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->end;
   }
 
-  public function setEnd(int $end): Annotation
+  public function setEnd(int $end): self
   {
     $this->end = $end;
 
@@ -279,7 +283,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->selectedText;
   }
 
-  public function setSelectedText(?string $selectedText): Annotation
+  public function setSelectedText(?string $selectedText): self
   {
     $this->selectedText = StringHelper::emptyToNull($selectedText);
 
@@ -291,7 +295,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->version;
   }
 
-  public function setVersion(?DateTime $version): Annotation
+  public function setVersion(?DateTime $version): self
   {
     $this->version = $version;
 
@@ -303,7 +307,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this->visibility;
   }
 
-  public function setVisibility(string $visibility): Annotation
+  public function setVisibility(string $visibility): self
   {
     if (!in_array($visibility, self::visibilityOptions())) {
       throw new InvalidArgumentException(sprintf('"%s" is not a valid visibility value!', $visibility));

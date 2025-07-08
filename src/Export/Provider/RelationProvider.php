@@ -14,6 +14,9 @@ use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+use function usort;
+
 class RelationProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;

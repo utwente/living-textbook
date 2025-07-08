@@ -7,6 +7,12 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+use function array_merge;
+use function is_array;
+use function json_encode;
+use function preg_replace;
+use function trim;
+
 /**
  * This extension ensures that the correct options are loaded for
  * the DataTable extension.

@@ -12,6 +12,8 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Override;
 
+use function array_map;
+
 class ConceptApiModel implements IdInterface
 {
   protected function __construct(

@@ -16,6 +16,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use function filemtime;
+use function is_file;
+use function sprintf;
+
 #[Route('/uploads')]
 class UploadsController extends AbstractController
 {

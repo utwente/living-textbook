@@ -59,3 +59,7 @@ docker/nginx/server.cert
 /.twig-cs-fixer.cache
 twigcs.xml
 ###< vincentlanglet/twig-cs-fixer ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

@@ -5,6 +5,8 @@ namespace App\UrlUtils\Model;
 use DateTime;
 use Exception;
 
+use function md5;
+
 class CacheableUrl extends AbstractUrl
 {
   private DateTime $timestamp;

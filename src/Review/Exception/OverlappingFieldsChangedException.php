@@ -5,6 +5,10 @@ namespace App\Review\Exception;
 use App\Entity\PendingChange;
 use Exception;
 
+use function array_intersect;
+use function implode;
+use function sprintf;
+
 /**
  * Class OverlappingFieldsChangedException.
  *

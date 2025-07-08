@@ -24,6 +24,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\ItemInterface;
 
+use function filemtime;
+use function md5;
+use function sprintf;
+use function str_replace;
+use function time;
+use function urlencode;
+
 #[Route('/latex')]
 class LatexController extends AbstractController
 {

@@ -14,14 +14,12 @@ return RectorConfig::configure()
   ->withImportNames()
   ->withParallel(timeoutSeconds: 180, jobSize: 10)
   ->withPhpSets()
-  ->withSets([
-    \Rector\Symfony\Set\SymfonySetList::SYMFONY_54,
-    \Rector\Symfony\Set\SymfonySetList::SYMFONY_60,
-    \Rector\Symfony\Set\SymfonySetList::SYMFONY_61,
-    \Rector\Symfony\Set\SymfonySetList::SYMFONY_62,
-    \Rector\Symfony\Set\SymfonySetList::SYMFONY_63,
-    \Rector\Symfony\Set\SymfonySetList::SYMFONY_64,
-  ])
+  ->withComposerBased(
+    twig: true,
+    phpunit: true,
+    doctrine: true,
+    symfony: true,
+  )
   ->withAttributesSets(symfony: true, doctrine: true, gedmo: true, jms: true)
   ->withConfiguredRule(\Rector\Php80\Rector\Class_\AnnotationToAttributeRector::class, [
     new AnnotationToAttribute(\App\Attribute\DenyOnFrozenStudyArea::class),

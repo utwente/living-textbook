@@ -29,6 +29,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
+use function array_keys;
+use function assert;
+use function count;
+use function is_numeric;
+
 #[Route('/{_studyArea<\d+>}/review')]
 class ReviewController extends AbstractController
 {

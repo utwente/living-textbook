@@ -9,6 +9,9 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Contributor>
+ */
 class ContributorRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)
@@ -40,8 +43,8 @@ class ContributorRepository extends ServiceEntityRepository
   {
     return $this->createQueryBuilder('c')
       ->distinct()
-      ->leftJoin('c.concepts', 'c')
-      ->where('c IN (:concepts)')
+      ->leftJoin('c.concepts', 'cc')
+      ->where('cc IN (:concepts)')
       ->setParameter('concepts', $concepts)
       ->getQuery()->getResult();
   }

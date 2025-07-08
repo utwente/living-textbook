@@ -5,6 +5,8 @@ namespace App\Review\Exception;
 use App\Entity\PendingChange;
 use Exception;
 
+use function sprintf;
+
 class IncompatibleChangeMergeException extends Exception
 {
   /** IncompatibleChangeMergeException constructor. */

@@ -6,6 +6,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
+use function ltrim;
+
 class LtbRouter
 {
   private RouterInterface $router;

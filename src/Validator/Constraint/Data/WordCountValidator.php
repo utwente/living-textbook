@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+use function str_word_count;
+use function strip_tags;
+
 class WordCountValidator extends ConstraintValidator
 {
   /**

@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function sprintf;
+
 class ButtonExtension extends AbstractTypeExtension
 {
   #[Override]

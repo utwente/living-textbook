@@ -9,6 +9,11 @@ use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function class_exists;
+use function class_uses;
+use function in_array;
+use function sprintf;
+
 abstract class AbstractBaseDataType extends AbstractType
 {
   #[Override]

@@ -5,6 +5,8 @@ namespace App\Review\Exception;
 use App\Entity\PendingChange;
 use Exception;
 
+use function sprintf;
+
 class InvalidChangeException extends Exception
 {
   public function __construct(PendingChange $pendingChange)

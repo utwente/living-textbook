@@ -39,6 +39,22 @@ use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Process\Process;
 
+use function array_map;
+use function array_reverse;
+use function array_unshift;
+use function array_values;
+use function gc_collect_cycles;
+use function ini_set;
+use function iterator_to_array;
+use function json_encode;
+use function md5;
+use function random_int;
+use function serialize;
+use function set_time_limit;
+use function sprintf;
+use function trim;
+use function unserialize;
+
 class AnalyticsService
 {
   private const string ENV_DIR = '.venv';

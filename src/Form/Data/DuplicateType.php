@@ -23,6 +23,10 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_filter;
+use function count;
+use function is_countable;
+
 class DuplicateType extends AbstractType
 {
   final public const string CHOICE              = 'type';

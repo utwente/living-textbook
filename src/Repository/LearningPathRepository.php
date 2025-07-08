@@ -12,6 +12,13 @@ use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function array_values;
+use function count;
+use function in_array;
+
+/**
+ * @extends ServiceEntityRepository<LearningPath>
+ */
 class LearningPathRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)
