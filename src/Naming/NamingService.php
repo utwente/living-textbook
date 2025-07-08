@@ -13,6 +13,8 @@ use Symfony\Component\String\Inflector\EnglishInflector;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function sprintf;
+
 /**
  * The naming service is responsible for the names printed in the application.
  * They either come from the configuration, or from the default translations.

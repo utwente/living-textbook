@@ -13,12 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function count;
+
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 #[ORM\Table]
 class Review implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
 
   #[Assert\NotNull]
   #[ORM\ManyToOne]
@@ -135,7 +137,7 @@ class Review implements IdInterface
     return $this->pendingChanges;
   }
 
-  public function addPendingChange(PendingChange $pendingChange): Review
+  public function addPendingChange(PendingChange $pendingChange): self
   {
     // Check whether the study area is set, otherwise set it as this
     if (!$pendingChange->getReview()) {
@@ -146,7 +148,7 @@ class Review implements IdInterface
     return $this;
   }
 
-  public function removePendingChange(PendingChange $PendingChange): Review
+  public function removePendingChange(PendingChange $PendingChange): self
   {
     $this->pendingChanges->removeElement($PendingChange);
 
@@ -182,7 +184,7 @@ class Review implements IdInterface
     return $this->reviewedAt;
   }
 
-  public function setReviewedAt(?DateTime $reviewedAt): Review
+  public function setReviewedAt(?DateTime $reviewedAt): self
   {
     $this->reviewedAt = $reviewedAt;
 
@@ -194,7 +196,7 @@ class Review implements IdInterface
     return $this->reviewedBy;
   }
 
-  public function setReviewedBy(?User $reviewedBy): Review
+  public function setReviewedBy(?User $reviewedBy): self
   {
     $this->reviewedBy = $reviewedBy;
 

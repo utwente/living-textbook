@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_merge;
+
 class PermissionsTypes extends AbstractType
 {
   #[Override]

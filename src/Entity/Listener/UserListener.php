@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
+use function assert;
+use function count;
+
 class UserListener
 {
   /**

@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class AnnotationComment implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   #[Assert\NotNull]
@@ -66,7 +66,7 @@ class AnnotationComment implements IdInterface
     return $this->user->getDisplayName();
   }
 
-  public function setUser(?User $user): AnnotationComment
+  public function setUser(?User $user): self
   {
     $this->user = $user;
 
@@ -78,7 +78,7 @@ class AnnotationComment implements IdInterface
     return $this->annotation;
   }
 
-  public function setAnnotation(?Annotation $annotation): AnnotationComment
+  public function setAnnotation(?Annotation $annotation): self
   {
     $this->annotation = $annotation;
 
@@ -90,7 +90,7 @@ class AnnotationComment implements IdInterface
     return $this->text;
   }
 
-  public function setText(?string $text): AnnotationComment
+  public function setText(?string $text): self
   {
     $this->text = $text;
 

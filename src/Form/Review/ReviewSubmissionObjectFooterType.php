@@ -13,6 +13,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
+use function assert;
+
 class ReviewSubmissionObjectFooterType extends AbstractType
 {
   public function __construct(

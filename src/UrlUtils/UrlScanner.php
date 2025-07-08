@@ -12,6 +12,15 @@ use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use Symfony\Component\Routing\RouterInterface;
 
+use function array_merge;
+use function array_unique;
+use function array_values;
+use function mb_stripos;
+use function preg_match;
+use function preg_match_all;
+use function preg_quote;
+use function trim;
+
 /**
  * Class UrlScanner.
  *

@@ -32,6 +32,15 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+use function array_key_exists;
+use function count;
+use function ini_set;
+use function preg_match_all;
+use function preg_quote;
+use function set_time_limit;
+use function sprintf;
+use function str_replace;
+
 class StudyAreaDuplicator
 {
   private TagRepository $tagRepository;
@@ -522,7 +531,7 @@ class StudyAreaDuplicator
       }
 
       // Check if this url is actually from the area to duplicate
-      if (intval($matchedRouteData['_studyArea']) !== $this->studyAreaToDuplicate->getId()) {
+      if ((int)$matchedRouteData['_studyArea'] !== $this->studyAreaToDuplicate->getId()) {
         continue;
       }
 
@@ -535,24 +544,24 @@ class StudyAreaDuplicator
       // Update route parameters for specific routes
       if ($routeName === 'app_concept_show') {
         // Check whether the new concept is available
-        if (array_key_exists(intval($matchedRouteData['concept']), $this->newConcepts)) {
-          $matchedRouteData['concept'] = $this->newConcepts[intval($matchedRouteData['concept'])]->getId();
+        if (array_key_exists((int)$matchedRouteData['concept'], $this->newConcepts)) {
+          $matchedRouteData['concept'] = $this->newConcepts[(int)$matchedRouteData['concept']]->getId();
         } else {
           // Revert to old study area id to not break link completely
           $revertStudyArea = true;
         }
       } elseif ($routeName === 'app_learningoutcome_show') {
         // Check whether the new learning outcome is available
-        if (array_key_exists(intval($matchedRouteData['learningOutcome']), $this->newLearningOutcomes)) {
-          $matchedRouteData['learningOutcome'] = $this->newLearningOutcomes[intval($matchedRouteData['learningOutcome'])]->getId();
+        if (array_key_exists((int)$matchedRouteData['learningOutcome'], $this->newLearningOutcomes)) {
+          $matchedRouteData['learningOutcome'] = $this->newLearningOutcomes[(int)$matchedRouteData['learningOutcome']]->getId();
         } else {
           // Revert to old study area id to not break link completely
           $revertStudyArea = true;
         }
       } elseif ($routeName === 'app_learningpath_show') {
         // Check whether the new learning path is available
-        if (array_key_exists(intval($matchedRouteData['learningPath']), $this->newLearningPaths)) {
-          $matchedRouteData['learningPath'] = $this->newLearningPaths[intval($matchedRouteData['learningPath'])]->getId();
+        if (array_key_exists((int)$matchedRouteData['learningPath'], $this->newLearningPaths)) {
+          $matchedRouteData['learningPath'] = $this->newLearningPaths[(int)$matchedRouteData['learningPath']]->getId();
         } else {
           // Revert to old study area id to not break link completely
           $revertStudyArea = true;
@@ -599,8 +608,8 @@ class StudyAreaDuplicator
       // Regex search successful
       foreach ($matches[1] as $key => $match) {
         // Find new id
-        if (array_key_exists(intval($match), $source)) {
-          $replace = str_replace($match, $source[intval($match)]->getId(), (string)$matches[0][$key]);
+        if (array_key_exists((int)$match, $source)) {
+          $replace = str_replace($match, $source[(int)$match]->getId(), (string)$matches[0][$key]);
           $text    = str_replace($matches[0][$key], $replace, $text);
         }
       }

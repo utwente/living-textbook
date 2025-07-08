@@ -22,8 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   #[Assert\NotNull]
@@ -58,7 +58,7 @@ class UserBrowserState implements StudyAreaFilteredInterface, IdInterface
     return $this->studyArea;
   }
 
-  public function setStudyArea(StudyArea $studyArea): UserBrowserState
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 

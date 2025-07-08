@@ -15,6 +15,8 @@ use Bobv\LatexBundle\Latex\Section\SubSection;
 use Pandoc\PandocException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function sprintf;
+
 class LearningPathSection extends LtbSection
 {
   /**

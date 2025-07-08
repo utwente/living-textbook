@@ -10,6 +10,10 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 
+use function array_walk;
+use function in_array;
+use function sprintf;
+
 /**
  * @extends ServiceEntityRepository<UserGroup>
  */

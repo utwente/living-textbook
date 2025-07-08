@@ -16,8 +16,8 @@ use Drenso\Shared\Interfaces\IdInterface;
 #[ORM\Table]
 class Help implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
 
   /** The help content. */
   #[ORM\Column(name: 'content', type: Types::TEXT, nullable: false)]

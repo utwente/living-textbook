@@ -22,6 +22,8 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+use function assert;
+
 class LearningPathElementType extends AbstractType
 {
   public function __construct(
@@ -67,8 +69,8 @@ class LearningPathElementType extends AbstractType
         ];
       },
       function (array $viewData) use ($options): ?LearningPathElement {
-        $concept               = $this->getConcept(intval($viewData['conceptId']), $options['studyArea']);
-        $learningPathElementId = intval($viewData['id']);
+        $concept               = $this->getConcept((int)$viewData['conceptId'], $options['studyArea']);
+        $learningPathElementId = (int)$viewData['id'];
         $element               = $learningPathElementId === -1 || empty($learningPathElementId)
             ? new LearningPathElement()
             : $this->learningPathElementRepository->findOneBy(['id' => $learningPathElementId, 'learningPath' => $options['learningPath']]);

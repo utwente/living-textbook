@@ -7,6 +7,12 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
+use function json_decode;
+use function json_encode;
+use function serialize;
+use function sprintf;
+use function unserialize;
+
 /**
  * Auto-generated Migration: Please modify to your needs!
  */

@@ -15,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function in_array;
+
 class EditContributorType extends AbstractType
 {
   #[Override]

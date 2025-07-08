@@ -19,8 +19,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class UserGroup implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
   final public const string GROUP_REVIEWER = 'reviewer';
   final public const string GROUP_EDITOR   = 'editor';
@@ -65,7 +65,7 @@ class UserGroup implements IdInterface
     return $this->studyArea;
   }
 
-  public function setStudyArea(StudyArea $studyArea): UserGroup
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 
@@ -77,7 +77,7 @@ class UserGroup implements IdInterface
     return $this->groupType;
   }
 
-  public function setGroupType(string $groupType): UserGroup
+  public function setGroupType(string $groupType): self
   {
     $this->groupType = $groupType;
 
@@ -90,7 +90,7 @@ class UserGroup implements IdInterface
     return $this->users;
   }
 
-  public function addUser(User $user): UserGroup
+  public function addUser(User $user): self
   {
     if ($this->users->contains($user)) {
       return $this;
@@ -101,7 +101,7 @@ class UserGroup implements IdInterface
     return $this;
   }
 
-  public function removeUser(User $user): UserGroup
+  public function removeUser(User $user): self
   {
     $this->users->removeElement($user);
 
@@ -114,7 +114,7 @@ class UserGroup implements IdInterface
     return $this->emails;
   }
 
-  public function addEmail(string $email): UserGroup
+  public function addEmail(string $email): self
   {
     // Check whether this is not a duplicate
     foreach ($this->emails as $userGroupEmail) {
@@ -128,7 +128,7 @@ class UserGroup implements IdInterface
     return $this;
   }
 
-  public function removeEmail(UserGroupEmail $email): UserGroup
+  public function removeEmail(UserGroupEmail $email): self
   {
     $this->emails->removeElement($email);
 

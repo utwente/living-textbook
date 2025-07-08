@@ -63,7 +63,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->userId;
   }
 
-  public function setUserId(string $userId): PageLoad
+  public function setUserId(string $userId): self
   {
     $this->userId = $userId;
 
@@ -75,7 +75,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->timestamp;
   }
 
-  public function setTimestamp(DateTime $timestamp): PageLoad
+  public function setTimestamp(DateTime $timestamp): self
   {
     $this->timestamp = $timestamp;
 
@@ -87,7 +87,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->sessionId;
   }
 
-  public function setSessionId(string $sessionId): PageLoad
+  public function setSessionId(string $sessionId): self
   {
     $this->sessionId = $sessionId;
 
@@ -100,7 +100,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->studyArea;
   }
 
-  public function setStudyArea(StudyArea $studyArea): PageLoad
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 
@@ -112,7 +112,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->path;
   }
 
-  public function setPath(string $path): PageLoad
+  public function setPath(string $path): self
   {
     $this->path = $path;
 
@@ -124,7 +124,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->pathContext;
   }
 
-  public function setPathContext(?array $pathContext): PageLoad
+  public function setPathContext(?array $pathContext): self
   {
     $this->pathContext = $pathContext;
 
@@ -136,7 +136,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->origin;
   }
 
-  public function setOrigin(?string $origin): PageLoad
+  public function setOrigin(?string $origin): self
   {
     $this->origin = $origin;
 
@@ -148,7 +148,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
     return $this->originContext;
   }
 
-  public function setOriginContext(?array $originContext): PageLoad
+  public function setOriginContext(?array $originContext): self
   {
     $this->originContext = $originContext;
 

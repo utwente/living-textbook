@@ -52,7 +52,7 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
   private ?StudyArea $studyArea = null;
 
   #[Assert\NotNull]
-  #[Assert\Choice(choices: TrackingEvent::SUPPORTED_EVENTS)]
+  #[Assert\Choice(choices: self::SUPPORTED_EVENTS)]
   #[Assert\Length(max: 50)]
   #[ORM\Column(name: 'event', length: 50)]
   private ?string $event = null;

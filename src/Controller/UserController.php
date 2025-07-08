@@ -29,6 +29,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function assert;
+use function bin2hex;
+use function random_bytes;
+use function sprintf;
+
 #[Route('/{_studyArea<\d+>}/users')]
 class UserController extends AbstractController
 {

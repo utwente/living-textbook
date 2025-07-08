@@ -12,6 +12,8 @@ use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class LearningPathProvider implements ProviderInterface
 {
   private LearningPathRepository $learningPathRepository;

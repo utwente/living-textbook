@@ -23,14 +23,17 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function assert;
+use function trim;
+
 #[ORM\Entity(repositoryClass: ContributorRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
-  use SoftDeletable;
+  use IdTrait;
   use ReviewableTrait;
+  use SoftDeletable;
 
   /** @var Collection<Concept> */
   #[ORM\ManyToMany(targetEntity: Concept::class, mappedBy: 'contributors')]
@@ -126,7 +129,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     return $this->description;
   }
 
-  public function setDescription(?string $description): Contributor
+  public function setDescription(?string $description): self
   {
     $this->description = StringHelper::emptyToNull($description);
 
@@ -138,7 +141,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     return $this->url;
   }
 
-  public function setUrl(?string $url): Contributor
+  public function setUrl(?string $url): self
   {
     $this->url = StringHelper::emptyToNull($url);
 
@@ -150,7 +153,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     return $this->broken;
   }
 
-  public function setBroken(bool $broken): Contributor
+  public function setBroken(bool $broken): self
   {
     $this->broken = $broken;
 
@@ -162,7 +165,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     return $this->email;
   }
 
-  public function setEmail(?string $email): Contributor
+  public function setEmail(?string $email): self
   {
     $this->email = $email;
 
@@ -176,7 +179,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
   }
 
   #[Override]
-  public function setStudyArea(StudyArea $studyArea): Contributor
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 

@@ -18,6 +18,11 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_fill;
+use function count;
+use function sprintf;
+use function ucfirst;
+
 /**
  * Class StudyAreaStatusBuilder.
  *

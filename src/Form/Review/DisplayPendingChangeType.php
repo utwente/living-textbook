@@ -15,6 +15,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function array_merge;
+
 class DisplayPendingChangeType extends AbstractType
 {
   public function __construct(private readonly ReviewService $reviewService)

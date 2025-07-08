@@ -25,15 +25,19 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function assert;
+use function stripos;
+use function trim;
+
 #[ORM\Entity(repositoryClass: ExternalResourceRepository::class)]
 #[ORM\Table]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class ExternalResource implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
-  use SoftDeletable;
+  use IdTrait;
   use ReviewableTrait;
+  use SoftDeletable;
 
   /** @var Collection<Concept> */
   #[ORM\ManyToMany(targetEntity: Concept::class, mappedBy: 'externalResources')]
@@ -135,7 +139,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->title;
   }
 
-  public function setTitle(string $title): ExternalResource
+  public function setTitle(string $title): self
   {
     $this->title = trim($title);
 
@@ -147,7 +151,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->description;
   }
 
-  public function setDescription(?string $description): ExternalResource
+  public function setDescription(?string $description): self
   {
     $this->description = StringHelper::emptyToNull($description);
 
@@ -159,7 +163,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->url;
   }
 
-  public function setUrl(?string $url): ExternalResource
+  public function setUrl(?string $url): self
   {
     $this->url = StringHelper::emptyToNull($url);
 
@@ -171,7 +175,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->broken;
   }
 
-  public function setBroken(bool $broken): ExternalResource
+  public function setBroken(bool $broken): self
   {
     $this->broken = $broken;
 
@@ -185,7 +189,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   }
 
   #[Override]
-  public function setStudyArea(StudyArea $studyArea): ExternalResource
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 

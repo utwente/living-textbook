@@ -24,6 +24,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+use function count;
+use function trim;
+
 #[Route('/{_studyArea<\d+>}/track')]
 class TrackingController extends AbstractController
 {

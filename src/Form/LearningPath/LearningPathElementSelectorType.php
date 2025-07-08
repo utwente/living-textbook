@@ -19,6 +19,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function ucfirst;
+
 class LearningPathElementSelectorType extends AbstractType
 {
   public function __construct(

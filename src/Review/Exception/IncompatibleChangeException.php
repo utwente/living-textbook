@@ -7,6 +7,8 @@ use App\Entity\PendingChange;
 use App\Entity\Traits\ReviewableTrait;
 use Exception;
 
+use function sprintf;
+
 class IncompatibleChangeException extends Exception
 {
   /**

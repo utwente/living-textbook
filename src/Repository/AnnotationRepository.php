@@ -11,6 +11,8 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function array_walk;
+
 /**
  * @extends ServiceEntityRepository<Annotation>
  */

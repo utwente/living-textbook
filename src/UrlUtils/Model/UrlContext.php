@@ -6,6 +6,9 @@ use InvalidArgumentException;
 use Override;
 use Stringable;
 
+use function preg_replace;
+use function strtolower;
+
 class UrlContext implements Stringable
 {
   /** @var string Class name */
@@ -46,7 +49,7 @@ class UrlContext implements Stringable
    *
    * @return UrlContext New context instance
    */
-  public function asInline(): UrlContext
+  public function asInline(): self
   {
     $new         = new self($this->class, $this->id, $this->path);
     $new->inline = true;

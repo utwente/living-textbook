@@ -22,6 +22,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function assert;
+use function ucfirst;
+
 class EditStudyAreaType extends AbstractType
 {
   public function __construct(

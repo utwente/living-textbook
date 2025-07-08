@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function assert;
+
 class RemoveType extends AbstractType
 {
   #[Override]

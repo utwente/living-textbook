@@ -14,6 +14,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_key_exists;
+use function assert;
+use function sprintf;
+use function strtolower;
+
 class TrackingExportBuilder
 {
   private NamingService $namingService;

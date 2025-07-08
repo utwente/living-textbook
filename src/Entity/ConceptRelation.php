@@ -18,8 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class ConceptRelation implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   #[Assert\NotNull]
@@ -95,7 +95,7 @@ class ConceptRelation implements IdInterface
     return $this->source;
   }
 
-  public function setSource(Concept $source): ConceptRelation
+  public function setSource(Concept $source): self
   {
     $this->source = $source;
 
@@ -107,7 +107,7 @@ class ConceptRelation implements IdInterface
     return $this->target;
   }
 
-  public function setTarget(Concept $target): ConceptRelation
+  public function setTarget(Concept $target): self
   {
     $this->target = $target;
 
@@ -119,7 +119,7 @@ class ConceptRelation implements IdInterface
     return $this->relationType;
   }
 
-  public function setRelationType(?RelationType $relationType): ConceptRelation
+  public function setRelationType(?RelationType $relationType): self
   {
     // Return on null, as the type might be deleted
     if ($relationType === null) {
@@ -136,7 +136,7 @@ class ConceptRelation implements IdInterface
     return $this->outgoingPosition;
   }
 
-  public function setOutgoingPosition(int $outgoingPosition): ConceptRelation
+  public function setOutgoingPosition(int $outgoingPosition): self
   {
     $this->outgoingPosition = $outgoingPosition;
 
@@ -148,7 +148,7 @@ class ConceptRelation implements IdInterface
     return $this->incomingPosition;
   }
 
-  public function setIncomingPosition(int $incomingPosition): ConceptRelation
+  public function setIncomingPosition(int $incomingPosition): self
   {
     $this->incomingPosition = $incomingPosition;
 

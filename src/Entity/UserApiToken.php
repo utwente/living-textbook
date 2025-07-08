@@ -15,14 +15,17 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function bin2hex;
+use function random_bytes;
+
 #[ORM\Entity(repositoryClass: UserApiTokenRepository::class)]
 #[ORM\Table]
 #[ORM\Index(columns: ['token_id'])]
 #[JMSA\ExclusionPolicy('all')]
 class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
 
   /** The user linked with this token. */
   #[ORM\ManyToOne]

@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyAreaFieldConfiguration implements IdInterface
 {
-  use IdTrait;
   use Blameable;
+  use IdTrait;
   use SoftDeletable;
 
   #[Assert\Length(max: 50)]

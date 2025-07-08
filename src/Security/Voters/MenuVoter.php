@@ -17,6 +17,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+use function assert;
+use function in_array;
+
 /**
  * This voter will decide whether the menu item is visible for you.
  * An item is visible when:

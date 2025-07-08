@@ -12,6 +12,15 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use function array_filter;
+use function array_map;
+use function implode;
+use function mb_strtolower;
+use function preg_split;
+use function trim;
+
+use const PHP_EOL;
+
 class EmailListType extends AbstractType
 {
   #[Override]
@@ -33,7 +42,7 @@ class EmailListType extends AbstractType
 
           $emails = array_map(fn ($email) => mb_strtolower(trim($email)), preg_split('/\r\n|\r|\n|,/', $reverseTransform));
 
-          return array_filter($emails, fn ($email) => strlen($email) > 0);
+          return array_filter($emails, fn ($email) => $email !== '');
         }
       ));
   }

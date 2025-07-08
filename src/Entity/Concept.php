@@ -34,6 +34,12 @@ use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function assert;
+use function count;
+use function iterator_to_array;
+use function strcasecmp;
+use function stripos;
+
 #[ORM\Entity(repositoryClass: ConceptRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table]
@@ -42,10 +48,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ConceptRelationValidator]
 class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 {
-  use IdTrait;
   use Blameable;
-  use SoftDeletable;
+  use IdTrait;
   use ReviewableTrait;
+  use SoftDeletable;
 
   #[Assert\NotBlank]
   #[Assert\Length(min: 3, max: 255)]
@@ -89,7 +95,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /** @var Collection<Concept> */
   #[Assert\NotNull]
   #[Assert\Valid]
-  #[ORM\ManyToMany(targetEntity: Concept::class, inversedBy: 'priorKnowledgeOf')]
+  #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'priorKnowledgeOf')]
   #[ORM\JoinTable(name: 'concepts_prior_knowledge', joinColumns: [new ORM\JoinColumn(name: 'concept_id', referencedColumnName: 'id')], inverseJoinColumns: [new ORM\JoinColumn(name: 'prior_knowledge_id', referencedColumnName: 'id')])]
   #[ORM\OrderBy(['name' => 'ASC'])]
   #[JMSA\Expose]
@@ -99,7 +105,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   private Collection $priorKnowledge;
 
   /** @var Collection<Concept> */
-  #[ORM\ManyToMany(targetEntity: Concept::class, mappedBy: 'priorKnowledge')]
+  #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'priorKnowledge')]
   private Collection $priorKnowledgeOf;
 
   /** @var Collection<LearningOutcome> */
@@ -554,14 +560,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   private function fixConceptRelationReferences(ConceptRelation &$conceptRelation, EntityManagerInterface $em)
   {
     if ($conceptRelation->getSource()) {
-      $sourceRef = $em->getReference(Concept::class, $conceptRelation->getSourceId());
-      assert($sourceRef instanceof Concept);
+      $sourceRef = $em->getReference(self::class, $conceptRelation->getSourceId());
+      assert($sourceRef instanceof self);
       $conceptRelation->setSource($sourceRef);
     }
 
     if ($conceptRelation->getTarget()) {
-      $targetRef = $em->getReference(Concept::class, $conceptRelation->getTargetId());
-      assert($targetRef instanceof Concept);
+      $targetRef = $em->getReference(self::class, $conceptRelation->getTargetId());
+      assert($targetRef instanceof self);
       $conceptRelation->setTarget($targetRef);
     }
 
@@ -593,7 +599,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  public function setName(string $name): Concept
+  public function setName(string $name): self
   {
     $this->name = $name;
 
@@ -605,7 +611,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->definition;
   }
 
-  public function setDefinition(string $definition): Concept
+  public function setDefinition(string $definition): self
   {
     $this->definition = $definition;
 
@@ -617,7 +623,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->synonyms;
   }
 
-  public function setSynonyms(string $synonyms): Concept
+  public function setSynonyms(string $synonyms): self
   {
     $this->synonyms = $synonyms;
 
@@ -635,7 +641,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->outgoingRelations;
   }
 
-  public function addOutgoingRelation(ConceptRelation $conceptRelation): Concept
+  public function addOutgoingRelation(ConceptRelation $conceptRelation): self
   {
     // Check whether the source is set, otherwise set it as this
     if (!$conceptRelation->getSource()) {
@@ -647,7 +653,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  public function removeOutgoingRelation(ConceptRelation $conceptRelation): Concept
+  public function removeOutgoingRelation(ConceptRelation $conceptRelation): self
   {
     $this->outgoingRelations->removeElement($conceptRelation);
 
@@ -660,7 +666,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->incomingRelations;
   }
 
-  public function addIncomingRelation(ConceptRelation $conceptRelation): Concept
+  public function addIncomingRelation(ConceptRelation $conceptRelation): self
   {
     // Check whether the source is set, otherwise set it as this
     if (!$conceptRelation->getTarget()) {
@@ -679,7 +685,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   }
 
   #[Override]
-  public function setStudyArea(StudyArea $studyArea): Concept
+  public function setStudyArea(StudyArea $studyArea): self
   {
     $this->studyArea = $studyArea;
 
@@ -691,7 +697,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->introduction;
   }
 
-  public function setIntroduction(DataIntroduction $introduction): Concept
+  public function setIntroduction(DataIntroduction $introduction): self
   {
     $this->introduction = $introduction;
 
@@ -703,7 +709,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->theoryExplanation;
   }
 
-  public function setTheoryExplanation(DataTheoryExplanation $theoryExplanation): Concept
+  public function setTheoryExplanation(DataTheoryExplanation $theoryExplanation): self
   {
     $this->theoryExplanation = $theoryExplanation;
 
@@ -715,7 +721,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->howTo;
   }
 
-  public function setHowTo(DataHowTo $howTo): Concept
+  public function setHowTo(DataHowTo $howTo): self
   {
     $this->howTo = $howTo;
 
@@ -727,7 +733,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->examples;
   }
 
-  public function setExamples(DataExamples $examples): Concept
+  public function setExamples(DataExamples $examples): self
   {
     $this->examples = $examples;
 
@@ -739,7 +745,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->selfAssessment;
   }
 
-  public function setSelfAssessment(DataSelfAssessment $selfAssessment): Concept
+  public function setSelfAssessment(DataSelfAssessment $selfAssessment): self
   {
     $this->selfAssessment = $selfAssessment;
 
@@ -752,14 +758,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->externalResources;
   }
 
-  public function addExternalResource(ExternalResource $externalResource): Concept
+  public function addExternalResource(ExternalResource $externalResource): self
   {
     $this->externalResources->add($externalResource);
 
     return $this;
   }
 
-  public function removeExternalResource(ExternalResource $externalResource): Concept
+  public function removeExternalResource(ExternalResource $externalResource): self
   {
     $this->externalResources->removeElement($externalResource);
 
@@ -772,14 +778,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->contributors;
   }
 
-  public function addContributor(Contributor $contributor): Concept
+  public function addContributor(Contributor $contributor): self
   {
     $this->contributors->add($contributor);
 
     return $this;
   }
 
-  public function removeContributor(Contributor $contributor): Concept
+  public function removeContributor(Contributor $contributor): self
   {
     $this->contributors->removeElement($contributor);
 
@@ -792,14 +798,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->priorKnowledge;
   }
 
-  public function addPriorKnowledge(Concept $concept): Concept
+  public function addPriorKnowledge(self $concept): self
   {
     $this->priorKnowledge->add($concept);
 
     return $this;
   }
 
-  public function removePriorKnowledge(Concept $concept): Concept
+  public function removePriorKnowledge(self $concept): self
   {
     $this->priorKnowledge->removeElement($concept);
 
@@ -818,14 +824,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->learningOutcomes;
   }
 
-  public function addLearningOutcome(LearningOutcome $learningOutcome): Concept
+  public function addLearningOutcome(LearningOutcome $learningOutcome): self
   {
     $this->learningOutcomes->add($learningOutcome);
 
     return $this;
   }
 
-  public function removeLearningOutcome(LearningOutcome $learningOutcome): Concept
+  public function removeLearningOutcome(LearningOutcome $learningOutcome): self
   {
     $this->learningOutcomes->removeElement($learningOutcome);
 
@@ -838,7 +844,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->tags;
   }
 
-  public function addTag(Tag $tag): Concept
+  public function addTag(Tag $tag): self
   {
     if (!$this->tags->contains($tag)) {
       $this->tags->add($tag);
@@ -847,7 +853,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  public function removeTag(Tag $tag): Concept
+  public function removeTag(Tag $tag): self
   {
     $this->tags->removeElement($tag);
 

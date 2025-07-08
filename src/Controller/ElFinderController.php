@@ -12,6 +12,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use function assert;
+use function preg_match;
+use function sprintf;
+
 /** Study area id 0 is used to indicate the global storage space. */
 #[Route('/elfinder')]
 class ElFinderController extends AbstractController
@@ -28,7 +32,7 @@ class ElFinderController extends AbstractController
 
     // Match for study area id
     if (1 === preg_match("/^studyarea\/(\d+)/", $homeFolderString, $result)) {
-      $studyAreaId = intval($result[1]);
+      $studyAreaId = (int)$result[1];
 
       if (!($studyArea = $studyAreaRepository->find($studyAreaId))) {
         throw $this->createNotFoundException();

@@ -5,6 +5,8 @@ namespace App\Analytics\Exception;
 use Exception;
 use Throwable;
 
+use function sprintf;
+
 class SynthesizeDependenciesFailed extends Exception
 {
   public function __construct(string $dependency, ?Throwable $previous = null)

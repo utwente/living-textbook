@@ -5,6 +5,8 @@ namespace App\Review\Exception;
 use App\Entity\Contracts\ReviewableInterface;
 use Exception;
 
+use function sprintf;
+
 class IncompatibleFieldChangedException extends Exception
 {
   /** IncompatibleFieldChangedException constructor. */

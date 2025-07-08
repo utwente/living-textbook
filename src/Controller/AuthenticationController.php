@@ -30,6 +30,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function bin2hex;
+use function random_bytes;
+use function sha1;
+
 class AuthenticationController extends AbstractController
 {
   private const string RESET_PASSWORD_USER  = '_ltb_rpu';

@@ -5,6 +5,9 @@ namespace App\UrlUtils\Model;
 use Override;
 use Stringable;
 
+use function mb_stripos;
+use function preg_match;
+
 /**
  * Class Url.
  *

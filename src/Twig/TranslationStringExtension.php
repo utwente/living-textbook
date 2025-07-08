@@ -6,6 +6,9 @@ use Override;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+use function preg_replace;
+use function strtolower;
+
 class TranslationStringExtension extends AbstractExtension
 {
   /** @return TwigFilter[] */

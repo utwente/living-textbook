@@ -7,6 +7,8 @@ use App\Entity\UserGroup;
 use App\Entity\UserGroupEmail;
 use InvalidArgumentException;
 
+use function sprintf;
+
 class UserPermissions
 {
   private ?User $user                     = null;

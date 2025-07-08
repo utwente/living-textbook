@@ -34,6 +34,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
+use function array_diff;
+use function array_filter;
+use function array_key_exists;
+use function array_keys;
+use function array_merge;
+use function array_unique;
+use function array_values;
+use function assert;
+use function count;
+use function in_array;
+use function is_numeric;
+use function is_string;
+use function json_decode;
+use function json_encode;
+use function sprintf;
+
 class ReviewService
 {
   // Serializer details
@@ -435,7 +451,7 @@ class ReviewService
 
     if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       // Create a new instance of the object
-      assert(is_string($objectType) && strlen($objectType) > 0);
+      assert(is_string($objectType) && $objectType !== '');
       $object = new $objectType();
       assert($object instanceof ReviewableInterface);
       $object->setStudyArea($pendingChange->getStudyArea());

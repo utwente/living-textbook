@@ -43,6 +43,22 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function array_combine;
+use function array_diff;
+use function array_filter;
+use function array_key_exists;
+use function array_map;
+use function array_merge;
+use function assert;
+use function count;
+use function method_exists;
+use function reset;
+use function sprintf;
+use function strcasecmp;
+use function strtolower;
+use function urldecode;
+use function usort;
+
 class DefaultController extends AbstractController
 {
   /** @var Concept[] */

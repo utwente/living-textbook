@@ -8,6 +8,8 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use function count;
+
 class ReviewNotificationService
 {
   private MailerInterface $mailer;

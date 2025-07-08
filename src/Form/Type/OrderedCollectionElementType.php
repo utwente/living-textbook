@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use function array_key_exists;
+
 class OrderedCollectionElementType extends AbstractType
 {
   /** Add the 'collection-position' class as last var in the view. */
