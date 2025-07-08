@@ -4742,12 +4742,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\StudyAreaRepository\\:\\:getVisibleCount\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\TagRepository\\:\\:findForStudyArea\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,

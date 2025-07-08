@@ -60,16 +60,6 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /**
-   * Retrieve the amount of visible study area's.
-   *
-   * @throws NonUniqueResultException
-   */
-  public function getVisibleCount(User $user)
-  {
-    return $this->getVisibleQueryBuilder($user)->addSelect('COUNT(sa.id)')->getQuery()->getSingleScalarResult();
-  }
-
-  /**
    * Retrieve QueryBuilder for the visible study area's.
    *
    * @return QueryBuilder

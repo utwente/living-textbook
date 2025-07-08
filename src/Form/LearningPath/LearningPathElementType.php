@@ -9,6 +9,7 @@ use App\Entity\StudyArea;
 use App\Form\Type\PrintedTextType;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathElementRepository;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -66,15 +67,15 @@ class LearningPathElementType extends AbstractType
           'description' => $modelData?->getDescription(),
         ];
       },
-      function (array $viewData) use ($options): ?LearningPathElement {
+      function (array $viewData) use ($options): LearningPathElement {
         $concept               = $this->getConcept((int)$viewData['conceptId'], $options['studyArea']);
         $learningPathElementId = (int)$viewData['id'];
         $element               = $learningPathElementId === -1 || empty($learningPathElementId)
             ? new LearningPathElement()
-            : $this->learningPathElementRepository->findOneBy(['id' => $learningPathElementId, 'learningPath' => $options['learningPath']]);
+            : ($this->learningPathElementRepository->findOneBy(['id' => $learningPathElementId, 'learningPath' => $options['learningPath']]) ?? throw new ObjectRequiredException());
 
         return $element
-          ?->setLearningPath($options['learningPath'])
+          ->setLearningPath($options['learningPath'])
           ->setConcept($concept)
           ->setDescription($viewData['description']);
       }
