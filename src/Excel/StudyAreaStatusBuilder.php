@@ -9,7 +9,6 @@ use App\Naming\NamingService;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
-use Doctrine\Common\Collections\Collection;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Cell\CellRange;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -24,7 +23,7 @@ use function sprintf;
 use function ucfirst;
 
 /**
- * This class is used to build an Excel sheet with the current study area status
+ * This class is used to build an Excel sheet with the current study area status.
  */
 class StudyAreaStatusBuilder
 {

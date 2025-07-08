@@ -22,8 +22,6 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-use function assert;
-
 class LearningPathElementType extends AbstractType
 {
   public function __construct(

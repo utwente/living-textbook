@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
 use Drenso\Shared\Exception\NullGuard\IdRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +12,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use function assert;
 use function preg_match;
 use function sprintf;
 
