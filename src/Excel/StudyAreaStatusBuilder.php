@@ -24,45 +24,28 @@ use function sprintf;
 use function ucfirst;
 
 /**
- * Class StudyAreaStatusBuilder.
- *
- * This class is used to build a Excel sheet with the current study area status
+ * This class is used to build an Excel sheet with the current study area status
  */
 class StudyAreaStatusBuilder
 {
-  private NamingService $namingService;
-
-  private TranslatorInterface $translator;
-
-  private RelationTypeRepository $relationTypeRepo;
-
-  private ConceptRepository $conceptRepo;
-
-  private ConceptRelationRepository $conceptRelationRepo;
-
-  private SpreadsheetHelper $spreadsheetHelper;
-
   private ?Spreadsheet $spreadsheet = null;
 
   private ?StudyArea $studyArea = null;
 
-  /** @var RelationType[]|Collection */
+  /** @var RelationType[] */
   private $relationTypes;
 
-  /** @var Concept[]|Collection */
+  /** @var Concept[] */
   private $concepts;
 
-  /** StudyAreaStatusBuilder constructor. */
-  public function __construct(TranslatorInterface $translator, ConceptRepository $conceptRepo,
-    ConceptRelationRepository $conceptRelationRepo, RelationTypeRepository $relationTypeRepo,
-    SpreadsheetHelper $spreadsheetHelper, NamingService $namingService)
+  public function __construct(
+    private readonly TranslatorInterface $translator,
+    private readonly ConceptRepository $conceptRepo,
+    private readonly ConceptRelationRepository $conceptRelationRepo,
+    private readonly RelationTypeRepository $relationTypeRepo,
+    private readonly SpreadsheetHelper $spreadsheetHelper,
+    private readonly NamingService $namingService)
   {
-    $this->translator          = $translator;
-    $this->conceptRelationRepo = $conceptRelationRepo;
-    $this->conceptRepo         = $conceptRepo;
-    $this->relationTypeRepo    = $relationTypeRepo;
-    $this->spreadsheetHelper   = $spreadsheetHelper;
-    $this->namingService       = $namingService;
   }
 
   /**

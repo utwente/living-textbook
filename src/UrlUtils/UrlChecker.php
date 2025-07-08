@@ -102,7 +102,6 @@ class UrlChecker
     $studyAreas = $this->studyAreaRepository->findAll();
     $badUrls    = [];
     foreach ($studyAreas as $studyArea) {
-      assert($studyArea instanceof StudyArea);
       $badUrls[$studyArea->getId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
     }
 
@@ -172,7 +171,6 @@ class UrlChecker
     $wrongStudyAreaUrls = [];
     $unscannedUrls      = [];
     foreach ($urls as $url) {
-      assert($url instanceof Url);
       if ($url->isInternal()) {
         $urlStatus = $this->checkInternalUrl($url, $studyArea);
         if ($urlStatus === false) {

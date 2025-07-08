@@ -16,17 +16,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class StudyAreaRepository extends ServiceEntityRepository
 {
-  private AuthorizationCheckerInterface $auth;
-  private TokenStorageInterface $tokenStorage;
-
   public function __construct(
-    ManagerRegistry $registry, AuthorizationCheckerInterface $authorizationChecker,
-    TokenStorageInterface $tokenStorage)
+    ManagerRegistry $registry,
+    private readonly AuthorizationCheckerInterface $authorizationChecker,
+    private readonly TokenStorageInterface $tokenStorage)
   {
     parent::__construct($registry, StudyArea::class);
-
-    $this->auth         = $authorizationChecker;
-    $this->tokenStorage = $tokenStorage;
   }
 
   /** @throws NonUniqueResultException */
@@ -71,7 +66,7 @@ class StudyAreaRepository extends ServiceEntityRepository
    */
   public function getVisibleCount(User $user)
   {
-    return $this->getVisibleQueryBuilder($user)->select('COUNT(sa.id)')->getQuery()->getSingleScalarResult();
+    return $this->getVisibleQueryBuilder($user)->addSelect('COUNT(sa.id)')->getQuery()->getSingleScalarResult();
   }
 
   /**
@@ -92,7 +87,7 @@ class StudyAreaRepository extends ServiceEntityRepository
       ->addOrderBy('sa.name', 'ASC');
 
     // Return everything for super admins
-    if ($this->tokenStorage->getToken() && $this->auth->isGranted('ROLE_SUPER_ADMIN')) {
+    if ($this->tokenStorage->getToken() && $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
       return $qb;
     }
 

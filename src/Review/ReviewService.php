@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\Mapping\MappingException;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use InvalidArgumentException;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -228,8 +229,8 @@ class ReviewService
 
     // Reapply the changes in a fresh pending change object, as we just cleared the EM
     /** @var PendingChange $pendingChange */
-    $pendingChange = $this->pendingChangeRepository->find($pendingChange->getId())
-      ->setObject($object)
+    $pendingChange = $this->pendingChangeRepository->find($pendingChange->getId()) ?? throw new ObjectRequiredException();
+    $pendingChange->setObject($object)
       ->setChangedFields($changedFields);
 
     // If the review was already reviewed, clear its approval status

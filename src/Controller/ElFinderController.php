@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\StudyArea;
 use App\Repository\StudyAreaRepository;
+use Drenso\Shared\Exception\NullGuard\IdRequiredException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +38,6 @@ class ElFinderController extends AbstractController
       if (!($studyArea = $studyAreaRepository->find($studyAreaId))) {
         throw $this->createNotFoundException();
       }
-      assert($studyArea instanceof StudyArea);
 
       $this->denyAccessUnlessGranted('STUDYAREA_EDIT', $studyArea);
     } elseif (1 === preg_match('/^global/', $homeFolderString, $result)) {
@@ -68,7 +68,7 @@ class ElFinderController extends AbstractController
       $this->denyAccessUnlessGranted('ROLE_SUPER_ADMIN');
     }
 
-    return $this->forwardToElFinder('show', $instance, $studyArea ? $studyArea->getId() : 0, $request->query->all());
+    return $this->forwardToElFinder('show', $instance, $studyArea ? ($studyArea->getId() ?? throw new IdRequiredException()) : 0, $request->query->all());
   }
 
   /** Forward the request to the correct elfinder controller. */

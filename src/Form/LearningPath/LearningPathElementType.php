@@ -76,7 +76,7 @@ class LearningPathElementType extends AbstractType
             : $this->learningPathElementRepository->findOneBy(['id' => $learningPathElementId, 'learningPath' => $options['learningPath']]);
 
         return $element
-          ->setLearningPath($options['learningPath'])
+          ?->setLearningPath($options['learningPath'])
           ->setConcept($concept)
           ->setDescription($viewData['description']);
       }
@@ -108,7 +108,6 @@ class LearningPathElementType extends AbstractType
     }
 
     $concept = $this->conceptRepository->findOneBy(['id' => $id, 'studyArea' => $studyArea]);
-    assert($concept == null || $concept instanceof Concept);
 
     return $concept;
   }

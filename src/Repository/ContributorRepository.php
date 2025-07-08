@@ -43,8 +43,8 @@ class ContributorRepository extends ServiceEntityRepository
   {
     return $this->createQueryBuilder('c')
       ->distinct()
-      ->leftJoin('c.concepts', 'c')
-      ->where('c IN (:concepts)')
+      ->leftJoin('c.concepts', 'cc')
+      ->where('cc IN (:concepts)')
       ->setParameter('concepts', $concepts)
       ->getQuery()->getResult();
   }
