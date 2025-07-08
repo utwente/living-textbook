@@ -10,6 +10,9 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 
+/**
+ * @extends ServiceEntityRepository<UserGroup>
+ */
 class UserGroupRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

@@ -8,10 +8,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class UserProtoRepository.
- *
- * @method UserProto|null find($id, $lockMode = NULL, $lockVersion = NULL)
- * @method UserProto|null findOneBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL)
+ * @extends ServiceEntityRepository<UserProto>
  */
 class UserProtoRepository extends ServiceEntityRepository
 {

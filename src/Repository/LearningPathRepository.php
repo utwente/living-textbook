@@ -12,6 +12,9 @@ use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<LearningPath>
+ */
 class LearningPathRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

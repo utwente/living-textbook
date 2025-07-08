@@ -6,6 +6,9 @@ use App\Entity\Data\DataExamples;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<DataExamples>
+ */
 class DataExamplesRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

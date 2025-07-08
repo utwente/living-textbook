@@ -8,6 +8,9 @@ use App\Entity\UserBrowserState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<UserBrowserState>
+ */
 class UserBrowserStateRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

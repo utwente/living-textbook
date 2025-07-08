@@ -10,6 +10,9 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<PendingChange>
+ */
 class PendingChangeRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

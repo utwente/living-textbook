@@ -5,9 +5,9 @@ namespace App\Entity\Listener;
 use App\Entity\User;
 use App\Entity\UserGroupEmail;
 use App\Repository\UserGroupEmailRepository;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class UserListener
 {

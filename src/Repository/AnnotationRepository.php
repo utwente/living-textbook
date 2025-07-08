@@ -11,6 +11,9 @@ use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Annotation>
+ */
 class AnnotationRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)
