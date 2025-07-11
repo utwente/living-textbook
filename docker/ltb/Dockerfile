@@ -1,4 +1,4 @@
-FROM php:8.4.8-fpm-bookworm as ltb_base
+FROM php:8.4.10-fpm-bookworm as ltb_base
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update all dependencies, and install required ones
