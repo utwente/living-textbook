@@ -497,7 +497,7 @@ sentry-release-production:
 # Deploy
 deploy-staging:
   stage: deploy
-  image: registry.drenso.dev/open/docker-images/release:1.0
+  image: registry.drenso.dev/open/docker-images/release:2.0
   resource_group: deploy-staging
   dependencies: []
   variables:
@@ -522,7 +522,7 @@ deploy-staging:
 
 deploy-research:
   stage: deploy
-  image: registry.drenso.dev/open/docker-images/release:1.0
+  image: registry.drenso.dev/open/docker-images/release:2.0
   resource_group: deploy-staging
   dependencies: []
   variables:
@@ -549,7 +549,7 @@ deploy-research:
 
 deploy-production:
   stage: deploy
-  image: registry.drenso.dev/open/docker-images/release:1.0
+  image: registry.drenso.dev/open/docker-images/release:2.0
   resource_group: deploy-production
   dependencies: []
   variables:
