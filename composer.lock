@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3c030c6fece205711b5dded97d5af4d",
+    "content-hash": "a9e647eac8bbc43d65f5cb696d7be90c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -12738,16 +12738,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.0.18",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "be3a452085b524a04056e3dfe72d861948711062"
+                "reference": "d0917c069bb0d9bb06ed111cf052510f609015a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/be3a452085b524a04056e3dfe72d861948711062",
-                "reference": "be3a452085b524a04056e3dfe72d861948711062",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/d0917c069bb0d9bb06ed111cf052510f609015a4",
+                "reference": "d0917c069bb0d9bb06ed111cf052510f609015a4",
                 "shasum": ""
             },
             "require": {
@@ -12777,6 +12777,7 @@
                 "MIT"
             ],
             "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "homepage": "https://getrector.com/",
             "keywords": [
                 "automation",
                 "dev",
@@ -12785,7 +12786,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.0.18"
+                "source": "https://github.com/rectorphp/rector/tree/2.1.1"
             },
             "funding": [
                 {
@@ -12793,7 +12794,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-11T11:19:37+00:00"
+            "time": "2025-07-10T11:31:31+00:00"
         },
         {
             "name": "sebastian/cli-parser",
