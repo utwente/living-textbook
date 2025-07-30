@@ -14,7 +14,7 @@ final class Version20230706134822 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'export studyarea to a given url';
+        return 'Export studyarea to a given url';
     }
 
     public function up(Schema $schema): void
