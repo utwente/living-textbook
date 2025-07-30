@@ -629,11 +629,7 @@ class DataController extends AbstractController
     ]);
   }
 
-  /**
-   * Based on https://stackoverflow.com/a/45241792/1439286.
-   *
-   * @phpstan-assert-if-true string $value
-   */
+  /** Based on https://stackoverflow.com/a/45241792/1439286. */
   private function couldBeJson(mixed $value): bool
   {
     // Numeric strings are always valid JSON.
