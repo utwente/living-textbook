@@ -21,7 +21,7 @@ final class Version20230706134822 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE study_area ADD url_export_enabled TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE study_area ADD export_url VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE study_area ADD export_url VARCHAR(512) DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
