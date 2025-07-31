@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10802d0c4cfaaf161f9b054297f521da",
+    "content-hash": "1f6d5018e70dd78b0ab128878dd9f6bf",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3932,16 +3932,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "4.4.0",
+            "version": "4.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "747ccd1b443e85e0cfc0d52acf50e4d15ef959eb"
+                "reference": "2ea9786632e6fac1aee601b6e426bcc723d8ce13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/747ccd1b443e85e0cfc0d52acf50e4d15ef959eb",
-                "reference": "747ccd1b443e85e0cfc0d52acf50e4d15ef959eb",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/2ea9786632e6fac1aee601b6e426bcc723d8ce13",
+                "reference": "2ea9786632e6fac1aee601b6e426bcc723d8ce13",
                 "shasum": ""
             },
             "require": {
@@ -4032,9 +4032,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.4.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/4.5.0"
             },
-            "time": "2025-06-23T01:23:23+00:00"
+            "time": "2025-07-24T05:15:59+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
