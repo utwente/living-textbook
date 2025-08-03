@@ -23,7 +23,7 @@ class ContributorController extends AbstractController
 {
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_contributor_list', subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_contributor_add', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
@@ -47,7 +47,7 @@ class ContributorController extends AbstractController
       return $this->redirectToRoute('app_contributor_list');
     }
 
-    return $this->render('contributor/list.html.twig', [
+    return $this->render('contributor/add.html.twig', [
       'contributor' => $contributor,
       'form'        => $form,
     ]);
