@@ -23,7 +23,7 @@ class ContributorController extends AbstractController
 {
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_contributor_add', subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_contributor_list', subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans): Response
   {
