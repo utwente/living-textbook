@@ -6,14 +6,19 @@ use App\Entity\StudyArea;
 use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\LearningPathRepository;
+use Deprecated;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 
+#[AsTaggedItem(index: 'learning-path')]
+#[Autoconfigure(lazy: true)]
 class LearningPathProvider implements ProviderInterface
 {
   private LearningPathRepository $learningPathRepository;
@@ -26,6 +31,7 @@ class LearningPathProvider implements ProviderInterface
     $this->serializer             = $serializer;
   }
 
+  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getName(): string
   {
