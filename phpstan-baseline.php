@@ -3932,18 +3932,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/ExceptionHandler/Subscriber/ExceptionSubscriber.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Export\\\\ExportService\\:\\:getChoices\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/ExportService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Export\\\\ExportService\\:\\:getPreviews\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/ExportService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$subject of function preg_replace expects array\\<float\\|int\\|string\\>\\|string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,

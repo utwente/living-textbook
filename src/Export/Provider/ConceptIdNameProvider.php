@@ -11,10 +11,12 @@ use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 
+#[Autoconfigure(lazy: true)]
 class ConceptIdNameProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -28,7 +30,7 @@ class ConceptIdNameProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getName(): string
+  public static function getName(): string
   {
     return 'concept-id-name';
   }

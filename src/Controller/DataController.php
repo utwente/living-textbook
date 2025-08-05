@@ -552,7 +552,7 @@ class DataController extends AbstractController
     $form->handleRequest($request);
 
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($form->isSubmitted()) {
+    if ($form->isSubmitted() && $form->isValid()) {
       return $exportService->export($studyArea, $form->getData()['type']);
     }
 
