@@ -7,14 +7,19 @@ use App\Entity\StudyArea;
 use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
+use Deprecated;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 
+#[AsTaggedItem(index: 'concept-id-name')]
+#[Autoconfigure(lazy: true)]
 class ConceptIdNameProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -27,6 +32,7 @@ class ConceptIdNameProvider implements ProviderInterface
     $this->spreadsheetHelper = $spreadsheetHelper;
   }
 
+  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getName(): string
   {

@@ -3,17 +3,19 @@
 namespace App\Export;
 
 use App\Entity\StudyArea;
-use App\Export\Provider\ConceptIdNameProvider;
-use App\Export\Provider\LearningPathProvider;
-use App\Export\Provider\LinkedSimpleNodeProvider;
-use App\Export\Provider\RdfProvider;
-use App\Export\Provider\RelationProvider;
 use InvalidArgumentException;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+use function array_combine;
 use function array_key_exists;
-use function func_get_args;
+use function array_keys;
+use function array_unique;
+use function iterator_to_array;
+use function array_map;
 use function iconv;
 use function ksort;
 use function mb_strtolower;
@@ -24,48 +26,54 @@ use function strtolower;
 
 use const LC_CTYPE;
 
-class ExportService
+class ExportService implements ChoiceLoaderInterface
 {
+
+  /*
+   * The default translation prefix.
+   */
+  public const string TRANSLATION_PREFIX = 'data.download.provider';
+
   /**
    * Available export types, and their providers.
    *
    * @var ProviderInterface[]
    */
-  private array $providers = [];
+  private array $providers;
 
-  public function __construct(
-    LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4, LearningPathProvider $p5)
+  /**
+   * The {@link ProviderInterface} tagged index is prefixed with this value when no other value is provided
+   * during instantiation.
+   * 
+   * @var string
+   */
+  private readonly string $transPrefix;
+
+  /**
+   * ExportService constructor.
+   *
+   * Initializes the export service with provided export providers and an optional translation prefix.
+   * The providers are stored in a normalized format with keys prefixed with the translation prefix.
+   *
+   * @param iterable    $providers   Array or Traversable of export providers to be registered
+   * @param string|null $transPrefix Optional prefix for translation keys, defaults to TRANSLATION_PREFIX
+   */
+  public function __construct(iterable $providers, ?string $transPrefix = null)
   {
-    $key = 0;
-    foreach (func_get_args() as $provider) {
-      /* @var ProviderInterface $provider */
-      $this->providers['p' . ++$key] = $provider;
+    $this->transPrefix = $transPrefix ?? self::TRANSLATION_PREFIX;
+    $providers = array_unique($providers instanceof \Traversable ? iterator_to_array($providers) : $providers, SORT_REGULAR);
+    ksort($providers);
+    $this->providers = [];
+    foreach($providers as $key => $provider) {
+      $this->providers[strtolower($this->transPrefix . '.' . $key)] = $provider;
     }
   }
 
   /**
-   * Get the available choices, to be used in a ChoiceType.
+   * Retrieve the previews from the providers.
    *
-   * @return array
+   * @return string[]
    */
-  public function getChoices()
-  {
-    $data = [];
-    foreach ($this->providers as $key => $provider) {
-      $providerName = strtolower($provider->getName());
-      $choiceName   = 'data.download.provider.' . $providerName;
-      if (array_key_exists($choiceName, $data)) {
-        throw new InvalidArgumentException('Non-unique download providers registered');
-      }
-      $data[$choiceName] = $key;
-    }
-
-    ksort($data);
-
-    return $data;
-  }
-
-  /** Retrieve the previews from the providers. */
   public function getPreviews(): array
   {
     $data = [];
@@ -95,5 +103,43 @@ class ExportService
       ResponseHeaderBag::DISPOSITION_ATTACHMENT,
       mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
     ));
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function loadChoiceList(?callable $value = null): ChoiceListInterface
+  {
+    $keys = array_keys($this->providers);
+    $choices = array_combine($keys, $keys);
+    return new ArrayChoiceList($choices, $value);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function loadChoicesForValues(array $values, ?callable $value = null): array
+  {
+    if (!$values) {
+      return [];
+    }
+    return $this->loadChoiceList($value)->getValuesForChoices($values);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function loadValuesForChoices(array $choices, ?callable $value = null): array
+  {
+    if (!$choices) {
+      return [];
+    }
+    if ($value) {
+      return array_map(fn ($item) => (string) $value($item), $choices);
+    }
+    return $this->loadChoiceList()->getValuesForChoices($choices);
   }
 }

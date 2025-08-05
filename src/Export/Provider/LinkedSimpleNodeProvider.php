@@ -15,15 +15,20 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use App\Repository\TagRepository;
 use App\Router\LtbRouter;
+use Deprecated;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use function array_map;
 use function sprintf;
 
+#[AsTaggedItem(index: 'linked-simple-node')]
+#[Autoconfigure(lazy: true)]
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -56,6 +61,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->router                     = $router;
   }
 
+  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getName(): string
   {
