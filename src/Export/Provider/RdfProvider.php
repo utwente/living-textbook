@@ -67,12 +67,6 @@ class RdfProvider implements ProviderInterface
 
   #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
-  public function getName(): string
-  {
-    return 'rdf';
-  }
-
-  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'

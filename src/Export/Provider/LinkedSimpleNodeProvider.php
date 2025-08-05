@@ -63,12 +63,6 @@ class LinkedSimpleNodeProvider implements ProviderInterface
 
   #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
-  public function getName(): string
-  {
-    return 'linked-simple-node';
-  }
-
-  #[Override]
   public function getPreview(): string
   {
     $names      = $this->namingService->get();
