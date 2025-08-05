@@ -33,12 +33,6 @@ class LearningPathProvider implements ProviderInterface
 
   #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
-  public function getName(): string
-  {
-    return 'learning-path';
-  }
-
-  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'

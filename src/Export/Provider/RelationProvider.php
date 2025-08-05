@@ -40,12 +40,6 @@ class RelationProvider implements ProviderInterface
 
   #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
-  public function getName(): string
-  {
-    return 'relation';
-  }
-
-  #[Override]
   public function getPreview(): string
   {
     return <<<'EOT'
