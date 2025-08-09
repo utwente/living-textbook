@@ -67,6 +67,7 @@ RUN docker-php-ext-install gd
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install sockets
 RUN docker-php-ext-install xsl
+RUN docker-php-ext-install sysvsem
 RUN pecl install apcu && docker-php-ext-enable apcu
 RUN pecl install imagick && docker-php-ext-enable imagick
 
