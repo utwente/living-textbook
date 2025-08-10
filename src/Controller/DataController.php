@@ -546,14 +546,14 @@ class DataController extends AbstractController
 
   #[Route('/download')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): Response
+  public function download(Request $request, RequestStudyArea $requestStudyArea): Response
   {
     $form = $this->createForm(DownloadType::class);
     $form->handleRequest($request);
 
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($form->isSubmitted()) {
-      return $exportService->export($studyArea, $form->getData()['type']);
+    if ($form->isSubmitted() && $form->isValid()) {
+      return $form->getData()['type']->export($studyArea);
     }
 
     return $this->render('data/download.html.twig', [

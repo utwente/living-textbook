@@ -17,6 +17,6 @@ class DownloadPreviewType extends AbstractType
   #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options): void
   {
-    $view->vars['preview_data'] = $this->exportService->getPreviews();
+    $view->vars['preview_data'] = array_values($this->exportService->getPreviews());
   }
 }
