@@ -4,15 +4,9 @@ namespace App\Export;
 
 use App\Entity\StudyArea;
 use InvalidArgumentException;
-use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
-use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-use function array_combine;
-use function array_key_exists;
-use function array_keys;
 use function array_unique;
 use function iterator_to_array;
 use function array_map;
@@ -22,17 +16,11 @@ use function mb_strtolower;
 use function preg_replace;
 use function setlocale;
 use function sprintf;
-use function strtolower;
 
 use const LC_CTYPE;
 
-class ExportService implements ChoiceLoaderInterface
+class ExportService
 {
-
-  /*
-   * The default translation prefix.
-   */
-  public const string TRANSLATION_PREFIX = 'data.download.provider';
 
   /**
    * Available export types, and their providers.
@@ -41,32 +29,16 @@ class ExportService implements ChoiceLoaderInterface
    */
   private array $providers;
 
-  /**
-   * The {@link ProviderInterface} tagged index is prefixed with this value when no other value is provided
-   * during instantiation.
-   * 
-   * @var string
-   */
-  private readonly string $transPrefix;
 
   /**
    * ExportService constructor.
    *
-   * Initializes the export service with provided export providers and an optional translation prefix.
-   * The providers are stored in a normalized format with keys prefixed with the translation prefix.
-   *
-   * @param iterable    $providers   Array or Traversable of export providers to be registered
-   * @param string|null $transPrefix Optional prefix for translation keys, defaults to TRANSLATION_PREFIX
+   * @param iterable<ProviderInterface> $providers Array or Traversable of export providers to be registered
    */
-  public function __construct(iterable $providers, ?string $transPrefix = null)
+  public function __construct(iterable $providers)
   {
-    $this->transPrefix = $transPrefix ?? self::TRANSLATION_PREFIX;
-    $providers = array_unique($providers instanceof \Traversable ? iterator_to_array($providers) : $providers, SORT_REGULAR);
-    ksort($providers);
-    $this->providers = [];
-    foreach($providers as $key => $provider) {
-      $this->providers[strtolower($this->transPrefix . '.' . $key)] = $provider;
-    }
+    $this->providers = array_unique($providers instanceof \Traversable ? iterator_to_array($providers) : $providers, SORT_REGULAR);
+    ksort($this->providers);
   }
 
   /**
@@ -76,18 +48,14 @@ class ExportService implements ChoiceLoaderInterface
    */
   public function getPreviews(): array
   {
-    $data = [];
-    foreach ($this->providers as $key => $provider) {
-      $data[$key] = $provider->getPreview();
-    }
-
-    return $data;
+    return array_map(fn (ProviderInterface $provider) => $provider->getPreview(), $this->providers);
   }
 
   /** Retrieve the export data. */
   public function export(StudyArea $studyArea, string $exportProvider): Response
   {
-    if (!array_key_exists($exportProvider, $this->providers)) {
+    $provider = $this->getProvider($exportProvider);
+    if (null === $provider) {
       throw new InvalidArgumentException(sprintf('Requested provider %s is not registered!', $exportProvider));
     }
 
@@ -101,45 +69,33 @@ class ExportService implements ChoiceLoaderInterface
     setlocale(LC_CTYPE, 'en_US.UTF-8');
     $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
       ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-      mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
+      mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename))),
     ));
   }
 
   /**
-   * {@inheritDoc}
+   * Get the registered providers sorted by their index value.
+   *
+   * @return array|ProviderInterface[]
    */
-  #[\Override]
-  public function loadChoiceList(?callable $value = null): ChoiceListInterface
+  public function getProviders(): array
   {
-    $keys = array_keys($this->providers);
-    $choices = array_combine($keys, $keys);
-    return new ArrayChoiceList($choices, $value);
+    return $this->providers;
   }
 
   /**
-   * {@inheritDoc}
+   * Get the provider for the `$index` or null if it doesn't exist.
+   *
+   * The index is the value used in the {@link Symfony\Component\DependencyInjection\Attribute\AsTaggedItem::index}
+   * attribute of the {@link App\Export\Provider\ProviderInterface} class.
+   *
+   * @param string $index
+   *
+   * @return ProviderInterface|null
    */
-  #[\Override]
-  public function loadChoicesForValues(array $values, ?callable $value = null): array
+  public function getProvider(string $index): ?ProviderInterface
   {
-    if (!$values) {
-      return [];
-    }
-    return $this->loadChoiceList($value)->getValuesForChoices($values);
+    return $this->providers[$index] ?? null;
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  #[\Override]
-  public function loadValuesForChoices(array $choices, ?callable $value = null): array
-  {
-    if (!$choices) {
-      return [];
-    }
-    if ($value) {
-      return array_map(fn ($item) => (string) $value($item), $choices);
-    }
-    return $this->loadChoiceList()->getValuesForChoices($choices);
-  }
 }
