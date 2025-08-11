@@ -9,7 +9,6 @@ use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
-use Deprecated;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -38,7 +37,6 @@ class RelationProvider implements ProviderInterface
     $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
-  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getPreview(): string
   {

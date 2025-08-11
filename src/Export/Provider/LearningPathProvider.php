@@ -6,7 +6,6 @@ use App\Entity\StudyArea;
 use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\LearningPathRepository;
-use Deprecated;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
@@ -31,7 +30,6 @@ class LearningPathProvider implements ProviderInterface
     $this->serializer             = $serializer;
   }
 
-  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getPreview(): string
   {

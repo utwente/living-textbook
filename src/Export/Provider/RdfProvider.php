@@ -11,7 +11,6 @@ use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
-use Deprecated;
 use EasyRdf\Exception;
 use EasyRdf\Graph;
 use EasyRdf\RdfNamespace;
@@ -65,7 +64,6 @@ class RdfProvider implements ProviderInterface
     return $this->exportGraph($graph);
   }
 
-  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getPreview(): string
   {

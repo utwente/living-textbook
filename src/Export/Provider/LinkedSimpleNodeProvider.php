@@ -15,7 +15,6 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use App\Repository\TagRepository;
 use App\Router\LtbRouter;
-use Deprecated;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
@@ -61,7 +60,6 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->router                     = $router;
   }
 
-  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getPreview(): string
   {
