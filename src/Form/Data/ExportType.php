@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
 class ExportType extends AbstractType
@@ -48,7 +49,11 @@ class ExportType extends AbstractType
       'choice_label'       => static function (Options $options): callable {
         return static fn (ProviderInterface $provider, string $key) => $options['translation_prefix'] . '.' . $key;
       },
-      'constraints'        => new Type(ProviderInterface::class),
+      'invalid_message' => 'export_type.invalid-type',
+      'constraints'        => [
+        new NotNull(message: 'export_type.not-null'),
+        new Type(ProviderInterface::class, 'export_type.invalid-type')
+      ],
     ]);
   }
 
