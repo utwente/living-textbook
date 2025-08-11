@@ -7,7 +7,6 @@ use App\Entity\StudyArea;
 use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
-use Deprecated;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -32,7 +31,6 @@ class ConceptIdNameProvider implements ProviderInterface
     $this->spreadsheetHelper = $spreadsheetHelper;
   }
 
-  #[Deprecated(message: 'Use the index attribute of #AsTaggedItem instead.')]
   #[Override]
   public function getPreview(): string
   {
