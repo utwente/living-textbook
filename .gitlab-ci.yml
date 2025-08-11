@@ -255,7 +255,8 @@ composer-unused:
     - curl -JOL --silent --show-error --fail-with-body https://github.com/composer-unused/composer-unused/releases/download/${COMPOSER_UNUSED_VERSION}/composer-unused.phar
   script:
     - php composer-unused.phar --no-progress --output-format=gitlab > composer-unused.json
-    - cat composer-unused.json
+  after_script:
+    - if [[ -f composer-unused.json ]]; then cat composer-unused.json; fi
   tags:
     - docker
   except:
