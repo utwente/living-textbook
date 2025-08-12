@@ -4,11 +4,11 @@ namespace App\Export;
 
 use App\Entity\StudyArea;
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-use function array_unique;
-use function iterator_to_array;
 use function array_map;
 use function iconv;
 use function ksort;
@@ -16,9 +16,11 @@ use function mb_strtolower;
 use function preg_replace;
 use function setlocale;
 use function sprintf;
+use function array_key_exists;
 
 use const LC_CTYPE;
 
+#[Autoconfigure(lazy: true)]
 class ExportService
 {
 
@@ -35,9 +37,18 @@ class ExportService
    *
    * @param iterable<ProviderInterface> $providers Array or Traversable of export providers to be registered
    */
-  public function __construct(iterable $providers)
+  public function __construct(
+    #[AutowireIterator(ProviderInterface::class, indexAttribute: 'key')]
+    iterable $providers)
   {
-    $this->providers = array_unique($providers instanceof \Traversable ? iterator_to_array($providers) : $providers, SORT_REGULAR);
+    $this->providers = [];
+    foreach ($providers as $key => $provider) {
+      if (array_key_exists($key, $this->providers)) {
+        throw new InvalidArgumentException(sprintf('Provider %s is already registered!', $key));
+      }
+
+      $this->providers[$key] = $provider;
+    }
     ksort($this->providers);
   }
 

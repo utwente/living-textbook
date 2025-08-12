@@ -41,25 +41,6 @@ services:
     resource: '../src/Api/Controller'
     tags: [ 'controller.service_arguments' ]
 
-  # To support other export formats, create a class extending the \App\Export\ProviderInterface and attribute the
-  # that class with #[AsTaggedItem(index: 'the_export_service_index');
-  #
-  # IMPORTANT: The tagged item's index MUST be unique and is used to derive a translation key used to obtain the
-  # stringable value shown in the \App\Form\Data\DownloadType choices;
-  App\Export\ExportService:
-    arguments: [ !tagged_iterator { tag: 'app.export_provider', index_by: 'key' } ]
-    lazy: true
-
-    # Other usages for App\Export\ExportService
-    #
-    # To exclude one or more specific export provider add the exclude value.
-    # arguments: [!tagged_iterator { tag: 'app.export_provider', index_by: 'key', exclude: ['App\Export\Provider\RdfProvider']}]
-    #
-    # Change the translation prefix key
-    # arguments:
-    #   $providers: !tagged_iterator { tag: 'app.export_provider', index_by: 'key'}
-    #   $transPrefix: 'some_trans_prefix_value' # no trailing period needed.
-
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
