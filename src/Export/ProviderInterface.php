@@ -6,7 +6,7 @@ use App\Entity\StudyArea;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AutoconfigureTag('app.export_provider')]
+#[AutoconfigureTag]
 interface ProviderInterface
 {
 
