@@ -1,4 +1,4 @@
-FROM php:8.4.10-fpm-bookworm as ltb_base
+FROM php:8.4.11-fpm-bookworm as ltb_base
 MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
 
 # Update all dependencies, and install required ones
@@ -67,6 +67,7 @@ RUN docker-php-ext-install gd
 RUN docker-php-ext-install intl
 RUN docker-php-ext-install sockets
 RUN docker-php-ext-install xsl
+RUN docker-php-ext-install sysvsem
 RUN pecl install apcu && docker-php-ext-enable apcu
 RUN pecl install imagick && docker-php-ext-enable imagick
 

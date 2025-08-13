@@ -47,7 +47,7 @@ class ContributorController extends AbstractController
       return $this->redirectToRoute('app_contributor_list');
     }
 
-    return $this->render('contributor/list.html.twig', [
+    return $this->render('contributor/add.html.twig', [
       'contributor' => $contributor,
       'form'        => $form,
     ]);
