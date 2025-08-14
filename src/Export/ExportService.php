@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+use function array_key_exists;
 use function array_map;
 use function iconv;
 use function ksort;
@@ -16,21 +17,18 @@ use function mb_strtolower;
 use function preg_replace;
 use function setlocale;
 use function sprintf;
-use function array_key_exists;
 
 use const LC_CTYPE;
 
 #[Autoconfigure(lazy: true)]
 class ExportService
 {
-
   /**
    * Available export types, and their providers.
    *
    * @var ProviderInterface[]
    */
   private array $providers;
-
 
   /**
    * ExportService constructor.
@@ -99,14 +97,9 @@ class ExportService
    *
    * The index is the value used in the {@link Symfony\Component\DependencyInjection\Attribute\AsTaggedItem::index}
    * attribute of the {@link App\Export\Provider\ProviderInterface} class.
-   *
-   * @param string $index
-   *
-   * @return ProviderInterface|null
    */
   public function getProvider(string $index): ?ProviderInterface
   {
     return $this->providers[$index] ?? null;
   }
-
 }

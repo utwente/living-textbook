@@ -16,7 +16,6 @@ use App\Entity\Tag;
 use App\Entity\User;
 use App\Excel\StudyAreaStatusBuilder;
 use App\Exception\DataImportException;
-use App\Export\ExportService;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;

@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 #[AutoconfigureTag]
 interface ProviderInterface
 {
-
   /** Provider preview, based on single concept from study area. */
   public function getPreview(): string;
 

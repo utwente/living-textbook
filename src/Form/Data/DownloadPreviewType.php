@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use function array_values;
+
 class DownloadPreviewType extends AbstractType
 {
   public function __construct(private readonly ExportService $exportService)

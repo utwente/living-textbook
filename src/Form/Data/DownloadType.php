@@ -10,14 +10,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DownloadType extends AbstractType
 {
-
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder
       ->add('type', ExportType::class, [
-        'label'         => 'data.download.type',
-        'attr'          => [
+        'label' => 'data.download.type',
+        'attr'  => [
           'class' => 'download-type',
         ],
       ])
