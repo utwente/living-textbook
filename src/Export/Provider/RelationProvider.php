@@ -12,14 +12,12 @@ use App\Repository\RelationTypeRepository;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 use function usort;
 
-#[AsTaggedItem(index: 'relation')]
 #[Autoconfigure(lazy: true)]
 class RelationProvider implements ProviderInterface
 {
@@ -35,6 +33,12 @@ class RelationProvider implements ProviderInterface
     $this->conceptRelationRepository = $conceptRelationRepository;
     $this->relationTypeRepository    = $relationTypeRepository;
     $this->spreadsheetHelper         = $spreadsheetHelper;
+  }
+
+  #[Override]
+  public static function getName(): string
+  {
+    return 'relation';
   }
 
   #[Override]

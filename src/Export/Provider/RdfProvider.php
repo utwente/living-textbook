@@ -17,7 +17,6 @@ use EasyRdf\RdfNamespace;
 use EasyRdf\Serialiser\JsonLd;
 use JMS\Serializer\SerializerInterface;
 use Override;
-use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,6 @@ use Symfony\Component\Routing\RouterInterface;
 
 use function sprintf;
 
-#[AsTaggedItem(index: 'rdf')]
 #[Autoconfigure(lazy: true)]
 class RdfProvider implements ProviderInterface
 {
@@ -62,6 +60,12 @@ class RdfProvider implements ProviderInterface
     }
 
     return $this->exportGraph($graph);
+  }
+
+  #[Override]
+  public static function getName(): string
+  {
+    return 'rdf';
   }
 
   #[Override]

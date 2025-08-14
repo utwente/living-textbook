@@ -18,7 +18,6 @@ use App\Router\LtbRouter;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
-use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 use function array_map;
 use function sprintf;
 
-#[AsTaggedItem(index: 'linked-simple-node')]
 #[Autoconfigure(lazy: true)]
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
@@ -58,6 +56,12 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     $this->serializer                 = $serializer;
     $this->namingService              = $namingService;
     $this->router                     = $router;
+  }
+
+  #[Override]
+  public static function getName(): string
+  {
+    return 'linked-simple-node';
   }
 
   #[Override]

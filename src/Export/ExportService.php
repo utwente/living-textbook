@@ -5,14 +5,15 @@ namespace App\Export;
 use App\Entity\StudyArea;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-use function array_key_exists;
+use function array_combine;
+use function array_keys;
 use function array_map;
 use function iconv;
-use function ksort;
 use function mb_strtolower;
 use function preg_replace;
 use function setlocale;
@@ -21,33 +22,23 @@ use function sprintf;
 use const LC_CTYPE;
 
 #[Autoconfigure(lazy: true)]
-class ExportService
+readonly class ExportService
 {
-  /**
-   * Available export types, and their providers.
-   *
-   * @var ProviderInterface[]
-   */
-  private array $providers;
-
-  /**
-   * ExportService constructor.
-   *
-   * @param iterable<ProviderInterface> $providers Array or Traversable of export providers to be registered
-   */
+  /** @param ServiceLocator<ProviderInterface> $providers The registered export providers */
   public function __construct(
-    #[AutowireIterator(ProviderInterface::class, indexAttribute: 'key')]
-    iterable $providers)
-  {
-    $this->providers = [];
-    foreach ($providers as $key => $provider) {
-      if (array_key_exists($key, $this->providers)) {
-        throw new InvalidArgumentException(sprintf('Provider %s is already registered!', $key));
-      }
+    #[AutowireLocator(ProviderInterface::class, defaultIndexMethod: 'getName')]
+    private ServiceLocator $providers,
+  ) {
+  }
 
-      $this->providers[$key] = $provider;
-    }
-    ksort($this->providers);
+  /**
+   * Retrieve the available export provider keys.
+   *
+   * @return string[]
+   */
+  public function getAvailableProviderKeys(): array
+  {
+    return array_keys($this->providers->getProvidedServices());
   }
 
   /**
@@ -57,18 +48,22 @@ class ExportService
    */
   public function getPreviews(): array
   {
-    return array_map(fn (ProviderInterface $provider) => $provider->getPreview(), $this->providers);
+    $providerKeys = $this->getAvailableProviderKeys();
+
+    return array_combine(
+      $providerKeys,
+      array_map(fn (string $k): string => $this->providers->get($k)->getPreview(), $providerKeys),
+    );
   }
 
   /** Retrieve the export data. */
   public function export(StudyArea $studyArea, string $exportProvider): Response
   {
-    $provider = $this->getProvider($exportProvider);
-    if (null === $provider) {
+    if (!$this->providers->has($exportProvider)) {
       throw new InvalidArgumentException(sprintf('Requested provider %s is not registered!', $exportProvider));
     }
 
-    return $this->providers[$exportProvider]->export($studyArea);
+    return $this->providers->get($exportProvider)->export($studyArea);
   }
 
   /** Create a correct content disposition. */
@@ -80,26 +75,5 @@ class ExportService
       ResponseHeaderBag::DISPOSITION_ATTACHMENT,
       mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename))),
     ));
-  }
-
-  /**
-   * Get the registered providers sorted by their index value.
-   *
-   * @return array|ProviderInterface[]
-   */
-  public function getProviders(): array
-  {
-    return $this->providers;
-  }
-
-  /**
-   * Get the provider for the `$index` or null if it doesn't exist.
-   *
-   * The index is the value used in the {@link Symfony\Component\DependencyInjection\Attribute\AsTaggedItem::index}
-   * attribute of the {@link App\Export\Provider\ProviderInterface} class.
-   */
-  public function getProvider(string $index): ?ProviderInterface
-  {
-    return $this->providers[$index] ?? null;
   }
 }

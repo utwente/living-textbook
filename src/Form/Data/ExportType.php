@@ -3,23 +3,19 @@
 namespace App\Form\Data;
 
 use App\Export\ExportService;
-use App\Export\ProviderInterface;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Type;
 
+/** @extends AbstractType<string> */
 class ExportType extends AbstractType
 {
   /** The default translation prefix. */
   public const string TRANSLATION_PREFIX = 'data.download.provider';
 
-  /**
-   * Constructs an export choice list from the {@link ExportService}'s registered {@link ProviderInterface}s.
-   */
   public function __construct(private readonly ExportService $exportService)
   {
   }
@@ -35,12 +31,11 @@ class ExportType extends AbstractType
   {
     $resolver->setDefaults([
       'translation_prefix' => self::TRANSLATION_PREFIX,
-      'choices'            => $this->exportService->getProviders(),
-      'choice_label'       => static fn (Options $options): callable => static fn (ProviderInterface $provider, string $key) => $options['translation_prefix'] . '.' . $key,
+      'choices'            => $this->exportService->getAvailableProviderKeys(),
+      'choice_label'       => static fn (Options $options): callable => static fn (string $key) => $options['translation_prefix'] . '.' . $key,
       'invalid_message'    => 'export_type.invalid-type',
       'constraints'        => [
         new NotNull(message: 'export_type.not-null'),
-        new Type(ProviderInterface::class, 'export_type.invalid-type'),
       ],
     ]);
   }

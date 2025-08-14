@@ -9,14 +9,12 @@ use App\Repository\LearningPathRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
-use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 
-#[AsTaggedItem(index: 'learning-path')]
 #[Autoconfigure(lazy: true)]
 class LearningPathProvider implements ProviderInterface
 {
@@ -28,6 +26,12 @@ class LearningPathProvider implements ProviderInterface
   {
     $this->learningPathRepository = $learningPathRepository;
     $this->serializer             = $serializer;
+  }
+
+  #[Override]
+  public static function getName(): string
+  {
+    return 'learning-path';
   }
 
   #[Override]

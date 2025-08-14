@@ -16,6 +16,7 @@ use App\Entity\Tag;
 use App\Entity\User;
 use App\Excel\StudyAreaStatusBuilder;
 use App\Exception\DataImportException;
+use App\Export\ExportService;
 use App\Form\Data\DownloadType;
 use App\Form\Data\DuplicateType;
 use App\Form\Data\JsonUploadType;
@@ -545,14 +546,14 @@ class DataController extends AbstractController
 
   #[Route('/download')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  public function download(Request $request, RequestStudyArea $requestStudyArea): Response
+  public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): Response
   {
     $form = $this->createForm(DownloadType::class);
     $form->handleRequest($request);
 
     $studyArea = $requestStudyArea->getStudyArea();
     if ($form->isSubmitted() && $form->isValid()) {
-      return $form->getData()['type']->export($studyArea);
+      return $exportService->export($studyArea, $form->getData()['type']);
     }
 
     return $this->render('data/download.html.twig', [

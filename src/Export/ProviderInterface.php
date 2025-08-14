@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 #[AutoconfigureTag]
 interface ProviderInterface
 {
+  /** Provider name, must be unique. */
+  public static function getName(): string;
+
   /** Provider preview, based on single concept from study area. */
   public function getPreview(): string;
 
