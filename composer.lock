@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2eb3ba1a70eb0348869af3d4f34f90c",
+    "content-hash": "cee472822f7892549d542372b24fa4c7",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1749,16 +1749,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "4.16.1",
+            "version": "4.16.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "8cace993e08a85bbf2cf1596a9bc5d7f370f89ef"
+                "reference": "53040d380cb92cd2ad63f3c05a36ae08022d9294"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/8cace993e08a85bbf2cf1596a9bc5d7f370f89ef",
-                "reference": "8cace993e08a85bbf2cf1596a9bc5d7f370f89ef",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/53040d380cb92cd2ad63f3c05a36ae08022d9294",
+                "reference": "53040d380cb92cd2ad63f3c05a36ae08022d9294",
                 "shasum": ""
             },
             "require": {
@@ -1789,7 +1789,7 @@
                 "maennchen/zipstream-php": "^3.0",
                 "monolog/monolog": "^3.8",
                 "php-decimal/php-decimal": "^1.1",
-                "phpoffice/phpspreadsheet": "^1.23 || ^2.0 || ^3.0 || ^4.0",
+                "phpoffice/phpspreadsheet": "^1.23 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
                 "phpstan/phpstan": "2.1.14",
                 "rector/rector": "2.0.16",
                 "sebastian/comparator": "^5.0 || ^6.0 || ^7.0",
@@ -1870,9 +1870,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/4.16.1"
+                "source": "https://github.com/Drenso/symfony-shared/tree/4.16.2"
             },
-            "time": "2025-05-22T20:29:08+00:00"
+            "time": "2025-08-18T07:32:52+00:00"
         },
         {
             "name": "egulias/email-validator",
