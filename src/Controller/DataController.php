@@ -40,10 +40,12 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -557,6 +559,73 @@ class DataController extends AbstractController
     }
 
     return $this->render('data/download.html.twig', [
+      'studyArea' => $studyArea,
+      'form'      => $form,
+    ]);
+  }
+
+  #[Route('/export/url', name: 'app_data_export_url', options: ['expose' => true])]
+  #[IsGranted(User::ROLE_SUPER_ADMIN, subject: 'requestStudyArea')]
+  public function exportToUrl(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator, ExportService $exportService): Response
+  {
+    $studyArea = $requestStudyArea->getStudyArea();
+    $exportUrl = $studyArea->getExportUrl();
+
+    if (!$studyArea->isUrlExportEnabled() || $exportUrl === null) {
+      $this->addFlash('error', sprintf('%s', $translator->trans('data.export.invalid-export-setting')));
+
+      return $this->redirectToRoute('app_default_dashboard');
+    }
+
+    $form = $this->createForm(DownloadType::class, null, [
+      'form_target'        => '_self',
+      'url_export_enabled' => $studyArea->isUrlExportEnabled(),
+      'export_url'         => $exportUrl,
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted()) {
+      $exportResponse = $exportService->export($studyArea, $form->getData()['type']);
+
+      $exportUrl      = $form->getData()['exportUrl'];
+
+      $content = '';
+      if ($exportResponse instanceof StreamedResponse) {
+        ob_start();
+        $exportResponse->sendContent();
+        $content      = ob_get_clean();
+      } else {
+        $content      = $exportResponse->getContent();
+      }
+
+      $client         = HttpClient::create();
+
+      $response       = $client->request($form->getData()['httpMethod'],
+        sprintf('%s/%s-%s.json', $exportUrl, $studyArea->getName(), $studyArea->getId()),
+        [
+          'headers' => [
+            'Content-Type' => $exportResponse->headers->get('Content-Type', 'application/json'),
+          ],
+          'body' => $content,
+        ]);
+
+      $statusCode = $response->getStatusCode();
+      if ($statusCode == Response::HTTP_OK) {
+        $this->addFlash(
+          'success', sprintf('%s: "%s"',
+            $translator->trans('data.export.success'),
+            $exportUrl)
+        );
+        $this->redirectToRoute('app_data_export_url');
+      } else {
+        $this->addFlash('error', sprintf('%s: "%s".',
+          $translator->trans('data.export.error'),
+          $exportUrl)
+        );
+      }
+    }
+
+    return $this->render('data/export.html.twig', [
       'studyArea' => $studyArea,
       'form'      => $form,
     ]);
