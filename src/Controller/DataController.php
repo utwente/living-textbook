@@ -40,7 +40,6 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,6 +48,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
@@ -72,9 +72,13 @@ class DataController extends AbstractController
   #[Route('/export', name: 'app_data_export', options: ['expose' => true], defaults: ['export' => true])]
   #[Route('/search', name: 'app_data_search', options: ['expose' => true], defaults: ['export' => false])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  public function export(bool $export, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
-    SerializerInterface $serializer, RequestStudyArea $requestStudyArea): Response
-  {
+  public function export(
+    bool $export,
+    RelationTypeRepository $relationTypeRepo,
+    ConceptRepository $conceptRepo,
+    SerializerInterface $serializer,
+    RequestStudyArea $requestStudyArea,
+  ): Response {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $relationTypeRepo->findBy(['studyArea' => $requestStudyArea->getStudyArea()]);
 
@@ -104,10 +108,16 @@ class DataController extends AbstractController
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'requestStudyArea')]
   public function upload(
-    Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
-    EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
-    LearningOutcomeRepository $learningOutcomeRepository, NamingService $namingService): Response
-  {
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    SerializerInterface $serializer,
+    TranslatorInterface $translator,
+    EntityManagerInterface $em,
+    RelationTypeRepository $relationTypeRepo,
+    ValidatorInterface $validator,
+    LearningOutcomeRepository $learningOutcomeRepository,
+    NamingService $namingService,
+  ): Response {
     $studyArea = $requestStudyArea->getStudyArea();
 
     if ($studyArea->isReviewModeEnabled()) {
@@ -568,8 +578,13 @@ class DataController extends AbstractController
 
   #[Route('/export/url', name: 'app_data_export_url', options: ['expose' => true])]
   #[IsGranted(User::ROLE_SUPER_ADMIN, subject: 'requestStudyArea')]
-  public function exportToUrl(Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator, ExportService $exportService): Response
-  {
+  public function exportToUrl(
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $translator,
+    ExportService $exportService,
+    HttpClientInterface $httpClient,
+  ): Response {
     $studyArea = $requestStudyArea->getStudyArea();
     $exportUrl = $studyArea->getExportUrl();
 
@@ -589,40 +604,37 @@ class DataController extends AbstractController
     if ($form->isSubmitted()) {
       $exportResponse = $exportService->export($studyArea, $form->getData()['type']);
 
-      $exportUrl      = $form->getData()['exportUrl'];
+      $exportUrl = $form->getData()['exportUrl'];
 
-      $content = '';
       if ($exportResponse instanceof StreamedResponse) {
         ob_start();
         $exportResponse->sendContent();
-        $content      = ob_get_clean();
+        $content = ob_get_clean();
       } else {
-        $content      = $exportResponse->getContent();
+        $content = $exportResponse->getContent();
       }
 
-      $client         = HttpClient::create();
-
-      $response       = $client->request($form->getData()['httpMethod'],
+      $response = $httpClient->request(
+        $form->getData()['httpMethod'],
         sprintf('%s/%s-%s.json', $exportUrl, $studyArea->getName(), $studyArea->getId()),
         [
           'headers' => [
             'Content-Type' => $exportResponse->headers->get('Content-Type', 'application/json'),
           ],
           'body' => $content,
-        ]);
+        ],
+      );
 
-      $statusCode = $response->getStatusCode();
-      if ($statusCode == Response::HTTP_OK) {
+      if ($response->getStatusCode() == Response::HTTP_OK) {
         $this->addFlash(
-          'success', sprintf('%s: "%s"',
-            $translator->trans('data.export.success'),
-            $exportUrl)
+          'success',
+          sprintf('%s: "%s"', $translator->trans('data.export.success'), $exportUrl),
         );
         $this->redirectToRoute('app_data_export_url');
       } else {
-        $this->addFlash('error', sprintf('%s: "%s".',
-          $translator->trans('data.export.error'),
-          $exportUrl)
+        $this->addFlash(
+          'error',
+          sprintf('%s: "%s".', $translator->trans('data.export.error'), $exportUrl),
         );
       }
     }
@@ -637,13 +649,20 @@ class DataController extends AbstractController
   #[Route('/duplicate')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function duplicate(
-    Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
-    EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
-    AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
-    LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo,
-    TagRepository $tagRepository): Response
-  {
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $trans,
+    EntityManagerInterface $em,
+    UrlScanner $urlScanner,
+    LtbRouter $router,
+    AbbreviationRepository $abbreviationRepo,
+    ConceptRelationRepository $conceptRelationRepo,
+    ContributorRepository $contributorRepository,
+    ExternalResourceRepository $externalResourceRepo,
+    LearningOutcomeRepository $learningOutcomeRepo,
+    LearningPathRepository $learningPathRepo,
+    TagRepository $tagRepository,
+  ): Response {
     $user = $this->getUser();
     assert($user instanceof User);
 
