@@ -76,7 +76,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
     "name": "<studyarea-name>",
     "description": "<studyarea-description>",
     "date_created": "<studyarea-date-created>",
-    "last_updated": "<studyarea-date-last-updated>",
+    "last_updated": "<studyarea-last-updated>",
     "nodes": [
         {
             "instance": "<concept-instance>",

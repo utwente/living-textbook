@@ -172,13 +172,13 @@ class StudyArea implements Stringable, IdInterface
   private Collection $stylingConfigurations;
 
   /** Setting this to true makes it possible to export studyarea to given URL endpoint. */
-  #[ORM\Column(name: 'url_export_enabled', options: ['default' => false])]
+  #[ORM\Column(options: ['default' => false])]
   private bool $urlExportEnabled = false;
 
   /** The URL to export the study area to. */
   #[Assert\Url]
   #[Assert\Length(max: 512)]
-  #[ORM\Column(name: 'export_url', length: 512, nullable: true)]
+  #[ORM\Column(length: 512, nullable: true)]
   #[JMSA\Type('string')]
   private ?string $exportUrl = null;
 
