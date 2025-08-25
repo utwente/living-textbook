@@ -662,6 +662,10 @@ study-area:
   dotron-help: "When enabled, Dotron visualization will be used."
   edit-title: 'Edit study area "%item%"'
   existing: 'Existing study area'
+  export-url: 'Export URL'
+  export-url-help: 'URL endpoint to export study area.'
+  export-url-http-method: 'HTTP method'
+  export-url-http-method-help: 'HTTP method to use for the export URL.'
   field-configuration:
     text: >-
       Here you can update the object and field naming for the current study area.
@@ -756,6 +760,10 @@ study-area:
   unfreeze-text: 'Are you sure you want to unfreeze the study area "%item%"? This could lead to data loss for users of this study area when data is edited, please use this feature responsibly!'
   unfreeze-succeeded: 'Study area "%item%" has been unfrozen successfully.'
   updated: 'Study area "%item%" has been successfully updated.'
+  url-export-enabled: 'Export to external URL'
+  url-export-enabled-help: >-
+    Enabling this makes it possible to export this study area to given URL endpoint.
+    Note that this will only export the study area content if the URL is valid and prepared to handle LTB exports!
 
 relation-type:
   _name: 'Relation type'

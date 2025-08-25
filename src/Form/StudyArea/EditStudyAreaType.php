@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -137,6 +138,20 @@ class EditStudyAreaType extends AbstractType
           'choice_label'  => 'name',
           'select2'       => true,
           'query_builder' => fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
+        ]);
+    }
+
+    if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+      $builder
+        ->add('urlExportEnabled', CheckboxType::class, [
+          'label'    => 'study-area.url-export-enabled',
+          'help'     => 'study-area.url-export-enabled-help',
+          'required' => false,
+        ])
+        ->add('exportUrl', UrlType::class, [
+          'label'    => 'study-area.export-url',
+          'help'     => 'study-area.export-url-help',
+          'required' => false,
         ]);
     }
 
