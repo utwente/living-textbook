@@ -72,6 +72,11 @@ class LinkedSimpleNodeProvider implements ProviderInterface
 
     return sprintf(<<<'EOT'
 {
+    "id": "<studyarea-id>",
+    "name": "<studyarea-name>",
+    "description": "<studyarea-description>",
+    "date_created": "<studyarea-date-created>",
+    "last_updated": "<studyarea-date-last-updated>",
     "nodes": [
         {
             "instance": "<concept-instance>",
@@ -251,6 +256,11 @@ EOT,
     $serializationContext->setSerializeNull(true);
     $json = $this->serializer->serialize(
       [
+        'id'           => $studyArea->getId(),
+        'name'         => $studyArea->getName(),
+        'description'  => $studyArea->getDescription(),
+        'date_created' => $studyArea->getCreatedAt(),
+        'last_updated' => $studyArea->getLastUpdated(),
         'nodes' => array_map(fn (Concept $concept) => [
           'instance'       => $concept->isInstance(),
           'label'          => $concept->getName(),
