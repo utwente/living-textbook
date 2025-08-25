@@ -59,6 +59,8 @@ use function is_numeric;
 use function is_string;
 use function json_encode;
 use function mb_convert_encoding;
+use function ob_get_clean;
+use function ob_start;
 use function set_time_limit;
 use function sprintf;
 use function strlen;
