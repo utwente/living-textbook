@@ -496,6 +496,7 @@ menu:
   duplicate: 'Duplicate'
   edit: 'Edit'
   excel-status: 'Progress export'
+  export-to-url: 'Export to URL'
   external-resources: "External resources"
   concept: 'Concepts'
   case-study: 'Case studies'
