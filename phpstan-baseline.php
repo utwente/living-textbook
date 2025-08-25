@@ -4118,12 +4118,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/Data/DownloadPreviewType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Form\\\\Data\\\\DownloadType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Data/DownloadType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Data\\\\DuplicateType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,

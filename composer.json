@@ -60,6 +60,7 @@
         "symfony/form": "6.4.24",
         "symfony/framework-bundle": "6.4.24",
         "symfony/http-client": "6.4.24",
+        "symfony/http-client-contracts": "3.6.0",
         "symfony/http-foundation": "6.4.24",
         "symfony/http-kernel": "6.4.24",
         "symfony/lock": "6.4.24",
