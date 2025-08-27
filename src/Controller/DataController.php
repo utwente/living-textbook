@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Attribute\DenyOnFrozenStudyArea;
+use App\Dto\DownloadTypeDto;
 use App\DuplicationUtils\StudyAreaDuplicator;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
@@ -36,6 +37,7 @@ use App\Security\Voters\StudyAreaVoter;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -44,9 +46,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
@@ -57,6 +61,8 @@ use function is_numeric;
 use function is_string;
 use function json_encode;
 use function mb_convert_encoding;
+use function ob_get_clean;
+use function ob_start;
 use function set_time_limit;
 use function sprintf;
 use function strlen;
@@ -68,9 +74,13 @@ class DataController extends AbstractController
   #[Route('/export', name: 'app_data_export', options: ['expose' => true], defaults: ['export' => true])]
   #[Route('/search', name: 'app_data_search', options: ['expose' => true], defaults: ['export' => false])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  public function export(bool $export, RelationTypeRepository $relationTypeRepo, ConceptRepository $conceptRepo,
-    SerializerInterface $serializer, RequestStudyArea $requestStudyArea): Response
-  {
+  public function export(
+    bool $export,
+    RelationTypeRepository $relationTypeRepo,
+    ConceptRepository $conceptRepo,
+    SerializerInterface $serializer,
+    RequestStudyArea $requestStudyArea,
+  ): Response {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $relationTypeRepo->findBy(['studyArea' => $requestStudyArea->getStudyArea()]);
 
@@ -100,10 +110,16 @@ class DataController extends AbstractController
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_default_dashboard', subject: 'requestStudyArea')]
   public function upload(
-    Request $request, RequestStudyArea $requestStudyArea, SerializerInterface $serializer, TranslatorInterface $translator,
-    EntityManagerInterface $em, RelationTypeRepository $relationTypeRepo, ValidatorInterface $validator,
-    LearningOutcomeRepository $learningOutcomeRepository, NamingService $namingService): Response
-  {
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    SerializerInterface $serializer,
+    TranslatorInterface $translator,
+    EntityManagerInterface $em,
+    RelationTypeRepository $relationTypeRepo,
+    ValidatorInterface $validator,
+    LearningOutcomeRepository $learningOutcomeRepository,
+    NamingService $namingService,
+  ): Response {
     $studyArea = $requestStudyArea->getStudyArea();
 
     if ($studyArea->isReviewModeEnabled()) {
@@ -148,7 +164,7 @@ class DataController extends AbstractController
 
         // Check fields
         if (!array_key_exists('nodes', $jsonData) || !is_array($jsonData['nodes'])
-            || !array_key_exists('links', $jsonData) || !is_array($jsonData['links'])
+          || !array_key_exists('links', $jsonData) || !is_array($jsonData['links'])
         ) {
           throw new DataImportException('Expected "nodes" and "links" properties to be an array!');
         }
@@ -256,8 +272,8 @@ class DataController extends AbstractController
         // Create the links
         foreach ($jsonData['links'] as $jsonLink) {
           if (!array_key_exists('target', $jsonLink)
-              || !array_key_exists('relationName', $jsonLink)
-              || !array_key_exists('source', $jsonLink)) {
+            || !array_key_exists('relationName', $jsonLink)
+            || !array_key_exists('source', $jsonLink)) {
             throw new DataImportException(
               sprintf('Missing one ore more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
           }
@@ -289,8 +305,8 @@ class DataController extends AbstractController
           $learningOutcomeNumber = $learningOutcomeRepository->findUnusedNumberInStudyArea($studyArea);
           foreach ($jsonData['learningOutcomes'] as $jsonLearningOutcome) {
             if (!array_key_exists('name', $jsonLearningOutcome)
-                || !array_key_exists('content', $jsonLearningOutcome)
-                || !array_key_exists('nodes', $jsonLearningOutcome)) {
+              || !array_key_exists('content', $jsonLearningOutcome)
+              || !array_key_exists('nodes', $jsonLearningOutcome)) {
               throw new DataImportException(
                 sprintf('Missing one ore more required properties "name", "content" or "nodes" from learning outcome: %s', json_encode($jsonLearningOutcome)));
             }
@@ -329,7 +345,7 @@ class DataController extends AbstractController
 
           foreach ($jsonData['externalResources'] as $jsonExternalResource) {
             if (!array_key_exists('title', $jsonExternalResource)
-                || !array_key_exists('nodes', $jsonExternalResource)) {
+              || !array_key_exists('nodes', $jsonExternalResource)) {
               throw new DataImportException(
                 sprintf('Missing one ore more required properties "title" or "nodes" from external resource: %s', json_encode($jsonExternalResource)));
             }
@@ -377,7 +393,7 @@ class DataController extends AbstractController
 
           foreach ($jsonData['tags'] as $jsonTag) {
             if (!array_key_exists('name', $jsonTag)
-                || !array_key_exists('nodes', $jsonTag)) {
+              || !array_key_exists('nodes', $jsonTag)) {
               throw new DataImportException(
                 sprintf('Missing one ore more required properties "name" or "nodes" from tag: %s', json_encode($jsonTag)));
             }
@@ -548,15 +564,88 @@ class DataController extends AbstractController
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function download(Request $request, RequestStudyArea $requestStudyArea, ExportService $exportService): Response
   {
-    $form = $this->createForm(DownloadType::class);
+    $form = $this->createForm(DownloadType::class, $data = new DownloadTypeDto(), [
+      'validation_groups' => [DownloadTypeDto::GROUP_DOWNLOAD],
+    ]);
     $form->handleRequest($request);
 
     $studyArea = $requestStudyArea->getStudyArea();
-    if ($form->isSubmitted()) {
-      return $exportService->export($studyArea, $form->getData()['type']);
+    if ($form->isSubmitted() && $form->isValid()) {
+      return $exportService->export($studyArea, $data->type);
     }
 
     return $this->render('data/download.html.twig', [
+      'studyArea' => $studyArea,
+      'form'      => $form,
+    ]);
+  }
+
+  #[Route('/export/url', name: 'app_data_export_url', options: ['expose' => true])]
+  #[IsGranted(User::ROLE_SUPER_ADMIN, subject: 'requestStudyArea')]
+  public function exportToUrl(
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $translator,
+    ExportService $exportService,
+    HttpClientInterface $httpClient,
+  ): Response {
+    $studyArea = $requestStudyArea->getStudyArea();
+
+    if (!$studyArea->isUrlExportEnabled()) {
+      $this->addFlash('error', sprintf('%s', $translator->trans('data.export.invalid-export-setting')));
+
+      return $this->redirectToRoute('app_default_dashboard');
+    }
+
+    $data = new DownloadTypeDto(exportUrl: $studyArea->getExportUrl());
+    $form = $this->createForm(DownloadType::class, $data, [
+      'form_target'        => '_self',
+      'url_export_enabled' => true,
+      'validation_groups'  => [DownloadTypeDto::GROUP_EXPORT],
+    ]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $exportResponse = $exportService->export($studyArea, $data->type);
+
+      if ($exportResponse instanceof StreamedResponse) {
+        ob_start();
+        $exportResponse->sendContent();
+        $content = ob_get_clean();
+      } else {
+        $content = $exportResponse->getContent();
+      }
+
+      // Ensured by form validation
+      $exportUrl = $data->exportUrl ?? throw new MustNotBeNullException();
+
+      $response  = $httpClient->request(
+        $data->httpMethod,
+        sprintf('%s/%s-%s.json', $exportUrl, $studyArea->getName(), $studyArea->getId()),
+        [
+          'headers' => [
+            'Content-Type' => $exportResponse->headers->get('Content-Type', 'application/json'),
+          ],
+          'body' => $content,
+        ],
+      );
+
+      if ($response->getStatusCode() == Response::HTTP_OK) {
+        $this->addFlash(
+          'success',
+          sprintf('%s: "%s"', $translator->trans('data.export.success'), $exportUrl),
+        );
+
+        return $this->redirectToRoute('app_data_export_url');
+      }
+
+      $this->addFlash(
+        'error',
+        sprintf('%s: "%s".', $translator->trans('data.export.error'), $exportUrl),
+      );
+    }
+
+    return $this->render('data/export.html.twig', [
       'studyArea' => $studyArea,
       'form'      => $form,
     ]);
@@ -566,13 +655,20 @@ class DataController extends AbstractController
   #[Route('/duplicate')]
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function duplicate(
-    Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $trans,
-    EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
-    AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
-    LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepo,
-    TagRepository $tagRepository): Response
-  {
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $trans,
+    EntityManagerInterface $em,
+    UrlScanner $urlScanner,
+    LtbRouter $router,
+    AbbreviationRepository $abbreviationRepo,
+    ConceptRelationRepository $conceptRelationRepo,
+    ContributorRepository $contributorRepository,
+    ExternalResourceRepository $externalResourceRepo,
+    LearningOutcomeRepository $learningOutcomeRepo,
+    LearningPathRepository $learningPathRepo,
+    TagRepository $tagRepository,
+  ): Response {
     $user = $this->getUser();
     assert($user instanceof User);
 

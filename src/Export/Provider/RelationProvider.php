@@ -12,11 +12,13 @@ use App\Repository\RelationTypeRepository;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 use function usort;
 
+#[Autoconfigure(lazy: true)]
 class RelationProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -34,7 +36,7 @@ class RelationProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getName(): string
+  public static function getName(): string
   {
     return 'relation';
   }

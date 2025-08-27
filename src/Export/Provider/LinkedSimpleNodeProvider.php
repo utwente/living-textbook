@@ -18,12 +18,14 @@ use App\Router\LtbRouter;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use function array_map;
 use function sprintf;
 
+#[Autoconfigure(lazy: true)]
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -57,7 +59,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getName(): string
+  public static function getName(): string
   {
     return 'linked-simple-node';
   }
@@ -70,6 +72,11 @@ class LinkedSimpleNodeProvider implements ProviderInterface
 
     return sprintf(<<<'EOT'
 {
+    "id": "<studyarea-id>",
+    "name": "<studyarea-name>",
+    "description": "<studyarea-description>",
+    "date_created": "<studyarea-date-created>",
+    "last_updated": "<studyarea-last-updated>",
     "nodes": [
         {
             "instance": "<concept-instance>",
@@ -249,7 +256,12 @@ EOT,
     $serializationContext->setSerializeNull(true);
     $json = $this->serializer->serialize(
       [
-        'nodes' => array_map(fn (Concept $concept) => [
+        'id'           => $studyArea->getId(),
+        'name'         => $studyArea->getName(),
+        'description'  => $studyArea->getDescription(),
+        'date_created' => $studyArea->getCreatedAt(),
+        'last_updated' => $studyArea->getLastUpdated(),
+        'nodes'        => array_map(fn (Concept $concept) => [
           'instance'       => $concept->isInstance(),
           'label'          => $concept->getName(),
           'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),

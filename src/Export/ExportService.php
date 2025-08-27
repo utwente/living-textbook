@@ -3,87 +3,67 @@
 namespace App\Export;
 
 use App\Entity\StudyArea;
-use App\Export\Provider\ConceptIdNameProvider;
-use App\Export\Provider\LearningPathProvider;
-use App\Export\Provider\LinkedSimpleNodeProvider;
-use App\Export\Provider\RdfProvider;
-use App\Export\Provider\RelationProvider;
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 
-use function array_key_exists;
-use function func_get_args;
+use function array_combine;
+use function array_keys;
+use function array_map;
 use function iconv;
-use function ksort;
 use function mb_strtolower;
 use function preg_replace;
 use function setlocale;
 use function sprintf;
-use function strtolower;
 
 use const LC_CTYPE;
 
-class ExportService
+#[Autoconfigure(lazy: true)]
+readonly class ExportService
 {
-  /**
-   * Available export types, and their providers.
-   *
-   * @var ProviderInterface[]
-   */
-  private array $providers = [];
-
+  /** @param ServiceProviderInterface<ProviderInterface> $providers The registered export providers */
   public function __construct(
-    LinkedSimpleNodeProvider $p1, ConceptIdNameProvider $p2, RelationProvider $p3, RdfProvider $p4, LearningPathProvider $p5)
-  {
-    $key = 0;
-    foreach (func_get_args() as $provider) {
-      /* @var ProviderInterface $provider */
-      $this->providers['p' . ++$key] = $provider;
-    }
+    #[AutowireLocator(ProviderInterface::class, defaultIndexMethod: 'getName')]
+    private ServiceProviderInterface $providers,
+  ) {
   }
 
   /**
-   * Get the available choices, to be used in a ChoiceType.
+   * Retrieve the available export provider keys.
    *
-   * @return array
+   * @return string[]
    */
-  public function getChoices()
+  public function getAvailableProviderKeys(): array
   {
-    $data = [];
-    foreach ($this->providers as $key => $provider) {
-      $providerName = strtolower($provider->getName());
-      $choiceName   = 'data.download.provider.' . $providerName;
-      if (array_key_exists($choiceName, $data)) {
-        throw new InvalidArgumentException('Non-unique download providers registered');
-      }
-      $data[$choiceName] = $key;
-    }
-
-    ksort($data);
-
-    return $data;
+    return array_keys($this->providers->getProvidedServices());
   }
 
-  /** Retrieve the previews from the providers. */
+  /**
+   * Retrieve the previews from the providers.
+   *
+   * @return string[]
+   */
   public function getPreviews(): array
   {
-    $data = [];
-    foreach ($this->providers as $key => $provider) {
-      $data[$key] = $provider->getPreview();
-    }
+    $providerKeys = $this->getAvailableProviderKeys();
 
-    return $data;
+    return array_combine(
+      $providerKeys,
+      array_map(fn (string $k): string => $this->providers->get($k)->getPreview(), $providerKeys),
+    );
   }
 
   /** Retrieve the export data. */
   public function export(StudyArea $studyArea, string $exportProvider): Response
   {
-    if (!array_key_exists($exportProvider, $this->providers)) {
+    if (!$this->providers->has($exportProvider)) {
       throw new InvalidArgumentException(sprintf('Requested provider %s is not registered!', $exportProvider));
     }
 
-    return $this->providers[$exportProvider]->export($studyArea);
+    return $this->providers->get($exportProvider)->export($studyArea);
   }
 
   /** Create a correct content disposition. */
@@ -93,7 +73,7 @@ class ExportService
     setlocale(LC_CTYPE, 'en_US.UTF-8');
     $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
       ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-      mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)))
+      mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename))),
     ));
   }
 }

@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\Selectable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -169,6 +170,17 @@ class StudyArea implements Stringable, IdInterface
   /** @var Collection<int, StylingConfiguration> */
   #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: StylingConfiguration::class, fetch: 'EXTRA_LAZY')]
   private Collection $stylingConfigurations;
+
+  /** Setting this to true makes it possible to export studyarea to given URL endpoint. */
+  #[ORM\Column(options: ['default' => false])]
+  private bool $urlExportEnabled = false;
+
+  /** The URL to export the study area to. */
+  #[Assert\Url]
+  #[Assert\Length(max: 512)]
+  #[ORM\Column(length: 512, nullable: true)]
+  #[JMSA\Type('string')]
+  private ?string $exportUrl = null;
 
   #[ORM\OneToOne]
   private ?LayoutConfiguration $defaultLayoutConfiguration = null;
@@ -846,6 +858,30 @@ class StudyArea implements Stringable, IdInterface
   public function getStylingConfigurations(): Collection
   {
     return $this->stylingConfigurations;
+  }
+
+  public function isUrlExportEnabled(): bool
+  {
+    return $this->urlExportEnabled;
+  }
+
+  public function setUrlExportEnabled(bool $urlExportEnabled): self
+  {
+    $this->urlExportEnabled = $urlExportEnabled;
+
+    return $this;
+  }
+
+  public function getExportUrl(): ?string
+  {
+    return $this->exportUrl;
+  }
+
+  public function setExportUrl(?string $exportUrl): self
+  {
+    $this->exportUrl = StringHelper::emptyToNull($exportUrl);
+
+    return $this;
   }
 
   public function getDefaultLayoutConfiguration(): ?LayoutConfiguration

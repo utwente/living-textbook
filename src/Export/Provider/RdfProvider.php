@@ -17,6 +17,7 @@ use EasyRdf\RdfNamespace;
 use EasyRdf\Serialiser\JsonLd;
 use JMS\Serializer\SerializerInterface;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,6 +25,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 use function sprintf;
 
+#[Autoconfigure(lazy: true)]
 class RdfProvider implements ProviderInterface
 {
   private ConceptRepository $conceptRepository;
@@ -61,7 +63,7 @@ class RdfProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getName(): string
+  public static function getName(): string
   {
     return 'rdf';
   }
