@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d173d80a3e99bee5ad27a10472fd55b",
+    "content-hash": "ee144a593b87dbb6c6749e37198eeaea",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11117,16 +11117,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "5.2.0",
+            "version": "5.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "b82e160f9dcc9c5c5e59bf9a4904ed4a8ffa86a4"
+                "reference": "e174ef759a934c337209dc41c7490919c2362df8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/b82e160f9dcc9c5c5e59bf9a4904ed4a8ffa86a4",
-                "reference": "b82e160f9dcc9c5c5e59bf9a4904ed4a8ffa86a4",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/e174ef759a934c337209dc41c7490919c2362df8",
+                "reference": "e174ef759a934c337209dc41c7490919c2362df8",
                 "shasum": ""
             },
             "require": {
@@ -11197,9 +11197,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/5.2.0"
+                "source": "https://github.com/zircote/swagger-php/tree/5.3.1"
             },
-            "time": "2025-08-11T04:26:13+00:00"
+            "time": "2025-08-16T22:59:55+00:00"
         },
         {
             "name": "zozlak/rdf-constants",
