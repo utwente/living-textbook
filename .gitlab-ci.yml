@@ -171,19 +171,6 @@ code-style-fixer:
     - production
 
 # Security audit
-php-cve-check:
-  stage: audit
-  image: alpine:latest
-  needs: []
-  interruptible: true
-  before_script:
-    - wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v${PHP_SEC_CHECK_VERSION}/local-php-security-checker_linux_amd64
-    - chmod +x local-php-security-checker
-  script:
-    - ./local-php-security-checker
-  tags:
-    - docker
-
 composer-audit:
   stage: audit
   image: "registry.drenso.dev/open/docker-images/php:${DRENSO_PHP_VERSION}"
