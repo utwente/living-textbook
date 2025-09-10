@@ -9,6 +9,8 @@ doctrine:
     default_table_options:
       charset: utf8mb4
       collation: utf8mb4_unicode_ci
+    options:
+      !php/const PDO::ATTR_EMULATE_PREPARES: false
 
     # Do not remove the messenger table
     schema_filter: '~^(?!_messenger_queue)~'
