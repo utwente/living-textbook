@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec9bdee7b1e465caf65e68f3fd649fd8",
+    "content-hash": "3faad488a8ca8acb66e019c739e8f37f",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4888,16 +4888,16 @@
         },
         {
             "name": "sentry/sentry-symfony",
-            "version": "5.4.0",
+            "version": "5.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-symfony.git",
-                "reference": "5c1bc4897204ed1e89a984864371e4db3acf7fa3"
+                "reference": "5a52fb16fb8743e1f84aa1072075bdabeb56e2de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/5c1bc4897204ed1e89a984864371e4db3acf7fa3",
-                "reference": "5c1bc4897204ed1e89a984864371e4db3acf7fa3",
+                "url": "https://api.github.com/repos/getsentry/sentry-symfony/zipball/5a52fb16fb8743e1f84aa1072075bdabeb56e2de",
+                "reference": "5a52fb16fb8743e1f84aa1072075bdabeb56e2de",
                 "shasum": ""
             },
             "require": {
@@ -4974,7 +4974,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-symfony/issues",
-                "source": "https://github.com/getsentry/sentry-symfony/tree/5.4.0"
+                "source": "https://github.com/getsentry/sentry-symfony/tree/5.4.1"
             },
             "funding": [
                 {
@@ -4986,7 +4986,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-09-08T09:20:33+00:00"
+            "time": "2025-09-09T12:12:59+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
