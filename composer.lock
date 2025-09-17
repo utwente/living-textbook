@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3faad488a8ca8acb66e019c739e8f37f",
+    "content-hash": "84816437648ed00ef93e6ef5645002b5",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -11963,16 +11963,16 @@
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "eeff19808f8ae3a6f7c4e43e388a2848eb2b0865"
+                "reference": "934f5734812341358fc41c44006b30fa00c785f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/eeff19808f8ae3a6f7c4e43e388a2848eb2b0865",
-                "reference": "eeff19808f8ae3a6f7c4e43e388a2848eb2b0865",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/934f5734812341358fc41c44006b30fa00c785f0",
+                "reference": "934f5734812341358fc41c44006b30fa00c785f0",
                 "shasum": ""
             },
             "require": {
@@ -12029,9 +12029,9 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.5"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.6"
             },
-            "time": "2025-09-07T11:52:30+00:00"
+            "time": "2025-09-10T07:06:30+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
