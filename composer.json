@@ -41,7 +41,7 @@
         "phpoffice/phpspreadsheet": "5.1.0",
         "rollerworks/password-strength-validator": "2.0.3",
         "ryakad/pandoc-php": "1.0.0",
-        "sentry/sentry-symfony": "5.4.1",
+        "sentry/sentry-symfony": "5.5.0",
         "stof/doctrine-extensions-bundle": "1.14.0",
         "sweetrdf/easyrdf": "1.16.1",
         "symfony/asset": "6.4.24",
