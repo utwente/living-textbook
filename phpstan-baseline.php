@@ -1142,24 +1142,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'concept\' does not exist on array\\{_studyArea\\: int\\|null\\}\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'learningOutcome\' does not exist on array\\{_studyArea\\: int\\|null\\}\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'learningPath\' does not exist on array\\{_studyArea\\: int\\|null\\}\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^PHPDoc tag @var with type App\\\\Entity\\\\LearningPathElement is not subtype of native type null\\.$#',
 	'identifier' => 'varTag.nativeType',
 	'count' => 1,
