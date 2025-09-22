@@ -30,7 +30,7 @@
         "drenso/symfony-shared": "4.16.2",
         "friendsofsymfony/ckeditor-bundle": "2.6.0",
         "friendsofsymfony/jsrouting-bundle": "3.5.2",
-        "gedmo/doctrine-extensions": "3.20.0",
+        "gedmo/doctrine-extensions": "3.20.1",
         "helios-ag/fm-elfinder-bundle": "12.7.3",
         "jms/serializer": "3.32.5",
         "jms/serializer-bundle": "5.5.1",
