@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74b89b32979ffd9e3294e1309e403a7b",
+    "content-hash": "d567baeb7ef7334a3a3441598ab996cc",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3396,16 +3396,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v5.6.1",
+            "version": "v5.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "0b8b6031c28af2999656488da7e1fec791a2f983"
+                "reference": "9b7ece3141b74699008be55231d6907b5e8bc883"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/0b8b6031c28af2999656488da7e1fec791a2f983",
-                "reference": "0b8b6031c28af2999656488da7e1fec791a2f983",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/9b7ece3141b74699008be55231d6907b5e8bc883",
+                "reference": "9b7ece3141b74699008be55231d6907b5e8bc883",
                 "shasum": ""
             },
             "require": {
@@ -3507,7 +3507,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v5.6.1"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v5.6.2"
             },
             "funding": [
                 {
@@ -3515,7 +3515,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-09-10T14:44:42+00:00"
+            "time": "2025-09-19T12:23:35+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
