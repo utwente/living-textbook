@@ -29,6 +29,7 @@ fos_ck_editor:
       extraPlugins: "image2,wordcount,latexeditor"
       extraAllowedContent: "span(latex-figure,latex-figure-inline);figure(latex-figure);figcaption(latex-caption);img(latex-image);a[data-concept-id](concept-link);ltb-abbr[data-abbr-id];symbol"
       removePlugins: "image,dialogadvtab"
+      removeButtons: "Underline"
       bodyClass: "ltb-text-container"
       wordcount:
         showParagraphs: false
