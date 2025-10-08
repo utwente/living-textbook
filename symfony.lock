@@ -1,7 +1,4 @@
 {
-    "behat/transliterator": {
-        "version": "v1.2.0"
-    },
     "bobv/latex-bundle": {
         "version": "v1.3.1"
     },
