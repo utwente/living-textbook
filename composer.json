@@ -43,7 +43,7 @@
         "ryakad/pandoc-php": "1.0.0",
         "sentry/sentry-symfony": "5.6.0",
         "stof/doctrine-extensions-bundle": "1.14.0",
-        "sweetrdf/easyrdf": "1.16.1",
+        "sweetrdf/easyrdf": "1.17.0",
         "symfony/asset": "6.4.24",
         "symfony/cache": "6.4.26",
         "symfony/config": "6.4.26",
