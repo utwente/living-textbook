@@ -998,6 +998,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/ReviewController.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Possibly invalid array key type float\\|int\\|string\\.$#',
+	'identifier' => 'offsetAccess.invalidOffset',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Controller/ReviewController.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
