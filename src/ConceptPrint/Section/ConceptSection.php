@@ -12,6 +12,7 @@ use Pandoc\PandocException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function sprintf;
+use function Symfony\Component\String\u;
 
 class ConceptSection extends LtbSection
 {
@@ -41,16 +42,16 @@ class ConceptSection extends LtbSection
     }
     $fieldNames = $namingService->get()->concept();
     if ($concept->getIntroduction()->hasData()) {
-      $this->addSection($fieldNames->introduction(), $concept->getIntroduction()->getText());
+      $this->addSection(u($fieldNames->introduction())->title(), $concept->getIntroduction()->getText());
     }
     if ($concept->getTheoryExplanation()->hasData()) {
-      $this->addSection($fieldNames->theoryExplanation(), $concept->getTheoryExplanation()->getText());
+      $this->addSection(u($fieldNames->theoryExplanation())->title(), $concept->getTheoryExplanation()->getText());
     }
     if ($concept->getHowTo()->hasData()) {
-      $this->addSection($fieldNames->howTo(), $concept->getHowTo()->getText());
+      $this->addSection(u($fieldNames->howTo())->title(), $concept->getHowTo()->getText());
     }
     if ($concept->getExamples()->hasData()) {
-      $this->addSection($fieldNames->examples(), $concept->getExamples()->getText());
+      $this->addSection(u($fieldNames->examples())->title(), $concept->getExamples()->getText());
     }
 
     // Undo sloppy
