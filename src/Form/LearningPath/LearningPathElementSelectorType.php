@@ -19,8 +19,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function ucfirst;
-
 class LearningPathElementSelectorType extends AbstractType
 {
   public function __construct(
@@ -47,7 +45,7 @@ class LearningPathElementSelectorType extends AbstractType
         'select2_placeholder' => 'learning-path.select',
       ])
       ->add('learningOutcomes', EntityType::class, [
-        'label'               => ucfirst($this->namingService->get()->learningOutcome()->objs()),
+        'label'               => $this->namingService->get()->learningOutcome()->objs(true),
         'class'               => LearningOutcome::class,
         'choice_label'        => 'name',
         'required'            => false,
