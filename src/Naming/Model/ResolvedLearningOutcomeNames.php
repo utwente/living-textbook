@@ -6,6 +6,7 @@ use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
 use function strtolower;
+use function Symfony\Component\String\u;
 
 class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
 {
@@ -24,13 +25,13 @@ class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
     $this->objs = $inflector->pluralize($this->obj)[0];
   }
 
-  public function obj(): string
+  public function obj(bool $titleCase = false): string
   {
-    return $this->obj;
+    return $titleCase ? u($this->obj)->title() : $this->obj;
   }
 
-  public function objs(): string
+  public function objs(bool $titleCase = false): string
   {
-    return $this->objs;
+    return $titleCase ? u($this->objs)->title() : $this->objs;
   }
 }

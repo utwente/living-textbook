@@ -6,6 +6,7 @@ use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
 use function strtolower;
+use function Symfony\Component\String\u;
 
 class ResolvedConceptNames implements ResolvedNamesInterface
 {
@@ -38,43 +39,43 @@ class ResolvedConceptNames implements ResolvedNamesInterface
     // Nothing to do here
   }
 
-  public function definition(): string
+  public function definition(bool $titleCase = false): string
   {
-    return $this->definition;
+    return $titleCase ? u($this->definition)->title() : $this->definition;
   }
 
-  public function examples(): string
+  public function examples(bool $titleCase = false): string
   {
-    return $this->examples;
+    return $titleCase ? u($this->definition())->title() : $this->examples;
   }
 
-  public function howTo(): string
+  public function howTo(bool $titleCase = false): string
   {
-    return $this->howTo;
+    return $titleCase ? u($this->howTo)->title() : $this->howTo;
   }
 
-  public function introduction(): string
+  public function introduction(bool $titleCase = false): string
   {
-    return $this->introduction;
+    return $titleCase ? u($this->introduction)->title() : $this->introduction;
   }
 
-  public function priorKnowledge(): string
+  public function priorKnowledge(bool $titleCase = false): string
   {
-    return $this->priorKnowledge;
+    return $titleCase ? u($this->priorKnowledge)->title() : $this->priorKnowledge;
   }
 
-  public function selfAssessment(): string
+  public function selfAssessment(bool $titleCase = false): string
   {
-    return $this->selfAssessment;
+    return $titleCase ? u($this->selfAssessment)->title() : $this->selfAssessment;
   }
 
-  public function synonyms(): string
+  public function synonyms(bool $titleCase = false): string
   {
-    return $this->synonyms;
+    return $titleCase ? u($this->synonyms)->title() : $this->synonyms;
   }
 
-  public function theoryExplanation(): string
+  public function theoryExplanation(bool $titleCase = false): string
   {
-    return $this->theoryExplanation;
+    return $titleCase ? u($this->theoryExplanation)->title() : $this->theoryExplanation;
   }
 }
