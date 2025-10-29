@@ -160,7 +160,7 @@ class ConceptController extends AbstractApiController
     }
 
     return $this->createDataResponse(
-      array_map(fn ($concept) => ConceptApiModel::fromEntity($concept), $concepts),
+      array_map(ConceptApiModel::fromEntity(...), $concepts),
       serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea)
     );
   }

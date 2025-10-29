@@ -91,7 +91,7 @@ class SearchController extends AbstractController
   {
     $data = array_map(fn (SearchableInterface $element) => $element->searchIn($search), $data);
 
-    $data = array_filter($data, fn ($element) => $this->filterSortData($element));
+    $data = array_filter($data, $this->filterSortData(...));
 
     usort($data, self::sortSearchData(...));
 
