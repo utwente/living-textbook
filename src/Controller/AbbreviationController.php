@@ -64,7 +64,7 @@ class AbbreviationController extends AbstractController
   {
     // Retrieve the abbreviations
     $ids           = $request->query->all('ids');
-    $ids           = array_filter($ids, fn ($id) => is_numeric($id));
+    $ids           = array_filter($ids, is_numeric(...));
     $abbreviations = $abbreviationRepo->findBy(['id' => $ids, 'studyArea' => $requestStudyArea->getStudyArea()]);
 
     $json = $serializer->serialize($abbreviations, 'json');

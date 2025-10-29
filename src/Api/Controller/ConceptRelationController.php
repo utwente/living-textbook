@@ -188,7 +188,7 @@ class ConceptRelationController extends AbstractApiController
     }
 
     return $this->createDataResponse(
-      array_map(fn ($conceptRelation) => DetailedConceptRelationApiModel::fromEntity($conceptRelation), $conceptRelations),
+      array_map(DetailedConceptRelationApiModel::fromEntity(...), $conceptRelations),
       serializationGroups: $this->getDefaultSerializationGroup($requestStudyArea));
   }
 

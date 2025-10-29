@@ -30,7 +30,7 @@ class StylingConfigurationController extends AbstractApiController
   {
     return $this->createDataResponse(
       $requestStudyArea->getStudyArea()->getStylingConfigurations()
-        ->map(fn (StylingConfiguration $conf) => StylingConfigurationApiModel::fromEntity($conf))
+        ->map(StylingConfigurationApiModel::fromEntity(...))
     );
   }
 
