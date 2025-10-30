@@ -5,7 +5,6 @@ namespace App\Naming\Model;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
-use function strtolower;
 use function Symfony\Component\String\u;
 
 class ResolvedConceptNames implements ResolvedNamesInterface
@@ -20,17 +19,23 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   private string $theoryExplanation;
 
   public function __construct(
-    string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
-    string $howTo, string $examples, string $selfAssessment)
-  {
-    $this->definition        = strtolower($definition);
-    $this->introduction      = strtolower($introduction);
-    $this->synonyms          = strtolower($synonyms);
-    $this->priorKnowledge    = strtolower($priorKnowledge);
-    $this->theoryExplanation = strtolower($theoryExplanation);
-    $this->howTo             = strtolower($howTo);
-    $this->examples          = strtolower($examples);
-    $this->selfAssessment    = strtolower($selfAssessment);
+    string $definition,
+    string $introduction,
+    string $synonyms,
+    string $priorKnowledge,
+    string $theoryExplanation,
+    string $howTo,
+    string $examples,
+    string $selfAssessment,
+  ) {
+    $this->definition        = u($definition)->lower();
+    $this->introduction      = u($introduction)->lower();
+    $this->synonyms          = u($synonyms)->lower();
+    $this->priorKnowledge    = u($priorKnowledge)->lower();
+    $this->theoryExplanation = u($theoryExplanation)->lower();
+    $this->howTo             = u($howTo)->lower();
+    $this->examples          = u($examples)->lower();
+    $this->selfAssessment    = u($selfAssessment)->lower();
   }
 
   #[Override]

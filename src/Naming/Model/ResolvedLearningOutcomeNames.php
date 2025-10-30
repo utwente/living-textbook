@@ -5,7 +5,6 @@ namespace App\Naming\Model;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
-use function strtolower;
 use function Symfony\Component\String\u;
 
 class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
@@ -16,7 +15,7 @@ class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
 
   public function __construct(string $obj)
   {
-    $this->obj = strtolower($obj);
+    $this->obj = u($obj)->lower();
   }
 
   #[Override]
