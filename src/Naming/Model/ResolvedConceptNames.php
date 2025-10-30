@@ -34,7 +34,7 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   }
 
   #[Override]
-  public function resolvePlurals(InflectorInterface $inflector)
+  public function resolvePlurals(InflectorInterface $inflector): void
   {
     // Nothing to do here
   }

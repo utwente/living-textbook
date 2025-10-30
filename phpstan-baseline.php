@@ -4526,30 +4526,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/User/UpdatePasswordType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Naming\\\\Model\\\\ResolvedConceptNames\\:\\:resolvePlurals\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Naming/Model/ResolvedConceptNames.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Naming\\\\Model\\\\ResolvedLearningOutcomeNames\\:\\:resolvePlurals\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Naming/Model/ResolvedLearningOutcomeNames.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Naming\\\\Model\\\\ResolvedNames\\:\\:resolvePlurals\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Naming/Model/ResolvedNames.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Naming\\\\Model\\\\ResolvedNamesInterface\\:\\:resolvePlurals\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Naming/Model/ResolvedNamesInterface.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Naming\\\\NamingService\\:\\:getCached\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,

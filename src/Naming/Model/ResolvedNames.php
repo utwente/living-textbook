@@ -18,7 +18,7 @@ class ResolvedNames implements ResolvedNamesInterface
   }
 
   #[Override]
-  public function resolvePlurals(InflectorInterface $inflector)
+  public function resolvePlurals(InflectorInterface $inflector): void
   {
     $this->concept->resolvePlurals($inflector);
     $this->learningOutcome->resolvePlurals($inflector);

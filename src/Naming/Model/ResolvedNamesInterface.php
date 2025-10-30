@@ -6,5 +6,5 @@ use Symfony\Component\String\Inflector\InflectorInterface;
 
 interface ResolvedNamesInterface
 {
-  public function resolvePlurals(InflectorInterface $inflector);
+  public function resolvePlurals(InflectorInterface $inflector): void;
 }
