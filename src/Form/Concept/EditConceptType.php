@@ -36,7 +36,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function in_array;
-use function ucfirst;
 
 class EditConceptType extends AbstractType
 {
@@ -94,7 +93,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('definition', TextareaType::class, [
-        'label'              => ucfirst($fieldNames->definition()),
+        'label'              => $fieldNames->definition(true),
         'translation_domain' => false,
         'empty_data'         => '',
         'required'           => false,
@@ -105,7 +104,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('introduction', BaseDataTextType::class, [
-        'label'              => ucfirst($fieldNames->introduction()),
+        'label'              => $fieldNames->introduction(true),
         'translation_domain' => false,
         'data_class'         => DataIntroduction::class,
         'studyArea'          => $studyArea,
@@ -117,7 +116,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('theoryExplanation', BaseDataTextType::class, [
-        'label'              => ucfirst($fieldNames->theoryExplanation()),
+        'label'              => $fieldNames->theoryExplanation(true),
         'translation_domain' => false,
         'required'           => false,
         'data_class'         => DataTheoryExplanation::class,
@@ -129,7 +128,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('examples', BaseDataTextType::class, [
-        'label'              => ucfirst($fieldNames->examples()),
+        'label'              => $fieldNames->examples(true),
         'translation_domain' => false,
         'required'           => false,
         'data_class'         => DataExamples::class,
@@ -141,7 +140,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('howTo', BaseDataTextType::class, [
-        'label'              => ucfirst($fieldNames->howTo()),
+        'label'              => $fieldNames->howTo(true),
         'translation_domain' => false,
         'required'           => false,
         'data_class'         => DataHowTo::class,
@@ -153,7 +152,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('synonyms', TextType::class, [
-        'label'              => ucfirst($fieldNames->synonyms()),
+        'label'              => $fieldNames->synonyms(true),
         'translation_domain' => false,
         'empty_data'         => '',
         'required'           => false,
@@ -178,7 +177,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('learningOutcomes', EntityType::class, [
-        'label'              => ucfirst($names->learningOutcome()->objs()),
+        'label'              => $names->learningOutcome()->objs(true),
         'translation_domain' => false,
         'class'              => LearningOutcome::class,
         'choice_label'       => 'shortName',
@@ -195,7 +194,7 @@ class EditConceptType extends AbstractType
 
         // This field is also used by the ckeditor plugin for concept selection
       ->add('priorKnowledge', EntityType::class, [
-        'label'              => ucfirst($fieldNames->priorKnowledge()),
+        'label'              => $fieldNames->priorKnowledge(true),
         'translation_domain' => false,
         'class'              => Concept::class,
         'choice_label'       => 'name',
@@ -226,7 +225,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('selfAssessment', BaseDataTextType::class, [
-        'label'      => ucfirst($fieldNames->selfAssessment()),
+        'label'      => $fieldNames->selfAssessment(true),
         'required'   => false,
         'data_class' => DataSelfAssessment::class,
         'studyArea'  => $studyArea,

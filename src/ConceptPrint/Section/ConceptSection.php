@@ -41,16 +41,16 @@ class ConceptSection extends LtbSection
     }
     $fieldNames = $namingService->get()->concept();
     if ($concept->getIntroduction()->hasData()) {
-      $this->addSection($fieldNames->introduction(), $concept->getIntroduction()->getText());
+      $this->addSection($fieldNames->introduction(true), $concept->getIntroduction()->getText());
     }
     if ($concept->getTheoryExplanation()->hasData()) {
-      $this->addSection($fieldNames->theoryExplanation(), $concept->getTheoryExplanation()->getText());
+      $this->addSection($fieldNames->theoryExplanation(true), $concept->getTheoryExplanation()->getText());
     }
     if ($concept->getHowTo()->hasData()) {
-      $this->addSection($fieldNames->howTo(), $concept->getHowTo()->getText());
+      $this->addSection($fieldNames->howTo(true), $concept->getHowTo()->getText());
     }
     if ($concept->getExamples()->hasData()) {
-      $this->addSection($fieldNames->examples(), $concept->getExamples()->getText());
+      $this->addSection($fieldNames->examples(true), $concept->getExamples()->getText());
     }
 
     // Undo sloppy

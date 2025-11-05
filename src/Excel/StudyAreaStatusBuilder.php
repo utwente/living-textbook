@@ -20,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_fill;
 use function count;
 use function sprintf;
-use function ucfirst;
+use function Symfony\Component\String\u;
 
 /**
  * This class is used to build an Excel sheet with the current study area status.
@@ -109,7 +109,7 @@ class StudyAreaStatusBuilder
     $row++;
 
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.access-type', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 1, $row, ucfirst($this->studyArea->getAccessType()));
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 1, $row, u($this->studyArea->getAccessType())->title());
     $row++;
 
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-info.creation-data', true);
@@ -312,7 +312,7 @@ class StudyAreaStatusBuilder
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.detailed-concept-overview.examples', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 6, $row, ucfirst($this->namingService->get()->learningOutcome()->objs()), true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 6, $row, $this->namingService->get()->learningOutcome()->objs(true), true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.external-links', true);

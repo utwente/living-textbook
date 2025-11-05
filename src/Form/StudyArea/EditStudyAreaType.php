@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function assert;
-use function ucfirst;
+use function Symfony\Component\String\u;
 
 class EditStudyAreaType extends AbstractType
 {
@@ -49,7 +49,7 @@ class EditStudyAreaType extends AbstractType
         'label'                     => 'study-area.access-type',
         'help'                      => 'study-area.access-type-change-note',
         'choices'                   => $studyArea->getAvailableAccessTypes($this->security, $this->em),
-        'choice_label'              => fn ($value) => ucfirst((string)$value),
+        'choice_label'              => fn ($value) => u((string)$value)->title(),
         'choice_translation_domain' => false,
         'select2'                   => true,
       ]);

@@ -5,7 +5,7 @@ namespace App\Naming\Model;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
-use function strtolower;
+use function Symfony\Component\String\u;
 
 class ResolvedConceptNames implements ResolvedNamesInterface
 {
@@ -19,62 +19,68 @@ class ResolvedConceptNames implements ResolvedNamesInterface
   private string $theoryExplanation;
 
   public function __construct(
-    string $definition, string $introduction, string $synonyms, string $priorKnowledge, string $theoryExplanation,
-    string $howTo, string $examples, string $selfAssessment)
-  {
-    $this->definition        = strtolower($definition);
-    $this->introduction      = strtolower($introduction);
-    $this->synonyms          = strtolower($synonyms);
-    $this->priorKnowledge    = strtolower($priorKnowledge);
-    $this->theoryExplanation = strtolower($theoryExplanation);
-    $this->howTo             = strtolower($howTo);
-    $this->examples          = strtolower($examples);
-    $this->selfAssessment    = strtolower($selfAssessment);
+    string $definition,
+    string $introduction,
+    string $synonyms,
+    string $priorKnowledge,
+    string $theoryExplanation,
+    string $howTo,
+    string $examples,
+    string $selfAssessment,
+  ) {
+    $this->definition        = u($definition)->lower();
+    $this->introduction      = u($introduction)->lower();
+    $this->synonyms          = u($synonyms)->lower();
+    $this->priorKnowledge    = u($priorKnowledge)->lower();
+    $this->theoryExplanation = u($theoryExplanation)->lower();
+    $this->howTo             = u($howTo)->lower();
+    $this->examples          = u($examples)->lower();
+    $this->selfAssessment    = u($selfAssessment)->lower();
   }
 
   #[Override]
-  public function resolvePlurals(InflectorInterface $inflector)
+  public function resolvePlurals(InflectorInterface $inflector): void
   {
     // Nothing to do here
   }
 
-  public function definition(): string
+  public function definition(bool $titleCase = false): string
   {
-    return $this->definition;
+    return $titleCase ? u($this->definition)->title() : $this->definition;
   }
 
-  public function examples(): string
+  public function examples(bool $titleCase = false): string
   {
-    return $this->examples;
+    return $titleCase ? u($this->definition())->title() : $this->examples;
   }
 
-  public function howTo(): string
+  public function howTo(bool $titleCase = false): string
   {
-    return $this->howTo;
+    return $titleCase ? u($this->howTo)->title() : $this->howTo;
   }
 
-  public function introduction(): string
+  public function introduction(bool $titleCase = false): string
   {
-    return $this->introduction;
+    return $titleCase ? u($this->introduction)->title() : $this->introduction;
   }
 
-  public function priorKnowledge(): string
+  public function priorKnowledge(bool $titleCase = false): string
   {
-    return $this->priorKnowledge;
+    return $titleCase ? u($this->priorKnowledge)->title() : $this->priorKnowledge;
   }
 
-  public function selfAssessment(): string
+  public function selfAssessment(bool $titleCase = false): string
   {
-    return $this->selfAssessment;
+    return $titleCase ? u($this->selfAssessment)->title() : $this->selfAssessment;
   }
 
-  public function synonyms(): string
+  public function synonyms(bool $titleCase = false): string
   {
-    return $this->synonyms;
+    return $titleCase ? u($this->synonyms)->title() : $this->synonyms;
   }
 
-  public function theoryExplanation(): string
+  public function theoryExplanation(bool $titleCase = false): string
   {
-    return $this->theoryExplanation;
+    return $titleCase ? u($this->theoryExplanation)->title() : $this->theoryExplanation;
   }
 }
