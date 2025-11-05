@@ -30,7 +30,7 @@ class LayoutConfigurationController extends AbstractApiController
   {
     return $this->createDataResponse(
       $requestStudyArea->getStudyArea()->getLayoutConfigurations()
-        ->map(fn (LayoutConfiguration $conf) => LayoutConfigurationApiModel::fromEntity($conf))
+        ->map(LayoutConfigurationApiModel::fromEntity(...))
     );
   }
 

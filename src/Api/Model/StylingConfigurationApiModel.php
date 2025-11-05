@@ -32,9 +32,9 @@ class StylingConfigurationApiModel
       $stylingConfiguration->getName(),
       $stylingConfiguration->getStylings(),
       new IdMap($stylingConfiguration->getConceptOverrides()
-        ->map(fn ($override) => StylingConfigurationConceptOverrideApiModel::fromEntity($override))->getValues()),
+        ->map(StylingConfigurationConceptOverrideApiModel::fromEntity(...))->getValues()),
       new IdMap($stylingConfiguration->getRelationOverrides()
-        ->map(fn ($override) => StylingConfigurationRelationOverrideApiModel::fromEntity($override))->getValues()),
+        ->map(StylingConfigurationRelationOverrideApiModel::fromEntity(...))->getValues()),
     );
   }
 

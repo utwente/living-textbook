@@ -29,7 +29,7 @@ class LayoutConfigurationApiModel
       $layoutConfiguration->getName(),
       $layoutConfiguration->getLayouts(),
       new IdMap($layoutConfiguration->getOverrides()
-        ->map(fn ($override) => LayoutConfigurationOverrideApiModel::fromEntity($override))->getValues()),
+        ->map(LayoutConfigurationOverrideApiModel::fromEntity(...))->getValues()),
     );
   }
 
