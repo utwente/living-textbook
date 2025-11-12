@@ -14,7 +14,7 @@ workflow:
 
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
-  COMPOSER_REQUIRE_CHECKER_VERSION: 4.16.1
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.18.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.9.5
   DRENSO_PHP_VERSION: 8.4

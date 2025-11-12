@@ -41,7 +41,7 @@
     "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
   },
   "dependencies": {
-    "@sentry/browser": "10.22.0",
+    "@sentry/browser": "10.23.0",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
@@ -58,7 +58,7 @@
     "font-awesome": "4.7.0",
     "foundation-emails": "2.4.0",
     "jquery": "3.7.1",
-    "jquery-contextmenu": "2.9.2",
+    "jquery-contextmenu": "2.10.1",
     "jquery-ui": "1.14.1",
     "jquery-ui-dist": "1.13.3",
     "jquery-ui-themes": "1.12.0",
