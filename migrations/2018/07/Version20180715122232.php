@@ -7,16 +7,10 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20180715122232 extends AbstractMigration
 {
   public function up(Schema $schema): void
   {
-    // this up() migration is auto-generated, please modify it to your needs
-    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
     // Create new table
     $this->addSql('CREATE TABLE concepts_external_resources (concept_id INT NOT NULL, external_resource_id INT NOT NULL, INDEX IDX_210C8329F909284E (concept_id), INDEX IDX_210C8329E1F5D052 (external_resource_id), PRIMARY KEY(concept_id, external_resource_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
 
@@ -37,9 +31,6 @@ final class Version20180715122232 extends AbstractMigration
 
   public function down(Schema $schema): void
   {
-    // this down() migration is auto-generated, please modify it to your needs
-    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
     // Create new table/columns
     $this->addSql('CREATE TABLE data_external_resources (id INT AUTO_INCREMENT NOT NULL, concept_id INT NOT NULL, created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, deleted_at DATETIME DEFAULT NULL, deleted_by VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     $this->addSql('ALTER TABLE concept ADD external_resources_id INT DEFAULT NULL');

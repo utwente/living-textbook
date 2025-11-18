@@ -102,7 +102,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
 
   /** @var array[string] */
   #[Assert\NotNull]
-  #[ORM\Column(name: 'roles', type: Types::ARRAY, nullable: false)]
+  #[ORM\Column(name: 'roles', type: Types::JSON, nullable: false)]
   private array $securityRoles = [];
 
   #[Assert\NotNull]

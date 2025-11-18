@@ -47,7 +47,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
   private ?string $path = null;
 
   #[Assert\Type('array')]
-  #[ORM\Column(name: 'path_context', type: Types::ARRAY, nullable: true)]
+  #[ORM\Column(name: 'path_context', type: Types::JSON, nullable: true)]
   private ?array $pathContext = null;
 
   #[Assert\Length(max: 1024)]
@@ -55,7 +55,7 @@ class PageLoad implements StudyAreaFilteredInterface, IdInterface
   private ?string $origin = null;
 
   #[Assert\Type('array')]
-  #[ORM\Column(name: 'origin_context', type: Types::ARRAY)]
+  #[ORM\Column(name: 'origin_context', type: Types::JSON, nullable: true)]
   private ?array $originContext = null;
 
   public function getUserId(): string

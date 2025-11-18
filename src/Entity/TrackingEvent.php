@@ -58,7 +58,7 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
   private ?string $event = null;
 
   #[Assert\Type('array')]
-  #[ORM\Column(name: 'context', type: Types::ARRAY, nullable: true)]
+  #[ORM\Column(name: 'context', type: Types::JSON, nullable: true)]
   private ?array $context = null;
 
   public function getUserId(): string

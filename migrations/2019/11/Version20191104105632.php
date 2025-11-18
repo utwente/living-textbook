@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20191104105632 extends AbstractMigration
 {
   public function getDescription(): string
@@ -19,9 +16,6 @@ final class Version20191104105632 extends AbstractMigration
 
   public function up(Schema $schema): void
   {
-    // this up() migration is auto-generated, please modify it to your needs
-    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
     $this->addSql('CREATE TABLE review (id INT AUTO_INCREMENT NOT NULL, study_area_id INT NOT NULL, owner_id INT NOT NULL, requested_review_by_id INT NOT NULL, requested_review_at DATETIME NOT NULL, review_comments LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\', created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL, INDEX IDX_794381C6881ABDFE (study_area_id), INDEX IDX_794381C67E3C61F9 (owner_id), INDEX IDX_794381C65872306B (requested_review_by_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     $this->addSql('ALTER TABLE review ADD CONSTRAINT FK_794381C6881ABDFE FOREIGN KEY (study_area_id) REFERENCES study_area (id)');
     $this->addSql('ALTER TABLE review ADD CONSTRAINT FK_794381C67E3C61F9 FOREIGN KEY (owner_id) REFERENCES user__table (id)');
@@ -35,9 +29,6 @@ final class Version20191104105632 extends AbstractMigration
 
   public function down(Schema $schema): void
   {
-    // this down() migration is auto-generated, please modify it to your needs
-    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
     $this->addSql('ALTER TABLE pending_change DROP FOREIGN KEY FK_4E13E3903E2E969B');
     $this->addSql('DROP TABLE review');
     $this->addSql('DROP INDEX IDX_4E13E3903E2E969B ON pending_change');

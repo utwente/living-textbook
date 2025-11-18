@@ -33,6 +33,12 @@ class UpdateConceptRelationApiModel extends ConceptRelationApiModel implements I
     return $this->id;
   }
 
+  #[Override]
+  public function getNonNullId(): int
+  {
+    return $this->getId();
+  }
+
   public function getRelationTypeId(): ?int
   {
     return $this->relationTypeId ?? null;
