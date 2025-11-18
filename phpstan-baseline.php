@@ -4898,12 +4898,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Unable to resolve the template type T in call to method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\)$#',
-	'identifier' => 'argument.templateType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Review/ReviewService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generate\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,

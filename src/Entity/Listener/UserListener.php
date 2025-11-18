@@ -6,8 +6,8 @@ use App\Entity\User;
 use App\Entity\UserGroupEmail;
 use App\Repository\UserGroupEmailRepository;
 use Doctrine\ORM\Event\PostPersistEventArgs;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\ORMException;
 
 use function assert;
 use function count;
