@@ -462,13 +462,13 @@ class ReviewService
 
       // Persist it
       $this->entityManager->persist($object);
-    } elseif ($changeType === PendingChange::CHANGE_TYPE_EDIT || $pendingChange === PendingChange::CHANGE_TYPE_REMOVE) {
+    } elseif ($changeType === PendingChange::CHANGE_TYPE_EDIT || $changeType === PendingChange::CHANGE_TYPE_REMOVE) {
       $object = $this->getOriginalObject($pendingChange);
 
       if ($changeType === PendingChange::CHANGE_TYPE_EDIT) {
         // Apply the changes
         $object->applyChanges($pendingChange, $this->entityManager);
-      } elseif ($changeType === PendingChange::CHANGE_TYPE_REMOVE) {
+      } else {
         // Remove the object
         $this->entityManager->remove($object);
 
