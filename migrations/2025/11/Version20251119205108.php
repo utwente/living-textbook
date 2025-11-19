@@ -18,6 +18,7 @@ final class Version20251119205108 extends AbstractMigration
   {
     $this->addSql(<<<SQL
       ALTER TABLE _messenger_queue
+        CHANGE queue_name queue_name VARCHAR(190) NOT NULL,
         CHANGE created_at created_at DATETIME NOT NULL,
         CHANGE available_at available_at DATETIME NOT NULL,
         CHANGE delivered_at delivered_at DATETIME DEFAULT NULL
