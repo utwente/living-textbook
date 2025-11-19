@@ -42,6 +42,12 @@ class ConceptApiModel implements IdInterface
     return $this->id;
   }
 
+  #[Override]
+  public function getNonNullId(): int
+  {
+    return $this->getId();
+  }
+
   /** @return int[]|null */
   public function getTags(): ?array
   {

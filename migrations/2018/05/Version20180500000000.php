@@ -7,16 +7,10 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20180500000000 extends AbstractMigration
 {
   public function up(Schema $schema): void
   {
-    // this up() migration is auto-generated, please modify it to your needs
-    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
     $this->addSql('CREATE TABLE study_area (id INT AUTO_INCREMENT NOT NULL, owner_user_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, deleted_by VARCHAR(255) DEFAULT NULL, INDEX IDX_A84CD5512B18554A (owner_user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     $this->addSql('CREATE TABLE external_resource (id INT AUTO_INCREMENT NOT NULL, collection_id INT NOT NULL, title TINYTEXT NOT NULL, description TEXT NOT NULL, url TEXT NOT NULL, position INT NOT NULL, broken TINYINT(1) NOT NULL, created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, deleted_by VARCHAR(255) DEFAULT NULL, INDEX IDX_539D46E5514956FD (collection_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
     $this->addSql('CREATE TABLE relation_type (id INT AUTO_INCREMENT NOT NULL, study_area_id INT NOT NULL, name VARCHAR(100) NOT NULL, created_at DATETIME NOT NULL, created_by VARCHAR(255) DEFAULT NULL, updated_at DATETIME DEFAULT NULL, updated_by VARCHAR(255) DEFAULT NULL, deleted_at DATETIME DEFAULT NULL, deleted_by VARCHAR(255) DEFAULT NULL, INDEX IDX_3BF454A4881ABDFE (study_area_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
@@ -54,9 +48,6 @@ final class Version20180500000000 extends AbstractMigration
 
   public function down(Schema $schema): void
   {
-    // this down() migration is auto-generated, please modify it to your needs
-    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
-
     $this->addSql('ALTER TABLE relation_type DROP FOREIGN KEY FK_3BF454A4881ABDFE');
     $this->addSql('ALTER TABLE learning_outcome DROP FOREIGN KEY FK_F41BD531881ABDFE');
     $this->addSql('ALTER TABLE concept DROP FOREIGN KEY FK_E74A6050881ABDFE');

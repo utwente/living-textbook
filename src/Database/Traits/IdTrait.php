@@ -3,6 +3,7 @@
 namespace App\Database\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
 use JMS\Serializer\Annotation as Serializer;
 
 trait IdTrait
@@ -18,5 +19,10 @@ trait IdTrait
   public function getId(): ?int
   {
     return $this->id;
+  }
+
+  public function getNonNullId(): int
+  {
+    return $this->id ?? throw new MustNotBeNullException();
   }
 }

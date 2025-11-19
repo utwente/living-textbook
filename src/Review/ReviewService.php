@@ -16,8 +16,8 @@ use App\Review\Model\PendingChangeObjectInfo;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\Mapping\MappingException;
 use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use InvalidArgumentException;
@@ -462,13 +462,13 @@ class ReviewService
 
       // Persist it
       $this->entityManager->persist($object);
-    } elseif ($changeType === PendingChange::CHANGE_TYPE_EDIT || $pendingChange === PendingChange::CHANGE_TYPE_REMOVE) {
+    } elseif ($changeType === PendingChange::CHANGE_TYPE_EDIT || $changeType === PendingChange::CHANGE_TYPE_REMOVE) {
       $object = $this->getOriginalObject($pendingChange);
 
       if ($changeType === PendingChange::CHANGE_TYPE_EDIT) {
         // Apply the changes
         $object->applyChanges($pendingChange, $this->entityManager);
-      } elseif ($changeType === PendingChange::CHANGE_TYPE_REMOVE) {
+      } else {
         // Remove the object
         $this->entityManager->remove($object);
 

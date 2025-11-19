@@ -19,7 +19,7 @@ class StudyAreaGroupRepository extends ServiceEntityRepository
 
   /** @return StudyAreaGroup[] */
   #[Override]
-  public function findAll()
+  public function findAll(): array
   {
     return $this->findBy([], ['name' => 'ASC']);
   }

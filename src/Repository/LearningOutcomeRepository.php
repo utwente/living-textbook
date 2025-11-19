@@ -95,7 +95,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
    */
   public function findUnusedNumberInStudyArea(StudyArea $studyArea)
   {
-    $highestNumber = $this->findForStudyAreaQb($studyArea)
+    $highestNumber = (int)$this->findForStudyAreaQb($studyArea)
       ->select('MAX(lo.number)')
       ->getQuery()->getSingleScalarResult();
 

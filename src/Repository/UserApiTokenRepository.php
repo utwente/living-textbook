@@ -29,6 +29,6 @@ class UserApiTokenRepository extends ServiceEntityRepository implements Password
     }
 
     $user->setPassword($newHashedPassword);
-    $this->_em->flush();
+    $this->getEntityManager()->flush();
   }
 }

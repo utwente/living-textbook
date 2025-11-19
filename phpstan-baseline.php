@@ -5324,20 +5324,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Strict comparison using \\=\\=\\= between App\\\\Entity\\\\PendingChange and \'30_remove\' will always evaluate to false\\.$#',
-	'identifier' => 'identical.alwaysFalse',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Review/ReviewService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#',
 	'identifier' => 'identical.alwaysFalse',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Review/ReviewService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Unable to resolve the template type T in call to method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\)$#',
-	'identifier' => 'argument.templateType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
 ];

@@ -13,9 +13,6 @@ use function serialize;
 use function sprintf;
 use function unserialize;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20220704130200 extends AbstractMigration
 {
   private const COLUMNS = [
@@ -32,7 +29,6 @@ final class Version20220704130200 extends AbstractMigration
 
   public function up(Schema $schema): void
   {
-    // this up() migration is auto-generated, please modify it to your needs
     $this->addSql('ALTER TABLE concept CHANGE dotron_config dotron_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
     $this->addSql('ALTER TABLE concept_relation CHANGE dotron_config dotron_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
     $this->addSql('ALTER TABLE study_area CHANGE dotron_config dotron_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:json)\'');
@@ -53,7 +49,6 @@ final class Version20220704130200 extends AbstractMigration
 
   public function down(Schema $schema): void
   {
-    // this down() migration is auto-generated, please modify it to your needs
     $this->addSql('ALTER TABLE concept CHANGE dotron_config dotron_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\'');
     $this->addSql('ALTER TABLE concept_relation CHANGE dotron_config dotron_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\'');
     $this->addSql('ALTER TABLE study_area CHANGE dotron_config dotron_config LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\'');
