@@ -31,7 +31,7 @@ final class Version20251118130644 extends AbstractMigration
     $this->addSql('ALTER TABLE concept_relation CHANGE dotron_config dotron_config JSON DEFAULT NULL');
     $this->addSql('ALTER TABLE page_load CHANGE session_id session_id CHAR(36) NOT NULL, CHANGE path_context path_context JSON DEFAULT NULL, CHANGE origin_context origin_context JSON DEFAULT NULL');
     $this->addSql('ALTER TABLE pending_change CHANGE changed_fields changed_fields JSON NOT NULL, CHANGE review_comments review_comments JSON DEFAULT NULL');
-    $this->addSql('ALTER TABLE study_area CHANGE dotron_config dotron_config JSON DEFAULT NULL, CHANGE url_export_enabled url_export_enabled TINYINT(1) DEFAULT 0 NOT NULL');
+    $this->addSql('ALTER TABLE CHANGE url_export_enabled url_export_enabled TINYINT(1) DEFAULT 0 NOT NULL');
     $this->addSql('ALTER TABLE styling_configuration CHANGE stylings stylings JSON DEFAULT NULL');
     $this->addSql('ALTER TABLE tracking_event CHANGE session_id session_id CHAR(36) NOT NULL, CHANGE context context JSON DEFAULT NULL');
     $this->addSql('ALTER TABLE user__table CHANGE roles roles JSON NOT NULL');
