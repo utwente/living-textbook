@@ -23,7 +23,13 @@ class StylingConfigurationConceptOverrideApiModel implements IdInterface
 
   // Used as index when responding with multiple
   #[Override]
-  public function getId(): ?int
+  public function getId(): int
+  {
+    return $this->concept;
+  }
+
+  #[Override]
+  public function getNonNullId(): int
   {
     return $this->concept;
   }

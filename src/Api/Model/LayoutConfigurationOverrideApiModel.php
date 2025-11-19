@@ -22,7 +22,13 @@ class LayoutConfigurationOverrideApiModel implements IdInterface
   }
 
   #[Override]
-  public function getId(): ?int
+  public function getId(): int
+  {
+    return $this->concept;
+  }
+
+  #[Override]
+  public function getNonNullId(): int
   {
     return $this->concept;
   }

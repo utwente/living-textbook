@@ -23,7 +23,13 @@ class StylingConfigurationRelationOverrideApiModel implements IdInterface
 
   // Used as index when responding with multiple
   #[Override]
-  public function getId(): ?int
+  public function getId(): int
+  {
+    return $this->relation;
+  }
+
+  #[Override]
+  public function getNonNullId(): int
   {
     return $this->relation;
   }
