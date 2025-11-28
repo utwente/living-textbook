@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25226bf1b90dbe53cf3785e1aeb670ec",
+    "content-hash": "7c47d99ac299dd6122bd7f1910f353a3",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -4991,16 +4991,16 @@
         },
         {
             "name": "sweetrdf/easyrdf",
-            "version": "1.17.0",
+            "version": "1.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/easyrdf.git",
-                "reference": "1fc84a50746466c6e7cd5ca29c354ef1a01a1888"
+                "reference": "a1f16190a77c7b734758402a187ff11b7d2f2f72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/1fc84a50746466c6e7cd5ca29c354ef1a01a1888",
-                "reference": "1fc84a50746466c6e7cd5ca29c354ef1a01a1888",
+                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/a1f16190a77c7b734758402a187ff11b7d2f2f72",
+                "reference": "a1f16190a77c7b734758402a187ff11b7d2f2f72",
                 "shasum": ""
             },
             "require": {
@@ -5022,8 +5022,7 @@
                 "phpstan/phpstan": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
                 "phpunit/phpunit": "^9.5.0|^10.0.0",
-                "semsol/arc2": "^3",
-                "zendframework/zend-http": "^2"
+                "semsol/arc2": "^3"
             },
             "suggest": {
                 "ml/json-ld": "^1.0",
@@ -5070,9 +5069,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/easyrdf/issues",
-                "source": "https://github.com/sweetrdf/easyrdf/tree/1.17.0"
+                "source": "https://github.com/sweetrdf/easyrdf/tree/1.18.0"
             },
-            "time": "2025-10-03T06:42:40+00:00"
+            "time": "2025-11-21T07:41:55+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
