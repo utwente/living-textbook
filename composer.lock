@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "acdb4e0859372eb9040f1b0c6947b776",
+    "content-hash": "5d405a70ce2f2e745364b3acaa12200c",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -4991,16 +4991,16 @@
         },
         {
             "name": "sweetrdf/easyrdf",
-            "version": "1.18.0",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/easyrdf.git",
-                "reference": "a1f16190a77c7b734758402a187ff11b7d2f2f72"
+                "reference": "00df644de258e16ec0f4815caebcd7ed3520f2cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/a1f16190a77c7b734758402a187ff11b7d2f2f72",
-                "reference": "a1f16190a77c7b734758402a187ff11b7d2f2f72",
+                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/00df644de258e16ec0f4815caebcd7ed3520f2cf",
+                "reference": "00df644de258e16ec0f4815caebcd7ed3520f2cf",
                 "shasum": ""
             },
             "require": {
@@ -5069,9 +5069,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/easyrdf/issues",
-                "source": "https://github.com/sweetrdf/easyrdf/tree/1.18.0"
+                "source": "https://github.com/sweetrdf/easyrdf/tree/1.18.1"
             },
-            "time": "2025-11-21T07:41:55+00:00"
+            "time": "2025-11-25T09:37:13+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
