@@ -33,7 +33,7 @@
         "gedmo/doctrine-extensions": "3.21.0",
         "helios-ag/fm-elfinder-bundle": "12.7.3",
         "jms/serializer": "3.32.5",
-        "jms/serializer-bundle": "5.5.1",
+        "jms/serializer-bundle": "5.5.2",
         "league/html-to-markdown": "5.1.1",
         "ml/json-ld": "1.2.1",
         "nelmio/api-doc-bundle": "5.8.1",
