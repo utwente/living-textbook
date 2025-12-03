@@ -9,12 +9,10 @@ use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Drenso\Shared\Interfaces\IdInterface;
+use JMS\Serializer\Annotation as JMS;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * TODO Migrate array property to JSON.
- */
 #[ORM\Entity(repositoryClass: TrackingEventRepository::class)]
 #[ORM\Table]
 class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
@@ -59,6 +57,7 @@ class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
 
   #[Assert\Type('array')]
   #[ORM\Column(name: 'context', type: Types::JSON, nullable: true)]
+  #[JMS\Type('array')]
   private ?array $context = null;
 
   public function getUserId(): string
