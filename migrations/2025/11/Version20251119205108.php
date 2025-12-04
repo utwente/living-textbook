@@ -16,7 +16,7 @@ final class Version20251119205108 extends AbstractMigration
 
   public function up(Schema $schema): void
   {
-    if ($this->sm->tablesExist(['_messenger_queue'])) {
+    if (!$this->sm->tablesExist(['_messenger_queue'])) {
       return;
     }
 
@@ -32,7 +32,7 @@ SQL,
 
   public function down(Schema $schema): void
   {
-    if ($this->sm->tablesExist(['_messenger_queue'])) {
+    if (!$this->sm->tablesExist(['_messenger_queue'])) {
       return;
     }
 
