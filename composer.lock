@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ce9f430629f4bd37ee8d5eb643bb51c",
+    "content-hash": "9d3e53af0bb4ed945d5e788969ddfe1b",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1576,16 +1576,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "6.5.0",
+            "version": "6.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "13213dfa72ab82b68e0d1d2034785d483d00c75a"
+                "reference": "e079805b690132b6899832273ceda0e07e60d57e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/13213dfa72ab82b68e0d1d2034785d483d00c75a",
-                "reference": "13213dfa72ab82b68e0d1d2034785d483d00c75a",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/e079805b690132b6899832273ceda0e07e60d57e",
+                "reference": "e079805b690132b6899832273ceda0e07e60d57e",
                 "shasum": ""
             },
             "require": {
@@ -1595,10 +1595,10 @@
                 "ext-random": "*",
                 "php": "^8.3",
                 "psr/clock": "~1.0",
-                "symfony/config": " ~6.4 || ~7.0",
-                "symfony/dependency-injection": "~6.4 || ~7.0",
-                "symfony/form": "~6.4 || ~7.0",
-                "symfony/http-kernel": "~6.4 || ~7.0",
+                "symfony/config": " ~6.4 || ~7.0 || ~8.0",
+                "symfony/dependency-injection": "~6.4 || ~7.0 || ~8.0",
+                "symfony/form": "~6.4 || ~7.0 || ~8.0",
+                "symfony/http-kernel": "~6.4 || ~7.0 || ~8.0",
                 "twig/twig": "~3.7"
             },
             "conflict": {
@@ -1612,7 +1612,7 @@
                 "doctrine/doctrine-bundle": "^2.13 || ^3.0",
                 "doctrine/orm": "^3.0",
                 "eluceo/ical": "^2.7",
-                "friendsofphp/php-cs-fixer": "3.89.2",
+                "friendsofphp/php-cs-fixer": "3.90.0",
                 "giggsey/libphonenumber-for-php": "^9.0",
                 "jms/serializer-bundle": "^5.0",
                 "maennchen/zipstream-php": "^3.0",
@@ -1621,24 +1621,24 @@
                 "php-decimal/php-decimal": "^1.1",
                 "phpoffice/phpspreadsheet": "^1.23 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
                 "phpstan/phpstan": "2.1.32",
-                "rector/rector": "2.2.8",
+                "rector/rector": "2.2.9",
                 "sebastian/comparator": "^5.0 || ^6.0 || ^7.0",
                 "stof/doctrine-extensions-bundle": "^1.14",
-                "symfony/console": "~6.4 || ~7.0",
+                "symfony/console": "~6.4 || ~7.0 || ~8.0",
                 "symfony/deprecation-contracts": "^2.1 || ^3.0",
-                "symfony/doctrine-bridge": "~6.4 || ~7.0",
-                "symfony/doctrine-messenger": "~6.4 || ~7.0",
-                "symfony/framework-bundle": "~6.4 || ~7.0",
-                "symfony/http-client": "~6.4 || ~7.0",
-                "symfony/lock": "~6.4 || ~7.0",
-                "symfony/mailer": "~6.4 || ~7.0",
-                "symfony/routing": "~6.4 || ~7.0",
-                "symfony/security-core": "~6.4 || ~7.0",
-                "symfony/security-http": "~6.4 || ~7.0",
+                "symfony/doctrine-bridge": "~6.4 || ~7.0 || ~8.0",
+                "symfony/doctrine-messenger": "~6.4 || ~7.0 || ~8.0",
+                "symfony/framework-bundle": "~6.4 || ~7.0 || ~8.0",
+                "symfony/http-client": "~6.4 || ~7.0 || ~8.0",
+                "symfony/lock": "~6.4 || ~7.0 || ~8.0",
+                "symfony/mailer": "~6.4 || ~7.0 || ~8.0",
+                "symfony/routing": "~6.4 || ~7.0 || ~8.0",
+                "symfony/security-core": "~6.4 || ~7.0 || ~8.0",
+                "symfony/security-http": "~6.4 || ~7.0 || ~8.0",
                 "symfony/translation-contracts": "~1.1 || ~2.0 || ~3.0",
-                "symfony/twig-bridge": "~6.4 || ~7.0",
-                "symfony/uid": "~6.4 || ~7.0",
-                "symfony/validator": "~6.4 || ~7.0",
+                "symfony/twig-bridge": "~6.4 || ~7.0 || ~8.0",
+                "symfony/uid": "~6.4 || ~7.0 || ~8.0",
+                "symfony/validator": "~6.4 || ~7.0 || ~8.0",
                 "zenstruck/messenger-monitor-bundle": "~0.5"
             },
             "suggest": {
@@ -1702,9 +1702,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/6.5.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/6.5.1"
             },
-            "time": "2025-11-27T09:32:37+00:00"
+            "time": "2025-12-06T11:41:35+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4991,16 +4991,16 @@
         },
         {
             "name": "sweetrdf/easyrdf",
-            "version": "1.18.1",
+            "version": "1.18.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/easyrdf.git",
-                "reference": "00df644de258e16ec0f4815caebcd7ed3520f2cf"
+                "reference": "e024182b3cf3840750995cd4702a3bb43a24de1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/00df644de258e16ec0f4815caebcd7ed3520f2cf",
-                "reference": "00df644de258e16ec0f4815caebcd7ed3520f2cf",
+                "url": "https://api.github.com/repos/sweetrdf/easyrdf/zipball/e024182b3cf3840750995cd4702a3bb43a24de1b",
+                "reference": "e024182b3cf3840750995cd4702a3bb43a24de1b",
                 "shasum": ""
             },
             "require": {
@@ -5069,9 +5069,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/easyrdf/issues",
-                "source": "https://github.com/sweetrdf/easyrdf/tree/1.18.1"
+                "source": "https://github.com/sweetrdf/easyrdf/tree/1.18.2"
             },
-            "time": "2025-11-25T09:37:13+00:00"
+            "time": "2025-11-25T15:08:30+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",

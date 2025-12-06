@@ -16,6 +16,10 @@ final class Version20251119205108 extends AbstractMigration
 
   public function up(Schema $schema): void
   {
+    if (!$this->sm->tablesExist(['_messenger_queue'])) {
+      return;
+    }
+
     $this->addSql(<<<SQL
       ALTER TABLE _messenger_queue
         CHANGE queue_name queue_name VARCHAR(190) NOT NULL,
@@ -28,6 +32,10 @@ SQL,
 
   public function down(Schema $schema): void
   {
+    if (!$this->sm->tablesExist(['_messenger_queue'])) {
+      return;
+    }
+
     $this->addSql(<<<SQL
       ALTER TABLE _messenger_queue
         CHANGE created_at created_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)',
