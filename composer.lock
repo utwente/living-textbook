@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d3e53af0bb4ed945d5e788969ddfe1b",
+    "content-hash": "221741b167f6c6fddd51795ac891df1b",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1489,16 +1489,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v4.2.0",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "6da6a17e206487646799489a1c1dce18ed2f10eb"
+                "reference": "70684f80c89bb043cea48cde44f0e9a762b89450"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/6da6a17e206487646799489a1c1dce18ed2f10eb",
-                "reference": "6da6a17e206487646799489a1c1dce18ed2f10eb",
+                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/70684f80c89bb043cea48cde44f0e9a762b89450",
+                "reference": "70684f80c89bb043cea48cde44f0e9a762b89450",
                 "shasum": ""
             },
             "require": {
@@ -1513,24 +1513,24 @@
                 "psr/clock": "^1.0",
                 "psr/container": "^1.1 || ^2.0",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
-                "symfony/config": "^5.4 || ^6.3 || ^7.0",
-                "symfony/dependency-injection": "^5.4 || ^6.3 || ^7.0",
-                "symfony/event-dispatcher": "^5.4 || ^6.3 || ^7.0",
-                "symfony/http-foundation": "^5.4 || ^6.3 || ^7.0",
-                "symfony/http-kernel": "^5.4 || ^6.3 || ^7.0",
-                "symfony/property-access": "^5.4 || ^6.3 || ^7.0",
-                "symfony/security-bundle": "^5.4 || ^6.3 || ^7.0",
-                "symfony/security-core": "^5.4 || ^6.3 || ^7.0",
-                "symfony/security-http": "^5.4 || ^6.3 || ^7.0",
-                "symfony/string": "^5.4 || ^6.3 || ^7.0"
+                "symfony/config": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/dependency-injection": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/event-dispatcher": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/http-foundation": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/http-kernel": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/property-access": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/security-bundle": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/security-core": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/security-http": "^5.4 || ^6.3 || ^7.0 || ^8.0",
+                "symfony/string": "^5.4 || ^6.3 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.75.0",
+                "friendsofphp/php-cs-fixer": "3.91.0",
                 "phpstan/extension-installer": "1.4.3",
-                "phpstan/phpstan": "2.1.17",
+                "phpstan/phpstan": "2.1.32",
                 "phpstan/phpstan-deprecation-rules": "^2.0",
-                "rector/rector": "2.0.18",
-                "symfony/cache": "^5.4 || ^6.3 || ^7.0",
+                "rector/rector": "2.2.9",
+                "symfony/cache": "^5.4 || ^6.3 || ^7.0 || ^8.0",
                 "symfony/translation-contracts": "^2.0 || ^3.0"
             },
             "suggest": {
@@ -1539,7 +1539,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "v3.x-dev"
+                    "dev-main": "v3.x-dev"
                 }
             },
             "autoload": {
@@ -1570,9 +1570,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v4.2.0"
+                "source": "https://github.com/Drenso/symfony-oidc/tree/v4.3.0"
             },
-            "time": "2025-06-19T09:43:57+00:00"
+            "time": "2025-12-07T10:51:55+00:00"
         },
         {
             "name": "drenso/symfony-shared",
