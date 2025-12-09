@@ -85,7 +85,7 @@
         "symfony/twig-bridge": "6.4.30",
         "symfony/twig-bundle": "6.4.24",
         "symfony/validator": "6.4.30",
-        "symfony/webpack-encore-bundle": "2.3.0",
+        "symfony/webpack-encore-bundle": "2.4.0",
         "symfony/yaml": "6.4.30",
         "twig/cssinliner-extra": "3.22.0",
         "twig/extra-bundle": "3.22.1",
