@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c6b0ce889f1d5b5072d6e4a4d876fc4",
+    "content-hash": "189294511d963e95269974438fb27afb",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1835,16 +1835,16 @@
         },
         {
             "name": "friendsofsymfony/ckeditor-bundle",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle.git",
-                "reference": "16ea17e5ae918b24808681956b0643d3881bd47d"
+                "reference": "6aad9cd12423f0522d386cb461c997135a7eed36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCKEditorBundle/zipball/16ea17e5ae918b24808681956b0643d3881bd47d",
-                "reference": "16ea17e5ae918b24808681956b0643d3881bd47d",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCKEditorBundle/zipball/6aad9cd12423f0522d386cb461c997135a7eed36",
+                "reference": "6aad9cd12423f0522d386cb461c997135a7eed36",
                 "shasum": ""
             },
             "require": {
@@ -1911,9 +1911,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle/issues",
-                "source": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle/tree/2.7.0"
+                "source": "https://github.com/FriendsOfSymfony/FOSCKEditorBundle/tree/2.7.1"
             },
-            "time": "2025-12-04T16:00:20+00:00"
+            "time": "2025-12-04T18:57:05+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
