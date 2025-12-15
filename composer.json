@@ -88,10 +88,10 @@
         "symfony/webpack-encore-bundle": "2.4.0",
         "symfony/yaml": "6.4.30",
         "twig/cssinliner-extra": "3.22.0",
-        "twig/extra-bundle": "3.22.1",
+        "twig/extra-bundle": "3.22.2",
         "twig/inky-extra": "3.22.0",
         "twig/intl-extra": "3.22.1",
-        "twig/twig": "3.22.1",
+        "twig/twig": "3.22.2",
         "zircote/swagger-php": "5.7.6"
     },
     "require-dev": {
