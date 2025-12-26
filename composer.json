@@ -28,7 +28,7 @@
         "drenso/pdf-to-image": "3.0.0",
         "drenso/symfony-oidc-bundle": "4.3.1",
         "drenso/symfony-shared": "6.5.1",
-        "friendsofsymfony/ckeditor-bundle": "2.7.1",
+        "friendsofsymfony/ckeditor-bundle": "2.8.0",
         "friendsofsymfony/jsrouting-bundle": "3.6.1",
         "gedmo/doctrine-extensions": "3.22.0",
         "helios-ag/fm-elfinder-bundle": "13",
