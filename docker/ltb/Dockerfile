@@ -1,5 +1,5 @@
-FROM php:8.4.14-fpm-bookworm as ltb_base
-MAINTAINER Drienerlo Engineering Solutions <hallo@drenso.nl>
+FROM php:8.4.14-fpm-bookworm AS ltb_base
+LABEL org.opencontainers.image.authors="Drienerlo Engineering Solutions <hallo@drenso.nl>"
 
 # Update all dependencies, and install required ones
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -101,7 +101,7 @@ RUN mv docker/ltb/docker-entry.sh /opt/docker-entry.sh \
     && rm -rf docker
 
 ######################## Development image ########################
-FROM ltb_base as ltb_dev
+FROM ltb_base AS ltb_dev
 
 # Install debug extension
 RUN pecl install xdebug && docker-php-ext-enable xdebug
@@ -110,14 +110,14 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 ENTRYPOINT ["/opt/docker-entry.sh"]
 
 ######################## Production php builder ########################
-FROM ltb_base as ltb_prod_php_build
+FROM ltb_base AS ltb_prod_php_build
 
 # Install application
 COPY . .
 
 # Install php vendors and prepare python environment
-ENV COMPOSER_NO_DEV 1
-ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_NO_DEV=1
+ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN cp .secrets.json.dist .secrets.json \
     && composer install --no-scripts \
     && composer dump-autoload --classmap-authoritative \
@@ -129,7 +129,7 @@ RUN cp .secrets.json.dist .secrets.json \
     && rm .secrets.json
 
 ######################## Production assets builder ########################
-FROM node:20.19.6-slim as ltb_prod_assets_build
+FROM node:20.19.6-slim AS ltb_prod_assets_build
 
 # Set the work dir
 WORKDIR /usr/src/app
@@ -147,7 +147,7 @@ RUN yarn install
 RUN yarn build
 
 ######################## Production image ########################
-FROM ltb_prod_php_build as ltb_prod
+FROM ltb_prod_php_build AS ltb_prod
 
 # Install assets
 COPY --from=ltb_prod_assets_build /usr/src/app/public/build ./public/build
