@@ -189,9 +189,6 @@
     "ml/iri": {
         "version": "1.1.4"
     },
-    "ml/json-ld": {
-        "version": "1.1.0"
-    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
