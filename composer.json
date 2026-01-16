@@ -23,7 +23,7 @@
         "doctrine/doctrine-migrations-bundle": "4.0.0",
         "doctrine/event-manager": "2.0.1",
         "doctrine/migrations": "3.9.5",
-        "doctrine/orm": "3.6.0",
+        "doctrine/orm": "3.6.1",
         "doctrine/persistence": "4.1.1",
         "drenso/pdf-to-image": "3.0.0",
         "drenso/symfony-oidc-bundle": "4.3.1",
