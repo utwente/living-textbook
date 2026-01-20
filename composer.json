@@ -16,7 +16,7 @@
         "ext-sysvsem": "*",
         "bobv/latex-bundle": "5.3.0",
         "caxy/php-htmldiff": "0.1.17",
-        "doctrine/collections": "2.5.0",
+        "doctrine/collections": "2.5.1",
         "doctrine/common": "3.5.0",
         "doctrine/dbal": "4.4.1",
         "doctrine/doctrine-bundle": "3.2.2",
