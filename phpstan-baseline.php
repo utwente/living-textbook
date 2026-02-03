@@ -1076,12 +1076,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/StudyAreaController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$default of method Symfony\\\\Component\\\\HttpFoundation\\\\InputBag\\<string\\>\\:\\:get\\(\\) expects string\\|null, false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/StudyAreaController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 3,
