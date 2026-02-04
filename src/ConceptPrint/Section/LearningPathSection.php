@@ -46,11 +46,11 @@ class LearningPathSection extends LtbSection
     }
 
     // Retrieve the concepts
-    $concepts = $learningPath->getElementsOrdered()->map(fn (LearningPathElement $learningPathElement) => $learningPathElement->getConcept());
+    $concepts = $learningPath->getElementsOrdered()->map(static fn (LearningPathElement $learningPathElement) => $learningPathElement->getConcept());
 
     // Add concept list
     $this->addElement(new SubSection($translator->trans('menu.concept'))
-      ->addElement(new Listing($concepts->map(fn (Concept $concept) => $concept->getName())->toArray())));
+      ->addElement(new Listing($concepts->map(static fn (Concept $concept) => $concept->getName())->toArray())));
 
     // Add each concept from the learning path
     foreach ($concepts as $concept) {

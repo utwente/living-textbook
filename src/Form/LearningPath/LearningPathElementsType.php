@@ -26,8 +26,8 @@ class LearningPathElementsType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder->addModelTransformer(new CallbackTransformer(
-      fn (Collection $modelData): array => LearningPath::OrderElements($modelData)->toArray(),
-      function (array $formData): ArrayCollection {
+      static fn (Collection $modelData): array => LearningPath::OrderElements($modelData)->toArray(),
+      static function (array $formData): ArrayCollection {
         /** @var LearningPathElement[] $formData */
         $previousElement = null;
         $formData        = array_values($formData);
@@ -69,7 +69,7 @@ class LearningPathElementsType extends AbstractType
         'allow_delete' => true,
       ]);
 
-    $resolver->setNormalizer('entry_options', function (Options $options, $value) {
+    $resolver->setNormalizer('entry_options', static function (Options $options, $value) {
       $value['studyArea']    = $options->offsetGet('studyArea');
       $value['learningPath'] = $options->offsetGet('learningPath');
       $value['sortable_id']  = $options->offsetGet('sortable_id');

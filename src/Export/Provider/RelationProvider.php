@@ -62,7 +62,7 @@ EOT;
     $links    = $this->conceptRelationRepository->findByConcepts($concepts);
 
     // Sort them first of source name, than on target name
-    usort($links, function (ConceptRelation $a, ConceptRelation $b) {
+    usort($links, static function (ConceptRelation $a, ConceptRelation $b) {
       if ($a->getSourceId() === $b->getSourceId()) {
         return $a->getTarget()->getName() <=> $b->getTarget()->getName();
       }

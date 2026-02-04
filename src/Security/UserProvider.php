@@ -80,9 +80,9 @@ class UserProvider implements OidcUserProviderInterface
   {
     if ($user instanceof User) {
       return $this->loadUserByIdentifier($user->getUserIdentifier(), $user->isOidc());
-    } else {
-      return $this->loadUserByIdentifier($user->getUserIdentifier());
     }
+
+    return $this->loadUserByIdentifier($user->getUserIdentifier());
   }
 
   /** Whether this provider supports the given user class. */

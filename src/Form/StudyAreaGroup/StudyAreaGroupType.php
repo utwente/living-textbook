@@ -32,7 +32,7 @@ class StudyAreaGroupType extends AbstractType
         'required'      => false,
         'by_reference'  => false,
         'multiple'      => true,
-        'query_builder' => function (StudyAreaRepository $repo) use ($studyAreaGroup) {
+        'query_builder' => static function (StudyAreaRepository $repo) use ($studyAreaGroup) {
           $qb = $repo->createQueryBuilder('s');
           $qb->where('s.group IS NULL');
 

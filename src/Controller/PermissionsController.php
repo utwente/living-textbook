@@ -147,7 +147,7 @@ class PermissionsController extends AbstractController
 
       // Find users, and remove those from the email list
       $foundUsers = $userRepository->getUsersForEmails($emails);
-      $emails     = array_diff($emails, array_map(fn (User $foundUser) => $foundUser->getUserIdentifier(), $foundUsers));
+      $emails     = array_diff($emails, array_map(static fn (User $foundUser) => $foundUser->getUserIdentifier(), $foundUsers));
 
       // Add the users/emails to the requested groups
       foreach ($groupTypes as $groupType) {
@@ -234,7 +234,7 @@ class PermissionsController extends AbstractController
     $email = mb_strtolower(trim(urldecode($email)));
 
     $newPermission   = null;
-    $userGroupEmails = $userGroup->getEmails()->filter(fn (UserGroupEmail $userGroupEmail) => $userGroupEmail->getEmail() === $email);
+    $userGroupEmails = $userGroup->getEmails()->filter(static fn (UserGroupEmail $userGroupEmail) => $userGroupEmail->getEmail() === $email);
 
     if (count($userGroupEmails) > 0) {
       foreach ($userGroupEmails as $userGroupEmail) {
@@ -304,7 +304,7 @@ class PermissionsController extends AbstractController
     $userPermissions = $studyArea->getUserPermissions();
 
     if ($groupType === UserGroup::GROUP_VIEWER) {
-      $notNecessary = 0 === count(array_filter($userPermissions, fn (UserPermissions $userPermission) => $userPermission->isViewerOnly()));
+      $notNecessary = 0 === count(array_filter($userPermissions, static fn (UserPermissions $userPermission) => $userPermission->isViewerOnly()));
     } else {
       $notNecessary = !$userGroup || ($userGroup->getUsers()->isEmpty() && $userGroup->getEmails()->isEmpty());
     }
@@ -419,7 +419,7 @@ class PermissionsController extends AbstractController
     }
 
     // Retrieve the user groups this user is in
-    $userGroups = $studyArea->getUserGroups()->filter(fn (UserGroup $userGroup) => $userGroup->getUsers()->contains($user));
+    $userGroups = $studyArea->getUserGroups()->filter(static fn (UserGroup $userGroup) => $userGroup->getUsers()->contains($user));
     if (count($userGroups) === 0) {
       $this->addFlash('notice', $trans->trans('permissions.remove-not-possible', [
         '%user%' => $user->getDisplayName(),
@@ -471,7 +471,7 @@ class PermissionsController extends AbstractController
     // Retrieve the correct user group
     $userGroupEmails = [];
     foreach ($studyArea->getUserGroups() as $userGroup) {
-      $userGroupEmails = array_merge($userGroupEmails, $userGroup->getEmails()->filter(fn (UserGroupEmail $userGroup) => $userGroup->getEmail() == $email)->toArray());
+      $userGroupEmails = array_merge($userGroupEmails, $userGroup->getEmails()->filter(static fn (UserGroupEmail $userGroup) => $userGroup->getEmail() == $email)->toArray());
     }
 
     // Verify whether remove is required

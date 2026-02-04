@@ -32,10 +32,10 @@ class LearningPathElementContainerType extends AbstractType
       ]);
 
     $builder->addModelTransformer(new CallbackTransformer(
-      fn (Collection $modelData): array => [
+      static fn (Collection $modelData): array => [
         'elements' => $modelData,
       ],
-      fn (array $viewData): Collection => $viewData['elements']
+      static fn (array $viewData): Collection => $viewData['elements']
     ));
   }
 
@@ -50,6 +50,6 @@ class LearningPathElementContainerType extends AbstractType
       ->setDefault('sortable_id', '')
       ->setAllowedTypes('sortable_id', 'string');
 
-    $resolver->setNormalizer('sortable_id', fn () => bin2hex(random_bytes(16)));
+    $resolver->setNormalizer('sortable_id', static fn () => bin2hex(random_bytes(16)));
   }
 }

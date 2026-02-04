@@ -223,7 +223,7 @@ class PendingChange implements IdInterface
         $sortOrder = [];
     }
 
-    usort($this->changedFields, function (string $a, string $b) use ($sortOrder) {
+    usort($this->changedFields, static function (string $a, string $b) use ($sortOrder) {
       if (!array_key_exists($a, $sortOrder) || !array_key_exists($b, $sortOrder)) {
         return 0;
       }

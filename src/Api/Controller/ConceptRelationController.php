@@ -161,7 +161,7 @@ class ConceptRelationController extends AbstractApiController
     try {
       // Prefetch all relations in a single query
       $dbRelations = new IdMap($relationRepository->findByIds(array_map(
-        fn (UpdateConceptRelationApiModel $requestRelation) => $requestRelation->getId(),
+        static fn (UpdateConceptRelationApiModel $requestRelation) => $requestRelation->getId(),
         $requestRelations
       )));
 

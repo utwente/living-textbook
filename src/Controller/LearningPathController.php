@@ -103,7 +103,7 @@ class LearningPathController extends AbstractController
     if ($form->isSubmitted() && $form->isValid()) {
       // Save the data
       $reviewService->storeChange($studyArea, $learningPath, PendingChange::CHANGE_TYPE_EDIT, $snapshot,
-        function (LearningPath $learningPath) use (&$originalElements, &$em) {
+        static function (LearningPath $learningPath) use (&$originalElements, &$em) {
           // Remove elements no longer used
           foreach ($originalElements as $element) {
             if (false === $learningPath->getElements()->contains($element)) {

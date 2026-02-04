@@ -43,7 +43,7 @@ class ConceptRelationType extends AbstractType
       $this->addTextType($builder, 'target', $concept->getName());
     }
 
-    $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($concept) {
+    $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($concept) {
       /** @var ConceptRelation|null $relation */
       $relation       = $event->getData();
       $relationTypeId = $relation === null ? null : $relation->getRelationType()->getId();
@@ -54,8 +54,8 @@ class ConceptRelationType extends AbstractType
         'class'         => RelationType::class,
         'select2'       => true,
         'choice_label'  => 'name',
-        'choice_attr'   => fn (RelationType $val, $key, $index) => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
-        'query_builder' => function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
+        'choice_attr'   => static fn (RelationType $val, $key, $index) => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
+        'query_builder' => static function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
           $qb = $repo->createQueryBuilder('rt');
 
           // Update result based on current data
@@ -78,7 +78,7 @@ class ConceptRelationType extends AbstractType
     });
 
     // Add a transformer to create new relations on every edit
-    $builder->addModelTransformer(new CallbackTransformer(function (?ConceptRelation $conceptRelation) {
+    $builder->addModelTransformer(new CallbackTransformer(static function (?ConceptRelation $conceptRelation) {
       if ($conceptRelation) {
         return [
           'source'       => $conceptRelation->getSource(),
@@ -92,7 +92,7 @@ class ConceptRelationType extends AbstractType
         'target'       => null,
         'relationType' => null,
       ];
-    }, function ($data) use ($concept, $incoming) {
+    }, static function ($data) use ($concept, $incoming) {
       $conceptRelation = new ConceptRelation()
         ->setRelationType($data['relationType']);
 
@@ -119,7 +119,7 @@ class ConceptRelationType extends AbstractType
         'class'         => Concept::class,
         'choice_label'  => 'name',
         'select2'       => true,
-        'query_builder' => fn (ConceptRepository $repo) => $repo->createQueryBuilder('c')
+        'query_builder' => static fn (ConceptRepository $repo) => $repo->createQueryBuilder('c')
           ->where('c.id != :id')
           ->andWhere('c.studyArea = :studyArea')
           ->orderBy('c.name', 'ASC')

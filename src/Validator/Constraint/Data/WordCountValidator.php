@@ -22,7 +22,7 @@ class WordCountValidator extends ConstraintValidator
   public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
-    if (!($constraint instanceof WordCount)) {
+    if (!$constraint instanceof WordCount) {
       throw new UnexpectedTypeException($constraint, WordCount::class);
     }
 

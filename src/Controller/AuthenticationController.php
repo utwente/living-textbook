@@ -51,9 +51,9 @@ class AuthenticationController extends AbstractController
   {
     if ($this->isGranted('ROLE_USER')) {
       return $this->redirect($this->generateUrl('_home'));
-    } else {
-      return $this->redirect($this->generateUrl('login'));
     }
+
+    return $this->redirect($this->generateUrl('login'));
   }
 
   /**

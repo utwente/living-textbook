@@ -18,13 +18,13 @@ class PrintedTextType extends AbstractType
   {
     $accessMethod = $options['access_method'];
 
-    $builder->addViewTransformer(new CallbackTransformer(function ($dataValue) use ($accessMethod) {
+    $builder->addViewTransformer(new CallbackTransformer(static function ($dataValue) use ($accessMethod) {
       if ($dataValue != null && $accessMethod) {
         $dataValue = $dataValue->$accessMethod();
       }
 
       return $dataValue;
-    }, function ($viewValue) {
+    }, static function ($viewValue) {
       // This transformation is not required
     }));
   }

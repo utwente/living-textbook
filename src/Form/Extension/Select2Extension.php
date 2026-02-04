@@ -46,7 +46,7 @@ class Select2Extension extends AbstractTypeExtension
     $resolver->setAllowedTypes('select2_allow_clear', ['null', 'bool']);
     $resolver->setAllowedTypes('select2_placeholder', ['null', 'string']);
 
-    $resolver->setNormalizer('select2_allow_clear', function (Options $options, $value) {
+    $resolver->setNormalizer('select2_allow_clear', static function (Options $options, $value) {
       if ($value !== null) {
         return $value;
       }

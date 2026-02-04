@@ -73,7 +73,7 @@ class PendingChangeObjectInfo
       throw new InvalidArgumentException(sprintf('Cannot retrieve pending change for field %s, as there are none', $field));
     }
 
-    $pendingChange = array_values(array_filter($this->pendingChanges, fn (PendingChange $pendingChange) => in_array($field, $pendingChange->getChangedFields())));
+    $pendingChange = array_values(array_filter($this->pendingChanges, static fn (PendingChange $pendingChange) => in_array($field, $pendingChange->getChangedFields())));
 
     return $pendingChange[0];
   }

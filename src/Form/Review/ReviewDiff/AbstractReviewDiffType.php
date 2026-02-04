@@ -43,7 +43,7 @@ class AbstractReviewDiffType extends AbstractType
     }
 
     $builder->addModelTransformer(new CallbackTransformer(
-      function () use ($options) {
+      static function () use ($options) {
         $pendingChange = $options['pending_change'];
         assert($pendingChange instanceof PendingChange);
 
@@ -58,7 +58,7 @@ class AbstractReviewDiffType extends AbstractType
           'comments' => $data,
         ];
       },
-      function (array $formData) use ($options) {
+      static function (array $formData) use ($options) {
         $pendingChange = $options['pending_change'];
         $field         = $options['field'];
         assert($pendingChange instanceof PendingChange);
