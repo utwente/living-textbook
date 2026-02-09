@@ -4730,12 +4730,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/UserRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on ReflectionType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Request/Subscriber/RequestStudyAreaSubscriber.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^If condition is always true\\.$#',
 	'identifier' => 'if.alwaysTrue',
 	'count' => 1,
