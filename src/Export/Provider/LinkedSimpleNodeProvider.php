@@ -194,7 +194,7 @@ EOT,
     $mappedContributors = [];
     foreach ($contributors as $contributor) {
       $mappedContributors[] = [
-        'nodes'       => $contributor->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'nodes'       => $contributor->getConcepts()->map(static fn (Concept $concept) => $idMap[$concept->getId()]),
         'name'        => $contributor->getName(),
         'description' => $contributor->getDescription(),
         'url'         => $contributor->getUrl(),
@@ -206,7 +206,7 @@ EOT,
     $mappedExternalResources = [];
     foreach ($externalResources as $externalResource) {
       $mappedExternalResources[] = [
-        'nodes'       => $externalResource->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'nodes'       => $externalResource->getConcepts()->map(static fn (Concept $concept) => $idMap[$concept->getId()]),
         'title'       => $externalResource->getTitle(),
         'description' => $externalResource->getDescription(),
         'url'         => $externalResource->getUrl(),
@@ -217,7 +217,7 @@ EOT,
     $mappedLearningOutcomes = [];
     foreach ($learningOutcomes as $learningOutcome) {
       $mappedLearningOutcomes[] = [
-        'nodes'   => $learningOutcome->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'nodes'   => $learningOutcome->getConcepts()->map(static fn (Concept $concept) => $idMap[$concept->getId()]),
         'number'  => $learningOutcome->getNumber(),
         'name'    => $learningOutcome->getName(),
         'content' => $learningOutcome->getText(),
@@ -228,7 +228,7 @@ EOT,
     $mappedTags = [];
     foreach ($tags as $tag) {
       $mappedTags[] = [
-        'nodes'       => $tag->getConcepts()->map(fn (Concept $concept) => $idMap[$concept->getId()]),
+        'nodes'       => $tag->getConcepts()->map(static fn (Concept $concept) => $idMap[$concept->getId()]),
         'color'       => $tag->getColor(),
         'name'        => $tag->getName(),
         'description' => $tag->getDescription(),
@@ -241,7 +241,7 @@ EOT,
       if (!$concept->getPriorKnowledge()->isEmpty()) {
         $mappedPriorKnowledge[] = [
           'node'               => $idMap[$concept->getId()],
-          'isPriorKnowledgeOf' => $concept->getPriorKnowledge()->map(fn (Concept $priorKnowledge) => $idMap[$priorKnowledge->getId()]),
+          'isPriorKnowledgeOf' => $concept->getPriorKnowledge()->map(static fn (Concept $priorKnowledge) => $idMap[$priorKnowledge->getId()]),
         ];
       }
     }

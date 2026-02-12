@@ -31,7 +31,7 @@ class LearningPathAnalyticsType extends AbstractType
         'class'         => LearningPath::class,
         'select2'       => true,
         'choice_label'  => 'name',
-        'query_builder' => fn (LearningPathRepository $repo) => $repo->findForStudyAreaQb($studyArea)
+        'query_builder' => static fn (LearningPathRepository $repo) => $repo->findForStudyAreaQb($studyArea)
           ->orderBy('lp.name'),
         'full_width_label' => true,
       ])

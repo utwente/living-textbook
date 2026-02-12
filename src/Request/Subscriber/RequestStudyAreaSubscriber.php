@@ -11,6 +11,7 @@ use App\Request\Wrapper\RequestStudyArea;
 use Override;
 use ReflectionException;
 use ReflectionMethod;
+use ReflectionParameter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
@@ -155,7 +156,8 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         if (!$reflParam->hasType()) {
           continue;
         }
-        if ($reflParam->getType()->getName() != RequestStudyArea::class) {
+        $reflType = $reflParam->getType();
+        if (!$reflType instanceof \ReflectionNamedType || $reflType->getName() !== RequestStudyArea::class) {
           continue;
         }
 

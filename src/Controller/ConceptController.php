@@ -265,7 +265,7 @@ class ConceptController extends AbstractController
         'choice_label'  => 'name',
         'class'         => Concept::class,
         'select2'       => true,
-        'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea, true),
+        'query_builder' => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea, true),
         'constraints'   => [
           new NotNull(),
         ],
@@ -290,7 +290,7 @@ class ConceptController extends AbstractController
       $instanceRelationType = $relationRepository->getOrCreateRelation(
         $studyArea, $translator->trans('concept.instantiate.default-relation-name'));
 
-      $createInstance = fn (Concept $base): Concept => new Concept()
+      $createInstance = static fn (Concept $base): Concept => new Concept()
         ->setStudyArea($studyArea)
         ->setInstance(true)
         ->setName($base->getName())

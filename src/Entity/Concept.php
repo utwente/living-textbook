@@ -285,7 +285,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   {
     $iterator = $values->getIterator();
     assert($iterator instanceof ArrayIterator);
-    $iterator->uasort(function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever) {
+    $iterator->uasort(static function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever) {
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
       return $val === 0
@@ -336,7 +336,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $lastUpdatedBy = $this->getLastUpdatedBy();
 
     // Loop relations to see if they have a newer date set
-    $check = function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
+    $check = static function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
       /** @var Blameable $entity */
       if ($entity->getLastUpdated() > $lastUpdated) {
         $lastUpdated   = $entity->getLastUpdated();

@@ -29,12 +29,12 @@ class ConceptRelationValidator extends ConstraintValidator
   public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
-    if (!($constraint instanceof ConceptRelation)) {
+    if (!$constraint instanceof ConceptRelation) {
       throw new UnexpectedTypeException($constraint, ConceptRelation::class);
     }
 
     // Check value
-    if (!($value instanceof Concept)) {
+    if (!$value instanceof Concept) {
       throw new UnexpectedTypeException($value, Concept::class);
     }
 

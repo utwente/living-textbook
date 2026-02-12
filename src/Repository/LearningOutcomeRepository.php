@@ -78,7 +78,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
       ->getQuery()->getResult();
 
     $return = [];
-    array_walk($result, function ($item) use (&$return) {
+    array_walk($result, static function ($item) use (&$return) {
       if (!isset($return[$item['id']])) {
         $return[$item['id']] = [];
       }

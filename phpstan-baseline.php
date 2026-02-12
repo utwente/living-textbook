@@ -1232,12 +1232,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/StudyAreaController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$default of method Symfony\\\\Component\\\\HttpFoundation\\\\InputBag\\<string\\>\\:\\:get\\(\\) expects string\\|null, false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/StudyAreaController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 3,
@@ -5166,12 +5160,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/UserRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on ReflectionType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Request/Subscriber/RequestStudyAreaSubscriber.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^If condition is always true\\.$#',

@@ -62,7 +62,7 @@ class ConceptApiModel implements IdInterface
       $concept->getName(),
       $concept->getDefinition(),
       $concept->getSynonyms(),
-      $concept->getTags()->map(fn (Tag $tag) => $tag->getId())->getValues(),
+      $concept->getTags()->map(static fn (Tag $tag) => $tag->getId())->getValues(),
       $concept->getOutgoingRelations()
         ->map(ConceptRelationApiModel::fromEntity(...))
         ->getValues(),

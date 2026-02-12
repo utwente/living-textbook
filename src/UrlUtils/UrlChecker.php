@@ -217,7 +217,7 @@ class UrlChecker
 
     $router = $this->router;
     // Exclude latex URLs
-    $urls = array_filter($urls, function (Url $entry) use ($router) {
+    $urls = array_filter($urls, static function (Url $entry) use ($router) {
       if (!$entry->isInternal()) {
         return true;
       }
@@ -295,18 +295,19 @@ class UrlChecker
         return false;
       }
     }
+
     // Recheck
     if ($this->_checkUrl($url)) {
       // Good items expire after 7 days
       $this->cacheUrl($cacheableUrl, $this->goodUrlsCache, 7 * 24 * 60 * 60);
 
       return true;
-    } else {
-      // Bad items expire after 14 days, although they should be deleted if they're no longer valid
-      $this->cacheUrl($cacheableUrl, $newCache, 14 * 24 * 60 * 60);
-
-      return false;
     }
+
+    // Bad items expire after 14 days, although they should be deleted if they're no longer valid
+    $this->cacheUrl($cacheableUrl, $newCache, 14 * 24 * 60 * 60);
+
+    return false;
   }
 
   private function checkInternalUrl(Url $url, StudyArea $studyArea): ?bool

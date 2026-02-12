@@ -19,7 +19,7 @@ class CkEditorType extends AbstractType
     $resolver
       ->setDefault('studyArea', null)
       ->setAllowedTypes('studyArea', ['null', StudyArea::class])
-      ->setDefault('config', function (Options $options) {
+      ->setDefault('config', static function (Options $options) {
         if ($options['studyArea'] === null) {
           return [];
         }
@@ -31,7 +31,7 @@ class CkEditorType extends AbstractType
           ],
         ];
       })
-      ->setNormalizer('config_name', function (Options $options, $value) {
+      ->setNormalizer('config_name', static function (Options $options, $value) {
         if ($value === 'ltb_config' && ($options['studyArea'] !== null && $options['studyArea']->getId() === null)) {
           return 'ltb_no_image';
         }

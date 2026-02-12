@@ -57,7 +57,7 @@ class LearningPathElementType extends AbstractType
       ]);
 
     $builder->addModelTransformer(new CallbackTransformer(
-      function (?LearningPathElement $modelData): array {
+      static function (?LearningPathElement $modelData): array {
         $concept = $modelData?->getConcept();
 
         return [

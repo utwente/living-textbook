@@ -109,7 +109,7 @@ class SaveType extends AbstractType
     $resolver->setAllowedTypes('cancel_route_params', 'array');
     $resolver->setAllowedTypes('locate_static', 'bool');
 
-    $resolver->setNormalizer('cancel_route', function (Options $options, $value) {
+    $resolver->setNormalizer('cancel_route', static function (Options $options, $value) {
       if ($options['enable_cancel'] === true && $value === null) {
         throw new MissingOptionsException('The option "cancel_route" is not set, while the cancel button is enabled.');
       }

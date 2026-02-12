@@ -29,7 +29,7 @@ class StudyAreaAccessTypeValidator extends ChoiceValidator
   public function validate(mixed $value, Constraint $constraint): void
   {
     // Check constraint
-    if (!($constraint instanceof StudyAreaAccessType)) {
+    if (!$constraint instanceof StudyAreaAccessType) {
       throw new UnexpectedTypeException($constraint, StudyAreaAccessType::class);
     }
 

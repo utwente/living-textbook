@@ -101,7 +101,7 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
 
       // Redirect to new url
       $redirectRoute = $this->router->generate($configuration->route, $routeParams);
-      $event->setController(fn () => new RedirectResponse($redirectRoute));
+      $event->setController(static fn () => new RedirectResponse($redirectRoute));
     }
   }
 }

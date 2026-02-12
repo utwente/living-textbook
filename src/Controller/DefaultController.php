@@ -198,7 +198,7 @@ class DefaultController extends AbstractController
         'choice_label'  => 'name',
         'class'         => Concept::class,
         'select2'       => true,
-        'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
+        'query_builder' => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
       ])
       ->add('submit', SubmitType::class, [
         'disabled' => true,
@@ -329,14 +329,14 @@ class DefaultController extends AbstractController
         'hide_label'  => true,
         'class'       => StudyArea::class,
         'select2'     => true,
-        'group_by'    => function (StudyArea $studyArea) use ($defaultGroupName) {
+        'group_by'    => static function (StudyArea $studyArea) use ($defaultGroupName) {
           if (!$studyArea->getGroup()) {
             return $defaultGroupName;
           }
 
           return $studyArea->getGroup()->getName();
         },
-        'query_builder' => function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
+        'query_builder' => static function (StudyAreaRepository $studyAreaRepository) use ($user, $studyArea) {
           $qb = $studyAreaRepository->getVisibleQueryBuilder($user);
           if ($studyArea !== null) {
             $qb->andWhere('sa != :current')

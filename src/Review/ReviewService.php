@@ -281,7 +281,7 @@ class ReviewService
     }
 
     return 0 === count(array_filter($this->pendingChangeRepository->getForObject($object),
-      fn (PendingChange $pendingChange) => $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT));
+      static fn (PendingChange $pendingChange) => $pendingChange->getChangeType() !== PendingChange::CHANGE_TYPE_EDIT));
   }
 
   /** Retrieve whether the object can be removed. */
@@ -376,7 +376,7 @@ class ReviewService
     $this->entityManager->remove($review);
 
     // Flush the changes in a transaction
-    $this->entityManager->wrapInTransaction(function (EntityManagerInterface $em) {
+    $this->entityManager->wrapInTransaction(static function (EntityManagerInterface $em) {
       $em->flush();
     });
 

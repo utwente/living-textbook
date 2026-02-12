@@ -40,7 +40,7 @@ class LearningPathElementSelectorType extends AbstractType
         'choice_label'        => 'name',
         'required'            => false,
         'multiple'            => true,
-        'query_builder'       => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
+        'query_builder'       => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
         'select2'             => true,
         'select2_placeholder' => 'learning-path.select',
       ])
@@ -50,7 +50,7 @@ class LearningPathElementSelectorType extends AbstractType
         'choice_label'        => 'name',
         'required'            => false,
         'multiple'            => true,
-        'query_builder'       => fn (LearningOutcomeRepository $learningOutcomeRepository) => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+        'query_builder'       => static fn (LearningOutcomeRepository $learningOutcomeRepository) => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
         'select2'             => true,
         'select2_placeholder' => 'learning-path.select',
       ])

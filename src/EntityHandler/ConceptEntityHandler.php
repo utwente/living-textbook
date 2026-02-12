@@ -72,7 +72,7 @@ class ConceptEntityHandler extends AbstractEntityHandler
   /** @noinspection PhpUnhandledExceptionInspection */
   public function delete(Concept $concept, LearningPathRepository $learningPathRepository): void
   {
-    $deleteFunction = fn () => $learningPathRepository->removeElementBasedOnConcept($concept);
+    $deleteFunction = static fn () => $learningPathRepository->removeElementBasedOnConcept($concept);
 
     if ($this->reviewService !== null) {
       $this->reviewService->storeChange(

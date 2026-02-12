@@ -49,7 +49,7 @@ class EditStudyAreaType extends AbstractType
         'label'                     => 'study-area.access-type',
         'help'                      => 'study-area.access-type-change-note',
         'choices'                   => $studyArea->getAvailableAccessTypes($this->security, $this->em),
-        'choice_label'              => fn ($value) => u((string)$value)->title(),
+        'choice_label'              => static fn ($value) => u((string)$value)->title(),
         'choice_translation_domain' => false,
         'select2'                   => true,
       ]);
@@ -62,7 +62,7 @@ class EditStudyAreaType extends AbstractType
           'label'         => 'study-area.groups.group',
           'choice_label'  => 'name',
           'select2'       => true,
-          'query_builder' => fn (StudyAreaGroupRepository $repo) => $repo->createQueryBuilder('sag')
+          'query_builder' => static fn (StudyAreaGroupRepository $repo) => $repo->createQueryBuilder('sag')
             ->orderBy('sag.name', 'ASC'),
         ]);
     }
@@ -137,7 +137,7 @@ class EditStudyAreaType extends AbstractType
           'class'         => Tag::class,
           'choice_label'  => 'name',
           'select2'       => true,
-          'query_builder' => fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
+          'query_builder' => static fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
         ]);
     }
 

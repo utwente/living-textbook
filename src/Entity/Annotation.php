@@ -334,7 +334,7 @@ class Annotation implements SearchableInterface, IdInterface
     $annotation = $this;
 
     return $this->comments
-      ->filter(fn (AnnotationComment $annotationComment) => $annotationComment->getUser()->getId() !== $annotation->getUserId())
+      ->filter(static fn (AnnotationComment $annotationComment) => $annotationComment->getUser()->getId() !== $annotation->getUserId())
       ->count();
   }
 }

@@ -252,7 +252,7 @@ class StudyArea implements Stringable, IdInterface
     // Get choices, remove public type when not administrator, and field has changed
     $choices = self::getAccessTypes();
     if (!$security->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
-      $choices = array_filter($choices, fn ($item) => $item !== StudyArea::ACCESS_PUBLIC);
+      $choices = array_filter($choices, static fn ($item) => $item !== StudyArea::ACCESS_PUBLIC);
     }
 
     return $choices;
@@ -348,7 +348,7 @@ class StudyArea implements Stringable, IdInterface
       return [];
     }
 
-    $users = array_merge(...$editorGroup->map(fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
+    $users = array_merge(...$editorGroup->map(static fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
     usort($users, User::sortOnDisplayName(...));
 
     return $users;
@@ -367,7 +367,7 @@ class StudyArea implements Stringable, IdInterface
       return [];
     }
 
-    $userGroupEmails = array_merge(...$editorGroup->map(fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
+    $userGroupEmails = array_merge(...$editorGroup->map(static fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
     usort($userGroupEmails, UserGroupEmail::sortOnEmail(...));
 
     return $userGroupEmails;
@@ -386,7 +386,7 @@ class StudyArea implements Stringable, IdInterface
       return [];
     }
 
-    $users = array_merge(...$reviewGroup->map(fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
+    $users = array_merge(...$reviewGroup->map(static fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
     usort($users, User::sortOnDisplayName(...));
 
     return $users;
@@ -405,7 +405,7 @@ class StudyArea implements Stringable, IdInterface
       return [];
     }
 
-    $userGroupEmails = array_merge(...$reviewGroup->map(fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
+    $userGroupEmails = array_merge(...$reviewGroup->map(static fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
     usort($userGroupEmails, UserGroupEmail::sortOnEmail(...));
 
     return $userGroupEmails;
@@ -424,7 +424,7 @@ class StudyArea implements Stringable, IdInterface
       return [];
     }
 
-    $users = array_merge(...$viewerGroup->map(fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
+    $users = array_merge(...$viewerGroup->map(static fn (UserGroup $userGroup) => $userGroup->getUsers()->toArray())->toArray());
     usort($users, User::sortOnDisplayName(...));
 
     return $users;
@@ -443,7 +443,7 @@ class StudyArea implements Stringable, IdInterface
       return [];
     }
 
-    $userGroupEmails = array_merge(...$viewerGroup->map(fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
+    $userGroupEmails = array_merge(...$viewerGroup->map(static fn (UserGroup $userGroup) => $userGroup->getEmails()->toArray())->toArray());
     usort($userGroupEmails, UserGroupEmail::sortOnEmail(...));
 
     return $userGroupEmails;
@@ -519,7 +519,7 @@ class StudyArea implements Stringable, IdInterface
     $lastUpdatedBy = $this->getLastUpdatedBy();
 
     // Loop relations to see if they have a newer date set
-    $check = function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
+    $check = static function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
       if ($entity instanceof Concept) {
         $lastEditInfo = $entity->getLastEditInfo();
         if ($lastEditInfo[0] > $lastUpdated) {

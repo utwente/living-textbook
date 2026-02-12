@@ -81,7 +81,7 @@ class DisplayPendingChangeType extends AbstractType
       ->setRequired('pending_change_info')
       ->setAllowedTypes('pending_change_info', PendingChangeObjectInfo::class)
       ->setDefault('pending_change', null)
-      ->setNormalizer('pending_change', function (Options $options) {
+      ->setNormalizer('pending_change', static function (Options $options) {
         /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
         $pendingChangeObjectInfo = $options->offsetGet('pending_change_info');
         $field                   = $options->offsetGet('field');

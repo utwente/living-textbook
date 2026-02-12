@@ -31,7 +31,7 @@ abstract class AbstractBaseDataType extends AbstractType
 
     $resolver->setRequired('data_class');
     $resolver->setAllowedTypes('data_class', ['string', 'null']);
-    $resolver->setNormalizer('data_class', function (Options $options, $value) {
+    $resolver->setNormalizer('data_class', static function (Options $options, $value) {
       if (!class_exists($value)) {
         throw new InvalidConfigurationException(sprintf('The "data_class" option must contain a valid class name ("%s" given).', $value ?: 'NULL'));
       }

@@ -38,7 +38,7 @@ class EditFallbackUserType extends AbstractType
       ]);
 
     // Transformer to set displayname same as fullname
-    $builder->addModelTransformer(new CallbackTransformer(fn (User $user) => $user, fn (User $user) => $user->setDisplayName($user->getFullName())));
+    $builder->addModelTransformer(new CallbackTransformer(static fn (User $user) => $user, static fn (User $user) => $user->setDisplayName($user->getFullName())));
   }
 
   #[Override]

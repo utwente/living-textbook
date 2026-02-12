@@ -81,7 +81,7 @@ class AnnotationRepository extends ServiceEntityRepository
 
     // Map result to id => count array
     $result = [];
-    array_walk($counts, function ($value) use (&$result) {
+    array_walk($counts, static function ($value) use (&$result) {
       $result[$value[1]] = $value[2];
     });
 

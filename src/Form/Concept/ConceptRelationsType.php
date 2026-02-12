@@ -33,7 +33,7 @@ class ConceptRelationsType extends AbstractType
     $resolver->setAllowedTypes('concept', [Concept::class]);
     $resolver->setAllowedTypes('incoming', ['bool']);
 
-    $resolver->setNormalizer('entry_options', function (Options $options, $value) {
+    $resolver->setNormalizer('entry_options', static function (Options $options, $value) {
       $value['concept']  = $options->offsetGet('concept');
       $value['incoming'] = $options->offsetGet('incoming');
 

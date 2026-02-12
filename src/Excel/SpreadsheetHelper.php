@@ -42,7 +42,7 @@ class SpreadsheetHelper
     // Create writer
     $writer   = $this->createExcelWriter($spreadsheet);
     $response = new StreamedResponse(
-      function () use ($writer) {
+      static function () use ($writer) {
         $writer->save('php://output');
       });
 
@@ -70,7 +70,7 @@ class SpreadsheetHelper
   {
     $writer = $this->createCsvWriter($spreadsheet);
 
-    $response = new StreamedResponse(function () use ($writer) {
+    $response = new StreamedResponse(static function () use ($writer) {
       $writer->save('php://output');
     });
     $response->headers->set('Content-Type', 'application/csv; charset=utf-8');

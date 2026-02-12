@@ -89,7 +89,7 @@ class EditLearningPathType extends AbstractType
         'choice_label'  => 'abbreviation',
         'required'      => false,
         'mapped'        => false,
-        'query_builder' => fn (AbbreviationRepository $abbreviationRepository) => $abbreviationRepository->findForStudyAreaQb($options['studyArea']),
+        'query_builder' => static fn (AbbreviationRepository $abbreviationRepository) => $abbreviationRepository->findForStudyAreaQb($options['studyArea']),
         'attr'          => [
           'data-ckeditor-selector' => 'abbreviations', // Register for ckeditor
         ],
@@ -100,7 +100,7 @@ class EditLearningPathType extends AbstractType
         'choice_label'  => 'name',
         'required'      => false,
         'mapped'        => false,
-        'query_builder' => fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($options['studyArea']),
+        'query_builder' => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($options['studyArea']),
         'attr'          => [
           'data-ckeditor-selector' => 'concepts', // Register for ckeditor
         ],

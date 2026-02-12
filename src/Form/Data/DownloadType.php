@@ -66,7 +66,7 @@ class DownloadType extends AbstractType
       ->setAllowedTypes('form_target', 'string')
       ->setAllowedTypes('url_export_enabled', 'bool');
 
-    $resolver->setNormalizer('attr', function (Options $options, array $attr) {
+    $resolver->setNormalizer('attr', static function (Options $options, array $attr) {
       $attr['target'] = $options['form_target'] ?? '_blank';
 
       return $attr;

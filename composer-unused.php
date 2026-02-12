@@ -11,6 +11,7 @@ return static function (Configuration $config): Configuration {
       ->addNamedFilter(NamedFilter::fromString('ext-apcu'))
       ->addNamedFilter(NamedFilter::fromString('ext-sysvsem'))
       ->addNamedFilter(NamedFilter::fromString('league/html-to-markdown'))
+      ->addNamedFilter(NamedFilter::fromString('sweetrdf/json-ld')) // Replaces ml/json-ld, but not marked as suggestion by sweetrdf/easyrdf
       ->addNamedFilter(NamedFilter::fromString('symfony/dotenv'))
       ->addNamedFilter(NamedFilter::fromString('symfony/flex'))
       ->addNamedFilter(NamedFilter::fromString('symfony/runtime'))

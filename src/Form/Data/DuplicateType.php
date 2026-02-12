@@ -65,7 +65,7 @@ class DuplicateType extends AbstractType
         'form_header' => 'study-area.existing',
         'placeholder' => 'dashboard.select-one',
         'select2'     => true,
-        'group_by'    => function (StudyArea $studyArea) use ($defaultGroupName) {
+        'group_by'    => static function (StudyArea $studyArea) use ($defaultGroupName) {
           if (!$studyArea->getGroup()) {
             return $defaultGroupName;
           }
@@ -97,7 +97,7 @@ class DuplicateType extends AbstractType
         'multiple'      => true,
         'class'         => Concept::class,
         'choice_label'  => 'name',
-        'query_builder' => fn (ConceptRepository $cr) => $cr->createQueryBuilder('c')
+        'query_builder' => static fn (ConceptRepository $cr) => $cr->createQueryBuilder('c')
           ->where('c.studyArea = :studyArea')
           ->setParameter('studyArea', $currentStudyArea)
           ->orderBy('c.name', 'ASC'),
@@ -127,7 +127,7 @@ class DuplicateType extends AbstractType
           new Callback($this->checkConcepts(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
           new Callback($this->checkNewStudyArea(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
         ],
-        'validation_groups' => fn (FormInterface $form) => [$form->getData()[self::CHOICE]],
+        'validation_groups' => static fn (FormInterface $form) => [$form->getData()[self::CHOICE]],
       ])
       ->setRequired('current_study_area')
       ->setRequired('new_study_area')

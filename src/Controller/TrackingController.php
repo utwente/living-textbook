@@ -52,7 +52,7 @@ class TrackingController extends AbstractController
   {
     return $this->processTrackingItem(
       PageLoad::class,
-      function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
+      static function (PageLoad $pageLoad, StudyArea $studyArea, ?User $user) use ($router) {
         $pathContext = null;
         try {
           $pathContext = $router->match($pageLoad->getPath());
@@ -87,7 +87,7 @@ class TrackingController extends AbstractController
   {
     return $this->processTrackingItem(
       TrackingEvent::class,
-      function (TrackingEvent $pageLoad, StudyArea $studyArea, ?User $user) {
+      static function (TrackingEvent $pageLoad, StudyArea $studyArea, ?User $user) {
         $pageLoad
           ->setStudyArea($studyArea)
           ->setUserId($user ? $user->getUserIdentifier() : 'anonymous');

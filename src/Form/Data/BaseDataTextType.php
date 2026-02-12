@@ -41,7 +41,7 @@ class BaseDataTextType extends AbstractBaseDataType
       ])
       ->setAllowedTypes('ckeditor', ['bool'])
       ->setAllowedTypes('studyArea', ['null', StudyArea::class])
-      ->setNormalizer('studyArea', function (Options $options, $value) {
+      ->setNormalizer('studyArea', static function (Options $options, $value) {
         if ($options['ckeditor'] && null === $value) {
           throw new MissingOptionsException('The required option "studyArea" is missing (as the form is a ckeditor type).');
         }

@@ -138,7 +138,7 @@ class DataController extends AbstractController
         $json = $form->getData()['json'];
 
         // Check file format
-        if (!($json instanceof UploadedFile)) {
+        if (!$json instanceof UploadedFile) {
           throw new DataImportException('File upload failed');
         }
 
