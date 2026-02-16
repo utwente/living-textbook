@@ -99,7 +99,7 @@
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.1.38",
         "phpstan/phpstan-doctrine": "2.0.14",
-        "phpstan/phpstan-phpunit": "2.0.12",
+        "phpstan/phpstan-phpunit": "2.0.13",
         "phpstan/phpstan-symfony": "2.0.12",
         "phpunit/phpunit": "12.5.10",
         "rector/rector": "2.3.6",
