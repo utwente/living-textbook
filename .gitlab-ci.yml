@@ -14,11 +14,11 @@ workflow:
 
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
-  COMPOSER_REQUIRE_CHECKER_VERSION: 4.20.0
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.19.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
-  COMPOSER_UNUSED_VERSION: 0.9.6
-  DRENSO_PHP_VERSION: 8.4
-  NODE_VERSION: 20
+  COMPOSER_UNUSED_VERSION: 0.9.5
+  DRENSO_PHP_VERSION: 8.5
+  NODE_VERSION: 24
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
   PHP_SEC_CHECK_VERSION: 2.1.3
   SASSLINT_VERSION: 1.12.1-d1
@@ -26,7 +26,7 @@ variables:
   TSLINT_VERSION: 5.18.0
   YAMLLINT_DIRECTORIES: config
   YAMLLINT_VERSION: 1.0.0
-  YARN_AUDIT_EXCLUDE_LIST: ""
+  NPM_AUDIT_EXCLUDE_LIST: ""
 
 # Prepare
 install-dependencies:
@@ -84,17 +84,17 @@ install-js-dependencies:
   cache:
     key:
       files:
-        - yarn.lock
-      prefix: ${CI_PROJECT_PATH_SLUG}_yarn
+        - package-lock.json
+      prefix: ${CI_PROJECT_PATH_SLUG}_npm
     paths:
       - node_modules/
   script:
     # Install the dependencies
-    - yarn install
+    - npm ci
     - >- # Use upstream dotron version when triggered from dotron repo
       if [ -n "${UPSTREAM_DOTRON_VERSION}" ]; then
         echo "Using updated dotron version ${UPSTREAM_DOTRON_VERSION}"
-        yarn add @utwente/dotron-app@${UPSTREAM_DOTRON_VERSION}
+        npm add @utwente/dotron-app@${UPSTREAM_DOTRON_VERSION}
       fi
   tags:
     - docker
@@ -180,14 +180,20 @@ composer-audit:
   tags:
     - docker
 
-yarn-audit:
+npm-audit:
   stage: audit
   image: "node:${NODE_VERSION}"
   needs: []
   interruptible: true
   script:
-    - yarn global add improved-yarn-audit
-    - improved-yarn-audit --ignore-dev-deps --exclude ${YARN_AUDIT_EXCLUDE_LIST}
+    - npm install -g better-npm-audit
+    - |-
+      if [[ -z "${NPM_AUDIT_EXCLUDE_LIST}" ]]; then
+        better-npm-audit audit --production
+      else
+        better-npm-audit audit --production --exclude ${NPM_AUDIT_EXCLUDE_LIST}
+      fi
+
   tags:
     - docker
 
@@ -378,14 +384,14 @@ build-assets:
   cache:
     - key:
         files:
-          - yarn.lock
-        prefix: ${CI_PROJECT_PATH_SLUG}_yarn
+          - package-lock.json
+        prefix: ${CI_PROJECT_PATH_SLUG}_npm
       paths:
         - node_modules/
       policy: pull
     - key:
         files:
-          - yarn.lock
+          - package-lock.json
           - webpack.config.js
         prefix: ${CI_PROJECT_PATH_SLUG}_webpack_persistent_cache
       paths:
@@ -397,7 +403,7 @@ build-assets:
       - public/build
       - public/email
   script:
-    - yarn build
+    - npm run build
   tags:
     - docker
   except:
