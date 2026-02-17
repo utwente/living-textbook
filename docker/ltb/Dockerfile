@@ -141,10 +141,10 @@ COPY --from=ltb_prod_php_build /usr/src/app/vendor/friendsofsymfony ./vendor/fri
 COPY --from=ltb_prod_php_build /usr/src/app/vendor/studio-42 ./vendor/studio-42
 
 # Install assets dependencies
-RUN yarn install
+RUN npm ci
 
 # Build the assets
-RUN yarn build
+RUN npm run build
 
 ######################## Production image ########################
 FROM ltb_prod_php_build AS ltb_prod

@@ -111,6 +111,7 @@ Encore
     // uncomment if you use Sass/SCSS files
     .enableSassLoader(options => {
       options.sassOptions = {
+        silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'legacy-js-api'],
         quietDeps: true, // Disabled math.div warning msg (Font Awesome 4.7)
       }
     })

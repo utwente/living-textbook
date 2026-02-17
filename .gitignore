@@ -40,7 +40,6 @@ assets/js/_fos_routes.json
 /public/build/
 /public/email/
 npm-debug.log
-yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 # Docker environment

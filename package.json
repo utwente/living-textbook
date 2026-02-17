@@ -1,11 +1,12 @@
 {
+  "name": "013-living-textbook",
   "devDependencies": {
     "@babel/core": "^7.17.0",
     "@babel/plugin-proposal-decorators": "^7.17.0",
     "@babel/plugin-transform-logical-assignment-operators": "^7.17.0",
     "@babel/preset-env": "^7.17.0",
     "@babel/preset-typescript": "^7.17.0",
-    "@symfony/webpack-encore": "4.5.0",
+    "@symfony/webpack-encore": "4.7.0",
     "@types/bootstrap": "4.6.6",
     "@types/color": "4.2.0",
     "@types/d3": "5.16.7",
@@ -15,30 +16,33 @@
     "babel-loader": "8.2.2",
     "browserslist": "4.17.1",
     "file-loader": "6.2.0",
-    "postcss": "8.3.7",
-    "postcss-loader": "6.1.1",
-    "sass": "1.53.0",
-    "sass-loader": "13.0.2",
-    "ts-loader": "9.2.6",
-    "typescript": "4.4.3",
-    "webpack": "5.89.0",
-    "webpack-cli": "4.10.0"
+    "npm-run-all2": "8.0.4",
+    "postcss": "8.4.35",
+    "postcss-loader": "7.3.4",
+    "sass": "1.97.2",
+    "sass-loader": "^14.2.1",
+    "ts-loader": "^9.4.2",
+    "typescript": "4.9.5",
+    "webpack": "^5.105.2",
+    "webpack-cli": "^5.1.4"
   },
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "dev-server": "yarn build:email && yarn watch:email & encore dev-server --host localhost.drenso.dev",
-    "dev-server-bob": "yarn dev-server --port 8999",
-    "dev-server-tobias": "yarn dev-server --port 8998",
-    "dev": "yarn dev:email && yarn dev:encore",
+    "dev-server:mail": "run-s build:email",
+    "dev-server:encore": "encore dev-server",
+    "dev-server-bob": "run-s dev-server:mail \"dev-server:encore -- --port 8999 --host localhost.drenso.dev\"",
+    "dev-server-tobias": "run-s dev-server:mail \"dev-server:encore -- --port 8998 --host localhost.drenso.dev\"",
+    "dev": "run-s dev:email dev:encore",
     "dev:encore": "encore dev",
-    "dev:email": "yarn build:email",
-    "watch": "yarn watch:email & yarn watch:encore",
+    "dev:email": "run-s build:email",
+    "watch": "run-p watch:email watch:encore",
     "watch:encore": "encore dev --watch",
-    "watch:email": "yarn build:email --watch",
-    "build": "yarn build:email && yarn build:encore",
+    "watch:email": "run-s \"build:email -- --watch\"",
+    "build": "run-s build:email build:encore",
     "build:encore": "encore production",
-    "build:email": "sass --load-path node_modules --style compressed ./assets/email/email.scss:./public/email/email.css"
+    "build:email": "sass --load-path node_modules --style compressed --silence-deprecation import,global-builtin,color-functions --quiet-deps ./assets/email/email.scss:./public/email/email.css",
+    "vue:lint": "vue-cli-service lint --no-fix --max-warnings 0"
   },
   "dependencies": {
     "@sentry/browser": "10.38.0",
@@ -72,12 +76,12 @@
     "symfony-collection": "ninsuo/symfony-collection",
     "uuid": "11.0.2"
   },
-  "resolutions": {
+  "overrides": {
     "datatables.net": "1.13.11",
     "datatables.net-bs4": "1.13.11",
     "jquery": "3.7.1"
   },
   "engines": {
-    "node": "~20"
+    "node": "~24"
   }
 }
