@@ -25,6 +25,8 @@ use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use Exception;
 use InvalidArgumentException;
 use RuntimeException;
@@ -198,7 +200,7 @@ class StudyAreaDuplicator
         ->setText($learningOutcome->getText());
 
       $this->em->persist($newLearningOutcome);
-      $this->newLearningOutcomes[$learningOutcome->getId()] = $newLearningOutcome;
+      $this->newLearningOutcomes[$learningOutcome->getNonNullId()] = $newLearningOutcome;
     }
   }
 
@@ -219,10 +221,11 @@ class StudyAreaDuplicator
       /** @var LearningPathElement[] $currentElements */
       $currentElements = $learningPath->getElementsOrdered()->toArray();
       for ($i = count($currentElements) - 1; $i >= 0; $i--) {
-        $element = $currentElements[$i];
+        $element        = $currentElements[$i];
+        $elementConcept = $element->getConcept() ?? throw new MustNotBeNullException();
 
         // Only copy element when the concept has been copied as well
-        if (!array_key_exists($element->getConcept()->getNonNullId(), $this->newConcepts)) {
+        if (!array_key_exists($elementConcept->getNonNullId(), $this->newConcepts)) {
           // Set next description to null when skipping an element
           $setNextNull = true;
           continue;
@@ -230,7 +233,7 @@ class StudyAreaDuplicator
 
         $newElement = new LearningPathElement()
           ->setNext($previousElement)
-          ->setConcept($this->newConcepts[$element->getConcept()->getId()])
+          ->setConcept($this->newConcepts[$elementConcept->getNonNullId()])
           ->setDescription($setNextNull ? null : $element->getDescription());
         $newLearningPath->addElement($newElement);
         $setNextNull     = false;
@@ -240,7 +243,7 @@ class StudyAreaDuplicator
       // Only save learning path when it still has elements left to save
       if ($newLearningPath->getElements()->count() > 0) {
         $this->em->persist($newLearningPath);
-        $this->newLearningPaths[$learningPath->getId()] = $newLearningPath;
+        $this->newLearningPaths[$learningPath->getNonNullId()] = $newLearningPath;
       }
     }
   }
@@ -258,7 +261,7 @@ class StudyAreaDuplicator
         ->setBroken($externalResource->isBroken());
 
       $this->em->persist($newExternalResource);
-      $this->newExternalResources[$externalResource->getId()] = $newExternalResource;
+      $this->newExternalResources[$externalResource->getNonNullId()] = $newExternalResource;
     }
   }
 
@@ -275,7 +278,7 @@ class StudyAreaDuplicator
         ->setBroken($contributor->isBroken());
 
       $this->em->persist($newContributor);
-      $this->newContributors[$contributor->getId()] = $newContributor;
+      $this->newContributors[$contributor->getNonNullId()] = $newContributor;
     }
   }
 
@@ -290,7 +293,7 @@ class StudyAreaDuplicator
         ->setMeaning($abbreviation->getMeaning());
 
       $this->em->persist($newAbbreviation);
-      $this->newAbbreviations[$abbreviation->getId()] = $newAbbreviation;
+      $this->newAbbreviations[$abbreviation->getNonNullId()] = $newAbbreviation;
     }
   }
 
@@ -304,7 +307,7 @@ class StudyAreaDuplicator
         ->setColor($tag->getColor());
 
       $this->em->persist($newTag);
-      $this->newTags[$tag->getId()] = $newTag;
+      $this->newTags[$tag->getNonNullId()] = $newTag;
     }
   }
 
@@ -328,28 +331,28 @@ class StudyAreaDuplicator
 
       // Set learning outcomes
       foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
-        $newConcept->addLearningOutcome($this->newLearningOutcomes[$oldLearningOutcome->getId()]);
+        $newConcept->addLearningOutcome($this->newLearningOutcomes[$oldLearningOutcome->getNonNullId()]);
       }
 
       // Set external resources
       foreach ($concept->getExternalResources() as $oldExternalResource) {
-        $newConcept->addExternalResource($this->newExternalResources[$oldExternalResource->getId()]);
+        $newConcept->addExternalResource($this->newExternalResources[$oldExternalResource->getNonNullId()]);
       }
 
       // Set contributors
       foreach ($concept->getContributors() as $oldContributor) {
-        $newConcept->addContributor($this->newContributors[$oldContributor->getId()]);
+        $newConcept->addContributor($this->newContributors[$oldContributor->getNonNullId()]);
       }
 
       // Set tags
       foreach ($concept->getTags() as $oldTag) {
-        $newConcept->addTag($this->newTags[$oldTag->getId()]);
+        $newConcept->addTag($this->newTags[$oldTag->getNonNullId()]);
       }
 
       // Save current prior knowledge to update them later when the concept map is complete
-      $priorKnowledges[$concept->getId()] = $concept->getPriorKnowledge();
+      $priorKnowledges[$concept->getNonNullId()] = $concept->getPriorKnowledge();
 
-      $this->newConcepts[$concept->getId()] = $newConcept;
+      $this->newConcepts[$concept->getNonNullId()] = $newConcept;
       $this->em->persist($newConcept);
     }
 
@@ -358,7 +361,7 @@ class StudyAreaDuplicator
       foreach ($priorKnowledges[$oldId] as $priorKnowledge) {
         /** @var Concept $priorKnowledge */
         if (array_key_exists($priorKnowledge->getNonNullId(), $this->newConcepts)) {
-          $newConcept->addPriorKnowledge($this->newConcepts[$priorKnowledge->getId()]);
+          $newConcept->addPriorKnowledge($this->newConcepts[$priorKnowledge->getNonNullId()]);
         }
       }
     }
@@ -371,27 +374,29 @@ class StudyAreaDuplicator
     $newRelationTypes = [];
     foreach ($conceptRelations as $conceptRelation) {
       // Duplicate relation type, if not done yet
-      $relationType = $conceptRelation->getRelationType();
+      $relationType = $conceptRelation->getRelationType() ?? throw new MustNotBeNullException();
       if (!array_key_exists($relationType->getNonNullId(), $newRelationTypes)) {
         $newRelationType = new RelationType()
           ->setStudyArea($this->newStudyArea)
           ->setName($relationType->getName());
 
-        $newRelationTypes[$relationType->getId()] = $newRelationType;
+        $newRelationTypes[$relationType->getNonNullId()] = $newRelationType;
         $this->em->persist($newRelationType);
       }
 
       // Skip relation for concepts that aren't duplicated
-      if (!array_key_exists($conceptRelation->getSource()->getNonNullId(), $this->newConcepts)
-          || !array_key_exists($conceptRelation->getTarget()->getNonNullId(), $this->newConcepts)) {
+      $sourceConcept = $conceptRelation->getSource() ?? throw new ObjectRequiredException();
+      $targetConcept = $conceptRelation->getTarget() ?? throw new ObjectRequiredException();
+      if (!array_key_exists($sourceConcept->getNonNullId(), $this->newConcepts)
+          || !array_key_exists($targetConcept->getNonNullId(), $this->newConcepts)) {
         continue;
       }
 
       // Duplicate relation
       $newConceptRelation = new ConceptRelation()
-        ->setSource($this->newConcepts[$conceptRelation->getSource()->getId()])
-        ->setTarget($this->newConcepts[$conceptRelation->getTarget()->getId()])
-        ->setRelationType($newRelationTypes[$relationType->getId()])
+        ->setSource($this->newConcepts[$sourceConcept->getNonNullId()])
+        ->setTarget($this->newConcepts[$targetConcept->getNonNullId()])
+        ->setRelationType($newRelationTypes[$relationType->getNonNullId()])
         ->setIncomingPosition($conceptRelation->getIncomingPosition())
         ->setOutgoingPosition($conceptRelation->getOutgoingPosition());
 

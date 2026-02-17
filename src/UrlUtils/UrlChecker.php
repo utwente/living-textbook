@@ -101,7 +101,7 @@ class UrlChecker
     $studyAreas = $this->studyAreaRepository->findAll();
     $badUrls    = [];
     foreach ($studyAreas as $studyArea) {
-      $badUrls[$studyArea->getId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
+      $badUrls[$studyArea->getNonNullId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
     }
 
     return $badUrls;

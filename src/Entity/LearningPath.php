@@ -17,6 +17,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -229,7 +230,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     $mappingNext = [];
     foreach ($elements as $element) {
       if ($element->getNext()) {
-        $mappingNext[$element->getNext()->getId()] = $element;
+        $mappingNext[$element->getNext()->getNonNullId()] = $element;
       } else {
         // No next, so is last element
         $result[] = $element;
@@ -237,7 +238,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
     }
 
     while (count($mappingNext) > 0) {
-      $nextId   = end($result)->getId();
+      $nextId   = (end($result) ?: throw new ObjectRequiredException())->getNonNullId();
       $result[] = $mappingNext[$nextId];
       unset($mappingNext[$nextId]);
     }

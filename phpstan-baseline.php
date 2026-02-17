@@ -1106,24 +1106,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 6,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\RelationType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 3,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\RelationType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\DuplicationUtils\\\\StudyAreaDuplicator\\:\\:duplicate\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -1145,12 +1127,6 @@ $ignoreErrors[] = [
 	'message' => '#^PHPDoc tag @var with type App\\\\Entity\\\\LearningPathElement is not subtype of native type null\\.$#',
 	'identifier' => 'varTag.nativeType',
 	'count' => 1,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 5,
 	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
 ];
 $ignoreErrors[] = [
@@ -2360,12 +2336,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\LearningPathElement\\|false\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
 	'identifier' => 'nullCoalesce.expr',
 	'count' => 2,
@@ -2944,12 +2914,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^PHPDoc tag @var for variable \\$entity has invalid type App\\\\Database\\\\Traits\\\\Blameable\\.$#',
 	'identifier' => 'varTag.trait',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
@@ -4880,12 +4844,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#',
-	'identifier' => 'identical.alwaysFalse',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Review/ReviewService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generate\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -5142,12 +5100,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 12,
 	'path' => __DIR__ . '/src/UrlUtils/UrlScanner.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, int\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Validator/Constraint/ConceptRelationValidator.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Validator\\\\Constraint\\\\ConceptRelationValidator\\:\\:\\$violations type has no value type specified in iterable type array\\.$#',

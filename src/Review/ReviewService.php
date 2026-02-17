@@ -308,7 +308,7 @@ class ReviewService
     /** @var PendingChange[] $pendingChanges */
     $pendingChanges = [];
     foreach ($this->pendingChangeRepository->getMultiple(array_keys($markedChanges)) as $pendingChange) {
-      $pendingChanges[$pendingChange->getId()] = $pendingChange;
+      $pendingChanges[$pendingChange->getNonNullId()] = $pendingChange;
     }
 
     // Create the review
