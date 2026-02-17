@@ -5,7 +5,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "8.4.*",
+        "php": "8.5.*",
         "ext-apcu": "*",
         "ext-curl": "*",
         "ext-dom": "*",
