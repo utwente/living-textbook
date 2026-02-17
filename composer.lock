@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d31ba742e2e7cb71f81bc31b43bcb9b",
+    "content-hash": "a362d9f6d3965db0664c23e1539afe4d",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -11867,16 +11867,16 @@
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "2.0.14",
+            "version": "2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "70cd3e82fef49171163ff682a89cfe793d88581c"
+                "reference": "ce03c55ea8cb6d154bd0a04af05b58066812bea4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/70cd3e82fef49171163ff682a89cfe793d88581c",
-                "reference": "70cd3e82fef49171163ff682a89cfe793d88581c",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/ce03c55ea8cb6d154bd0a04af05b58066812bea4",
+                "reference": "ce03c55ea8cb6d154bd0a04af05b58066812bea4",
                 "shasum": ""
             },
             "require": {
@@ -11932,24 +11932,27 @@
                 "MIT"
             ],
             "description": "Doctrine extensions for PHPStan",
+            "keywords": [
+                "static analysis"
+            ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.14"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.0.15"
             },
-            "time": "2026-01-25T14:56:09+00:00"
+            "time": "2026-02-10T12:01:22+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "2.0.13",
+            "version": "2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "45bc1ad30669c3ebb19417d5c272b8104d155415"
+                "reference": "f7553d6c613878d04f7e7ef129d4607118cd7cd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/45bc1ad30669c3ebb19417d5c272b8104d155415",
-                "reference": "45bc1ad30669c3ebb19417d5c272b8104d155415",
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/f7553d6c613878d04f7e7ef129d4607118cd7cd4",
+                "reference": "f7553d6c613878d04f7e7ef129d4607118cd7cd4",
                 "shasum": ""
             },
             "require": {
@@ -11990,9 +11993,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
-                "source": "https://github.com/phpstan/phpstan-phpunit/tree/2.0.13"
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/2.0.14"
             },
-            "time": "2026-02-09T11:32:05+00:00"
+            "time": "2026-02-10T11:57:48+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
