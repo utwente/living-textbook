@@ -50,8 +50,9 @@ class AbstractReviewDiffType extends AbstractType
         $existingComments = $pendingChange->getReviewComments() ?? [];
         $data             = null;
 
-        if (array_key_exists($options['field'], $existingComments)) {
-          $data = $existingComments[$options['field']];
+        $field = $options['field'];
+        if ($field && array_key_exists($field, $existingComments)) {
+          $data = $existingComments[$field];
         }
 
         return [

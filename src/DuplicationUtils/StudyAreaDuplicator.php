@@ -222,7 +222,7 @@ class StudyAreaDuplicator
         $element = $currentElements[$i];
 
         // Only copy element when the concept has been copied as well
-        if (!array_key_exists($element->getConcept()->getId(), $this->newConcepts)) {
+        if (!array_key_exists($element->getConcept()->getNonNullId(), $this->newConcepts)) {
           // Set next description to null when skipping an element
           $setNextNull = true;
           continue;
@@ -357,7 +357,7 @@ class StudyAreaDuplicator
     foreach ($this->newConcepts as $oldId => $newConcept) {
       foreach ($priorKnowledges[$oldId] as $priorKnowledge) {
         /** @var Concept $priorKnowledge */
-        if (array_key_exists($priorKnowledge->getId(), $this->newConcepts)) {
+        if (array_key_exists($priorKnowledge->getNonNullId(), $this->newConcepts)) {
           $newConcept->addPriorKnowledge($this->newConcepts[$priorKnowledge->getId()]);
         }
       }
@@ -372,7 +372,7 @@ class StudyAreaDuplicator
     foreach ($conceptRelations as $conceptRelation) {
       // Duplicate relation type, if not done yet
       $relationType = $conceptRelation->getRelationType();
-      if (!array_key_exists($relationType->getId(), $newRelationTypes)) {
+      if (!array_key_exists($relationType->getNonNullId(), $newRelationTypes)) {
         $newRelationType = new RelationType()
           ->setStudyArea($this->newStudyArea)
           ->setName($relationType->getName());
@@ -382,8 +382,8 @@ class StudyAreaDuplicator
       }
 
       // Skip relation for concepts that aren't duplicated
-      if (!array_key_exists($conceptRelation->getSource()->getId(), $this->newConcepts)
-          || !array_key_exists($conceptRelation->getTarget()->getId(), $this->newConcepts)) {
+      if (!array_key_exists($conceptRelation->getSource()->getNonNullId(), $this->newConcepts)
+          || !array_key_exists($conceptRelation->getTarget()->getNonNullId(), $this->newConcepts)) {
         continue;
       }
 
