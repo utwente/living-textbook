@@ -1,4 +1,4 @@
-FROM php:8.4.14-fpm-bookworm AS ltb_base
+FROM php:8.5.3-fpm-trixie AS ltb_base
 LABEL org.opencontainers.image.authors="Drienerlo Engineering Solutions <hallo@drenso.nl>"
 
 # Update all dependencies, and install required ones
@@ -9,7 +9,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y \
     # PHP dependencies
     ## ZIP
-      unzip zlib1g-dev libpcre3-dev libzip-dev \
+      unzip zlib1g-dev libzip-dev \
     ## GD
       libpng-dev \
     ## Intl
@@ -61,7 +61,6 @@ RUN printf "zend.assertions = -1\n" >> `php -i | grep php.ini | awk '{print $6'}
 
 # Install PHP extensions
 RUN docker-php-ext-install zip
-RUN docker-php-ext-install opcache
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install intl
@@ -82,7 +81,7 @@ COPY ./docker/ltb/install-composer.sh .
 RUN sh install-composer.sh && rm install-composer.sh
 
 # Configure Imagick
-RUN sed -ri 's/rights="(none)" pattern="PDF"/rights="read" pattern="PDF"/gi' /etc/ImageMagick-6/policy.xml
+RUN sed -ri 's/rights="(none)" pattern="PDF"/rights="read" pattern="PDF"/gi' /etc/ImageMagick-7/policy.xml
 
 # Install wait-for script
 RUN curl -s https://raw.githubusercontent.com/eficode/wait-for/master/wait-for -o /opt/wait-for \
