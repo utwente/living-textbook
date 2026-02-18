@@ -22,7 +22,6 @@ use function array_filter;
 use function array_key_exists;
 use function array_merge;
 use function assert;
-use function curl_close;
 use function curl_exec;
 use function curl_getinfo;
 use function curl_init;
@@ -102,7 +101,7 @@ class UrlChecker
     $studyAreas = $this->studyAreaRepository->findAll();
     $badUrls    = [];
     foreach ($studyAreas as $studyArea) {
-      $badUrls[$studyArea->getId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
+      $badUrls[$studyArea->getNonNullId()] = $this->checkStudyArea($studyArea, $force, $fromCache);
     }
 
     return $badUrls;
@@ -254,7 +253,6 @@ class UrlChecker
     curl_exec($ch);
     // Get headers
     $headers = curl_getinfo($ch);
-    curl_close($ch);
 
     // Verify HTTP code
     return $headers['http_code'] === 200;

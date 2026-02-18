@@ -308,7 +308,7 @@ class ReviewService
     /** @var PendingChange[] $pendingChanges */
     $pendingChanges = [];
     foreach ($this->pendingChangeRepository->getMultiple(array_keys($markedChanges)) as $pendingChange) {
-      $pendingChanges[$pendingChange->getId()] = $pendingChange;
+      $pendingChanges[$pendingChange->getNonNullId()] = $pendingChange;
     }
 
     // Create the review
@@ -489,10 +489,6 @@ class ReviewService
   /** Determines the changed fields based on the snapshot. */
   private function determineChangedFieldsFromSnapshot(ReviewableInterface $object, string $originalSnapshot): array
   {
-    if (null === $originalSnapshot) {
-      throw new InvalidArgumentException('Snapshot must be given!');
-    }
-
     $changedFields = [];
 
     // Create a snapshot of the new data
@@ -504,7 +500,7 @@ class ReviewService
 
     // Compare the data
     foreach ($newSnapshotArray as $key => $data) {
-      $origData = array_key_exists($key, $originalSnapshotArray) ? $originalSnapshotArray[$key] : null;
+      $origData = array_key_exists((string)$key, $originalSnapshotArray) ? $originalSnapshotArray[$key] : null;
 
       // The relation field are rebuild every time, so we need to exclude the id property from this test
       if ($object->getReviewName() === Concept::class && ($key === 'relations' || $key === 'incomingRelations')) {

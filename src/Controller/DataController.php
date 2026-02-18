@@ -179,7 +179,7 @@ class DataController extends AbstractController
 
           // Check whether already cached
           $linkName = $jsonLink['relationName'];
-          if (!array_key_exists($linkName, $linkTypes)) {
+          if (!array_key_exists($linkName ?? '', $linkTypes)) {
             // Retrieve from database
             $linkType = $relationTypeRepo->findOneBy(['name' => $linkName, 'studyArea' => $studyArea]);
             if ($linkType) {
@@ -278,11 +278,11 @@ class DataController extends AbstractController
               sprintf('Missing one ore more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
           }
 
-          if (!array_key_exists($jsonLink['source'], $concepts)) {
+          if (!array_key_exists($jsonLink['source'] ?? '', $concepts)) {
             throw new DataImportException(
               sprintf('Link references non-existing source node: %s', json_encode($jsonLink)));
           }
-          if (!array_key_exists($jsonLink['target'], $concepts)) {
+          if (!array_key_exists($jsonLink['target'] ?? '', $concepts)) {
             throw new DataImportException(
               sprintf('Link references non-existing target node: %s', json_encode($jsonLink)));
           }
@@ -322,7 +322,7 @@ class DataController extends AbstractController
             $learningOutcome->setNumber($learningOutcomeNumber);
             $learningOutcome->setStudyArea($studyArea);
             foreach ($jsonLearningOutcome['nodes'] as $linkedConceptKey) {
-              if (!array_key_exists($linkedConceptKey, $concepts)) {
+              if (!array_key_exists($linkedConceptKey ?? '', $concepts)) {
                 throw new DataImportException(
                   sprintf('The referenced node %d does not exist in learning outcome: %s', $linkedConceptKey, json_encode($jsonLearningOutcome)));
               }
@@ -368,7 +368,7 @@ class DataController extends AbstractController
 
             // Map to related concepts
             foreach ($jsonExternalResource['nodes'] as $linkedConceptKey) {
-              if (!array_key_exists($linkedConceptKey, $concepts)) {
+              if (!array_key_exists($linkedConceptKey ?? '', $concepts)) {
                 throw new DataImportException(
                   sprintf('The referenced node %d does not exist in external resource: %s', $linkedConceptKey, json_encode($jsonExternalResource)));
               }
@@ -417,7 +417,7 @@ class DataController extends AbstractController
 
             // Map to related concepts
             foreach ($jsonTag['nodes'] as $taggedConceptKey) {
-              if (!array_key_exists($taggedConceptKey, $concepts)) {
+              if (!array_key_exists($taggedConceptKey ?? '', $concepts)) {
                 throw new DataImportException(
                   sprintf('The referenced node %d does not exist in tag: %s', $taggedConceptKey, json_encode($jsonTag)));
               }
@@ -442,14 +442,14 @@ class DataController extends AbstractController
                 sprintf('Missing one ore more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
             }
 
-            if (!array_key_exists($jsonPriorKnowledge['node'], $concepts)) {
+            if (!array_key_exists($jsonPriorKnowledge['node'] ?? '', $concepts)) {
               throw new DataImportException(
                 sprintf('Prior knowledge references non-existing "node": %s', json_encode($jsonPriorKnowledge)));
             }
 
             // Map prior knowledge to concepts
             foreach ($jsonPriorKnowledge['isPriorKnowledgeOf'] as $priorKnowledgeConceptKey) {
-              if (!array_key_exists($priorKnowledgeConceptKey, $concepts)) {
+              if (!array_key_exists($priorKnowledgeConceptKey ?? '', $concepts)) {
                 throw new DataImportException(
                   sprintf('The referenced node %d does not exist in "isPriorKnowledgeOf": %s', $priorKnowledgeConceptKey, json_encode($jsonPriorKnowledge)));
               }
@@ -490,7 +490,7 @@ class DataController extends AbstractController
 
             // Map contributor to concepts
             foreach ($jsonContributor['nodes'] as $contributorConceptKey) {
-              if (!array_key_exists($contributorConceptKey, $concepts)) {
+              if (!array_key_exists($contributorConceptKey ?? '', $concepts)) {
                 throw new DataImportException(
                   sprintf('The referenced node %d does not exist in contributor: %s', $contributorConceptKey, json_encode($jsonContributor)));
               }

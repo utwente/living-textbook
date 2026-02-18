@@ -32,10 +32,9 @@
       "rebaseWhen": "auto",
       "schedule": "before 9am on monday"
     },
-    "npmrc": "registry=https://registry.yarnpkg.com",
     "platformAutomerge": true,
     "postUpdateOptions": [
-        "yarnDedupeFewer"
+        "npmDedupe"
     ],
     "prConcurrentLimit": 0,
     "prHourlyLimit": 10,

@@ -319,10 +319,11 @@ class StudyArea implements Stringable, IdInterface
     $result = [];
     foreach ($this->userGroups as $userGroup) {
       foreach ($userGroup->getUsers() as $user) {
-        if (!array_key_exists($user->getId(), $result)) {
-          $result[$user->getId()] = new UserPermissions($user, null);
+        $userId = $user->getNonNullId();
+        if (!array_key_exists($userId, $result)) {
+          $result[$userId] = new UserPermissions($user, null);
         }
-        $result[$user->getId()]->addPermissionFromGroup($userGroup);
+        $result[$userId]->addPermissionFromGroup($userGroup);
       }
       foreach ($userGroup->getEmails() as $email) {
         if (!array_key_exists($email->getEmail(), $result)) {

@@ -145,7 +145,7 @@ class AnalyticsService
     $learningPath = $request->learningPath;
     $settings     = [
       'learningpaths' => [
-        $learningPath->getId() => [
+        $learningPath->getNonNullId() => [
           'starting time' => $this->formatPythonDateTime($request->teachingMoment),
           'list'          => $learningPath->getElementsOrdered()->map(static fn (LearningPathElement $element) => $element->getConcept()->getId())->toArray(),
           'id'            => $learningPath->getId(),
