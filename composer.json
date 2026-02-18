@@ -98,7 +98,7 @@
         "friendsofphp/php-cs-fixer": "3.93.1",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.1.38",
-        "phpstan/phpstan-doctrine": "2.0.15",
+        "phpstan/phpstan-doctrine": "2.0.16",
         "phpstan/phpstan-phpunit": "2.0.14",
         "phpstan/phpstan-symfony": "2.0.13",
         "phpunit/phpunit": "12.5.10",
