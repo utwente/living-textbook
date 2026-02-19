@@ -8,9 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<LayoutConfiguration>
- */
+/** @extends ServiceEntityRepository<LayoutConfiguration> */
 class LayoutConfigurationRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

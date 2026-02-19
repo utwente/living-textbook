@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20220704142741 extends AbstractMigration
 {
   public function getDescription(): string
@@ -19,7 +16,6 @@ final class Version20220704142741 extends AbstractMigration
 
   public function up(Schema $schema): void
   {
-    // this up() migration is auto-generated, please modify it to your needs
     $this->addSql('CREATE TABLE layout_configuration (
           id INT AUTO_INCREMENT NOT NULL,
           study_area_id INT NOT NULL,
@@ -43,7 +39,6 @@ final class Version20220704142741 extends AbstractMigration
 
   public function down(Schema $schema): void
   {
-    // this down() migration is auto-generated, please modify it to your needs
     $this->addSql('ALTER TABLE study_area DROP FOREIGN KEY FK_A84CD55168E3C9FE');
     $this->addSql('DROP TABLE layout_configuration');
     $this->addSql('ALTER TABLE study_area DROP FOREIGN KEY FK_A84CD5514C0A0AFD');
