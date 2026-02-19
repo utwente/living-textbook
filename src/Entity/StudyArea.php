@@ -62,9 +62,7 @@ class StudyArea implements Stringable, IdInterface
   #[JMSA\Expose]
   private Collection $concepts;
 
-  /**
-   * @var Collection<UserGroup>&Selectable<UserGroup>
-   */
+  /** @var Collection<UserGroup>&Selectable<UserGroup> */
   #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: UserGroup::class, cascade: ['persist', 'remove'])]
   #[JMSA\Expose]
   private Collection&Selectable $userGroups;

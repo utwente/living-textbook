@@ -13,9 +13,7 @@ use Symfony\Component\Security\Http\HttpUtils;
 
 use function parse_url;
 
-/**
- * Verifies the original target url, and insert the map if required.
- */
+/** Verifies the original target url, and insert the map if required. */
 class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
 {
   public function __construct(

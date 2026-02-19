@@ -12,9 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Drenso\Shared\Database\RepositoryTraits\FindIdsTrait;
 
-/**
- * @extends ServiceEntityRepository<ConceptRelation>
- */
+/** @extends ServiceEntityRepository<ConceptRelation> */
 class ConceptRelationRepository extends ServiceEntityRepository
 {
   use FindIdsTrait;

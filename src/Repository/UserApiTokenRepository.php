@@ -11,9 +11,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @extends ServiceEntityRepository<UserApiToken>
- */
+/** @extends ServiceEntityRepository<UserApiToken> */
 class UserApiTokenRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
   public function __construct(ManagerRegistry $registry)

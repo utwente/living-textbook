@@ -10,9 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt")
- */
+/** @Gedmo\SoftDeleteable(fieldName="deletedAt") */
 trait BaseDataTextObject
 {
   use Blameable;

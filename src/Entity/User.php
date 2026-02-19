@@ -33,9 +33,7 @@ use function sort;
 use function strcmp;
 use function unserialize;
 
-/**
- * TODO Migrate array properties to JSON.
- */
+/** TODO Migrate array properties to JSON. */
 #[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners([UserListener::class])]

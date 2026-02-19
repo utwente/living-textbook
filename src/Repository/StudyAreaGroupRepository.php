@@ -7,9 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Override;
 
-/**
- * @extends ServiceEntityRepository<StudyAreaGroup>
- */
+/** @extends ServiceEntityRepository<StudyAreaGroup> */
 class StudyAreaGroupRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

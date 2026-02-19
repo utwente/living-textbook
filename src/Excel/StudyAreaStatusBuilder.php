@@ -22,9 +22,7 @@ use function count;
 use function sprintf;
 use function Symfony\Component\String\u;
 
-/**
- * This class is used to build an Excel sheet with the current study area status.
- */
+/** This class is used to build an Excel sheet with the current study area status. */
 class StudyAreaStatusBuilder
 {
   private ?Spreadsheet $spreadsheet = null;

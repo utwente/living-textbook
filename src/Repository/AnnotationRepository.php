@@ -13,9 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use function array_walk;
 
-/**
- * @extends ServiceEntityRepository<Annotation>
- */
+/** @extends ServiceEntityRepository<Annotation> */
 class AnnotationRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

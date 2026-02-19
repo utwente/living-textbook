@@ -9,9 +9,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Abbreviation>
- */
+/** @extends ServiceEntityRepository<Abbreviation> */
 class AbbreviationRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

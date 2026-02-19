@@ -6,9 +6,7 @@ use App\Entity\Data\DataHowTo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<DataHowTo>
- */
+/** @extends ServiceEntityRepository<DataHowTo> */
 class DataHowToRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

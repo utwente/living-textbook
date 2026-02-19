@@ -11,9 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * @extends ServiceEntityRepository<StudyArea>
- */
+/** @extends ServiceEntityRepository<StudyArea> */
 class StudyAreaRepository extends ServiceEntityRepository
 {
   public function __construct(

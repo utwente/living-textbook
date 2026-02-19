@@ -28,9 +28,7 @@ use function is_array;
 use function is_object;
 use function Symfony\Component\String\b;
 
-/**
- * Subscriber for KernelEvents related to controllers.
- */
+/** Subscriber for KernelEvents related to controllers. */
 class RequestStudyAreaSubscriber implements EventSubscriberInterface
 {
   /** @var string Study area session/request key */
