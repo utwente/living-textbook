@@ -11,9 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use function array_walk;
 
-/**
- * @extends ServiceEntityRepository<LearningOutcome>
- */
+/** @extends ServiceEntityRepository<LearningOutcome> */
 class LearningOutcomeRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

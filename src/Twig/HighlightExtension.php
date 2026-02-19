@@ -10,9 +10,7 @@ use function preg_quote;
 use function preg_replace;
 use function sprintf;
 
-/**
- * Register a filter in Twig to highlight parts of text, useful for search.
- */
+/** Register a filter in Twig to highlight parts of text, useful for search. */
 class HighlightExtension extends AbstractExtension
 {
   /** @return TwigFilter[] */

@@ -6,9 +6,7 @@ use App\Entity\Data\DataTheoryExplanation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<DataTheoryExplanation>
- */
+/** @extends ServiceEntityRepository<DataTheoryExplanation> */
 class DataTheoryExplanationRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

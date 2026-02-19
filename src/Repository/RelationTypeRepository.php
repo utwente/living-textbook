@@ -9,9 +9,7 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<RelationType>
- */
+/** @extends ServiceEntityRepository<RelationType> */
 class RelationTypeRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)

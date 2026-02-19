@@ -13,9 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Holds information about the current browser state for the user, per study area.
- */
+/** Holds information about the current browser state for the user, per study area. */
 #[ORM\Entity(repositoryClass: UserBrowserStateRepository::class)]
 #[ORM\Table]
 #[ORM\UniqueConstraint(columns: ['user_id', 'study_area_id'])]

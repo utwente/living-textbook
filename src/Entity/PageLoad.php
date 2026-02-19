@@ -12,9 +12,7 @@ use Drenso\Shared\Interfaces\IdInterface;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * TODO Migrate array properties to JSON.
- */
+/** TODO Migrate array properties to JSON. */
 #[ORM\Entity(repositoryClass: PageLoadRepository::class)]
 #[ORM\Table]
 class PageLoad implements StudyAreaFilteredInterface, IdInterface

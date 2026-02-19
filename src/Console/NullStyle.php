@@ -8,9 +8,7 @@ use Symfony\Component\Console\Style\OutputStyle;
 
 use function sprintf;
 
-/**
- * Can be used to disable output when the OutputStyle is not provided.
- */
+/** Can be used to disable output when the OutputStyle is not provided. */
 class NullStyle extends OutputStyle
 {
   #[Override]

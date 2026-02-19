@@ -5,9 +5,7 @@ namespace App\Analytics\Model;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Finder\SplFileInfo;
 
-/**
- * Serialization of this class is managed in the LearningPathVisualisationResultHandler.
- */
+/** Serialization of this class is managed in the LearningPathVisualisationResultHandler. */
 #[Serializer\ExclusionPolicy('all')]
 class LearningPathVisualisationResult
 {

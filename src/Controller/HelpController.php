@@ -17,9 +17,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Scoped per study area to prevent reload issues.
- */
+/** Scoped per study area to prevent reload issues. */
 #[Route('/{_studyArea<\d+>}/help')]
 class HelpController extends AbstractController
 {

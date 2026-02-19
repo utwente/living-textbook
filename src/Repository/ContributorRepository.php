@@ -9,9 +9,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Contributor>
- */
+/** @extends ServiceEntityRepository<Contributor> */
 class ContributorRepository extends ServiceEntityRepository
 {
   public function __construct(ManagerRegistry $registry)
