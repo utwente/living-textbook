@@ -1,6 +1,6 @@
 <?php
 
-return (new PhpCsFixer\Config())
+return new PhpCsFixer\Config()
     ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setIndent('  ')
     ->setRiskyAllowed(true)
@@ -40,12 +40,20 @@ return (new PhpCsFixer\Config())
         'native_function_invocation'                       => ['include' => ['@all']],
         'nullable_type_declaration_for_default_null_value' => true,
         'ordered_imports'                                  => ['imports_order' => ['class', 'function', 'const']],
-        'phpdoc_line_span'                                 => ['const' => 'single', 'method' => 'single', 'property' => 'single'],
-        'phpdoc_order'                                     => true,
-        'phpdoc_to_comment'                                => ['ignored_tags' => ['noinspection', 'noRector', 'var']],
-        'single_line_throw'                                => false,
-        'single_line_comment_spacing'                      => false,
-        'yoda_style'                                       => false,
+        'phpdoc_line_span'                                 => [
+          'case'         => 'single',
+          'class'        => 'single',
+          'const'        => 'single',
+          'method'       => 'single',
+          'other'        => 'single',
+          'property'     => 'single',
+          'trait_import' => 'single',
+        ],
+        'phpdoc_order'                => true,
+        'phpdoc_to_comment'           => ['ignored_tags' => ['noinspection', 'noRector', 'var']],
+        'single_line_throw'           => false,
+        'single_line_comment_spacing' => false,
+        'yoda_style'                  => false,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
