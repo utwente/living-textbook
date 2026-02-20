@@ -58,8 +58,9 @@ class ConceptRelationValidator extends ConstraintValidator
         continue;
       }
 
-      $sourceId = $source->getNonNullId();
-      $targetId = $target->getNonNullId();
+      // Fallback id to 0 to be able to validate correctly for a newly created source or target
+      $sourceId = $source->getId() ?? 0;
+      $targetId = $target->getId() ?? 0;
 
       // Update map to contain a key for every concept
       if (!array_key_exists($sourceId, $map)) {
