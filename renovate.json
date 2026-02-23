@@ -32,6 +32,7 @@
       "rebaseWhen": "auto",
       "schedule": "before 9am on monday"
     },
+    "npmrc": "registry=https://registry.npmjs.org",
     "platformAutomerge": true,
     "postUpdateOptions": [
         "npmDedupe"
