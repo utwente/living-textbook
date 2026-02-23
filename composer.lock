@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b95bdfddd0fa706069798215ea6349b6",
+    "content-hash": "7e63b49d5b54f59ab4817cd737b00d69",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -2249,16 +2249,16 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "13",
+            "version": "13.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "4b62c623bd3e724078810ced0f87c4f84866a5fe"
+                "reference": "d7408f88341336258b97853af64a7684c98f17ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/4b62c623bd3e724078810ced0f87c4f84866a5fe",
-                "reference": "4b62c623bd3e724078810ced0f87c4f84866a5fe",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/d7408f88341336258b97853af64a7684c98f17ef",
+                "reference": "d7408f88341336258b97853af64a7684c98f17ef",
                 "shasum": ""
             },
             "require": {
@@ -2319,9 +2319,9 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/13"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/13.0.1"
             },
-            "time": "2025-12-09T05:04:37+00:00"
+            "time": "2026-02-15T02:39:12+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
