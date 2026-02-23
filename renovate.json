@@ -1,7 +1,7 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-        "config:base",
+        "config:recommended",
         ":automergeDisabled",
         ":disableDevDependencies",
         ":labels(Maintenance,RenovateBot)"
@@ -10,7 +10,10 @@
         "group:symfony"
     ],
     "dependencyDashboard": true,
-    "dependencyDashboardLabels": ["Maintenance", "RenovateBot"],
+    "dependencyDashboardLabels": [
+        "Maintenance",
+        "RenovateBot"
+    ],
     "commitMessagePrefix": "[RenovateBot]",
     "composerIgnorePlatformReqs": [
         "ext-apcu",
@@ -28,9 +31,9 @@
     ],
     "internalChecksFilter": "strict",
     "lockFileMaintenance": {
-      "enabled": true,
-      "rebaseWhen": "auto",
-      "schedule": "before 9am on monday"
+        "enabled": true,
+        "rebaseWhen": "auto",
+        "schedule": "before 9am on monday"
     },
     "npmrc": "registry=https://registry.npmjs.org",
     "platformAutomerge": true,
@@ -45,78 +48,117 @@
     "timezone": "Europe/Amsterdam",
     "packageRules": [
         {
-            "matchDepNames": ["php"],
+            "matchDepNames": [
+                "php"
+            ],
             "rangeStrategy": "replace"
         },
         {
             "enabled": true,
-            "matchPackagePrefixes": ["drenso/", "@drenso/"],
             "rebaseWhen": "conflicted",
-            "minimumReleaseAge": null
+            "minimumReleaseAge": null,
+            "matchPackageNames": [
+                "drenso/{/,}**",
+                "@drenso/{/,}**"
+            ]
         },
         {
-            "matchPackagePrefixes": ["twig/"],
             "rebaseWhen": "conflicted",
-            "minimumReleaseAge": null
+            "minimumReleaseAge": null,
+            "matchPackageNames": [
+                "twig/{/,}**"
+            ]
         },
         {
-            "matchPackagePrefixes": ["symfony/"],
             "groupName": "Symfony packages",
             "groupSlug": "symfony",
-            "excludePackagePatterns": "-contracts$",
-            "excludePackageNames": [
-                "symfony/maker-bundle",
-                "symfony/webpack-encore-bundle"
-            ],
-            "minimumReleaseAge": null
+            "minimumReleaseAge": null,
+            "matchPackageNames": [
+                "symfony/{/,}**",
+                "!/-contracts$/",
+                "!symfony/maker-bundle",
+                "!symfony/webpack-encore-bundle"
+            ]
         },
         {
-            "matchPackagePatterns": ["^symfony/[\\w+-]+-contracts$"],
             "groupName": "Symfony contracts",
             "groupSlug": "symfony-contracts",
-            "minimumReleaseAge": null
+            "minimumReleaseAge": null,
+            "matchPackageNames": [
+                "/^symfony/[\\w+-]+-contracts$/"
+            ]
         },
         {
-            "matchPackagePrefixes": ["@types/"],
-            "enabled": true
+            "enabled": true,
+            "matchPackageNames": [
+                "@types/{/,}**"
+            ]
         },
         {
-            "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-            "matchPackagePrefixes": ["@types/"],
+            "matchUpdateTypes": [
+                "minor",
+                "patch",
+                "pin",
+                "digest"
+            ],
             "rebaseWhen": "auto",
             "automerge": true,
-            "minimumReleaseAge": null
+            "minimumReleaseAge": null,
+            "matchPackageNames": [
+                "@types/{/,}**"
+            ]
         },
         {
-            "matchUpdateTypes": ["minor", "patch"],
-            "matchPackageNames": ["@types/node"],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "matchPackageNames": [
+                "@types/node"
+            ],
             "enabled": false
         },
         {
-            "matchPackageNames": ["jms/serializer"],
+            "matchPackageNames": [
+                "jms/serializer"
+            ],
             "groupName": "JMS serializer packages",
             "groupSlug": "jms-serializer"
         },
         {
-            "matchPackagePrefixes": ["datatables.net"],
             "groupName": "DataTables packages",
-            "groupSlug": "datatables"
-        }, 
+            "groupSlug": "datatables",
+            "matchPackageNames": [
+                "datatables.net{/,}**"
+            ]
+        },
         {
-            "matchPackageNames": ["autoprefixer", "browserslist", "postcss"],
+            "matchPackageNames": [
+                "autoprefixer",
+                "browserslist",
+                "postcss"
+            ],
             "groupName": "CSS processing dependencies",
             "groupSlug": "css-dependencies"
         },
         {
-            "matchPackagePrefixes": ["Sentry"],
-            "matchManagers": ["nuget"],
+            "matchManagers": [
+                "nuget"
+            ],
             "groupName": "Sentry packages",
-            "groupSlug": "sentry"
+            "groupSlug": "sentry",
+            "matchPackageNames": [
+                "Sentry{/,}**"
+            ]
         },
         {
-            "matchPackagePatterns": ["^twig/twig$", "^twig/\\w+-extra$", "^twig/extra-bundle$"],
             "groupName": "Twig packages",
-            "groupSlug": "twig"
+            "groupSlug": "twig",
+            "matchPackageNames": [
+                "/^twig/twig$/",
+                "/^twig/\\w+-extra$/",
+                "/^twig/extra-bundle$/"
+            ]
         },
         {
             "matchDepTypes": [
@@ -125,7 +167,9 @@
             "enabled": false
         },
         {
-            "matchPackageNames": ["@utwente/dotron-app"],
+            "matchPackageNames": [
+                "@utwente/dotron-app"
+            ],
             "rebaseWhen": "conflicted",
             "minimumReleaseAge": null
         }
@@ -133,7 +177,9 @@
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": ["^\\.gitlab-ci\\.yml$"],
+            "managerFilePatterns": [
+                "/^\\.gitlab-ci\\.yml$/"
+            ],
             "matchStrings": [
                 "#\\s?renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_VERSION: (?<currentValue>.*)\\s"
             ],
