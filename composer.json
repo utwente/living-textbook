@@ -35,7 +35,7 @@
         "jms/serializer": "3.32.6",
         "jms/serializer-bundle": "5.5.2",
         "league/html-to-markdown": "5.1.1",
-        "nelmio/api-doc-bundle": "5.9.3",
+        "nelmio/api-doc-bundle": "5.9.4",
         "nelmio/cors-bundle": "2.6.1",
         "phpoffice/phpspreadsheet": "5.4.0",
         "rollerworks/password-strength-validator": "2.0.3",
