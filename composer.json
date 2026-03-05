@@ -100,7 +100,7 @@
         "phpstan/phpstan": "2.1.40",
         "phpstan/phpstan-doctrine": "2.0.18",
         "phpstan/phpstan-phpunit": "2.0.16",
-        "phpstan/phpstan-symfony": "2.0.14",
+        "phpstan/phpstan-symfony": "2.0.15",
         "phpunit/phpunit": "12.5.14",
         "rector/rector": "2.3.8",
         "symfony/error-handler": "6.4.32",
