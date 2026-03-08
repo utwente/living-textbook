@@ -104,7 +104,7 @@
         "phpunit/phpunit": "12.5.14",
         "rector/rector": "2.3.8",
         "symfony/error-handler": "6.4.32",
-        "symfony/phpunit-bridge": "6.4.26",
+        "symfony/phpunit-bridge": "6.4.35",
         "symfony/stopwatch": "6.4.24",
         "symfony/web-profiler-bundle": "6.4.35",
         "vincentlanglet/twig-cs-fixer": "3.14.0"
