@@ -8,7 +8,7 @@
     "@babel/preset-typescript": "^7.17.0",
     "@symfony/webpack-encore": "4.7.0",
     "@types/bootstrap": "4.6.6",
-    "@types/color": "4.2.0",
+    "@types/color": "4.2.1",
     "@types/d3": "5.16.7",
     "@types/jquery": "3.5.34",
     "@types/webpack-env": "1.18.8",
