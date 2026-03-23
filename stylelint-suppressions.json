@@ -1,0 +1,200 @@
+{
+  "assets/css/_font.scss": {
+    "scss/at-rule-conditional-no-parentheses": {
+      "count": 1
+    },
+    "at-rule-empty-line-before": {
+      "count": 1
+    },
+    "font-family-name-quotes": {
+      "count": 1
+    },
+    "function-url-quotes": {
+      "count": 1
+    },
+    "value-keyword-case": {
+      "count": 1
+    }
+  },
+  "assets/css/app.scss": {
+    "comment-empty-line-before": {
+      "count": 1
+    },
+    "property-no-vendor-prefix": {
+      "count": 2
+    }
+  },
+  "assets/css/openapi.scss": {
+    "selector-class-pattern": {
+      "count": 1
+    }
+  },
+  "assets/css/vendor.scss": {
+    "scss/at-extend-no-missing-placeholder": {
+      "count": 1
+    },
+    "scss/no-global-function-names": {
+      "count": 1
+    },
+    "block-no-empty": {
+      "count": 1
+    },
+    "property-no-vendor-prefix": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "assets/email/email.scss": {
+    "scss/at-mixin-argumentless-call-parentheses": {
+      "count": 3
+    },
+    "at-rule-empty-line-before": {
+      "count": 1
+    }
+  },
+  "assets/css/ckeditor/ckeditor.scss": {
+    "no-invalid-position-at-import-rule": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 3
+    }
+  },
+  "assets/css/conceptBrowser/conceptBrowser.scss": {
+    "at-rule-empty-line-before": {
+      "count": 1
+    },
+    "block-no-empty": {
+      "count": 1
+    },
+    "selector-id-pattern": {
+      "count": 1
+    }
+  },
+  "assets/css/content/_annotations.scss": {
+    "at-rule-empty-line-before": {
+      "count": 1
+    },
+    "declaration-block-no-redundant-longhand-properties": {
+      "count": 1
+    },
+    "media-feature-range-notation": {
+      "count": 2
+    },
+    "rule-empty-line-before": {
+      "count": 1
+    }
+  },
+  "assets/css/content/_customTags.scss": {
+    "scss/load-partial-extension": {
+      "count": 2
+    }
+  },
+  "assets/css/content/_download_preview.scss": {
+    "scss/load-partial-extension": {
+      "count": 2
+    }
+  },
+  "assets/css/content/_footer.scss": {
+    "scss/load-partial-extension": {
+      "count": 2
+    }
+  },
+  "assets/css/content/_landing.scss": {
+    "scss/load-partial-extension": {
+      "count": 2
+    },
+    "declaration-block-no-redundant-longhand-properties": {
+      "count": 1
+    },
+    "property-no-vendor-prefix": {
+      "count": 3
+    }
+  },
+  "assets/css/content/_menu.scss": {
+    "scss/load-partial-extension": {
+      "count": 2
+    },
+    "at-rule-empty-line-before": {
+      "count": 2
+    },
+    "rule-empty-line-before": {
+      "count": 1
+    },
+    "selector-id-pattern": {
+      "count": 1
+    }
+  },
+  "assets/css/content/_review.scss": {
+    "alpha-value-notation": {
+      "count": 8
+    },
+    "color-function-alias-notation": {
+      "count": 8
+    },
+    "color-function-notation": {
+      "count": 8
+    }
+  },
+  "assets/css/content/_search.scss": {
+    "scss/load-partial-extension": {
+      "count": 2
+    }
+  },
+  "assets/css/content/_sortable_learning_paths.scss": {
+    "scss/load-partial-extension": {
+      "count": 3
+    }
+  },
+  "assets/css/content/_styleGuide.scss": {
+    "scss/at-mixin-pattern": {
+      "count": 1
+    },
+    "scss/load-partial-extension": {
+      "count": 4
+    },
+    "shorthand-property-no-redundant-values": {
+      "count": 1
+    }
+  },
+  "assets/css/content/_table.scss": {
+    "scss/at-mixin-argumentless-call-parentheses": {
+      "count": 1
+    },
+    "at-rule-empty-line-before": {
+      "count": 1
+    },
+    "declaration-property-value-keyword-no-deprecated": {
+      "count": 1
+    },
+    "property-no-deprecated": {
+      "count": 1
+    },
+    "rule-empty-line-before": {
+      "count": 1
+    },
+    "selector-class-pattern": {
+      "count": 4
+    }
+  },
+  "assets/css/content/content.scss": {
+    "scss/at-mixin-argumentless-call-parentheses": {
+      "count": 1
+    },
+    "no-invalid-position-at-import-rule": {
+      "count": 12
+    }
+  },
+  "assets/css/doubleColumn/doubleColumn.scss": {
+    "scss/at-mixin-argumentless-call-parentheses": {
+      "count": 1
+    }
+  },
+  "assets/css/learningPathBrowser/learningPathBrowser.scss": {
+    "scss/at-mixin-argumentless-call-parentheses": {
+      "count": 1
+    }
+  }
+}
