@@ -358,6 +358,29 @@ yaml-analysis:
     - main
     - production
 
+stylelint:
+  stage: lint
+  image: "node:${NODE_VERSION}"
+  needs:
+    - install-js-dependencies
+  cache:
+    - key:
+        files:
+          - package-lock.json
+        prefix: ${CI_PROJECT_PATH_SLUG}_npm
+      paths:
+        - node_modules/
+      policy: pull
+  interruptible: true
+  script:
+    - npm run css:lint
+  tags:
+    - docker
+  except:
+    - schedules
+    - main
+    - production
+
 # Build
 build-assets:
   stage: build

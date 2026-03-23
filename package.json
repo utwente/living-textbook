@@ -6,6 +6,7 @@
     "@babel/plugin-transform-logical-assignment-operators": "^7.17.0",
     "@babel/preset-env": "^7.17.0",
     "@babel/preset-typescript": "^7.17.0",
+    "@drenso/stylelint-config": "^0.0.2",
     "@symfony/webpack-encore": "4.7.0",
     "@types/bootstrap": "4.6.6",
     "@types/color": "4.2.1",
@@ -21,6 +22,7 @@
     "postcss-loader": "7.3.4",
     "sass": "1.97.2",
     "sass-loader": "^14.2.1",
+    "stylelint": "^17.5.0",
     "ts-loader": "^9.4.2",
     "typescript": "4.9.5",
     "webpack": "^5.105.2",
@@ -29,6 +31,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
+    "css:lint": "stylelint \"**/*.{css,scss,sass}\"",
     "dev-server:mail": "run-s build:email",
     "dev-server:encore": "encore dev-server",
     "dev-server-bob": "run-s dev-server:mail \"dev-server:encore -- --port 8999 --host localhost.drenso.dev\"",
