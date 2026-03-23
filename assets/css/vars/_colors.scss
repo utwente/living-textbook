@@ -1,11 +1,13 @@
+@use 'sass:color';
+
 // Color used in the design
 
 // General layout colors
 $background-color: #e4e4e4;
-$drag-background-color: darken($background-color, 10%);
-$drag-stripes-color: darken($background-color, 40%);
+$drag-background-color: color.adjust($background-color, $lightness: -10%);
+$drag-stripes-color: color.adjust($background-color, $lightness: -40%);
 
-$loader-color: darken($background-color, 50%);
+$loader-color: color.adjust($background-color, $lightness: -50%);
 
 $soft-red: #ff524d;
 $soft-yellow: #fff256;

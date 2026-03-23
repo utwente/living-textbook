@@ -1,16 +1,19 @@
+@use '../css/vars/colors';
+@use 'sass:color';
+@use "sass:map";
+
 @import 'bootstrap/scss/_mixins';
 @import 'bootstrap/scss/_functions';
 @import 'bootstrap/scss/_variables';
-@import '../css/vars/colors';
 
-$primary-color: map-get($theme-colors, primary);
-$secondary-color: map-get($theme-colors, secondary);
-$success-color: map-get($theme-colors, success);
-$warning-color: map-get($theme-colors, warning);
-$alert-color: map-get($theme-colors, danger);
-$light-gray: $background-color;
-$medium-gray: darken($background-color, 20%);
-$dark-gray: darken($background-color, 40%);
+$primary-color: map.get($theme-colors, primary);
+$secondary-color: map.get($theme-colors, secondary);
+$success-color: map.get($theme-colors, success);
+$warning-color: map.get($theme-colors, warning);
+$alert-color: map.get($theme-colors, danger);
+$light-gray: colors.$background-color;
+$medium-gray: color.adjust(colors.$background-color, $lightness: -20%);
+$dark-gray: color.adjust(colors.$background-color, $lightness: -40%);
 $image-margin: 16px;
 $button-margin: 0;
 
@@ -57,7 +60,7 @@ html,
 }
 
 .body-drip {
-  border-top: 8px solid map-get($theme-colors, primary);
+  border-top: 8px solid map.get($theme-colors, primary);
 }
 
 p {

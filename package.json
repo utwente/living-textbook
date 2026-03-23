@@ -41,7 +41,7 @@
     "watch:email": "run-s \"build:email -- --watch\"",
     "build": "run-s build:email build:encore",
     "build:encore": "encore production",
-    "build:email": "sass --load-path node_modules --style compressed --silence-deprecation import,global-builtin,color-functions --quiet-deps ./assets/email/email.scss:./public/email/email.css",
+    "build:email": "sass --load-path node_modules --style compressed --silence-deprecation import --quiet-deps ./assets/email/email.scss:./public/email/email.css",
     "vue:lint": "vue-cli-service lint --no-fix --max-warnings 0"
   },
   "dependencies": {
