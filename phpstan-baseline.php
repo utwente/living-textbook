@@ -2612,12 +2612,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:orderChangedFields\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:setChangedFields\\(\\) has parameter \\$changedFields with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2648,20 +2642,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$array of function usort expects TArray of array, array\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\.\\.\\.\\$arrays of function array_intersect expects array, array\\|null given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\PendingChange\\:\\:\\$changedFields type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
