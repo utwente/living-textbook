@@ -14,14 +14,13 @@ workflow:
 
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
-  COMPOSER_REQUIRE_CHECKER_VERSION: 4.21.0
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.22.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.9.6
   DRENSO_PHP_VERSION: 8.5
   NODE_VERSION: 24
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
   PHP_SEC_CHECK_VERSION: 2.1.3
-  SASSLINT_VERSION: 1.12.1-d1
   SHELLCHECK_VERSION: v0.7.2
   TSLINT_VERSION: 5.18.0
   YAMLLINT_DIRECTORIES: config
@@ -362,13 +361,22 @@ yaml-analysis:
     - main
     - production
 
-sass-analysis:
+stylelint:
   stage: lint
-  image: "registry.drenso.dev/open/docker-images/sasslint:${SASSLINT_VERSION}"
-  needs: []
+  image: "node:${NODE_VERSION}"
+  needs:
+    - install-js-dependencies
+  cache:
+    - key:
+        files:
+          - package-lock.json
+        prefix: ${CI_PROJECT_PATH_SLUG}_npm
+      paths:
+        - node_modules/
+      policy: pull
   interruptible: true
   script:
-    - sass-lint -v -c tests/sass-lint/.sass-lint.yml
+    - npm run css:lint
   tags:
     - docker
   except:
@@ -392,13 +400,15 @@ build-assets:
       paths:
         - node_modules/
       policy: pull
-    - key:
-        files:
-          - package-lock.json
-          - webpack.config.js
-        prefix: ${CI_PROJECT_PATH_SLUG}_webpack_persistent_cache
-      paths:
-        - node_modules/.cache/webpack
+    # Disabled as apparently the Webpack cache doesn't work as the absolute paths need to be equal...
+    # https://webpack.js.org/configuration/cache/#setup-cache-in-cicd-system
+    # - key:
+    #     files:
+    #       - package-lock.json
+    #       - webpack.config.js
+    #     prefix: ${CI_PROJECT_PATH_SLUG}_webpack_persistent_cache
+    #   paths:
+    #     - node_modules/.cache/webpack
   artifacts:
     name: "${CI_JOB_NAME}_${CI_COMMIT_REF_NAME}_assets"
     expire_in: 1 day

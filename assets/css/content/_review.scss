@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '../vars/vars';
 
 .review-card {
@@ -62,13 +63,13 @@
   // Originally from '../../../vendor/caxy/php-htmldiff/demo/codes.css'
   // But it messed with our list style
 
-  $review-added-color: darken($note-color, 50%);
-  $review-added-background-color: lighten($note-color, 15%);
+  $review-added-color: color.adjust($note-color, $lightness: -50%);
+  $review-added-background-color: color.adjust($note-color, $lightness: 15%);
   $review-added-link-color: $link-color;
 
-  $review-removed-color: darken($soft-red, 50%);
-  $review-removed-background-color: lighten($soft-red, 15%);
-  $review-removed-link-color: darken($link-color, 25%);
+  $review-removed-color: color.adjust($soft-red, $lightness: -50%);
+  $review-removed-background-color: color.adjust($soft-red, $lightness: 15%);
+  $review-removed-link-color: color.adjust($link-color, $lightness: -25%);
 
   // Difference Highlighting and Strike-through
   ins {
