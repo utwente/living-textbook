@@ -66,9 +66,7 @@ class PendingChange implements IdInterface
   #[ORM\Column(nullable: true)]
   private ?int $objectId = null;
 
-  /**
-   * JSON encoded object.
-   */
+  /** JSON encoded object. */
   #[Assert\NotBlank(allowNull: false)]
   #[ORM\Column(type: Types::TEXT)]
   private ?string $payload = null;
@@ -157,11 +155,11 @@ class PendingChange implements IdInterface
   public function orderChangedFields(): void
   {
     $sortOrder = match ($this->objectType) {
-      Abbreviation::class     => [
+      Abbreviation::class => [
         'abbreviation' => 200,
         'meaning'      => 150,
       ],
-      Concept::class          => [
+      Concept::class => [
         'name'              => 200,
         'instance'          => 190,
         'definition'        => 180,
@@ -178,7 +176,7 @@ class PendingChange implements IdInterface
         'incomingRelations' => 70,
         'contributors'      => 60,
       ],
-      Contributor::class      => [
+      Contributor::class => [
         'name'        => 200,
         'description' => 150,
         'url'         => 100,
@@ -188,22 +186,22 @@ class PendingChange implements IdInterface
         'description' => 150,
         'url'         => 100,
       ],
-      LearningOutcome::class  => [
+      LearningOutcome::class => [
         'number' => 200,
         'name'   => 150,
         'text'   => 100,
       ],
-      LearningPath::class     => [
+      LearningPath::class => [
         'name'         => 200,
         'introduction' => 150,
         'question'     => 100,
         'elements'     => 50,
       ],
-      RelationType::class     => [
+      RelationType::class => [
         'name'        => 200,
         'description' => 150,
       ],
-      default                 => [],
+      default => [],
     };
 
     $this->changedFields ??= [];
