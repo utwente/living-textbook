@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eec82a6332962059bdb0fe88ee1ac699",
+    "content-hash": "8e68ec6561a5d6bc84db6d68f485c855",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -3039,57 +3039,6 @@
             "time": "2022-12-02T22:17:43+00:00"
         },
         {
-            "name": "ml/iri",
-            "version": "1.1.4",
-            "target-dir": "ML/IRI",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lanthaler/IRI.git",
-                "reference": "cbd44fa913e00ea624241b38cefaa99da8d71341"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lanthaler/IRI/zipball/cbd44fa913e00ea624241b38cefaa99da8d71341",
-                "reference": "cbd44fa913e00ea624241b38cefaa99da8d71341",
-                "shasum": ""
-            },
-            "require": {
-                "lib-pcre": ">=4.0",
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "ML\\IRI": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Markus Lanthaler",
-                    "email": "mail@markus-lanthaler.com",
-                    "homepage": "http://www.markus-lanthaler.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "IRI handling for PHP",
-            "homepage": "http://www.markus-lanthaler.com",
-            "keywords": [
-                "URN",
-                "iri",
-                "uri",
-                "url"
-            ],
-            "support": {
-                "issues": "https://github.com/lanthaler/IRI/issues",
-                "source": "https://github.com/lanthaler/IRI/tree/master"
-            },
-            "time": "2014-01-21T13:43:39+00:00"
-        },
-        {
             "name": "monolog/monolog",
             "version": "3.10.0",
             "source": {
@@ -4974,35 +4923,98 @@
             "time": "2026-01-07T14:46:24+00:00"
         },
         {
-            "name": "sweetrdf/json-ld",
-            "version": "1.3.0",
+            "name": "sweetrdf/iri",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sweetrdf/json-ld.git",
-                "reference": "14785df8821f4ec4c6025bf587a161383878e9f7"
+                "url": "https://github.com/sweetrdf/IRI.git",
+                "reference": "31246f99f7cf0f9b38f0f83ada28e1d019054bb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/json-ld/zipball/14785df8821f4ec4c6025bf587a161383878e9f7",
-                "reference": "14785df8821f4ec4c6025bf587a161383878e9f7",
+                "url": "https://api.github.com/repos/sweetrdf/IRI/zipball/31246f99f7cf0f9b38f0f83ada28e1d019054bb8",
+                "reference": "31246f99f7cf0f9b38f0f83ada28e1d019054bb8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1.0"
+            },
+            "replace": {
+                "ml/iri": "1.1.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10|^11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ML\\IRI\\": "src/",
+                    "ML\\IRI\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Lanthaler",
+                    "email": "mail@markus-lanthaler.com",
+                    "homepage": "http://www.markus-lanthaler.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Konrad Abicht",
+                    "email": "hi@inspirito.de",
+                    "homepage": "http://inspirito.de/",
+                    "role": "Maintainer, Developer"
+                }
+            ],
+            "description": "IRI handling for PHP",
+            "homepage": "http://www.markus-lanthaler.com",
+            "keywords": [
+                "URN",
+                "iri",
+                "uri",
+                "url"
+            ],
+            "support": {
+                "source": "https://github.com/sweetrdf/IRI/tree/1.2.1"
+            },
+            "time": "2026-03-19T13:47:04+00:00"
+        },
+        {
+            "name": "sweetrdf/json-ld",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sweetrdf/json-ld.git",
+                "reference": "3edf6cddf22d7aa55b41ccaaa66cff5ca21b140b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sweetrdf/json-ld/zipball/3edf6cddf22d7aa55b41ccaaa66cff5ca21b140b",
+                "reference": "3edf6cddf22d7aa55b41ccaaa66cff5ca21b140b",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "ml/iri": "^1.1.1",
-                "php": ">=8.1.0"
+                "ext-mbstring": "*",
+                "php": ">=8.1.0",
+                "sweetrdf/iri": "^1"
             },
             "replace": {
                 "ml/json-ld": "1.2.*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^10||^11",
+                "phpunit/phpunit": "^10|^11",
                 "symfony/process": "^6|^7|^8"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "ML\\JsonLD\\": ""
+                    "ML\\JsonLD\\": "src/",
+                    "ML\\JsonLD\\Test\\": "Test/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5031,9 +5043,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/json-ld/issues",
-                "source": "https://github.com/sweetrdf/json-ld/tree/1.3.0"
+                "source": "https://github.com/sweetrdf/json-ld/tree/1.4.0"
             },
-            "time": "2025-12-29T11:00:01+00:00"
+            "time": "2026-03-19T13:30:45+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
