@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a7b6b47feed12c9c4a734f6969b0493f",
+    "content-hash": "91ed383fc044a6e20d9925524972998e",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -2250,16 +2250,16 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "d7408f88341336258b97853af64a7684c98f17ef"
+                "reference": "fa0247c4e43d748b1d8a626f94f8e4c423687fdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/d7408f88341336258b97853af64a7684c98f17ef",
-                "reference": "d7408f88341336258b97853af64a7684c98f17ef",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/fa0247c4e43d748b1d8a626f94f8e4c423687fdb",
+                "reference": "fa0247c4e43d748b1d8a626f94f8e4c423687fdb",
                 "shasum": ""
             },
             "require": {
@@ -2267,6 +2267,7 @@
                 "php": "^8.1",
                 "studio-42/elfinder": "~2.1.62",
                 "symfony/asset": "^6.4 || ^7.0 || ^8.0",
+                "symfony/console": "^6.4 || ^7.0 || ^8.0",
                 "symfony/form": "^6.4 || ^7.0 || ^8.0",
                 "symfony/framework-bundle": "^6.4 || ^7.0 || ^8.0",
                 "symfony/twig-bundle": "^6.4 || ^7.0 || ^8.0"
@@ -2289,7 +2290,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "13.0-dev"
+                    "dev-main": "13.x-dev"
                 }
             },
             "autoload": {
@@ -2320,9 +2321,9 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/13.0.1"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/13.0.2"
             },
-            "time": "2026-02-15T02:39:12+00:00"
+            "time": "2026-03-26T07:06:56+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
