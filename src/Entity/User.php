@@ -182,10 +182,8 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
 
   /**
    * Get the mailer Address for this User.
-   *
-   * @return Address
    */
-  public function getAddress()
+  public function getAddress(): Address
   {
     return new Address($this->username, $this->getFullName());
   }
@@ -223,12 +221,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @param string $serialized the string representation of the object
    *
-   * @return void
-   *
    * @since 5.1.0
    */
   #[Override]
-  public function unserialize($serialized)
+  public function unserialize($serialized): void
   {
     $this->__unserialize(unserialize($serialized));
   }
@@ -320,11 +316,9 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   }
 
   /**
-   * @param string $password
-   *
    * @return $this
    */
-  public function setPassword($password)
+  public function setPassword(?string $password): static
   {
     $this->password = $password;
 
@@ -333,10 +327,8 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
 
   /**
    * Get registeredOn.
-   *
-   * @return DateTime
    */
-  public function getRegisteredOn()
+  public function getRegisteredOn(): DateTime
   {
     return $this->registeredOn;
   }
@@ -356,11 +348,9 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   /**
    * Set securityRoles.
    *
-   * @param array $securityRoles
-   *
    * @return User
    */
-  public function setSecurityRoles($securityRoles)
+  public function setSecurityRoles(array $securityRoles): static
   {
     sort($securityRoles);
     $this->securityRoles = $securityRoles;
@@ -370,10 +360,8 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
 
   /**
    * Get securityRoles.
-   *
-   * @return array
    */
-  public function getSecurityRoles()
+  public function getSecurityRoles(): array
   {
     return $this->securityRoles;
   }

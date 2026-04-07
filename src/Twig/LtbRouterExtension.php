@@ -12,7 +12,7 @@ class LtbRouterExtension
   }
 
   #[AsTwigFunction(name: 'browserPath')]
-  public function browserPath($name, $parameters = []): string
+  public function browserPath(string $name, array $parameters = []): string
   {
     return $this->router->generateBrowserUrl($name, $parameters);
   }

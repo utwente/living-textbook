@@ -37,7 +37,7 @@ class LearningPathElementType extends AbstractType
     $builder
       ->add('id', HiddenType::class)
       ->add('conceptId', HiddenType::class, [
-        'constraints' => new Callback(function ($value, ExecutionContextInterface $context) use ($options) {
+        'constraints' => new Callback(function ($value, ExecutionContextInterface $context) use ($options): void {
           // Verify whether the supplied id actually exists
           if (!$this->getConcept($value, $options['studyArea'])) {
             $context->buildViolation('Error')

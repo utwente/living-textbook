@@ -17,10 +17,8 @@ class UserRepository extends ServiceEntityRepository
 
   /**
    * Retrieve fallback users.
-   *
-   * @return array
    */
-  public function getFallbackUsers()
+  public function getFallbackUsers(): array
   {
     return $this->findBy(['isOidc' => false], ['username' => 'ASC']);
   }
@@ -30,7 +28,7 @@ class UserRepository extends ServiceEntityRepository
    *
    * @return User[]
    */
-  public function getSuperAdmins()
+  public function getSuperAdmins(): mixed
   {
     return $this->createQueryBuilder('u')
       ->where('u.isAdmin = :admin')

@@ -27,11 +27,9 @@ class ConceptPrint extends LatexBase
   /**
    * Article constructor, sets defaults.
    *
-   * @param string $filename
-   *
    * @throws Exception
    */
-  public function __construct($filename)
+  public function __construct(string $filename)
   {
     // Define standard values
     $this->parser   = new Parser();
@@ -76,7 +74,7 @@ class ConceptPrint extends LatexBase
    *
    * @return ConceptPrint
    */
-  public function useLicenseImage(string $projectDir)
+  public function useLicenseImage(string $projectDir): static
   {
     $this->setParam('licenseimage', sprintf('%s/assets/img/footer/license.png', $projectDir));
 
@@ -88,7 +86,7 @@ class ConceptPrint extends LatexBase
    *
    * @return ConceptPrint
    */
-  public function setBaseUrl(string $baseUrl)
+  public function setBaseUrl(string $baseUrl): static
   {
     $this->baseUrl = substr($baseUrl, strlen($baseUrl) - 1) == '/' ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
 
@@ -102,7 +100,7 @@ class ConceptPrint extends LatexBase
    *
    * @return ConceptPrint
    */
-  public function setHeader(StudyArea $studyArea, TranslatorInterface $translator)
+  public function setHeader(StudyArea $studyArea, TranslatorInterface $translator): static
   {
     if ($this->baseUrl == null) {
       throw new InvalidArgumentException('Missing base url, make sure to set it before calling this method!');
@@ -125,7 +123,7 @@ class ConceptPrint extends LatexBase
    *
    * @return ConceptPrint
    */
-  public function addIntroduction(StudyArea $studyArea, TranslatorInterface $translator)
+  public function addIntroduction(StudyArea $studyArea, TranslatorInterface $translator): static
   {
     // Only add the introduction when one is defined
     if ($studyArea->getPrintIntroduction()) {

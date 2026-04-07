@@ -123,7 +123,7 @@ class AnalyticsService
     $process = Process::fromShellCommandline(
       sprintf('. %s/bin/activate; pip install -r requirements.txt --no-cache-dir', self::ENV_DIR),
       $this->analyticsDir, null, null, null);
-    $process->mustRun(static function ($type, $buffer) use ($output, $progressBar) {
+    $process->mustRun(static function ($type, $buffer) use ($output, $progressBar): void {
       $progressBar->clear();
       if (Process::ERR === $type) {
         $output->error(trim($buffer));
@@ -147,7 +147,7 @@ class AnalyticsService
       'learningpaths' => [
         $learningPath->getNonNullId() => [
           'starting time' => $this->formatPythonDateTime($request->teachingMoment),
-          'list'          => $learningPath->getElementsOrdered()->map(static fn (LearningPathElement $element) => $element->getConcept()->getId())->toArray(),
+          'list'          => $learningPath->getElementsOrdered()->map(static fn (LearningPathElement $element): ?int => $element->getConcept()->getId())->toArray(),
           'id'            => $learningPath->getId(),
         ],
       ],
@@ -159,7 +159,7 @@ class AnalyticsService
       ->build($learningPath, $request->periodStart, $request->periodEnd, $settings, $request->forceRebuild);
 
     // Return the data
-    $finder = static fn () => new Finder()
+    $finder = static fn (): Finder => new Finder()
       ->files()
       ->in($outputDirectory)
       ->depth(0);
@@ -271,7 +271,7 @@ class AnalyticsService
     }
 
     // Load new data
-    $this->entityManager->wrapInTransaction(function () use ($studyArea, &$settings) {
+    $this->entityManager->wrapInTransaction(function () use ($studyArea, &$settings): void {
       // Purge existing tracking data
       $this->trackingEventRepository->purgeForStudyArea($studyArea);
       $this->pageLoadRepository->purgeForStudyArea($studyArea);

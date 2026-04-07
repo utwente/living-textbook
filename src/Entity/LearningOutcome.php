@@ -80,7 +80,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     $this->concepts = new ArrayCollection();
   }
 
-  public function getShortName()
+  public function getShortName(): string
   {
     return sprintf('%d - %s', $this->number, $this->name);
   }

@@ -34,15 +34,13 @@ class SpreadsheetHelper
 
   /**
    * Create an Excel response from a spreadsheet.
-   *
-   * @return StreamedResponse
    */
-  public function createExcelResponse(Spreadsheet $spreadsheet, string $filename)
+  public function createExcelResponse(Spreadsheet $spreadsheet, string $filename): StreamedResponse
   {
     // Create writer
     $writer   = $this->createExcelWriter($spreadsheet);
     $response = new StreamedResponse(
-      static function () use ($writer) {
+      static function () use ($writer): void {
         $writer->save('php://output');
       });
 
@@ -63,14 +61,12 @@ class SpreadsheetHelper
 
   /**
    * Create a CSV response from a spreadsheet.
-   *
-   * @return StreamedResponse
    */
-  public function createCsvResponse(Spreadsheet $spreadsheet, string $filename)
+  public function createCsvResponse(Spreadsheet $spreadsheet, string $filename): StreamedResponse
   {
     $writer = $this->createCsvWriter($spreadsheet);
 
-    $response = new StreamedResponse(static function () use ($writer) {
+    $response = new StreamedResponse(static function () use ($writer): void {
       $writer->save('php://output');
     });
     $response->headers->set('Content-Type', 'application/csv; charset=utf-8');
@@ -92,17 +88,17 @@ class SpreadsheetHelper
     return $sheet;
   }
 
-  public function setCellBooleanValue(Worksheet &$sheet, int $column, int $row, bool $value)
+  public function setCellBooleanValue(Worksheet &$sheet, int $column, int $row, bool $value): void
   {
     $this->setCellTranslatedValue($sheet, $column, $row, $value ? 'excel.boolean.yes' : 'excel.boolean.no');
   }
 
-  public function setCellTranslatedValue(Worksheet &$sheet, int $column, int $row, string $value, bool $bold = false)
+  public function setCellTranslatedValue(Worksheet &$sheet, int $column, int $row, string $value, bool $bold = false): void
   {
     $this->setCellValue($sheet, $column, $row, $this->translator->trans($value), $bold);
   }
 
-  public function setCellValue(Worksheet &$sheet, int $column, int $row, mixed $value, bool $bold = false)
+  public function setCellValue(Worksheet &$sheet, int $column, int $row, mixed $value, bool $bold = false): void
   {
     $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row), $value);
 
@@ -111,7 +107,7 @@ class SpreadsheetHelper
     }
   }
 
-  public function setCellDateTime(Worksheet &$sheet, int $column, int $row, DateTime $dateTime, bool $leftAligned = false, bool $bold = false)
+  public function setCellDateTime(Worksheet &$sheet, int $column, int $row, DateTime $dateTime, bool $leftAligned = false, bool $bold = false): void
   {
     $this->setCellValue($sheet, $column, $row, Date::PHPToExcel($dateTime), $bold);
     $sheet->getStyle(CellAddress::fromColumnAndRow($column, $row))->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_DATE_DATETIME);

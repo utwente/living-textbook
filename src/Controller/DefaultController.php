@@ -26,6 +26,7 @@ use App\UrlUtils\Model\Url;
 use App\UrlUtils\UrlChecker;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -198,7 +199,7 @@ class DefaultController extends AbstractController
         'choice_label'  => 'name',
         'class'         => Concept::class,
         'select2'       => true,
-        'query_builder' => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
+        'query_builder' => static fn (ConceptRepository $conceptRepository): QueryBuilder => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
       ])
       ->add('submit', SubmitType::class, [
         'disabled' => true,
@@ -295,7 +296,7 @@ class DefaultController extends AbstractController
   /** @throws InvalidArgumentException */
   #[Route('/{_studyArea<\d+>}/rescanurl/{url}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, $url): Response
+  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, array $url): Response
   {
     $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode((string)$url)));
     $result = $urlChecker->checkUrl($url[0], true, false) ?
@@ -329,7 +330,7 @@ class DefaultController extends AbstractController
         'hide_label'  => true,
         'class'       => StudyArea::class,
         'select2'     => true,
-        'group_by'    => static function (StudyArea $studyArea) use ($defaultGroupName) {
+        'group_by'    => static function (StudyArea $studyArea) use ($defaultGroupName): ?string {
           if (!$studyArea->getGroup()) {
             return $defaultGroupName;
           }

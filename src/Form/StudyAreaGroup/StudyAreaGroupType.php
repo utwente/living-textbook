@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use App\Entity\StudyAreaGroup;
 use App\Form\Type\SaveType;
 use App\Repository\StudyAreaRepository;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -32,7 +33,7 @@ class StudyAreaGroupType extends AbstractType
         'required'      => false,
         'by_reference'  => false,
         'multiple'      => true,
-        'query_builder' => static function (StudyAreaRepository $repo) use ($studyAreaGroup) {
+        'query_builder' => static function (StudyAreaRepository $repo) use ($studyAreaGroup): QueryBuilder {
           $qb = $repo->createQueryBuilder('s');
           $qb->where('s.group IS NULL');
 

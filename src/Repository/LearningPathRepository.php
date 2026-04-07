@@ -25,7 +25,7 @@ class LearningPathRepository extends ServiceEntityRepository
   }
 
   /** @return LearningPath[] */
-  public function findForStudyArea(StudyArea $studyArea)
+  public function findForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->orderBy('lp.name', 'ASC')
@@ -33,7 +33,7 @@ class LearningPathRepository extends ServiceEntityRepository
   }
 
   /** @throws NonUniqueResultException */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->select('COUNT(lp.id)')
@@ -52,7 +52,7 @@ class LearningPathRepository extends ServiceEntityRepository
    *
    * @return LearningPath[]
    */
-  public function findForConcept(Concept $concept)
+  public function findForConcept(Concept $concept): mixed
   {
     return $this->createQueryBuilder('lp')
       ->distinct()
@@ -68,7 +68,7 @@ class LearningPathRepository extends ServiceEntityRepository
    *
    * @throws ORMException
    */
-  public function removeElementBasedOnConcept(Concept $concept)
+  public function removeElementBasedOnConcept(Concept $concept): void
   {
     $em            = $this->getEntityManager();
     $learningPaths = $this->findForConcept($concept);

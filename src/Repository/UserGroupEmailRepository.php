@@ -15,7 +15,7 @@ class UserGroupEmailRepository extends ServiceEntityRepository
   }
 
   /** @return UserGroupEmail[] */
-  public function findByEmail(string $email)
+  public function findByEmail(string $email): mixed
   {
     return $this->createQueryBuilder('uge')
         // Inner join to filter removed user groups

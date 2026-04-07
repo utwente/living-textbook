@@ -24,7 +24,7 @@ class PrintedTextType extends AbstractType
       }
 
       return $dataValue;
-    }, static function ($viewValue) {
+    }, static function ($viewValue): void {
       // This transformation is not required
     }));
   }

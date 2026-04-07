@@ -20,14 +20,14 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /** @return LearningOutcome[] */
-  public function findForStudyArea(StudyArea $studyArea)
+  public function findForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->getQuery()->getResult();
   }
 
   /** @return LearningOutcome[] */
-  public function findForStudyAreaOrderedByName(StudyArea $studyArea)
+  public function findForStudyAreaOrderedByName(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->orderBy('lo.name', 'ASC')
@@ -47,7 +47,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
    *
    * @return LearningOutcome[]
    */
-  public function findForConcepts(array $concepts)
+  public function findForConcepts(array $concepts): mixed
   {
     return $this->createQueryBuilder('lo')
       ->distinct()
@@ -58,7 +58,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
   }
 
   /** @throws NonUniqueResultException */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->createQueryBuilder('lo')
       ->select('COUNT(lo.id)')
@@ -67,8 +67,9 @@ class LearningOutcomeRepository extends ServiceEntityRepository
       ->getQuery()->getSingleScalarResult();
   }
 
-  /** Find the concepts ids used in every learning outcome in the given study area. */
-  public function findUsedConceptIdsForStudyArea(StudyArea $studyArea)
+  /** Find the concepts ids used in every learning outcome in the given study area.
+   * @return non-empty-list[] */
+  public function findUsedConceptIdsForStudyArea(StudyArea $studyArea): array
   {
     $result = $this->findForStudyAreaQb($studyArea)
       ->innerJoin('lo.concepts', 'c')
@@ -76,7 +77,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
       ->getQuery()->getResult();
 
     $return = [];
-    array_walk($result, static function ($item) use (&$return) {
+    array_walk($result, static function (array $item) use (&$return): void {
       if (!isset($return[$item['id']])) {
         $return[$item['id']] = [];
       }
@@ -91,7 +92,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
    *
    * @throws NonUniqueResultException
    */
-  public function findUnusedNumberInStudyArea(StudyArea $studyArea)
+  public function findUnusedNumberInStudyArea(StudyArea $studyArea): int
   {
     $highestNumber = (int)$this->findForStudyAreaQb($studyArea)
       ->select('MAX(lo.number)')

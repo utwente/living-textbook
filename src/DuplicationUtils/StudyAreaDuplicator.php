@@ -132,7 +132,7 @@ class StudyAreaDuplicator
    *
    * @throws Exception
    */
-  public function duplicate()
+  public function duplicate(): void
   {
     $this->em->getConnection()->beginTransaction();
     try {
@@ -485,10 +485,8 @@ class StudyAreaDuplicator
 
   /**
    * Retrieve the study area uploads path.
-   *
-   * @return string
    */
-  private function getStudyAreaDirectory(StudyArea $studyArea)
+  private function getStudyAreaDirectory(StudyArea $studyArea): string
   {
     // Check for null
     if ($studyArea->getId() === null) {

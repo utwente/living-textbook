@@ -17,7 +17,7 @@ class CkEditorType extends AbstractType
     $resolver
       ->setDefault('studyArea', null)
       ->setAllowedTypes('studyArea', ['null', StudyArea::class])
-      ->setDefault('config', static function (Options $options) {
+      ->setDefault('config', static function (Options $options): array {
         if ($options['studyArea'] === null) {
           return [];
         }

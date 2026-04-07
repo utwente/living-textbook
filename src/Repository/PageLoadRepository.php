@@ -28,7 +28,7 @@ class PageLoadRepository extends ServiceEntityRepository
   }
 
   /** Remove all page loads for a certain study area. */
-  public function purgeForStudyArea(StudyArea $studyArea)
+  public function purgeForStudyArea(StudyArea $studyArea): void
   {
     $this->createQueryBuilder('pl')
       ->delete()

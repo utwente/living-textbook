@@ -30,7 +30,7 @@ class StudyAreaStatusBuilder
   private ?StudyArea $studyArea = null;
 
   /** @var RelationType[] */
-  private $relationTypes;
+  private ?array $relationTypes = null;
 
   /** @var Concept[] */
   private $concepts;
@@ -87,7 +87,7 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addGeneralInfoSheet()
+  private function addGeneralInfoSheet(): void
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-info._tab');
 
@@ -126,7 +126,7 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addGeneralConceptStatisticsSheet()
+  private function addGeneralConceptStatisticsSheet(): void
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-concept-statistics._tab');
 
@@ -151,7 +151,7 @@ class StudyAreaStatusBuilder
 
     $column = 2;
     $counts = array_fill(0, 9, 0);
-    $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row) {
+    $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row): void {
       if ($condition) {
         $this->spreadsheetHelper->setCellValue($sheet, $column + $index, $row + 1 + $counts[$index], $concept->getName());
         $counts[$index]++;
@@ -183,7 +183,7 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addGeneralRelationshipStatisticsSheet()
+  private function addGeneralRelationshipStatisticsSheet(): void
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-relationship-statistics._tab');
 
@@ -226,7 +226,7 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addDetailedRelationshipsOverviewSheet()
+  private function addDetailedRelationshipsOverviewSheet(): void
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.detailed-relationships-overview._tab');
 
@@ -293,7 +293,7 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addDetailedConceptOverviewSheet()
+  private function addDetailedConceptOverviewSheet(): void
   {
     $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.detailed-concept-overview._tab');
 

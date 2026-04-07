@@ -205,7 +205,7 @@ class PendingChange implements IdInterface
     };
 
     $this->changedFields ??= [];
-    usort($this->changedFields, static function (string $a, string $b) use ($sortOrder) {
+    usort($this->changedFields, static function (string $a, string $b) use ($sortOrder): int {
       if (!array_key_exists($a, $sortOrder) || !array_key_exists($b, $sortOrder)) {
         return 0;
       }
@@ -279,7 +279,7 @@ class PendingChange implements IdInterface
 
   /** Validates the object id field, which must be empty for new objects, but filled for existing objects. */
   #[Assert\Callback]
-  public function validateObjectId(ExecutionContextInterface $context, $payload)
+  public function validateObjectId(ExecutionContextInterface $context, $payload): void
   {
     $violation = null;
     if ($this->changeType == self::CHANGE_TYPE_ADD) {

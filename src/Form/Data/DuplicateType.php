@@ -65,17 +65,17 @@ class DuplicateType extends AbstractType
         'form_header' => 'study-area.existing',
         'placeholder' => 'dashboard.select-one',
         'select2'     => true,
-        'group_by'    => static function (StudyArea $studyArea) use ($defaultGroupName) {
+        'group_by'    => static function (StudyArea $studyArea) use ($defaultGroupName): ?string {
           if (!$studyArea->getGroup()) {
             return $defaultGroupName;
           }
 
           return $studyArea->getGroup()->getName();
         },
-        'choice_loader' => new CallbackChoiceLoader(function () use ($currentStudyArea) {
+        'choice_loader' => new CallbackChoiceLoader(function () use ($currentStudyArea): array {
           $studyAreas = $this->studyAreaRepository->findBy(['reviewModeEnabled' => false, 'frozenOn' => null]);
 
-          return array_filter($studyAreas, fn (StudyArea $studyArea) => $studyArea->getId() !== $currentStudyArea->getId() && $this->security->isGranted('STUDYAREA_EDIT', $studyArea));
+          return array_filter($studyAreas, fn (StudyArea $studyArea): bool => $studyArea->getId() !== $currentStudyArea->getId() && $this->security->isGranted('STUDYAREA_EDIT', $studyArea));
         }),
         'choice_label' => 'name',
         'constraints'  => [
@@ -127,7 +127,7 @@ class DuplicateType extends AbstractType
           new Callback($this->checkConcepts(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
           new Callback($this->checkNewStudyArea(...), [self::CHOICE_NEW, self::CHOICE_EXISTING]),
         ],
-        'validation_groups' => static fn (FormInterface $form) => [$form->getData()[self::CHOICE]],
+        'validation_groups' => static fn (FormInterface $form): array => [$form->getData()[self::CHOICE]],
       ])
       ->setRequired('current_study_area')
       ->setRequired('new_study_area')
@@ -136,7 +136,7 @@ class DuplicateType extends AbstractType
   }
 
   /** Check if there is at least 1 concept selected to duplicate. */
-  public function checkConcepts($data, ExecutionContextInterface $context): void
+  public function checkConcepts(array $data, ExecutionContextInterface $context): void
   {
     if ($data['select_all'] === false && (is_countable($data['concepts']) ? count($data['concepts']) : 0) === 0) {
       $context->buildViolation('data.concepts-no-selection')
@@ -146,7 +146,7 @@ class DuplicateType extends AbstractType
   }
 
   /** Check if the new study area is valid. */
-  public function checkNewStudyArea($data, ExecutionContextInterface $context): void
+  public function checkNewStudyArea(array $data, ExecutionContextInterface $context): void
   {
     if ($context->getGroup() === self::CHOICE_NEW) {
       $context

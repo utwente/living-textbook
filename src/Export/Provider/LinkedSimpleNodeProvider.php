@@ -262,7 +262,7 @@ EOT,
         'description'  => $studyArea->getDescription(),
         'date_created' => $studyArea->getCreatedAt(),
         'last_updated' => $studyArea->getLastUpdated(),
-        'nodes'        => array_map(fn (Concept $concept) => [
+        'nodes'        => array_map(fn (Concept $concept): array => [
           'instance'       => $concept->isInstance(),
           'label'          => $concept->getName(),
           'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),

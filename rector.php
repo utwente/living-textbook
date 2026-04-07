@@ -16,10 +16,13 @@ return RectorConfig::configure()
   ->withPhpSets()
   ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml')
   ->withSymfonyContainerPhp(__DIR__ . '/tests/rector/symfony-container.php')
+  ->withPreparedSets(
+    typeDeclarations: true,
+  )
   ->withComposerBased(
     twig: true,
-    phpunit: true,
     doctrine: true,
+    phpunit: true,
     symfony: true,
   )
   ->withSkip([

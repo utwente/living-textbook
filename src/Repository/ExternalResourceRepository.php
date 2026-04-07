@@ -18,14 +18,14 @@ class ExternalResourceRepository extends ServiceEntityRepository
   }
 
   /** @return ExternalResource[] */
-  public function findForStudyArea(StudyArea $studyArea)
+  public function findForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->getQuery()->getResult();
   }
 
   /** @return ExternalResource[] */
-  public function findForStudyAreaOrderedByTitle(StudyArea $studyArea)
+  public function findForStudyAreaOrderedByTitle(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->orderBy('er.title', 'ASC')
@@ -45,7 +45,7 @@ class ExternalResourceRepository extends ServiceEntityRepository
    *
    * @return ExternalResource[]
    */
-  public function findForConcepts(array $concepts)
+  public function findForConcepts(array $concepts): mixed
   {
     return $this->createQueryBuilder('er')
       ->distinct()
@@ -56,7 +56,7 @@ class ExternalResourceRepository extends ServiceEntityRepository
   }
 
   /** @throws NonUniqueResultException */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->createQueryBuilder('lo')
       ->select('COUNT(lo.id)')

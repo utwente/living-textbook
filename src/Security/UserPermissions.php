@@ -33,7 +33,7 @@ class UserPermissions
   }
 
   /** Add a permission based on the group. */
-  public function addPermissionFromGroup(UserGroup $userGroup)
+  public function addPermissionFromGroup(UserGroup $userGroup): void
   {
     switch ($userGroup->getGroupType()) {
       case UserGroup::GROUP_VIEWER:

@@ -20,7 +20,7 @@ class ReviewRepository extends ServiceEntityRepository
    *
    * @return Review[]
    */
-  public function getSubmissions(StudyArea $studyArea)
+  public function getSubmissions(StudyArea $studyArea): mixed
   {
     return $this->createQueryBuilder('r')
       ->where('r.studyArea = :studyArea')
@@ -35,7 +35,7 @@ class ReviewRepository extends ServiceEntityRepository
    *
    * @return Review[]
    */
-  public function getApproved(StudyArea $studyArea)
+  public function getApproved(StudyArea $studyArea): mixed
   {
     return $this->createQueryBuilder('r')
       ->where('r.studyArea = :studyArea')

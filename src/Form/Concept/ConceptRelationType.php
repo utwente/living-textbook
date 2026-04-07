@@ -7,6 +7,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\RelationType;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -43,7 +44,7 @@ class ConceptRelationType extends AbstractType
       $this->addTextType($builder, 'target', $concept->getName());
     }
 
-    $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($concept) {
+    $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($concept): void {
       /** @var ConceptRelation|null $relation */
       $relation       = $event->getData();
       $relationTypeId = $relation === null ? null : $relation->getRelationType()->getId();
@@ -54,8 +55,8 @@ class ConceptRelationType extends AbstractType
         'class'         => RelationType::class,
         'select2'       => true,
         'choice_label'  => 'name',
-        'choice_attr'   => static fn (RelationType $val, $key, $index) => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
-        'query_builder' => static function (RelationTypeRepository $repo) use ($concept, $relationTypeId) {
+        'choice_attr'   => static fn (RelationType $val, $key, $index): array => $val->getDeletedAt() === null ? [] : ['disabled' => 'disabled'],
+        'query_builder' => static function (RelationTypeRepository $repo) use ($concept, $relationTypeId): QueryBuilder {
           $qb = $repo->createQueryBuilder('rt');
 
           // Update result based on current data
@@ -78,7 +79,7 @@ class ConceptRelationType extends AbstractType
     });
 
     // Add a transformer to create new relations on every edit
-    $builder->addModelTransformer(new CallbackTransformer(static function (?ConceptRelation $conceptRelation) {
+    $builder->addModelTransformer(new CallbackTransformer(static function (?ConceptRelation $conceptRelation): array {
       if ($conceptRelation) {
         return [
           'source'       => $conceptRelation->getSource(),
@@ -92,7 +93,7 @@ class ConceptRelationType extends AbstractType
         'target'       => null,
         'relationType' => null,
       ];
-    }, static function ($data) use ($concept, $incoming) {
+    }, static function (array $data) use ($concept, $incoming): ConceptRelation {
       $conceptRelation = new ConceptRelation()
         ->setRelationType($data['relationType']);
 

@@ -234,7 +234,7 @@ abstract class LtbSection extends Section
     return $latex;
   }
 
-  private function replacePlaceholder(string $latex, array $replaceInfo, $replacement)
+  private function replacePlaceholder(string $latex, array $replaceInfo, string $replacement): string|array
   {
     foreach ($replaceInfo as $id => $toReplace) {
       $new   = sprintf($replacement, $toReplace['replace'], $this->parser->parseText($toReplace['caption']));

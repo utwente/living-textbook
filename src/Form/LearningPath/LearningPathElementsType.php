@@ -69,7 +69,7 @@ class LearningPathElementsType extends AbstractType
         'allow_delete' => true,
       ]);
 
-    $resolver->setNormalizer('entry_options', static function (Options $options, $value) {
+    $resolver->setNormalizer('entry_options', static function (Options $options, array $value): array {
       $value['studyArea']    = $options->offsetGet('studyArea');
       $value['learningPath'] = $options->offsetGet('learningPath');
       $value['sortable_id']  = $options->offsetGet('sortable_id');

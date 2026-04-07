@@ -4,6 +4,7 @@ namespace App\Router;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 
 use function ltrim;
@@ -17,7 +18,7 @@ class LtbRouter
     $this->router = $router;
   }
 
-  public function generate($name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+  public function generate(string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
   {
     return $this->router->generate($name, $parameters, $referenceType);
   }
@@ -36,22 +37,22 @@ class LtbRouter
     ], RouterInterface::ABSOLUTE_URL);
   }
 
-  public function getRouteCollection()
+  public function getRouteCollection(): RouteCollection
   {
     return $this->router->getRouteCollection();
   }
 
-  public function match($pathinfo)
+  public function match(string $pathinfo): array
   {
     return $this->router->match($pathinfo);
   }
 
-  public function setContext(RequestContext $context)
+  public function setContext(RequestContext $context): void
   {
     $this->router->setContext($context);
   }
 
-  public function getContext()
+  public function getContext(): RequestContext
   {
     return $this->router->getContext();
   }

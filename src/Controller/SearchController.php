@@ -77,7 +77,7 @@ class SearchController extends AbstractController
       assert($user instanceof User);
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
-      $ownAnnotations = array_filter($allAnnotations, static fn (Annotation $annotation) => $annotation->getUserId() == $userId);
+      $ownAnnotations = array_filter($allAnnotations, static fn (Annotation $annotation): bool => $annotation->getUserId() == $userId);
 
       $result['ownAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($ownAnnotations, $search));
       $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
@@ -89,7 +89,7 @@ class SearchController extends AbstractController
   /** @param SearchableInterface[] $data */
   private function searchData(array $data, string $search): array
   {
-    $data = array_map(static fn (SearchableInterface $element) => $element->searchIn($search), $data);
+    $data = array_map(static fn (SearchableInterface $element): array => $element->searchIn($search), $data);
 
     $data = array_filter($data, $this->filterSortData(...));
 
@@ -103,7 +103,7 @@ class SearchController extends AbstractController
   {
     $result = [];
 
-    array_map(static function ($item) use (&$result) {
+    array_map(static function (array $item) use (&$result): void {
       $annotation = $item['_data'];
       assert($annotation instanceof Annotation);
       $concept = $annotation->getConcept();
@@ -122,12 +122,12 @@ class SearchController extends AbstractController
     return $result;
   }
 
-  private function filterSortData($element): bool
+  private function filterSortData(array $element): bool
   {
     return array_key_exists('results', $element) && (is_countable($element['results']) ? count($element['results']) : 0) > 0;
   }
 
-  public static function sortSearchData($a, $b): int
+  public static function sortSearchData(array $a, array $b): int
   {
     $reduceFunction = static fn ($carry, $item) => max($item['prio'], $carry);
 
