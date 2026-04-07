@@ -17,7 +17,6 @@ use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
 use App\Entity\PageLoad;
 use App\Entity\StudyArea;
-use App\Excel\SpreadsheetHelper;
 use App\Excel\TrackingExportBuilder;
 use App\Export\Provider\ConceptIdNameProvider;
 use App\Export\Provider\RelationProvider;
@@ -27,6 +26,7 @@ use App\Repository\TrackingEventRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Drenso\Shared\Helper\SpreadsheetHelper;
 use Exception;
 use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
@@ -55,30 +55,30 @@ use function sprintf;
 use function trim;
 use function unserialize;
 
-class AnalyticsService
+final readonly class AnalyticsService
 {
   private const string ENV_DIR = '.venv';
 
   /** The directory where the python implementation lives   */
-  private readonly string $analyticsDir;
-  private readonly Filesystem $fileSystem;
+  private string $analyticsDir;
+  private Filesystem $fileSystem;
   /** The output directory, located in the application cache   */
-  private readonly string $baseOutputDir;
+  private string $baseOutputDir;
 
   public function __construct(
-    private readonly TrackingExportBuilder $trackingExportBuilder,
-    private readonly ConceptIdNameProvider $conceptIdNameProvider,
-    private readonly SpreadsheetHelper $spreadsheetHelper,
+    private TrackingExportBuilder $trackingExportBuilder,
+    private ConceptIdNameProvider $conceptIdNameProvider,
+    private SpreadsheetHelper $spreadsheetHelper,
     string $projectDir,
     string $cacheDir,
-    private readonly TrackingEventRepository $trackingEventRepository,
-    private readonly PageLoadRepository $pageLoadRepository,
-    private readonly LearningPathRepository $learningPathRepository,
-    private readonly RelationProvider $relationProvider,
-    private readonly EntityManagerInterface $entityManager,
-    private readonly string $host,
-    private readonly bool $isDebug,
-    private readonly string $pythonPath)
+    private TrackingEventRepository $trackingEventRepository,
+    private PageLoadRepository $pageLoadRepository,
+    private LearningPathRepository $learningPathRepository,
+    private RelationProvider $relationProvider,
+    private EntityManagerInterface $entityManager,
+    private string $host,
+    private bool $isDebug,
+    private string $pythonPath)
   {
     $this->analyticsDir  = $projectDir . '/python/data-visualisation';
     $this->baseOutputDir = $cacheDir . '/data-visualisation';
@@ -424,7 +424,7 @@ class AnalyticsService
   {
     $fileName = $outputDir . '/tracking_data.xlsx';
     $this->spreadsheetHelper
-      ->createExcelWriter($this->trackingExportBuilder->buildSpreadsheet($studyArea))
+      ->createXlsxWriter($this->trackingExportBuilder->buildSpreadsheet($studyArea))
       ->save($fileName);
 
     return $fileName;

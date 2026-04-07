@@ -4,9 +4,9 @@ namespace App\Export\Provider;
 
 use App\Entity\Concept;
 use App\Entity\StudyArea;
-use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
+use Drenso\Shared\Helper\SpreadsheetHelper;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
@@ -17,16 +17,12 @@ use Symfony\Component\HttpFoundation\Response;
 use function sprintf;
 
 #[Autoconfigure(lazy: true)]
-class ConceptIdNameProvider implements ProviderInterface
+final readonly class ConceptIdNameProvider implements ProviderInterface
 {
-  private readonly ConceptRepository $conceptRepository;
-
-  private readonly SpreadsheetHelper $spreadsheetHelper;
-
-  public function __construct(ConceptRepository $conceptRepository, SpreadsheetHelper $spreadsheetHelper)
+  public function __construct(
+    private ConceptRepository $conceptRepository,
+    private SpreadsheetHelper $spreadsheetHelper)
   {
-    $this->conceptRepository = $conceptRepository;
-    $this->spreadsheetHelper = $spreadsheetHelper;
   }
 
   #[Override]

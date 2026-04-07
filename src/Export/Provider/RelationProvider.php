@@ -4,11 +4,11 @@ namespace App\Export\Provider;
 
 use App\Entity\ConceptRelation;
 use App\Entity\StudyArea;
-use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Drenso\Shared\Helper\SpreadsheetHelper;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -19,20 +19,14 @@ use function sprintf;
 use function usort;
 
 #[Autoconfigure(lazy: true)]
-class RelationProvider implements ProviderInterface
+final readonly class RelationProvider implements ProviderInterface
 {
-  private readonly ConceptRepository $conceptRepository;
-  private readonly ConceptRelationRepository $conceptRelationRepository;
-  private readonly RelationTypeRepository $relationTypeRepository;
-  private readonly SpreadsheetHelper $spreadsheetHelper;
-
-  public function __construct(ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-    RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)
+  public function __construct(
+    private ConceptRepository $conceptRepository,
+    private ConceptRelationRepository $conceptRelationRepository,
+    private RelationTypeRepository $relationTypeRepository,
+    private SpreadsheetHelper $spreadsheetHelper)
   {
-    $this->conceptRepository         = $conceptRepository;
-    $this->conceptRelationRepository = $conceptRelationRepository;
-    $this->relationTypeRepository    = $relationTypeRepository;
-    $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
   #[Override]
