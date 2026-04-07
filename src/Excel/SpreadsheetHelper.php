@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SpreadsheetHelper
 {
-  private TranslatorInterface $translator;
+  private readonly TranslatorInterface $translator;
 
   /** SpreadsheetHelper constructor. */
   public function __construct(TranslatorInterface $translator)

@@ -12,13 +12,13 @@ use function strtolower;
 class UrlContext implements Stringable
 {
   /** @var string Class name */
-  private string $class;
+  private readonly string $class;
 
   /** @var int Class id */
-  private int $id;
+  private readonly int $id;
 
   /** @var string Class path */
-  private string $path;
+  private readonly string $path;
 
   private bool $inline;
 

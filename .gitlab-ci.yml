@@ -14,7 +14,7 @@ workflow:
 
 variables:
   # renovate: datasource=github-releases depName=maglnet/ComposerRequireChecker
-  COMPOSER_REQUIRE_CHECKER_VERSION: 4.22.0
+  COMPOSER_REQUIRE_CHECKER_VERSION: 4.24.0
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.9.6
   DRENSO_PHP_VERSION: 8.5
@@ -49,7 +49,6 @@ install-dependencies:
       - vendor/drenso/symfony-shared/src/Resources/translations
       - .secrets.json
       # Extra paths
-      - assets/js/_fos_routes.json
       - vendor/studio-42/elfinder/css
       - vendor/studio-42/elfinder/img
       - vendor/studio-42/elfinder/js
@@ -141,7 +140,7 @@ code-style-fixer:
         - .twig-cs-fixer.cache
   script:
     - >-
-      if [[ "skip" == $(php -r "echo (str_starts_with('$CI_COMMIT_REF_NAME', 'renovate/') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'rector-rector') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'friendsofphp-php-cs-fixer') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'vincentlanglet-twig-cs-fixer') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'intern-runner-templates')) ? 'skip' : '';") ]]; then echo "Skipping automated code style fix tasks"; exit 0; fi
+      if [[ "skip" == $(php -r "echo (str_starts_with('$CI_COMMIT_REF_NAME', 'renovate/') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'rector-rector') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'friendsofphp-php-cs-fixer') && "'!'"str_contains('$CI_COMMIT_REF_NAME', 'vincentlanglet-twig-cs-fixer')) ? 'skip' : '';") ]]; then echo "Skipping automated code style fix tasks"; exit 0; fi
     - if [[ -f .secrets.json.dist ]]; then cp .secrets.json.dist .secrets.json; fi
     - "[[ -d public/email/ ]] || mkdir public/email" # Create email folder for cache clear.
     - if [[ -f bin/console ]]; then bin/console cache:clear --env=dev; fi # Build cache so it can be used by Rector
@@ -443,6 +442,9 @@ phpunit:
     - cp phpunit.xml.dist phpunit.xml
   script:
     - vendor/bin/phpunit --log-junit report.xml
+  artifacts:
+    reports:
+      junit: report.xml
   tags:
     - docker
   except:

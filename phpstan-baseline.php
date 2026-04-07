@@ -542,18 +542,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Attribute/DenyOnFrozenStudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Command/AddAccountCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Symfony\\\\Component\\\\Console\\\\Helper\\\\QuestionHelper and Symfony\\\\Component\\\\Console\\\\Helper\\\\QuestionHelper will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Command/AddAccountCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getAddress\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 5,
@@ -1236,12 +1224,6 @@ $ignoreErrors[] = [
 	'identifier' => 'method.nonObject',
 	'count' => 3,
 	'path' => __DIR__ . '/src/Controller/TagController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationInterface to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/TrackingController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$date of method Symfony\\\\Component\\\\HttpFoundation\\\\Response\\:\\:setLastModified\\(\\) expects DateTimeInterface\\|null, DateTime\\|false given\\.$#',
@@ -3734,12 +3716,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getUserIdentifier\\(\\) should return string but returns string\\|null\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\User\\:\\:setSecurityRoles\\(\\) has parameter \\$securityRoles with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -4406,18 +4382,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationsType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$offset of method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'argument.unresolvableType',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationsType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Return type of call to method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'method.unresolvableReturnType',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationsType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getConcepts\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
@@ -4502,24 +4466,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/Data/JsonUploadType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$offset of method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetExists\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'argument.unresolvableType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Extension/Select2Extension.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$offset of method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'argument.unresolvableType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Extension/Select2Extension.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Return type of call to method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'method.unresolvableReturnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Extension/Select2Extension.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\ExternalResource\\\\EditExternalResourceType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -4565,18 +4511,6 @@ $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\LearningPath\\\\LearningPathElementsType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
-	'path' => __DIR__ . '/src/Form/LearningPath/LearningPathElementsType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$offset of method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'argument.unresolvableType',
-	'count' => 3,
-	'path' => __DIR__ . '/src/Form/LearningPath/LearningPathElementsType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Return type of call to method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'method.unresolvableReturnType',
-	'count' => 3,
 	'path' => __DIR__ . '/src/Form/LearningPath/LearningPathElementsType.php',
 ];
 $ignoreErrors[] = [
@@ -4643,18 +4577,6 @@ $ignoreErrors[] = [
 	'message' => '#^If condition is always true\\.$#',
 	'identifier' => 'if.alwaysTrue',
 	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Review/DisplayPendingChangeType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$offset of method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'argument.unresolvableType',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Form/Review/DisplayPendingChangeType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Return type of call to method ArrayAccess\\<key\\-of\\<mixed\\>,value\\-of\\<mixed\\>\\>\\:\\:offsetGet\\(\\) contains unresolvable type\\.$#',
-	'identifier' => 'method.unresolvableReturnType',
-	'count' => 2,
 	'path' => __DIR__ . '/src/Form/Review/DisplayPendingChangeType.php',
 ];
 $ignoreErrors[] = [

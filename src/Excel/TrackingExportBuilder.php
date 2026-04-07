@@ -21,15 +21,15 @@ use function strtolower;
 
 class TrackingExportBuilder
 {
-  private NamingService $namingService;
+  private readonly NamingService $namingService;
 
-  private TranslatorInterface $translator;
+  private readonly TranslatorInterface $translator;
 
-  private SpreadsheetHelper $spreadsheetHelper;
+  private readonly SpreadsheetHelper $spreadsheetHelper;
 
-  private PageLoadRepository $pageLoadRepository;
+  private readonly PageLoadRepository $pageLoadRepository;
 
-  private TrackingEventRepository $trackingEventRepository;
+  private readonly TrackingEventRepository $trackingEventRepository;
 
   /** TrackingExportBuilder constructor. */
   public function __construct(

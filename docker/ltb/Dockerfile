@@ -1,4 +1,4 @@
-FROM php:8.5.3-fpm-trixie AS ltb_base
+FROM php:8.5.4-fpm-trixie AS ltb_base
 LABEL org.opencontainers.image.authors="Drienerlo Engineering Solutions <hallo@drenso.nl>"
 
 # Update all dependencies, and install required ones
@@ -128,7 +128,7 @@ RUN cp .secrets.json.dist .secrets.json \
     && rm .secrets.json
 
 ######################## Production assets builder ########################
-FROM node:24.14.0-slim AS ltb_prod_assets_build
+FROM node:24.14.1-slim AS ltb_prod_assets_build
 
 # Set the work dir
 WORKDIR /usr/src/app

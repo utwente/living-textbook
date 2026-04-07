@@ -60,10 +60,10 @@ class AnalyticsService
   private const string ENV_DIR = '.venv';
 
   /** The directory where the python implementation lives   */
-  private string $analyticsDir;
-  private Filesystem $fileSystem;
+  private readonly string $analyticsDir;
+  private readonly Filesystem $fileSystem;
   /** The output directory, located in the application cache   */
-  private string $baseOutputDir;
+  private readonly string $baseOutputDir;
 
   public function __construct(
     private readonly TrackingExportBuilder $trackingExportBuilder,

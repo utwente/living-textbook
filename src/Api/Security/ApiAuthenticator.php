@@ -16,6 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PasswordUpgradeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -25,6 +26,7 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 use function count;
 use function explode;
+use function is_string;
 
 class ApiAuthenticator extends AbstractAuthenticator
 {
@@ -61,7 +63,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         fn ($userIdentifier): ?UserApiToken => $this->userApiTokenRepository->findOneBy(['tokenId' => $userIdentifier])
       ),
       new CustomCredentials(
-        fn (#[SensitiveParameter] string $password, UserApiToken $apiToken): bool => (
+        fn (#[SensitiveParameter] mixed $password, UserInterface $apiToken): bool => $apiToken instanceof UserApiToken && is_string($password) && (
           !$apiToken->getValidUntil() || $apiToken->getValidUntil() > new DateTimeImmutable()
         ) && $this->passwordHasher->isPasswordValid($apiToken, $password),
         $tokenData[1],

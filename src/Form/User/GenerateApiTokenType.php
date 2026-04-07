@@ -22,7 +22,7 @@ class GenerateApiTokenType extends AbstractType
         'required'    => false,
         'label'       => 'user.api-tokens.description',
         'constraints' => [
-          new Length(['max' => 255]),
+          new Length(max: 255),
         ],
       ])
       ->add('validUntil', DateTimeType::class, [

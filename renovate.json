@@ -76,7 +76,9 @@
             "matchPackageNames": [
                 "symfony/{/,}**",
                 "!/-contracts$/",
+                "!symfony/flex",
                 "!symfony/maker-bundle",
+                "!symfony/monolog-bundle",
                 "!symfony/webpack-encore-bundle"
             ]
         },

@@ -1,5 +1,8 @@
+# yaml-language-server: $schema=../vendor/symfony/dependency-injection/Loader/schema/services.schema.json
+
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
+# See also https://symfony.com/doc/current/service_container/import.html
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
@@ -30,8 +33,7 @@ services:
   App\:
     resource: '../src/'
     exclude:
-      - '../src/{ConceptPrint,Entity,EntityHandler,Tests}/'
-      - '../src/Kernel.php'
+      - '../src/{ConceptPrint,EntityHandler}/'
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
   App\Controller\:
@@ -60,10 +62,6 @@ services:
   App\Communication\SetFromSubscriber:
     arguments:
       $from: '%env(MAIL_FROM)%'
-
-  App\Twig\HighlightExtension:
-    tags:
-      - { name: twig.extension }
 
   App\UrlUtils\UrlScanner:
     lazy: true

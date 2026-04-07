@@ -1,8 +1,0 @@
-controllers:
-  type: attribute
-  resource: ../../src/Controller/
-  schemes: [ https ]
-
-kernel:
-  resource: ../../src/Kernel.php
-  type: attribute

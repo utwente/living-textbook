@@ -63,7 +63,7 @@ class EmailListType extends AbstractType
       'constraints' => [
         'constraints' => new All([
           new NotBlank(),
-          new Email(['message' => 'emails.invalid-email']),
+          new Email(message: 'emails.invalid-email'),
         ]),
       ],
       'attr' => [

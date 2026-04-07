@@ -5,24 +5,15 @@ namespace App\Twig;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\StudyArea;
 use App\Review\ReviewService;
-use Override;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class ReviewExtension extends AbstractExtension
+class ReviewExtension
 {
   public function __construct(private readonly ReviewService $reviewService)
   {
   }
 
-  #[Override]
-  public function getFunctions(): array
-  {
-    return [
-      new TwigFunction('reviewEnabled', $this->reviewEnabled(...)),
-    ];
-  }
-
+  #[AsTwigFunction(name: 'reviewEnabled')]
   public function reviewEnabled(StudyArea $studyArea, ReviewableInterface $reviewable): bool
   {
     return $this->reviewService->isReviewModeEnabledForObject($studyArea, $reviewable);
