@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use function sprintf;
 
@@ -68,7 +68,7 @@ EOT;
 
   /** @throws Exception */
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): StreamedResponse
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadSheet($studyArea),
       sprintf('%s_concept_id_name_export.csv', $studyArea->getName()));

@@ -13,7 +13,7 @@ use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use function sprintf;
 use function usort;
@@ -86,7 +86,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): StreamedResponse
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadsheet($studyArea),
       sprintf('%s_concept_relation_export.csv', $studyArea->getName()));

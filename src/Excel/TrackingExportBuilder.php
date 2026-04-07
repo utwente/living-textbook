@@ -13,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
@@ -59,7 +60,7 @@ final readonly class TrackingExportBuilder
    *
    * @throws Exception
    */
-  public function buildResponse(StudyArea $studyArea): Response
+  public function buildResponse(StudyArea $studyArea): StreamedResponse
   {
     // Create response
     return $this->spreadsheetHelper->createExcelResponse($this->buildSpreadsheet($studyArea),

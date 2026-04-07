@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_fill;
@@ -49,7 +50,7 @@ final class StudyAreaStatusBuilder
    *
    * @throws Exception
    */
-  public function build(StudyArea $studyArea): Response
+  public function build(StudyArea $studyArea): StreamedResponse
   {
     // Save study area
     $this->studyArea = $studyArea;
