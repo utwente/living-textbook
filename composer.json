@@ -67,7 +67,7 @@
         "symfony/mailer": "7.4.8",
         "symfony/messenger": "7.4.8",
         "symfony/mime": "7.4.8",
-        "symfony/monolog-bundle": "3.11.1",
+        "symfony/monolog-bundle": "4.0.2",
         "symfony/options-resolver": "7.4.8",
         "symfony/password-hasher": "7.4.8",
         "symfony/process": "7.4.8",
