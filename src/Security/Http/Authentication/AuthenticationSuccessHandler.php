@@ -3,6 +3,7 @@
 namespace App\Security\Http\Authentication;
 
 use App\Router\LtbRouter;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
 use Exception;
 use Override;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,7 @@ class AuthenticationSuccessHandler extends DefaultAuthenticationSuccessHandler
     }
 
     // Retrieve route information
-    $routeInfo = $this->router->getRouteCollection()->get($matchedRoute['_route']);
+    $routeInfo = $this->router->getRouteCollection()->get($matchedRoute['_route']) ?? throw new MustNotBeNullException();
 
     // Verify whether this route must not be wrapped after login
     if ($routeInfo->getOption('no_login_wrap') === true) {

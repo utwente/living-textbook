@@ -69,11 +69,7 @@ class ConceptPrint extends LatexBase
     parent::__construct($filename);
   }
 
-  /**
-   * @throws LatexException
-   *
-   * @return ConceptPrint
-   */
+  /** @throws LatexException */
   public function useLicenseImage(string $projectDir): static
   {
     $this->setParam('licenseimage', sprintf('%s/assets/img/footer/license.png', $projectDir));
@@ -81,11 +77,7 @@ class ConceptPrint extends LatexBase
     return $this;
   }
 
-  /**
-   * Set the base url for the header.
-   *
-   * @return ConceptPrint
-   */
+  /** Set the base url for the header. */
   public function setBaseUrl(string $baseUrl): static
   {
     $this->baseUrl = substr($baseUrl, strlen($baseUrl) - 1) == '/' ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
@@ -97,8 +89,6 @@ class ConceptPrint extends LatexBase
    * Set the header for a print.
    *
    * @throws LatexException
-   *
-   * @return ConceptPrint
    */
   public function setHeader(StudyArea $studyArea, TranslatorInterface $translator): static
   {
@@ -120,8 +110,6 @@ class ConceptPrint extends LatexBase
    * Add the introduction text for a print.
    *
    * @throws LatexException
-   *
-   * @return ConceptPrint
    */
   public function addIntroduction(StudyArea $studyArea, TranslatorInterface $translator): static
   {

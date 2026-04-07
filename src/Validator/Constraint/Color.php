@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Color extends Regex
 {
+  /** @phpstan-ignore missingType.iterableValue */
   public function __construct(string|array|null $options = null)
   {
     $this->message = 'color.invalid';

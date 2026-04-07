@@ -33,7 +33,6 @@ use function sort;
 use function strcmp;
 use function unserialize;
 
-/** TODO Migrate array properties to JSON. */
 #[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners([UserListener::class])]
@@ -121,7 +120,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   private Collection $userGroups;
 
   /** @var Collection<Annotation> */
-  #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annotation::class)]
+  #[ORM\OneToMany(targetEntity: Annotation::class, mappedBy: 'user')]
   private Collection $annotations;
 
   public function __construct()
@@ -180,9 +179,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
       ->setFamilyName($userData->getFamilyName());
   }
 
-  /**
-   * Get the mailer Address for this User.
-   */
+  /** Get the mailer Address for this User. */
   public function getAddress(): Address
   {
     return new Address($this->username, $this->getFullName());
@@ -315,9 +312,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->password ?? '';
   }
 
-  /**
-   * @return $this
-   */
   public function setPassword(?string $password): static
   {
     $this->password = $password;
@@ -325,9 +319,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /**
-   * Get registeredOn.
-   */
   public function getRegisteredOn(): DateTime
   {
     return $this->registeredOn;
@@ -345,11 +336,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /**
-   * Set securityRoles.
-   *
-   * @return User
-   */
   public function setSecurityRoles(array $securityRoles): static
   {
     sort($securityRoles);
@@ -358,9 +344,6 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /**
-   * Get securityRoles.
-   */
   public function getSecurityRoles(): array
   {
     return $this->securityRoles;

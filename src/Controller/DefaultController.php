@@ -296,9 +296,9 @@ class DefaultController extends AbstractController
   /** @throws InvalidArgumentException */
   #[Route('/{_studyArea<\d+>}/rescanurl/{url}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, array $url): Response
+  public function urlRescan(RequestStudyArea $requestStudyArea, UrlChecker $urlChecker, UrlScanner $urlScanner, TranslatorInterface $translator, string $url): Response
   {
-    $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode((string)$url)));
+    $url    = $urlScanner->scanText(sprintf('src="%s"', urldecode($url)));
     $result = $urlChecker->checkUrl($url[0], true, false) ?
         $translator->trans('url.good') :
         $translator->trans('url.bad');

@@ -67,8 +67,11 @@ class LearningOutcomeRepository extends ServiceEntityRepository
       ->getQuery()->getSingleScalarResult();
   }
 
-  /** Find the concepts ids used in every learning outcome in the given study area.
-   * @return non-empty-list[] */
+  /**
+   * Find the concepts ids used in every learning outcome in the given study area.
+   *
+   * @return array<int, non-empty-list<int>>
+   */
   public function findUsedConceptIdsForStudyArea(StudyArea $studyArea): array
   {
     $result = $this->findForStudyAreaQb($studyArea)

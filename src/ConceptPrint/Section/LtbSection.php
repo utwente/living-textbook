@@ -215,7 +215,7 @@ abstract class LtbSection extends Section
 
     // Replace unsupported graphics with an unavailable image
     $matches = [];
-    preg_match_all('/\\\\includegraphics(\[.+\])?\{([^}]+)\}/u', (string)$latex, $matches);
+    preg_match_all('/\\\\includegraphics(\[.+\])?\{([^}]+)\}/u', $latex, $matches);
     foreach ($matches[2] as $imageLocation) {
       if ($this->fileSystem->exists($imageLocation)) {
         $extension = strtolower(pathinfo((string)$imageLocation, PATHINFO_EXTENSION));
@@ -224,17 +224,17 @@ abstract class LtbSection extends Section
         }
 
         // Unsupported image found, replace with notice image
-        $latex = str_replace($imageLocation, sprintf('%s%s/assets/img/print/notavailable.png', $this->projectDir, DIRECTORY_SEPARATOR), (string)$latex);
+        $latex = str_replace($imageLocation, sprintf('%s%s/assets/img/print/notavailable.png', $this->projectDir, DIRECTORY_SEPARATOR), $latex);
       }
     }
 
     // Replace local urls with full-path versions
-    $latex = preg_replace('/\\\\href\{\/([^}]+)\}/ui', sprintf('\\\\href{%s$1}', $this->baseUrl), (string)$latex);
+    $latex = preg_replace('/\\\\href\{\/([^}]+)\}/ui', sprintf('\\\\href{%s$1}', $this->baseUrl), $latex);
 
     return $latex;
   }
 
-  private function replacePlaceholder(string $latex, array $replaceInfo, string $replacement): string|array
+  private function replacePlaceholder(string $latex, array $replaceInfo, string $replacement): string
   {
     foreach ($replaceInfo as $id => $toReplace) {
       $new   = sprintf($replacement, $toReplace['replace'], $this->parser->parseText($toReplace['caption']));

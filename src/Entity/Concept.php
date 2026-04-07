@@ -628,6 +628,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
+  /** @return Collection<string, ConceptRelation> */
   public function getRelations(): Collection
   {
     return $this->getOutgoingRelations();

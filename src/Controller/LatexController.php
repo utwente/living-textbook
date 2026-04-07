@@ -69,7 +69,7 @@ class LatexController extends AbstractController
       &$cached,
       $request,
       $latexGeneratorLimiter,
-    ): string|array {
+    ): string {
       try {
         if (!$this->isGranted('ROLE_USER')) {
           // Enforce generation limit

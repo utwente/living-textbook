@@ -135,7 +135,11 @@ class DuplicateType extends AbstractType
       ->setAllowedTypes('new_study_area', StudyArea::class);
   }
 
-  /** Check if there is at least 1 concept selected to duplicate. */
+  /**
+   * Check if there is at least 1 concept selected to duplicate.
+   *
+   * @phpstan-ignore missingType.iterableValue
+   */
   public function checkConcepts(array $data, ExecutionContextInterface $context): void
   {
     if ($data['select_all'] === false && (is_countable($data['concepts']) ? count($data['concepts']) : 0) === 0) {
@@ -145,7 +149,11 @@ class DuplicateType extends AbstractType
     }
   }
 
-  /** Check if the new study area is valid. */
+  /**
+   * Check if the new study area is valid.
+   *
+   * @phpstan-ignore missingType.iterableValue
+   */
   public function checkNewStudyArea(array $data, ExecutionContextInterface $context): void
   {
     if ($context->getGroup() === self::CHOICE_NEW) {

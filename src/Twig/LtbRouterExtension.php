@@ -11,6 +11,7 @@ class LtbRouterExtension
   {
   }
 
+  /** @phpstan-ignore missingType.iterableValue */
   #[AsTwigFunction(name: 'browserPath')]
   public function browserPath(string $name, array $parameters = []): string
   {

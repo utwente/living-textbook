@@ -74,12 +74,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Analytics/Model/SynthesizeRequest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Analytics\\\\Model\\\\SynthesizeRequest\\:\\:validate\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Analytics/Model/SynthesizeRequest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access constant class on Symfony\\\\Component\\\\Security\\\\Core\\\\User\\\\UserInterface\\|null\\.$#',
 	'identifier' => 'classConstant.nonObject',
 	'count' => 1,
@@ -398,40 +392,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Communication/Notification/ReviewNotificationService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Communication\\\\Notification\\\\ReviewNotificationService\\:\\:reviewRequested\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Communication/Notification/ReviewNotificationService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Communication\\\\Notification\\\\ReviewNotificationService\\:\\:submissionApproved\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Communication/Notification/ReviewNotificationService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Communication\\\\Notification\\\\ReviewNotificationService\\:\\:submissionDenied\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Communication/Notification/ReviewNotificationService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Communication\\\\Notification\\\\ReviewNotificationService\\:\\:submissionPublished\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Communication/Notification/ReviewNotificationService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Communication\\\\Notification\\\\ReviewNotificationService\\:\\:trans\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Communication/Notification/ReviewNotificationService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Communication\\\\SetFromSubscriber\\:\\:onMessage\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Communication/SetFromSubscriber.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$html of method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:addSection\\(\\) expects string, string\\|null given\\.$#',
@@ -482,20 +446,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:replacePlaceholder\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:replacePlaceholder\\(\\) has parameter \\$replaceInfo with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:replacePlaceholder\\(\\) has parameter \\$replacement with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
 ];
@@ -605,12 +557,6 @@ $ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 6,
-	'path' => __DIR__ . '/src/Controller/AnnotationController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\AnnotationController\\:\\:validate\\(\\) has parameter \\$object with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
 	'path' => __DIR__ . '/src/Controller/AnnotationController.php',
 ];
 $ignoreErrors[] = [
@@ -742,12 +688,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Controller\\\\DefaultController\\:\\:splitUrlLocation\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/DefaultController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\DefaultController\\:\\:urlRescan\\(\\) has parameter \\$url with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Controller/DefaultController.php',
 ];
@@ -926,12 +866,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/PrintController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\PrintController\\:\\:getProjectPath\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$filename of class App\\\\ConceptPrint\\\\Base\\\\ConceptPrint constructor expects string, array\\|string\\|false\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
@@ -1016,12 +950,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/SearchController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\SearchController\\:\\:filterSortData\\(\\) has parameter \\$element with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/SearchController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Controller\\\\SearchController\\:\\:groupAnnotationsByConcept\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1036,18 +964,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Controller\\\\SearchController\\:\\:searchData\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/SearchController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\SearchController\\:\\:sortSearchData\\(\\) has parameter \\$a with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/SearchController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\SearchController\\:\\:sortSearchData\\(\\) has parameter \\$b with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Controller/SearchController.php',
 ];
@@ -1084,12 +1000,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'_studyArea\' on non\\-empty\\-array\\|true\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\DuplicationUtils\\\\StudyAreaDuplicator\\:\\:duplicate\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/DuplicationUtils/StudyAreaDuplicator.php',
 ];
@@ -1424,44 +1334,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:checkEntityRelations\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:doFixConceptRelationOrder\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:doFixConceptRelationOrder\\(\\) has parameter \\$values with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection but does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:filterDataOn\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:filterDataOn\\(\\) has parameter \\$results with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:fixConceptRelationOrder\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:fixConceptRelationReferences\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -1528,12 +1408,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getPriorKnowledgeOf\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getRelations\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -2246,12 +2120,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningOutcome\\:\\:getShortName\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\LearningOutcome\\:\\:searchIn\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2474,12 +2342,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Listener\\\\UserListener\\:\\:updateStudyAreaRights\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PageLoad\\:\\:getOriginContext\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2602,12 +2464,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:setReviewComments\\(\\) has parameter \\$reviewComments with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:validateObjectId\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
@@ -3710,30 +3566,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/EntityHandler/TagHandler.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\SpreadsheetHelper\\:\\:setCellBooleanValue\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/SpreadsheetHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\SpreadsheetHelper\\:\\:setCellDateTime\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/SpreadsheetHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\SpreadsheetHelper\\:\\:setCellTranslatedValue\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/SpreadsheetHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\SpreadsheetHelper\\:\\:setCellValue\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/SpreadsheetHelper.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getAccessType\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -3776,42 +3608,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:addDetailedConceptOverviewSheet\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:addDetailedRelationshipsOverviewSheet\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:addGeneralConceptStatisticsSheet\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:addGeneralInfoSheet\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Excel\\\\StudyAreaStatusBuilder\\:\\:addGeneralRelationshipStatisticsSheet\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$spreadsheet of method App\\\\Excel\\\\SpreadsheetHelper\\:\\:createSheet\\(\\) expects PhpOffice\\\\PhpSpreadsheet\\\\Spreadsheet, PhpOffice\\\\PhpSpreadsheet\\\\Spreadsheet\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 5,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -3828,12 +3624,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Excel/TrackingExportBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\ExceptionHandler\\\\Subscriber\\\\ExceptionSubscriber\\:\\:onKernelException\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ExceptionHandler/Subscriber/ExceptionSubscriber.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$subject of function preg_replace expects array\\<float\\|int\\|string\\>\\|string, string\\|false given\\.$#',
@@ -4012,18 +3802,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Data\\\\DuplicateType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Form\\\\Data\\\\DuplicateType\\:\\:checkConcepts\\(\\) has parameter \\$data with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Form\\\\Data\\\\DuplicateType\\:\\:checkNewStudyArea\\(\\) has parameter \\$data with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
 ];
@@ -4394,20 +4172,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Naming/NamingService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\AbbreviationRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/AbbreviationRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\AnnotationRepository\\:\\:getCountsForUserInStudyArea\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/AnnotationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\AnnotationRepository\\:\\:getForUserAndStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/AnnotationRepository.php',
 ];
@@ -4448,26 +4214,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\ConceptRepository\\:\\:loadRelations\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\ConceptRepository\\:\\:preLoadData\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\ContributorRepository\\:\\:findForConcepts\\(\\) has parameter \\$concepts with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ContributorRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\ContributorRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/ContributorRepository.php',
 ];
@@ -4478,32 +4226,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/ExternalResourceRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\ExternalResourceRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ExternalResourceRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findForConcepts\\(\\) has parameter \\$concepts with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findUnusedNumberInStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findUsedConceptIdsForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/LearningOutcomeRepository.php',
 ];
@@ -4512,24 +4236,6 @@ $ignoreErrors[] = [
 	'identifier' => 'method.nonObject',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/LearningPathRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\LearningPathRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningPathRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\LearningPathRepository\\:\\:removeElementBasedOnConcept\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/LearningPathRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\PageLoadRepository\\:\\:purgeForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/PageLoadRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\PendingChangeRepository\\:\\:getMultiple\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#',
@@ -4544,34 +4250,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/RelationTypeRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\StudyAreaRepository\\:\\:getOwnerAmount\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/StudyAreaRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\TagRepository\\:\\:findForStudyArea\\(\\) has parameter \\$ids with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/TagRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\TagRepository\\:\\:getCountForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/TagRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\TrackingEventRepository\\:\\:purgeForStudyArea\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/TrackingEventRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Repository\\\\UserGroupRepository\\:\\:removeObsoleteGroups\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/UserGroupRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\UserProtoRepository\\:\\:getForEmail\\(\\) has parameter \\$email with no type specified\\.$#',
@@ -4748,62 +4430,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generate\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generate\\(\\) has parameter \\$name with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generate\\(\\) has parameter \\$parameters with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generate\\(\\) has parameter \\$referenceType with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:generateBrowserUrl\\(\\) has parameter \\$parameters with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:getContext\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:getRouteCollection\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:match\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:match\\(\\) has parameter \\$pathinfo with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Router/LtbRouter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Router\\\\LtbRouter\\:\\:setContext\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Router/LtbRouter.php',
 ];
@@ -4838,12 +4466,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Security/UserPermissions.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Security\\\\UserPermissions\\:\\:addPermissionFromGroup\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Security/UserPermissions.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Security\\\\Voters\\\\MenuVoter extends generic class Symfony\\\\Component\\\\Security\\\\Core\\\\Authorization\\\\Voter\\\\Voter but does not specify its types\\: TAttribute, TSubject$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -4870,12 +4492,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Twig\\\\DataTableExtension\\:\\:dataTable\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Twig/DataTableExtension.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Twig\\\\DataTableExtension\\:\\:dataTable\\(\\) has parameter \\$tableId with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Twig/DataTableExtension.php',
 ];
@@ -4916,18 +4532,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Twig/HighlightExtension.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Twig\\\\LtbRouterExtension\\:\\:browserPath\\(\\) has parameter \\$name with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Twig/LtbRouterExtension.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Twig\\\\LtbRouterExtension\\:\\:browserPath\\(\\) has parameter \\$parameters with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Twig/LtbRouterExtension.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Twig\\\\TranslationStringExtension\\:\\:trString\\(\\) has parameter \\$text with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -4956,12 +4560,6 @@ $ignoreErrors[] = [
 	'identifier' => 'nullCoalesce.variable',
 	'count' => 1,
 	'path' => __DIR__ . '/src/UrlUtils/Model/UrlContext.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\UrlUtils\\\\UrlChecker\\:\\:cacheUrl\\(\\) has parameter \\$expiry with no type specified\\.$#',
-	'identifier' => 'missingType.parameter',
-	'count' => 1,
-	'path' => __DIR__ . '/src/UrlUtils/UrlChecker.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\UrlUtils\\\\UrlChecker\\:\\:checkAllUrls\\(\\) return type has no value type specified in iterable type array\\.$#',
