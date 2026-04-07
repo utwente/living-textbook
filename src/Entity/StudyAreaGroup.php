@@ -51,7 +51,7 @@ class StudyAreaGroup implements IdInterface
     return $this;
   }
 
-  /** @return Collection<StudyArea> */
+  /** @return Collection<int, StudyArea> */
   public function getStudyAreas(): Collection
   {
     return $this->studyAreas;

@@ -1034,24 +1034,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Abbreviation\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Abbreviation\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Abbreviation\\:\\:searchIn\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1060,12 +1042,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Abbreviation\\:\\:testChange\\(\\) should return App\\\\Entity\\\\Contracts\\\\ReviewableInterface but returns App\\\\Entity\\\\Contracts\\\\ReviewableInterface\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
 ];
@@ -1083,18 +1059,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
@@ -1124,32 +1088,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Annotation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Annotation\\:\\:getComments\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Annotation\\:\\:getConceptId\\(\\) should return int but returns int\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Annotation\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Annotation\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Annotation.php',
 ];
@@ -1178,12 +1118,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Annotation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -1202,18 +1136,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Annotation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -1226,32 +1148,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\AnnotationComment\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\AnnotationComment\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\AnnotationComment\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
 ];
@@ -1269,18 +1167,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
@@ -1316,12 +1202,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Instanceof between App\\\\Entity\\\\Data\\\\DataInterface and App\\\\Entity\\\\Data\\\\BaseDataTextObject will always evaluate to false\\.$#',
 	'identifier' => 'instanceof.alwaysFalse',
 	'count' => 1,
@@ -1346,56 +1226,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getContributors\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getDotronConfig\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getExternalResources\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getIncomingRelations\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getLastEditInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getLearningOutcomes\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getOutgoingRelations\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -1407,12 +1245,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getPriorKnowledgeOf\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Concept\\:\\:getTags\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
@@ -1444,12 +1276,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$contributors with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -1520,50 +1346,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\ConceptRelation\\:\\:getDotronConfig\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\ConceptRelation\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\ConceptRelation\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\ConceptRelation\\:\\:setDotronConfig\\(\\) has parameter \\$dotronConfig with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
 ];
@@ -1592,18 +1382,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Contracts\\\\ReviewableInterface\\:\\:setStudyArea\\(\\) has no return type specified\\.$#',
 	'identifier' => 'missingType.return',
 	'count' => 1,
@@ -1622,30 +1400,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Contributor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Contributor\\:\\:getConcepts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Contributor\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Contributor\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Contributor\\:\\:testChange\\(\\) should return App\\\\Entity\\\\Contracts\\\\ReviewableInterface but returns App\\\\Entity\\\\Contracts\\\\ReviewableInterface\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -1654,12 +1408,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$concepts with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Contributor.php',
 ];
@@ -1682,42 +1430,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Contributor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataExamples\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataExamples\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -1734,42 +1446,6 @@ $ignoreErrors[] = [
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
@@ -1790,42 +1466,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -1842,42 +1482,6 @@ $ignoreErrors[] = [
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
@@ -1898,42 +1502,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -1952,44 +1520,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\|null supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\ExternalResource\\:\\:getConcepts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\ExternalResource\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\ExternalResource\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
 ];
@@ -2012,12 +1544,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -2036,86 +1562,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Help.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Help\\:\\:getContent\\(\\) should return string but returns string\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Help.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Help\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Help.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Help\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Help.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Help\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Help.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Help\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Help.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Help\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Help.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\|null supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningOutcome\\:\\:getConcepts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningOutcome\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningOutcome\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
 ];
@@ -2138,12 +1592,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -2162,18 +1610,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\|null supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
@@ -2183,12 +1619,6 @@ $ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
 $ignoreErrors[] = [
@@ -2204,38 +1634,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningPath\\:\\:getElements\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\LearningPath\\:\\:getElementsOrdered\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningPath\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningPath\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\LearningPath\\:\\:testChange\\(\\) should return App\\\\Entity\\\\Contracts\\\\ReviewableInterface but returns App\\\\Entity\\\\Contracts\\\\ReviewableInterface\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
@@ -2264,42 +1670,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningPathElement\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\LearningPathElement\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -2313,18 +1683,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
@@ -2414,12 +1772,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:duplicate\\(\\) has parameter \\$changedFields with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2428,18 +1780,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:getChangedFields\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\PendingChange\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
@@ -2486,12 +1826,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\PendingChange\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\PendingChange\\:\\:\\$payload \\(string\\|null\\) does not accept string\\|false\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -2500,18 +1834,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\PendingChange\\:\\:\\$reviewComments type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\PendingChange\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/PendingChange.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\PendingChange\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/PendingChange.php',
 ];
@@ -2528,32 +1850,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/RelationType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\RelationType\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\RelationType\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\RelationType\\:\\:testChange\\(\\) should return App\\\\Entity\\\\Contracts\\\\ReviewableInterface but returns App\\\\Entity\\\\Contracts\\\\ReviewableInterface\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\RelationType\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/RelationType.php',
 ];
@@ -2576,68 +1874,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/RelationType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\RelationType\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\RelationType\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Review\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Review\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Review\\:\\:getPendingChanges\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Review\\:\\:getStudyArea\\(\\) should return App\\\\Entity\\\\StudyArea but returns App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Review.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Review\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Review\\:\\:\\$pendingChanges with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Review\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Review.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Review\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Review.php',
 ];
@@ -2660,12 +1904,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Generic type Doctrine\\\\Common\\\\Collections\\\\Selectable\\<App\\\\Entity\\\\UserGroup\\> in PHPDoc tag @return does not specify all template types of interface Doctrine\\\\Common\\\\Collections\\\\Selectable\\: TKey, T$#',
 	'identifier' => 'generics.lessTypes',
 	'count' => 1,
@@ -2678,12 +1916,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getConcepts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getDotronConfig\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2692,24 +1924,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getLastEditInfo\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyArea\\:\\:getRelationTypes\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
@@ -2752,12 +1966,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$contributors with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
@@ -2816,18 +2024,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$userGroups \\(Doctrine\\\\Common\\\\Collections\\\\Collection&Doctrine\\\\Common\\\\Collections\\\\Selectable\\<App\\\\Entity\\\\UserGroup\\>&iterable\\<App\\\\Entity\\\\UserGroup\\>\\) does not accept Doctrine\\\\Common\\\\Collections\\\\ArrayCollection\\<\\*NEVER\\*, \\*NEVER\\*\\>\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -2838,30 +2034,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
@@ -2880,48 +2052,6 @@ $ignoreErrors[] = [
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyAreaGroup\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyAreaGroup\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StudyAreaGroup\\:\\:getStudyAreas\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
@@ -2948,36 +2078,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StylingConfiguration\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\StylingConfiguration\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\StylingConfiguration\\:\\:getStylings\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2986,12 +2086,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\StylingConfiguration\\:\\:setStylings\\(\\) has parameter \\$stylings with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
 ];
@@ -3020,50 +2114,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Tag\\:\\:getConcepts\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Tag\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\Tag\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$concepts with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Tag.php',
 ];
@@ -3081,18 +2133,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
 	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Tag.php',
@@ -3146,20 +2186,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/TrackingEvent.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\User\\:\\:__unserialize\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getAnnotations\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
@@ -3170,26 +2198,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getSecurityRoles\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getUserGroups\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
@@ -3218,12 +2228,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
 	'identifier' => 'assign.propertyType',
 	'count' => 1,
@@ -3248,64 +2252,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$userGroups with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/UserApiToken.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserApiToken\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserApiToken.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserApiToken\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserApiToken.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserApiToken\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserApiToken.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserApiToken\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserApiToken.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserApiToken\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserApiToken.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\UserBrowserState\\:\\:getFilterState\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -3314,26 +2264,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserBrowserState\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserBrowserState\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\UserBrowserState\\:\\:setFilterState\\(\\) has parameter \\$filterState with no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
 ];
@@ -3362,62 +2294,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getEmails\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getGroupTypes\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/UserGroup.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getStudyArea\\(\\) should return App\\\\Entity\\\\StudyArea but returns App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getUsers\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/UserGroup.php',
 ];
@@ -3446,18 +2330,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/UserGroup.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$users with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -3468,42 +2340,6 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/UserGroupEmail.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Expression on left side of \\?\\? is not nullable\\.$#',
-	'identifier' => 'nullCoalesce.expr',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Entity/UserProto.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserProto\\:\\:getLastUpdated\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserProto.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\UserProto\\:\\:getLastUpdatedBy\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserProto.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserProto\\:\\:\\$createdBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserProto.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserProto\\:\\:\\$updatedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserProto.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserProto\\:\\:\\$updatedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserProto.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method addOutgoingRelation\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',

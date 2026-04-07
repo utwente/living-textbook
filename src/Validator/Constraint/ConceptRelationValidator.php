@@ -49,7 +49,6 @@ class ConceptRelationValidator extends ConstraintValidator
     $this->violations = [];
     $map              = [];
     foreach ($all as $relation) {
-      assert($relation instanceof \App\Entity\ConceptRelation);
       $source = $relation->getSource();
       $target = $relation->getTarget();
 

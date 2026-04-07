@@ -42,7 +42,6 @@ use function stripos;
 
 #[ORM\Entity(repositoryClass: ConceptRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 #[ConceptRelationValidator]
@@ -209,7 +208,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  #[ORM\Column(type: 'json', nullable: true)]
+  #[ORM\Column(type: Types::JSON, nullable: true)]
   private ?array $dotronConfig = null;
 
   public function __construct()
@@ -628,13 +627,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<string, ConceptRelation> */
+  /** @return Collection<int, ConceptRelation> */
   public function getRelations(): Collection
   {
     return $this->getOutgoingRelations();
   }
 
-  /** @return Collection<ConceptRelation> */
+  /** @return Collection<int, ConceptRelation> */
   public function getOutgoingRelations(): Collection
   {
     return $this->outgoingRelations;
@@ -659,7 +658,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<ConceptRelation> */
+  /** @return Collection<int, ConceptRelation> */
   public function getIncomingRelations(): Collection
   {
     return $this->incomingRelations;
@@ -751,7 +750,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<ExternalResource> */
+  /** @return Collection<int, ExternalResource> */
   public function getExternalResources(): Collection
   {
     return $this->externalResources;
@@ -771,7 +770,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<Contributor> */
+  /** @return Collection<int, Contributor> */
   public function getContributors(): Collection
   {
     return $this->contributors;
@@ -817,7 +816,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->priorKnowledgeOf;
   }
 
-  /** @return Collection<LearningOutcome> */
+  /** @return Collection<int, LearningOutcome> */
   public function getLearningOutcomes(): Collection
   {
     return $this->learningOutcomes;
@@ -837,7 +836,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<Tag> */
+  /** @return Collection<int, Tag> */
   public function getTags(): Collection
   {
     return $this->tags;

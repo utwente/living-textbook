@@ -27,7 +27,6 @@ use function substr;
 use function usort;
 
 #[ORM\Entity(repositoryClass: PendingChangeRepository::class)]
-#[ORM\Table]
 class PendingChange implements IdInterface
 {
   use Blameable;

@@ -15,9 +15,7 @@ class UserRepository extends ServiceEntityRepository
     parent::__construct($registry, User::class);
   }
 
-  /**
-   * Retrieve fallback users.
-   */
+  /** Retrieve fallback users. */
   public function getFallbackUsers(): array
   {
     return $this->findBy(['isOidc' => false], ['username' => 'ASC']);

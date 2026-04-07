@@ -483,9 +483,7 @@ class StudyAreaDuplicator
     $fileSystem->remove($directory);
   }
 
-  /**
-   * Retrieve the study area uploads path.
-   */
+  /** Retrieve the study area uploads path. */
   private function getStudyAreaDirectory(StudyArea $studyArea): string
   {
     // Check for null

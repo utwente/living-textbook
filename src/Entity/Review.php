@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use function count;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
-#[ORM\Table]
 class Review implements IdInterface
 {
   use Blameable;
@@ -131,7 +130,7 @@ class Review implements IdInterface
     return $this;
   }
 
-  /** @return Collection<PendingChange> */
+  /** @return Collection<int, PendingChange> */
   public function getPendingChanges(): Collection
   {
     return $this->pendingChanges;

@@ -9,10 +9,12 @@ use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\SearchableInterface;
 use App\Repository\AnnotationRepository;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
 use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Exception;
@@ -28,7 +30,6 @@ use function stripos;
 
 #[ORM\Entity(repositoryClass: AnnotationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Annotation implements SearchableInterface, IdInterface
@@ -199,9 +200,9 @@ class Annotation implements SearchableInterface, IdInterface
 
   #[JMSA\VirtualProperty]
   #[JMSA\Expose]
-  public function getAuthoredTime(): DateTime
+  public function getAuthoredTime(): DateTimeInterface
   {
-    return $this->createdAt;
+    return $this->createdAt ?? throw new MustNotBeNullException();
   }
 
   public function setUser(?User $user): self
@@ -318,7 +319,7 @@ class Annotation implements SearchableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<AnnotationComment> */
+  /** @return Collection<int, AnnotationComment> */
   public function getComments(): Collection
   {
     return $this->comments;

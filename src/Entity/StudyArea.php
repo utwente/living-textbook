@@ -34,7 +34,6 @@ use function array_values;
 use function usort;
 
 #[ORM\Entity(repositoryClass: StudyAreaRepository::class)]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyArea implements Stringable, IdInterface
@@ -583,7 +582,7 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  /** @return Collection<Concept> */
+  /** @return Collection<int, Concept> */
   public function getConcepts(): Collection
   {
     return $this->concepts;
@@ -655,7 +654,7 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  /** @return Collection<RelationType> */
+  /** @return Collection<int, RelationType> */
   public function getRelationTypes(): Collection
   {
     return $this->relationTypes;

@@ -32,9 +32,7 @@ class SpreadsheetHelper
     return new Xlsx($spreadsheet);
   }
 
-  /**
-   * Create an Excel response from a spreadsheet.
-   */
+  /** Create an Excel response from a spreadsheet. */
   public function createExcelResponse(Spreadsheet $spreadsheet, string $filename): StreamedResponse
   {
     // Create writer
@@ -59,9 +57,7 @@ class SpreadsheetHelper
       ->setSheetIndex(0);
   }
 
-  /**
-   * Create a CSV response from a spreadsheet.
-   */
+  /** Create a CSV response from a spreadsheet. */
   public function createCsvResponse(Spreadsheet $spreadsheet, string $filename): StreamedResponse
   {
     $writer = $this->createCsvWriter($spreadsheet);

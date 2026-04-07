@@ -433,13 +433,13 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return Collection<UserGroup> */
+  /** @return Collection<int, UserGroup> */
   public function getUserGroups(): Collection
   {
     return $this->userGroups;
   }
 
-  /** @return Collection<Annotation> */
+  /** @return Collection<int, Annotation> */
   public function getAnnotations(): Collection
   {
     return $this->annotations;
