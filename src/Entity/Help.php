@@ -11,7 +11,6 @@ use Drenso\Shared\Interfaces\IdInterface;
 
 /** Each update will be saved as a new iteration of the help entity. */
 #[ORM\Entity(repositoryClass: HelpRepository::class)]
-#[ORM\Table]
 class Help implements IdInterface
 {
   use Blameable;

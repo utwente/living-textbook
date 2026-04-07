@@ -50,7 +50,7 @@ class UserGroupRepository extends ServiceEntityRepository
    * Remove obsolete user groups based on the new study area access type
    * Note that flush is required after this function call!
    */
-  public function removeObsoleteGroups(StudyArea $studyArea)
+  public function removeObsoleteGroups(StudyArea $studyArea): void
   {
     $qb = $this->createQueryBuilder('ug')
       ->where('ug.studyArea = :studyArea')
@@ -74,7 +74,7 @@ class UserGroupRepository extends ServiceEntityRepository
     $groups = $qb->getQuery()->getResult();
 
     // Remove with entity manager to trigger soft delete
-    array_walk($groups, function (UserGroup $group) {
+    array_walk($groups, function (UserGroup $group): void {
       $group->getUsers()->clear();
       foreach ($group->getEmails() as $userGroupEmail) {
         $this->getEntityManager()->remove($userGroupEmail);

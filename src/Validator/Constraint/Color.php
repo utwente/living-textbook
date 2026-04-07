@@ -9,7 +9,8 @@ use Symfony\Component\Validator\Constraints\Regex;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class Color extends Regex
 {
-  public function __construct($options = null)
+  /** @phpstan-ignore missingType.iterableValue */
+  public function __construct(string|array|null $options = null)
   {
     $this->message = 'color.invalid';
     $this->pattern = '/^#([0-9A-F]{3}){1,2}$/i';

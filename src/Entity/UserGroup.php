@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserGroupRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class UserGroup implements IdInterface
 {
@@ -84,7 +83,7 @@ class UserGroup implements IdInterface
     return $this;
   }
 
-  /** @return Collection<User> */
+  /** @return Collection<int, User> */
   public function getUsers(): Collection
   {
     return $this->users;
@@ -108,7 +107,7 @@ class UserGroup implements IdInterface
     return $this;
   }
 
-  /** @return Collection<UserGroupEmail> */
+  /** @return Collection<int, UserGroupEmail> */
   public function getEmails(): Collection
   {
     return $this->emails;

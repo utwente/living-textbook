@@ -9,12 +9,14 @@ use App\Naming\NamingService;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Drenso\Shared\Helper\SpreadsheetHelper;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Cell\CellRange;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_fill;
@@ -23,17 +25,15 @@ use function sprintf;
 use function Symfony\Component\String\u;
 
 /** This class is used to build an Excel sheet with the current study area status. */
-class StudyAreaStatusBuilder
+final class StudyAreaStatusBuilder
 {
-  private ?Spreadsheet $spreadsheet = null;
-
   private ?StudyArea $studyArea = null;
 
   /** @var RelationType[] */
-  private $relationTypes;
+  private array $relationTypes = [];
 
   /** @var Concept[] */
-  private $concepts;
+  private array $concepts = [];
 
   public function __construct(
     private readonly TranslatorInterface $translator,
@@ -50,7 +50,7 @@ class StudyAreaStatusBuilder
    *
    * @throws Exception
    */
-  public function build(StudyArea $studyArea): Response
+  public function build(StudyArea $studyArea): StreamedResponse
   {
     // Save study area
     $this->studyArea = $studyArea;
@@ -62,34 +62,34 @@ class StudyAreaStatusBuilder
     $this->concepts = $this->conceptRepo->findForStudyAreaOrderedByName($studyArea, true);
 
     // Create spreadsheet
-    $this->spreadsheet = new Spreadsheet();
-    $this->spreadsheet->getProperties()->setCreator($this->studyArea->getOwner()->getDisplayName())
+    $spreadsheet = new Spreadsheet();
+    $spreadsheet->getProperties()->setCreator($this->studyArea->getOwner()->getDisplayName())
       ->setTitle($this->studyArea->getName())
       ->setSubject($this->translator->trans('excel.subject', ['%item%' => $this->studyArea->getName()]))
       ->setDescription($this->translator->trans('excel.description', ['%item%' => $this->studyArea->getName()]));
 
     // Create content
-    $this->spreadsheet->removeSheetByIndex(0);
-    $this->addGeneralInfoSheet();
-    $this->addGeneralConceptStatisticsSheet();
-    $this->addGeneralRelationshipStatisticsSheet();
-    $this->addDetailedConceptOverviewSheet();
-    $this->addDetailedRelationshipsOverviewSheet();
+    $spreadsheet->removeSheetByIndex(0);
+    $this->addGeneralInfoSheet($spreadsheet);
+    $this->addGeneralConceptStatisticsSheet($spreadsheet);
+    $this->addGeneralRelationshipStatisticsSheet($spreadsheet);
+    $this->addDetailedConceptOverviewSheet($spreadsheet);
+    $this->addDetailedRelationshipsOverviewSheet($spreadsheet);
 
     // Reset active sheet index and selected cells
-    foreach ($this->spreadsheet->getAllSheets() as $sheet) {
+    foreach ($spreadsheet->getAllSheets() as $sheet) {
       $sheet->setSelectedCell(CellAddress::fromColumnAndRow(1, 1));
     }
-    $this->spreadsheet->setActiveSheetIndex(0);
+    $spreadsheet->setActiveSheetIndex(0);
 
-    return $this->spreadsheetHelper->createExcelResponse($this->spreadsheet,
+    return $this->spreadsheetHelper->createExcelResponse($spreadsheet,
       sprintf('%s_status.xlsx', $studyArea->getName()));
   }
 
   /** @throws Exception */
-  private function addGeneralInfoSheet()
+  private function addGeneralInfoSheet(Spreadsheet $spreadsheet): void
   {
-    $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-info._tab');
+    $sheet = $this->spreadsheetHelper->createSheet($spreadsheet, 'excel.sheet.general-info._tab');
 
     $column = 1;
     $row    = 1;
@@ -126,9 +126,9 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addGeneralConceptStatisticsSheet()
+  private function addGeneralConceptStatisticsSheet(Spreadsheet $spreadsheet): void
   {
-    $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-concept-statistics._tab');
+    $sheet = $this->spreadsheetHelper->createSheet($spreadsheet, 'excel.sheet.general-concept-statistics._tab');
 
     $column = 1;
     $row    = 1;
@@ -151,7 +151,7 @@ class StudyAreaStatusBuilder
 
     $column = 2;
     $counts = array_fill(0, 9, 0);
-    $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row) {
+    $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row): void {
       if ($condition) {
         $this->spreadsheetHelper->setCellValue($sheet, $column + $index, $row + 1 + $counts[$index], $concept->getName());
         $counts[$index]++;
@@ -183,9 +183,9 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addGeneralRelationshipStatisticsSheet()
+  private function addGeneralRelationshipStatisticsSheet(Spreadsheet $spreadsheet): void
   {
-    $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.general-relationship-statistics._tab');
+    $sheet = $this->spreadsheetHelper->createSheet($spreadsheet, 'excel.sheet.general-relationship-statistics._tab');
 
     $column = 1;
     $row    = 1;
@@ -226,9 +226,9 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addDetailedRelationshipsOverviewSheet()
+  private function addDetailedRelationshipsOverviewSheet(Spreadsheet $spreadsheet): void
   {
-    $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.detailed-relationships-overview._tab');
+    $sheet = $this->spreadsheetHelper->createSheet($spreadsheet, 'excel.sheet.detailed-relationships-overview._tab');
 
     $column = 1;
     $row    = 1;
@@ -293,9 +293,9 @@ class StudyAreaStatusBuilder
   }
 
   /** @throws Exception */
-  private function addDetailedConceptOverviewSheet()
+  private function addDetailedConceptOverviewSheet(Spreadsheet $spreadsheet): void
   {
-    $sheet = $this->spreadsheetHelper->createSheet($this->spreadsheet, 'excel.sheet.detailed-concept-overview._tab');
+    $sheet = $this->spreadsheetHelper->createSheet($spreadsheet, 'excel.sheet.detailed-concept-overview._tab');
 
     for ($column = 1; $column <= 13; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);

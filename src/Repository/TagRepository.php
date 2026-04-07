@@ -33,7 +33,7 @@ class TagRepository extends ServiceEntityRepository
    * @noinspection PhpDocMissingThrowsInspection
    * @noinspection PhpUnhandledExceptionInspection
    */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->select('COUNT(t.id)')

@@ -3,135 +3,85 @@
 namespace App\Database\Traits;
 
 use DateTime;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 trait Blameable
 {
-  /** @var DateTime */
-  #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
+  #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: false)]
   #[Gedmo\Timestampable(on: 'create')]
-  private $createdAt;
+  private ?DateTimeInterface $createdAt = null;
 
-  /** @var string */
-  #[ORM\Column(name: 'created_by', type: 'string', length: 255, nullable: true)]
+  #[ORM\Column(name: 'created_by', type: Types::STRING, length: 255, nullable: true)]
   #[Gedmo\Blameable(on: 'create')]
-  private $createdBy;
+  private ?string $createdBy = null;
 
-  /** @var DateTime */
-  #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: true)]
+  #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: true)]
   #[Gedmo\Timestampable(on: 'update')]
-  private $updatedAt;
+  private ?DateTimeInterface $updatedAt = null;
 
-  /** @var string */
-  #[ORM\Column(name: 'updated_by', type: 'string', length: 255, nullable: true)]
+  #[ORM\Column(name: 'updated_by', type: Types::STRING, length: 255, nullable: true)]
   #[Gedmo\Blameable(on: 'update')]
-  private $updatedBy;
+  private ?string $updatedBy = null;
 
   /** Get the last update time, which is either creation time or update time */
-  public function getLastUpdated()
+  public function getLastUpdated(): ?DateTimeInterface
   {
     return $this->getUpdatedAt() ?? $this->getCreatedAt();
   }
 
   /** Get the last updated by, which is either creation by or update by */
-  public function getLastUpdatedBy()
+  public function getLastUpdatedBy(): ?string
   {
     return $this->getUpdatedBy() ?? $this->getCreatedBy();
   }
 
-  /**
-   * Set createdAt.
-   *
-   * @param DateTime $createdAt
-   *
-   * @return $this
-   */
-  public function setCreatedAt($createdAt)
+  public function setCreatedAt(DateTime $createdAt): self
   {
     $this->createdAt = $createdAt;
 
     return $this;
   }
 
-  /**
-   * Get createdAt.
-   *
-   * @return DateTime
-   */
-  public function getCreatedAt()
+  public function getCreatedAt(): ?DateTimeInterface
   {
     return $this->createdAt;
   }
 
-  /**
-   * Set createdBy.
-   *
-   * @param string $createdBy
-   *
-   * @return $this
-   */
-  public function setCreatedBy($createdBy)
+  public function setCreatedBy(?string $createdBy): self
   {
     $this->createdBy = $createdBy;
 
     return $this;
   }
 
-  /**
-   * Get createdBy.
-   *
-   * @return string
-   */
-  public function getCreatedBy()
+  public function getCreatedBy(): ?string
   {
     return $this->createdBy;
   }
 
-  /**
-   * Set updatedAt.
-   *
-   * @param DateTime $updatedAt
-   *
-   * @return $this
-   */
-  public function setUpdatedAt($updatedAt)
+  public function setUpdatedAt(?DateTime $updatedAt): self
   {
     $this->updatedAt = $updatedAt;
 
     return $this;
   }
 
-  /**
-   * Get updatedAt.
-   *
-   * @return DateTime
-   */
-  public function getUpdatedAt()
+  public function getUpdatedAt(): ?DateTimeInterface
   {
     return $this->updatedAt;
   }
 
-  /**
-   * Set updatedBy.
-   *
-   * @param string $updatedBy
-   *
-   * @return $this
-   */
-  public function setUpdatedBy($updatedBy)
+  public function setUpdatedBy(?string $updatedBy): self
   {
     $this->updatedBy = $updatedBy;
 
     return $this;
   }
 
-  /**
-   * Get updatedBy.
-   *
-   * @return string
-   */
-  public function getUpdatedBy()
+  public function getUpdatedBy(): ?string
   {
     return $this->updatedBy;
   }

@@ -12,7 +12,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StudyAreaFieldConfigurationRepository::class)]
-#[ORM\Table]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyAreaFieldConfiguration implements IdInterface
 {

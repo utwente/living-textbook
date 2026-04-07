@@ -32,7 +32,7 @@ class ExportType extends AbstractType
     $resolver->setDefaults([
       'translation_prefix' => self::TRANSLATION_PREFIX,
       'choices'            => $this->exportService->getAvailableProviderKeys(),
-      'choice_label'       => static fn (Options $options): callable => static fn (string $key) => $options['translation_prefix'] . '.' . $key,
+      'choice_label'       => static fn (Options $options): callable => static fn (string $key): string => $options['translation_prefix'] . '.' . $key,
       'invalid_message'    => 'export_type.invalid-type',
       'constraints'        => [
         new NotNull(message: 'export_type.not-null'),

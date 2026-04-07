@@ -38,7 +38,7 @@ class ConceptEntityHandler extends AbstractEntityHandler
   {
     $this->validate($concept);
 
-    $updateFunction = function () use (&$originalIncomingRelations, &$originalOutgoingRelations) {
+    $updateFunction = function () use (&$originalIncomingRelations, &$originalOutgoingRelations): void {
       // Remove outdated relations
       if ($originalOutgoingRelations !== null) {
         foreach ($originalOutgoingRelations as $originalOutgoingRelation) {

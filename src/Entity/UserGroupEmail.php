@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use function strcmp;
 
 #[ORM\Entity(repositoryClass: UserGroupEmailRepository::class)]
-#[ORM\Table]
 #[ORM\Index(columns: ['user_group_id'], name: 'user_group_idx')]
 #[ORM\Index(columns: ['email'], name: 'email_idx')]
 class UserGroupEmail

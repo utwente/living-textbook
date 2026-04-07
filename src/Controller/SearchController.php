@@ -32,6 +32,7 @@ use function strcmp;
 use function strlen;
 use function usort;
 
+/** @phpstan-type SearchElement array{'_data'?: object, '_title'?: string, 'results'?: array<int|string, array{'prio': int, 'property': string, 'data': string|array}>|mixed} */
 #[Route('/{_studyArea<\d+>}/search')]
 class SearchController extends AbstractController
 {
@@ -77,7 +78,7 @@ class SearchController extends AbstractController
       assert($user instanceof User);
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
-      $ownAnnotations = array_filter($allAnnotations, static fn (Annotation $annotation) => $annotation->getUserId() == $userId);
+      $ownAnnotations = array_filter($allAnnotations, static fn (Annotation $annotation): bool => $annotation->getUserId() == $userId);
 
       $result['ownAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($ownAnnotations, $search));
       $result['allAnnotationsData'] = $this->groupAnnotationsByConcept($this->searchData($allAnnotations, $search));
@@ -89,7 +90,7 @@ class SearchController extends AbstractController
   /** @param SearchableInterface[] $data */
   private function searchData(array $data, string $search): array
   {
-    $data = array_map(static fn (SearchableInterface $element) => $element->searchIn($search), $data);
+    $data = array_map(static fn (SearchableInterface $element): array => $element->searchIn($search), $data);
 
     $data = array_filter($data, $this->filterSortData(...));
 
@@ -103,7 +104,7 @@ class SearchController extends AbstractController
   {
     $result = [];
 
-    array_map(static function ($item) use (&$result) {
+    array_map(static function (array $item) use (&$result): void {
       $annotation = $item['_data'];
       assert($annotation instanceof Annotation);
       $concept = $annotation->getConcept();
@@ -122,20 +123,29 @@ class SearchController extends AbstractController
     return $result;
   }
 
-  private function filterSortData($element): bool
+  /** @param SearchElement $element */
+  private function filterSortData(array $element): bool
   {
     return array_key_exists('results', $element) && (is_countable($element['results']) ? count($element['results']) : 0) > 0;
   }
 
-  public static function sortSearchData($a, $b): int
+  /**
+   * @param SearchElement $a
+   * @param SearchElement $b
+   */
+  public static function sortSearchData(array $a, array $b): int
   {
+    if (!array_key_exists('results', $a) || !array_key_exists('results', $b) || !array_key_exists('_title', $a) || !array_key_exists('_title', $b)) {
+      return 0;
+    }
+
     $reduceFunction = static fn ($carry, $item) => max($item['prio'], $carry);
 
     $ap = array_reduce($a['results'], $reduceFunction, 0);
     $bp = array_reduce($b['results'], $reduceFunction, 0);
 
     if ($ap == $bp) {
-      return strcmp((string)$a['_title'], (string)$b['_title']);
+      return strcmp($a['_title'], $b['_title']);
     }
 
     return $bp - $ap;

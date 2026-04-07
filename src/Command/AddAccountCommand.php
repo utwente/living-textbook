@@ -51,11 +51,11 @@ final readonly class AddAccountCommand
       ($user = new User())
         ->setGivenName($helper->ask($input, $output,
           $this->buildQuestion('Provide a given name', 'LTB')
-            ->setValidator(fn ($answer) => $this->validateProp('givenName', $answer))
+            ->setValidator(fn ($answer): mixed => $this->validateProp('givenName', $answer))
         ))
         ->setFamilyName($helper->ask($input, $output,
           $this->buildQuestion('Provide a family name', 'Developer')
-            ->setValidator(fn ($answer) => $this->validateProp('familyName', $answer))
+            ->setValidator(fn ($answer): mixed => $this->validateProp('familyName', $answer))
         ))
         ->setUsername($helper->ask($input, $output,
           $this->buildQuestion('Provide a username (email)', 'developer@ltb.local')

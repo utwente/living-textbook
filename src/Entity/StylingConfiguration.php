@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StylingConfigurationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface

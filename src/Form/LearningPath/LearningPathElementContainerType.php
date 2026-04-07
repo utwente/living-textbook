@@ -50,6 +50,6 @@ class LearningPathElementContainerType extends AbstractType
       ->setDefault('sortable_id', '')
       ->setAllowedTypes('sortable_id', 'string');
 
-    $resolver->setNormalizer('sortable_id', static fn () => bin2hex(random_bytes(16)));
+    $resolver->setNormalizer('sortable_id', static fn (): string => bin2hex(random_bytes(16)));
   }
 }

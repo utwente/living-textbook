@@ -17,7 +17,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     return [KernelEvents::EXCEPTION => [['onKernelException', 0]]];
   }
 
-  public function onKernelException(ExceptionEvent $event)
+  public function onKernelException(ExceptionEvent $event): void
   {
     $exception = $event->getThrowable();
 

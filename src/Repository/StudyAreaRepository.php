@@ -23,7 +23,7 @@ class StudyAreaRepository extends ServiceEntityRepository
   }
 
   /** @throws NonUniqueResultException */
-  public function getOwnerAmount(User $owner)
+  public function getOwnerAmount(User $owner): mixed
   {
     return $this->createQueryBuilder('sa')
       ->where('sa.owner = :owner')

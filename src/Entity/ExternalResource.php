@@ -30,7 +30,6 @@ use function stripos;
 use function trim;
 
 #[ORM\Entity(repositoryClass: ExternalResourceRepository::class)]
-#[ORM\Table]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class ExternalResource implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
@@ -128,7 +127,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->getTitle();
   }
 
-  /** @return Collection<Concept> */
+  /** @return Collection<int, Concept> */
   public function getConcepts(): Collection
   {
     return $this->concepts;

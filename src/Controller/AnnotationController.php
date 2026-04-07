@@ -242,7 +242,7 @@ class AnnotationController extends AbstractController
     ], 'json'), 200, [], true);
   }
 
-  private function validate($object, ValidatorInterface $validator, SerializerInterface $serializer): ?JsonResponse
+  private function validate(Annotation|AnnotationComment $object, ValidatorInterface $validator, SerializerInterface $serializer): ?JsonResponse
   {
     // Validate data
     $violations = $validator->validate($object);

@@ -21,7 +21,7 @@ class AnnotationRepository extends ServiceEntityRepository
     parent::__construct($registry, Annotation::class);
   }
 
-  public function getForUserAndStudyArea(User $user, StudyArea $studyArea)
+  public function getForUserAndStudyArea(User $user, StudyArea $studyArea): mixed
   {
     // Default query part
     $qb = $this->createQueryBuilder('a');
@@ -42,7 +42,7 @@ class AnnotationRepository extends ServiceEntityRepository
    *
    * @return Annotation[]
    */
-  public function getForUserAndConcept(User $user, Concept $concept)
+  public function getForUserAndConcept(User $user, Concept $concept): mixed
   {
     // Default query part
     $qb = $this->createQueryBuilder('a');
@@ -79,7 +79,7 @@ class AnnotationRepository extends ServiceEntityRepository
 
     // Map result to id => count array
     $result = [];
-    array_walk($counts, static function ($value) use (&$result) {
+    array_walk($counts, static function (array $value) use (&$result): void {
       $result[$value[1]] = $value[2];
     });
 

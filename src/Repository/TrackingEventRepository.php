@@ -28,7 +28,7 @@ class TrackingEventRepository extends ServiceEntityRepository
   }
 
   /** Remove all tracking events for a certain study area. */
-  public function purgeForStudyArea(StudyArea $studyArea)
+  public function purgeForStudyArea(StudyArea $studyArea): void
   {
     $this->createQueryBuilder('te')
       ->delete()

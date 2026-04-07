@@ -6,9 +6,10 @@ use App\Database\Traits\Blameable;
 use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Repository\AnnotationCommentRepository;
-use DateTime;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
@@ -16,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AnnotationCommentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class AnnotationComment implements IdInterface
@@ -42,9 +42,9 @@ class AnnotationComment implements IdInterface
 
   #[JMSA\VirtualProperty]
   #[JMSA\Expose]
-  public function getAuthoredTime(): DateTime
+  public function getAuthoredTime(): DateTimeInterface
   {
-    return $this->createdAt;
+    return $this->createdAt ?? throw new MustNotBeNullException();
   }
 
   public function getUser(): ?User

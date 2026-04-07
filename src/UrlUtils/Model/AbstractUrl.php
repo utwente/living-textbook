@@ -4,8 +4,7 @@ namespace App\UrlUtils\Model;
 
 abstract class AbstractUrl
 {
-  /** @var string */
-  protected $url;
+  protected string $url;
 
   /** AbstractUrl constructor. */
   public function __construct(string $url)

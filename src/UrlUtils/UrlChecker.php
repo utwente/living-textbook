@@ -195,7 +195,7 @@ class UrlChecker
    *
    * @return Url[]|array Returns a flat array of URLs without origin
    */
-  private function scanStudyArea(StudyArea $studyArea)
+  private function scanStudyArea(StudyArea $studyArea): array
   {
     $urls = $this->urlScanner->scanStudyArea($studyArea);
     foreach ($studyArea->getConcepts() as $concept) {
@@ -216,7 +216,7 @@ class UrlChecker
 
     $router = $this->router;
     // Exclude latex URLs
-    $urls = array_filter($urls, static function (Url $entry) use ($router) {
+    $urls = array_filter($urls, static function (Url $entry) use ($router): bool {
       if (!$entry->isInternal()) {
         return true;
       }
@@ -263,7 +263,7 @@ class UrlChecker
    *
    * @throws InvalidArgumentException
    */
-  private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, $expiry): void
+  private function cacheUrl(CacheableUrl $cacheableUrl, AdapterInterface $cache, int $expiry): void
   {
     $cache->save(
       $cache->getItem($cacheableUrl->getCachekey())

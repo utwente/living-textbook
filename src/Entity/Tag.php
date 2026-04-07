@@ -19,7 +19,6 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Tag implements StudyAreaFilteredInterface, IdInterface
@@ -59,7 +58,7 @@ class Tag implements StudyAreaFilteredInterface, IdInterface
     $this->concepts = new ArrayCollection();
   }
 
-  /** @return Collection<Concept> */
+  /** @return Collection<int, Concept> */
   public function getConcepts(): Collection
   {
     return $this->concepts;

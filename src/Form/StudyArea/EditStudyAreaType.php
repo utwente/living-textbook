@@ -10,6 +10,7 @@ use App\Form\Type\SaveType;
 use App\Repository\StudyAreaGroupRepository;
 use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -62,7 +63,7 @@ class EditStudyAreaType extends AbstractType
           'label'         => 'study-area.groups.group',
           'choice_label'  => 'name',
           'select2'       => true,
-          'query_builder' => static fn (StudyAreaGroupRepository $repo) => $repo->createQueryBuilder('sag')
+          'query_builder' => static fn (StudyAreaGroupRepository $repo): QueryBuilder => $repo->createQueryBuilder('sag')
             ->orderBy('sag.name', 'ASC'),
         ]);
     }
@@ -137,7 +138,7 @@ class EditStudyAreaType extends AbstractType
           'class'         => Tag::class,
           'choice_label'  => 'name',
           'select2'       => true,
-          'query_builder' => static fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($studyArea),
+          'query_builder' => static fn (TagRepository $tagRepository): QueryBuilder => $tagRepository->findForStudyAreaQb($studyArea),
         ]);
     }
 

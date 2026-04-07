@@ -17,3 +17,5 @@ drenso_shared:
   serializer:
     handlers:
       id_map: ~
+  services:
+    spreadsheethelper: ~

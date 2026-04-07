@@ -18,7 +18,7 @@ class ContributorRepository extends ServiceEntityRepository
   }
 
   /** @return Contributor[] */
-  public function findForStudyArea(StudyArea $studyArea)
+  public function findForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->getQuery()->getResult();
@@ -37,7 +37,7 @@ class ContributorRepository extends ServiceEntityRepository
    *
    * @return Contributor[]
    */
-  public function findForConcepts(array $concepts)
+  public function findForConcepts(array $concepts): mixed
   {
     return $this->createQueryBuilder('c')
       ->distinct()
@@ -48,7 +48,7 @@ class ContributorRepository extends ServiceEntityRepository
   }
 
   /** @throws NonUniqueResultException */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->createQueryBuilder('c')
       ->select('COUNT(c.id)')

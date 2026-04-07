@@ -28,21 +28,21 @@ class EmailListType extends AbstractType
   {
     $builder
       ->addModelTransformer(new CallbackTransformer(
-        static function (?array $transform) {
+        static function (?array $transform): string {
           if ($transform === null) {
             return '';
           }
 
           return implode(PHP_EOL, $transform);
         },
-        static function (?string $reverseTransform) {
+        static function (?string $reverseTransform): array {
           if ($reverseTransform === null) {
             return [];
           }
 
           $emails = array_map(static fn ($email) => mb_strtolower(trim($email)), preg_split('/\r\n|\r|\n|,/', $reverseTransform));
 
-          return array_filter($emails, static fn ($email) => $email !== '');
+          return array_filter($emails, static fn ($email): bool => $email !== '');
         }
       ));
   }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
+use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
@@ -16,12 +17,18 @@ return RectorConfig::configure()
   ->withPhpSets()
   ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml')
   ->withSymfonyContainerPhp(__DIR__ . '/tests/rector/symfony-container.php')
+  ->withPreparedSets(
+    typeDeclarations: true,
+  )
   ->withComposerBased(
     twig: true,
-    phpunit: true,
     doctrine: true,
+    phpunit: true,
     symfony: true,
   )
+  ->withSets([
+    DoctrineSetList::DOCTRINE_CODE_QUALITY,
+  ])
   ->withSkip([
     ClassPropertyAssignToConstructorPromotionRector::class, // Messes up the annotations
   ]);

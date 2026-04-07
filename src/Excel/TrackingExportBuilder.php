@@ -8,10 +8,12 @@ use App\Entity\TrackingEvent;
 use App\Naming\NamingService;
 use App\Repository\PageLoadRepository;
 use App\Repository\TrackingEventRepository;
+use Drenso\Shared\Helper\SpreadsheetHelper;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
@@ -19,28 +21,15 @@ use function assert;
 use function sprintf;
 use function strtolower;
 
-class TrackingExportBuilder
+final readonly class TrackingExportBuilder
 {
-  private readonly NamingService $namingService;
-
-  private readonly TranslatorInterface $translator;
-
-  private readonly SpreadsheetHelper $spreadsheetHelper;
-
-  private readonly PageLoadRepository $pageLoadRepository;
-
-  private readonly TrackingEventRepository $trackingEventRepository;
-
-  /** TrackingExportBuilder constructor. */
   public function __construct(
-    TranslatorInterface $translator, SpreadsheetHelper $spreadsheetHelper, PageLoadRepository $pageLoadRepository,
-    TrackingEventRepository $trackingEventRepository, NamingService $namingService)
+    private TranslatorInterface $translator,
+    private SpreadsheetHelper $spreadsheetHelper,
+    private PageLoadRepository $pageLoadRepository,
+    private TrackingEventRepository $trackingEventRepository,
+    private NamingService $namingService)
   {
-    $this->translator              = $translator;
-    $this->spreadsheetHelper       = $spreadsheetHelper;
-    $this->pageLoadRepository      = $pageLoadRepository;
-    $this->trackingEventRepository = $trackingEventRepository;
-    $this->namingService           = $namingService;
   }
 
   /**
@@ -71,7 +60,7 @@ class TrackingExportBuilder
    *
    * @throws Exception
    */
-  public function buildResponse(StudyArea $studyArea): Response
+  public function buildResponse(StudyArea $studyArea): StreamedResponse
   {
     // Create response
     return $this->spreadsheetHelper->createExcelResponse($this->buildSpreadsheet($studyArea),

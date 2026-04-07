@@ -34,8 +34,7 @@ class CacheableUrl extends AbstractUrl
     return md5($this->getUrl());
   }
 
-  /** @return CacheableUrl */
-  public static function fromUrl(Url $url)
+  public static function fromUrl(Url $url): self
   {
     return new self($url->getUrl());
   }

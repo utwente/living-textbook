@@ -217,7 +217,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     if ($this->studyArea->isApiEnabled()) {
       // Validate whether the area is frozen
       if (!$event->getRequest()->isMethod('GET') && $this->studyArea->isFrozen()) {
-        $event->setController(static fn () => new ApiErrorResponse(
+        $event->setController(static fn (): ApiErrorResponse => new ApiErrorResponse(
           'Study area frozen',
           Response::HTTP_BAD_REQUEST,
           'This study area has been frozen'
@@ -228,7 +228,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     }
 
     // Return an error response
-    $event->setController(static fn () => new ApiErrorResponse(
+    $event->setController(static fn (): ApiErrorResponse => new ApiErrorResponse(
       'API disabled',
       Response::HTTP_FORBIDDEN,
       'API not enabled for this study area'

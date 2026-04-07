@@ -10,7 +10,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 use function array_key_exists;
 use function array_merge;
-use function assert;
 use function in_array;
 use function sprintf;
 
@@ -49,7 +48,6 @@ class ConceptRelationValidator extends ConstraintValidator
     $this->violations = [];
     $map              = [];
     foreach ($all as $relation) {
-      assert($relation instanceof \App\Entity\ConceptRelation);
       $source = $relation->getSource();
       $target = $relation->getTarget();
 
