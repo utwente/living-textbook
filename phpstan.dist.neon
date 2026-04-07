@@ -10,6 +10,9 @@ parameters:
         - public/
         - src/
         - tests/
+    excludePaths:
+        analyse:
+            - config/reference.php
     doctrine:
         objectManagerLoader: tests/phpstan/object-manager.php
         reportDynamicQueryBuilders: false
