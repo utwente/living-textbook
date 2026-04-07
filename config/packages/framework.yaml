@@ -1,10 +1,6 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-  annotations: false
   secret: '%env(string:key:app:json:file:resolve:SECRETS_FILE)%'
-  csrf_protection: ~
-  http_method_override: false
-  handle_all_throwables: true
 
   rate_limiter:
     latex_generator:
@@ -25,8 +21,6 @@ framework:
 
   #esi: true
   #fragments: true
-  php_errors:
-    log: true
 
 when@dev:
   framework:
