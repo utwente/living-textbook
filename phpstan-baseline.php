@@ -1082,12 +1082,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/TagController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationInterface to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/TrackingController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$date of method Symfony\\\\Component\\\\HttpFoundation\\\\Response\\:\\:setLastModified\\(\\) expects DateTimeInterface\\|null, DateTime\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -3352,12 +3346,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getUserGroups\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getUserIdentifier\\(\\) should return string but returns string\\|null\\.$#',
-	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];

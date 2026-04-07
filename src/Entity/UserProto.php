@@ -57,7 +57,7 @@ class UserProto implements UserInterface, PasswordAuthenticatedUserInterface, Id
   #[Override]
   public function getUserIdentifier(): string
   {
-    return $this->email;
+    return empty($this->email) ? '-' : $this->email;
   }
 
   #[Override]
