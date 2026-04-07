@@ -104,7 +104,6 @@
         "phpunit/phpunit": "12.5.15",
         "rector/rector": "2.3.9",
         "symfony/error-handler": "7.4.8",
-        "symfony/phpunit-bridge": "7.4.8",
         "symfony/stopwatch": "7.4.8",
         "symfony/web-profiler-bundle": "7.4.8",
         "vincentlanglet/twig-cs-fixer": "3.14.0"
@@ -147,7 +146,8 @@
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*",
         "symfony/polyfill-php83": "*",
-        "symfony/polyfill-php84": "*"
+        "symfony/polyfill-php84": "*",
+        "symfony/polyfill-php85": "*"
     },
     "scripts": {
         "auto-scripts": {

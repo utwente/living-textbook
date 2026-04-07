@@ -553,21 +553,6 @@
     "symfony/options-resolver": {
         "version": "v4.0.2"
     },
-    "symfony/phpunit-bridge": {
-        "version": "6.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.3",
-            "ref": "a411a0480041243d97382cac7984f7dce7813c08"
-        },
-        "files": [
-            ".env.test",
-            "bin/phpunit",
-            "phpunit.xml.dist",
-            "tests/bootstrap.php"
-        ]
-    },
     "symfony/polyfill-ctype": {
         "version": "v1.8.0"
     },
