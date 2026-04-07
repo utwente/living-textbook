@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e26b646aaf5aec1086a9ea3981cdfdd6",
+    "content-hash": "43df317e957789ba7019cfbbd5f8915d",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -4404,36 +4404,34 @@
         },
         {
             "name": "rollerworks/password-strength-validator",
-            "version": "v2.1.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollerworks/PasswordStrengthValidator.git",
-                "reference": "70da987ac64029ebad3f167a4a6dd30a07a1fc49"
+                "reference": "bb23ea35001329dccb90b0b7ca43a4f6b1eedef2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/70da987ac64029ebad3f167a4a6dd30a07a1fc49",
-                "reference": "70da987ac64029ebad3f167a4a6dd30a07a1fc49",
+                "url": "https://api.github.com/repos/rollerworks/PasswordStrengthValidator/zipball/bb23ea35001329dccb90b0b7ca43a4f6b1eedef2",
+                "reference": "bb23ea35001329dccb90b0b7ca43a4f6b1eedef2",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.2",
-                "symfony/config": "^6.4 || ^7.4 || ^8.0",
+                "php": ">=8.4",
+                "symfony/config": "^7.4 || ^8.0",
                 "symfony/polyfill-mbstring": "^1.5.0",
-                "symfony/translation": "^6.4 || ^7.4 || ^8.0",
-                "symfony/validator": "^6.4 || ^7.4 || ^8.0"
+                "symfony/translation": "^7.4 || ^8.0",
+                "symfony/validator": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.10",
-                "phpstan/phpstan-phpunit": "^1.1",
-                "phpstan/phpstan-symfony": "^1.2",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^12.4",
+                "rollerscapes/standards": "^1.0",
                 "symfony/phpunit-bridge": "^7.4 || ^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.0-dev"
+                    "dev-main": "3.0-dev"
                 }
             },
             "autoload": {
@@ -4466,9 +4464,9 @@
             ],
             "support": {
                 "issues": "https://github.com/rollerworks/PasswordStrengthValidator/issues",
-                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v2.1.0"
+                "source": "https://github.com/rollerworks/PasswordStrengthValidator/tree/v3.0.0"
             },
-            "time": "2026-02-25T18:57:22+00:00"
+            "time": "2025-12-17T15:33:41+00:00"
         },
         {
             "name": "ryakad/pandoc-php",

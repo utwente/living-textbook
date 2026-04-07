@@ -20,11 +20,11 @@ class NewPasswordType extends AbstractType
       'constraints' => [
         // Max length due to BCrypt, @see BCryptPasswordEncoder
         new Length(max: 72),
-        new PasswordStrength([
-          'minLength'   => 8,
-          'minStrength' => 4,
-          'message'     => 'user.password-too-weak',
-        ]),
+        new PasswordStrength(
+          minStrength: 4,
+          minLength: 8,
+          message: 'user.password-too-weak',
+        ),
       ],
       'invalid_message' => 'user.password-no-match',
       'first_options'   => ['label' => 'user.password'],
