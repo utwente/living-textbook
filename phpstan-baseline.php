@@ -386,18 +386,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Attribute/DenyOnFrozenStudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Command/AddAccountCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Symfony\\\\Component\\\\Console\\\\Helper\\\\QuestionHelper and Symfony\\\\Component\\\\Console\\\\Helper\\\\QuestionHelper will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Command/AddAccountCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getAddress\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 5,

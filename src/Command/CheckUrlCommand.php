@@ -3,28 +3,17 @@
 namespace App\Command;
 
 use App\UrlUtils\UrlChecker;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('ltb:check:urls')]
-class CheckUrlCommand extends Command
+#[AsCommand('ltb:check:urls', description: 'Checks all the URLs in the living textbook to see if there are no dead links.')]
+final readonly class CheckUrlCommand
 {
-  public function __construct(private readonly UrlChecker $urlChecker)
+  public function __construct(private UrlChecker $urlChecker)
   {
-    parent::__construct();
   }
 
-  #[Override]
-  protected function configure(): void
-  {
-    $this->setDescription('Checks all the URLs in the living textbook to see if there are no dead links.');
-  }
-
-  #[Override]
-  protected function execute(InputInterface $input, OutputInterface $output): int
+  public function __invoke(): int
   {
     $this->urlChecker->checkAllUrls(false, false);
 

@@ -3,26 +3,20 @@
 namespace App\Command;
 
 use App\Analytics\AnalyticsService;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand('ltb:python:build')]
-class BuildPythonEnvironmentCommand extends Command
+final readonly class BuildPythonEnvironmentCommand
 {
-  public function __construct(private readonly AnalyticsService $analyticsService)
+  public function __construct(private AnalyticsService $analyticsService)
   {
-    parent::__construct();
   }
 
-  #[Override]
-  protected function execute(InputInterface $input, OutputInterface $output): int
+  public function __invoke(SymfonyStyle $io): int
   {
-    $style = new SymfonyStyle($input, $output);
-    $this->analyticsService->ensurePythonEnvironment($style);
+    $this->analyticsService->ensurePythonEnvironment($io);
 
     return Command::SUCCESS;
   }
