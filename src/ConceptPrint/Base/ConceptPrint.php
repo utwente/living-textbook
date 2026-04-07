@@ -20,7 +20,7 @@ use function substr;
 
 class ConceptPrint extends LatexBase
 {
-  private Parser $parser;
+  private readonly Parser $parser;
 
   private ?string $baseUrl = null;
 

@@ -9,7 +9,7 @@ use function Symfony\Component\String\u;
 
 class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
 {
-  private string $obj;
+  private readonly string $obj;
   /** @var string */
   private $objs;
 

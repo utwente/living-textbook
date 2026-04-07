@@ -20,10 +20,7 @@ class JsonUploadType extends AbstractType
         'label'       => 'data.json-file',
         'constraints' => [
           new NotNull(),
-          new File([
-            // Allow text/html as the imported file can be detected wrongly
-            'mimeTypes' => ['application/json', 'text/plain', 'text/html'],
-          ]),
+          new File(mimeTypes: ['application/json', 'text/plain', 'text/html']), // Allow text/html as the imported file can be detected wrongly
         ],
       ])
       ->add('submit', SubmitType::class);

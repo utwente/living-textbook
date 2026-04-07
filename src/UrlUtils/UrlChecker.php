@@ -39,33 +39,33 @@ use const CURLOPT_URL;
 
 class UrlChecker
 {
-  private FilesystemAdapter $bad0UrlCache;
+  private readonly FilesystemAdapter $bad0UrlCache;
 
-  private FilesystemAdapter $bad1UrlCache;
+  private readonly FilesystemAdapter $bad1UrlCache;
 
-  private FilesystemAdapter $bad2UrlCache;
+  private readonly FilesystemAdapter $bad2UrlCache;
 
-  private FilesystemAdapter $bad4UrlCache;
+  private readonly FilesystemAdapter $bad4UrlCache;
 
-  private FilesystemAdapter $bad7UrlCache;
+  private readonly FilesystemAdapter $bad7UrlCache;
 
-  private FilesystemAdapter $goodUrlsCache;
+  private readonly FilesystemAdapter $goodUrlsCache;
 
-  private FilesystemAdapter $studyAreaCache;
+  private readonly FilesystemAdapter $studyAreaCache;
 
-  private ContributorRepository $contributorRepository;
+  private readonly ContributorRepository $contributorRepository;
 
-  private ExternalResourceRepository $externalResourceRepository;
+  private readonly ExternalResourceRepository $externalResourceRepository;
 
-  private LearningOutcomeRepository $learningOutcomeRepository;
+  private readonly LearningOutcomeRepository $learningOutcomeRepository;
 
-  private LearningPathRepository $learningPathRepository;
+  private readonly LearningPathRepository $learningPathRepository;
 
-  private StudyAreaRepository $studyAreaRepository;
+  private readonly StudyAreaRepository $studyAreaRepository;
 
-  private UrlScanner $urlScanner;
+  private readonly UrlScanner $urlScanner;
 
-  private RouterInterface $router;
+  private readonly RouterInterface $router;
 
   /** UrlChecker constructor. */
   public function __construct(

@@ -19,7 +19,7 @@ class NewPasswordType extends AbstractType
       'type'        => PasswordType::class,
       'constraints' => [
         // Max length due to BCrypt, @see BCryptPasswordEncoder
-        new Length(['max' => 72]),
+        new Length(max: 72),
         new PasswordStrength([
           'minLength'   => 8,
           'minStrength' => 4,

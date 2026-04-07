@@ -9,14 +9,14 @@ use function Symfony\Component\String\u;
 
 class ResolvedConceptNames implements ResolvedNamesInterface
 {
-  private string $definition;
-  private string $examples;
-  private string $howTo;
-  private string $introduction;
-  private string $priorKnowledge;
-  private string $selfAssessment;
-  private string $synonyms;
-  private string $theoryExplanation;
+  private readonly string $definition;
+  private readonly string $examples;
+  private readonly string $howTo;
+  private readonly string $introduction;
+  private readonly string $priorKnowledge;
+  private readonly string $selfAssessment;
+  private readonly string $synonyms;
+  private readonly string $theoryExplanation;
 
   public function __construct(
     string $definition,

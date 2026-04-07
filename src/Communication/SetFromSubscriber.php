@@ -10,7 +10,7 @@ use Symfony\Component\Mime\Email;
 
 class SetFromSubscriber implements EventSubscriberInterface
 {
-  private string $from;
+  private readonly string $from;
 
   public function __construct(string $from)
   {

@@ -10,7 +10,7 @@ use function ltrim;
 
 class LtbRouter
 {
-  private RouterInterface $router;
+  private readonly RouterInterface $router;
 
   public function __construct(RouterInterface $router)
   {

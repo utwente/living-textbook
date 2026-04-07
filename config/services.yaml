@@ -61,9 +61,5 @@ services:
     arguments:
       $from: '%env(MAIL_FROM)%'
 
-  App\Twig\HighlightExtension:
-    tags:
-      - { name: twig.extension }
-
   App\UrlUtils\UrlScanner:
     lazy: true

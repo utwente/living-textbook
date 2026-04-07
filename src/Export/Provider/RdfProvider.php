@@ -28,13 +28,13 @@ use function sprintf;
 #[Autoconfigure(lazy: true)]
 class RdfProvider implements ProviderInterface
 {
-  private ConceptRepository $conceptRepository;
+  private readonly ConceptRepository $conceptRepository;
 
-  private LearningPathRepository $learningPathRepository;
+  private readonly LearningPathRepository $learningPathRepository;
 
-  private RouterInterface $router;
+  private readonly RouterInterface $router;
 
-  private SerializerInterface $serializer;
+  private readonly SerializerInterface $serializer;
 
   public function __construct(ConceptRepository $conceptRepository, LearningPathRepository $learningPathRepository, RouterInterface $router, SerializerInterface $serializer)
   {

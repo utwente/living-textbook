@@ -83,7 +83,7 @@ class AddAccountCommand extends Command
             ->setValidator(function ($answer) {
               $violations = $this->validator->validate($answer, [
                 new NotBlank(),
-                new Length(['max' => 72]),
+                new Length(max: 72),
                 new PasswordStrength(minStrength: 4, minLength: 8, message: 'user.password-too-weak'),
               ]);
 

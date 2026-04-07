@@ -79,7 +79,7 @@ class DuplicateType extends AbstractType
         }),
         'choice_label' => 'name',
         'constraints'  => [
-          new NotNull(['groups' => [self::CHOICE_EXISTING]]),
+          new NotNull(groups: [self::CHOICE_EXISTING]),
         ],
       ])
       ->add(self::NEW_STUDY_AREA, EditStudyAreaType::class, [

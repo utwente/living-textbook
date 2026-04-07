@@ -18,9 +18,9 @@ use function sprintf;
 #[Autoconfigure(lazy: true)]
 class LearningPathProvider implements ProviderInterface
 {
-  private LearningPathRepository $learningPathRepository;
+  private readonly LearningPathRepository $learningPathRepository;
 
-  private SerializerInterface $serializer;
+  private readonly SerializerInterface $serializer;
 
   public function __construct(LearningPathRepository $learningPathRepository, SerializerInterface $serializer)
   {

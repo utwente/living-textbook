@@ -29,16 +29,16 @@ use function sprintf;
 #[Autoconfigure(lazy: true)]
 class LinkedSimpleNodeProvider implements ProviderInterface
 {
-  private ConceptRepository $conceptRepository;
-  private ConceptRelationRepository $conceptRelationRepository;
-  private ContributorRepository $contributorRepository;
-  private ExternalResourceRepository $externalResourceRepository;
-  private LearningOutcomeRepository $learningOutcomeRepository;
-  private NamingService $namingService;
-  private RelationTypeRepository $relationTypeRepository;
-  private TagRepository $tagRepository;
-  private LtbRouter $router;
-  private SerializerInterface $serializer;
+  private readonly ConceptRepository $conceptRepository;
+  private readonly ConceptRelationRepository $conceptRelationRepository;
+  private readonly ContributorRepository $contributorRepository;
+  private readonly ExternalResourceRepository $externalResourceRepository;
+  private readonly LearningOutcomeRepository $learningOutcomeRepository;
+  private readonly NamingService $namingService;
+  private readonly RelationTypeRepository $relationTypeRepository;
+  private readonly TagRepository $tagRepository;
+  private readonly LtbRouter $router;
+  private readonly SerializerInterface $serializer;
 
   public function __construct(
     ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,

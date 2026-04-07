@@ -15,11 +15,11 @@ use function preg_match;
  */
 class Url extends AbstractUrl implements Stringable
 {
-  private bool $isPath;
+  private readonly bool $isPath;
 
-  private bool $internal;
+  private readonly bool $internal;
 
-  private UrlContext $context;
+  private readonly UrlContext $context;
 
   public function __construct(string $url, bool $internal, UrlContext $context)
   {

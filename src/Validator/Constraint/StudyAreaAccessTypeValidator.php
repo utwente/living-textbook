@@ -50,8 +50,6 @@ class StudyAreaAccessTypeValidator extends ChoiceValidator
     }
 
     // Forward the call to the Symfony Choice constraint validator, with the allowed values
-    parent::validate($value, new Choice([
-      'choices' => $object->getAvailableAccessTypes($this->security, $this->em),
-    ]));
+    parent::validate($value, new Choice(choices: $object->getAvailableAccessTypes($this->security, $this->em)));
   }
 }
