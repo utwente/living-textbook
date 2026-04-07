@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[Gedmo\SoftDeleteable]
 #[JMSA\ExclusionPolicy('all')]
-#[ORM\Table]
 class LayoutConfiguration implements StudyAreaFilteredInterface
 {
   use Blameable;
@@ -30,6 +29,7 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
   #[Assert\NotNull]
   private ?StudyArea $studyArea = null;
 
+  /** @var mixed[]|null */
   #[ORM\Column(nullable: true)]
   private ?array $layouts = null;
 
@@ -40,7 +40,8 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
   private string $name = '';
 
   /** @var Collection<int, LayoutConfigurationOverride> */
-  #[ORM\OneToMany(mappedBy: 'layoutConfiguration', targetEntity: LayoutConfigurationOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: LayoutConfigurationOverride::class, mappedBy: 'layoutConfiguration', cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  /** @phpstan-ignore-next-line property.onlyRead */
   private Collection $overrides;
 
   #[Override]
@@ -56,11 +57,13 @@ class LayoutConfiguration implements StudyAreaFilteredInterface
     return $this;
   }
 
+  /** @return mixed[]|null */
   public function getLayouts(): ?array
   {
     return $this->layouts;
   }
 
+  /** @param mixed[]|null $layouts */
   public function setLayouts(?array $layouts): self
   {
     $this->layouts = $layouts;

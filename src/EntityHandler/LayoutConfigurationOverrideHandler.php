@@ -6,7 +6,7 @@ use App\Entity\LayoutConfigurationOverride;
 
 class LayoutConfigurationOverrideHandler extends AbstractEntityHandler
 {
-  public function add(LayoutConfigurationOverride $override)
+  public function add(LayoutConfigurationOverride $override): void
   {
     $this->validate($override);
 
@@ -14,13 +14,13 @@ class LayoutConfigurationOverrideHandler extends AbstractEntityHandler
     $this->em->flush();
   }
 
-  public function update(LayoutConfigurationOverride $override)
+  public function update(LayoutConfigurationOverride $override): void
   {
     $this->validate($override);
     $this->em->flush();
   }
 
-  public function delete(LayoutConfigurationOverride $override)
+  public function delete(LayoutConfigurationOverride $override): void
   {
     if ($override->isDeleted()) {
       return;

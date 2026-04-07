@@ -13,14 +13,15 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(['concept', 'stylingConfiguration'])]
 #[Gedmo\SoftDeleteable]
 #[JMSA\ExclusionPolicy('all')]
-#[ORM\Table]
 class StylingConfigurationConceptOverride extends Override
 {
   #[ORM\ManyToOne(inversedBy: 'stylingOverrides')]
   #[JMSA\Expose]
+  /** @phpstan-ignore-next-line doctrine.associationType */
   private Concept $concept;
 
   #[ORM\ManyToOne(inversedBy: 'conceptOverrides')]
+  /** @phpstan-ignore-next-line doctrine.associationType */
   private StylingConfiguration $stylingConfiguration;
 
   public function __construct(

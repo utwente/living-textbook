@@ -71,7 +71,8 @@ class ConceptRelation implements IdInterface
   private ?array $dotronConfig = null;
 
   /** @var Collection<int, StylingConfigurationRelationOverride> */
-  #[ORM\OneToMany(mappedBy: 'relation', targetEntity: StylingConfigurationRelationOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: StylingConfigurationRelationOverride::class, mappedBy: 'relation', cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  /** @phpstan-ignore-next-line property.notFound */
   private Collection $stylingOverrides;
 
   #[JMSA\VirtualProperty]

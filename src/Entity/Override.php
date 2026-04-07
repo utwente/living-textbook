@@ -25,11 +25,13 @@ abstract class Override implements StudyAreaFilteredInterface
   #[Assert\NotNull]
   private StudyArea $studyArea;
 
+  /** @var mixed[]|null */
   #[ORM\Column(nullable: true)]
   #[JMSA\Expose]
   #[Assert\NotNull]
-  private ?array $override = null;
+  private ?array $override;
 
+  /** @param mixed[]|null $override */
   public function __construct(
     StudyArea $studyArea,
     ?array $override,
@@ -44,11 +46,13 @@ abstract class Override implements StudyAreaFilteredInterface
     return $this->studyArea;
   }
 
+  /** @return mixed[]|null */
   public function getOverride(): ?array
   {
     return $this->override;
   }
 
+  /** @param mixed[]|null $override */
   public function setOverride(?array $override): self
   {
     $this->override = $override;

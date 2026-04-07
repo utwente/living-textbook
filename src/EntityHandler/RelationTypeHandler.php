@@ -5,6 +5,7 @@ namespace App\EntityHandler;
 use App\Entity\PendingChange;
 use App\Entity\RelationType;
 use DateTime;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -16,7 +17,7 @@ class RelationTypeHandler extends AbstractEntityHandler
 
     if ($this->useReviewService($snapshot)) {
       $this->reviewService->storeChange(
-        $relationType->getStudyArea(), $relationType, PendingChange::CHANGE_TYPE_ADD, $snapshot);
+        $relationType->getStudyArea() ?? throw new ObjectRequiredException(), $relationType, PendingChange::CHANGE_TYPE_ADD, $snapshot);
     } else {
       $this->em->persist($relationType);
       $this->em->flush();
@@ -33,7 +34,7 @@ class RelationTypeHandler extends AbstractEntityHandler
 
     if ($this->useReviewService($snapshot)) {
       $this->reviewService->storeChange(
-        $relationType->getStudyArea(), $relationType, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
+        $relationType->getStudyArea() ?? throw new ObjectRequiredException(), $relationType, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
     } else {
       $this->em->flush();
     }
@@ -47,14 +48,14 @@ class RelationTypeHandler extends AbstractEntityHandler
     }
 
     // Remove the relation type by setting the deletedAt/By manually
-    $removeFunction = static fn () => $relationType
+    $removeFunction = static fn (): RelationType => $relationType
       ->setDeletedAt(new DateTime())
       ->setDeletedBy($user instanceof UserInterface ? $user->getUserIdentifier() : 'anon.');
 
     if ($this->reviewService !== null) {
       // This must be registered as remove change, but it must be handled differently when actually removed
       $this->reviewService->storeChange(
-        $relationType->getStudyArea(), $relationType, PendingChange::CHANGE_TYPE_REMOVE, null, $removeFunction);
+        $relationType->getStudyArea() ?? throw new ObjectRequiredException(), $relationType, PendingChange::CHANGE_TYPE_REMOVE, null, $removeFunction);
     } else {
       $removeFunction();
       $this->em->flush();

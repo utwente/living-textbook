@@ -32,6 +32,7 @@ abstract class AbstractEntityHandler
     throw new EntityValidationFailedException($violations);
   }
 
+  /** @phpstan-assert-if-true ReviewService $this->reviewService */
   protected function useReviewService(?string $snapshot): bool
   {
     if ($this->reviewService === null) {

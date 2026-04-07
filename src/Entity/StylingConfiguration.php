@@ -39,11 +39,12 @@ class StylingConfiguration implements StudyAreaFilteredInterface, IdInterface
   private string $name = '';
 
   /** @var Collection<int, StylingConfigurationConceptOverride> */
-  #[ORM\OneToMany(mappedBy: 'stylingConfiguration', targetEntity: StylingConfigurationConceptOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: StylingConfigurationConceptOverride::class, mappedBy: 'stylingConfiguration', cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  /** @phpstan-ignore-next-line property.onlyRead */
   private Collection $conceptOverrides;
 
   /** @var Collection<int, StylingConfigurationRelationOverride> */
-  #[ORM\OneToMany(mappedBy: 'stylingConfiguration', targetEntity: StylingConfigurationRelationOverride::class, cascade: ['remove'], fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: StylingConfigurationRelationOverride::class, mappedBy: 'stylingConfiguration', cascade: ['remove'], fetch: 'EXTRA_LAZY')]
   private Collection $relationOverrides;
 
   #[Override]

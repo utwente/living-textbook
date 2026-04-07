@@ -6,7 +6,7 @@ use App\Entity\StylingConfigurationConceptOverride;
 
 class StylingConfigurationConceptOverrideHandler extends AbstractEntityHandler
 {
-  public function add(StylingConfigurationConceptOverride $override)
+  public function add(StylingConfigurationConceptOverride $override): void
   {
     $this->validate($override);
 
@@ -14,13 +14,13 @@ class StylingConfigurationConceptOverrideHandler extends AbstractEntityHandler
     $this->em->flush();
   }
 
-  public function update(StylingConfigurationConceptOverride $override)
+  public function update(StylingConfigurationConceptOverride $override): void
   {
     $this->validate($override);
     $this->em->flush();
   }
 
-  public function delete(StylingConfigurationConceptOverride $override)
+  public function delete(StylingConfigurationConceptOverride $override): void
   {
     if ($override->isDeleted()) {
       return;

@@ -8,16 +8,16 @@ use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\Type;
 use Override;
 
-class StylingConfigurationConceptOverrideApiModel implements IdInterface
+readonly class StylingConfigurationConceptOverrideApiModel implements IdInterface
 {
   protected function __construct(
     #[Groups(['Default'])]
-    protected readonly int $concept,
+    protected int $concept,
     #[Groups(['Default'])]
-    protected readonly int $stylingConfiguration,
+    protected int $stylingConfiguration,
     #[Groups(['Default', 'mutate', 'create'])]
     #[Type('array')]
-    protected readonly array $override,
+    protected ?array $override,
   ) {
   }
 
@@ -44,7 +44,7 @@ class StylingConfigurationConceptOverrideApiModel implements IdInterface
     return $this->stylingConfiguration;
   }
 
-  public function getOverride(): array
+  public function getOverride(): ?array
   {
     return $this->override;
   }

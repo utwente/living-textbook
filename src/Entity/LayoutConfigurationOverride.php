@@ -13,16 +13,18 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(['concept', 'layoutConfiguration'])]
 #[Gedmo\SoftDeleteable]
 #[JMSA\ExclusionPolicy('all')]
-#[ORM\Table]
 class LayoutConfigurationOverride extends Override
 {
   #[ORM\ManyToOne(inversedBy: 'layoutOverrides')]
   #[JMSA\Expose]
+  /** @phpstan-ignore-next-line doctrine.associationType */
   private Concept $concept;
 
   #[ORM\ManyToOne(inversedBy: 'overrides')]
+  /** @phpstan-ignore-next-line doctrine.associationType */
   private LayoutConfiguration $layoutConfiguration;
 
+  /** @param mixed[]|null $override */
   public function __construct(
     StudyArea $studyArea,
     Concept $concept,
