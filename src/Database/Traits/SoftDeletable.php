@@ -62,12 +62,8 @@ trait SoftDeletable
     return $this->deletedBy;
   }
 
-  /**
-   * Is deleted?
-   *
-   * @return bool
-   */
-  public function isDeleted()
+  /** Is deleted? */
+  public function isDeleted(): bool
   {
     return null !== $this->deletedAt;
   }

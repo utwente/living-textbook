@@ -19,7 +19,6 @@ use function bin2hex;
 use function random_bytes;
 
 #[ORM\Entity(repositoryClass: UserApiTokenRepository::class)]
-#[ORM\Table]
 #[ORM\Index(columns: ['token_id'])]
 #[JMSA\ExclusionPolicy('all')]
 class UserApiToken implements UserInterface, PasswordAuthenticatedUserInterface, IdInterface

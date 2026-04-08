@@ -14,7 +14,6 @@ use Override;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TrackingEventRepository::class)]
-#[ORM\Table]
 class TrackingEvent implements StudyAreaFilteredInterface, IdInterface
 {
   use IdTrait;

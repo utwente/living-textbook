@@ -18,7 +18,7 @@ class AbbreviationRepository extends ServiceEntityRepository
   }
 
   /** @return Abbreviation[] */
-  public function findForStudyArea(StudyArea $studyArea)
+  public function findForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->findForStudyAreaQb($studyArea)
       ->getQuery()->getResult();
@@ -33,7 +33,7 @@ class AbbreviationRepository extends ServiceEntityRepository
   }
 
   /** @throws NonUniqueResultException */
-  public function getCountForStudyArea(StudyArea $studyArea)
+  public function getCountForStudyArea(StudyArea $studyArea): mixed
   {
     return $this->createQueryBuilder('a')
       ->select('COUNT(a.id)')

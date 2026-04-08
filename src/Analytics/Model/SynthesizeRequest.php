@@ -123,7 +123,7 @@ class SynthesizeRequest
   }
 
   #[Assert\Callback]
-  public function validate(ExecutionContextInterface $context)
+  public function validate(ExecutionContextInterface $context): void
   {
     if ($this->testMoment >= new DateTimeImmutable()) {
       $context->buildViolation('analytics.before-now')

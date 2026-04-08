@@ -39,10 +39,10 @@ class PermissionsTypes extends AbstractType
 
     // Add transformer to enforce viewer role set to true
     $builder->addModelTransformer(new CallbackTransformer(
-      static function () {
+      static function (): void {
         // No-op
       },
-      static function ($data) {
+      static function (array $data): array {
         $data[UserGroup::GROUP_VIEWER] = true;
 
         return $data;

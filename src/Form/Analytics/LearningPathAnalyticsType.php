@@ -6,6 +6,7 @@ use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Entity\LearningPath;
 use App\Entity\StudyArea;
 use App\Repository\LearningPathRepository;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,7 +32,7 @@ class LearningPathAnalyticsType extends AbstractType
         'class'         => LearningPath::class,
         'select2'       => true,
         'choice_label'  => 'name',
-        'query_builder' => static fn (LearningPathRepository $repo) => $repo->findForStudyAreaQb($studyArea)
+        'query_builder' => static fn (LearningPathRepository $repo): QueryBuilder => $repo->findForStudyAreaQb($studyArea)
           ->orderBy('lp.name'),
         'full_width_label' => true,
       ])

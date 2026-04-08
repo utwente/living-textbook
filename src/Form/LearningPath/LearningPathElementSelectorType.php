@@ -8,6 +8,7 @@ use App\Entity\StudyArea;
 use App\Naming\NamingService;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningOutcomeRepository;
+use Doctrine\ORM\QueryBuilder;
 use JMS\Serializer\SerializerInterface;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -40,7 +41,7 @@ class LearningPathElementSelectorType extends AbstractType
         'choice_label'        => 'name',
         'required'            => false,
         'multiple'            => true,
-        'query_builder'       => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
+        'query_builder'       => static fn (ConceptRepository $conceptRepository): QueryBuilder => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
         'select2'             => true,
         'select2_placeholder' => 'learning-path.select',
       ])
@@ -50,7 +51,7 @@ class LearningPathElementSelectorType extends AbstractType
         'choice_label'        => 'name',
         'required'            => false,
         'multiple'            => true,
-        'query_builder'       => static fn (LearningOutcomeRepository $learningOutcomeRepository) => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+        'query_builder'       => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
         'select2'             => true,
         'select2_placeholder' => 'learning-path.select',
       ])

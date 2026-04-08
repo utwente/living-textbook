@@ -25,7 +25,7 @@ class SetFromSubscriber implements EventSubscriberInterface
     ];
   }
 
-  public function onMessage(MessageEvent $messageEvent)
+  public function onMessage(MessageEvent $messageEvent): void
   {
     $email = $messageEvent->getMessage();
     if (!$email instanceof Email) {

@@ -21,7 +21,7 @@ class UserListener
    * @throws ORMException
    */
   #[ORM\PostPersist]
-  public function updateStudyAreaRights(User $user, PostPersistEventArgs $event)
+  public function updateStudyAreaRights(User $user, PostPersistEventArgs $event): void
   {
     $em = $event->getObjectManager();
 

@@ -33,7 +33,6 @@ use function sort;
 use function strcmp;
 use function unserialize;
 
-/** TODO Migrate array properties to JSON. */
 #[UniqueEntity(['username', 'isOidc'], message: 'user.email-used', errorPath: 'username')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\EntityListeners([UserListener::class])]
@@ -121,7 +120,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   private Collection $userGroups;
 
   /** @var Collection<Annotation> */
-  #[ORM\OneToMany(mappedBy: 'user', targetEntity: Annotation::class)]
+  #[ORM\OneToMany(targetEntity: Annotation::class, mappedBy: 'user')]
   private Collection $annotations;
 
   public function __construct()
@@ -180,12 +179,8 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
       ->setFamilyName($userData->getFamilyName());
   }
 
-  /**
-   * Get the mailer Address for this User.
-   *
-   * @return Address
-   */
-  public function getAddress()
+  /** Get the mailer Address for this User. */
+  public function getAddress(): Address
   {
     return new Address($this->username, $this->getFullName());
   }
@@ -223,12 +218,10 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
    *
    * @param string $serialized the string representation of the object
    *
-   * @return void
-   *
    * @since 5.1.0
    */
   #[Override]
-  public function unserialize($serialized)
+  public function unserialize($serialized): void
   {
     $this->__unserialize(unserialize($serialized));
   }
@@ -319,24 +312,14 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this->password ?? '';
   }
 
-  /**
-   * @param string $password
-   *
-   * @return $this
-   */
-  public function setPassword($password)
+  public function setPassword(?string $password): static
   {
     $this->password = $password;
 
     return $this;
   }
 
-  /**
-   * Get registeredOn.
-   *
-   * @return DateTime
-   */
-  public function getRegisteredOn()
+  public function getRegisteredOn(): DateTime
   {
     return $this->registeredOn;
   }
@@ -353,14 +336,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /**
-   * Set securityRoles.
-   *
-   * @param array $securityRoles
-   *
-   * @return User
-   */
-  public function setSecurityRoles($securityRoles)
+  public function setSecurityRoles(array $securityRoles): static
   {
     sort($securityRoles);
     $this->securityRoles = $securityRoles;
@@ -368,12 +344,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /**
-   * Get securityRoles.
-   *
-   * @return array
-   */
-  public function getSecurityRoles()
+  public function getSecurityRoles(): array
   {
     return $this->securityRoles;
   }
@@ -462,13 +433,13 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
     return $this;
   }
 
-  /** @return Collection<UserGroup> */
+  /** @return Collection<int, UserGroup> */
   public function getUserGroups(): Collection
   {
     return $this->userGroups;
   }
 
-  /** @return Collection<Annotation> */
+  /** @return Collection<int, Annotation> */
   public function getAnnotations(): Collection
   {
     return $this->annotations;

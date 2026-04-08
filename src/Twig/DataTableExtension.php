@@ -22,7 +22,7 @@ class DataTableExtension
   }
 
   #[AsTwigFunction(name: 'dataTable', isSafe: ['html'])]
-  public function dataTable($tableId, array $options = []): string
+  public function dataTable(string $tableId, array $options = []): string
   {
     // Merge options with default ones
     $options = array_merge($this->getDefaultDataTableOptions(), $options);

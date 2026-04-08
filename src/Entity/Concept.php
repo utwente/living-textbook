@@ -42,7 +42,6 @@ use function stripos;
 
 #[ORM\Entity(repositoryClass: ConceptRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 #[ConceptRelationValidator]
@@ -209,7 +208,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  #[ORM\Column(type: 'json', nullable: true)]
+  #[ORM\Column(type: Types::JSON, nullable: true)]
   private ?array $dotronConfig = null;
 
   public function __construct()
@@ -243,7 +242,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 
   /** Check whether the relations have the correct owning data. */
   #[ORM\PreFlush]
-  public function checkEntityRelations()
+  public function checkEntityRelations(): void
   {
     // Check relations
     foreach ($this->getOutgoingRelations() as $relation) {
@@ -266,18 +265,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    * @throws Exception
    */
   #[ORM\PreFlush]
-  public function fixConceptRelationOrder()
+  public function fixConceptRelationOrder(): void
   {
     $this->doFixConceptRelationOrder($this->getOutgoingRelations(), 'getTarget', 'setOutgoingPosition');
     $this->doFixConceptRelationOrder($this->getIncomingRelations(), 'getSource', 'setIncomingPosition');
   }
 
   /** @throws Exception */
-  private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter)
+  private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter): void
   {
     $iterator = $values->getIterator();
     assert($iterator instanceof ArrayIterator);
-    $iterator->uasort(static function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever) {
+    $iterator->uasort(static function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever): int {
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
       return $val === 0
@@ -303,15 +302,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return count($this->outgoingRelations) + count($this->incomingRelations);
   }
 
-  /** @return bool */
   #[JMSA\VirtualProperty]
-  public function isEmpty()
+  public function isEmpty(): bool
   {
     return $this->getDefinition() == '' && !$this->getIntroduction()->hasData();
   }
 
-  /** @return bool */
-  public function hasTextData()
+  public function hasTextData(): bool
   {
     return $this->getDefinition() != ''
         || $this->getIntroduction()->hasData()
@@ -322,13 +319,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   }
 
   /** @return array Array with DateTime and username */
-  public function getLastEditInfo()
+  public function getLastEditInfo(): array
   {
     $lastUpdated   = $this->getLastUpdated();
     $lastUpdatedBy = $this->getLastUpdatedBy();
 
     // Loop relations to see if they have a newer date set
-    $check = static function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
+    $check = static function ($entity) use (&$lastUpdated, &$lastUpdatedBy): void {
       /** @var Blameable $entity */
       if ($entity->getLastUpdated() > $lastUpdated) {
         $lastUpdated   = $entity->getLastUpdated();
@@ -400,7 +397,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     ];
   }
 
-  private function filterDataOn(array &$results, DataInterface $data, int $prio, string $property, string $search)
+  private function filterDataOn(array &$results, DataInterface $data, int $prio, string $property, string $search): void
   {
     assert($data instanceof BaseDataTextObject);
     if ($data->hasData() && stripos((string)$data->getText(), $search) !== false) {
@@ -557,7 +554,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
    *
    * @throws ORMException
    */
-  private function fixConceptRelationReferences(ConceptRelation &$conceptRelation, EntityManagerInterface $em)
+  private function fixConceptRelationReferences(ConceptRelation &$conceptRelation, EntityManagerInterface $em): void
   {
     if ($conceptRelation->getSource()) {
       $sourceRef = $em->getReference(self::class, $conceptRelation->getSourceId());
@@ -630,12 +627,13 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  public function getRelations()
+  /** @return Collection<int, ConceptRelation> */
+  public function getRelations(): Collection
   {
     return $this->getOutgoingRelations();
   }
 
-  /** @return Collection<ConceptRelation> */
+  /** @return Collection<int, ConceptRelation> */
   public function getOutgoingRelations(): Collection
   {
     return $this->outgoingRelations;
@@ -660,7 +658,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<ConceptRelation> */
+  /** @return Collection<int, ConceptRelation> */
   public function getIncomingRelations(): Collection
   {
     return $this->incomingRelations;
@@ -752,7 +750,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<ExternalResource> */
+  /** @return Collection<int, ExternalResource> */
   public function getExternalResources(): Collection
   {
     return $this->externalResources;
@@ -772,7 +770,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<Contributor> */
+  /** @return Collection<int, Contributor> */
   public function getContributors(): Collection
   {
     return $this->contributors;
@@ -818,7 +816,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this->priorKnowledgeOf;
   }
 
-  /** @return Collection<LearningOutcome> */
+  /** @return Collection<int, LearningOutcome> */
   public function getLearningOutcomes(): Collection
   {
     return $this->learningOutcomes;
@@ -838,7 +836,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     return $this;
   }
 
-  /** @return Collection<Tag> */
+  /** @return Collection<int, Tag> */
   public function getTags(): Collection
   {
     return $this->tags;

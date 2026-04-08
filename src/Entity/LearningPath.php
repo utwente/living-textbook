@@ -30,7 +30,6 @@ use function count;
 use function end;
 
 #[ORM\Entity(repositoryClass: LearningPathRepository::class)]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
@@ -197,7 +196,7 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   /**
    * Retrieve the ordered element list.
    *
-   * @return Collection<LearningPathElement>
+   * @return Collection<int, LearningPathElement>
    */
   public function getElements(): Collection
   {

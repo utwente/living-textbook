@@ -26,7 +26,6 @@ use function stripos;
 use function trim;
 
 #[ORM\Entity(repositoryClass: AbbreviationRepository::class)]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class Abbreviation implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface

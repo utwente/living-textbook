@@ -26,8 +26,7 @@ use function str_replace;
 use function trim;
 use function ucwords;
 
-#[ORM\Entity(repositoryClass: RelationTypeRepository::class)] // We do not enable the soft-deletable extension here, as soft-deleted relations should still work after they have been
-#[ORM\Table]
+#[ORM\Entity(repositoryClass: RelationTypeRepository::class)] // We do not enable the soft-deletable extension here, as soft-deleted relations should still work after they have been deleted
 class RelationType implements StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
   use Blameable;

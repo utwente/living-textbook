@@ -13,6 +13,7 @@ use App\Form\Type\SaveType;
 use App\Repository\AbbreviationRepository;
 use App\Repository\ConceptRepository;
 use App\Review\Model\PendingChangeObjectInfo;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -89,7 +90,7 @@ class EditLearningPathType extends AbstractType
         'choice_label'  => 'abbreviation',
         'required'      => false,
         'mapped'        => false,
-        'query_builder' => static fn (AbbreviationRepository $abbreviationRepository) => $abbreviationRepository->findForStudyAreaQb($options['studyArea']),
+        'query_builder' => static fn (AbbreviationRepository $abbreviationRepository): QueryBuilder => $abbreviationRepository->findForStudyAreaQb($options['studyArea']),
         'attr'          => [
           'data-ckeditor-selector' => 'abbreviations', // Register for ckeditor
         ],
@@ -100,7 +101,7 @@ class EditLearningPathType extends AbstractType
         'choice_label'  => 'name',
         'required'      => false,
         'mapped'        => false,
-        'query_builder' => static fn (ConceptRepository $conceptRepository) => $conceptRepository->findForStudyAreaOrderByNameQb($options['studyArea']),
+        'query_builder' => static fn (ConceptRepository $conceptRepository): QueryBuilder => $conceptRepository->findForStudyAreaOrderByNameQb($options['studyArea']),
         'attr'          => [
           'data-ckeditor-selector' => 'concepts', // Register for ckeditor
         ],

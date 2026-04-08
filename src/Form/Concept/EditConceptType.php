@@ -25,6 +25,7 @@ use App\Repository\ExternalResourceRepository;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\TagRepository;
 use App\Review\Model\PendingChangeObjectInfo;
+use Doctrine\ORM\QueryBuilder;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -75,7 +76,7 @@ class EditConceptType extends AbstractType
         'choice_label'  => 'name',
         'required'      => false,
         'multiple'      => true,
-        'query_builder' => static fn (TagRepository $tagRepository) => $tagRepository->findForStudyAreaQb($concept->getStudyArea()),
+        'query_builder' => static fn (TagRepository $tagRepository): QueryBuilder => $tagRepository->findForStudyAreaQb($concept->getStudyArea()),
         'select2'       => true,
         'disabled'      => in_array('tags', $disabledFields),
       ])
@@ -168,7 +169,7 @@ class EditConceptType extends AbstractType
         'choice_label'  => 'title',
         'required'      => false,
         'multiple'      => true,
-        'query_builder' => static fn (ExternalResourceRepository $externalResourceRepository) => $externalResourceRepository->findForStudyAreaQb($studyArea),
+        'query_builder' => static fn (ExternalResourceRepository $externalResourceRepository): QueryBuilder => $externalResourceRepository->findForStudyAreaQb($studyArea),
         'select2'       => true,
         'disabled'      => in_array('externalResources', $disabledFields),
       ])
@@ -183,7 +184,7 @@ class EditConceptType extends AbstractType
         'choice_label'       => 'shortName',
         'required'           => false,
         'multiple'           => true,
-        'query_builder'      => static fn (LearningOutcomeRepository $learningOutcomeRepository) => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+        'query_builder'      => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
         'select2'            => true,
         'disabled'           => in_array('learningOutcomes', $disabledFields),
       ])
@@ -276,7 +277,7 @@ class EditConceptType extends AbstractType
         'choice_label'  => 'name',
         'required'      => false,
         'multiple'      => true,
-        'query_builder' => static fn (ContributorRepository $contributorRepository) => $contributorRepository->findForStudyAreaQb($concept->getStudyArea()),
+        'query_builder' => static fn (ContributorRepository $contributorRepository): QueryBuilder => $contributorRepository->findForStudyAreaQb($concept->getStudyArea()),
         'select2'       => true,
         'disabled'      => in_array('contributors', $disabledFields),
       ])
@@ -303,7 +304,7 @@ class EditConceptType extends AbstractType
         'choice_label'  => 'abbreviation',
         'required'      => false,
         'mapped'        => false,
-        'query_builder' => static fn (AbbreviationRepository $abbreviationRepository) => $abbreviationRepository->createQueryBuilder('a')
+        'query_builder' => static fn (AbbreviationRepository $abbreviationRepository): QueryBuilder => $abbreviationRepository->createQueryBuilder('a')
           ->where('a.studyArea = :studyArea')
           ->setParameter('studyArea', $concept->getStudyArea())
           ->orderBy('a.abbreviation'),

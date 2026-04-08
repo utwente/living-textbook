@@ -106,7 +106,7 @@ class Contributor implements StudyAreaFilteredInterface, ReviewableInterface, Id
     return $this->getName();
   }
 
-  /** @return Collection<Concept> */
+  /** @return Collection<int, Concept> */
   public function getConcepts(): Collection
   {
     return $this->concepts;

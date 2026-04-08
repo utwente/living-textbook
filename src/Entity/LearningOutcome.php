@@ -33,7 +33,6 @@ use function trim;
 
 #[UniqueEntity(fields: ['studyArea', 'number'], message: 'learning-outcome.number-already-used', errorPath: 'number')]
 #[ORM\Entity(repositoryClass: LearningOutcomeRepository::class)]
-#[ORM\Table]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface, ReviewableInterface, IdInterface
 {
@@ -80,7 +79,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     $this->concepts = new ArrayCollection();
   }
 
-  public function getShortName()
+  public function getShortName(): string
   {
     return sprintf('%d - %s', $this->number, $this->name);
   }
@@ -169,7 +168,7 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
     return $this;
   }
 
-  /** @return Collection<Concept> */
+  /** @return Collection<int, Concept> */
   public function getConcepts(): Collection
   {
     return $this->concepts;

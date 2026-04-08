@@ -34,7 +34,6 @@ use function array_values;
 use function usort;
 
 #[ORM\Entity(repositoryClass: StudyAreaRepository::class)]
-#[ORM\Table]
 #[JMSA\ExclusionPolicy('all')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
 class StudyArea implements Stringable, IdInterface
@@ -242,7 +241,7 @@ class StudyArea implements Stringable, IdInterface
     // Get choices, remove public type when not administrator, and field has changed
     $choices = self::getAccessTypes();
     if (!$security->isGranted('ROLE_SUPER_ADMIN') && $prevValue !== self::ACCESS_PUBLIC) {
-      $choices = array_filter($choices, static fn ($item) => $item !== StudyArea::ACCESS_PUBLIC);
+      $choices = array_filter($choices, static fn (string $item): bool => $item !== StudyArea::ACCESS_PUBLIC);
     }
 
     return $choices;
@@ -510,7 +509,7 @@ class StudyArea implements Stringable, IdInterface
     $lastUpdatedBy = $this->getLastUpdatedBy();
 
     // Loop relations to see if they have a newer date set
-    $check = static function ($entity) use (&$lastUpdated, &$lastUpdatedBy) {
+    $check = static function ($entity) use (&$lastUpdated, &$lastUpdatedBy): void {
       if ($entity instanceof Concept) {
         $lastEditInfo = $entity->getLastEditInfo();
         if ($lastEditInfo[0] > $lastUpdated) {
@@ -583,7 +582,7 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  /** @return Collection<Concept> */
+  /** @return Collection<int, Concept> */
   public function getConcepts(): Collection
   {
     return $this->concepts;
@@ -655,7 +654,7 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  /** @return Collection<RelationType> */
+  /** @return Collection<int, RelationType> */
   public function getRelationTypes(): Collection
   {
     return $this->relationTypes;

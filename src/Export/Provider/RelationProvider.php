@@ -4,35 +4,29 @@ namespace App\Export\Provider;
 
 use App\Entity\ConceptRelation;
 use App\Entity\StudyArea;
-use App\Excel\SpreadsheetHelper;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Drenso\Shared\Helper\SpreadsheetHelper;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use function sprintf;
 use function usort;
 
 #[Autoconfigure(lazy: true)]
-class RelationProvider implements ProviderInterface
+final readonly class RelationProvider implements ProviderInterface
 {
-  private readonly ConceptRepository $conceptRepository;
-  private readonly ConceptRelationRepository $conceptRelationRepository;
-  private readonly RelationTypeRepository $relationTypeRepository;
-  private readonly SpreadsheetHelper $spreadsheetHelper;
-
-  public function __construct(ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-    RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)
+  public function __construct(
+    private ConceptRepository $conceptRepository,
+    private ConceptRelationRepository $conceptRelationRepository,
+    private RelationTypeRepository $relationTypeRepository,
+    private SpreadsheetHelper $spreadsheetHelper)
   {
-    $this->conceptRepository         = $conceptRepository;
-    $this->conceptRelationRepository = $conceptRelationRepository;
-    $this->relationTypeRepository    = $relationTypeRepository;
-    $this->spreadsheetHelper         = $spreadsheetHelper;
   }
 
   #[Override]
@@ -62,7 +56,7 @@ EOT;
     $links    = $this->conceptRelationRepository->findByConcepts($concepts);
 
     // Sort them first of source name, than on target name
-    usort($links, static function (ConceptRelation $a, ConceptRelation $b) {
+    usort($links, static function (ConceptRelation $a, ConceptRelation $b): int {
       if ($a->getSourceId() === $b->getSourceId()) {
         return $a->getTarget()->getName() <=> $b->getTarget()->getName();
       }
@@ -92,7 +86,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): StreamedResponse
   {
     return $this->spreadsheetHelper->createCsvResponse($this->getSpreadsheet($studyArea),
       sprintf('%s_concept_relation_export.csv', $studyArea->getName()));

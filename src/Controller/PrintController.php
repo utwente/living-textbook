@@ -140,7 +140,7 @@ class PrintController extends AbstractController
     return 1 === preg_match('@^https?://@', $url);
   }
 
-  private function getProjectPath(string $url, StudyArea $studyArea)
+  private function getProjectPath(string $url, StudyArea $studyArea): string
   {
     // Try to match against expected project path
     $matches = [];
