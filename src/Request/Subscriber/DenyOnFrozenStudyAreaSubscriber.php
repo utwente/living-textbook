@@ -53,7 +53,6 @@ class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
     }
 
     $configuration = $attributes[0];
-    assert($configuration instanceof DenyOnFrozenStudyArea);
 
     // Retrieve subject
     $arguments = $event->getNamedArguments();

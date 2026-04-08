@@ -286,7 +286,7 @@ class User implements UserInterface, Serializable, PasswordAuthenticatedUserInte
   #[Override]
   public function getUserIdentifier(): string
   {
-    return $this->username;
+    return empty($this->username) ? '-' : $this->username;
   }
 
   public function getUsername(): ?string

@@ -52,7 +52,7 @@ class LearningPathElementType extends AbstractType
         'required'    => false,
         'label'       => 'learning-path.element-description',
         'constraints' => [
-          new Length(['max' => 1024]),
+          new Length(max: 1024),
         ],
       ]);
 

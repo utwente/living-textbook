@@ -29,11 +29,6 @@ assets/js/_fos_routes.json
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-.phpunit.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -62,3 +57,8 @@ twigcs.xml
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###

@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SynthesizeRequest
 {
-  private StudyArea $studyArea;
+  private readonly StudyArea $studyArea;
 
   /**
    * Number of users to skip.

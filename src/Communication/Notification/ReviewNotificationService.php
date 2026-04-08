@@ -12,8 +12,8 @@ use function count;
 
 class ReviewNotificationService
 {
-  private MailerInterface $mailer;
-  private TranslatorInterface $translator;
+  private readonly MailerInterface $mailer;
+  private readonly TranslatorInterface $translator;
 
   public function __construct(MailerInterface $mailer, TranslatorInterface $translator)
   {

@@ -386,18 +386,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Attribute/DenyOnFrozenStudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Command/AddAccountCommand.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Symfony\\\\Component\\\\Console\\\\Helper\\\\QuestionHelper and Symfony\\\\Component\\\\Console\\\\Helper\\\\QuestionHelper will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Command/AddAccountCommand.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getAddress\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 5,
@@ -1080,12 +1068,6 @@ $ignoreErrors[] = [
 	'identifier' => 'method.nonObject',
 	'count' => 3,
 	'path' => __DIR__ . '/src/Controller/TagController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot cast Symfony\\\\Component\\\\Validator\\\\ConstraintViolationInterface to string\\.$#',
-	'identifier' => 'cast.string',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/TrackingController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$date of method Symfony\\\\Component\\\\HttpFoundation\\\\Response\\:\\:setLastModified\\(\\) expects DateTimeInterface\\|null, DateTime\\|false given\\.$#',
@@ -3352,12 +3334,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getUserGroups\\(\\) return type with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Entity\\\\User\\:\\:getUserIdentifier\\(\\) should return string but returns string\\|null\\.$#',
-	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];

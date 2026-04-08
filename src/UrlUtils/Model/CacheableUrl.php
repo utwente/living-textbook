@@ -9,7 +9,7 @@ use function md5;
 
 class CacheableUrl extends AbstractUrl
 {
-  private DateTime $timestamp;
+  private readonly DateTime $timestamp;
 
   /**
    * CacheableUrl constructor.

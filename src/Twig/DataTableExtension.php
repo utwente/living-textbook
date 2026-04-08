@@ -2,10 +2,8 @@
 
 namespace App\Twig;
 
-use Override;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
 use function array_merge;
 use function is_array;
@@ -17,21 +15,13 @@ use function trim;
  * This extension ensures that the correct options are loaded for
  * the DataTable extension.
  */
-class DataTableExtension extends AbstractExtension
+class DataTableExtension
 {
   public function __construct(private readonly TranslatorInterface $translator)
   {
   }
 
-  /** @return TwigFunction[] */
-  #[Override]
-  public function getFunctions(): array
-  {
-    return [
-      new TwigFunction('dataTable', $this->dataTable(...), ['is_safe' => ['html']]),
-    ];
-  }
-
+  #[AsTwigFunction(name: 'dataTable', isSafe: ['html'])]
   public function dataTable($tableId, array $options = []): string
   {
     // Merge options with default ones

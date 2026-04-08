@@ -21,10 +21,10 @@ use function usort;
 #[Autoconfigure(lazy: true)]
 class RelationProvider implements ProviderInterface
 {
-  private ConceptRepository $conceptRepository;
-  private ConceptRelationRepository $conceptRelationRepository;
-  private RelationTypeRepository $relationTypeRepository;
-  private SpreadsheetHelper $spreadsheetHelper;
+  private readonly ConceptRepository $conceptRepository;
+  private readonly ConceptRelationRepository $conceptRelationRepository;
+  private readonly RelationTypeRepository $relationTypeRepository;
+  private readonly SpreadsheetHelper $spreadsheetHelper;
 
   public function __construct(ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
     RelationTypeRepository $relationTypeRepository, SpreadsheetHelper $spreadsheetHelper)

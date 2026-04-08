@@ -4,21 +4,11 @@ namespace App\Twig;
 
 use Caxy\HtmlDiff\HtmlDiff;
 use Caxy\HtmlDiff\HtmlDiffConfig;
-use Override;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class HtmlDiffExtension extends AbstractExtension
+class HtmlDiffExtension
 {
-  /** @return TwigFunction[] */
-  #[Override]
-  public function getFunctions(): array
-  {
-    return [
-      new TwigFunction('htmldiff', $this->htmlDiff(...), ['is_safe' => ['html']]),
-    ];
-  }
-
+  #[AsTwigFunction(name: 'htmldiff', isSafe: ['html'])]
   public function htmlDiff(?string $a, ?string $b): string
   {
     $config = new HtmlDiffConfig()

@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\Exception\RateLimitExceededException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -40,7 +40,7 @@ class LatexController extends AbstractController
   public function renderLatex(
     Request $request,
     LatexGeneratorInterface $generator,
-    RateLimiterFactory $latexGeneratorLimiter): Response
+    RateLimiterFactoryInterface $latexGeneratorLimiter): Response
   {
     // Retrieve and check content
     $content = $request->query->get('content', null);

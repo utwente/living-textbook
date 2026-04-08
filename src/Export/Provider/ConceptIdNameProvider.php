@@ -19,9 +19,9 @@ use function sprintf;
 #[Autoconfigure(lazy: true)]
 class ConceptIdNameProvider implements ProviderInterface
 {
-  private ConceptRepository $conceptRepository;
+  private readonly ConceptRepository $conceptRepository;
 
-  private SpreadsheetHelper $spreadsheetHelper;
+  private readonly SpreadsheetHelper $spreadsheetHelper;
 
   public function __construct(ConceptRepository $conceptRepository, SpreadsheetHelper $spreadsheetHelper)
   {
