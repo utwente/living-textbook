@@ -434,12 +434,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:addSection\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\ConceptPrint\\\\Section\\\\LtbSection\\:\\:convertHtmlToLatex\\(\\) should return string but returns string\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -3448,12 +3442,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method Tests\\\\UrlUtils\\\\UrlScannerTest\\:\\:scanTextProvider\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/tests/phpunit/UrlUtils/UrlScannerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method Tests\\\\UrlUtils\\\\UrlScannerTest\\:\\:testScanText\\(\\) has no return type specified\\.$#',
-	'identifier' => 'missingType.return',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/phpunit/UrlUtils/UrlScannerTest.php',
 ];
