@@ -62,7 +62,7 @@ abstract class LtbSection extends Section
    * @throws LatexException
    * @throws PandocException
    */
-  protected function addSection(string $title, string $html)
+  protected function addSection(string $title, string $html): void
   {
     // See https://tex.stackexchange.com/a/282/110054
     $this->addElement(new CustomCommand('\\FloatBarrier'));

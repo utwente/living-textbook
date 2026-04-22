@@ -13,7 +13,7 @@ use Symfony\Component\Routing\RouterInterface;
 class UrlScannerTest extends TestCase
 {
   #[DataProvider('scanTextProvider')]
-  public function testScanText(string $val, array $expected)
+  public function testScanText(string $val, array $expected): void
   {
     // Arrange
     $contextStub = new RequestContext();

@@ -3,30 +3,19 @@
 namespace App\Validator\Constraint;
 
 use Attribute;
-use Override;
+use Symfony\Component\Validator\Constraints\Compound;
 use Symfony\Component\Validator\Constraints\Regex;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class Color extends Regex
+class Color extends Compound
 {
-  /** @phpstan-ignore missingType.iterableValue */
-  public function __construct(string|array|null $options = null)
+  protected function getConstraints(array $options): array
   {
-    $this->message = 'color.invalid';
-    $this->pattern = '/^#([0-9A-F]{3}){1,2}$/i';
-
-    parent::__construct($options);
-  }
-
-  #[Override]
-  public function getRequiredOptions(): array
-  {
-    return [];
-  }
-
-  #[Override]
-  public function validatedBy(): string
-  {
-    return Regex::class . 'Validator';
+    return [
+      new Regex(
+        pattern: '/^#([0-9A-F]{3}){1,2}$/i',
+        message: 'color.invalid',
+      ),
+    ];
   }
 }

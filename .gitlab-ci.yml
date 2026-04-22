@@ -324,7 +324,7 @@ js-analysis:
   before_script:
     - cp tests/jshint/.jshintignore .
   script:
-    - /usr/bin/jshint src --verbose --config tests/jshint/config
+    - jshint src --verbose --config tests/jshint/config
   tags:
     - docker
   except:
