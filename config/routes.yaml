@@ -8,7 +8,10 @@
 #   bin/console debug:router
 
 controllers:
-  resource: routing.controllers
+  type: attribute
+  resource: ../src/Controller/
+  schemes: [ https ]
+
 logout:
   path: /logout
   schemes:  [ https ]
