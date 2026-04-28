@@ -92,7 +92,7 @@
         "twig/inky-extra": "3.24.0",
         "twig/intl-extra": "3.24.0",
         "twig/twig": "3.24.0",
-        "zircote/swagger-php": "6.1.0"
+        "zircote/swagger-php": "6.1.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "3.95.1",
