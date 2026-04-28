@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f799e3eee36a36e4958fbdca9536f566",
+    "content-hash": "6cb4230ce04eac826c6e51b3fea9f693",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -5050,16 +5050,16 @@
         },
         {
             "name": "sweetrdf/json-ld",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/json-ld.git",
-                "reference": "3edf6cddf22d7aa55b41ccaaa66cff5ca21b140b"
+                "reference": "f24ac876100a0c4176167e3747a664c1cc8438ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/json-ld/zipball/3edf6cddf22d7aa55b41ccaaa66cff5ca21b140b",
-                "reference": "3edf6cddf22d7aa55b41ccaaa66cff5ca21b140b",
+                "url": "https://api.github.com/repos/sweetrdf/json-ld/zipball/f24ac876100a0c4176167e3747a664c1cc8438ff",
+                "reference": "f24ac876100a0c4176167e3747a664c1cc8438ff",
                 "shasum": ""
             },
             "require": {
@@ -5108,9 +5108,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/json-ld/issues",
-                "source": "https://github.com/sweetrdf/json-ld/tree/1.4.0"
+                "source": "https://github.com/sweetrdf/json-ld/tree/1.4.1"
             },
-            "time": "2026-03-19T13:30:45+00:00"
+            "time": "2026-04-21T07:00:46+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
