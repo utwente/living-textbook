@@ -104,28 +104,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Api/Controller/AbstractApiController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(object\\)\\: mixed\\)\\|null, Closure\\(App\\\\Entity\\\\Concept\\)\\: App\\\\Entity\\\\Concept given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$objects of class Drenso\\\\Shared\\\\IdMap\\\\IdMap constructor expects array\\<Drenso\\\\Shared\\\\Interfaces\\\\IdInterface\\>, array\\<object\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$requestTag in PHPDoc tag @var does not match assigned variable \\$requestTags\\.$#',
 	'identifier' => 'varTag.differentVariable',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Api/Controller/ConceptController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$objects of class Drenso\\\\Shared\\\\IdMap\\\\IdMap constructor expects array\\<Drenso\\\\Shared\\\\Interfaces\\\\IdInterface\\>, array\\<object\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Api/Controller/ConceptRelationController.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$object of method App\\\\Api\\\\Controller\\\\AbstractApiController\\:\\:assertStudyAreaObject\\(\\) expects App\\\\Entity\\\\Contracts\\\\StudyAreaFilteredInterface, App\\\\Entity\\\\Concept\\|null given\\.$#',
@@ -3014,12 +2996,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Repository/AnnotationRepository.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ConceptRelationRepository uses generic trait Drenso\\\\Shared\\\\Database\\\\RepositoryTraits\\\\FindIdsTrait but does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ConceptRelationRepository.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\ConceptRelationRepository\\:\\:getByRelationTypeCount\\(\\) should return int but returns bool\\|float\\|int\\|string\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -3030,12 +3006,6 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Repository/ConceptRelationRepository.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Repository\\\\ConceptRepository uses generic trait Drenso\\\\Shared\\\\Database\\\\RepositoryTraits\\\\FindIdsTrait but does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Repository/ConceptRepository.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Repository\\\\ConceptRepository\\:\\:getCountForStudyArea\\(\\) should return int but returns bool\\|float\\|int\\|string\\|null\\.$#',

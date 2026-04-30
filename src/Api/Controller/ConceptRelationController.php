@@ -171,7 +171,6 @@ class ConceptRelationController extends AbstractApiController
           // Silently ignore missing relation in database
           continue;
         }
-        assert($dbRelation instanceof ConceptRelation);
 
         $conceptRelations[] = $this->updateRelation(
           $requestStudyArea,
