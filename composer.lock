@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3caa6739b8ac05006361306ac3471e41",
+    "content-hash": "b4a4778cb4035c077915b90e4d9fb9bb",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -11153,16 +11153,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "6.1.1",
+            "version": "6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "2cc71771759d9fdfecd5fbb72bcb00e307f43ecb"
+                "reference": "f66289ab9c9c3a1cf70222e0bebbe7c6c7109f2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/2cc71771759d9fdfecd5fbb72bcb00e307f43ecb",
-                "reference": "2cc71771759d9fdfecd5fbb72bcb00e307f43ecb",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/f66289ab9c9c3a1cf70222e0bebbe7c6c7109f2f",
+                "reference": "f66289ab9c9c3a1cf70222e0bebbe7c6c7109f2f",
                 "shasum": ""
             },
             "require": {
@@ -11231,7 +11231,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/6.1.1"
+                "source": "https://github.com/zircote/swagger-php/tree/6.1.2"
             },
             "funding": [
                 {
@@ -11239,7 +11239,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-19T21:47:30+00:00"
+            "time": "2026-04-28T04:47:53+00:00"
         },
         {
             "name": "zozlak/rdf-constants",
