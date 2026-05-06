@@ -15,6 +15,7 @@ use Drenso\Shared\Database\RepositoryTraits\FindIdsTrait;
 /** @extends ServiceEntityRepository<ConceptRelation> */
 class ConceptRelationRepository extends ServiceEntityRepository
 {
+  /** @use FindIdsTrait<ConceptRelation> */
   use FindIdsTrait;
 
   public function __construct(ManagerRegistry $registry)

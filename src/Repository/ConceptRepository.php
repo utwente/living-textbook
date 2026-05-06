@@ -13,6 +13,7 @@ use InvalidArgumentException;
 /** @extends ServiceEntityRepository<Concept> */
 class ConceptRepository extends ServiceEntityRepository
 {
+  /** @use FindIdsTrait<Concept> */
   use FindIdsTrait;
 
   public function __construct(ManagerRegistry $registry)
