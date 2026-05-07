@@ -72,7 +72,7 @@
         "symfony/password-hasher": "7.4.8",
         "symfony/process": "7.4.8",
         "symfony/property-access": "7.4.8",
-        "symfony/rate-limiter": "7.4.9",
+        "symfony/rate-limiter": "7.4.10",
         "symfony/routing": "7.4.9",
         "symfony/runtime": "7.4.8",
         "symfony/security-bundle": "7.4.8",
