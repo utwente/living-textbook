@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c57bd8580a413c7b8354962ea977f9e",
+    "content-hash": "2156e1e0c69ef2e96ac6ca9b507a16c5",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1581,16 +1581,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "7.2.0",
+            "version": "7.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "56644fdacd8c24937d6a76a9714835f81dd4b97e"
+                "reference": "a3039e775363001b06dd32701ecfe7817c1a12ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/56644fdacd8c24937d6a76a9714835f81dd4b97e",
-                "reference": "56644fdacd8c24937d6a76a9714835f81dd4b97e",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/a3039e775363001b06dd32701ecfe7817c1a12ea",
+                "reference": "a3039e775363001b06dd32701ecfe7817c1a12ea",
                 "shasum": ""
             },
             "require": {
@@ -1707,9 +1707,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/7.2.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/7.2.1"
             },
-            "time": "2026-05-08T09:05:51+00:00"
+            "time": "2026-05-11T09:23:56+00:00"
         },
         {
             "name": "egulias/email-validator",
