@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "00c91c72a2ce961712cebfd0bfa2854d",
+    "content-hash": "04013693af1ec6a870602767ef686fa2",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -5058,16 +5058,16 @@
         },
         {
             "name": "sweetrdf/json-ld",
-            "version": "1.4.1",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sweetrdf/json-ld.git",
-                "reference": "f24ac876100a0c4176167e3747a664c1cc8438ff"
+                "reference": "b030f706af4c0266026da71d7ec52d439e024faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sweetrdf/json-ld/zipball/f24ac876100a0c4176167e3747a664c1cc8438ff",
-                "reference": "f24ac876100a0c4176167e3747a664c1cc8438ff",
+                "url": "https://api.github.com/repos/sweetrdf/json-ld/zipball/b030f706af4c0266026da71d7ec52d439e024faa",
+                "reference": "b030f706af4c0266026da71d7ec52d439e024faa",
                 "shasum": ""
             },
             "require": {
@@ -5086,8 +5086,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "ML\\JsonLD\\": "src/",
-                    "ML\\JsonLD\\Test\\": "Test/"
+                    "ML\\JsonLD\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5116,9 +5115,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sweetrdf/json-ld/issues",
-                "source": "https://github.com/sweetrdf/json-ld/tree/1.4.1"
+                "source": "https://github.com/sweetrdf/json-ld/tree/1.4.3"
             },
-            "time": "2026-04-21T07:00:46+00:00"
+            "time": "2026-05-07T15:35:18+00:00"
         },
         {
             "name": "sweetrdf/rdf-helpers",
