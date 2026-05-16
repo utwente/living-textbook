@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use function array_map;
-use function assert;
 
 #[OA\Tag('Concept relation')]
 #[Route('/conceptrelation')]
