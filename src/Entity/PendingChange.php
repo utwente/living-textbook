@@ -56,10 +56,14 @@ class PendingChange implements IdInterface
   #[ORM\Column(length: 10)]
   private ?string $changeType = null;
 
-  /** The object type of the pending change. */
+  /**
+   * The object type of the pending change.
+   *
+   * @var class-string<ReviewableInterface>|null
+   */
   #[Assert\NotBlank(allowNull: false)]
   #[ORM\Column(length: 255)]
-  private ?string $objectType = null;
+  private ?string $objectType = null; // @phpstan-ignore doctrine.columnType
 
   /** The object id of the pending change. */
   #[ORM\Column(nullable: true)]
@@ -237,6 +241,7 @@ class PendingChange implements IdInterface
     return $this;
   }
 
+  /** @return class-string<ReviewableInterface>|null */
   public function getObjectType(): ?string
   {
     return $this->objectType;
@@ -256,6 +261,7 @@ class PendingChange implements IdInterface
     return substr($this->objectType, $pos + 1);
   }
 
+  /** @param class-string<ReviewableInterface>|null $objectType */
   public function setObjectType(?string $objectType): self
   {
     $this->cachedObject = null;

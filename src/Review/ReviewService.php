@@ -19,6 +19,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\Mapping\MappingException;
+use Drenso\Shared\Exception\NullGuard\MustNotBeNullException;
 use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use InvalidArgumentException;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
@@ -92,12 +93,12 @@ class ReviewService
     }
 
     // Retrieve the object as referenced by the change
-    $object = $this->entityManager->getRepository($pendingChange->getObjectType())->find($pendingChange->getObjectId());
+    $objectType = $pendingChange->getObjectType() ?? throw new MustNotBeNullException();
+    $object     = $this->entityManager->getRepository($objectType)->find($pendingChange->getObjectId());
     if (!$object) {
       // The object belonging with the review does not exist, this is an error
       throw new EntityNotFoundException();
     }
-    assert($object instanceof ReviewableInterface);
 
     return $object;
   }
@@ -452,9 +453,7 @@ class ReviewService
 
     if ($changeType === PendingChange::CHANGE_TYPE_ADD) {
       // Create a new instance of the object
-      assert(is_string($objectType) && $objectType !== '');
       $object = new $objectType();
-      assert($object instanceof ReviewableInterface);
       $object->setStudyArea($pendingChange->getStudyArea());
 
       // Set the updated fields in it

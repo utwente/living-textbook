@@ -18,6 +18,8 @@ interface ReviewableInterface extends StudyAreaFilteredInterface
   /**
    * The name used in the pending change table to store the change
    * Must be unique per entity.
+   *
+   * @return class-string<ReviewableInterface>
    */
   public function getReviewName(): string;
 

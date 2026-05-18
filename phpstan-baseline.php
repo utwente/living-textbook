@@ -3206,12 +3206,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Review/ReviewService.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$className of method Doctrine\\\\ORM\\\\EntityManagerInterface\\:\\:getRepository\\(\\) expects class\\-string\\<object\\>, string\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Review/ReviewService.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, array\\|null given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
