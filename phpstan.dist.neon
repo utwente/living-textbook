@@ -24,3 +24,8 @@ parameters:
         - var/cache/dev/Symfony
     scanFiles:
         - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
+
+rules:
+  - Drenso\Shared\PhpStan\Rules\EnforceEnumDatabasePropertyRule
+  - Drenso\Shared\PhpStan\Rules\EnforceEnumDatabasePromotedPropertyRule
+  - Drenso\Shared\PhpStan\Rules\UlidQueryParameterRule
