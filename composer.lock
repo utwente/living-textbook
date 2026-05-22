@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "299f78683dbff455986c9a8acb521ae9",
+    "content-hash": "c31410b0c5eeff8ab9c69b9bf7f22846",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -12664,16 +12664,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.1.9",
+            "version": "13.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "506033fd7d6855fea1e2973767d65844412b4574"
+                "reference": "38959098d3c10660a189afaa35a94290c1de67bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/506033fd7d6855fea1e2973767d65844412b4574",
-                "reference": "506033fd7d6855fea1e2973767d65844412b4574",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/38959098d3c10660a189afaa35a94290c1de67bb",
+                "reference": "38959098d3c10660a189afaa35a94290c1de67bb",
                 "shasum": ""
             },
             "require": {
@@ -12693,8 +12693,8 @@
                 "phpunit/php-text-template": "^6.0.0",
                 "phpunit/php-timer": "^9.0.0",
                 "sebastian/cli-parser": "^5.0.0",
-                "sebastian/comparator": "^8.1.2",
-                "sebastian/diff": "^8.1.0",
+                "sebastian/comparator": "^8.1.3",
+                "sebastian/diff": "^8.3.0",
                 "sebastian/environment": "^9.3.0",
                 "sebastian/exporter": "^8.0.2",
                 "sebastian/git-state": "^1.0",
@@ -12743,7 +12743,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.9"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.10"
             },
             "funding": [
                 {
@@ -12751,7 +12751,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-05-13T04:00:53+00:00"
+            "time": "2026-05-15T08:03:56+00:00"
         },
         {
             "name": "react/cache",
