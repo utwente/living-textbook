@@ -2363,6 +2363,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         remember_me_parameter?: scalar|Param|null, // Default: "_remember_me"
  *         code_challenge_method?: scalar|Param|null, // Default: null
  *         disable_nonce?: bool|Param, // Default: false
+ *         allow_discovery_access_token_issuer?: bool|Param, // Allow the non-standard `access_token_issuer` field in the discovery document as the expected issuer for access token validation. // Default: false
  *     }>,
  * }
  * @psalm-type ConfigType = array{
