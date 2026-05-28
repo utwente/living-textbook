@@ -144,7 +144,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     $arguments  = $event->getArguments();
 
     try {
-      /** @phpstan-ignore-next-line notEqual.alwaysFalse */
+      /* @phpstan-ignore-next-line notEqual.alwaysFalse */
       if (!is_array($controller) || count($controller) != 2) {
         return;
       }
