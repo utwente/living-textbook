@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ff86676936509f554c1b2e7491558f1",
+    "content-hash": "ab92e2613e2cb2f06e2c080b8b57a21a",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -3154,16 +3154,16 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "v5.10.2",
+            "version": "v5.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "84888f8914670868d853b1a3468243e6de29fcf2"
+                "reference": "e6b6d3f4e413f8f9a78b8470a082b9e4ffb49533"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/84888f8914670868d853b1a3468243e6de29fcf2",
-                "reference": "84888f8914670868d853b1a3468243e6de29fcf2",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/e6b6d3f4e413f8f9a78b8470a082b9e4ffb49533",
+                "reference": "e6b6d3f4e413f8f9a78b8470a082b9e4ffb49533",
                 "shasum": ""
             },
             "require": {
@@ -3265,7 +3265,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nelmio/NelmioApiDocBundle/issues",
-                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v5.10.2"
+                "source": "https://github.com/nelmio/NelmioApiDocBundle/tree/v5.10.3"
             },
             "funding": [
                 {
@@ -3273,7 +3273,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-08T12:08:58+00:00"
+            "time": "2026-06-01T07:56:07+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
