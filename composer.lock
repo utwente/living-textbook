@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71abcde5a4e19109124676f1c7a24103",
+    "content-hash": "05f497d57fac181217be4aa22f581b75",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -14657,16 +14657,16 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "10e0133faf33218ea3380432f3a757ba50e9e17d"
+                "reference": "366f7cca494a6f95c5f410ae542aef9c164d329e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/10e0133faf33218ea3380432f3a757ba50e9e17d",
-                "reference": "10e0133faf33218ea3380432f3a757ba50e9e17d",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/366f7cca494a6f95c5f410ae542aef9c164d329e",
+                "reference": "366f7cca494a6f95c5f410ae542aef9c164d329e",
                 "shasum": ""
             },
             "require": {
@@ -14722,7 +14722,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/4.0.0"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/4.0.1"
             },
             "funding": [
                 {
@@ -14730,7 +14730,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-15T14:41:51+00:00"
+            "time": "2026-06-18T15:31:27+00:00"
         }
     ],
     "aliases": [],
