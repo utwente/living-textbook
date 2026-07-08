@@ -626,6 +626,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/ContributorController.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Call to function array_key_exists\\(\\) with \'relationName\' and non\\-empty\\-array will always evaluate to true\\.$#',
+	'identifier' => 'function.alreadyNarrowedType',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Controller/DataController.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on class\\-string\\|object\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
