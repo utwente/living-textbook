@@ -97,9 +97,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "3.95.11",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "2.2.4",
+        "phpstan/phpstan": "2.2.5",
         "phpstan/phpstan-doctrine": "2.0.27",
-        "phpstan/phpstan-phpunit": "2.0.17",
+        "phpstan/phpstan-phpunit": "2.0.18",
         "phpstan/phpstan-symfony": "2.0.20",
         "phpunit/phpunit": "13.2.2",
         "rector/rector": "2.5.2",
