@@ -2138,16 +2138,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.3",
+            "version": "2.12.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "7ec62dc3f44aa218487dbed81a9bf9bc647be55d"
+                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/7ec62dc3f44aa218487dbed81a9bf9bc647be55d",
-                "reference": "7ec62dc3f44aa218487dbed81a9bf9bc647be55d",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9365d578a9fd1552ad6ca9c3cb530708526feb09",
+                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09",
                 "shasum": ""
             },
             "require": {
@@ -2237,7 +2237,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.3"
+                "source": "https://github.com/guzzle/psr7/tree/2.12.5"
             },
             "funding": [
                 {
@@ -2253,7 +2253,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-23T15:21:08+00:00"
+            "time": "2026-07-13T01:27:20+00:00"
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
@@ -3910,16 +3910,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.3.2",
+            "version": "2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a"
+                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/a004701b11273a26cd7955a61d67a7f1e525a45a",
-                "reference": "a004701b11273a26cd7955a61d67a7f1e525a45a",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
+                "reference": "fb19eedd2bb67ff8cf7a5502ad329e701d6398a3",
                 "shasum": ""
             },
             "require": {
@@ -3951,9 +3951,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.2"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.3"
             },
-            "time": "2026-01-25T14:56:51+00:00"
+            "time": "2026-07-08T07:01:06+00:00"
         },
         {
             "name": "psr/cache",
@@ -12297,16 +12297,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.2.2",
+            "version": "14.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "10d7da3628a99289cdf4c662dd7f0d73f1baec83"
+                "reference": "82f6e49ff224e2cde923d74425e583a883910783"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/10d7da3628a99289cdf4c662dd7f0d73f1baec83",
-                "reference": "10d7da3628a99289cdf4c662dd7f0d73f1baec83",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/82f6e49ff224e2cde923d74425e583a883910783",
+                "reference": "82f6e49ff224e2cde923d74425e583a883910783",
                 "shasum": ""
             },
             "require": {
@@ -12314,7 +12314,7 @@
                 "ext-libxml": "*",
                 "ext-mbstring": "*",
                 "ext-xmlwriter": "*",
-                "nikic/php-parser": "^5.7.0",
+                "nikic/php-parser": "^5.8.0",
                 "php": ">=8.4",
                 "phpunit/php-text-template": "^6.0",
                 "sebastian/complexity": "^6.0",
@@ -12325,7 +12325,7 @@
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.2.0"
+                "phpunit/phpunit": "^13.2.2"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -12363,7 +12363,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.2.2"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.2.3"
             },
             "funding": [
                 {
@@ -12383,7 +12383,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-08T11:50:38+00:00"
+            "time": "2026-07-06T15:04:02+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -14046,24 +14046,24 @@
         },
         {
             "name": "sebastian/lines-of-code",
-            "version": "5.0.1",
+            "version": "5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/lines-of-code.git",
-                "reference": "d2cff273a90c79b0eb590baa682d4b5c318bdbb7"
+                "reference": "d1b6f8fce682505dbd048977f1abedf1b8ad3ff8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/lines-of-code/zipball/d2cff273a90c79b0eb590baa682d4b5c318bdbb7",
-                "reference": "d2cff273a90c79b0eb590baa682d4b5c318bdbb7",
+                "url": "https://api.github.com/repos/sebastianbergmann/lines-of-code/zipball/d1b6f8fce682505dbd048977f1abedf1b8ad3ff8",
+                "reference": "d1b6f8fce682505dbd048977f1abedf1b8ad3ff8",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^5.7.0",
+                "nikic/php-parser": "^5.8.0",
                 "php": ">=8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.1.10"
+                "phpunit/phpunit": "^13.2.4"
             },
             "type": "library",
             "extra": {
@@ -14092,7 +14092,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/lines-of-code/issues",
                 "security": "https://github.com/sebastianbergmann/lines-of-code/security/policy",
-                "source": "https://github.com/sebastianbergmann/lines-of-code/tree/5.0.1"
+                "source": "https://github.com/sebastianbergmann/lines-of-code/tree/5.0.2"
             },
             "funding": [
                 {
@@ -14112,7 +14112,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-19T16:23:37+00:00"
+            "time": "2026-07-09T08:42:34+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
