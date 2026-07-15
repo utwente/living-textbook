@@ -215,7 +215,7 @@ final readonly class AnalyticsService
             ->modify(sprintf('-%d days', $request->daysBeforeTest))
             ->modify(sprintf('-%d days', $key * $request->daysBetweenLearningPaths))
             ->format('Y-m-d H:i:s'),
-          'concepts'         => array_values(array_map(static fn (LearningPathElement $el) => (string)$el->getConcept()->getId(), $lp->getElementsOrdered()->toArray())),
+          'concepts'         => array_values(array_map(static fn (LearningPathElement $el): string => (string)$el->getConcept()->getId(), $lp->getElementsOrdered()->toArray())),
           'learningpathName' => $lp->getName(),
         ];
       }

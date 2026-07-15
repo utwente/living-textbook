@@ -91,22 +91,22 @@
         "twig/extra-bundle": "3.24.0",
         "twig/inky-extra": "3.26.0",
         "twig/intl-extra": "3.26.0",
-        "twig/twig": "3.27.1",
+        "twig/twig": "3.28.0",
         "zircote/swagger-php": "6.1.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "3.95.10",
+        "friendsofphp/php-cs-fixer": "3.95.12",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "2.2.2",
+        "phpstan/phpstan": "2.2.5",
         "phpstan/phpstan-doctrine": "2.0.27",
-        "phpstan/phpstan-phpunit": "2.0.16",
+        "phpstan/phpstan-phpunit": "2.0.18",
         "phpstan/phpstan-symfony": "2.0.20",
-        "phpunit/phpunit": "13.2.1",
-        "rector/rector": "2.5.2",
+        "phpunit/phpunit": "13.2.4",
+        "rector/rector": "2.5.4",
         "symfony/error-handler": "7.4.14",
         "symfony/stopwatch": "7.4.8",
         "symfony/web-profiler-bundle": "7.4.14",
-        "vincentlanglet/twig-cs-fixer": "4.0.1"
+        "vincentlanglet/twig-cs-fixer": "4.0.2"
     },
     "config": {
         "preferred-install": {
