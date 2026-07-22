@@ -80,7 +80,7 @@ class LatexController extends AbstractController
         }
 
         // Create latex object
-        $document = new Standalone(md5($content))
+        $document = new Standalone(hash('xxh128', $content))
           ->addPackages(['mathtools', 'amssymb', 'esint'])
           ->addElement(new CustomCommand('\\begin{displaymath}'))
           ->addElement(new CustomCommand($content))
