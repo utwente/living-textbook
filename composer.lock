@@ -4,41 +4,46 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21b698204af33c93ca517965585c8338",
+    "content-hash": "fddefcc81f04305527404849f8858500",
     "packages": [
         {
             "name": "bobv/latex-bundle",
-            "version": "v5.3.0",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobvandevijver/latex-bundle.git",
-                "reference": "a2c6f0e5ddeb0eb46a025a21806c7a8332e92659"
+                "reference": "14c043467509f6e88fbb00f054b8eb88ee0547d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/a2c6f0e5ddeb0eb46a025a21806c7a8332e92659",
-                "reference": "a2c6f0e5ddeb0eb46a025a21806c7a8332e92659",
+                "url": "https://api.github.com/repos/bobvandevijver/latex-bundle/zipball/14c043467509f6e88fbb00f054b8eb88ee0547d7",
+                "reference": "14c043467509f6e88fbb00f054b8eb88ee0547d7",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/config": "^5.4 || ^6.2 || ^7.1",
-                "symfony/console": "^5.4 || ^6.2 || ^7.1",
-                "symfony/dependency-injection": "^5.4 || ^6.2 || ^7.1",
-                "symfony/filesystem": "^5.4 || ^6.2 || ^7.1",
-                "symfony/finder": "^5.4 || ^6.2 || ^7.1",
-                "symfony/form": "^5.4 || ^6.2 || ^7.1",
-                "symfony/framework-bundle": "^5.4 || ^6.2 || ^7.1",
-                "symfony/http-foundation": "^5.4 || ^6.2 || ^7.1",
-                "symfony/http-kernel": "^5.4 || ^6.2 || ^7.1",
-                "symfony/options-resolver": "^5.4 || ^6.2 || ^7.1",
-                "symfony/process": "^5.4 || ^6.2 || ^7.1",
-                "twig/twig": "^2.15 || ^3.0"
+                "ext-dom": "*",
+                "php": ">=8.2",
+                "symfony/config": "^6.4 || ^7.4",
+                "symfony/console": "^6.4 || ^7.4",
+                "symfony/dependency-injection": "^6.4 || ^7.4",
+                "symfony/filesystem": "^6.4 || ^7.4",
+                "symfony/finder": "^6.4 || ^7.4",
+                "symfony/form": "^6.4 || ^7.4",
+                "symfony/framework-bundle": "^6.4 || ^7.4",
+                "symfony/http-foundation": "^6.4 || ^7.4",
+                "symfony/http-kernel": "^6.4 || ^7.4",
+                "symfony/options-resolver": "^6.4 || ^7.4",
+                "symfony/process": "^6.4 || ^7.4",
+                "symfony/uid": "^6.4 || ^7.4",
+                "twig/twig": "^3.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "3.95.15",
+                "phpstan/phpstan": "2.2.5",
                 "phpunit/phpunit": "^9.5",
-                "symfony/lock": "^5.4 || ^6.2 || ^7.1",
-                "symfony/string": "^5.4 || ^6.2 || ^7.1"
+                "rector/rector": "2.5.7",
+                "symfony/lock": "^6.4 || ^7.4",
+                "symfony/string": "^6.4 || ^7.4"
             },
             "suggest": {
                 "friendsofsymfony/ckeditor-bundle": "Allows the usage of the bobv_latex form type, and easily integrates ckeditor into your Symfony application",
@@ -72,9 +77,15 @@
             ],
             "support": {
                 "issues": "https://github.com/bobvandevijver/latex-bundle/issues",
-                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v5.3.0"
+                "source": "https://github.com/bobvandevijver/latex-bundle/tree/v7.2.0"
             },
-            "time": "2025-08-12T20:38:48+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/bobvandevijver",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-07-29T09:03:16+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -8480,6 +8491,89 @@
             "time": "2026-05-25T13:48:31+00:00"
         },
         {
+            "name": "symfony/polyfill-uuid",
+            "version": "v1.37.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-uuid.git",
+                "reference": "26dfec253c4cf3e51b541b52ddf7e42cb0908e94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/26dfec253c4cf3e51b541b52ddf7e42cb0908e94",
+                "reference": "26dfec253c4cf3e51b541b52ddf7e42cb0908e94",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "provide": {
+                "ext-uuid": "*"
+            },
+            "suggest": {
+                "ext-uuid": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Uuid\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for uuid functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "uuid"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.37.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-04-10T16:19:22+00:00"
+        },
+        {
             "name": "symfony/process",
             "version": "v7.4.13",
             "source": {
@@ -10233,6 +10327,84 @@
                 }
             ],
             "time": "2026-04-22T15:21:55+00:00"
+        },
+        {
+            "name": "symfony/uid",
+            "version": "v7.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/uid.git",
+                "reference": "2676b524340abcfe4d6151ec698463cebafee439"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/uid/zipball/2676b524340abcfe4d6151ec698463cebafee439",
+                "reference": "2676b524340abcfe4d6151ec698463cebafee439",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/polyfill-uuid": "^1.15"
+            },
+            "require-dev": {
+                "symfony/console": "^6.4|^7.0|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Uid\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides an object-oriented API to generate and represent UIDs",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "UID",
+                "ulid",
+                "uuid"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/uid/tree/v7.4.9"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-04-30T15:19:22+00:00"
         },
         {
             "name": "symfony/validator",

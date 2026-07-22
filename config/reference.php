@@ -645,7 +645,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         }>,
  *     },
  *     uid?: bool|array{ // Uid configuration
- *         enabled?: bool|Param, // Default: false
+ *         enabled?: bool|Param, // Default: true
  *         default_uuid_version?: 7|6|4|1|Param, // Default: 7
  *         name_based_uuid_version?: 5|3|Param, // Default: 5
  *         name_based_uuid_namespace?: scalar|Param|null,
@@ -1942,9 +1942,34 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     }>,
  * }
  * @psalm-type BobvLatexConfig = array{
- *     escaping?: array{
- *         use_symfony_string?: bool|Param, // When set to true, the Symfony String component will be used to transliterate the remaining unicode characters // Default: false
+ *     compiler?: array{
+ *         class?: scalar|Param|null, // The implementation used as compiler. Must implement Bobv\LatexBundle\Compiler\LatexCompilerInterface // Default: "Bobv\\LatexBundle\\Compiler\\LocalLatexCompiler"
+ *         dependency_dirs?: list<scalar|Param|null>,
+ *         podman_proxy?: array{ // Configuration for the podman proxy compiler
+ *             socket_path?: scalar|Param|null, // Default: "unix:///home/bobv-latex-pdflatex/podman_proxy.sock"
+ *         },
+ *         podman?: array{ // Configuration for the podman compiler
+ *             homedir?: scalar|Param|null, // The home directory used for podman // Default: "/home/bobv-latex-pdflatex"
+ *             binary_path?: scalar|Param|null, // The path to the podman binary // Default: "podman"
+ *             image?: scalar|Param|null, // The image used for the podman container // Default: "registry.drenso.dev/open/docker-images/pdflatex:latest"
+ *         },
+ *         local?: array{ // Configuration for the local compiler
+ *             pdflatex_binary_path?: scalar|Param|null, // The path to the pdflatex binary // Default: "pdflatex"
+ *             bibtex_binary_path?: scalar|Param|null, // The path to the bibtex binary // Default: "bibtex"
+ *         },
  *     },
+ *     generator?: array{
+ *         class?: scalar|Param|null, // The implementation used as generator. Must implement Bobv\LatexBundle\Generator\LatexGeneratorInterface // Default: "Bobv\\LatexBundle\\Generator\\LatexGenerator"
+ *     },
+ *     locked_generator?: array{
+ *         class?: scalar|Param|null, // The implementation used as locked generator. Must implement Bobv\LatexBundle\Generator\LatexGeneratorInterface // Default: "Bobv\\LatexBundle\\Generator\\LockedLatexGenerator"
+ *     },
+ *     twig_extension?: array{
+ *         class?: scalar|Param|null, // The implementation used as twig extension. // Default: "Bobv\\LatexBundle\\Twig\\BobvLatexExtension"
+ *     },
+ *     cache_dir?: scalar|Param|null, // The directory where the generated files will be cached (always placed in a BobvLatex subdirectory) // Default: "%kernel.cache_dir%"
+ *     max_age?: scalar|Param|null, // The maximum age of the cached files // Default: "-1 day"
+ *     use_symfony_string?: bool|Param, // When set to true, the Symfony String component will be used to transliterate the remaining unicode characters // Default: false
  * }
  * @psalm-type FosCkEditorConfig = array{
  *     enable?: bool|Param, // Default: true
