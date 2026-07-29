@@ -44,7 +44,7 @@ messenger_services=(
 )
 for service in "${messenger_services[@]}"; do
   echo "Stopping ltb-messenger@${service}"
-  sudo systemctl stop "ltb-messenger@${service}"
+  sudo -n systemctl stop "ltb-messenger@${service}"
 done
 
 # Pull the new data, initialize submodules as well
@@ -79,16 +79,23 @@ composer install -o --apcu-autoloader --no-dev --no-scripts
 composer symfony:dump-env
 
 # Clear cache
-sudo -u www-data php bin/console cache:clear
+sudo -n -u www-data php bin/console cache:clear
 
 # Run install vendors again but now with scripts, effectively only executing the scripts
 composer install -o --apcu-autoloader --no-dev
 
 # Execute migrations
-sudo -u www-data php bin/console doctrine:migrations:migrate -n
+sudo -n -u www-data php bin/console doctrine:migrations:migrate -n
 
 # Install python environment
 php bin/console ltb:python:build
+
+# Configure ACLs for the podman proxy user
+sudo -n -u www-data php bin/console bobv:latex:configure-proxy-acls --output-only | xargs -L 1 -t sudo -n -u root
+
+# Install the latest podman proxy and restart it
+sudo -n systemctl start bobv-latex-podman-proxy-installer
+sudo -n systemctl restart bobv-latex-podman-proxy
 
 # Restore frontend controller
 git checkout public/index.php
@@ -96,8 +103,12 @@ git checkout public/index.php
 # Start the messenger component
 for service in "${messenger_services[@]}"; do
   echo "Starting ltb-messenger@${service}"
-  sudo systemctl start "ltb-messenger@${service}"
+  sudo -n systemctl start "ltb-messenger@${service}"
 done
+
+# Pull latest pdflatex image and clear old images
+sudo -n -u bobv-latex-pdflatex podman pull registry.drenso.dev/open/docker-images/pdflatex:latest
+sudo -n -u bobv-latex-pdflatex podman image prune -f
 
 # Remove deployment artifacts
 rm -rf ${DEPLOY_DIR}
