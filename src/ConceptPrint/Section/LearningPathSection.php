@@ -11,6 +11,7 @@ use Bobv\LatexBundle\Exception\LatexException;
 use Bobv\LatexBundle\Latex\Element\CustomCommand;
 use Bobv\LatexBundle\Latex\Element\Listing;
 use Bobv\LatexBundle\Latex\Element\Text;
+use Bobv\LatexBundle\Latex\LatexBaseInterface;
 use Bobv\LatexBundle\Latex\Section\SubSection;
 use Pandoc\PandocException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -26,9 +27,14 @@ class LearningPathSection extends LtbSection
    * @throws PandocException
    */
   public function __construct(
-    LearningPath $learningPath, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
-  {
-    parent::__construct($learningPath->getName(), $router, $projectDir);
+    LearningPath $learningPath,
+    LtbRouter $router,
+    TranslatorInterface $translator,
+    NamingService $namingService,
+    LatexBaseInterface $latexBase,
+    string $projectDir,
+  ) {
+    parent::__construct($learningPath->getName(), $router, $latexBase, $projectDir);
 
     $this->addElement(new Text(sprintf('\href{%s}{%s}',
       $this->router->generateBrowserUrl('app_learningpath_show', ['learningPath' => $learningPath->getId()]),
@@ -55,7 +61,7 @@ class LearningPathSection extends LtbSection
     // Add each concept from the learning path
     foreach ($concepts as $concept) {
       $this->addElement(new CustomCommand('\\newpage'));
-      $this->addElement(new ConceptSection($concept, $router, $translator, $namingService, $projectDir));
+      $this->addElement(new ConceptSection($concept, $router, $translator, $namingService, $latexBase, $projectDir));
     }
   }
 }

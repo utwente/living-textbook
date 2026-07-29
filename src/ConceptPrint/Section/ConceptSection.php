@@ -8,6 +8,7 @@ use App\Router\LtbRouter;
 use Bobv\LatexBundle\Exception\LatexException;
 use Bobv\LatexBundle\Latex\Element\CustomCommand;
 use Bobv\LatexBundle\Latex\Element\Text;
+use Bobv\LatexBundle\Latex\LatexBaseInterface;
 use Pandoc\PandocException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -22,9 +23,14 @@ class ConceptSection extends LtbSection
    * @throws PandocException
    */
   public function __construct(
-    Concept $concept, LtbRouter $router, TranslatorInterface $translator, NamingService $namingService, string $projectDir)
-  {
-    parent::__construct($concept->getName(), $router, $projectDir);
+    Concept $concept,
+    LtbRouter $router,
+    TranslatorInterface $translator,
+    NamingService $namingService,
+    LatexBaseInterface $latexBase,
+    string $projectDir,
+  ) {
+    parent::__construct($concept->getName(), $router, $latexBase, $projectDir);
 
     // Use sloppy to improve text breaks
     $this->addElement(new CustomCommand('\\sloppy'));

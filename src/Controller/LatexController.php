@@ -11,6 +11,7 @@ use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\ItemInterface;
 
 use function filemtime;
-use function md5;
+use function hash;
 use function sprintf;
 use function str_replace;
 use function time;
@@ -40,18 +41,19 @@ class LatexController extends AbstractController
   public function renderLatex(
     Request $request,
     LatexGeneratorInterface $generator,
-    RateLimiterFactoryInterface $latexGeneratorLimiter): Response
-  {
+    RateLimiterFactoryInterface $latexGeneratorLimiter,
+    #[Autowire(param: 'kernel.cache_dir')] string $cacheDir,
+  ): Response {
     // Retrieve and check content
     $content = $request->query->get('content', null);
     if (!$content) {
       throw $this->createNotFoundException();
     }
-    $cacheKey = urlencode($content);
+    $cacheKey = hash('xxh128', urlencode($content));
 
     // Check cache (and whether cached file exists)
     $imageLocation = null;
-    $cache         = new FilesystemAdapter('latex.equations', 86400);
+    $cache         = new FilesystemAdapter('latex.equations', 86400, $cacheDir);
     $cached        = true;
 
     // Verify image still exists in cache
@@ -80,14 +82,15 @@ class LatexController extends AbstractController
         }
 
         // Create latex object
-        $document = new Standalone(md5($content))
+        $document = new Standalone(hash('xxh128', $content))
           ->addPackages(['mathtools', 'amssymb', 'esint'])
           ->addElement(new CustomCommand('\\begin{displaymath}'))
           ->addElement(new CustomCommand($content))
           ->addElement(new CustomCommand('\\end{displaymath}'));
 
         // Generate pdf output
-        $pdfLocation = $generator->generate($document);
+        $pdfFileInfo = $generator->generate($document);
+        $pdfLocation = $pdfFileInfo->getPdfLocation();
 
         // Determine output location
         $imageLocation = str_replace('.pdf', '.png', $pdfLocation);
