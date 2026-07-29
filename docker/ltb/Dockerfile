@@ -18,8 +18,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libxslt-dev \
     ## Imagick
       imagemagick libmagickwand-dev libmagickcore-dev \
-    # Latex
-      texlive-base texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra poppler-utils \
+    # Latex helpers
+      poppler-utils \
     # Pandoc
       pandoc \
     # Python build dependencies \
