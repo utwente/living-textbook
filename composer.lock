@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7350f483f70f6f8581e72ee5b4a89b50",
+    "content-hash": "47774100ad75d6a2afa394e8b5e74beb",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -546,16 +546,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "3.2.5",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "f07f8fbfb512d2765566cf80c40d456b07a88ed0"
+                "reference": "88ad38467d03e30b676069493fa96663ffa0a32b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/f07f8fbfb512d2765566cf80c40d456b07a88ed0",
-                "reference": "f07f8fbfb512d2765566cf80c40d456b07a88ed0",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/88ad38467d03e30b676069493fa96663ffa0a32b",
+                "reference": "88ad38467d03e30b676069493fa96663ffa0a32b",
                 "shasum": ""
             },
             "require": {
@@ -644,7 +644,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/3.2.5"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/3.3.0"
             },
             "funding": [
                 {
@@ -660,7 +660,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-22T10:06:20+00:00"
+            "time": "2026-07-22T11:49:24+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
