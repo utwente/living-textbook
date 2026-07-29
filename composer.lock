@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32d9760d8b1df997bb7e05df2e32a2d9",
+    "content-hash": "bd5bf0f27edc03df817d138e4861e85b",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1585,16 +1585,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "7.2.1",
+            "version": "7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "a3039e775363001b06dd32701ecfe7817c1a12ea"
+                "reference": "2cd1f524e5d872354b6df00327d90d61c684fbab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/a3039e775363001b06dd32701ecfe7817c1a12ea",
-                "reference": "a3039e775363001b06dd32701ecfe7817c1a12ea",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/2cd1f524e5d872354b6df00327d90d61c684fbab",
+                "reference": "2cd1f524e5d872354b6df00327d90d61c684fbab",
                 "shasum": ""
             },
             "require": {
@@ -1621,7 +1621,7 @@
                 "doctrine/doctrine-bundle": "^2.13 || ^3.0",
                 "doctrine/orm": "^3.0",
                 "eluceo/ical": "^2.7",
-                "friendsofphp/php-cs-fixer": "3.95.1",
+                "friendsofphp/php-cs-fixer": "3.95.15",
                 "giggsey/libphonenumber-for-php": "^9.0",
                 "jms/serializer-bundle": "^5.0",
                 "maennchen/zipstream-php": "^3.0",
@@ -1629,8 +1629,8 @@
                 "odolbeau/phone-number-bundle": "^4.2",
                 "php-decimal/php-decimal": "^1.1",
                 "phpoffice/phpspreadsheet": "^1.23 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
-                "phpstan/phpstan": "2.1.54",
-                "rector/rector": "2.4.2",
+                "phpstan/phpstan": "2.2.5",
+                "rector/rector": "2.5.7",
                 "sebastian/comparator": "^5.0 || ^6.0 || ^7.0 || ^8.0",
                 "stof/doctrine-extensions-bundle": "^1.14",
                 "symfony/console": "~6.4 || ~7.0 || ~8.0",
@@ -1711,9 +1711,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/7.2.1"
+                "source": "https://github.com/Drenso/symfony-shared/tree/7.3.0"
             },
-            "time": "2026-05-11T09:23:56+00:00"
+            "time": "2026-07-29T08:44:50+00:00"
         },
         {
             "name": "egulias/email-validator",
