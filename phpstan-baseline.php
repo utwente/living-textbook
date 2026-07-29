@@ -428,12 +428,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function md5 expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/ConceptPrint/Section/LtbSection.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Console\\\\NullStyle\\:\\:caution\\(\\) has parameter \\$message with no type specified\\.$#',
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
@@ -821,36 +815,6 @@ $ignoreErrors[] = [
 	'message' => '#^Instanceof between Bobv\\\\LatexBundle\\\\Exception\\\\LatexException and Bobv\\\\LatexBundle\\\\Exception\\\\LatexException will always evaluate to true\\.$#',
 	'identifier' => 'instanceof.alwaysTrue',
 	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\PrintController\\:\\:filename\\(\\) never returns array so it can be removed from the return type\\.$#',
-	'identifier' => 'return.unusedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\PrintController\\:\\:filename\\(\\) never returns false so it can be removed from the return type\\.$#',
-	'identifier' => 'return.unusedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\PrintController\\:\\:filename\\(\\) never returns null so it can be removed from the return type\\.$#',
-	'identifier' => 'return.unusedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Controller\\\\PrintController\\:\\:filename\\(\\) return type has no value type specified in iterable type array\\.$#',
-	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$filename of class App\\\\ConceptPrint\\\\Base\\\\ConceptPrint constructor expects string, array\\|string\\|false\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
 	'path' => __DIR__ . '/src/Controller/PrintController.php',
 ];
 $ignoreErrors[] = [

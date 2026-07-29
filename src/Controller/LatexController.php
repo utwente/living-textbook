@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Cache\ItemInterface;
 
 use function filemtime;
-use function md5;
+use function hash;
 use function sprintf;
 use function str_replace;
 use function time;
@@ -89,7 +89,8 @@ class LatexController extends AbstractController
           ->addElement(new CustomCommand('\\end{displaymath}'));
 
         // Generate pdf output
-        $pdfLocation = $generator->generate($document);
+        $pdfFileInfo = $generator->generate($document);
+        $pdfLocation = $pdfFileInfo->getPdfLocation();
 
         // Determine output location
         $imageLocation = str_replace('.pdf', '.png', $pdfLocation);

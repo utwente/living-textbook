@@ -6,21 +6,25 @@ use App\Router\LtbRouter;
 use Bobv\LatexBundle\Exception\LatexException;
 use Bobv\LatexBundle\Helper\Parser;
 use Bobv\LatexBundle\Latex\Element\CustomCommand;
+use Bobv\LatexBundle\Latex\LatexBaseInterface;
 use Bobv\LatexBundle\Latex\Section\Section;
 use Bobv\LatexBundle\Latex\Section\SubSection;
 use DOMDocument;
 use DOMElement;
+use DOMException;
 use Pandoc\Pandoc;
 use Pandoc\PandocException;
+use RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+use function array_find;
 use function count;
 use function explode;
+use function hash;
 use function in_array;
 use function libxml_clear_errors;
 use function libxml_use_internal_errors;
-use function md5;
 use function pathinfo;
 use function preg_match_all;
 use function preg_replace;
@@ -38,19 +42,28 @@ abstract class LtbSection extends Section
   protected readonly Filesystem $fileSystem; // Set in constructor
   protected readonly Parser $parser; // Set in constructor
   protected readonly string $baseUrl; // Set in constructor
+  protected readonly string $notAvailableAsset; // Set in constructor
 
-  /** @throws LatexException */
+  /**
+   * @throws LatexException
+   * @throws PandocException
+   */
   public function __construct(
     string $name,
     protected readonly LtbRouter $router,
-    protected readonly string $projectDir)
-  {
+    protected readonly LatexBaseInterface $latexBase,
+    protected readonly string $projectDir,
+  ) {
     $this->pandoc     = new Pandoc($_ENV['PANDOC_PATH']);
     $this->fileSystem = new Filesystem();
     $this->parser     = new Parser();
 
     // Generate base url
     $this->baseUrl = $router->generate('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+    $this->notAvailableAsset = $this->latexBase->addLinkedDependency(
+      sprintf('%s%s/assets/img/print/notavailable.png', $this->projectDir, DIRECTORY_SEPARATOR)
+    );
 
     parent::__construct($name);
 
@@ -61,6 +74,7 @@ abstract class LtbSection extends Section
   /**
    * @throws LatexException
    * @throws PandocException
+   * @throws DOMException
    */
   protected function addSection(string $title, string $html): void
   {
@@ -71,10 +85,11 @@ abstract class LtbSection extends Section
 
   /**
    * @throws PandocException
+   * @throws DOMException
    *
-   * @return string
+   * @noinspection PhpPipeOperatorCanBeUsedInspection
    */
-  protected function convertHtmlToLatex(string $html)
+  protected function convertHtmlToLatex(string $html): string
   {
     // Try to replace latex equations
     $latexImages       = [];
@@ -144,7 +159,7 @@ abstract class LtbSection extends Section
         }
 
         // Retrieve information
-        $id = md5($dom->saveHTML($imgElement));
+        $id = hash('xxh128', $dom->saveHTML($imgElement) ?: throw new RuntimeException('Failed to generate HTML'));
         if (!$isInlineLatex && isset($captionElement)) {
           $caption = $dom->saveHTML($captionElement);
         }
@@ -177,10 +192,15 @@ abstract class LtbSection extends Section
           }
 
           // Retrieve relevant information
-          $image             = $imgElement->getAttribute('src');
+          $image = $imgElement->getAttribute('src');
+          if (!$imagePath = preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s$1', $this->projectDir), $image)) {
+            continue;
+          }
+
           $normalImages[$id] = [
-            'replace' => preg_replace('/(\/uploads\/studyarea\/)/ui', sprintf('%s$1', $this->projectDir), $image),
-            'caption' => $caption,
+            'original' => $imagePath,
+            'replace'  => $this->latexBase->addLinkedDependency($imagePath),
+            'caption'  => $caption,
           ];
         }
 
@@ -217,15 +237,23 @@ abstract class LtbSection extends Section
     $matches = [];
     preg_match_all('/\\\\includegraphics(\[.+\])?\{([^}]+)\}/u', $latex, $matches);
     foreach ($matches[2] as $imageLocation) {
-      if ($this->fileSystem->exists($imageLocation)) {
-        $extension = strtolower(pathinfo((string)$imageLocation, PATHINFO_EXTENSION));
-        if (in_array($extension, ['png', 'jpg', 'jpeg'])) {
+      if (!$this->fileSystem->exists($imageLocation)) {
+        // Try again by finding the original path
+        $imageLocation = array_find($normalImages, static fn (array $image): bool => $image['replace'] === $imageLocation);
+        $imageLocation = $imageLocation['original'] ?? null;
+
+        if (!$imageLocation || !$this->fileSystem->exists($imageLocation)) {
           continue;
         }
-
-        // Unsupported image found, replace with notice image
-        $latex = str_replace($imageLocation, sprintf('%s%s/assets/img/print/notavailable.png', $this->projectDir, DIRECTORY_SEPARATOR), $latex);
       }
+
+      $extension = strtolower(pathinfo($imageLocation, PATHINFO_EXTENSION));
+      if (in_array($extension, ['png', 'jpg', 'jpeg'])) {
+        continue;
+      }
+
+      // Unsupported image found, replace it with notice image
+      $latex = str_replace($imageLocation, $this->notAvailableAsset, $latex);
     }
 
     // Replace local urls with full-path versions

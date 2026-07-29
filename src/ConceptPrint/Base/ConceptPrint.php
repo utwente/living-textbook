@@ -15,6 +15,7 @@ use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function sprintf;
+use function str_ends_with;
 use function strlen;
 use function substr;
 
@@ -72,7 +73,11 @@ class ConceptPrint extends LatexBase
   /** @throws LatexException */
   public function useLicenseImage(string $projectDir): static
   {
-    $this->setParam('licenseimage', sprintf('%s/assets/img/footer/license.png', $projectDir));
+    /** @noinspection PhpPipeOperatorCanBeUsedInspection */
+    $this->setParam(
+      'licenseimage',
+      $this->addLinkedDependency(sprintf('%s/assets/img/footer/license.png', $projectDir)),
+    );
 
     return $this;
   }
@@ -80,7 +85,7 @@ class ConceptPrint extends LatexBase
   /** Set the base url for the header. */
   public function setBaseUrl(string $baseUrl): static
   {
-    $this->baseUrl = substr($baseUrl, strlen($baseUrl) - 1) == '/' ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
+    $this->baseUrl = str_ends_with($baseUrl, '/') ? substr($baseUrl, 0, strlen($baseUrl) - 1) : $baseUrl;
 
     return $this;
   }

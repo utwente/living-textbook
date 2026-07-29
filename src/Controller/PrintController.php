@@ -16,6 +16,7 @@ use Bobv\LatexBundle\Exception\ImageNotFoundException;
 use Bobv\LatexBundle\Exception\LatexException;
 use Bobv\LatexBundle\Generator\LatexGeneratorInterface;
 use Bobv\LatexBundle\Helper\Sanitize;
+use Drenso\Shared\Exception\NullGuard\MustNotBeEmptyException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,12 +50,13 @@ class PrintController extends AbstractController
     $projectDir = $this->getParameter('kernel.project_dir');
 
     // Create LaTeX document
-    $document = new ConceptPrint($this->filename($concept->getName()))
+    $document = new ConceptPrint($this->filename($concept->getName()));
+    $document
       ->useLicenseImage($projectDir)
       ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
       ->setHeader($concept->getStudyArea(), $translator)
       ->addIntroduction($concept->getStudyArea(), $translator)
-      ->addElement(new ConceptSection($concept, $router, $translator, $namingService, $projectDir));
+      ->addElement(new ConceptSection($concept, $router, $translator, $namingService, $document, $projectDir));
 
     // Return PDF
     try {
@@ -79,12 +81,13 @@ class PrintController extends AbstractController
     $projectDir = $this->getParameter('kernel.project_dir');
 
     // Create LaTeX document
-    $document = new ConceptPrint($this->filename($learningPath->getName()))
+    $document = new ConceptPrint($this->filename($learningPath->getName()));
+    $document
       ->useLicenseImage($projectDir)
       ->setBaseUrl($this->generateUrl('base_url', [], UrlGeneratorInterface::ABSOLUTE_URL))
       ->setHeader($learningPath->getStudyArea(), $translator)
       ->addIntroduction($learningPath->getStudyArea(), $translator)
-      ->addElement(new LearningPathSection($learningPath, $router, $translator, $namingService, $projectDir));
+      ->addElement(new LearningPathSection($learningPath, $router, $translator, $namingService, $document, $projectDir));
 
     // Return PDF
     try {
@@ -94,9 +97,11 @@ class PrintController extends AbstractController
     }
   }
 
-  private function filename(string $name): array|false|string|null
+  /** @return non-empty-string */
+  private function filename(string $name): string
   {
-    return str_replace(' ', '-', mb_strtolower(Sanitize::sanitizeText($name)));
+    return str_replace(' ', '-', mb_strtolower(Sanitize::sanitizeText($name)))
+      ?: throw new MustNotBeEmptyException();
   }
 
   /**
