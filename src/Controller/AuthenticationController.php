@@ -50,10 +50,10 @@ class AuthenticationController extends AbstractController
   public function checkLogin(): Response
   {
     if ($this->isGranted('ROLE_USER')) {
-      return $this->redirect($this->generateUrl('_home'));
+      return $this->redirectToRoute('_home');
     }
 
-    return $this->redirect($this->generateUrl('login'));
+    return $this->redirectToRoute('login');
   }
 
   /**
