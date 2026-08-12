@@ -304,7 +304,7 @@ class DefaultController extends AbstractController
         $translator->trans('url.bad');
     $this->addFlash('info', $translator->trans('url.rescanned', ['%result%' => strtolower($result)]));
 
-    return $this->redirect($this->generateUrl('app_default_urloverview'));
+    return $this->redirectToRoute('app_default_urloverview');
   }
 
   /** @throws InvalidArgumentException */
@@ -315,7 +315,7 @@ class DefaultController extends AbstractController
     $urlChecker->checkStudyArea($requestStudyArea->getStudyArea(), false, false);
     $this->addFlash('info', $translator->trans('url.rescanned-study-area'));
 
-    return $this->redirect($this->generateUrl('app_default_urloverview'));
+    return $this->redirectToRoute('app_default_urloverview');
   }
 
   private function createStudyAreaForm(

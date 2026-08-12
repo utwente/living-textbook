@@ -18,8 +18,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libxslt-dev \
     ## Imagick
       imagemagick libmagickwand-dev libmagickcore-dev \
-    # Latex
-      texlive-base texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra poppler-utils \
+    # Latex helpers
+      poppler-utils \
     # Pandoc
       pandoc \
     # Python build dependencies \
@@ -128,7 +128,7 @@ RUN cp .secrets.json.dist .secrets.json \
     && rm .secrets.json
 
 ######################## Production assets builder ########################
-FROM node:24.18.0-slim AS ltb_prod_assets_build
+FROM node:24.19.0-slim AS ltb_prod_assets_build
 
 # Set the work dir
 WORKDIR /usr/src/app
