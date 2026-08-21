@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bcd0ae56b9ac3745ea470bb6cbe1c14",
+    "content-hash": "63727b2de6cfa7f8f59f34268fa8cf5d",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -11645,6 +11645,76 @@
             "time": "2024-05-06T16:37:16+00:00"
         },
         {
+            "name": "drenso/symfony-shared-phpstan",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Drenso/symfony-shared-phpstan.git",
+                "reference": "9888272ba6072ad27350fe77959b9a3a1cca0931"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared-phpstan/zipball/9888272ba6072ad27350fe77959b9a3a1cca0931",
+                "reference": "9888272ba6072ad27350fe77959b9a3a1cca0931",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^5",
+                "php": "^8.3",
+                "phpstan/phpstan": "^2.2"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^4",
+                "doctrine/orm": "^3",
+                "drenso/symfony-shared": "~7 || ~8",
+                "friendsofphp/php-cs-fixer": "3.95.18",
+                "phpstan/phpstan": "2.2.8",
+                "rector/rector": "2.6.1",
+                "symfony/doctrine-bridge": "~6 || ~7 || ~8",
+                "symfony/uid": "~6 || ~7 || ~8"
+            },
+            "suggest": {
+                "symfony/doctrine-bridge": "To use Ulid related rules",
+                "symfony/uid": "To use Ulid related rules"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drenso\\Shared\\PhpStan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob van de Vijver",
+                    "email": "bob@drenso.nl"
+                },
+                {
+                    "name": "Tobias Feijten",
+                    "email": "tobias@drenso.nl"
+                }
+            ],
+            "description": "This package contains commonly shared phpstan extensions between our projects.",
+            "keywords": [
+                "PHPStan",
+                "drenso",
+                "shared"
+            ],
+            "support": {
+                "issues": "https://github.com/Drenso/symfony-shared-phpstan/issues",
+                "source": "https://github.com/Drenso/symfony-shared-phpstan/tree/v1.0.1"
+            },
+            "time": "2026-08-21T19:40:19+00:00"
+        },
+        {
             "name": "ergebnis/agent-detector",
             "version": "1.2.0",
             "source": {
@@ -13428,16 +13498,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.6.2",
+            "version": "2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "03cd615cdd5648abb5f10ff3a684fdb976687190"
+                "reference": "7e46709996a4b3dc59e1d6ecbb6a38ace335bd58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/03cd615cdd5648abb5f10ff3a684fdb976687190",
-                "reference": "03cd615cdd5648abb5f10ff3a684fdb976687190",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/7e46709996a4b3dc59e1d6ecbb6a38ace335bd58",
+                "reference": "7e46709996a4b3dc59e1d6ecbb6a38ace335bd58",
                 "shasum": ""
             },
             "require": {
@@ -13476,7 +13546,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.6.2"
+                "source": "https://github.com/rectorphp/rector/tree/2.6.3"
             },
             "funding": [
                 {
@@ -13484,7 +13554,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-12T06:23:05+00:00"
+            "time": "2026-08-18T22:01:18+00:00"
         },
         {
             "name": "sebastian/cli-parser",

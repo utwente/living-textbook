@@ -95,6 +95,7 @@
         "zircote/swagger-php": "6.1.2"
     },
     "require-dev": {
+        "drenso/symfony-shared-phpstan": "1.0.1",
         "friendsofphp/php-cs-fixer": "3.95.18",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.2.8",
@@ -102,7 +103,7 @@
         "phpstan/phpstan-phpunit": "2.0.18",
         "phpstan/phpstan-symfony": "2.0.20",
         "phpunit/phpunit": "13.3.1",
-        "rector/rector": "2.6.2",
+        "rector/rector": "2.6.3",
         "symfony/error-handler": "7.4.15",
         "symfony/stopwatch": "7.4.8",
         "symfony/web-profiler-bundle": "7.4.16",
