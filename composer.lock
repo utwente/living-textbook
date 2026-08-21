@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1874fd9b0c17f0e914d9fa15476d9fec",
+    "content-hash": "9bcd0ae56b9ac3745ea470bb6cbe1c14",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1599,16 +1599,16 @@
         },
         {
             "name": "drenso/symfony-shared",
-            "version": "7.4.0",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Drenso/symfony-shared.git",
-                "reference": "57712163393fe633d8fc9200580a9508d8470a2e"
+                "reference": "7da9256be234d9d54a23ff72c1bc4e91749df1aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/57712163393fe633d8fc9200580a9508d8470a2e",
-                "reference": "57712163393fe633d8fc9200580a9508d8470a2e",
+                "url": "https://api.github.com/repos/Drenso/symfony-shared/zipball/7da9256be234d9d54a23ff72c1bc4e91749df1aa",
+                "reference": "7da9256be234d9d54a23ff72c1bc4e91749df1aa",
                 "shasum": ""
             },
             "require": {
@@ -1644,7 +1644,7 @@
                 "php-decimal/php-decimal": "^1.1",
                 "phpoffice/phpspreadsheet": "^1.23 || ^2.0 || ^3.0 || ^4.0 || ^5.0",
                 "phpstan/phpstan": "2.2.8",
-                "rector/rector": "2.6.1",
+                "rector/rector": "2.6.3",
                 "sebastian/comparator": "^5.0 || ^6.0 || ^7.0 || ^8.0",
                 "sentry/sentry-symfony": "^5.0",
                 "stof/doctrine-extensions-bundle": "^1.14",
@@ -1691,17 +1691,15 @@
                 "twig/extra-bundle": "Needed to use the MailService when inlining CSS styles",
                 "zenstruck/messenger-monitor-bundle": "Needed to use the messenger monitor command"
             },
-            "type": "symfony-bundle",
+            "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "6.x-dev"
+                    "dev-main": "8.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Drenso\\Shared\\": "src/",
-                    "Drenso\\Shared\\Tests\\": "phpunit/",
-                    "Drenso\\Shared\\PhpStan\\": "phpstan/"
+                    "Drenso\\Shared\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1726,9 +1724,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Drenso/symfony-shared/issues",
-                "source": "https://github.com/Drenso/symfony-shared/tree/7.4.0"
+                "source": "https://github.com/Drenso/symfony-shared/tree/v8.0.0"
             },
-            "time": "2026-08-16T19:10:31+00:00"
+            "time": "2026-08-21T14:35:53+00:00"
         },
         {
             "name": "egulias/email-validator",
