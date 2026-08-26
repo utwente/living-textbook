@@ -322,9 +322,6 @@
     "psr/simple-cache": {
         "version": "1.0.0"
     },
-    "ralouphie/getallheaders": {
-        "version": "3.0.3"
-    },
     "rollerworks/password-strength-validator": {
         "version": "v1.3.0"
     },
