@@ -96,7 +96,7 @@
     },
     "require-dev": {
         "drenso/symfony-shared-phpstan": "1.0.1",
-        "friendsofphp/php-cs-fixer": "3.95.20",
+        "friendsofphp/php-cs-fixer": "3.95.22",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.2.9",
         "phpstan/phpstan-doctrine": "2.0.28",
