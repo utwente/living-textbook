@@ -81,9 +81,7 @@ class LearningOutcomeRepository extends ServiceEntityRepository
 
     $return = [];
     array_walk($result, static function (array $item) use (&$return): void {
-      if (!isset($return[$item['id']])) {
-        $return[$item['id']] = [];
-      }
+      $return[$item['id']] ??= [];
       $return[$item['id']][] = $item['cid'];
     });
 

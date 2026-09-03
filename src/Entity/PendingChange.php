@@ -329,9 +329,7 @@ class PendingChange implements IdInterface
       return null;
     }
 
-    if ($this->cachedObject === null) {
-      $this->cachedObject = ReviewService::getObjectFromSnapshot($this->payload, $this->objectType);
-    }
+    $this->cachedObject ??= ReviewService::getObjectFromSnapshot($this->payload, $this->objectType);
 
     return $this->cachedObject;
   }
