@@ -8,6 +8,7 @@ use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
+use Rector\TypeDeclaration\Rector\BooleanAnd\BinaryOpNullableToInstanceofRector;
 
 return RectorConfig::configure()
   ->withCache('./var/cache/rector', FileCacheStorage::class)
@@ -31,4 +32,5 @@ return RectorConfig::configure()
   ])
   ->withSkip([
     ClassPropertyAssignToConstructorPromotionRector::class, // Messes up the annotations
+    BinaryOpNullableToInstanceofRector::class, // Makes code unreadable
   ]);
