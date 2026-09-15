@@ -34,7 +34,7 @@
         "helios-ag/fm-elfinder-bundle": "13.0.2",
         "jms/serializer": "3.32.9",
         "jms/serializer-bundle": "5.5.2",
-        "league/html-to-markdown": "5.1.1",
+        "league/html-to-markdown": "5.1.2",
         "nelmio/api-doc-bundle": "5.11.1",
         "nelmio/cors-bundle": "2.6.1",
         "phpoffice/phpspreadsheet": "5.9.0",
