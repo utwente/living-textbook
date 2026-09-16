@@ -107,7 +107,7 @@
         "symfony/error-handler": "7.4.17",
         "symfony/stopwatch": "7.4.8",
         "symfony/web-profiler-bundle": "7.4.19",
-        "vincentlanglet/twig-cs-fixer": "4.1.0"
+        "vincentlanglet/twig-cs-fixer": "4.1.1"
     },
     "config": {
         "preferred-install": {
