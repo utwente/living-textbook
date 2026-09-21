@@ -76,7 +76,6 @@
     "requirejs": "2.3.8",
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
-    "symfony-collection": "ninsuo/symfony-collection",
     "uuid": "14.0.2"
   },
   "overrides": {
