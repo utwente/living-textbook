@@ -27,7 +27,7 @@ Encore
     .addEntry('double-column', './assets/js/doubleColumn.js')
     .addEntry('content', [
       './assets/js/content.js',
-      'symfony-collection/jquery.collection.js'
+      './assets/js/symfony-collection.js'
     ])
     .addEntry('analytics', [
       './assets/js/analytics/main.js'

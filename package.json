@@ -48,7 +48,7 @@
     "vue:lint": "vue-cli-service lint --no-fix --max-warnings 0"
   },
   "dependencies": {
-    "@sentry/browser": "10.73.0",
+    "@sentry/browser": "10.74.0",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
@@ -76,7 +76,6 @@
     "requirejs": "2.3.8",
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
-    "symfony-collection": "ninsuo/symfony-collection",
     "uuid": "14.0.2"
   },
   "overrides": {
