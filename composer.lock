@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcb91a780cd775a4bcf6154030530823",
+    "content-hash": "bdf79950f4bdb8d5d3cd0ba16719fcf9",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -2269,16 +2269,16 @@
         },
         {
             "name": "helios-ag/fm-elfinder-bundle",
-            "version": "13.0.2",
+            "version": "14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helios-ag/FMElfinderBundle.git",
-                "reference": "fa0247c4e43d748b1d8a626f94f8e4c423687fdb"
+                "reference": "136d258ea923b7ae69a8c81fda2da35aa716b62e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/fa0247c4e43d748b1d8a626f94f8e4c423687fdb",
-                "reference": "fa0247c4e43d748b1d8a626f94f8e4c423687fdb",
+                "url": "https://api.github.com/repos/helios-ag/FMElfinderBundle/zipball/136d258ea923b7ae69a8c81fda2da35aa716b62e",
+                "reference": "136d258ea923b7ae69a8c81fda2da35aa716b62e",
                 "shasum": ""
             },
             "require": {
@@ -2293,14 +2293,19 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "dev-master",
+                "league/flysystem": "^3.0",
+                "league/flysystem-ftp": "^3.0",
+                "league/flysystem-sftp-v3": "^3.0",
                 "matthiasnoback/symfony-config-test": "^6.0",
                 "matthiasnoback/symfony-dependency-injection-test": "^6.0",
                 "php-coveralls/php-coveralls": "^2.0",
+                "spatie/dropbox-api": "^1.0|^2.0",
+                "spatie/flysystem-dropbox": "^3.0",
                 "symfony/finder": "^6.4 || ^7.0 || ^8.0",
                 "symfony/phpunit-bridge": "^6.4 || ^7.0.1 || ^8.0"
             },
             "suggest": {
-                "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
+                "barryvdh/elfinder-flysystem-driver": "Flysystem v3 compatible elFinder volume driver (requires ^0.5, older versions target Flysystem 1.x)",
                 "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle",
                 "helios-ag/fm-summernote-bundle": "FMSummernoteBundle WYSIWYG Editor Bundle",
                 "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",
@@ -2309,7 +2314,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "13.x-dev"
+                    "dev-main": "14.x-dev"
                 }
             },
             "autoload": {
@@ -2340,9 +2345,9 @@
             ],
             "support": {
                 "issues": "https://github.com/helios-ag/FMElfinderBundle/issues",
-                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/13.0.2"
+                "source": "https://github.com/helios-ag/FMElfinderBundle/tree/14.0"
             },
-            "time": "2026-03-26T07:06:56+00:00"
+            "time": "2026-09-02T00:53:43+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
