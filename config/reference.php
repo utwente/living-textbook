@@ -680,7 +680,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         message_bus?: scalar|Param|null, // The message bus to use. // Default: "messenger.default_bus"
  *         routing?: array<string, array{ // Default: []
  *             service?: scalar|Param|null,
- *             secret?: scalar|Param|null, // The secret used to verify incoming request signatures. It must be set in production: with an empty value, requests from any sender are accepted. // Default: ""
+ *             secret?: scalar|Param|null, // The secret used to verify incoming request signatures. It must be set in production: with an empty value, depending on the parser, requests from any sender are accepted or every request is rejected. // Default: ""
  *         }>,
  *     },
  *     remote_event?: bool|array{ // RemoteEvent configuration
@@ -1258,9 +1258,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             lifetime?: int|Param, // Default: 31536000
  *             path?: scalar|Param|null, // Default: "/"
  *             domain?: scalar|Param|null, // Default: null
- *             secure?: true|false|"auto"|Param, // Default: true
+ *             secure?: true|false|"auto"|Param, // Defaults to the value of "framework.session.cookie_secure", or to "auto".
  *             httponly?: bool|Param, // Default: true
- *             samesite?: null|"lax"|"strict"|"none"|Param, // Default: "lax"
+ *             samesite?: null|"lax"|"strict"|"none"|Param, // Defaults to the value of "framework.session.cookie_samesite", or to "lax".
  *             always_remember_me?: bool|Param, // Default: false
  *             remember_me_parameter?: scalar|Param|null, // Default: "_remember_me"
  *         },
@@ -1709,6 +1709,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         cors_support?: bool|Param, // Default: false
  *         editor?: scalar|Param|null, // Default: "simple"
  *         editor_template?: scalar|Param|null, // Default: null
+ *         multiple?: bool|Param, // Default: false
+ *         callback_function?: scalar|Param|null, // Default: null
  *         fullscreen?: bool|Param, // Default: true
  *         multi_home_folder?: bool|Param, // Default: false
  *         folder_separator?: scalar|Param|null, // Default: ""
@@ -1818,21 +1820,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                             privateKey?: scalar|Param|null, // Default: ""
  *                             timeout?: int|Param, // Default: 10
  *                             root?: scalar|Param|null, // Default: "/"
- *                         },
- *                         azure?: bool|array{
- *                             enabled?: bool|Param, // Default: false
- *                             account_name?: scalar|Param|null, // Default: ""
- *                             account_key?: scalar|Param|null, // Default: ""
- *                             container_name?: scalar|Param|null, // Default: ""
- *                         },
- *                         aws_s3_v2?: bool|array{
- *                             enabled?: bool|Param, // Default: false
- *                             key?: scalar|Param|null, // Default: ""
- *                             secret?: scalar|Param|null, // Default: ""
- *                             region?: scalar|Param|null, // Default: ""
- *                             bucket_name?: scalar|Param|null, // Default: ""
- *                             optional_prefix?: scalar|Param|null, // Default: ""
- *                             base_url?: scalar|Param|null, // Default: ""
+ *                             permPublic?: int|Param, // Default: null
+ *                             permPrivate?: int|Param, // Default: null
+ *                             directoryPerm?: int|Param, // Default: null
  *                         },
  *                         aws_s3_v3?: bool|array{
  *                             enabled?: bool|Param, // Default: false
@@ -1845,39 +1835,12 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                             endpoint?: scalar|Param|null, // Default: null
  *                             use_path_style_endpoint?: bool|Param, // Default: false
  *                             use_aws_shared_config_files?: bool|Param, // Default: true
- *                             options?: bool|array{
- *                                 enabled?: bool|Param, // Default: false
- *                                 ACL?: scalar|Param|null, // Default: ""
- *                             },
- *                         },
- *                         copy_com?: bool|array{
- *                             enabled?: bool|Param, // Default: false
- *                             consumer_key?: scalar|Param|null, // Default: ""
- *                             consumer_secret?: scalar|Param|null, // Default: ""
- *                             access_token?: scalar|Param|null, // Default: ""
- *                             token_secret?: scalar|Param|null, // Default: ""
- *                             optional_prefix?: scalar|Param|null, // Default: ""
- *                         },
- *                         gridfs?: bool|array{
- *                             enabled?: bool|Param, // Default: false
- *                             db_name?: scalar|Param|null, // Default: ""
- *                         },
- *                         zip?: bool|array{
- *                             enabled?: bool|Param, // Default: false
- *                             path?: scalar|Param|null, // Default: ""
+ *                             options?: list<mixed>,
  *                         },
  *                         dropbox?: bool|array{
  *                             enabled?: bool|Param, // Default: false
  *                             app?: scalar|Param|null, // Default: ""
  *                             token?: scalar|Param|null, // Default: ""
- *                         },
- *                         rackspace?: bool|array{
- *                             enabled?: bool|Param, // Default: false
- *                             username?: scalar|Param|null, // Default: ""
- *                             apikey?: scalar|Param|null, // Default: ""
- *                             endpoint?: scalar|Param|null, // Default: ""
- *                             container?: scalar|Param|null, // Default: ""
- *                             region?: scalar|Param|null, // Default: ""
  *                         },
  *                     },
  *                 },
