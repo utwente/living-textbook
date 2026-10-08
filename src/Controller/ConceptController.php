@@ -25,7 +25,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -87,7 +86,7 @@ class ConceptController extends AbstractController
 
   #[Route(path: '/edit/{concept<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_concept_show', routeParams: ['concept' => '{concept}'], subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_concept_show', subject: 'requestStudyArea', routeParams: ['concept' => '{concept}'])]
   public function edit(
     Request $request,
     RequestStudyArea $requestStudyArea,
@@ -182,7 +181,7 @@ class ConceptController extends AbstractController
 
     // Verify it can be edited
     if (!$this->reviewService->canObjectBeEdited($studyArea, $concept)) {
-      throw new NotFoundHttpException('When review has been disabled, pending edits can no longer be edited');
+      throw $this->createNotFoundException('When review has been disabled, pending edits can no longer be edited');
     }
 
     // Create snapshot. Do this of the current version, to ensure all changes are detected correctly
@@ -396,7 +395,7 @@ class ConceptController extends AbstractController
 
   #[Route(path: '/remove/{concept<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_concept_show', routeParams: ['concept' => '{concept}'], subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_concept_show', subject: 'requestStudyArea', routeParams: ['concept' => '{concept}'])]
   public function remove(
     Request $request,
     RequestStudyArea $requestStudyArea,
