@@ -357,7 +357,7 @@ class ConceptController extends AbstractController
     $user      = $this->getUser();
     $studyArea = $requestStudyArea->getStudyArea();
 
-    $concepts         = $repo->findForStudyAreaOrderedByName($studyArea, false, true);
+    $concepts         = $repo->findForStudyAreaOrderedByName($studyArea, conceptsOnly: true, preloadForLastEdit: true);
     $annotationCounts = $user
         ? $annotationRepository->getCountsForUserInStudyArea($user, $studyArea)
         : null;

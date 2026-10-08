@@ -58,7 +58,7 @@ final class StudyAreaStatusBuilder
     $this->relationTypes = $this->relationTypeRepo->findBy(['studyArea' => $studyArea]);
 
     // Retrieve the concepts
-    $this->concepts = $this->conceptRepo->findForStudyAreaOrderedByName($studyArea, true);
+    $this->concepts = $this->conceptRepo->findForStudyAreaOrderedByName($studyArea, preloadForLastEdit: true);
 
     // Create spreadsheet
     $spreadsheet = new Spreadsheet();

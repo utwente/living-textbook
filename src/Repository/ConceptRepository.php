@@ -22,8 +22,10 @@ class ConceptRepository extends ServiceEntityRepository
   }
 
   public function findForStudyAreaOrderByNameQb(
-    StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): QueryBuilder
-  {
+    StudyArea $studyArea,
+    bool $conceptsOnly = false,
+    bool $instancesOnly = false,
+  ): QueryBuilder {
     if ($conceptsOnly && $instancesOnly) {
       throw new InvalidArgumentException('You cannot select both only options at the same time!');
     }
@@ -45,13 +47,19 @@ class ConceptRepository extends ServiceEntityRepository
 
   /** @return Concept[] */
   public function findForStudyAreaOrderedByName(
-    StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false): mixed
-  {
+    StudyArea $studyArea,
+    bool $preLoadData = false,
+    bool $conceptsOnly = false,
+    bool $instancesOnly = false,
+    bool $preloadForLastEdit = false,
+  ): mixed {
     $qb = $this->findForStudyAreaOrderByNameQb($studyArea, $conceptsOnly, $instancesOnly);
 
     $this->loadRelations($qb, 'c');
 
-    if ($preLoadData) {
+    if ($preloadForLastEdit) {
+      $this->preloadForLastEdit($qb, 'c');
+    } elseif ($preLoadData) {
       $this->preLoadData($qb, 'c');
     }
 
@@ -63,8 +71,10 @@ class ConceptRepository extends ServiceEntityRepository
    * @noinspection PhpUnhandledExceptionInspection
    */
   public function getCountForStudyArea(
-    StudyArea $studyArea, bool $conceptsOnly = false, bool $instancesOnly = false): int
-  {
+    StudyArea $studyArea,
+    bool $conceptsOnly = false,
+    bool $instancesOnly = false,
+  ): int {
     if ($conceptsOnly && $instancesOnly) {
       throw new InvalidArgumentException('You cannot select both only options at the same time!');
     }
@@ -85,7 +95,7 @@ class ConceptRepository extends ServiceEntityRepository
   }
 
   /** Eagerly load the concept relations, while applying the soft deletable filter. */
-  private function loadRelations(QueryBuilder &$qb, string $alias): void
+  private function loadRelations(QueryBuilder $qb, string $alias): void
   {
     $qb
       ->leftJoin($alias . '.outgoingRelations', 'r')
@@ -95,7 +105,7 @@ class ConceptRepository extends ServiceEntityRepository
   }
 
   /** Eagerly load the text data. */
-  private function preLoadData(QueryBuilder &$qb, string $alias): void
+  private function preLoadData(QueryBuilder $qb, string $alias): void
   {
     $qb
       ->join($alias . '.examples', 'de')
@@ -108,5 +118,24 @@ class ConceptRepository extends ServiceEntityRepository
       ->addSelect('dt')
       ->addSelect('dh')
       ->addSelect('ds');
+  }
+
+  private function preloadForLastEdit(QueryBuilder $qb, string $alias): void
+  {
+    $this->preLoadData($qb, $alias);
+
+    $qb
+      ->leftJoin($alias . '.externalResources', 'leER')
+      ->leftJoin($alias . '.contributors', 'leC')
+      ->leftJoin($alias . '.incomingRelations', 'leIR')
+      ->leftJoin($alias . '.learningOutcomes', 'leLO')
+      ->leftJoin($alias . '.outgoingRelations', 'leOR')
+      ->leftJoin($alias . '.tags', 'leT')
+      ->addSelect('leER')
+      ->addSelect('leC')
+      ->addSelect('leIR')
+      ->addSelect('leLO')
+      ->addSelect('leOR')
+      ->addSelect('leT');
   }
 }

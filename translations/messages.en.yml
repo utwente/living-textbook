@@ -173,6 +173,7 @@ concept:
     not-possible-review-enabled: 'It is not possible to instantiate an instance as review mode is enabled.'
     success: 'The instances have been created! Refresh the browser to see them.'
   introduction: 'Introduction'
+  last-edit: "Last edit"
   list-title: 'Concept list'
   name: 'Name'
   new: 'New concept/instance'
