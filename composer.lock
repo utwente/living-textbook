@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f8564c4802f1c653148128eec476b180",
+    "content-hash": "c7296a638eb4b4a840154c0fc79e67ac",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -2739,16 +2739,16 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "5.1.2",
+            "version": "5.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "db234ecdb160b9d2b422c1c130db4b01eb3e9e24"
+                "reference": "5411b9650dd468be52267a6f4a2a26c31d2581be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/db234ecdb160b9d2b422c1c130db4b01eb3e9e24",
-                "reference": "db234ecdb160b9d2b422c1c130db4b01eb3e9e24",
+                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/5411b9650dd468be52267a6f4a2a26c31d2581be",
+                "reference": "5411b9650dd468be52267a6f4a2a26c31d2581be",
                 "shasum": ""
             },
             "require": {
@@ -2804,7 +2804,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/html-to-markdown/issues",
-                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.1.2"
+                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.1.3"
             },
             "funding": [
                 {
@@ -2824,7 +2824,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-07T13:53:32+00:00"
+            "time": "2026-10-06T01:08:41+00:00"
         },
         {
             "name": "lorenzo/pinky",
