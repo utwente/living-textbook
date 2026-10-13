@@ -103,7 +103,7 @@
         "phpstan/phpstan-phpunit": "2.1.0",
         "phpstan/phpstan-symfony": "2.1.0",
         "phpunit/phpunit": "13.4.1",
-        "rector/rector": "2.6.7",
+        "rector/rector": "2.7.0",
         "symfony/error-handler": "7.4.20",
         "symfony/stopwatch": "7.4.8",
         "symfony/web-profiler-bundle": "7.4.20",
