@@ -47,7 +47,7 @@ class ConceptRelationType extends AbstractType
     $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($concept): void {
       /** @var ConceptRelation|null $relation */
       $relation       = $event->getData();
-      $relationTypeId = $relation === null ? null : $relation->getRelationType()->getId();
+      $relationTypeId = $relation?->getRelationType()->getId();
       $form           = $event->getForm();
 
       $form->add('relationType', EntityType::class, [
