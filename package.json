@@ -76,7 +76,7 @@
     "requirejs": "2.3.8",
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
-    "uuid": "14.0.2"
+    "uuid": "14.0.3"
   },
   "overrides": {
     "datatables.net": "1.13.11",
