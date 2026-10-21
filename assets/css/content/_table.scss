@@ -5,13 +5,12 @@
 @import '~font-awesome/scss/mixins';
 
 table.table {
-
   &.table-datatable {
     width: 100% !important;
     border-spacing: 0;
 
     thead {
-      .sorting, .sorting_desc, .sorting_asc {
+      .sorting {
         padding-right: 0.75rem;
 
         &::before, &::after {
@@ -20,27 +19,32 @@ table.table {
 
         .sort {
           padding-left: 0.5em;
+          width: 1em;
           @include fa-icon();
           position: relative;
 
           &::before {
             content: $fa-var-sort;
             opacity: 0.3;
-            position: absolute;
+            position: relative;
           }
         }
       }
 
-      .sorting .sort::before {
-        position: relative;
+      .sorting_desc, .sorting_asc {
+        .sort::before {
+          position: absolute;
+        }
       }
 
       .sorting_desc .sort::after {
         content: $fa-var-sort-desc;
+        display: absolute;
       }
 
       .sorting_asc .sort::after {
         content: $fa-var-sort-asc;
+        display: absolute;
       }
     }
 

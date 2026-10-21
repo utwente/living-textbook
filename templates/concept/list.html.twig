@@ -30,6 +30,7 @@
       <th scope="col">{{ 'concept.instance'|trans }}<i class="sort"></i></th>
       <th scope="col">{{ 'concept.outgoing-relations'|trans }}<i class="sort"></i></th>
       <th scope="col">{{ 'concept.incoming-relations'|trans }}<i class="sort"></i></th>
+      <th scope="col">{{ 'concept.last-edit'|trans }}<i class="sort"></i></th>
       {% if app.user %}
         <th scope="col">{{ 'annotations.list-count'|trans }}<i class="sort"></i></th>
       {% endif %}
@@ -48,6 +49,11 @@
         </td>
         <td>{{ concept.outgoingRelations|length }}</td>
         <td>{{ concept.incomingRelations|length }}</td>
+        <td>
+          {% if concept.lastEditInfo[0] !== null %}
+            {{ concept.lastEditInfo[0]|date('Y-m-d H:i') }}
+          {% endif %}
+        </td>
         {% if app.user %}
           <td>{{ annotation_counts[concept.id]|default(0) }}</td>
         {% endif %}

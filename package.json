@@ -48,7 +48,7 @@
     "vue:lint": "vue-cli-service lint --no-fix --max-warnings 0"
   },
   "dependencies": {
-    "@sentry/browser": "10.75.3",
+    "@sentry/browser": "10.76.2",
     "@utwente/dotron-app": "1.0.4",
     "bootstrap": "4.6.2",
     "bootstrap-3-typeahead": "4.0.2",
@@ -76,7 +76,7 @@
     "requirejs": "2.3.8",
     "select2": "4.0.13",
     "select2-theme-bootstrap4": "1.0.2",
-    "uuid": "14.0.2"
+    "uuid": "14.0.3"
   },
   "overrides": {
     "datatables.net": "1.13.11",
