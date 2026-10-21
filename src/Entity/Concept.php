@@ -21,7 +21,6 @@ use App\Review\Exception\IncompatibleChangeException;
 use App\Review\Exception\IncompatibleFieldChangedException;
 use App\Validator\Constraint\ConceptRelation as ConceptRelationValidator;
 use ArrayIterator;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -327,7 +326,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
         || $this->theoryExplanation->hasData();
   }
 
-  /** @return array{DateTimeInterface|null, string|null} Array with DateTime and username */
+  /** @return array Array with DateTime and username */
   public function getLastEditInfo(): array
   {
     $lastUpdated   = $this->getLastUpdated();
