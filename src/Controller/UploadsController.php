@@ -7,6 +7,7 @@ use App\Security\Voters\StudyAreaVoter;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use function filemtime;
 use function is_file;
-use function sprintf;
+use function str_starts_with;
 
 #[Route('/uploads')]
 class UploadsController extends AbstractController
@@ -32,29 +33,26 @@ class UploadsController extends AbstractController
       return new Response(status: Response::HTTP_FORBIDDEN);
     }
 
-    // Create path from request
-    $requestedFile = sprintf('%s/uploads/studyarea/%s/%s',
-      $this->getParameter('kernel.project_dir'),
-      $requestStudyArea->getStudyArea()->getId(),
-      $path);
-
-    return $this->getFile($request, $requestedFile);
+    return $this->getFile($request, "studyarea/{$requestStudyArea->getStudyArea()->getNonNullId()}", $path);
   }
 
   #[Route('/global/{path}', options: ['no_login_wrap' => true])]
   #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function loadGlobal(Request $request, string $path): Response
   {
-    // Create path from request
-    $requestedFile = sprintf('%s/uploads/global/%s',
-      $this->getParameter('kernel.project_dir'),
-      $path);
-
-    return $this->getFile($request, $requestedFile);
+    return $this->getFile($request, 'global', $path);
   }
 
-  private function getFile(Request $request, string $requestedFile): BinaryFileResponse
+  private function getFile(Request $request, string $folder, string $path): BinaryFileResponse
   {
+    $uploadsDir    = Path::join($this->getParameter('kernel.project_dir'), 'uploads');
+    $requestedFile = Path::canonicalize(Path::join($uploadsDir, $folder, $path));
+
+    // Guard against path traversal (combined with the canonicalize above)
+    if (!str_starts_with($requestedFile, $uploadsDir)) {
+      throw $this->createNotFoundException();
+    }
+
     // Check if path exists
     $fs = new Filesystem();
     if (!$fs->exists($requestedFile) || !is_file($requestedFile)) {
