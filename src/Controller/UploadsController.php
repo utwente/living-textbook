@@ -45,8 +45,8 @@ class UploadsController extends AbstractController
 
   private function getFile(Request $request, string $folder, string $path): BinaryFileResponse
   {
-    $uploadsDir    = Path::join($this->getParameter('kernel.project_dir'), 'uploads');
-    $requestedFile = Path::canonicalize(Path::join($uploadsDir, $folder, $path));
+    $uploadsDir    = Path::join($this->getParameter('kernel.project_dir'), 'uploads', $folder);
+    $requestedFile = Path::canonicalize(Path::join($uploadsDir, $path));
 
     // Guard against path traversal (combined with the canonicalize above)
     if (!str_starts_with($requestedFile, $uploadsDir)) {
