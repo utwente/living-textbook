@@ -81,7 +81,8 @@
   "overrides": {
     "datatables.net": "1.13.11",
     "datatables.net-bs4": "1.13.11",
-    "jquery": "3.7.1"
+    "jquery": "3.7.1",
+    "webpack": "<5.110"
   },
   "engines": {
     "node": "~24"
