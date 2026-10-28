@@ -18,7 +18,7 @@ variables:
   # renovate: datasource=github-releases depName=composer-unused/composer-unused
   COMPOSER_UNUSED_VERSION: 0.9.6
   DRENSO_PHP_VERSION: 8.5
-  NODE_VERSION: 24
+  NODE_VERSION: 26
   # renovate: datasource=github-releases depName=fabpot/local-php-security-checker
   PHP_SEC_CHECK_VERSION: 2.1.3
   SHELLCHECK_VERSION: v0.7.2
@@ -56,9 +56,9 @@ install-dependencies:
   before_script:
     - cp .secrets.json.dist .secrets.json
     - >- # Fix for http-host used in fos-js routing
-      if [ "$CI_COMMIT_REF_NAME" = "main" ]; then
+      if [[ "$CI_COMMIT_REF_NAME" == "main" ]]; then
         export HTTP_HOST="${STAGING_HOST}"
-      elif [ "$CI_COMMIT_REF_NAME" = "research" ]; then
+      elif [[ "$CI_COMMIT_REF_NAME" == "research" ]]; then
         export HTTP_HOST="${RESEARCH_HOST}"
       else
         export HTTP_HOST="${PRODUCTION_HOST}"
@@ -90,7 +90,7 @@ install-js-dependencies:
     # Install the dependencies
     - npm ci
     - >- # Use upstream dotron version when triggered from dotron repo
-      if [ -n "${UPSTREAM_DOTRON_VERSION}" ]; then
+      if [[ -n "${UPSTREAM_DOTRON_VERSION}" ]]; then
         echo "Using updated dotron version ${UPSTREAM_DOTRON_VERSION}"
         npm add @utwente/dotron-app@${UPSTREAM_DOTRON_VERSION}
       elif [ "$CI_COMMIT_REF_NAME" == "research" ]; then

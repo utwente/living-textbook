@@ -25,7 +25,7 @@
     "stylelint": "^17.5.0",
     "ts-loader": "^9.4.2",
     "typescript": "5.9.3",
-    "webpack": "^5.105.2",
+    "webpack": "<5.110",
     "webpack-cli": "^5.1.4"
   },
   "license": "UNLICENSED",
@@ -55,7 +55,7 @@
     "bootstrap4-toggle": "3.6.1",
     "ckeditor4-nonlts": "4.24.0",
     "color": "4.2.3",
-    "core-js": "3.50.0",
+    "core-js": "3.51.0",
     "custom-event": "1.0.1",
     "d3": "5.16.0",
     "datatables.net": "1.13.11",
@@ -81,9 +81,10 @@
   "overrides": {
     "datatables.net": "1.13.11",
     "datatables.net-bs4": "1.13.11",
-    "jquery": "3.7.1"
+    "jquery": "3.7.1",
+    "webpack": "<5.110"
   },
   "engines": {
-    "node": "~24"
+    "node": "~26"
   }
 }
