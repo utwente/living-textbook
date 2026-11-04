@@ -128,7 +128,7 @@ RUN cp .secrets.json.dist .secrets.json \
     && rm .secrets.json
 
 ######################## Production assets builder ########################
-FROM node:26.12.0-slim AS ltb_prod_assets_build
+FROM node:26.12.1-slim AS ltb_prod_assets_build
 
 # Set the work dir
 WORKDIR /usr/src/app
