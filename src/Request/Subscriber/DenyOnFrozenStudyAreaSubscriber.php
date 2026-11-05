@@ -5,9 +5,8 @@ namespace App\Request\Subscriber;
 use App\Attribute\DenyOnFrozenStudyArea;
 use App\Entity\StudyArea;
 use App\Request\Wrapper\RequestStudyArea;
-use Override;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
@@ -24,26 +23,16 @@ use function stripos;
 use function strlen;
 use function substr;
 
-class DenyOnFrozenStudyAreaSubscriber implements EventSubscriberInterface
+readonly class DenyOnFrozenStudyAreaSubscriber
 {
   public function __construct(
-    private readonly TranslatorInterface $translator,
-    private readonly RouterInterface $router)
+    private TranslatorInterface $translator,
+    private RouterInterface $router)
   {
-  }
-
-  #[Override]
-  public static function getSubscribedEvents(): array
-  {
-    return [
-      KernelEvents::CONTROLLER_ARGUMENTS => [
-        'checkFrozenStudyArea',
-        -50,
-      ],
-    ];
   }
 
   /** Check if a study area is frozen, and if so, prevent editing. */
+  #[AsEventListener(event: KernelEvents::CONTROLLER_ARGUMENTS, priority: -50)]
   public function checkFrozenStudyArea(ControllerArgumentsEvent $event): void
   {
     $attributes = $event->getAttributes(DenyOnFrozenStudyArea::class);

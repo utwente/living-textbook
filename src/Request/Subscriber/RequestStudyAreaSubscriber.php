@@ -8,11 +8,10 @@ use App\Entity\User;
 use App\Naming\NamingService;
 use App\Repository\StudyAreaRepository;
 use App\Request\Wrapper\RequestStudyArea;
-use Override;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -29,7 +28,7 @@ use function is_object;
 use function Symfony\Component\String\b;
 
 /** Subscriber for KernelEvents related to controllers. */
-class RequestStudyAreaSubscriber implements EventSubscriberInterface
+class RequestStudyAreaSubscriber
 {
   /** @var string Study area session/request key */
   final public const string STUDY_AREA_KEY = '_studyArea';
@@ -50,24 +49,8 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   {
   }
 
-  /** Determine the events to subscribe to. */
-  #[Override]
-  public static function getSubscribedEvents(): array
-  {
-    return [
-      KernelEvents::CONTROLLER => [
-        ['determineStudyArea', 100],
-        ['validateApiStudyArea', 99],
-        ['injectStudyAreaInNamingService', 98],
-        ['injectStudyAreaInView', 98],
-      ],
-      KernelEvents::CONTROLLER_ARGUMENTS => [
-        ['injectStudyAreaInControllerArguments', 100],
-      ],
-    ];
-  }
-
   /** Determine the study area for this request. */
+  #[AsEventListener(event: KernelEvents::CONTROLLER, priority: 100)]
   public function determineStudyArea(ControllerEvent $event): void
   {
     $request = $event->getRequest();
@@ -128,6 +111,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** Inject the StudyArea in the controller arguments when required. */
+  #[AsEventListener(event: KernelEvents::CONTROLLER_ARGUMENTS, priority: 100)]
   public function injectStudyAreaInControllerArguments(ControllerArgumentsEvent $event): void
   {
     if ($this->studyAreaId === null) {
@@ -185,6 +169,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** Inject the StudyArea in the twig variables for the view */
+  #[AsEventListener(event: KernelEvents::CONTROLLER, priority: 98)]
   public function injectStudyAreaInView(): void
   {
     $this->testCache();
@@ -192,12 +177,14 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
   }
 
   /** Inject the StudyArea in the naming service */
+  #[AsEventListener(event: KernelEvents::CONTROLLER, priority: 98)]
   public function injectStudyAreaInNamingService(): void
   {
     $this->testCache();
     $this->namingService->injectStudyArea($this->studyArea);
   }
 
+  #[AsEventListener(event: KernelEvents::CONTROLLER, priority: 99)]
   public function validateApiStudyArea(ControllerEvent $event): void
   {
     $this->testCache();
@@ -210,7 +197,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     // Validate it is actually an API request, exclude study area list to allow checking which API enabled study areas are available to this token/user
     $requestAttributes = $event->getRequest()->attributes;
     if (!b($requestAttributes->get('_controller'))->startsWith('App\\Api\\Controller\\')
-        || $requestAttributes->get('_route') === 'api_study_area_list') {
+      || $requestAttributes->get('_route') === 'api_study_area_list') {
       return;
     }
 
@@ -221,7 +208,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
         $event->setController(static fn (): ApiErrorResponse => new ApiErrorResponse(
           'Study area frozen',
           Response::HTTP_BAD_REQUEST,
-          'This study area has been frozen'
+          'This study area has been frozen',
         ));
       }
 
@@ -232,7 +219,7 @@ class RequestStudyAreaSubscriber implements EventSubscriberInterface
     $event->setController(static fn (): ApiErrorResponse => new ApiErrorResponse(
       'API disabled',
       Response::HTTP_FORBIDDEN,
-      'API not enabled for this study area'
+      'API not enabled for this study area',
     ));
   }
 
