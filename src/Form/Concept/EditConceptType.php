@@ -43,8 +43,8 @@ class EditConceptType extends AbstractType
 {
   public function __construct(
     private readonly TranslatorInterface $translator,
-    private readonly NamingService $namingService)
-  {
+    private readonly NamingService $namingService,
+  ) {
   }
 
   #[Override]
@@ -232,11 +232,12 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('selfAssessment', BaseDataTextType::class, [
-        'label'      => $fieldNames->selfAssessment(true),
-        'required'   => false,
-        'data_class' => DataSelfAssessment::class,
-        'studyArea'  => $studyArea,
-        'disabled'   => in_array('selfAssessment', $disabledFields),
+        'label'              => $fieldNames->selfAssessment(true),
+        'translation_domain' => false,
+        'required'           => false,
+        'data_class'         => DataSelfAssessment::class,
+        'studyArea'          => $studyArea,
+        'disabled'           => in_array('selfAssessment', $disabledFields),
       ])
       ->add('selfAssessment_review', DisplayPendingChangeType::class, [
         'field'               => 'selfAssessment',
