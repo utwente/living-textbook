@@ -11,6 +11,7 @@ use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use EasyRdf\Exception;
 use EasyRdf\Graph;
 use EasyRdf\RdfNamespace;
@@ -198,7 +199,8 @@ EOT;
     foreach ($concept->getOutgoingRelations() as $outgoingRelation) {
       $conceptResource->add('https://ltb.itc.utwente.nl/resource/' . $outgoingRelation->getRelationType()->getCamelizedName(), ['type' => 'uri', 'value' => $this->generateConceptResourceUrl($outgoingRelation->getTarget())]);
     }
-    if ($concept->getStudyArea()->isDeprecatedSkills()) {
+    $studyArea = $concept->getStudyArea() ?? throw new ObjectRequiredException();
+    if ($studyArea->isDeprecatedSkills()) {
       foreach ($concept->getLearningOutcomes() as $learningOutcome) {
         $conceptResource->add('https://ltb.itc.utwente.nl/resource/learningoutcome', ['type' => 'uri', 'value' => $this->generateLearningOutcomeResourceUrl($learningOutcome)]);
       }

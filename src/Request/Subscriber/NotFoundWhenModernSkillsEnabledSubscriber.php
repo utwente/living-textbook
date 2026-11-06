@@ -7,18 +7,10 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class NotFoundWhenModernSkillsEnabledSubscriber
 {
   use StudyAreaAwareSubscriberTrait;
-
-  public function __construct(
-    private TranslatorInterface $translator,
-    private RouterInterface $router,
-  ) {
-  }
 
   /** Check if a study area has modern skills enabled, and if so, throw a 404. */
   #[AsEventListener(event: KernelEvents::CONTROLLER_ARGUMENTS, priority: -50)]

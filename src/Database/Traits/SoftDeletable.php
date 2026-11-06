@@ -8,61 +8,36 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait SoftDeletable
 {
-  /** @var DateTime */
   #[ORM\Column(name: 'deleted_at', type: Types::DATETIME_MUTABLE, nullable: true)]
-  protected $deletedAt;
+  protected ?DateTime $deletedAt;
 
-  /** @var string */
   #[ORM\Column(name: 'deleted_by', type: Types::STRING, length: 255, nullable: true)]
-  protected $deletedBy;
+  protected ?string $deletedBy;
 
-  /**
-   * Sets deletedAt.
-   *
-   * @return $this
-   */
-  public function setDeletedAt(?DateTime $deletedAt = null)
+  public function setDeletedAt(?DateTime $deletedAt = null): self
   {
     $this->deletedAt = $deletedAt;
 
     return $this;
   }
 
-  /**
-   * Returns deletedAt.
-   *
-   * @return DateTime
-   */
-  public function getDeletedAt()
+  public function getDeletedAt(): ?DateTime
   {
     return $this->deletedAt;
   }
 
-  /**
-   * Set deletedBy.
-   *
-   * @param string $deletedBy
-   *
-   * @return $this
-   */
-  public function setDeletedBy($deletedBy)
+  public function setDeletedBy(string $deletedBy): self
   {
     $this->deletedBy = $deletedBy;
 
     return $this;
   }
 
-  /**
-   * Get deletedBy.
-   *
-   * @return string
-   */
-  public function getDeletedBy()
+  public function getDeletedBy(): ?string
   {
     return $this->deletedBy;
   }
 
-  /** Is deleted? */
   public function isDeleted(): bool
   {
     return null !== $this->deletedAt;

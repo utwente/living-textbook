@@ -8,6 +8,7 @@ use App\Export\ExportService;
 use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use App\Skills\SkillAccessor;
+use Drenso\Shared\Exception\NullGuard\MustNotBeEmptyException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
@@ -93,7 +94,7 @@ EOT;
 
   public static function formattedSkills(SkillAccessor $skillAccessor, string $ident = '        '): string
   {
-    return json_encode($skillAccessor->getAsArrayData(new DataSkills(), '<nullable-value>'), JSON_PRETTY_PRINT)
+    return (json_encode($skillAccessor->getAsArrayData(new DataSkills(), '<nullable-value>'), JSON_PRETTY_PRINT) ?: throw new MustNotBeEmptyException())
       |> (static fn (string $x): array => explode("\n", $x))
       |> (static fn (array $x): array => array_filter($x, static fn (string $line): bool => $line !== '{' && $line !== '}'))
       |> (static fn (array $x): array => array_map(static fn (string $line): string => $ident . $line, $x))

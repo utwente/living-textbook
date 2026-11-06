@@ -26,6 +26,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\TagRepository;
 use App\Review\Model\PendingChangeObjectInfo;
 use Doctrine\ORM\QueryBuilder;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -58,7 +59,7 @@ class EditConceptType extends AbstractType
 
     /** @var Concept $concept */
     $concept   = $options['concept'];
-    $studyArea = $concept->getStudyArea();
+    $studyArea = $concept->getStudyArea() ?? throw new ObjectRequiredException();
     $editing   = $concept->getId() !== null;
     $builder
       ->add('name', TextType::class, [
@@ -178,7 +179,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ]);
 
-    if ($concept->getStudyArea()->isDeprecatedSkills()) {
+    if ($studyArea->isDeprecatedSkills()) {
       $builder
         ->add('learningOutcomes', EntityType::class, [
           'label'              => $names->learningOutcome->objs(true),

@@ -7,6 +7,7 @@ use App\Entity\ConceptRelation;
 use App\Entity\PendingChange;
 use App\Repository\LearningPathRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 
 class ConceptEntityHandler extends AbstractEntityHandler
 {
@@ -56,7 +57,12 @@ class ConceptEntityHandler extends AbstractEntityHandler
 
     if ($this->useReviewService($snapshot)) {
       $this->reviewService->storeChange(
-        $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_EDIT, $snapshot, $updateFunction);
+        $concept->getStudyArea() ?? throw new ObjectRequiredException(),
+        $concept,
+        PendingChange::CHANGE_TYPE_EDIT,
+        $snapshot,
+        $updateFunction,
+      );
     } else {
       $updateFunction();
       $this->em->flush();
@@ -76,7 +82,12 @@ class ConceptEntityHandler extends AbstractEntityHandler
 
     if ($this->reviewService !== null) {
       $this->reviewService->storeChange(
-        $concept->getStudyArea(), $concept, PendingChange::CHANGE_TYPE_REMOVE, null, $deleteFunction);
+        $concept->getStudyArea() ?? throw new ObjectRequiredException(),
+        $concept,
+        PendingChange::CHANGE_TYPE_REMOVE,
+        null,
+        $deleteFunction,
+      );
     } else {
       $deleteFunction();
       $this->em->remove($concept);

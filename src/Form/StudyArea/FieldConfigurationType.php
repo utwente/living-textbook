@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/** @extends AbstractType<StudyAreaFieldConfiguration> */
 class FieldConfigurationType extends AbstractType
 {
   #[Override]
@@ -36,6 +37,7 @@ class FieldConfigurationType extends AbstractType
       ->setAllowedTypes('deprecated_skills', 'bool');
   }
 
+  /** @param FormBuilderInterface<StudyAreaFieldConfiguration|null> $builder */
   private function conceptFields(FormBuilderInterface $builder): self
   {
     $builder
@@ -92,6 +94,10 @@ class FieldConfigurationType extends AbstractType
     return $this;
   }
 
+  /**
+   * @param FormBuilderInterface<StudyAreaFieldConfiguration|null> $builder
+   * @param array<string, mixed>                                   $options
+   */
   private function skillFields(FormBuilderInterface $builder, array $options): void
   {
     if ($options['deprecated_skills']) {
@@ -107,13 +113,13 @@ class FieldConfigurationType extends AbstractType
     } else {
       $builder
         ->add('skillObjName', null, [
-        'form_header' => 'skill._name',
-        'label'       => 'field-configuration.obj-name',
-        'help'        => 'field-configuration.obj-help',
-        'attr'        => [
-          'placeholder' => 'skill._name',
-        ],
-      ]);
+          'form_header' => 'skill._name',
+          'label'       => 'field-configuration.obj-name',
+          'help'        => 'field-configuration.obj-help',
+          'attr'        => [
+            'placeholder' => 'skill._name',
+          ],
+        ]);
     }
   }
 }

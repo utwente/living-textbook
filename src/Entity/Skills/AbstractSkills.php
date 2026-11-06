@@ -8,7 +8,7 @@ abstract class AbstractSkills implements SkillsInterface
 {
   public function hasData(): bool
   {
-    return !empty(ArrayHelper::filterEmptyValuesFromStringArray($this->getSkills()));
+    return !empty(ArrayHelper::filterEmptyValuesFromStringArray(ArrayHelper::filterNullValuesFromArray($this->getSkills())));
   }
 
   /** @return array<string|null> */

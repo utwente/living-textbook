@@ -842,18 +842,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/RelationTypeController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Strict comparison using \\!\\=\\= between DateTime and null will always evaluate to true\\.$#',
-	'identifier' => 'notIdentical.alwaysTrue',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Controller/RelationTypeController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Unreachable statement \\- code above always terminates\\.$#',
-	'identifier' => 'deadCode.unreachable',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Controller/RelationTypeController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 3,
@@ -992,24 +980,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Abbreviation\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Abbreviation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -1064,24 +1034,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Annotation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Annotation\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Annotation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -1096,24 +1048,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\AnnotationComment\\:\\:getUserId\\(\\) should return int but returns int\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\AnnotationComment\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/AnnotationComment.php',
 ];
@@ -1226,24 +1160,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Concept\\:\\:\\$dotronConfig type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1304,24 +1220,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ConceptRelation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\ConceptRelation\\:\\:\\$dotronConfig type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1358,114 +1256,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Contributor.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Contributor\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Contributor.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataExamples\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataExamples.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataHowTo\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataHowTo.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataIntroduction\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataIntroduction.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataSelfAssessment\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataSelfAssessment.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Data\\\\DataTheoryExplanation\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Data/DataTheoryExplanation.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\|null supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
@@ -1486,24 +1276,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$concepts with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\ExternalResource\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/ExternalResource.php',
 ];
@@ -1534,24 +1306,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$concepts with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningOutcome\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningOutcome.php',
 ];
@@ -1592,46 +1346,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\LearningPath\\:\\:\\$elements with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\LearningPathElement\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/LearningPathElement.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
@@ -1802,24 +1520,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/RelationType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\RelationType\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\RelationType\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\RelationType\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/RelationType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\Review\\:\\:getStudyArea\\(\\) should return App\\\\Entity\\\\StudyArea but returns App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
@@ -1916,24 +1616,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyArea.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StudyArea\\:\\:\\$dotronConfig type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -1982,42 +1664,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StudyArea.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaFieldConfiguration\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaFieldConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StudyAreaGroup.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StudyAreaGroup\\:\\:\\$studyAreas with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -2036,24 +1682,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/StylingConfiguration.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\StylingConfiguration\\:\\:\\$stylings type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2062,24 +1690,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$concepts with generic interface Doctrine\\\\Common\\\\Collections\\\\Collection does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Tag.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\Tag\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Tag.php',
 ];
@@ -2174,24 +1784,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/User.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/User.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\User\\:\\:\\$securityRoles type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2216,24 +1808,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserBrowserState.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Property App\\\\Entity\\\\UserBrowserState\\:\\:\\$filterState type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
@@ -2248,24 +1822,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\UserGroup\\:\\:getStudyArea\\(\\) should return App\\\\Entity\\\\StudyArea but returns App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$deletedAt \\(DateTime\\) does not accept DateTime\\|null\\.$#',
-	'identifier' => 'assign.propertyType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$deletedAt type mapping mismatch\\: database can contain DateTime\\|null but property expects DateTime\\.$#',
-	'identifier' => 'doctrine.columnType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/UserGroup.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Property App\\\\Entity\\\\UserGroup\\:\\:\\$deletedBy type mapping mismatch\\: database can contain string\\|null but property expects string\\.$#',
-	'identifier' => 'doctrine.columnType',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/UserGroup.php',
 ];
@@ -2294,12 +1850,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/EntityHandler/ConceptEntityHandler.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method storeChange\\(\\) on App\\\\Review\\\\ReviewService\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/src/EntityHandler/ConceptEntityHandler.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method App\\\\EntityHandler\\\\ConceptEntityHandler\\:\\:update\\(\\) has parameter \\$originalIncomingRelations with generic class Doctrine\\\\Common\\\\Collections\\\\ArrayCollection but does not specify its types\\: TKey, T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -2316,24 +1866,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/EntityHandler/ConceptEntityHandler.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method storeChange\\(\\) on App\\\\Review\\\\ReviewService\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/EntityHandler/RelationTypeHandler.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Strict comparison using \\!\\=\\= between DateTime and null will always evaluate to true\\.$#',
-	'identifier' => 'notIdentical.alwaysTrue',
-	'count' => 2,
-	'path' => __DIR__ . '/src/EntityHandler/RelationTypeHandler.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Unreachable statement \\- code above always terminates\\.$#',
-	'identifier' => 'deadCode.unreachable',
-	'count' => 2,
-	'path' => __DIR__ . '/src/EntityHandler/RelationTypeHandler.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getDefaultTagFilter\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
@@ -2510,56 +2042,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Strict comparison using \\=\\=\\= between DateTime and null will always evaluate to false\\.$#',
-	'identifier' => 'identical.alwaysFalse',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Concept\\\\ConceptRelationsType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationsType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getConcepts\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getRelationTypes\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Concept\\\\EditConceptType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\ContributorRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\ExternalResourceRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\TagRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
 ];
@@ -2790,24 +2280,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/StudyArea/EditStudyAreaType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Form\\\\StudyArea\\\\FieldConfigurationType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/StudyArea/FieldConfigurationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Form\\\\StudyArea\\\\FieldConfigurationType\\:\\:conceptFields\\(\\) has parameter \\$builder with generic interface Symfony\\\\Component\\\\Form\\\\FormBuilderInterface but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/StudyArea/FieldConfigurationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Form\\\\StudyArea\\\\FieldConfigurationType\\:\\:learningOutcomeFields\\(\\) has parameter \\$builder with generic interface Symfony\\\\Component\\\\Form\\\\FormBuilderInterface but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/StudyArea/FieldConfigurationType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\StudyArea\\\\TransferOwnerType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
