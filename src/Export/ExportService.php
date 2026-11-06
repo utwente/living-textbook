@@ -6,6 +6,7 @@ use App\Entity\StudyArea;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Service\ServiceProviderInterface;
@@ -21,8 +22,8 @@ use function sprintf;
 
 use const LC_CTYPE;
 
-#[Autoconfigure(lazy: true)]
-readonly class ExportService
+#[Lazy]
+final readonly class ExportService
 {
   /** @param ServiceProviderInterface<ProviderInterface> $providers The registered export providers */
   public function __construct(

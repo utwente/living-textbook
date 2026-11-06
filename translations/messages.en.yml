@@ -226,6 +226,7 @@ data:
       linked-simple-node: 'Simple linked node'
       rdf: 'RDF (as JSON-LD)'
       relation: 'Relations'
+      skills: 'Skills'
   duplicate: 'Duplicate'
   duplicate-text: >-
     Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.

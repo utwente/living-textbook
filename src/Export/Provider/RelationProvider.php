@@ -13,12 +13,13 @@ use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use function sprintf;
 use function usort;
 
-#[Autoconfigure(lazy: true)]
+#[Lazy]
 final readonly class RelationProvider implements ProviderInterface
 {
   public function __construct(
@@ -33,6 +34,12 @@ final readonly class RelationProvider implements ProviderInterface
   public static function getName(): string
   {
     return 'relation';
+  }
+
+  #[Override]
+  public function isAvailable(StudyArea $studyArea): bool
+  {
+    return true;
   }
 
   #[Override]

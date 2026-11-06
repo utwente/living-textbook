@@ -3,6 +3,7 @@
 namespace App\Export\Provider;
 
 use App\Entity\Concept;
+use App\Entity\Data\DataSkills;
 use App\Entity\StudyArea;
 use App\Export\ExportService;
 use App\Export\ProviderInterface;
@@ -15,19 +16,20 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
 use App\Repository\TagRepository;
 use App\Router\LtbRouter;
+use App\Skills\SkillAccessor;
 use Drenso\Shared\Exception\NullGuard\IdRequiredException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use function array_map;
 use function sprintf;
 
-#[Autoconfigure(lazy: true)]
-readonly class LinkedSimpleNodeProvider implements ProviderInterface
+#[Lazy]
+final readonly class LinkedSimpleNodeProvider implements ProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,
@@ -40,6 +42,7 @@ readonly class LinkedSimpleNodeProvider implements ProviderInterface
     private SerializerInterface $serializer,
     private NamingService $namingService,
     private LtbRouter $router,
+    private SkillAccessor $skillAccessor,
   ) {
   }
 
@@ -47,6 +50,12 @@ readonly class LinkedSimpleNodeProvider implements ProviderInterface
   public static function getName(): string
   {
     return 'linked-simple-node';
+  }
+
+  #[Override]
+  public function isAvailable(StudyArea $studyArea): bool
+  {
+    return true;
   }
 
   #[Override]
@@ -74,6 +83,24 @@ readonly class LinkedSimpleNodeProvider implements ProviderInterface
             "examples": "<concept-examples>",
             "selfAssessment": "<concept-self-assessment>",
             "howTo": "<concept-how-to>",
+EOT;
+    if (!$studyArea->isDeprecatedSkills()) {
+      $preview .= <<<'EOT'
+
+            "skills": {
+
+EOT;
+
+      $preview .= SkillsProvider::formattedSkills($this->skillAccessor, '            ');
+
+      $preview .= <<<'EOT'
+
+            }
+EOT;
+    }
+
+    $preview .= <<<'EOT'
+
         }
     ],
     "links": [
@@ -263,37 +290,48 @@ EOT;
     $names      = $this->namingService->get();
     $fieldNames = $names->concept;
     $data       = [
-      'id'                => $studyArea->getNonNullId(),
-      'name'              => $studyArea->getName(),
-      'description'       => $studyArea->getDescription(),
-      'date_created'      => $studyArea->getCreatedAt(),
-      'last_updated'      => $studyArea->getLastUpdated(),
-      'nodes'             => array_map(fn (Concept $concept): array => [
-        'instance'       => $concept->isInstance(),
-        'label'          => $concept->getName(),
-        'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-        'numberOfLinks'  => $concept->getNumberOfLinks(),
-        'definition'     => $concept->getDefinition(),
-        'explanation'    => $concept->getTheoryExplanation()->getText(),
-        'introduction'   => $concept->getIntroduction()->getText(),
-        'examples'       => $concept->getExamples()->getText(),
-        'howTo'          => $concept->getHowTo()->getText(),
-        'selfAssessment' => $concept->getSelfAssessment()->getText(),
-      ], $concepts),
+      'id'           => $studyArea->getNonNullId(),
+      'name'         => $studyArea->getName(),
+      'description'  => $studyArea->getDescription(),
+      'date_created' => $studyArea->getCreatedAt(),
+      'last_updated' => $studyArea->getLastUpdated(),
+      'nodes' => array_map(
+        function (Concept $concept) use ($studyArea): array {
+          $nodeData = [
+            'instance'       => $concept->isInstance(),
+            'label'          => $concept->getName(),
+            'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+            'numberOfLinks'  => $concept->getNumberOfLinks(),
+            'definition'     => $concept->getDefinition(),
+            'explanation'    => $concept->getTheoryExplanation()->getText(),
+            'introduction'   => $concept->getIntroduction()->getText(),
+            'examples'       => $concept->getExamples()->getText(),
+            'howTo'          => $concept->getHowTo()->getText(),
+            'selfAssessment' => $concept->getSelfAssessment()->getText(),
+          ];
+
+          if (!$studyArea->isDeprecatedSkills()) {
+            $nodeData['skills'] = $this->skillAccessor->getAsArrayData($concept->getSkills());
+          }
+
+          return $nodeData;
+        },
+        $concepts,
+      ),
       'links'             => $mappedLinks,
       'contributors'      => $mappedContributors,
       'externalResources' => $mappedExternalResources,
       'tags'              => $mappedTags,
       'priorKnowledge'    => $mappedPriorKnowledge,
       'aliases'           => [
-        'definition'       => $fieldNames->definition(),
-        'explanation'      => $fieldNames->theoryExplanation(),
-        'introduction'     => $fieldNames->introduction(),
-        'examples'         => $fieldNames->examples(),
-        'selfAssessment'   => $fieldNames->selfAssessment(),
-        'howTo'            => $fieldNames->howTo(),
-        'skills'           => $names->skill->obj(),
-        'priorKnowledge'   => $fieldNames->priorKnowledge(),
+        'definition'     => $fieldNames->definition(),
+        'explanation'    => $fieldNames->theoryExplanation(),
+        'introduction'   => $fieldNames->introduction(),
+        'examples'       => $fieldNames->examples(),
+        'selfAssessment' => $fieldNames->selfAssessment(),
+        'howTo'          => $fieldNames->howTo(),
+        'skills'         => $names->skill->obj(),
+        'priorKnowledge' => $fieldNames->priorKnowledge(),
       ],
     ];
 

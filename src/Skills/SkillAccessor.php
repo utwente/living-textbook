@@ -9,9 +9,28 @@ use App\Entity\Skills\SkillsInterface;
 use Drenso\Shared\Helper\StringHelper;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
+use function strtolower;
+
 final readonly class SkillAccessor
 {
-  public function __construct(private PropertyAccessorInterface $propertyAccessor) {
+  public function __construct(private PropertyAccessorInterface $propertyAccessor)
+  {
+  }
+
+  /** @return array<string, array<string, string|null>> */
+  public function getAsArrayData(DataSkills $skillData, ?string $staticValue = null): array
+  {
+    $data = [];
+    foreach (SkillSetEnum::cases() as $skillSet) {
+      $skills = [];
+      foreach ($skillSet->getSkills() as $skill) {
+        $skills[$this->propertyName($skill)] = $staticValue ?? $this->getValue($skillData, $skill);
+      }
+
+      $data[$this->propertyName($skillSet)] = $skills;
+    }
+
+    return $data;
   }
 
   public function setValue(DataSkills $skillData, SkillsEnumInterface $skill, ?string $value): void

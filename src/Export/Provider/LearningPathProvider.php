@@ -10,13 +10,14 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use function sprintf;
 
-#[Autoconfigure(lazy: true)]
-readonly class LearningPathProvider implements ProviderInterface
+#[Lazy]
+final readonly class LearningPathProvider implements ProviderInterface
 {
   public function __construct(
     private LearningPathRepository $learningPathRepository,
@@ -28,6 +29,12 @@ readonly class LearningPathProvider implements ProviderInterface
   public static function getName(): string
   {
     return 'learning-path';
+  }
+
+  #[Override]
+  public function isAvailable(StudyArea $studyArea): bool
+  {
+    return true;
   }
 
   #[Override]

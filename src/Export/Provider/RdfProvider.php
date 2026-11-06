@@ -18,6 +18,7 @@ use EasyRdf\Serialiser\JsonLd;
 use JMS\Serializer\SerializerInterface;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,8 +26,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 use function sprintf;
 
-#[Autoconfigure(lazy: true)]
-readonly class RdfProvider implements ProviderInterface
+#[Lazy]
+final readonly class RdfProvider implements ProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,
@@ -58,6 +59,12 @@ readonly class RdfProvider implements ProviderInterface
   public static function getName(): string
   {
     return 'rdf';
+  }
+
+  #[Override]
+  public function isAvailable(StudyArea $studyArea): bool
+  {
+    return true;
   }
 
   #[Override]

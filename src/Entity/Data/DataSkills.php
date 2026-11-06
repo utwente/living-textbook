@@ -26,22 +26,22 @@ class DataSkills implements DataInterface
   use SoftDeletable;
 
   #[ORM\Embedded]
-  private AnalyseSkills $analyse;
+  public AnalyseSkills $analyse;
 
   #[ORM\Embedded]
-  private ApplySkills $apply;
+  public ApplySkills $apply;
 
   #[ORM\Embedded]
-  private CreateSkills $create;
+  public CreateSkills $create;
 
   #[ORM\Embedded]
-  private EvaluateSkills $evaluate;
+  public EvaluateSkills $evaluate;
 
   #[ORM\Embedded]
-  private RememberSkills $remember;
+  public RememberSkills $remember;
 
   #[ORM\Embedded]
-  private UnderstandSkills $understand;
+  public UnderstandSkills $understand;
 
   public function __construct()
   {

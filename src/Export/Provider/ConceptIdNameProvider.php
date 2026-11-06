@@ -12,11 +12,12 @@ use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
 use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use function sprintf;
 
-#[Autoconfigure(lazy: true)]
+#[Lazy]
 final readonly class ConceptIdNameProvider implements ProviderInterface
 {
   public function __construct(
@@ -29,6 +30,12 @@ final readonly class ConceptIdNameProvider implements ProviderInterface
   public static function getName(): string
   {
     return 'concept-id-name';
+  }
+
+  #[Override]
+  public function isAvailable(StudyArea $studyArea): bool
+  {
+    return true;
   }
 
   #[Override]
