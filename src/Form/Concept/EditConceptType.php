@@ -176,23 +176,28 @@ class EditConceptType extends AbstractType
       ->add('externalResources_review', DisplayPendingChangeType::class, [
         'field'               => 'externalResources',
         'pending_change_info' => $pendingChangeObjectInfo,
-      ])
-      ->add('learningOutcomes', EntityType::class, [
-        'label'              => $names->learningOutcome()->objs(true),
-        'translation_domain' => false,
-        'class'              => LearningOutcome::class,
-        'choice_label'       => 'shortName',
-        'required'           => false,
-        'multiple'           => true,
-        'query_builder'      => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
-        'select2'            => true,
-        'disabled'           => in_array('learningOutcomes', $disabledFields),
-      ])
-      ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
-        'field'               => 'learningOutcomes',
-        'pending_change_info' => $pendingChangeObjectInfo,
-      ])
+      ]);
 
+    if ($concept->getStudyArea()->isDeprecatedSkills()) {
+      $builder
+        ->add('learningOutcomes', EntityType::class, [
+          'label'              => $names->learningOutcome->objs(true),
+          'translation_domain' => false,
+          'class'              => LearningOutcome::class,
+          'choice_label'       => 'shortName',
+          'required'           => false,
+          'multiple'           => true,
+          'query_builder'      => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+          'select2'            => true,
+          'disabled'           => in_array('learningOutcomes', $disabledFields),
+        ])
+        ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
+          'field'               => 'learningOutcomes',
+          'pending_change_info' => $pendingChangeObjectInfo,
+        ]);
+    }
+
+    $builder
         // This field is also used by the ckeditor plugin for concept selection
       ->add('priorKnowledge', EntityType::class, [
         'label'              => $fieldNames->priorKnowledge(true),
