@@ -57,12 +57,12 @@ class StudyArea implements Stringable, IdInterface
   private ?string $description = null;
 
   /** @var Collection<Concept> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Concept::class, cascade: ['persist', 'remove'])]
+  #[ORM\OneToMany(targetEntity: Concept::class, mappedBy: 'studyArea', cascade: ['persist', 'remove'])]
   #[JMSA\Expose]
   private Collection $concepts;
 
   /** @var Collection<UserGroup>&Selectable<UserGroup> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: UserGroup::class, cascade: ['persist', 'remove'])]
+  #[ORM\OneToMany(targetEntity: UserGroup::class, mappedBy: 'studyArea', cascade: ['persist', 'remove'])]
   #[JMSA\Expose]
   private Collection&Selectable $userGroups;
 
@@ -77,31 +77,31 @@ class StudyArea implements Stringable, IdInterface
   private string $accessType = self::ACCESS_PRIVATE;
 
   /** @var Collection<RelationType> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: RelationType::class)]
+  #[ORM\OneToMany(targetEntity: RelationType::class, mappedBy: 'studyArea')]
   private Collection $relationTypes;
 
   /** @var Collection<Abbreviation> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Abbreviation::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: Abbreviation::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $abbreviations;
 
   /** @var Collection<ExternalResource> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: ExternalResource::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: ExternalResource::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $externalResources;
 
   /** @var Collection<Contributor> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Contributor::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: Contributor::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $contributors;
 
   /** @var Collection<LearningOutcome> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LearningOutcome::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: LearningOutcome::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $learningOutcomes;
 
   /** @var Collection<LearningPath> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LearningPath::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: LearningPath::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $learningPaths;
 
   /** @var Collection<Tag> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: Tag::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $tags;
 
   #[ORM\Column(name: 'frozen_on', nullable: true)]
@@ -165,7 +165,7 @@ class StudyArea implements Stringable, IdInterface
   private ?array $dotronConfig = null;
 
   /** @var Collection<int, StylingConfiguration> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: StylingConfiguration::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: StylingConfiguration::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $stylingConfigurations;
 
   /** Setting this to true makes it possible to export studyarea to given URL endpoint. */
