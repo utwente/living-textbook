@@ -56,7 +56,7 @@
         "symfony/expression-language": "7.4.21",
         "symfony/filesystem": "7.4.23",
         "symfony/finder": "7.4.23",
-        "symfony/flex": "2.11.0",
+        "symfony/flex": "2.12.0",
         "symfony/form": "7.4.23",
         "symfony/framework-bundle": "7.4.23",
         "symfony/http-client": "7.4.23",
