@@ -417,7 +417,7 @@ help:
   title: "Help"
 
 learning-outcome:
-  _name: 'Learning outcome'
+  _name: 'Skill (deprecated)'
   add-title: 'Add new %singular%'
   edit-title: 'Edit %singular% "%item%"'
   list-title: '%singular% list'
@@ -649,6 +649,9 @@ search:
   results-for: 'Search results for "%item%"'
   search: 'Search'
 
+skill:
+  _name: 'Skill'
+
 study-area:
   access-type: 'Access type'
   access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!
@@ -664,6 +667,8 @@ study-area:
   current-area: 'Now browsing "%item%"'
   default-tag-filter: 'Default tag filter'
   default-tag-filter-help: 'The selected tag will be used as default filter when the concept browser is loaded for the first time.'
+  deprecated-skills: 'Deprecated skills'
+  deprecated-skills-help: 'When enabled, the deprecated skill mode is enabled. These were previously called "Learning outcomes".'
   description: 'Description'
   dotron: "Dotron enabled"
   dotron-help: "When enabled, Dotron visualization will be used."

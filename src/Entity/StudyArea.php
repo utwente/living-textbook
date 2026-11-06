@@ -132,6 +132,10 @@ class StudyArea implements Stringable, IdInterface
   #[ORM\Column(options: ['default' => false])]
   private bool $analyticsDashboardEnabled = false;
 
+  /** Setting this to true will enable the deprecated skills functionality (learning outcomes). */
+  #[ORM\Column(options: ['default' => false])]
+  private bool $deprecatedSkills = false;
+
   /** Whether the review mode has been enabled for this study area. */
   #[ORM\Column(options: ['default' => false])]
   private bool $reviewModeEnabled = false;
@@ -865,6 +869,18 @@ class StudyArea implements Stringable, IdInterface
   public function setUrlExportEnabled(bool $urlExportEnabled): self
   {
     $this->urlExportEnabled = $urlExportEnabled;
+
+    return $this;
+  }
+
+  public function isDeprecatedSkills(): bool
+  {
+    return $this->deprecatedSkills;
+  }
+
+  public function setDeprecatedSkills(bool $deprecatedSkills): self
+  {
+    $this->deprecatedSkills = $deprecatedSkills;
 
     return $this;
   }
