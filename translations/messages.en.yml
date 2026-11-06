@@ -651,7 +651,40 @@ search:
   search: 'Search'
 
 skill:
-  _name: 'Skill'
+  _name: Skill
+  _set:
+    remember: Remember
+    _remember:
+      recalling: Recalling
+      recognising: Recognising
+    understand: Understand
+    _understand:
+      classifying: Classifying
+      comparing: Comparing
+      exemplifying: Exemplifying
+      explaining: Explaining
+      inferring: Inferring
+      interpreting: Interpreting
+      summarising: Summarising
+    apply: Apply
+    _apply:
+      executing: Executing
+      implementing: Implementing
+    analyse: Analyse
+    _analyse:
+      attributing: Attributing
+      differentiating: Differentiating
+      organising: Organising
+    evaluate: Evaluate
+    _evaluate:
+      checking: Checking
+      critiquing: Critiquing
+    create: Create
+    _create:
+      generating: Generating
+      planning: Planning
+      producing: Producing
+  _level: 'Level %level%: %set% (%count%)'
 
 study-area:
   access-type: 'Access type'

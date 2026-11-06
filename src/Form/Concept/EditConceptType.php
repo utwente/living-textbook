@@ -15,6 +15,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\Tag;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Review\DisplayPendingChangeType;
+use App\Form\Skills\DataSkillsType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
 use App\Naming\NamingService;
@@ -194,6 +195,17 @@ class EditConceptType extends AbstractType
         ])
         ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
           'field'               => 'learningOutcomes',
+          'pending_change_info' => $pendingChangeObjectInfo,
+        ]);
+    } else {
+      $builder
+        ->add('skills', DataSkillsType::class, [
+          'label'              => $names->skill->objs(true),
+          'translation_domain' => false,
+          'disabled'           => in_array('skills', $disabledFields),
+        ])
+        ->add('skills_review', DisplayPendingChangeType::class, [
+          'field'               => 'skills',
           'pending_change_info' => $pendingChangeObjectInfo,
         ]);
     }

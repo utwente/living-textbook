@@ -2,6 +2,8 @@
 
 namespace App\Entity\Skills;
 
+use Symfony\Component\Translation\TranslatableMessage;
+
 enum SkillSetEnum: int
 {
   case REMEMBER   = 1;
@@ -22,5 +24,10 @@ enum SkillSetEnum: int
       self::EVALUATE   => EvaluateSkillsEnum::cases(),
       self::CREATE     => CreateSkillsEnum::cases(),
     };
+  }
+
+  public function label(): TranslatableMessage
+  {
+    return new TranslatableMessage('skill._set.' . strtolower($this->name));
   }
 }

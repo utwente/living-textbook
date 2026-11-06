@@ -1,0 +1,16 @@
+{% block skills_row %}
+  <div class="card card-collection">
+    <div class="card-header font-weight-bold">
+      <i class="fa fa-chevron-right"></i>
+      {{ 'skill._level'|trans({
+        '%level%': form.vars.skill_set.value,
+        '%set%': form.vars.skill_set.label(),
+        '%count%': form.vars.skill_set.skills|length,
+      }) }}
+    </div>
+
+    <div class="card-body pb-0">
+      {{ form_widget(form) }}
+    </div>
+  </div>
+{% endblock %}

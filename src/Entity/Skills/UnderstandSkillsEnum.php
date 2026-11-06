@@ -4,6 +4,8 @@ namespace App\Entity\Skills;
 
 enum UnderstandSkillsEnum: int implements SkillsEnumInterface
 {
+  use SkillTranslationTrait;
+
   case CLASSIFYING  = 1;
   case COMPARING    = 2;
   case EXEMPLIFYING = 3;
