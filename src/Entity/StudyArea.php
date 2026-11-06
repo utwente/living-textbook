@@ -808,9 +808,11 @@ class StudyArea implements Stringable, IdInterface
     return $this->mapWidth;
   }
 
-  public function setMapWidth(int $mapWidth): void
+  public function setMapWidth(int $mapWidth): self
   {
     $this->mapWidth = $mapWidth;
+
+    return $this;
   }
 
   public function getMapHeight(): int
@@ -818,9 +820,11 @@ class StudyArea implements Stringable, IdInterface
     return $this->mapHeight;
   }
 
-  public function setMapHeight(int $mapHeight): void
+  public function setMapHeight(int $mapHeight): self
   {
     $this->mapHeight = $mapHeight;
+
+    return $this;
   }
 
   public function isDotron(): bool
