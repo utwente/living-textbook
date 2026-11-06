@@ -32,7 +32,7 @@ final readonly class ConceptIdNameProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getPreview(): string
+  public function getPreview(StudyArea $studyArea): string
   {
     return <<<'EOT'
 "<id>";"<concept-name>"

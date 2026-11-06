@@ -16,16 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 use function sprintf;
 
 #[Autoconfigure(lazy: true)]
-class LearningPathProvider implements ProviderInterface
+readonly class LearningPathProvider implements ProviderInterface
 {
-  private readonly LearningPathRepository $learningPathRepository;
-
-  private readonly SerializerInterface $serializer;
-
-  public function __construct(LearningPathRepository $learningPathRepository, SerializerInterface $serializer)
-  {
-    $this->learningPathRepository = $learningPathRepository;
-    $this->serializer             = $serializer;
+  public function __construct(
+    private LearningPathRepository $learningPathRepository,
+    private SerializerInterface $serializer,
+  ) {
   }
 
   #[Override]
@@ -35,7 +31,7 @@ class LearningPathProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getPreview(): string
+  public function getPreview(StudyArea $studyArea): string
   {
     return <<<'EOT'
 [

@@ -570,6 +570,7 @@ class DataController extends AbstractController
   {
     $form = $this->createForm(DownloadType::class, $data = new DownloadTypeDto(), [
       'validation_groups' => [DownloadTypeDto::GROUP_DOWNLOAD],
+      'study_area'        => $requestStudyArea->getStudyArea(),
     ]);
     $form->handleRequest($request);
 
@@ -606,6 +607,7 @@ class DataController extends AbstractController
       'form_target'        => '_self',
       'url_export_enabled' => true,
       'validation_groups'  => [DownloadTypeDto::GROUP_EXPORT],
+      'study_area'         => $studyArea,
     ]);
     $form->handleRequest($request);
 

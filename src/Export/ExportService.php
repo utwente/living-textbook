@@ -46,13 +46,13 @@ readonly class ExportService
    *
    * @return string[]
    */
-  public function getPreviews(): array
+  public function getPreviews(StudyArea $studyArea): array
   {
     $providerKeys = $this->getAvailableProviderKeys();
 
     return array_combine(
       $providerKeys,
-      array_map(fn (string $k): string => $this->providers->get($k)->getPreview(), $providerKeys),
+      array_map(fn (string $k): string => $this->providers->get($k)->getPreview($studyArea), $providerKeys),
     );
   }
 
@@ -71,9 +71,10 @@ readonly class ExportService
   {
     // Set locale required for the iconv conversion to work correctly
     setlocale(LC_CTYPE, 'en_US.UTF-8');
-    $response->headers->set('Content-Disposition', $response->headers->makeDisposition(
-      ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-      mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename))),
-    ));
+    $filename = mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)));
+    $response->headers->set(
+      'Content-Disposition',
+      $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename),
+    );
   }
 }

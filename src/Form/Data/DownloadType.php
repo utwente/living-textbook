@@ -3,6 +3,7 @@
 namespace App\Form\Data;
 
 use App\Dto\DownloadTypeDto;
+use App\Entity\StudyArea;
 use App\Form\Type\SingleSubmitType;
 use Override;
 use Symfony\Component\Form\AbstractType;
@@ -44,7 +45,8 @@ class DownloadType extends AbstractType
         ],
       ])
       ->add('preview', DownloadPreviewType::class, [
-        'mapped' => false,
+        'mapped'     => false,
+        'study_area' => $options['study_area'],
       ])
       ->add('submit', SingleSubmitType::class, [
         'label' => 'data.download.title',
@@ -64,7 +66,9 @@ class DownloadType extends AbstractType
         'url_export_enabled' => false,
       ])
       ->setAllowedTypes('form_target', 'string')
-      ->setAllowedTypes('url_export_enabled', 'bool');
+      ->setAllowedTypes('url_export_enabled', 'bool')
+      ->setRequired('study_area')
+      ->setAllowedTypes('study_area', [StudyArea::class]);
 
     $resolver->setNormalizer('attr', static function (Options $options, array $attr): array {
       $attr['target'] = $options['form_target'] ?? '_blank';

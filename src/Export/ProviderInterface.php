@@ -13,7 +13,7 @@ interface ProviderInterface
   public static function getName(): string;
 
   /** Provider preview, based on single concept from study area. */
-  public function getPreview(): string;
+  public function getPreview(StudyArea $studyArea): string;
 
   /** Export the data, and return a response. */
   public function export(StudyArea $studyArea): Response;

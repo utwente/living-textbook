@@ -36,7 +36,7 @@ final readonly class RelationProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getPreview(): string
+  public function getPreview(StudyArea $studyArea): string
   {
     return <<<'EOT'
 "From";"From name";"To";"To name";"Relation"

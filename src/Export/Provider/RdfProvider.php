@@ -26,22 +26,14 @@ use Symfony\Component\Routing\RouterInterface;
 use function sprintf;
 
 #[Autoconfigure(lazy: true)]
-class RdfProvider implements ProviderInterface
+readonly class RdfProvider implements ProviderInterface
 {
-  private readonly ConceptRepository $conceptRepository;
-
-  private readonly LearningPathRepository $learningPathRepository;
-
-  private readonly RouterInterface $router;
-
-  private readonly SerializerInterface $serializer;
-
-  public function __construct(ConceptRepository $conceptRepository, LearningPathRepository $learningPathRepository, RouterInterface $router, SerializerInterface $serializer)
-  {
-    $this->conceptRepository      = $conceptRepository;
-    $this->learningPathRepository = $learningPathRepository;
-    $this->router                 = $router;
-    $this->serializer             = $serializer;
+  public function __construct(
+    private ConceptRepository $conceptRepository,
+    private LearningPathRepository $learningPathRepository,
+    private RouterInterface $router,
+    private SerializerInterface $serializer,
+  ) {
   }
 
   /** @throws Exception */
@@ -69,9 +61,9 @@ class RdfProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getPreview(): string
+  public function getPreview(StudyArea $studyArea): string
   {
-    return <<<'EOT'
+    $preview = <<<'EOT'
 [
   {
     "@id": "<concept-url>",
@@ -82,9 +74,19 @@ class RdfProvider implements ProviderInterface
     "<relation-url>": {
       "@id": "<related-concept-url>"
     },
+EOT;
+
+    if ($studyArea->isDeprecatedSkills()) {
+      $preview .= <<<'EOT'
+
     "<learning-outcome-url>": {
       "@id": "<learning-outcome-resource-url>"
     },
+EOT;
+    }
+
+    $preview .= <<<'EOT'
+
     "<prior-knowledge-url>": {
       "@id": "<prior-knowledge-concept-url>"
     },
@@ -146,6 +148,8 @@ class RdfProvider implements ProviderInterface
   }
 ]
 EOT;
+
+    return $preview;
   }
 
   /** @throws Exception */
@@ -187,8 +191,10 @@ EOT;
     foreach ($concept->getOutgoingRelations() as $outgoingRelation) {
       $conceptResource->add('https://ltb.itc.utwente.nl/resource/' . $outgoingRelation->getRelationType()->getCamelizedName(), ['type' => 'uri', 'value' => $this->generateConceptResourceUrl($outgoingRelation->getTarget())]);
     }
-    foreach ($concept->getLearningOutcomes() as $learningOutcome) {
-      $conceptResource->add('https://ltb.itc.utwente.nl/resource/learningoutcome', ['type' => 'uri', 'value' => $this->generateLearningOutcomeResourceUrl($learningOutcome)]);
+    if ($concept->getStudyArea()->isDeprecatedSkills()) {
+      foreach ($concept->getLearningOutcomes() as $learningOutcome) {
+        $conceptResource->add('https://ltb.itc.utwente.nl/resource/learningoutcome', ['type' => 'uri', 'value' => $this->generateLearningOutcomeResourceUrl($learningOutcome)]);
+      }
     }
     foreach ($this->learningPathRepository->findForConcept($concept) as $learningPath) {
       $conceptResource->add('https://ltb.itc.utwente.nl/resource/learningpath', ['type' => 'uri', 'value' => $this->generateLearningPathResourceUrl($learningPath)]);

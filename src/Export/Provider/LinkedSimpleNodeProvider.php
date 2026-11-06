@@ -27,36 +27,20 @@ use function array_map;
 use function sprintf;
 
 #[Autoconfigure(lazy: true)]
-class LinkedSimpleNodeProvider implements ProviderInterface
+readonly class LinkedSimpleNodeProvider implements ProviderInterface
 {
-  private readonly ConceptRepository $conceptRepository;
-  private readonly ConceptRelationRepository $conceptRelationRepository;
-  private readonly ContributorRepository $contributorRepository;
-  private readonly ExternalResourceRepository $externalResourceRepository;
-  private readonly LearningOutcomeRepository $learningOutcomeRepository;
-  private readonly NamingService $namingService;
-  private readonly RelationTypeRepository $relationTypeRepository;
-  private readonly TagRepository $tagRepository;
-  private readonly LtbRouter $router;
-  private readonly SerializerInterface $serializer;
-
   public function __construct(
-    ConceptRepository $conceptRepository, ConceptRelationRepository $conceptRelationRepository,
-    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepository,
-    LearningOutcomeRepository $learningOutcomeRepository, RelationTypeRepository $relationTypeRepository,
-    TagRepository $tagRepository, SerializerInterface $serializer, NamingService $namingService,
-    LtbRouter $router)
-  {
-    $this->conceptRepository          = $conceptRepository;
-    $this->conceptRelationRepository  = $conceptRelationRepository;
-    $this->contributorRepository      = $contributorRepository;
-    $this->externalResourceRepository = $externalResourceRepository;
-    $this->learningOutcomeRepository  = $learningOutcomeRepository;
-    $this->relationTypeRepository     = $relationTypeRepository;
-    $this->tagRepository              = $tagRepository;
-    $this->serializer                 = $serializer;
-    $this->namingService              = $namingService;
-    $this->router                     = $router;
+    private ConceptRepository $conceptRepository,
+    private ConceptRelationRepository $conceptRelationRepository,
+    private ContributorRepository $contributorRepository,
+    private ExternalResourceRepository $externalResourceRepository,
+    private LearningOutcomeRepository $learningOutcomeRepository,
+    private RelationTypeRepository $relationTypeRepository,
+    private TagRepository $tagRepository,
+    private SerializerInterface $serializer,
+    private NamingService $namingService,
+    private LtbRouter $router,
+  ) {
   }
 
   #[Override]
@@ -66,12 +50,12 @@ class LinkedSimpleNodeProvider implements ProviderInterface
   }
 
   #[Override]
-  public function getPreview(): string
+  public function getPreview(StudyArea $studyArea): string
   {
     $names      = $this->namingService->get();
     $fieldNames = $names->concept;
 
-    return sprintf(<<<'EOT'
+    $preview = <<<'EOT'
 {
     "id": "<studyarea-id>",
     "name": "<studyarea-name>",
@@ -116,6 +100,10 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "url": "<external-resource-url>",
         }
     ],
+EOT;
+    if ($studyArea->isDeprecatedSkills()) {
+      $preview .= <<<'EOT'
+
     "learningOutcomes": [
         {
             "nodes": [<node-ids>],
@@ -124,6 +112,11 @@ class LinkedSimpleNodeProvider implements ProviderInterface
             "content": "<learning_outcome-content>",
         }
     ],
+EOT;
+    }
+
+    $preview .= <<<'EOT'
+
     "tags": [
       {
           "nodes": [<node-ids>],
@@ -145,21 +138,36 @@ class LinkedSimpleNodeProvider implements ProviderInterface
       "examples": "%4$s",
       "selfAssessment": "%5$s",
       "howTo": "%6$s",
+EOT;
+
+    if ($studyArea->isDeprecatedSkills()) {
+      $preview .= <<<'EOT'
+
       "learningOutcomes": "%7$s",
-      "skills": "%8$s",
-      "priorKnowledge": "%9$s",
+EOT;
+    } else {
+      $preview .= <<<'EOT'
+
+      "skills": "%7$s",
+EOT;
+    }
+
+    $preview .= <<<'EOT'
+
+      "priorKnowledge": "%8$s",
     ]
 }
-EOT,
+EOT;
+
+    return sprintf($preview,
       $fieldNames->definition(),
       $fieldNames->theoryExplanation(),
       $fieldNames->introduction(),
       $fieldNames->examples(),
       $fieldNames->selfAssessment(),
       $fieldNames->howTo(),
-      $names->learningOutcome->obj(),
-      $names->skill->obj(),
-      $fieldNames->priorKnowledge()
+      $studyArea->isDeprecatedSkills() ? $names->learningOutcome->obj() : $names->skill->obj(),
+      $fieldNames->priorKnowledge(),
     );
   }
 
@@ -174,7 +182,6 @@ EOT,
     $links             = $this->conceptRelationRepository->findByConcepts($concepts);
     $contributors      = $this->contributorRepository->findForStudyArea($studyArea);
     $externalResources = $this->externalResourceRepository->findForStudyAreaOrderedByTitle($studyArea);
-    $learningOutcomes  = $this->learningOutcomeRepository->findForStudyAreaOrderedByName($studyArea);
     $tags              = $this->tagRepository->findForStudyArea($studyArea);
 
     // Detach the data from the ORM
@@ -216,15 +223,18 @@ EOT,
       ];
     }
 
-    // Create learning outcomes data
     $mappedLearningOutcomes = [];
-    foreach ($learningOutcomes as $learningOutcome) {
-      $mappedLearningOutcomes[] = [
-        'nodes'   => $learningOutcome->getConcepts()->map(static fn (Concept $concept): mixed => $idMap[$concept->getNonNullId()]),
-        'number'  => $learningOutcome->getNumber(),
-        'name'    => $learningOutcome->getName(),
-        'content' => $learningOutcome->getText(),
-      ];
+    if ($studyArea->isDeprecatedSkills()) {
+      // Create learning outcomes data
+      $learningOutcomes = $this->learningOutcomeRepository->findForStudyAreaOrderedByName($studyArea);
+      foreach ($learningOutcomes as $learningOutcome) {
+        $mappedLearningOutcomes[] = [
+          'nodes'   => $learningOutcome->getConcepts()->map(static fn (Concept $concept): mixed => $idMap[$concept->getNonNullId()]),
+          'number'  => $learningOutcome->getNumber(),
+          'name'    => $learningOutcome->getName(),
+          'content' => $learningOutcome->getText(),
+        ];
+      }
     }
 
     // Create tags data
@@ -250,52 +260,52 @@ EOT,
     }
 
     // Create JSON data
+    $names      = $this->namingService->get();
+    $fieldNames = $names->concept;
+    $data       = [
+      'id'                => $studyArea->getNonNullId(),
+      'name'              => $studyArea->getName(),
+      'description'       => $studyArea->getDescription(),
+      'date_created'      => $studyArea->getCreatedAt(),
+      'last_updated'      => $studyArea->getLastUpdated(),
+      'nodes'             => array_map(fn (Concept $concept): array => [
+        'instance'       => $concept->isInstance(),
+        'label'          => $concept->getName(),
+        'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
+        'numberOfLinks'  => $concept->getNumberOfLinks(),
+        'definition'     => $concept->getDefinition(),
+        'explanation'    => $concept->getTheoryExplanation()->getText(),
+        'introduction'   => $concept->getIntroduction()->getText(),
+        'examples'       => $concept->getExamples()->getText(),
+        'howTo'          => $concept->getHowTo()->getText(),
+        'selfAssessment' => $concept->getSelfAssessment()->getText(),
+      ], $concepts),
+      'links'             => $mappedLinks,
+      'contributors'      => $mappedContributors,
+      'externalResources' => $mappedExternalResources,
+      'tags'              => $mappedTags,
+      'priorKnowledge'    => $mappedPriorKnowledge,
+      'aliases'           => [
+        'definition'       => $fieldNames->definition(),
+        'explanation'      => $fieldNames->theoryExplanation(),
+        'introduction'     => $fieldNames->introduction(),
+        'examples'         => $fieldNames->examples(),
+        'selfAssessment'   => $fieldNames->selfAssessment(),
+        'howTo'            => $fieldNames->howTo(),
+        'skills'           => $names->skill->obj(),
+        'priorKnowledge'   => $fieldNames->priorKnowledge(),
+      ],
+    ];
 
-    $names                 = $this->namingService->get();
-    $fieldNames            = $names->concept;
+    if ($studyArea->isDeprecatedSkills()) {
+      $data['learningOutcomes']            = $mappedLearningOutcomes;
+      $data['aliases']['learningOutcomes'] = $names->learningOutcome->obj();
+    } else {
+      $data['aliases']['skills'] = $names->skill->obj();
+    }
 
     // Return as JSON
-    $serializationContext = SerializationContext::create();
-    $serializationContext->setSerializeNull(true);
-    $json = $this->serializer->serialize(
-      [
-        'id'           => $studyArea->getNonNullId(),
-        'name'         => $studyArea->getName(),
-        'description'  => $studyArea->getDescription(),
-        'date_created' => $studyArea->getCreatedAt(),
-        'last_updated' => $studyArea->getLastUpdated(),
-        'nodes'        => array_map(fn (Concept $concept): array => [
-          'instance'       => $concept->isInstance(),
-          'label'          => $concept->getName(),
-          'link'           => $this->router->generateBrowserUrl('app_concept_show', ['concept' => $concept->getId()]),
-          'numberOfLinks'  => $concept->getNumberOfLinks(),
-          'definition'     => $concept->getDefinition(),
-          'explanation'    => $concept->getTheoryExplanation()->getText(),
-          'introduction'   => $concept->getIntroduction()->getText(),
-          'examples'       => $concept->getExamples()->getText(),
-          'howTo'          => $concept->getHowTo()->getText(),
-          'selfAssessment' => $concept->getSelfAssessment()->getText(),
-        ], $concepts),
-        'links'             => $mappedLinks,
-        'contributors'      => $mappedContributors,
-        'externalResources' => $mappedExternalResources,
-        'learningOutcomes'  => $mappedLearningOutcomes,
-        'tags'              => $mappedTags,
-        'priorKnowledge'    => $mappedPriorKnowledge,
-        'aliases'           => [
-          'definition'       => $fieldNames->definition(),
-          'explanation'      => $fieldNames->theoryExplanation(),
-          'introduction'     => $fieldNames->introduction(),
-          'examples'         => $fieldNames->examples(),
-          'selfAssessment'   => $fieldNames->selfAssessment(),
-          'howTo'            => $fieldNames->howTo(),
-          'learningOutcomes' => $names->learningOutcome->obj(),
-          'skills'           => $names->skill->obj(),
-          'priorKnowledge'   => $fieldNames->priorKnowledge(),
-        ],
-      ],
-      'json', $serializationContext);
-
+    $json     = $this->serializer->serialize($data, 'json', SerializationContext::create()->setSerializeNull(true));
     $response = new JsonResponse($json, Response::HTTP_OK, [], true);
     ExportService::contentDisposition($response, sprintf('%s_export.json', $studyArea->getName()));
 
