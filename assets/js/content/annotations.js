@@ -329,7 +329,7 @@
    * @param annotation
    */
   function updateAnnotation(annotation) {
-    if (annotation.start === -1 || typeof annotation.selectedText == 'undefined') {
+    if (annotation.start === -1 || typeof annotation.selectedText == 'undefined' || annotation.selectedText === null) {
       const $context = $('[data-annotations-contains-text="false"][data-annotations-context="' + annotation.context + '"]');
       const annotations = [];
       ($context.data('annotations') || []).forEach(function (item) {
@@ -358,7 +358,7 @@
     // Loop the annotations
     for (let i = 0; i < annotations.length; i++) {
       const annotation = annotations[i];
-      if (annotation.start === -1 || typeof annotation.selectedText == 'undefined') {
+      if (annotation.start === -1 || typeof annotation.selectedText == 'undefined' || annotation.selectedText === null) {
         renderHeaderAnnotation(annotation);
       } else {
         renderTextAnnotation(annotation);
@@ -406,7 +406,7 @@
         if (showAnnotations !== 'all' && annotation.userId !== userId) {
           return;
         }
-        $context.addClass(typeof annotation.text == 'undefined' ? 'mark' : 'note');
+        $context.addClass(typeof annotation.text == 'undefined' || annotation.text === null ? 'mark' : 'note');
       });
     });
   }
@@ -555,7 +555,7 @@
         start: annotation.start,
         length: annotation.end - annotation.start
       }], {
-        className: 'ltb-annotation ' + (typeof annotation.text == 'undefined' ? 'mark' : 'note'),
+        className: 'ltb-annotation ' + (typeof annotation.text == 'undefined' || annotation.text === null ? 'mark' : 'note'),
         acrossElements: true,
         accuracy: 'exactly',
         caseSensitive: true,
@@ -1105,7 +1105,7 @@
    */
   function openCollectionAnnotationsModal($button, isOutdatedNotes) {
     const annotationsData = ($button.data('annotations') || []).sort(function (annotation) {
-      return typeof annotation.text != 'undefined';
+      return typeof annotation.text !== 'undefined' && annotation.text !== null;
     });
 
     // Clear current annotations from modal
@@ -1120,7 +1120,7 @@
       }
 
       const $annotationElement = $collectionNoteProto.clone();
-      if (typeof annotation.text == 'undefined') {
+      if (typeof annotation.text === 'undefined' || annotation.text === null) {
         $annotationElement.find('.note-header').remove();
         $annotationElement.find('.annotations-note-container').parent().remove();
         $annotationElement.find('.annotations-visibility').parent().remove();
@@ -1190,7 +1190,7 @@
       }
 
       // Set selected text
-      if (typeof annotation.selectedText !== 'undefined' && annotation.selectedText.length > 0) {
+      if (typeof annotation.selectedText !== 'undefined' && annotation.selectedText !== null && annotation.selectedText.length > 0) {
         $annotationElement.find('.selected-text').text(annotation.selectedText);
       } else {
         $annotationElement.find('.selected-text').closest('.row').remove();
