@@ -14,6 +14,7 @@ use App\Entity\Data\DataHowTo;
 use App\Entity\Data\DataInterface;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
+use App\Entity\Data\DataSkills;
 use App\Entity\Data\DataTheoryExplanation;
 use App\Entity\Traits\ReviewableTrait;
 use App\Repository\ConceptRepository;
@@ -120,6 +121,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 
   #[Assert\Valid]
   #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'skills_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataSkills::class)]
+  private DataSkills $skills;
+
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
   #[ORM\JoinColumn(name: 'theory_explanation_id', referencedColumnName: 'id', nullable: false)]
   #[JMSA\Expose]
   #[JMSA\Groups(['review_change'])]
@@ -220,8 +229,9 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->priorKnowledge   = new ArrayCollection();
     $this->priorKnowledgeOf = new ArrayCollection();
 
-    // Learning outcome
+    // Skills
     $this->learningOutcomes = new ArrayCollection();
+    $this->skills           = new DataSkills();
 
     // External resources
     $this->externalResources = new ArrayCollection();
@@ -314,8 +324,9 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
         || $this->getIntroduction()->hasData()
         || $this->getExamples()->hasData()
         || $this->getHowTo()->hasData()
-        || $this->selfAssessment->hasData()
-        || $this->theoryExplanation->hasData();
+        || $this->getSelfAssessment()->hasData()
+        || $this->getTheoryExplanation()->hasData()
+        || $this->getSkills()->hasData();
   }
 
   /** @return array Array with DateTime and username */
@@ -339,6 +350,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $check($this->getIntroduction());
     $check($this->getSelfAssessment());
     $check($this->getTheoryExplanation());
+    $check($this->getSkills());
 
     // Check other data
     foreach ($this->getExternalResources() as $externalResource) {
@@ -832,6 +844,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   public function removeLearningOutcome(LearningOutcome $learningOutcome): self
   {
     $this->learningOutcomes->removeElement($learningOutcome);
+
+    return $this;
+  }
+
+  public function getSkills(): DataSkills
+  {
+    return $this->skills;
+  }
+
+  public function setSkills(DataSkills $skills): self
+  {
+    $this->skills = $skills;
 
     return $this;
   }

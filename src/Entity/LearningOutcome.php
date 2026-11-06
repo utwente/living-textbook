@@ -31,6 +31,7 @@ use function sprintf;
 use function stripos;
 use function trim;
 
+/** These are considered to be deprecated skills. */
 #[UniqueEntity(fields: ['studyArea', 'number'], message: 'learning-outcome.number-already-used', errorPath: 'number')]
 #[ORM\Entity(repositoryClass: LearningOutcomeRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
