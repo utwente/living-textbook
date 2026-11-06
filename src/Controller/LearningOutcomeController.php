@@ -72,7 +72,7 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/edit/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', subject: 'requestStudyArea', routeParams: ['learningOutcome' => '{learningOutcome}'])]
   #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
@@ -140,7 +140,7 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/remove/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', subject: 'requestStudyArea', routeParams: ['learningOutcome' => '{learningOutcome}'])]
   #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
