@@ -45,7 +45,7 @@ class ConceptSection extends LtbSection
       $this->addElement(new CustomCommand('\\\\'));
       $this->addElement(new Text($concept->getDefinition()));
     }
-    $fieldNames = $namingService->get()->concept();
+    $fieldNames = $namingService->get()->concept;
     if ($concept->getIntroduction()->hasData()) {
       $this->addSection($fieldNames->introduction(true), $concept->getIntroduction()->getText());
     }

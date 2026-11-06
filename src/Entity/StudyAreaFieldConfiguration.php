@@ -7,6 +7,7 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Repository\StudyAreaFieldConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Drenso\Shared\Helper\StringHelper;
 use Drenso\Shared\Interfaces\IdInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,145 +22,61 @@ class StudyAreaFieldConfiguration implements IdInterface
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptDefinitionName = null;
+  public ?string $conceptDefinitionName = null {
+    set => $this->conceptDefinitionName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptIntroductionName = null;
+  public ?string $conceptIntroductionName = null {
+    set => $this->conceptIntroductionName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptSynonymsName = null;
+  public ?string $conceptSynonymsName = null {
+    set => $this->conceptSynonymsName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptPriorKnowledgeName = null;
+  public ?string $conceptPriorKnowledgeName = null {
+    set => $this->conceptPriorKnowledgeName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptTheoryExplanationName = null;
+  public ?string $conceptTheoryExplanationName = null {
+    set => $this->conceptTheoryExplanationName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptHowtoName = null;
+  public ?string $conceptHowtoName = null {
+    set => $this->conceptHowtoName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptExamplesName = null;
+  public ?string $conceptExamplesName = null {
+    set => $this->conceptExamplesName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $conceptSelfAssessmentName = null;
+  public ?string $conceptSelfAssessmentName = null {
+    set => $this->conceptSelfAssessmentName = StringHelper::emptyToNull($value);
+  }
 
   #[Assert\Length(max: 50)]
   #[ORM\Column(length: 50, nullable: true)]
-  private ?string $learningOutcomeObjName = null;
-
-  public function getConceptDefinitionName(): ?string
-  {
-    return $this->conceptDefinitionName;
+  public ?string $learningOutcomeObjName = null {
+    set => $this->learningOutcomeObjName = StringHelper::emptyToNull($value);
   }
 
-  public function setConceptDefinitionName(?string $conceptDefinitionName): self
-  {
-    $this->conceptDefinitionName = $conceptDefinitionName;
-
-    return $this;
-  }
-
-  public function getConceptIntroductionName(): ?string
-  {
-    return $this->conceptIntroductionName;
-  }
-
-  public function setConceptIntroductionName(?string $conceptIntroductionName): self
-  {
-    $this->conceptIntroductionName = $conceptIntroductionName;
-
-    return $this;
-  }
-
-  public function getConceptSynonymsName(): ?string
-  {
-    return $this->conceptSynonymsName;
-  }
-
-  public function setConceptSynonymsName(?string $conceptSynonymsName): self
-  {
-    $this->conceptSynonymsName = $conceptSynonymsName;
-
-    return $this;
-  }
-
-  public function getConceptPriorKnowledgeName(): ?string
-  {
-    return $this->conceptPriorKnowledgeName;
-  }
-
-  public function setConceptPriorKnowledgeName(?string $conceptPriorKnowledgeName): self
-  {
-    $this->conceptPriorKnowledgeName = $conceptPriorKnowledgeName;
-
-    return $this;
-  }
-
-  public function getConceptTheoryExplanationName(): ?string
-  {
-    return $this->conceptTheoryExplanationName;
-  }
-
-  public function setConceptTheoryExplanationName(?string $conceptTheoryExplanationName): self
-  {
-    $this->conceptTheoryExplanationName = $conceptTheoryExplanationName;
-
-    return $this;
-  }
-
-  public function getConceptHowtoName(): ?string
-  {
-    return $this->conceptHowtoName;
-  }
-
-  public function setConceptHowtoName(?string $conceptHowtoName): self
-  {
-    $this->conceptHowtoName = $conceptHowtoName;
-
-    return $this;
-  }
-
-  public function getConceptExamplesName(): ?string
-  {
-    return $this->conceptExamplesName;
-  }
-
-  public function setConceptExamplesName(?string $conceptExamplesName): self
-  {
-    $this->conceptExamplesName = $conceptExamplesName;
-
-    return $this;
-  }
-
-  public function getConceptSelfAssessmentName(): ?string
-  {
-    return $this->conceptSelfAssessmentName;
-  }
-
-  public function setConceptSelfAssessmentName(?string $conceptSelfAssessmentName): self
-  {
-    $this->conceptSelfAssessmentName = $conceptSelfAssessmentName;
-
-    return $this;
-  }
-
-  public function getLearningOutcomeObjName(): ?string
-  {
-    return $this->learningOutcomeObjName;
-  }
-
-  public function setLearningOutcomeObjName(?string $learningOutcomeObjName): self
-  {
-    $this->learningOutcomeObjName = $learningOutcomeObjName;
-
-    return $this;
+  #[Assert\Length(max: 50)]
+  #[ORM\Column(length: 50, nullable: true)]
+  public ?string $skillObjName = null {
+    set => $this->skillObjName = StringHelper::emptyToNull($value);
   }
 }

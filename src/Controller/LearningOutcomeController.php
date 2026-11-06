@@ -54,7 +54,7 @@ class LearningOutcomeController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.saved', [
         '%item%'     => $learningOutcome->getShortName(),
-        '%singular%' => $namingService->get()->learningOutcome()->obj(true),
+        '%singular%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       if (!$learningOutcome->getId() || SaveType::isListClicked($form)) {
@@ -87,7 +87,7 @@ class LearningOutcomeController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $learningOutcome)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-        '%item%' => $namingService->get()->learningOutcome()->obj(true),
+        '%item%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -111,7 +111,7 @@ class LearningOutcomeController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.updated', [
         '%item%'     => $learningOutcome->getShortName(),
-        '%singular%' => $namingService->get()->learningOutcome()->obj(true),
+        '%singular%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       if (SaveType::isListClicked($form)) {
@@ -156,7 +156,7 @@ class LearningOutcomeController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $learningOutcome)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-        '%item%' => $namingService->get()->learningOutcome()->obj(true),
+        '%item%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -174,7 +174,7 @@ class LearningOutcomeController extends AbstractController
 
       $this->addFlash('success', $trans->trans('learning-outcome.removed', [
         '%item%'     => $learningOutcome->getShortName(),
-        '%singular%' => $namingService->get()->learningOutcome()->obj(true),
+        '%singular%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -199,7 +199,7 @@ class LearningOutcomeController extends AbstractController
     $unusedLearningOutcomes = $learningOutcomeRepository->findUnusedInStudyArea($studyArea);
     if (count($unusedLearningOutcomes) === 0) {
       $this->addFlash('info', $trans->trans('learning-outcome.no-unused', [
-        '%plural%' => $namingService->get()->learningOutcome()->objs(),
+        '%plural%' => $namingService->get()->learningOutcome->objs(),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -216,7 +216,7 @@ class LearningOutcomeController extends AbstractController
         if (!$reviewService->canObjectBeRemoved($studyArea, $unusedLearningOutcome)) {
           $this->addFlash('error', $trans->trans('review.remove-not-possible', [
             '%item%' => sprintf('%s "%s"',
-              $namingService->get()->learningOutcome()->obj(true), $unusedLearningOutcome->getName()),
+              $namingService->get()->learningOutcome->obj(true), $unusedLearningOutcome->getName()),
           ]));
 
           // Only add warning, but continue with the others
@@ -228,7 +228,7 @@ class LearningOutcomeController extends AbstractController
       }
 
       $this->addFlash('success', $trans->trans('learning-outcome.unused-removed', [
-        '%plural%' => $namingService->get()->learningOutcome()->objs(),
+        '%plural%' => $namingService->get()->learningOutcome->objs(),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');

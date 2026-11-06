@@ -511,35 +511,39 @@ class DataController extends AbstractController
           $jsonAliases            = $jsonData['aliases'];
 
           if (array_key_exists('definition', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptDefinitionName($jsonAliases['definition']);
+            $studyAreaConfiguration->conceptDefinitionName = $jsonAliases['definition'];
           }
 
           if (array_key_exists('explanation', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptTheoryExplanationName($jsonAliases['definition']);
+            $studyAreaConfiguration->conceptTheoryExplanationName = $jsonAliases['definition'];
           }
 
           if (array_key_exists('introduction', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptIntroductionName($jsonAliases['introduction']);
+            $studyAreaConfiguration->conceptIntroductionName = $jsonAliases['introduction'];
           }
 
           if (array_key_exists('examples', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptExamplesName($jsonAliases['examples']);
+            $studyAreaConfiguration->conceptExamplesName = $jsonAliases['examples'];
           }
 
           if (array_key_exists('selfAssessment', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptSelfAssessmentName($jsonAliases['selfAssessment']);
+            $studyAreaConfiguration->conceptSelfAssessmentName= $jsonAliases['selfAssessment'];
           }
 
           if (array_key_exists('howTo', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptHowtoName($jsonAliases['howTo']);
+            $studyAreaConfiguration->conceptHowtoName= $jsonAliases['howTo'];
           }
 
           if (array_key_exists('learningOutcomes', $jsonAliases)) {
-            $studyAreaConfiguration->setLearningOutcomeObjName($jsonAliases['learningOutcomes']);
+            $studyAreaConfiguration->learningOutcomeObjName= $jsonAliases['learningOutcomes'];
+          }
+
+          if (array_key_exists('skills', $jsonAliases)) {
+            $studyAreaConfiguration->skillObjName= $jsonAliases['skills'];
           }
 
           if (array_key_exists('priorKnowledge', $jsonAliases)) {
-            $studyAreaConfiguration->setConceptPriorKnowledgeName($jsonAliases['priorKnowledge']);
+            $studyAreaConfiguration->conceptPriorKnowledgeName= $jsonAliases['priorKnowledge'];
           }
 
           $studyArea->setFieldConfiguration($studyAreaConfiguration);

@@ -2,16 +2,17 @@
 
 namespace App\Naming\Model;
 
+use Doctrine\Inflector\Inflector;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
 use function Symfony\Component\String\u;
 
-class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
+class ResolvedTermNames implements ResolvedNamesInterface
 {
+  const string DEPRECATED = '(deprecated)';
   private readonly string $obj;
-  /** @var string */
-  private $objs;
+  private string          $objs = '';
 
   public function __construct(string $obj)
   {
@@ -21,7 +22,16 @@ class ResolvedLearningOutcomeNames implements ResolvedNamesInterface
   #[Override]
   public function resolvePlurals(InflectorInterface $inflector): void
   {
-    $this->objs = $inflector->pluralize($this->obj)[0];
+    $term = u($this->obj);
+    if ($deprecatedTerm = $term->endsWith(self::DEPRECATED)) {
+      $term = $term->trimSuffix(self::DEPRECATED)->trimEnd();
+    }
+
+    $this->objs = $inflector->pluralize($term)[0];
+
+    if ($deprecatedTerm) {
+      $this->objs .= ' ' . self::DEPRECATED;
+    }
   }
 
   public function obj(bool $titleCase = false): string

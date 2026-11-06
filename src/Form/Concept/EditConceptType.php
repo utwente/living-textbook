@@ -50,7 +50,7 @@ class EditConceptType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $names      = $this->namingService->get();
-    $fieldNames = $names->concept();
+    $fieldNames = $names->concept;
 
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
     $pendingChangeObjectInfo = $options['pending_change_info'];

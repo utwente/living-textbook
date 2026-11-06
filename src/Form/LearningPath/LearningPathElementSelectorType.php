@@ -46,7 +46,7 @@ class LearningPathElementSelectorType extends AbstractType
         'select2_placeholder' => 'learning-path.select',
       ])
       ->add('learningOutcomes', EntityType::class, [
-        'label'               => $this->namingService->get()->learningOutcome()->objs(true),
+        'label'               => $this->namingService->get()->learningOutcome->objs(true),
         'class'               => LearningOutcome::class,
         'choice_label'        => 'name',
         'required'            => false,

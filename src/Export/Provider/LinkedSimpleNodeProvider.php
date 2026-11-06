@@ -69,7 +69,7 @@ class LinkedSimpleNodeProvider implements ProviderInterface
   public function getPreview(): string
   {
     $names      = $this->namingService->get();
-    $fieldNames = $names->concept();
+    $fieldNames = $names->concept;
 
     return sprintf(<<<'EOT'
 {
@@ -146,7 +146,8 @@ class LinkedSimpleNodeProvider implements ProviderInterface
       "selfAssessment": "%5$s",
       "howTo": "%6$s",
       "learningOutcomes": "%7$s",
-      "priorKnowledge": "%8$s",
+      "skills": "%8$s",
+      "priorKnowledge": "%9$s",
     ]
 }
 EOT,
@@ -156,7 +157,8 @@ EOT,
       $fieldNames->examples(),
       $fieldNames->selfAssessment(),
       $fieldNames->howTo(),
-      $names->learningOutcome()->obj(),
+      $names->learningOutcome->obj(),
+      $names->skill->obj(),
       $fieldNames->priorKnowledge()
     );
   }
@@ -250,7 +252,7 @@ EOT,
     // Create JSON data
 
     $names                 = $this->namingService->get();
-    $fieldNames            = $names->concept();
+    $fieldNames            = $names->concept;
 
     // Return as JSON
     $serializationContext = SerializationContext::create();
@@ -287,7 +289,8 @@ EOT,
           'examples'         => $fieldNames->examples(),
           'selfAssessment'   => $fieldNames->selfAssessment(),
           'howTo'            => $fieldNames->howTo(),
-          'learningOutcomes' => $names->learningOutcome()->obj(),
+          'learningOutcomes' => $names->learningOutcome->obj(),
+          'skills'           => $names->skill->obj(),
           'priorKnowledge'   => $fieldNames->priorKnowledge(),
         ],
       ],

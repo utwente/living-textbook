@@ -5,7 +5,8 @@ namespace App\Naming;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Naming\Model\ResolvedConceptNames;
-use App\Naming\Model\ResolvedLearningOutcomeNames;
+use App\Naming\Model\ResolvedTermNames;
+use App\Naming\Model\ResolvedSkillNames;
 use App\Naming\Model\ResolvedNames;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
@@ -65,21 +66,25 @@ class NamingService
         $conf = $studyArea->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
 
         $conceptNames = new ResolvedConceptNames(
-          $conf->getConceptDefinitionName() ?: $this->translator->trans('concept.definition'),
-          $conf->getConceptIntroductionName() ?: $this->translator->trans('concept.introduction'),
-          $conf->getConceptSynonymsName() ?: $this->translator->trans('concept.synonyms'),
-          $conf->getConceptPriorKnowledgeName() ?: $this->translator->trans('concept.prior-knowledge'),
-          $conf->getConceptTheoryExplanationName() ?: $this->translator->trans('concept.theory-explanation'),
-          $conf->getConceptHowtoName() ?: $this->translator->trans('concept.how-to'),
-          $conf->getConceptExamplesName() ?: $this->translator->trans('concept.examples'),
-          $conf->getConceptSelfAssessmentName() ?: $this->translator->trans('concept.self-assessment')
+          $conf->conceptDefinitionName ?: $this->translator->trans('concept.definition'),
+          $conf->conceptIntroductionName ?: $this->translator->trans('concept.introduction'),
+          $conf->conceptSynonymsName ?: $this->translator->trans('concept.synonyms'),
+          $conf->conceptPriorKnowledgeName ?: $this->translator->trans('concept.prior-knowledge'),
+          $conf->conceptTheoryExplanationName ?: $this->translator->trans('concept.theory-explanation'),
+          $conf->conceptHowtoName ?: $this->translator->trans('concept.how-to'),
+          $conf->conceptExamplesName ?: $this->translator->trans('concept.examples'),
+          $conf->conceptSelfAssessmentName ?: $this->translator->trans('concept.self-assessment')
         );
 
-        $learningOutcomeNames = new ResolvedLearningOutcomeNames(
-          $conf->getLearningOutcomeObjName() ?: $this->translator->trans('learning-outcome._name')
+        $learningOutcomeNames = new ResolvedTermNames(
+          $conf->learningOutcomeObjName ?: $this->translator->trans('learning-outcome._name')
         );
 
-        $result = new ResolvedNames($conceptNames, $learningOutcomeNames);
+        $skillNames = new ResolvedTermNames(
+          $conf->skillObjName ?: $this->translator->trans('skill._name')
+        );
+
+        $result = new ResolvedNames($conceptNames, $learningOutcomeNames, $skillNames);
         $result->resolvePlurals(new EnglishInflector());
 
         $item->tag(self::CACHE_TAG);

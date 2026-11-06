@@ -103,7 +103,7 @@ final readonly class TrackingExportBuilder
     $contextMap['learningpath'] = $column;
 
     $sheet->getColumnDimensionByColumn(++$column)->setAutoSize(true);
-    $this->spreadsheetHelper->setCellValue($sheet, $column, $row, $this->namingService->get()->learningOutcome()->obj(), true);
+    $this->spreadsheetHelper->setCellValue($sheet, $column, $row, $this->namingService->get()->learningOutcome->obj(), true);
     $contextMap['learningoutcome'] = $column;
 
     $contextMap['__next'] = ++$column;
