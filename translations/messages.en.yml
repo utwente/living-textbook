@@ -684,7 +684,7 @@ skill:
       generating: Generating
       planning: Planning
       producing: Producing
-  _level: 'Level %level%: %set% (%count%)'
+  _level: 'Level %level%: %set%'
 
 study-area:
   access-type: 'Access type'

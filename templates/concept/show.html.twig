@@ -58,7 +58,11 @@
     {{ macros.data_how_to(concept.howTo) }}
     {{ macros.data_synonyms(concept.synonyms) }}
     {{ macros.data_external_resources(concept.externalResources) }}
-    {{ macros.data_learning_outcomes(concept.learningOutcomes) }}
+    {% if concept.studyArea.deprecatedSkills %}
+      {{ macros.data_learning_outcomes(concept.learningOutcomes) }}
+    {% else %}
+      {{ macros.data_skills(concept.skills) }}
+    {% endif %}
     {{ macros.data_prior_knowledge(concept.priorKnowledge) }}
     {{ macros.data_self_assessment(concept.selfAssessment) }}
     {{ macros.data_outgoing_relations(concept.outgoingRelations) }}

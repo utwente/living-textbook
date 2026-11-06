@@ -173,7 +173,7 @@
 
 {% macro data_learning_outcomes(data) %}
   {% if data|length > 0 %}
-    <h2>{{ naming.get.learningOutcome.objs|capitalize }}</h2>
+    <h2>{{ naming.get.learningOutcome.objs(true) }}</h2>
     <ul>
       {% from _self import render_learning_outcome %}
       {% for learning_outcome in data %}
@@ -190,6 +190,50 @@
   <div class="ltb-text-container">
     {{ learning_outcome.text|striptags(allowed_ckeditor_tags)|raw }}
   </div>
+{% endmacro %}
+
+{% macro data_skills(data) %}
+  <h2>{{ naming.get.skill.objs(true) }}</h2>
+  {% from _self import render_skill_set %}
+  {% for skill_set in enum_cases('App\\Entity\\Skills\\SkillSetEnum') %}
+    <div class="ltb-text-container">
+      {{ render_skill_set(data, skill_set) }}
+    </div>
+  {% endfor %}
+{% endmacro %}
+
+{% macro render_skill_set(data, skill_set) %}
+  {% from _self import render_skill %}
+  {% set skill_values = skill_accessor.getSkillValues(data, skill_set) %}
+  {% if skill_values|length > 0 %}
+    <div class="skill-set">
+      <a data-toggle="collapse" class="collapsed" href="#collapse-skill-set-{{ skill_set.name }}" role="button" aria-expanded="false" aria-controls="collapse-skill-set-{{ skill_set.name }}">
+        <i class="fa fa-fw fa-chevron-right"></i>{{ 'skill._level'|trans({
+          '%level%': skill_set.value,
+          '%set%': skill_set.label(),
+        }) }}
+        ({{ skill_values|length }})
+      </a>
+
+      <div id="collapse-skill-set-{{ skill_set.name }}" class="collapse">
+        <ul class="skill-list">
+          {% for skill in skill_set.skills %}
+            {{ render_skill(skill, skill_values) }}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_skill(skill, skill_values) %}
+  {% set skill_value = skill_values[skill_accessor.propertyName(skill)]|default(false) %}
+  {% if skill_value %}
+    <li class="skill">
+      <span class="skill-name">{{ skill.label()|trans }}:</span>
+      <span class="skill-content">{{ skill_value }}</span>
+    </li>
+  {% endif %}
 {% endmacro %}
 
 {% macro data_tags(data) %}

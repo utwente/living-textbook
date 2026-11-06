@@ -18,6 +18,7 @@ twig:
   globals:
     allowed_ckeditor_tags: '%ckeditor_tags%'
     naming: '@App\Naming\NamingService'
+    skill_accessor: '@App\Skills\SkillAccessor'
     sentry_dsn: '%env(SENTRY_JS_DSN)%'
     sentry_release: '%sentry_release%'
 

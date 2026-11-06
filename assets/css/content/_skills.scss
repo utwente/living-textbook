@@ -1,0 +1,17 @@
+.skill-set {
+  a .fa {
+    transition: transform 0.3s ease;
+  }
+
+  a:not(.collapsed) {
+    .fa {
+      transform: rotate(90deg);
+    }
+  }
+
+  .skill {
+    .skill-name {
+      font-weight: bold;
+    }
+  }
+}
