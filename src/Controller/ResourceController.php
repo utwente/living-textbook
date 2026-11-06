@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Attribute\NotFoundWhenModernSkillsEnabled;
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
@@ -50,6 +51,7 @@ class ResourceController extends AbstractController
   /** @throws Exception */
   #[Route('/learningoutcome/{learningOutcome<\d+>}', options: ['no_login_wrap' => true])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
   public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
   {
     if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
