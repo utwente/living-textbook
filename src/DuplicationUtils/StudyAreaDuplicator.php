@@ -191,6 +191,10 @@ class StudyAreaDuplicator
   /** Duplicate the learning outcomes */
   private function duplicateLearningOutcomes(): void
   {
+    if (!$this->newStudyArea->isDeprecatedSkills()) {
+      return;
+    }
+
     $learningOutcomes = $this->learningOutcomeRepo->findForStudyArea($this->studyAreaToDuplicate);
     foreach ($learningOutcomes as $learningOutcome) {
       $newLearningOutcome = new LearningOutcome()
@@ -330,8 +334,10 @@ class StudyAreaDuplicator
         ->setSelfAssessment($newConcept->getSelfAssessment()->setText($concept->getSelfAssessment()->getText()));
 
       // Set learning outcomes
-      foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
-        $newConcept->addLearningOutcome($this->newLearningOutcomes[$oldLearningOutcome->getNonNullId()]);
+      if ($this->newStudyArea->isDeprecatedSkills()) {
+        foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
+          $newConcept->addLearningOutcome($this->newLearningOutcomes[$oldLearningOutcome->getNonNullId()]);
+        }
       }
 
       // Set external resources
@@ -418,8 +424,10 @@ class StudyAreaDuplicator
     }
 
     // Update learning outcomes
-    foreach ($this->newLearningOutcomes as $newLearningOutcome) {
-      $newLearningOutcome->setText($this->updateUrls($newLearningOutcome->getText()));
+    if ($this->newStudyArea->isDeprecatedSkills()) {
+      foreach ($this->newLearningOutcomes as $newLearningOutcome) {
+        $newLearningOutcome->setText($this->updateUrls($newLearningOutcome->getText()));
+      }
     }
 
     // Update external resources
