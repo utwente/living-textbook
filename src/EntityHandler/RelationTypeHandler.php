@@ -56,7 +56,7 @@ class RelationTypeHandler extends AbstractEntityHandler
     }
 
     // Remove the relation type by setting the deletedAt/By manually
-    $removeFunction = static fn () => $relationType
+    $removeFunction = static fn (): RelationType => $relationType
       ->setDeletedAt(new DateTime())
       ->setDeletedBy($user instanceof UserInterface ? $user->getUserIdentifier() : 'anon.');
 

@@ -3,7 +3,6 @@
 namespace App\Export\Provider;
 
 use App\Entity\Concept;
-use App\Entity\Data\DataSkills;
 use App\Entity\StudyArea;
 use App\Export\ExportService;
 use App\Export\ProviderInterface;
@@ -199,7 +198,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): JsonResponse
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $this->relationTypeRepository->findBy(['studyArea' => $studyArea]);
@@ -295,7 +294,7 @@ EOT;
       'description'  => $studyArea->getDescription(),
       'date_created' => $studyArea->getCreatedAt(),
       'last_updated' => $studyArea->getLastUpdated(),
-      'nodes' => array_map(
+      'nodes'        => array_map(
         function (Concept $concept) use ($studyArea): array {
           $nodeData = [
             'instance'       => $concept->isInstance(),

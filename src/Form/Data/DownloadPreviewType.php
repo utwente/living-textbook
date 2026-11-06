@@ -28,5 +28,4 @@ class DownloadPreviewType extends AbstractType
       ->setRequired('study_area')
       ->setAllowedTypes('study_area', [StudyArea::class]);
   }
-
 }

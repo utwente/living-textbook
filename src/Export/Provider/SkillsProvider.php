@@ -72,7 +72,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): JsonResponse
   {
     $concepts = $this->conceptRepository->findForStudyAreaOrderedByName($studyArea);
 

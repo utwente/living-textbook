@@ -7,7 +7,6 @@ use App\Entity\Skills\SkillsInterface;
 use App\Skills\SkillAccessor;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -25,9 +24,9 @@ class SkillsType extends AbstractType
   {
     foreach ($options['skill_set']->getSkills() as $skill) {
       $builder->add($this->skillAccessor->propertyName($skill), TextareaType::class, [
-        'label'    => $skill->label(),
+        'label'              => $skill->label(),
         'translation_domain' => 'messages',
-        'required' => false,
+        'required'           => false,
       ]);
     }
   }

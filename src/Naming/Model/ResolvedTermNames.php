@@ -2,7 +2,6 @@
 
 namespace App\Naming\Model;
 
-use Doctrine\Inflector\Inflector;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
@@ -10,9 +9,9 @@ use function Symfony\Component\String\u;
 
 class ResolvedTermNames implements ResolvedNamesInterface
 {
-  const string DEPRECATED = '(deprecated)';
+  public const string DEPRECATED = '(deprecated)';
   private readonly string $obj;
-  private string          $objs = '';
+  private string $objs = '';
 
   public function __construct(string $obj)
   {

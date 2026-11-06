@@ -18,7 +18,6 @@ use EasyRdf\RdfNamespace;
 use EasyRdf\Serialiser\JsonLd;
 use JMS\Serializer\SerializerInterface;
 use Override;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -162,7 +161,7 @@ EOT;
 
   /** @throws Exception */
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): JsonResponse
   {
     $response = $this->exportStudyArea($studyArea);
     ExportService::contentDisposition($response, sprintf('%s_rdf_export.json', $studyArea->getName()));

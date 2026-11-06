@@ -55,7 +55,7 @@ final readonly class SkillAccessor
     return array_filter(
       array_combine(
         array_map(
-          fn (SkillsEnumInterface $skill): string => $this->propertyName($skill),
+          $this->propertyName(...),
           $skillSet->getSkills(),
         ),
         array_map(

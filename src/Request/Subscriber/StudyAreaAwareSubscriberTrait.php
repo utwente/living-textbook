@@ -7,6 +7,9 @@ use App\Request\Wrapper\RequestStudyArea;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 
+use function array_key_exists;
+use function sprintf;
+
 trait StudyAreaAwareSubscriberTrait
 {
   protected function getStudyArea(ControllerArgumentsEvent $event, string $subject): StudyArea

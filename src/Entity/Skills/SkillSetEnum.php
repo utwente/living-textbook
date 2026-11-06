@@ -4,6 +4,8 @@ namespace App\Entity\Skills;
 
 use Symfony\Component\Translation\TranslatableMessage;
 
+use function strtolower;
+
 enum SkillSetEnum: int
 {
   case REMEMBER   = 1;

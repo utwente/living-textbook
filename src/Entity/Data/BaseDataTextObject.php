@@ -7,7 +7,6 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 
 trait BaseDataTextObject

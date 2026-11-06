@@ -16,6 +16,8 @@ use App\Repository\Data\DataSkillsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use function array_any;
+
 /** Skills are the new learning outcomes, which follow a predefined pattern. */
 #[ORM\Entity(repositoryClass: DataSkillsRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
@@ -64,7 +66,7 @@ class DataSkills implements DataInterface
         $this->remember,
         $this->understand,
       ],
-      static fn (SkillsInterface $skillSet) => $skillSet->hasData(),
+      static fn (SkillsInterface $skillSet): bool => $skillSet->hasData(),
     );
   }
 }

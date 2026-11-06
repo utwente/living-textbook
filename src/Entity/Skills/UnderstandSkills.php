@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Embeddable]
 class UnderstandSkills extends AbstractSkills
 {
-
   #[ORM\Column(nullable: true)]
   #[Assert\Length(max: 255)]
   public ?string $classifying  = null;

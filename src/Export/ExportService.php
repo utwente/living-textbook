@@ -4,7 +4,6 @@ namespace App\Export;
 
 use App\Entity\StudyArea;
 use InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\Response;

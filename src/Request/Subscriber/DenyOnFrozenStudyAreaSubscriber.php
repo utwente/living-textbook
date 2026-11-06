@@ -3,6 +3,7 @@
 namespace App\Request\Subscriber;
 
 use App\Attribute\DenyOnFrozenStudyArea;
+use InvalidArgumentException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -27,8 +28,7 @@ final readonly class DenyOnFrozenStudyAreaSubscriber
   public function __construct(
     private TranslatorInterface $translator,
     private RouterInterface $router,
-  )
-  {
+  ) {
   }
 
   /** Check if a study area is frozen, and if so, prevent editing. */
@@ -51,7 +51,7 @@ final readonly class DenyOnFrozenStudyAreaSubscriber
     // Verify forwarding url
     $request = $event->getRequest();
     if ($request->request->get('_route') === $configuration->route) {
-      throw new \InvalidArgumentException(sprintf('Forwarding route is the same as the route triggering it ("%s")', $configuration->route));
+      throw new InvalidArgumentException(sprintf('Forwarding route is the same as the route triggering it ("%s")', $configuration->route));
     }
 
     $session = $request->getSession();
