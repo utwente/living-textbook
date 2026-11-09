@@ -58,15 +58,29 @@ class DataSkills implements DataInterface
   public function hasData(): bool
   {
     return array_any(
-      [
-        $this->analyse,
-        $this->apply,
-        $this->create,
-        $this->evaluate,
-        $this->remember,
-        $this->understand,
-      ],
+      $this->getSkillObjects(),
       static fn (SkillsInterface $skillSet): bool => $skillSet->hasData(),
     );
+  }
+
+  public function skillCount(): int
+  {
+    return array_sum(array_map(
+      static fn (SkillsInterface $skillSet): int => $skillSet->skillCount(),
+      $this->getSkillObjects(),
+    ));
+  }
+
+  /** @return SkillsInterface[] */
+  public function getSkillObjects(): array
+  {
+    return [
+      $this->analyse,
+      $this->apply,
+      $this->create,
+      $this->evaluate,
+      $this->remember,
+      $this->understand,
+    ];
   }
 }

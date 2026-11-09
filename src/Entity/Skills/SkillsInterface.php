@@ -6,4 +6,5 @@ use App\Entity\Data\DataInterface;
 
 interface SkillsInterface extends DataInterface
 {
+  public function skillCount(): int;
 }
