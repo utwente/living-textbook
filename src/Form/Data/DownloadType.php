@@ -39,8 +39,9 @@ class DownloadType extends AbstractType
 
     $builder
       ->add('type', ExportType::class, [
-        'label' => 'data.download.type',
-        'attr'  => [
+        'label'      => 'data.download.type',
+        'study_area' => $options['study_area'],
+        'attr'       => [
           'class' => 'download-type',
         ],
       ])

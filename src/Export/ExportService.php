@@ -36,9 +36,12 @@ final readonly class ExportService
    *
    * @return string[]
    */
-  public function getAvailableProviderKeys(): array
+  public function getAvailableProviderKeys(StudyArea $studyArea): array
   {
-    return array_keys($this->providers->getProvidedServices());
+    return array_filter(
+      array_keys($this->providers->getProvidedServices()),
+      fn (string $k): bool => $this->providers->get($k)->isAvailable($studyArea),
+    );
   }
 
   /**
@@ -48,7 +51,7 @@ final readonly class ExportService
    */
   public function getPreviews(StudyArea $studyArea): array
   {
-    $providerKeys = $this->getAvailableProviderKeys();
+    $providerKeys = $this->getAvailableProviderKeys($studyArea);
 
     return array_combine(
       $providerKeys,

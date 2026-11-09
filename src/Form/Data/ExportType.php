@@ -2,6 +2,7 @@
 
 namespace App\Form\Data;
 
+use App\Entity\StudyArea;
 use App\Export\ExportService;
 use Override;
 use Symfony\Component\Form\AbstractType;
@@ -29,14 +30,17 @@ class ExportType extends AbstractType
   #[Override]
   public function configureOptions(OptionsResolver $resolver): void
   {
-    $resolver->setDefaults([
-      'translation_prefix' => self::TRANSLATION_PREFIX,
-      'choices'            => $this->exportService->getAvailableProviderKeys(),
-      'choice_label'       => static fn (Options $options): callable => static fn (string $key): string => $options['translation_prefix'] . '.' . $key,
-      'invalid_message'    => 'export_type.invalid-type',
-      'constraints'        => [
-        new NotNull(message: 'export_type.not-null'),
-      ],
-    ]);
+    $resolver
+      ->setRequired('study_area')
+      ->setAllowedTypes('study_area', StudyArea::class)
+      ->setDefaults([
+        'translation_prefix' => self::TRANSLATION_PREFIX,
+        'choices'            => fn (Options $options): array => $this->exportService->getAvailableProviderKeys($options['study_area']),
+        'choice_label'       => static fn (Options $options): callable => static fn (string $key): string => $options['translation_prefix'] . '.' . $key,
+        'invalid_message'    => 'export_type.invalid-type',
+        'constraints'        => [
+          new NotNull(message: 'export_type.not-null'),
+        ],
+      ]);
   }
 }
