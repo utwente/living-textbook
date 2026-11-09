@@ -39,11 +39,15 @@ class SearchController extends AbstractController
   #[Route('/{s<.*>?}', name: 'search')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function search(
-    ?string $s, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-    AbbreviationRepository $abbreviationRepository, ConceptRepository $conceptRepository,
-    ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-    AnnotationRepository $annotationRepository): Response
-  {
+    ?string $s,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $translator,
+    AbbreviationRepository $abbreviationRepository,
+    ConceptRepository $conceptRepository,
+    ExternalResourceRepository $externalResourceRepository,
+    LearningOutcomeRepository $learningOutcomeRepository,
+    AnnotationRepository $annotationRepository,
+  ): Response {
     $result = [];
 
     if (null === $s) {
@@ -70,7 +74,9 @@ class SearchController extends AbstractController
     $result['instanceData']         = $this->searchData($conceptRepository->findForStudyAreaOrderedByName($studyArea, true, false, true), $search);
     $result['abbreviationData']     = $this->searchData($abbreviationRepository->findForStudyArea($studyArea), $search);
     $result['externalResourceData'] = $this->searchData($externalResourceRepository->findForStudyArea($studyArea), $search);
-    $result['learningOutcomeData']  = $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search);
+    $result['learningOutcomeData']  = $studyArea->isDeprecatedSkills()
+      ? $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search)
+      : [];
 
     // Retrieve annotation data, which is easier to do here
     $user = $this->getUser();
