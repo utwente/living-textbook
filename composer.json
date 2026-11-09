@@ -102,7 +102,7 @@
         "phpstan/phpstan-doctrine": "2.1.0",
         "phpstan/phpstan-phpunit": "2.1.1",
         "phpstan/phpstan-symfony": "2.1.1",
-        "phpunit/phpunit": "13.4.5",
+        "phpunit/phpunit": "13.4.6",
         "rector/rector": "2.8.4",
         "symfony/error-handler": "7.4.22",
         "symfony/stopwatch": "7.4.8",
