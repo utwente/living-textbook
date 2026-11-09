@@ -702,7 +702,7 @@ study-area:
   default-tag-filter: 'Default tag filter'
   default-tag-filter-help: 'The selected tag will be used as default filter when the concept browser is loaded for the first time.'
   deprecated-skills: 'Deprecated skills'
-  deprecated-skills-help: 'When enabled, the deprecated skill mode is enabled. These were previously called "Learning outcomes".'
+  deprecated-skills-help: 'When enabled, the deprecated skill mode is enabled.'
   description: 'Description'
   dotron: "Dotron enabled"
   dotron-help: "When enabled, Dotron visualization will be used."
