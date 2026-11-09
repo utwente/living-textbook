@@ -242,6 +242,7 @@ data:
   import:
     provider:
       linked-simple-node: 'Simple linked node'
+      skills: 'Skills'
     json-file: 'JSON data file'
     json-incorrect: 'JSON data incorrect! %message%'
     json-uploaded: 'JSON data successfully imported!'

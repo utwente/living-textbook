@@ -53,8 +53,8 @@ final readonly class SkillsExportProvider implements ExportProviderInterface
     $preview = <<<'EOT'
 [
     {
-        "id": <concept-id>,
-        "name": "<concept-naam>",
+        "concept_id": <concept-id>,
+        "concept": "<concept-naam>",
         "skills": {
 
 EOT;
@@ -79,9 +79,9 @@ EOT;
     $data = [];
     foreach ($concepts as $concept) {
       $data[] = [
-        'id'     => $concept->getId(),
-        'name'   => $concept->getName(),
-        'skills' => $this->skillAccessor->getAsArrayData($concept->getSkills()),
+        'concept_id' => $concept->getId(),
+        'concept'    => $concept->getName(),
+        'skills'     => $this->skillAccessor->getAsArrayData($concept->getSkills()),
       ];
     }
 

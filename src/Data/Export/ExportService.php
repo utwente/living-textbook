@@ -31,6 +31,21 @@ final readonly class ExportService extends AbstractDataService
     parent::__construct($providers);
   }
 
+  /**
+   * Retrieve the previews from the providers.
+   *
+   * @return string[]
+   */
+  public function getPreviews(StudyArea $studyArea): array
+  {
+    $providerKeys = $this->getAvailableProviderKeys($studyArea);
+
+    return array_combine(
+      $providerKeys,
+      array_map(fn (string $k): string => $this->providers->get($k)->getPreview($studyArea), $providerKeys),
+    );
+  }
+
   /** Retrieve the export data. */
   public function export(StudyArea $studyArea, string $exportProvider): Response
   {
