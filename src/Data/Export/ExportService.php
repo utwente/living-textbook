@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Export;
+namespace App\Data\Export;
 
+use App\Data\AbstractDataService;
 use App\Entity\StudyArea;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
@@ -10,9 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
-use function array_combine;
-use function array_keys;
-use function array_map;
 use function iconv;
 use function mb_strtolower;
 use function preg_replace;
@@ -21,42 +19,16 @@ use function sprintf;
 
 use const LC_CTYPE;
 
+/** @extends AbstractDataService<ExportProviderInterface> */
 #[Lazy]
-final readonly class ExportService
+final readonly class ExportService extends AbstractDataService
 {
-  /** @param ServiceProviderInterface<ProviderInterface> $providers The registered export providers */
+  /** @param ServiceProviderInterface<ExportProviderInterface> $providers The registered export providers */
   public function __construct(
-    #[AutowireLocator(ProviderInterface::class, defaultIndexMethod: 'getName')]
-    private ServiceProviderInterface $providers,
+    #[AutowireLocator(ExportProviderInterface::class, defaultIndexMethod: 'getName')]
+    ServiceProviderInterface $providers,
   ) {
-  }
-
-  /**
-   * Retrieve the available export provider keys.
-   *
-   * @return string[]
-   */
-  public function getAvailableProviderKeys(StudyArea $studyArea): array
-  {
-    return array_filter(
-      array_keys($this->providers->getProvidedServices()),
-      fn (string $k): bool => $this->providers->get($k)->isAvailable($studyArea),
-    );
-  }
-
-  /**
-   * Retrieve the previews from the providers.
-   *
-   * @return string[]
-   */
-  public function getPreviews(StudyArea $studyArea): array
-  {
-    $providerKeys = $this->getAvailableProviderKeys($studyArea);
-
-    return array_combine(
-      $providerKeys,
-      array_map(fn (string $k): string => $this->providers->get($k)->getPreview($studyArea), $providerKeys),
-    );
+    parent::__construct($providers);
   }
 
   /** Retrieve the export data. */
@@ -74,7 +46,11 @@ final readonly class ExportService
   {
     // Set locale required for the iconv conversion to work correctly
     setlocale(LC_CTYPE, 'en_US.UTF-8');
-    $filename = mb_strtolower((string)preg_replace('/[^A-Z\d.]/ui', '_', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename)));
+    $filename = mb_strtolower((string)preg_replace(
+      '/[^A-Z\d.]/ui',
+      '_',
+      (string) iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename),
+    ));
     $response->headers->set(
       'Content-Disposition',
       $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename),

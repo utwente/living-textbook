@@ -2,7 +2,7 @@
 
 namespace App\Form\Data;
 
-use App\Dto\DownloadTypeDto;
+use App\Dto\ExportTypeDto;
 use App\Entity\StudyArea;
 use App\Form\Type\SingleSubmitType;
 use Override;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function array_combine;
 
-/** @extends AbstractType<DownloadTypeDto> */
+/** @extends AbstractType<ExportTypeDto> */
 class DownloadType extends AbstractType
 {
   #[Override]
@@ -32,14 +32,14 @@ class DownloadType extends AbstractType
         ->add('httpMethod', ChoiceType::class, [
           'label'    => 'study-area.export-url-http-method',
           'help'     => 'study-area.export-url-http-method-help',
-          'choices'  => array_combine(DownloadTypeDto::METHODS, DownloadTypeDto::METHODS),
+          'choices'  => array_combine(ExportTypeDto::METHODS, ExportTypeDto::METHODS),
           'required' => true,
         ]);
     }
 
     $builder
       ->add('type', ExportType::class, [
-        'label'      => 'data.download.type',
+        'label'      => 'data.export.type',
         'study_area' => $options['study_area'],
         'attr'       => [
           'class' => 'download-type',
@@ -50,7 +50,7 @@ class DownloadType extends AbstractType
         'study_area' => $options['study_area'],
       ])
       ->add('submit', SingleSubmitType::class, [
-        'label' => 'data.download.title',
+        'label' => 'data.export.title',
         'icon'  => 'fa-download',
         'attr'  => [
           'class' => 'btn btn-outline-success',

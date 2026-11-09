@@ -26,7 +26,7 @@ use function Symfony\Component\String\u;
 /** This class is used to build an Excel sheet with the current study area status. */
 final class StudyAreaStatusBuilder
 {
-  private ?StudyArea $studyArea = null;
+  private StudyArea $studyArea;
 
   /** @var RelationType[] */
   private array $relationTypes = [];

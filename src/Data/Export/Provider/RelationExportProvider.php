@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Export\Provider;
+namespace App\Data\Export\Provider;
 
+use App\Data\Export\ExportProviderInterface;
 use App\Entity\ConceptRelation;
 use App\Entity\StudyArea;
-use App\Export\ProviderInterface;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
 use App\Repository\RelationTypeRepository;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use Drenso\Shared\Helper\SpreadsheetHelper;
 use Override;
 use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
@@ -19,7 +20,7 @@ use function sprintf;
 use function usort;
 
 #[Lazy]
-final readonly class RelationProvider implements ProviderInterface
+final readonly class RelationExportProvider implements ExportProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,
@@ -64,10 +65,16 @@ EOT;
     // Sort them first of source name, than on target name
     usort($links, static function (ConceptRelation $a, ConceptRelation $b): int {
       if ($a->getSourceId() === $b->getSourceId()) {
-        return $a->getTarget()->getName() <=> $b->getTarget()->getName();
+        $aTarget = $a->getTarget() ?? throw new ObjectRequiredException();
+        $bTarget = $b->getTarget() ?? throw new ObjectRequiredException();
+
+        return $aTarget->getName() <=> $bTarget->getName();
       }
 
-      return $a->getSource()->getName() <=> $b->getSource()->getName();
+      $aSource = $a->getSource() ?? throw new ObjectRequiredException();
+      $bSource = $b->getSource() ?? throw new ObjectRequiredException();
+
+      return $aSource->getName() <=> $bSource->getName();
     });
 
     $row         = 1;
@@ -82,9 +89,11 @@ EOT;
     foreach ($links as $link) {
       $column = 1;
       $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getSourceId());
-      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getSource()->getName());
+      $source = $link->getSource() ?? throw new ObjectRequiredException();
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $source->getName());
       $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getTargetId());
-      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $link->getTarget()->getName());
+      $target = $link->getTarget() ?? throw new ObjectRequiredException();
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $target->getName());
       $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row++), $link->getRelationName());
     }
 

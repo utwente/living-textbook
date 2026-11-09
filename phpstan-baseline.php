@@ -620,12 +620,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/ContributorController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function array_key_exists\\(\\) with \'relationName\' and non\\-empty\\-array will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/DataController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on class\\-string\\|object\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -1880,45 +1874,15 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/EntityHandler/TagHandler.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getAccessType\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getCreatedAt\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
 	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getLastEditInfo\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getOwner\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
 	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
 ];
 $ignoreErrors[] = [
@@ -1938,42 +1902,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Excel/TrackingExportBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of function preg_replace expects array\\<float\\|int\\|string\\>\\|string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/ExportService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getCamelizedName\\(\\) on App\\\\Entity\\\\RelationType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getFullName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getOwner\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$concept of method App\\\\Export\\\\Provider\\\\RdfProvider\\:\\:generateConceptResourceUrl\\(\\) expects App\\\\Entity\\\\Concept, App\\\\Entity\\\\Concept\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 6,
-	'path' => __DIR__ . '/src/Export/Provider/RelationProvider.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Abbreviation\\\\EditAbbreviationType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -2076,12 +2004,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Form\\\\Data\\\\JsonUploadType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Data/JsonUploadType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\ExternalResource\\\\EditExternalResourceType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',

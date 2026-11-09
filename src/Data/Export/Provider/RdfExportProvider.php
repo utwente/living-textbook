@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Export\Provider;
+namespace App\Data\Export\Provider;
 
+use App\Data\Export\ExportProviderInterface;
+use App\Data\Export\ExportService;
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
 use App\Entity\RelationType;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
-use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use App\Repository\LearningPathRepository;
 use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
@@ -27,7 +27,7 @@ use Symfony\Component\Routing\RouterInterface;
 use function sprintf;
 
 #[Lazy]
-final readonly class RdfProvider implements ProviderInterface
+final readonly class RdfExportProvider implements ExportProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,
@@ -161,7 +161,7 @@ EOT;
 
   /** @throws Exception */
   #[Override]
-  public function export(StudyArea $studyArea): JsonResponse
+  public function export(StudyArea $studyArea): Response
   {
     $response = $this->exportStudyArea($studyArea);
     ExportService::contentDisposition($response, sprintf('%s_rdf_export.json', $studyArea->getName()));
@@ -171,9 +171,11 @@ EOT;
 
   public function addRelationTypeResource(RelationType $relationType, Graph $graph): void
   {
+    $studyArea = $relationType->getStudyArea() ?? throw new ObjectRequiredException();
+
     $relationTypeResource = $graph->resource('https://ltb.itc.utwente.nl/relationType/' . $relationType->getCamelizedName());
     $relationTypeResource->setType('rdf:Property');
-    $relationTypeResource->addLiteral('dcterms:creator', $relationType->getStudyArea()->getOwner()->getFullName());
+    $relationTypeResource->addLiteral('dcterms:creator', $studyArea->getOwner()?->getFullName());
     $relationTypeResource->addLiteral('rdfs:comment', $relationType->getDescription(), 'en');
     $relationTypeResource->add('rdfs:domain', ['type' => 'uri', 'value' => RdfNamespace::expand('skos:Concept')]);
     $relationTypeResource->addLiteral('rdfs:label', $relationType->getName(), 'en');
@@ -186,19 +188,22 @@ EOT;
     $studyAreaResource = $graph->resource($this->generateStudyAreaResourceUrl());
     $studyAreaResource->addType('skos:ConceptScheme');
     $studyAreaResource->addType('https://ltb.itc.utwente.nl/resource/studyarea');
-    $studyAreaResource->addLiteral('dcterms:creator', $studyArea->getOwner()->getFullName());
+    $studyAreaResource->addLiteral('dcterms:creator', $studyArea->getOwner()?->getFullName());
     $studyAreaResource->addLiteral('rdfs:label', $studyArea->getName(), 'en');
   }
 
   public function addConceptResource(Concept $concept, Graph $graph): void
   {
+    $studyArea = $concept->getStudyArea() ?? throw new ObjectRequiredException();
+
     $conceptResource = $graph->resource($this->generateConceptResourceUrl($concept));
     $conceptResource->addType('rdfs:Class');
     $conceptResource->addType('skos:Concept');
     foreach ($concept->getOutgoingRelations() as $outgoingRelation) {
-      $conceptResource->add('https://ltb.itc.utwente.nl/resource/' . $outgoingRelation->getRelationType()->getCamelizedName(), ['type' => 'uri', 'value' => $this->generateConceptResourceUrl($outgoingRelation->getTarget())]);
+      $relationType = $outgoingRelation->getRelationType() ?? throw new ObjectRequiredException();
+      $target       = $outgoingRelation->getTarget() ?? throw new ObjectRequiredException();
+      $conceptResource->add('https://ltb.itc.utwente.nl/resource/' . $relationType->getCamelizedName(), ['type' => 'uri', 'value' => $this->generateConceptResourceUrl($target)]);
     }
-    $studyArea = $concept->getStudyArea() ?? throw new ObjectRequiredException();
     if ($studyArea->isDeprecatedSkills()) {
       foreach ($concept->getLearningOutcomes() as $learningOutcome) {
         $conceptResource->add('https://ltb.itc.utwente.nl/resource/learningoutcome', ['type' => 'uri', 'value' => $this->generateLearningOutcomeResourceUrl($learningOutcome)]);

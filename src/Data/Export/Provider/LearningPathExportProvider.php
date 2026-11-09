@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Export\Provider;
+namespace App\Data\Export\Provider;
 
+use App\Data\Export\ExportProviderInterface;
+use App\Data\Export\ExportService;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
-use App\Export\ProviderInterface;
 use App\Repository\LearningPathRepository;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -12,11 +12,10 @@ use Override;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-
 use function sprintf;
 
 #[Lazy]
-final readonly class LearningPathProvider implements ProviderInterface
+final readonly class LearningPathExportProvider implements ExportProviderInterface
 {
   public function __construct(
     private LearningPathRepository $learningPathRepository,
@@ -63,7 +62,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): JsonResponse
+  public function export(StudyArea $studyArea): Response
   {
     $learningPaths = $this->learningPathRepository->findForStudyArea($studyArea);
 

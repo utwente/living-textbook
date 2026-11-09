@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Export\Provider;
+namespace App\Data\Export\Provider;
 
+use App\Data\Export\ExportProviderInterface;
+use App\Data\Export\ExportService;
 use App\Entity\Data\DataSkills;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
-use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use App\Skills\SkillAccessor;
 use Drenso\Shared\Exception\NullGuard\MustNotBeEmptyException;
@@ -26,7 +26,7 @@ use function sprintf;
 use const JSON_PRETTY_PRINT;
 
 #[Lazy]
-final readonly class SkillsProvider implements ProviderInterface
+final readonly class SkillsExportProvider implements ExportProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,

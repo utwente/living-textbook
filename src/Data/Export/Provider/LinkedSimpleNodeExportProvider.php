@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Export\Provider;
+namespace App\Data\Export\Provider;
 
+use App\Data\Export\ExportProviderInterface;
+use App\Data\Export\ExportService;
 use App\Entity\Concept;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
-use App\Export\ProviderInterface;
 use App\Naming\NamingService;
 use App\Repository\ConceptRelationRepository;
 use App\Repository\ConceptRepository;
@@ -23,12 +23,11 @@ use Override;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-
 use function array_map;
 use function sprintf;
 
 #[Lazy]
-final readonly class LinkedSimpleNodeProvider implements ProviderInterface
+final readonly class LinkedSimpleNodeExportProvider implements ExportProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,
@@ -90,7 +89,7 @@ EOT;
 
 EOT;
 
-      $preview .= SkillsProvider::formattedSkills($this->skillAccessor, '            ');
+      $preview .= SkillsExportProvider::formattedSkills($this->skillAccessor, '            ');
 
       $preview .= <<<'EOT'
 
@@ -198,7 +197,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): JsonResponse
+  public function export(StudyArea $studyArea): Response
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $this->relationTypeRepository->findBy(['studyArea' => $studyArea]);
@@ -294,7 +293,7 @@ EOT;
       'description'  => $studyArea->getDescription(),
       'date_created' => $studyArea->getCreatedAt(),
       'last_updated' => $studyArea->getLastUpdated(),
-      'nodes'        => array_map(
+      'nodes' => array_map(
         function (Concept $concept) use ($studyArea): array {
           $nodeData = [
             'instance'       => $concept->isInstance(),

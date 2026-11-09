@@ -2,8 +2,8 @@
 
 namespace App\Form\Data;
 
+use App\Data\Export\ExportService;
 use App\Entity\StudyArea;
-use App\Export\ExportService;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -28,4 +28,5 @@ class DownloadPreviewType extends AbstractType
       ->setRequired('study_area')
       ->setAllowedTypes('study_area', [StudyArea::class]);
   }
+
 }

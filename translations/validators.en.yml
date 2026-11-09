@@ -35,6 +35,10 @@ user:
   password-too-weak: 'The supplied password does not match the strength criteria. Use at least one capital and one lowercase character, and one number.'
   wrong-current-password: 'Your current password is not accepted!'
 
-export_type:
+export-type:
   not-null: 'The export type is required!'
   invalid-type: 'Invalid export type provided!'
+
+import-type:
+  not-null: 'The import type is required!'
+  invalid-type: 'Invalid import type provided!'

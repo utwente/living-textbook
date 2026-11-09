@@ -50,6 +50,7 @@ final readonly class SkillAccessor
     return $this->propertyAccessor->getValue($skillData, $this->propertyName($skill));
   }
 
+  /** @return array<string, string> */
   public function getSkillValues(DataSkills $skillData, SkillSetEnum $skillSet): array
   {
     return array_filter(

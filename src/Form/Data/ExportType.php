@@ -3,7 +3,7 @@
 namespace App\Form\Data;
 
 use App\Entity\StudyArea;
-use App\Export\ExportService;
+use App\Data\Export\ExportService;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -14,9 +14,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 /** @extends AbstractType<string> */
 class ExportType extends AbstractType
 {
-  /** The default translation prefix. */
-  public const string TRANSLATION_PREFIX = 'data.download.provider';
-
   public function __construct(private readonly ExportService $exportService)
   {
   }
@@ -34,12 +31,12 @@ class ExportType extends AbstractType
       ->setRequired('study_area')
       ->setAllowedTypes('study_area', StudyArea::class)
       ->setDefaults([
-        'translation_prefix' => self::TRANSLATION_PREFIX,
+        'translation_prefix' => 'data.export.provider',
         'choices'            => fn (Options $options): array => $this->exportService->getAvailableProviderKeys($options['study_area']),
         'choice_label'       => static fn (Options $options): callable => static fn (string $key): string => $options['translation_prefix'] . '.' . $key,
-        'invalid_message'    => 'export_type.invalid-type',
+        'invalid_message'    => 'export-type.invalid-type',
         'constraints'        => [
-          new NotNull(message: 'export_type.not-null'),
+          new NotNull(message: 'export-type.not-null'),
         ],
       ]);
   }

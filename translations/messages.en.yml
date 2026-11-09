@@ -216,7 +216,13 @@ data:
   concepts: 'Concepts'
   concepts-duplicated: 'The study area has been duplicated successfully. Start browsing it directly!'
   concepts-to-duplicate: 'Concepts/instances to duplicate'
-  download:
+  duplicate: 'Duplicate'
+  duplicate-text: >-
+    Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
+    In order to select an existing area, you need to have write right, and review mode must be disabled.
+    You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
+    Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
+  export:
     text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
     title: 'Export'
     type: 'Export type'
@@ -227,27 +233,24 @@ data:
       rdf: 'RDF (as JSON-LD)'
       relation: 'Relations'
       skills: 'Skills'
-  duplicate: 'Duplicate'
-  duplicate-text: >-
-    Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
-    In order to select an existing area, you need to have write right, and review mode must be disabled.
-    You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
-    Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
-  export:
+  export-url:
     title: 'Export to URL'
     text: 'You can export the current study area to a URL in one of the types shown below. Select the one you will want to export.'
     error: 'The system could not export the current study area to'
     success: 'The study area was exported successfully to'
     invalid-export-setting: 'The export to URL is not enabled in the study area settings or the export URL is empty.'
-  json-file: 'JSON data file'
-  json-incorrect: 'JSON data incorrect! %message%'
-  json-uploaded: 'JSON data successfully imported!'
+  import:
+    provider:
+      linked-simple-node: 'Simple linked node'
+    json-file: 'JSON data file'
+    json-incorrect: 'JSON data incorrect! %message%'
+    json-uploaded: 'JSON data successfully imported!'
+    upload-json: 'Upload JSON file'
+    upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
+    upload-json-text: 'This upload form can be used to upload an JSON file.'
   select-all: 'Select all'
   select-all-info: 'Note that when you do not select all concepts/instances to be copied, some data (such as learning paths) might be adjusted!'
   study-area: 'Study area'
-  upload-json: 'Upload JSON file'
-  upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
-  upload-json-text: 'This upload form can be used to upload an JSON file. Note that this will not import wiki content!'
 
 datatable:
   all: "All"

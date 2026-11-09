@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Export\Provider;
+namespace App\Data\Export\Provider;
 
+use App\Data\Export\ExportProviderInterface;
 use App\Entity\Concept;
 use App\Entity\StudyArea;
-use App\Export\ProviderInterface;
 use App\Repository\ConceptRepository;
 use Drenso\Shared\Helper\SpreadsheetHelper;
 use Override;
@@ -13,11 +13,10 @@ use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
 use function sprintf;
 
 #[Lazy]
-final readonly class ConceptIdNameProvider implements ProviderInterface
+final readonly class ConceptIdNameExportProvider implements ExportProviderInterface
 {
   public function __construct(
     private ConceptRepository $conceptRepository,

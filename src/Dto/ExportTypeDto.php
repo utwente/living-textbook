@@ -5,7 +5,7 @@ namespace App\Dto;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DownloadTypeDto
+class ExportTypeDto
 {
   /** @var string[] */
   public const array METHODS         = [Request::METHOD_POST, Request::METHOD_PUT];

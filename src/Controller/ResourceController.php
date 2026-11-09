@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Attribute\NotFoundWhenModernSkillsEnabled;
+use App\Data\Export\Provider\RdfExportProvider;
 use App\Entity\Concept;
 use App\Entity\LearningOutcome;
 use App\Entity\LearningPath;
-use App\Export\Provider\RdfProvider;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Security\Voters\StudyAreaVoter;
 use EasyRdf\Exception;
@@ -23,7 +23,7 @@ class ResourceController extends AbstractController
   /** @throws Exception */
   #[Route('/concept/{concept<\d+>}', options: ['no_login_wrap' => true])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  public function concept(RequestStudyArea $requestStudyArea, Concept $concept, RdfProvider $provider): JsonResponse
+  public function concept(RequestStudyArea $requestStudyArea, Concept $concept, RdfExportProvider $provider): JsonResponse
   {
     if ($concept->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
@@ -37,7 +37,7 @@ class ResourceController extends AbstractController
   /** @throws Exception */
   #[Route('/learningpath/{learningPath<\d+>}', options: ['no_login_wrap' => true])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  public function learningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, RdfProvider $provider): JsonResponse
+  public function learningPath(RequestStudyArea $requestStudyArea, LearningPath $learningPath, RdfExportProvider $provider): JsonResponse
   {
     if ($learningPath->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
@@ -52,7 +52,7 @@ class ResourceController extends AbstractController
   #[Route('/learningoutcome/{learningOutcome<\d+>}', options: ['no_login_wrap' => true])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
-  public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfProvider $provider): JsonResponse
+  public function learningOutcome(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome, RdfExportProvider $provider): JsonResponse
   {
     if ($learningOutcome->getStudyArea()->getId() !== $requestStudyArea->getStudyArea()->getId()) {
       throw $this->createNotFoundException();
@@ -66,7 +66,7 @@ class ResourceController extends AbstractController
   /** @throws Exception */
   #[Route('/studyarea', options: ['no_login_wrap' => true])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  public function studyArea(RequestStudyArea $requestStudyArea, RdfProvider $provider): Response
+  public function studyArea(RequestStudyArea $requestStudyArea, RdfExportProvider $provider): Response
   {
     $studyArea = $requestStudyArea->getStudyArea();
 
