@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 use function array_any;
+use function array_map;
+use function array_sum;
 
 /** Skills are the new learning outcomes, which follow a predefined pattern. */
 #[ORM\Entity(repositoryClass: DataSkillsRepository::class)]

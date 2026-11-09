@@ -3,7 +3,6 @@
 namespace App\Form\Data;
 
 use App\Data\Import\ImportService;
-use App\Dto\ExportTypeDto;
 use App\Dto\ImportTypeDto;
 use App\Entity\StudyArea;
 use Override;
@@ -12,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotNull;

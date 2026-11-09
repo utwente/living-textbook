@@ -12,6 +12,7 @@ use Override;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+
 use function sprintf;
 
 #[Lazy]
@@ -62,7 +63,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): JsonResponse
   {
     $learningPaths = $this->learningPathRepository->findForStudyArea($studyArea);
 

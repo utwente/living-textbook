@@ -161,7 +161,7 @@ EOT;
 
   /** @throws Exception */
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): JsonResponse
   {
     $response = $this->exportStudyArea($studyArea);
     ExportService::contentDisposition($response, sprintf('%s_rdf_export.json', $studyArea->getName()));

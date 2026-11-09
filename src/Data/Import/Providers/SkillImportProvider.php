@@ -10,6 +10,9 @@ use App\Repository\ConceptRepository;
 use App\Skills\SkillAccessor;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 
+use function array_is_list;
+use function array_key_exists;
+
 #[Lazy]
 final readonly class SkillImportProvider implements ImportProviderInterface
 {
@@ -37,7 +40,6 @@ final readonly class SkillImportProvider implements ImportProviderInterface
     }
 
     foreach ($jsonData as $skillItem) {
-
       // We need the skill data
       if (!array_key_exists('skills', $skillItem)) {
         throw new DataImportException('Skill item needs to contain "skills" property.');
@@ -46,7 +48,7 @@ final readonly class SkillImportProvider implements ImportProviderInterface
       // We need either concept id or name
       if (array_key_exists('concept_id', $skillItem)) {
         $concept = $this->conceptRepository->findOneBy(['id' => $skillItem['concept_id'], 'studyArea' => $studyArea]);
-      } else if (array_key_exists('concept', $skillItem)) {
+      } elseif (array_key_exists('concept', $skillItem)) {
         $concept = $this->conceptRepository->findOneBy(['name' => $skillItem['concept'], 'studyArea' => $studyArea]);
       } else {
         throw new DataImportException('Skill item needs to contain either "concept_id" or "concept" property.');

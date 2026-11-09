@@ -13,7 +13,7 @@ interface ImportProviderInterface extends ProviderInterface
   /**
    * Imports the posted data.
    *
-   * @param array<mixed> $jsonData The JSON data to import.
+   * @param array<mixed> $jsonData the JSON data to import
    *
    * @throws DataImportException
    */

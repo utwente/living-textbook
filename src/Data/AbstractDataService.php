@@ -3,13 +3,10 @@
 namespace App\Data;
 
 use App\Entity\StudyArea;
-
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
-use function array_combine;
 use function array_filter;
 use function array_keys;
-use function array_map;
 
 /** @template TProvider of ProviderInterface */
 abstract readonly class AbstractDataService

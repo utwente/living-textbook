@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
+use function array_combine;
+use function array_map;
 use function iconv;
 use function mb_strtolower;
 use function preg_replace;
@@ -64,7 +66,7 @@ final readonly class ExportService extends AbstractDataService
     $filename = mb_strtolower((string)preg_replace(
       '/[^A-Z\d.]/ui',
       '_',
-      (string) iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename),
+      (string)iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $filename),
     ));
     $response->headers->set(
       'Content-Disposition',

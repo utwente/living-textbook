@@ -2,8 +2,8 @@
 
 namespace App\Form\Data;
 
-use App\Entity\StudyArea;
 use App\Data\Export\ExportService;
+use App\Entity\StudyArea;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

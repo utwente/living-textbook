@@ -23,6 +23,7 @@ use Override;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+
 use function array_map;
 use function sprintf;
 
@@ -197,7 +198,7 @@ EOT;
   }
 
   #[Override]
-  public function export(StudyArea $studyArea): Response
+  public function export(StudyArea $studyArea): JsonResponse
   {
     /** @noinspection PhpUnusedLocalVariableInspection Retrieve the relation types as cache */
     $relationTypes = $this->relationTypeRepository->findBy(['studyArea' => $studyArea]);
@@ -293,7 +294,7 @@ EOT;
       'description'  => $studyArea->getDescription(),
       'date_created' => $studyArea->getCreatedAt(),
       'last_updated' => $studyArea->getLastUpdated(),
-      'nodes' => array_map(
+      'nodes'        => array_map(
         function (Concept $concept) use ($studyArea): array {
           $nodeData = [
             'instance'       => $concept->isInstance(),

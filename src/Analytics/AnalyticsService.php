@@ -38,6 +38,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Process\Process;
+
 use function array_map;
 use function array_reverse;
 use function array_unshift;
