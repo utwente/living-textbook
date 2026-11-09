@@ -449,6 +449,7 @@ learning-path:
   element-errors: 'One or more elements contain errors'
   elements: 'Elements'
   elements-info: 'Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements.'
+  elements-info-skills: 'Select concepts/instances below to add them to the learning path elements.'
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'

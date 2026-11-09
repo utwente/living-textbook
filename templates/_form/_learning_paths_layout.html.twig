@@ -2,7 +2,11 @@
   <div class="form-group row">
     {{ form_label(form) }}
     <div class="col-12">
-      {{ 'learning-path.elements-info'|trans({'%learning_outcomes%': naming.get.learningOutcome.objs}) }}
+      {% if _twigStudyArea.isDeprecatedSkills %}
+        {{ 'learning-path.elements-info'|trans({'%learning_outcomes%': naming.get.learningOutcome.objs}) }}
+      {% else %}
+        {{ 'learning-path.elements-info-skills'|trans }}
+      {% endif %}
     </div>
     <div class="col-12">
       {%- if errors|length > 0 -%}
@@ -37,31 +41,39 @@
       {{ form_widget(form.concepts) }}
     </div>
   </div>
-  <div class="form-group row">
-    <label class="col-form-label col-12" for="{{ form.learningOutcomes.vars.id }}">
-      {{ form.learningOutcomes.vars.label }}
-    </label>
-    <div class="col-12">
-      {{ form_widget(form.learningOutcomes) }}
+
+  {% if form.learningOutcomes is defined %}
+    <div class="form-group row">
+      <label class="col-form-label col-12" for="{{ form.learningOutcomes.vars.id }}">
+        {{ form.learningOutcomes.vars.label }}
+      </label>
+      <div class="col-12">
+        {{ form_widget(form.learningOutcomes) }}
+      </div>
     </div>
-  </div>
-  {{ form_widget(form.learningOutcomesConcepts) }}
+    {{ form_widget(form.learningOutcomesConcepts) }}
+  {% endif %}
+
   {{ form_row(form.add) }}
 
   <!--suppress JSUnusedLocalSymbols -->
   <script type="text/javascript">
     function addLearningPathConcepts_{{ sortable_id }}() {
       if (window.slp) {
-        window.slp.addLearningPathConcepts('{{ sortable_id }}', '{{ form.concepts.vars.id }}', '{{ form.learningOutcomes.vars.id }}');
+        window.slp.addLearningPathConcepts(
+          '{{ sortable_id }}',
+          '{{ form.concepts.vars.id }}',
+          {% if form.learningOutcomes is defined %}'{{ form.learningOutcomes.vars.id }}'{% else %}null{% endif %}
+        );
       }
     }
 
     $(function () {
       var $conceptField = $('#{{ form.concepts.vars.id }}');
-      var $learningOutcomesField = $('#{{ form.learningOutcomes.vars.id }}');
+      var $learningOutcomesField = {% if form.learningOutcomes is defined %}$('#{{ form.learningOutcomes.vars.id }}'){% else %}null{% endif %};
 
       function updateAddButton() {
-        var disabled = $conceptField.val().length === 0 && $learningOutcomesField.val().length === 0;
+        var disabled = $conceptField.val().length === 0 && ($learningOutcomesField === null || $learningOutcomesField.val().length === 0);
         var $elem = $('#{{ form.add.vars.id }}');
         $elem.prop('disabled', disabled);
         if (disabled) {
@@ -71,9 +83,14 @@
         }
       }
 
-      $conceptField.add($learningOutcomesField).on('change', function () {
+      $conceptField.on('change', function () {
         updateAddButton();
       });
+      if ($learningOutcomesField) {
+        $learningOutcomesField.on('change', function () {
+          updateAddButton();
+        });
+      }
       updateAddButton();
     });
   </script>

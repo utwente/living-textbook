@@ -64,7 +64,6 @@
    */
   slp.addLearningPathConcepts = function (sortableId, conceptsFieldId, learningOutcomesFieldId) {
     const $conceptField = $('#' + conceptsFieldId);
-    const $learningOutcomesField = $('#' + learningOutcomesFieldId);
 
     const addConceptId = function (conceptId) {
       conceptId = parseInt(conceptId);
@@ -77,18 +76,23 @@
       addConceptId(this);
     });
 
-    // Add learning outcome concepts
-    const learningOutcomeConceptIds = JSON.parse($('#' + learningOutcomesFieldId + 'Concepts').val());
-    $($learningOutcomesField.val()).each(function () {
-      const learningOutcomeId = parseInt(this);
-      $(learningOutcomeConceptIds[learningOutcomeId]).each(function () {
-        addConceptId(this);
-      })
-    });
-
     // Clear current selection
     $conceptField.val(null).trigger('change');
-    $learningOutcomesField.val(null).trigger('change');
+
+    // Add learning outcome concepts
+    if (learningOutcomesFieldId !== null) {
+      const $learningOutcomesField = $('#' + learningOutcomesFieldId);
+      const learningOutcomeConceptIds = JSON.parse($('#' + learningOutcomesFieldId + 'Concepts').val());
+      $($learningOutcomesField.val()).each(function () {
+        const learningOutcomeId = parseInt(this);
+        $(learningOutcomeConceptIds[learningOutcomeId]).each(function () {
+          addConceptId(this);
+        })
+      });
+
+      // Clear current selection
+      $learningOutcomesField.val(null).trigger('change');
+    }
   };
 
   /**

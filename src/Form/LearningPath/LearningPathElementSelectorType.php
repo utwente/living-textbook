@@ -32,6 +32,7 @@ class LearningPathElementSelectorType extends AbstractType
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyArea $studyArea */
     $studyArea = $options['studyArea'];
 
     $builder
@@ -44,8 +45,10 @@ class LearningPathElementSelectorType extends AbstractType
         'query_builder'       => static fn (ConceptRepository $conceptRepository): QueryBuilder => $conceptRepository->findForStudyAreaOrderByNameQb($studyArea),
         'select2'             => true,
         'select2_placeholder' => 'learning-path.select',
-      ])
-      ->add('learningOutcomes', EntityType::class, [
+      ]);
+
+    if ($studyArea->isDeprecatedSkills()) {
+      $builder->add('learningOutcomes', EntityType::class, [
         'label'               => $this->namingService->get()->learningOutcome->objs(true),
         'class'               => LearningOutcome::class,
         'choice_label'        => 'name',
@@ -54,7 +57,10 @@ class LearningPathElementSelectorType extends AbstractType
         'query_builder'       => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
         'select2'             => true,
         'select2_placeholder' => 'learning-path.select',
-      ])
+      ]);
+    }
+
+    $builder
       ->add('learningOutcomesConcepts', HiddenType::class, [
         'data' => $this->serializer->serialize($this->learningOutcomeRepository->findUsedConceptIdsForStudyArea($studyArea), 'json'),
       ])
