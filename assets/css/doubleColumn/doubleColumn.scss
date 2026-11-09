@@ -47,7 +47,7 @@ body, #double-column-container, #bottom-container {
     overflow: hidden;
 
     & > div {
-      @include div-center();
+      @include div-center;
       text-align: center;
       font-size: $loader-size;
       color: $loader-color;

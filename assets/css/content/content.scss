@@ -19,13 +19,14 @@
   background-color: $background-color;
 
   & > div {
-    @include div-center();
+    @include div-center;
     text-align: center;
     font-size: $loader-size;
     color: $loader-color;
   }
 }
 
+/* stylelint-disable no-invalid-position-at-import-rule */
 @import 'annotations';
 @import 'landing';
 @import 'menu';
@@ -38,6 +39,7 @@
 @import 'sortable_learning_paths';
 @import 'download_preview';
 @import 'tags';
+/* stylelint-enable no-invalid-position-at-import-rule */
 
 .ltb-text-container {
   @include styleGuide;
