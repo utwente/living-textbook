@@ -26,8 +26,8 @@ class ReviewSubmissionObjectFooterType extends AbstractType
   #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options): void
   {
+    /** @var PendingChange $pendingChange */
     $pendingChange = $options['pending_change'];
-    assert($pendingChange instanceof PendingChange);
 
     // If it is not for a concept, we currently do not support it
     if ($pendingChange->getObjectType() !== Concept::class) {
@@ -35,8 +35,8 @@ class ReviewSubmissionObjectFooterType extends AbstractType
     }
 
     // Only the owner of the change or the super admin can re-edit a pending change
+    /** @var User $user */
     $user = $this->security->getUser();
-    assert($user instanceof User);
     if ($user->getId() !== $pendingChange->getOwner()->getId() && !$this->security->isGranted('ROLE_SUPER_ADMIN')) {
       return;
     }

@@ -40,8 +40,8 @@ class LearningPathVisualisationResultHandler implements EventSubscriberInterface
       return;
     }
 
+    /** @var LearningPathVisualisationResult|null $object */
     $object = $event->getObject();
-    assert($object instanceof LearningPathVisualisationResult);
     if (!$object) {
       return;
     }

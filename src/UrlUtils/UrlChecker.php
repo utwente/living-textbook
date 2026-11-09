@@ -283,8 +283,8 @@ class UrlChecker
     $cachekey     = $cacheableUrl->getCachekey();
     if ($oldCache !== null) {
       // Check if cache still valid
+      /** @var CacheableUrl $cachedUrl */
       $cachedUrl = $oldCache->getItem($cachekey)->get();
-      assert($cachedUrl instanceof CacheableUrl);
 
       // Test whether it is expired, always return false if forced from cache
       if ($cachedUrl->getTimestamp() < new DateTime()->modify($modifyTime) && !$fromCache) {

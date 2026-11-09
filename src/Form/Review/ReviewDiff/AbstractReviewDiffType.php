@@ -44,8 +44,8 @@ class AbstractReviewDiffType extends AbstractType
 
     $builder->addModelTransformer(new CallbackTransformer(
       static function () use ($options): array {
+        /** @var PendingChange $pendingChange */
         $pendingChange = $options['pending_change'];
-        assert($pendingChange instanceof PendingChange);
 
         $existingComments = $pendingChange->getReviewComments() ?? [];
         $data             = null;
@@ -60,9 +60,9 @@ class AbstractReviewDiffType extends AbstractType
         ];
       },
       static function (array $formData) use ($options): null {
+        /** @var PendingChange $pendingChange */
         $pendingChange = $options['pending_change'];
         $field         = $options['field'];
-        assert($pendingChange instanceof PendingChange);
 
         $reviewComments = $pendingChange->getReviewComments() ?? [];
         $formComments   = $formData['comments'];
@@ -85,8 +85,8 @@ class AbstractReviewDiffType extends AbstractType
   #[Override]
   public function buildView(FormView $view, FormInterface $form, array $options): void
   {
+    /** @var PendingChange $pendingChange */
     $pendingChange = $options['pending_change'];
-    assert($pendingChange instanceof PendingChange);
 
     $view->vars['diff_only']         = $options['diff_only'];
     $view->vars['checkbox']          = $options['checkbox'];
@@ -126,8 +126,8 @@ class AbstractReviewDiffType extends AbstractType
 
   protected function getPendingChange(array $options): PendingChange
   {
+    /** @var PendingChange $pendingChange */
     $pendingChange = $options['pending_change'];
-    assert($pendingChange instanceof PendingChange);
 
     return $pendingChange;
   }

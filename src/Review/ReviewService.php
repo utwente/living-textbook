@@ -158,7 +158,6 @@ class ReviewService
 
     // Validate the entity
     if (count($violations = $this->validator->validate($pendingChange))) {
-      assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
@@ -169,9 +168,7 @@ class ReviewService
 
     // Replace the relations after the manager has been cleared
     $refOwner     = $this->entityManager->getReference(User::class, $pendingChange->getOwner()->getId());
-    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId());
-    assert($refOwner instanceof User);
-    assert($refStudyArea instanceof StudyArea);
+    $refStudyArea = $this->entityManager->getReference(StudyArea::class, $pendingChange->getStudyArea()->getId()) ?? throw new ObjectRequiredException();
     $pendingChange->setOwner($refOwner);
     $pendingChange->setStudyArea($refStudyArea);
 
@@ -221,7 +218,6 @@ class ReviewService
 
     // Validate the entity
     if (count($violations = $this->validator->validate($pendingChange))) {
-      assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
@@ -348,7 +344,6 @@ class ReviewService
 
     // Validate the entity
     if (count($violations = $this->validator->validate($review))) {
-      assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Pending change validation not passed! %s', $violations));
     }
 
@@ -393,8 +388,8 @@ class ReviewService
   /** Retrieve the data object from a change snapshot. */
   public static function getObjectFromSnapshot(string $snapshot, string $objectType): ReviewableInterface
   {
+    /** @var ReviewableInterface $object */
     $object = self::getSerializer()->deserialize($snapshot, $objectType, self::SERIALIZER_FORMAT);
-    assert($object instanceof ReviewableInterface);
 
     return $object;
   }
@@ -480,7 +475,6 @@ class ReviewService
 
     // Validate the new/updated entity
     if (0 !== count($violations = $this->validator->validate($object))) {
-      assert($violations instanceof ConstraintViolationList);
       throw new InvalidArgumentException(sprintf('Validation not passed during publish! %s', $violations));
     }
   }
@@ -537,8 +531,8 @@ class ReviewService
   private function addFlash(string $type, string $message): void
   {
     if (!$request = $this->requestStack->getMainRequest()) {
+      /** @var Session $session */
       $session = $request->getSession();
-      assert($session instanceof Session);
       $session->getFlashBag()->add($type, $message);
     }
   }
@@ -567,8 +561,8 @@ class ReviewService
   /** Get the current user. */
   private function getUser(): User
   {
+    /** @var User $user */
     $user = $this->security->getUser();
-    assert($user instanceof User);
 
     return $user;
   }

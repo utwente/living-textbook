@@ -91,8 +91,8 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
   #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
+    /** @var self $changeObj */
     $changeObj = $this->testChange($change);
-    assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
       switch ($changedField) {
@@ -121,7 +121,6 @@ class LearningPath implements StudyAreaFilteredInterface, ReviewableInterface, I
           // Set the new elements
           foreach ($changeObj->getElements() as $newElement) {
             $conceptRef = $em->getReference(Concept::class, $newElement->getConcept()->getId());
-            assert($conceptRef instanceof Concept);
             $newElement->setConcept($conceptRef);
 
             $this->addElement($newElement);

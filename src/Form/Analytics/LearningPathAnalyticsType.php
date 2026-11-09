@@ -23,8 +23,8 @@ class LearningPathAnalyticsType extends AbstractType
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyArea $studyArea */
     $studyArea = $options['study_area'];
-    assert($studyArea instanceof StudyArea);
 
     $builder
       ->add('learningPath', EntityType::class, [

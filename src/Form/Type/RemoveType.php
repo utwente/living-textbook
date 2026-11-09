@@ -37,7 +37,7 @@ class RemoveType extends AbstractType
   /** Check whether the "remove" button is clicked. */
   public static function isRemoveClicked(FormInterface $form): bool
   {
-    assert($form instanceof Form);
+    /** @var Form $form */
     $clickedButton = $form->getClickedButton();
 
     if ($form->isSubmitted()

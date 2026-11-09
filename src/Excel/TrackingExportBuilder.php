@@ -209,11 +209,9 @@ final readonly class TrackingExportBuilder
     $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'tracking.export.timestamp', true);
   }
 
-  /** @param object $object */
+  /** @param PageLoad|TrackingEvent $object */
   private function setCommonHeaderValues(Worksheet &$sheet, int &$column, int $row, $object): void
   {
-    assert($object instanceof PageLoad || $object instanceof TrackingEvent);
-
     $this->spreadsheetHelper->setCellValue($sheet, ++$column, $row, $object->getUserId());
     $this->spreadsheetHelper->setCellValue($sheet, ++$column, $row, $object->getSessionId());
     $this->spreadsheetHelper->setCellDateTime($sheet, ++$column, $row, $object->getTimestamp(), true);

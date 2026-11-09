@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -30,8 +31,13 @@ class AnnotationController extends AbstractController
 {
   #[Route(path: '/{concept}/all', requirements: ['concept' => '\d+'], options: ['expose' => 'true'])]
   #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
-  public function all(RequestStudyArea $requestStudyArea, Concept $concept,
-    AnnotationRepository $annotationRepository, SerializerInterface $serializer): Response
+  public function all(
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    AnnotationRepository $annotationRepository,
+    SerializerInterface $serializer,
+  ): Response
   {
     // Check study area
     $studyArea = $requestStudyArea->getStudyArea();
@@ -40,8 +46,6 @@ class AnnotationController extends AbstractController
     }
 
     // Determine whether the user has "teacher" role
-    $user = $this->getUser();
-    assert($user instanceof User);
     $annotations = $annotationRepository->getForUserAndConcept($user, $concept);
     $json        = $serializer->serialize($annotations, 'json');
 
@@ -92,8 +96,16 @@ class AnnotationController extends AbstractController
 
   #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/comment', options: ['expose' => 'true'], methods: ['POST'])]
   #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
-  public function addComment(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer): Response
+  public function addComment(
+    Request $request,
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    Annotation $annotation,
+    ValidatorInterface $validator,
+    EntityManagerInterface $em,
+    SerializerInterface $serializer,
+  ): Response
   {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
@@ -101,9 +113,6 @@ class AnnotationController extends AbstractController
         || $annotation->getConceptId() != $concept->getId()) {
       throw $this->createNotFoundException();
     }
-
-    $user = $this->getUser();
-    assert($user instanceof User);
 
     // Validate whether this is a comment which is actually visible for the user
     if ($annotation->getVisibility() == Annotation::privateVisibility()
@@ -147,8 +156,16 @@ class AnnotationController extends AbstractController
 
   #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/edit', options: ['expose' => 'true'], methods: ['POST'])]
   #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
-  public function editVisibility(Request $request, RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-    ValidatorInterface $validator, EntityManagerInterface $em, SerializerInterface $serializer): Response
+  public function editVisibility(
+    Request $request,
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    Annotation $annotation,
+    ValidatorInterface $validator,
+    EntityManagerInterface $em,
+    SerializerInterface $serializer,
+  ): Response
   {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
@@ -158,8 +175,6 @@ class AnnotationController extends AbstractController
     }
 
     // Validate rights
-    $user = $this->getUser();
-    assert($user instanceof User);
     if ($annotation->getUserId() != $user->getId()) {
       throw $this->createAccessDeniedException();
     }
@@ -187,8 +202,13 @@ class AnnotationController extends AbstractController
   /** @throws Exception */
   #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/remove', options: ['expose' => 'true'], methods: ['DELETE'])]
   #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
-  public function remove(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation, EntityManagerInterface $em): Response
-  {
+  public function remove(
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    Annotation $annotation,
+    EntityManagerInterface $em,
+  ): Response {
     // Check study area
     if ($concept->getStudyArea()->getId() != $requestStudyArea->getStudyArea()->getId()
         || $annotation->getConceptId() != $concept->getId()) {
@@ -196,8 +216,6 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    $user = $this->getUser();
-    assert($user instanceof User);
     if ($annotation->getUserId() != $user->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       throw $this->createAccessDeniedException();
     }
@@ -211,9 +229,15 @@ class AnnotationController extends AbstractController
 
   #[Route('/{concept<\d+>}/annotation/{annotation<\d+>}/comment/{comment<\d+>}/remove', options: ['expose' => 'true'], methods: ['DELETE'])]
   #[IsGranted(StudyAreaVoter::ANNOTATE, subject: 'requestStudyArea')]
-  public function removeComment(RequestStudyArea $requestStudyArea, Concept $concept, Annotation $annotation,
-    AnnotationComment $comment, EntityManagerInterface $em, SerializerInterface $serializer): Response
-  {
+  public function removeComment(
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Concept $concept,
+    Annotation $annotation,
+    AnnotationComment $comment,
+    EntityManagerInterface $em,
+    SerializerInterface $serializer,
+  ): Response {
     // Check study area/concept/annotation
     $studyArea = $requestStudyArea->getStudyArea();
     if ($concept->getStudyArea()->getId() != $studyArea->getId()
@@ -223,8 +247,6 @@ class AnnotationController extends AbstractController
     }
 
     // Validate credentials
-    $user = $this->getUser();
-    assert($user instanceof User);
     if ($comment->getUserId() != $user->getId() && !$this->isGranted('STUDYAREA_OWNER', $requestStudyArea)) {
       throw $this->createAccessDeniedException();
     }

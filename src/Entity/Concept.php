@@ -16,6 +16,7 @@ use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
 use App\Entity\Data\DataSkills;
 use App\Entity\Data\DataTheoryExplanation;
+use App\Entity\Data\TextDataInterface;
 use App\Entity\Traits\ReviewableTrait;
 use App\Repository\ConceptRepository;
 use App\Review\Exception\IncompatibleChangeException;
@@ -284,8 +285,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /** @throws Exception */
   private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter): void
   {
+    /** @var ArrayIterator<int, ConceptRelation> $iterator */
     $iterator = $values->getIterator();
-    assert($iterator instanceof ArrayIterator);
     $iterator->uasort(static function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever): int {
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
@@ -296,8 +297,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 
     // Set sort order
     $key = 0;
-    foreach (iterator_to_array($iterator) as &$value) {
-      assert($value instanceof ConceptRelation);
+    /** @var ConceptRelation $value */
+    foreach (iterator_to_array($iterator) as $value) {
       $value->$positionSetter($key);
       $key++;
     }
@@ -409,11 +410,15 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     ];
   }
 
-  private function filterDataOn(array &$results, DataInterface $data, int $prio, string $property, string $search): void
+  private function filterDataOn(array &$results, TextDataInterface $data, int $prio, string $property, string $search): void
   {
-    assert($data instanceof BaseDataTextObject);
-    if ($data->hasData() && stripos((string)$data->getText(), $search) !== false) {
-      $results[] = SearchController::createResult($prio, $property, $data->getText());
+    if (!$data->hasData()) {
+      return;
+    }
+
+    $text = (string)$data->getText();
+    if (stripos($text, $search) !== false) {
+      $results[] = SearchController::createResult($prio, $property, $text);
     }
   }
 
@@ -425,8 +430,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
+    /** @var self $changeObj */
     $changeObj = $this->testChange($change);
-    assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
       switch ($changedField) {
@@ -449,8 +454,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getPriorKnowledge()->clear();
 
           foreach ($changeObj->getPriorKnowledge() as $newPriorKnowledge) {
+            /** @var self $newPriorKnowledgeRef */
             $newPriorKnowledgeRef = $em->getReference(self::class, $newPriorKnowledge->getId());
-            assert($newPriorKnowledgeRef instanceof self);
             $this->addPriorKnowledge($newPriorKnowledgeRef);
           }
           break;
@@ -459,8 +464,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getLearningOutcomes()->clear();
 
           foreach ($changeObj->getLearningOutcomes() as $newLearningOutcome) {
+            /** @var LearningOutcome $newLearningOutcomeRef */
             $newLearningOutcomeRef = $em->getReference(LearningOutcome::class, $newLearningOutcome->getId());
-            assert($newLearningOutcomeRef instanceof LearningOutcome);
             $this->addLearningOutcome($newLearningOutcomeRef);
           }
           break;
@@ -478,8 +483,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getExternalResources()->clear();
 
           foreach ($changeObj->getExternalResources() as $newExternalResource) {
+            /** @var ExternalResource $newExternalResourceRef */
             $newExternalResourceRef = $em->getReference(ExternalResource::class, $newExternalResource->getId());
-            assert($newExternalResourceRef instanceof ExternalResource);
             $this->addExternalResource($newExternalResourceRef);
           }
           break;
@@ -488,8 +493,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getContributors()->clear();
 
           foreach ($changeObj->getContributors() as $newContributor) {
+            /** @var Contributor $newContributorRef */
             $newContributorRef = $em->getReference(Contributor::class, $newContributor->getId());
-            assert($newContributorRef instanceof Contributor);
             $this->addContributor($newContributorRef);
           }
           break;
@@ -498,8 +503,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getTags()->clear();
 
           foreach ($changeObj->getTags() as $newTag) {
+            /** @var Tag $newTagRef */
             $newTagRef = $em->getReference(Tag::class, $newTag->getId());
-            assert($newTagRef instanceof Tag);
             $this->addTag($newTagRef);
           }
           break;
@@ -569,19 +574,19 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   private function fixConceptRelationReferences(ConceptRelation &$conceptRelation, EntityManagerInterface $em): void
   {
     if ($conceptRelation->getSource()) {
+      /** @var self $sourceRef */
       $sourceRef = $em->getReference(self::class, $conceptRelation->getSourceId());
-      assert($sourceRef instanceof self);
       $conceptRelation->setSource($sourceRef);
     }
 
     if ($conceptRelation->getTarget()) {
+      /** @var self $targetRef */
       $targetRef = $em->getReference(self::class, $conceptRelation->getTargetId());
-      assert($targetRef instanceof self);
       $conceptRelation->setTarget($targetRef);
     }
 
+    /** @var RelationType $relationTypeRef */
     $relationTypeRef = $em->getReference(RelationType::class, $conceptRelation->getRelationType()->getId());
-    assert($relationTypeRef instanceof RelationType);
     $conceptRelation->setRelationType($relationTypeRef);
   }
 

@@ -117,7 +117,6 @@ class PrintController extends AbstractController
 
     switch (true) {
       case $e instanceof ImageNotFoundException:
-        assert($e instanceof ImageNotFoundException);
         $imageLocation = $e->getImageLocation();
         $isUrl         = $this->isUrl($imageLocation);
 
@@ -130,8 +129,6 @@ class PrintController extends AbstractController
           'studyArea'    => $studyArea,
         ]);
       case $e instanceof LatexException:
-        assert($e instanceof LatexException);
-
         return $this->render('print/latex_error.html.twig', [
           'error' => $e,
         ]);

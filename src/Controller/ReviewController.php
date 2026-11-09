@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
@@ -166,16 +167,18 @@ class ReviewController extends AbstractController
   #[Route('/{review<\d+>}/resubmit')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function resubmitSubmission(
-    Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-    ReviewNotificationService $reviewNotificationService, TranslatorInterface $translator): Response
-  {
+    Request $request,
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Review $review,
+    EntityManagerInterface $em,
+    ReviewNotificationService $reviewNotificationService,
+    TranslatorInterface $translator,
+  ): Response {
     $studyArea = $requestStudyArea->getStudyArea();
 
     $this->isReviewable($studyArea);
     $this->checkAccess($studyArea, $review);
-
-    $user = $this->getUser();
-    assert($user instanceof User);
 
     $form = $this->createForm(EditReviewType::class, $review, [
       'save_label' => 'review.resubmit-review',
@@ -213,9 +216,14 @@ class ReviewController extends AbstractController
   #[Route('/{review<\d+>}')]
   #[IsGranted(StudyAreaVoter::REVIEW, subject: 'requestStudyArea')]
   public function reviewSubmission(
-    Request $request, RequestStudyArea $requestStudyArea, Review $review, EntityManagerInterface $em,
-    TranslatorInterface $translator, ReviewNotificationService $reviewNotificationService): Response
-  {
+    Request $request,
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    Review $review,
+    EntityManagerInterface $em,
+    TranslatorInterface $translator,
+    ReviewNotificationService $reviewNotificationService,
+  ): Response {
     $this->checkAccess($requestStudyArea->getStudyArea(), $review, false);
 
     // Check if not yet reviewed
@@ -234,8 +242,6 @@ class ReviewController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       $now  = new DateTime();
-      $user = $this->getUser();
-      assert($user instanceof User);
 
       $review
         ->setReviewedBy($user)
@@ -308,14 +314,16 @@ class ReviewController extends AbstractController
   #[Route('/submit')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   public function submit(
-    Request $request, RequestStudyArea $requestStudyArea, PendingChangeRepository $pendingChangeRepository,
-    ReviewService $reviewService, TranslatorInterface $translator): Response
-  {
+    #[CurrentUser] User $user,
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    PendingChangeRepository $pendingChangeRepository,
+    ReviewService $reviewService,
+    TranslatorInterface $translator,
+  ): Response {
     $this->isReviewable($requestStudyArea);
 
     $studyArea = $requestStudyArea->getStudyArea();
-    $user      = $this->getUser();
-    assert($user instanceof User);
 
     $pendingChanges = $pendingChangeRepository->getSubmittableForUser($studyArea, $user);
 
@@ -402,7 +410,10 @@ class ReviewController extends AbstractController
 
     // Check access
     $user = $this->getUser();
-    assert($user instanceof User);
+    if (!$user instanceof User) {
+      throw new NotFoundHttpException('Access denied');
+    }
+
     if ($review->getOwner()->getId() !== $user->getId()
         && !$this->isGranted('STUDYAREA_OWNER', $studyArea)) {
       throw new NotFoundHttpException('Access denied');

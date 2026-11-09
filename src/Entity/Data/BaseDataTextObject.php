@@ -15,15 +15,10 @@ trait BaseDataTextObject
   use IdTrait;
   use SoftDeletable;
 
-  /**
-   * Learning outcomes.
-   *
-   * @var string|null
-   */
   #[ORM\Column(name: 'text', type: Types::TEXT, nullable: true)]
   #[Serializer\Groups(['review_change'])]
   #[Serializer\Type('string')]
-  private $text;
+  private ?string $text;
 
   /** Determine whether this block has data. */
   public function hasData(): bool
@@ -36,8 +31,7 @@ trait BaseDataTextObject
     return $this->text;
   }
 
-  /** @return $this */
-  public function setText(?string $text)
+  public function setText(?string $text): self
   {
     $this->text = $text;
 

@@ -84,12 +84,10 @@ class StudyAreaVoter extends Voter
     }
 
     // Always return false for null values
+    /** @var StudyArea|null $subject */
     if ($subject === null) {
       return false;
     }
-
-    /* @var StudyArea $subject */
-    assert($subject instanceof StudyArea);
 
     switch ($attribute) {
       case self::OWNER:

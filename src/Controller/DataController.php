@@ -42,6 +42,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -267,6 +268,7 @@ class DataController extends AbstractController
   #[IsGranted(StudyAreaVoter::OWNER, subject: 'requestStudyArea')]
   public function duplicate(
     Request $request,
+    #[CurrentUser] User $user,
     RequestStudyArea $requestStudyArea,
     TranslatorInterface $trans,
     EntityManagerInterface $em,
@@ -280,9 +282,6 @@ class DataController extends AbstractController
     LearningPathRepository $learningPathRepo,
     TagRepository $tagRepository,
   ): Response {
-    $user = $this->getUser();
-    assert($user instanceof User);
-
     // Create form to select the concepts for this study area
     $studyAreaToDuplicate = $requestStudyArea->getStudyArea();
     $newStudyArea         = new StudyArea()

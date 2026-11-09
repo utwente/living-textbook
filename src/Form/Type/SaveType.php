@@ -65,7 +65,7 @@ class SaveType extends AbstractType
   /** Check whether the "save and list" button is clicked. */
   public static function isListClicked(FormInterface $form): bool
   {
-    assert($form instanceof Form);
+    /** @var Form $form */
     $clickedButton = $form->getClickedButton();
     if ($form->isSubmitted()
         && $clickedButton instanceof SubmitButton

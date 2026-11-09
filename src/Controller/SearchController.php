@@ -15,6 +15,7 @@ use App\Security\Voters\StudyAreaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -39,6 +40,7 @@ class SearchController extends AbstractController
   #[Route('/{s<.*>?}', name: 'search')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function search(
+    #[CurrentUser] ?User $user,
     ?string $s,
     RequestStudyArea $requestStudyArea,
     TranslatorInterface $translator,
@@ -79,9 +81,7 @@ class SearchController extends AbstractController
       : [];
 
     // Retrieve annotation data, which is easier to do here
-    $user = $this->getUser();
     if ($user) {
-      assert($user instanceof User);
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
       $ownAnnotations = array_filter($allAnnotations, static fn (Annotation $annotation): bool => $annotation->getUserId() == $userId);
@@ -111,8 +111,8 @@ class SearchController extends AbstractController
     $result = [];
 
     array_map(static function (array $item) use (&$result): void {
+      /** @var Annotation $annotation */
       $annotation = $item['_data'];
-      assert($annotation instanceof Annotation);
       $concept = $annotation->getConcept();
 
       // Set concept key for sorting purposes

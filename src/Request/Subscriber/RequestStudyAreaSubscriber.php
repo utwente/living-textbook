@@ -85,12 +85,12 @@ class RequestStudyAreaSubscriber
         // Resolve the user
         $token = $this->tokenStorage->getToken();
         $user  = $token?->getUser();
+        /** @var User|null $user */
         $user  = is_object($user) ? $user : null;
-        assert($user === null || $user instanceof User);
 
         // Try to find a visible study area
         if (null !== ($studyArea = $this->studyAreaRepository->getFirstVisible($user))) {
-          assert($studyArea instanceof StudyArea);
+          /** @var StudyArea $studyArea */
           $studyAreaId     = $studyArea->getId();
           $this->studyArea = $studyArea;
         }

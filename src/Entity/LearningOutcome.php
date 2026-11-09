@@ -114,8 +114,8 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
+    /** @var self $changeObj */
     $changeObj = $this->testChange($change);
-    assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
       match ($changedField) {

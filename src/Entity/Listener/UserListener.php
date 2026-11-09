@@ -27,7 +27,6 @@ class UserListener
 
     // Find any UserGroupEmail to upgrade
     $repo = $em->getRepository(UserGroupEmail::class);
-    assert($repo instanceof UserGroupEmailRepository);
     $userGroupEmails = $repo->findByEmail($user->getUserIdentifier());
     if (count($userGroupEmails) == 0) {
       return;

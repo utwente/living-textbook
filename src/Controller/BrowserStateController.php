@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use function assert;
@@ -25,13 +26,14 @@ class BrowserStateController extends AbstractController
   #[Route('/filter', options: ['expose' => true], methods: ['GET'])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function filterState(
-    RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
-    SerializerInterface $serializer): Response
-  {
-    if (!$user = $this->getUser()) {
+    #[CurrentUser] ?User $user,
+    RequestStudyArea $requestStudyArea,
+    UserBrowserStateRepository $repository,
+    SerializerInterface $serializer,
+  ): Response {
+    if (!$user instanceof User) {
       return new Response(null, Response::HTTP_FORBIDDEN);
     }
-    assert($user instanceof User);
 
     if (!$state = $repository->findForUser($user, $requestStudyArea->getStudyArea())) {
       throw $this->createNotFoundException();
@@ -44,13 +46,16 @@ class BrowserStateController extends AbstractController
   #[Route('/filter', options: ['expose' => true], methods: ['POST'])]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function storeFilterState(
-    Request $request, RequestStudyArea $requestStudyArea, UserBrowserStateRepository $repository,
-    SerializerInterface $serializer, EntityManagerInterface $em): Response
-  {
-    if (!$user = $this->getUser()) {
+    #[CurrentUser] ?User $user,
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    UserBrowserStateRepository $repository,
+    SerializerInterface $serializer,
+    EntityManagerInterface $em
+  ): Response {
+    if (!$user instanceof User) {
       return new Response(null, Response::HTTP_FORBIDDEN);
     }
-    assert($user instanceof User);
 
     if (!$state = $repository->findForUser($user, $requestStudyArea->getStudyArea())) {
       $state = new UserBrowserState()

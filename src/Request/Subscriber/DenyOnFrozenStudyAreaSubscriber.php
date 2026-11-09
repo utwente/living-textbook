@@ -54,8 +54,8 @@ final readonly class DenyOnFrozenStudyAreaSubscriber
       throw new InvalidArgumentException(sprintf('Forwarding route is the same as the route triggering it ("%s")', $configuration->route));
     }
 
+    /** @var Session $session */
     $session = $request->getSession();
-    assert($session instanceof Session);
     $session->getFlashBag()->add('error', $this->translator->trans('study-area.frozen'));
 
     // Parse route params

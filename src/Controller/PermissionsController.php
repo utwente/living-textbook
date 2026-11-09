@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -55,8 +56,8 @@ class PermissionsController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+      /** @var User $newAdmin */
       $newAdmin = $form->getData()['admin'];
-      assert($newAdmin instanceof User);
 
       $newAdmin->setIsAdmin(true);
       $em->flush();
@@ -73,11 +74,14 @@ class PermissionsController extends AbstractController
 
   #[Route(path: '/admin/{user<\d+>}/remove')]
   #[IsGranted(User::ROLE_SUPER_ADMIN)]
-  public function removeAdmin(Request $request, User $user, EntityManagerInterface $em, TranslatorInterface $trans): Response
-  {
+  public function removeAdmin(
+    Request $request,
+    #[CurrentUser] User $secUser,
+    User $user,
+    EntityManagerInterface $em,
+    TranslatorInterface $trans,
+  ): Response {
     // Check if not self
-    $secUser = $this->getUser();
-    assert($secUser instanceof User);
     if ($user->getId() === $secUser->getId()) {
       $this->addFlash('warning', $trans->trans('permissions.cannot-edit-self', ['%user%' => $user->getDisplayName()]));
 
@@ -366,15 +370,16 @@ class PermissionsController extends AbstractController
   #[Route('/studyarea/revoke/self')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function removeSelf(
-    Request $request, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-    EntityManagerInterface $entityManager): Response
-  {
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $translator,
+    EntityManagerInterface $entityManager,
+  ): Response {
     $user = $this->getUser();
-    if (!$user) {
+    if (!$user instanceof User) {
       // This page does not exist for anonymous users
       throw $this->createNotFoundException();
     }
-    assert($user instanceof User);
 
     // Not allowed for study area owners
     $studyArea = $requestStudyArea->getStudyArea();

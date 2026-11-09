@@ -142,8 +142,8 @@ class ConceptController extends AbstractApiController
 
     try {
       $concepts = array_map(function (Concept $concept) use ($requestStudyArea, $requestConcepts, $tagRepository): Concept {
+        /** @var ConceptApiModel $requestConcept */
         $requestConcept = $requestConcepts[$concept->getId()];
-        assert($requestConcept instanceof ConceptApiModel);
 
         return $this->updateConcept(
           $requestStudyArea,

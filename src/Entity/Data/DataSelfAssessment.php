@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: DataSelfAssessmentRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
-class DataSelfAssessment implements DataInterface
+class DataSelfAssessment implements TextDataInterface
 {
   use BaseDataTextObject;
 }

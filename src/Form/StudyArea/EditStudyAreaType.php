@@ -38,8 +38,9 @@ class EditStudyAreaType extends AbstractType
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyArea $studyArea */
     $studyArea = $options['studyArea'];
-    assert($studyArea instanceof StudyArea);
+
     $editing = $studyArea->getId() !== null;
     $builder
       ->add('name', TextType::class, [

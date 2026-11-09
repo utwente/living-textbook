@@ -788,27 +788,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/PermissionsController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Bobv\\\\LatexBundle\\\\Exception\\\\ImageNotFoundException and Bobv\\\\LatexBundle\\\\Exception\\\\ImageNotFoundException will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Bobv\\\\LatexBundle\\\\Exception\\\\LatexException and Bobv\\\\LatexBundle\\\\Exception\\\\LatexException will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
 	'path' => __DIR__ . '/src/Controller/PrintController.php',
 ];
 $ignoreErrors[] = [
@@ -1052,12 +1034,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with false will always evaluate to false\\.$#',
-	'identifier' => 'function.impossibleType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Call to method getLastUpdated\\(\\) on an unknown class App\\\\Database\\\\Traits\\\\Blameable\\.$#',
 	'identifier' => 'class.notFound',
 	'count' => 2,
@@ -1072,18 +1048,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\RelationType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\Entity\\\\Data\\\\DataInterface and App\\\\Entity\\\\Data\\\\BaseDataTextObject will always evaluate to false\\.$#',
-	'identifier' => 'instanceof.alwaysFalse',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\Entity\\\\Data\\\\DataInterface and trait App\\\\Entity\\\\Data\\\\BaseDataTextObject will always evaluate to false\\.$#',
-	'identifier' => 'instanceof.trait',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -1344,18 +1308,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\Repository\\\\UserGroupEmailRepository\\<App\\\\Entity\\\\UserGroupEmail\\> and App\\\\Repository\\\\UserGroupEmailRepository will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PageLoad\\:\\:getOriginContext\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -2638,12 +2590,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Serializer\\\\Handler\\\\LearningPathVisualisationResultHandler\\:\\:getSubscribedEvents\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Serializer/Handler/LearningPathVisualisationResultHandler.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Negated boolean expression is always false\\.$#',
-	'identifier' => 'booleanNot.alwaysFalse',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Serializer/Handler/LearningPathVisualisationResultHandler.php',
 ];

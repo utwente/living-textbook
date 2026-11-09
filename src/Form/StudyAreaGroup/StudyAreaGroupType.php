@@ -21,8 +21,8 @@ class StudyAreaGroupType extends AbstractType
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyAreaGroup $studyAreaGroup */
     $studyAreaGroup = $options['study_area_group'];
-    assert($studyAreaGroup instanceof StudyAreaGroup);
 
     $builder
       ->add('name', TextType::class)

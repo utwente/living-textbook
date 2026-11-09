@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: DataTheoryExplanationRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
-class DataTheoryExplanation implements DataInterface
+class DataTheoryExplanation implements TextDataInterface
 {
   use BaseDataTextObject;
 }
