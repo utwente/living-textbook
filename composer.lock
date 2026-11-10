@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8927d5b52368f64a7a25018737f2f6df",
+    "content-hash": "47436ae0fa1c7d46368e918bd0e9d76c",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1524,16 +1524,16 @@
         },
         {
             "name": "drenso/symfony-deployer-bundle",
-            "version": "1.0.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Drenso/symfony-deployer.git",
-                "reference": "c538eed6aa85d156c6057b80ece194ceaca7526b"
+                "url": "https://github.com/drenso/symfony-deployer.git",
+                "reference": "be92fca1b5e991cfb288cebd2f9050191646ee2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-deployer/zipball/c538eed6aa85d156c6057b80ece194ceaca7526b",
-                "reference": "c538eed6aa85d156c6057b80ece194ceaca7526b",
+                "url": "https://api.github.com/repos/drenso/symfony-deployer/zipball/be92fca1b5e991cfb288cebd2f9050191646ee2d",
+                "reference": "be92fca1b5e991cfb288cebd2f9050191646ee2d",
                 "shasum": ""
             },
             "require": {
@@ -1541,22 +1541,22 @@
                 "doctrine/orm": "^3.0",
                 "ext-hash": "*",
                 "php": ">=8.1",
-                "symfony/asset": "^5.4 || ^6.0 || ^7.0",
-                "symfony/config": "^5.4 || ^6.0 || ^7.0",
-                "symfony/console": "^5.4 || ^6.0 || ^7.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
-                "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0",
+                "symfony/asset": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/config": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/console": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0 || ^8.0",
                 "symfony/service-contracts": "^2 || ^3",
-                "symfony/validator": "^5.4 || ^6.0 || ^7.0"
+                "symfony/validator": "^5.4 || ^6.0 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.88.2",
+                "friendsofphp/php-cs-fixer": "3.95.27",
                 "phpstan/extension-installer": "1.4.3",
-                "phpstan/phpstan": "2.1.31",
-                "phpstan/phpstan-symfony": "2.0.8",
-                "rector/rector": "2.2.3",
-                "symfony/messenger": "^5.4 || ^6.0 || ^7.0",
-                "symfony/twig-bundle": "^5.4 || ^6.0 || ^7.0",
+                "phpstan/phpstan": "2.3.5",
+                "phpstan/phpstan-symfony": "2.1.1",
+                "rector/rector": "2.8.4",
+                "symfony/messenger": "^5.4 || ^6.0 || ^7.0 || ^8.0",
+                "symfony/twig-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0",
                 "twig/twig": "^3.4"
             },
             "type": "symfony-bundle",
@@ -1593,11 +1593,17 @@
                 "symfony"
             ],
             "support": {
-                "issues": "https://github.com/Drenso/symfony-deployer/issues",
-                "source": "https://github.com/Drenso/symfony-deployer/tree/1.0.0"
+                "issues": "https://github.com/drenso/symfony-deployer/issues",
+                "source": "https://github.com/drenso/symfony-deployer/tree/2.0.0"
             },
-            "time": "2025-10-22T07:35:39+00:00",
-            "published-time": "2025-10-22T07:36:12+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/bobvandevijver",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-11-10T20:04:50+00:00",
+            "published-time": "2026-11-10T20:05:48+00:00"
         },
         {
             "name": "drenso/symfony-oidc-bundle",

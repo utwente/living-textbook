@@ -2405,7 +2405,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     }>,
  * }
  * @psalm-type DrensoDeployerConfig = array{
- *     path?: scalar|Param|null, // The path where the deployment scripts are to be found // Default: "%kernel.project_dir%/deploy/scripts"
+ *     base_dir?: scalar|Param|null, // The path where the deployment related files are to be found // Default: "%kernel.project_dir%/deploy"
+ *     controllers_dir?: scalar|Param|null, // The path where the update controllers are to be found // Default: "controllers"
+ *     content_dir?: scalar|Param|null, // The path where the update page contents are to be found // Default: "content"
+ *     script_dir?: scalar|Param|null, // The path where the deployment scripts are to be found // Default: "scripts"
  *     namespace?: scalar|Param|null, // The namespace of the deployment scripts // Default: "DrensoDeployer"
  *     generator_enabled?: scalar|Param|null, // Whether the generator command is available // Default: true
  *     update_pages?: bool|array{ // A generator for static update pages
