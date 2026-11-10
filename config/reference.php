@@ -2404,6 +2404,26 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         allow_discovery_access_token_issuer?: bool|Param, // Allow the non-standard `access_token_issuer` field in the discovery document as the expected issuer for access token validation. // Default: false
  *     }>,
  * }
+ * @psalm-type DrensoDeployerConfig = array{
+ *     path?: scalar|Param|null, // The path where the deployment scripts are to be found // Default: "%kernel.project_dir%/deploy/scripts"
+ *     namespace?: scalar|Param|null, // The namespace of the deployment scripts // Default: "DrensoDeployer"
+ *     generator_enabled?: scalar|Param|null, // Whether the generator command is available // Default: true
+ *     update_pages?: bool|array{ // A generator for static update pages
+ *         enabled?: bool|Param, // Default: false
+ *         preview_controller?: bool|Param, // Whether the preview controller needs to be registered. Routes still need to be imported manually. // Default: false
+ *         configurations?: array<string, array{ // Default: []
+ *             response_code?: int|Param, // The response code to use with this page // Default: 503
+ *             page_title?: scalar|Param|null, // Default: "Updating"
+ *             background_color?: scalar|Param|null, // Default: "#244E95"
+ *             svg?: scalar|Param|null, // Default: null
+ *             update_title?: scalar|Param|null, // Default: "Updating"
+ *             update_text?: scalar|Param|null, // Default: "Unfortunately, we are updating the website right now. However, this shouldn't take very long, so please try again in a few minutes!"
+ *             reload_seconds?: int|Param, // Whether to automatically reload the page after x seconds. Can be disabled by setting to 0. // Default: 60
+ *             enable_game?: bool|Param, // Whether to enable the Chromium dino mini game on the update page // Default: true
+ *             game_header?: scalar|Param|null, // Default: "Need to pass some time?"
+ *         }>,
+ *     },
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -2427,6 +2447,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     drenso_shared?: DrensoSharedConfig,
  *     nelmio_cors?: NelmioCorsConfig,
  *     drenso_oidc?: DrensoOidcConfig,
+ *     drenso_deployer?: DrensoDeployerConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -2451,6 +2472,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         drenso_shared?: DrensoSharedConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         drenso_oidc?: DrensoOidcConfig,
+ *         drenso_deployer?: DrensoDeployerConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -2475,6 +2497,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         drenso_shared?: DrensoSharedConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         drenso_oidc?: DrensoOidcConfig,
+ *         drenso_deployer?: DrensoDeployerConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -2500,6 +2523,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         drenso_shared?: DrensoSharedConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         drenso_oidc?: DrensoOidcConfig,
+ *         drenso_deployer?: DrensoDeployerConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
