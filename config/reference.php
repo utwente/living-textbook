@@ -2411,6 +2411,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     script_dir?: scalar|Param|null, // The path where the deployment scripts are to be found // Default: "scripts"
  *     namespace?: scalar|Param|null, // The namespace of the deployment scripts // Default: "DrensoDeployer"
  *     generator_enabled?: scalar|Param|null, // Whether the generator command is available // Default: true
+ *     deploy_indicator?: scalar|Param|null, // The file that should exists to indicate deployment is running // Default: ".deploying"
+ *     block_messenger_worker_during_deploy?: scalar|Param|null, // Whether to block messenger worker startup when a deployment is running // Default: true
  *     update_pages?: bool|array{ // A generator for static update pages
  *         enabled?: bool|Param, // Default: false
  *         preview_controller?: bool|Param, // Whether the preview controller needs to be registered. Routes still need to be imported manually. // Default: false

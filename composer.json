@@ -25,7 +25,7 @@
         "doctrine/migrations": "3.9.8",
         "doctrine/orm": "3.7.6",
         "doctrine/persistence": "4.2.1",
-        "drenso/symfony-deployer-bundle": "2.0.0",
+        "drenso/symfony-deployer-bundle": "2.2.0",
         "drenso/pdf-to-image": "3.0.0",
         "drenso/symfony-oidc-bundle": "4.5.0",
         "drenso/symfony-shared": "8.2.0",
@@ -110,31 +110,9 @@
         "symfony/web-profiler-bundle": "7.4.23",
         "vincentlanglet/twig-cs-fixer": "4.1.1"
     },
-    "config": {
-        "preferred-install": {
-            "*": "dist"
-        },
-        "component-dir": "public/elfinder-assets",
-        "sort-packages": true,
-        "allow-plugins": {
-            "symfony/flex": true,
-            "symfony/runtime": true,
-            "php-http/discovery": false,
-            "phpstan/extension-installer": true
-        },
-        "audit": {
-            "abandoned": "report"
-        }
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\Tests\\": "tests/"
-        }
+    "conflict": {
+        "ext-igbinary": "*",
+        "symfony/symfony": "*"
     },
     "replace": {
         "symfony/polyfill-apcu": "*",
@@ -151,9 +129,35 @@
         "symfony/polyfill-php84": "*",
         "symfony/polyfill-php85": "*"
     },
+    "autoload": {
+        "psr-4": {
+           "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "component-dir": "public/elfinder-assets",
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "php-http/discovery": false,
+            "phpstan/extension-installer": true
+        },
+        "audit": {
+            "abandoned": "report"
+        }
+    },
     "scripts": {
         "auto-scripts": {
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "assets:install --symlink --relative": "symfony-cmd",
             "fos:js-routing:dump --format=json --target=assets/js/_fos_routes.json": "symfony-cmd"
         },
         "post-install-cmd": [
@@ -163,13 +167,14 @@
             "@auto-scripts"
         ]
     },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.4.*"
+            "require": "7.4.*",
+            "docker": false
+        },
+        "symfony/flex": {
+            "synchronize_package_json": false
         }
     }
 }
