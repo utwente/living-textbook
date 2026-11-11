@@ -18,6 +18,11 @@ ASSET_PATHS=(
   "public/email"
 )
 
+function pre_restore_hook() {
+  # Install python environment
+  php bin/console ltb:python:build
+}
+
 # Run the deployment script
 # shellcheck source=/dev/null
 source vendor/drenso/symfony-deployer-bundle/deploy-scripts/deploy.sh
