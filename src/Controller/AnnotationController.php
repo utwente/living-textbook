@@ -23,7 +23,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-use function assert;
 use function count;
 
 #[Route('/{_studyArea<\d+>}/annotation')]
@@ -37,8 +36,7 @@ class AnnotationController extends AbstractController
     Concept $concept,
     AnnotationRepository $annotationRepository,
     SerializerInterface $serializer,
-  ): Response
-  {
+  ): Response {
     // Check study area
     $studyArea = $requestStudyArea->getStudyArea();
     if ($concept->getStudyArea()->getId() != $studyArea->getId()) {
@@ -105,8 +103,7 @@ class AnnotationController extends AbstractController
     ValidatorInterface $validator,
     EntityManagerInterface $em,
     SerializerInterface $serializer,
-  ): Response
-  {
+  ): Response {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
     if ($concept->getStudyArea()->getId() != $studyArea->getId()
@@ -165,8 +162,7 @@ class AnnotationController extends AbstractController
     ValidatorInterface $validator,
     EntityManagerInterface $em,
     SerializerInterface $serializer,
-  ): Response
-  {
+  ): Response {
     // Check study area/concept
     $studyArea = $requestStudyArea->getStudyArea();
     if ($concept->getStudyArea()->getId() != $studyArea->getId()

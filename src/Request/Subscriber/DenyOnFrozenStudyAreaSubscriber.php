@@ -13,7 +13,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
-use function assert;
 use function is_object;
 use function method_exists;
 use function sprintf;

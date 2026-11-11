@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 use function array_filter;
 use function array_merge;
-use function assert;
 
 class AbstractReviewType extends AbstractType
 {
@@ -46,7 +45,7 @@ class AbstractReviewType extends AbstractType
     /** @var User $self */
     $self = $this->security->getUser();
     /** @var StudyArea $studyArea */
-    $studyArea = $options['study_area'];
+    $studyArea      = $options['study_area'];
     $userGroup      = $this->userGroupRepository->getForType($studyArea, UserGroup::GROUP_REVIEWER);
     $groupReviewers = array_filter($userGroup ? $userGroup->getUsers()->toArray() : [],
       static fn (User $user): bool => $user->getId() != $self->getId());

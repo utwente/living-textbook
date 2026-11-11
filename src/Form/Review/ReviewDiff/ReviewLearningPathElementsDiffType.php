@@ -7,8 +7,6 @@ use Override;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-use function assert;
-
 class ReviewLearningPathElementsDiffType extends AbstractReviewDiffType
 {
   #[Override]

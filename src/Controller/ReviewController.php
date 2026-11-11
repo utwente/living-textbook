@@ -31,7 +31,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 
 use function array_keys;
-use function assert;
 use function count;
 use function is_numeric;
 

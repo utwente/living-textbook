@@ -25,7 +25,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use function assert;
 use function basename;
 use function mb_strtolower;
 use function preg_match;

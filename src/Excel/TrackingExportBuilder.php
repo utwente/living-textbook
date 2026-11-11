@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use function array_key_exists;
-use function assert;
 use function sprintf;
 use function strtolower;
 

@@ -30,7 +30,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use function assert;
 use function bin2hex;
 use function random_bytes;
 use function sprintf;

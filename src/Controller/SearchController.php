@@ -23,7 +23,6 @@ use function array_filter;
 use function array_key_exists;
 use function array_map;
 use function array_reduce;
-use function assert;
 use function count;
 use function is_countable;
 use function ksort;
@@ -113,7 +112,7 @@ class SearchController extends AbstractController
     array_map(static function (array $item) use (&$result): void {
       /** @var Annotation $annotation */
       $annotation = $item['_data'];
-      $concept = $annotation->getConcept();
+      $concept    = $annotation->getConcept();
 
       // Set concept key for sorting purposes
       $conceptKey = $concept->getName() . $concept->getId();

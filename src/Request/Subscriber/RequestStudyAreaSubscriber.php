@@ -21,7 +21,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
-use function assert;
 use function count;
 use function is_array;
 use function is_object;

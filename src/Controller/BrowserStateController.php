@@ -17,8 +17,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use function assert;
-
 #[Route('/{_studyArea<\d+>}/browser/state')]
 class BrowserStateController extends AbstractController
 {
@@ -51,7 +49,7 @@ class BrowserStateController extends AbstractController
     RequestStudyArea $requestStudyArea,
     UserBrowserStateRepository $repository,
     SerializerInterface $serializer,
-    EntityManagerInterface $em
+    EntityManagerInterface $em,
   ): Response {
     if (!$user instanceof User) {
       return new Response(null, Response::HTTP_FORBIDDEN);

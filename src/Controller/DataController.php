@@ -47,7 +47,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use function assert;
 use function file_get_contents;
 use function is_numeric;
 use function is_string;

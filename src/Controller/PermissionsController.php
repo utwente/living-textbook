@@ -30,7 +30,6 @@ use function array_diff;
 use function array_filter;
 use function array_map;
 use function array_merge;
-use function assert;
 use function count;
 use function mb_strtolower;
 use function trim;
