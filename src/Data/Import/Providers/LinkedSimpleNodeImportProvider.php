@@ -9,12 +9,14 @@ use App\Entity\Contributor;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
+use App\Entity\Skills\SkillSetEnum;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Entity\Tag;
 use App\Exception\DataImportException;
 use App\Repository\LearningOutcomeRepository;
 use App\Repository\RelationTypeRepository;
+use App\Skills\SkillAccessor;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
@@ -32,6 +34,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
     private RelationTypeRepository $relationTypeRepo,
     private ValidatorInterface $validator,
     private LearningOutcomeRepository $learningOutcomeRepository,
+    private SkillAccessor $skillAccessor,
     private EntityManagerInterface $em,
   ) {
   }
@@ -139,6 +142,23 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
         if ($this->validator->validate($howTo)->count() > 0) {
           throw new DataImportException(
             sprintf('Could not create the concept how to: %s', json_encode($howTo)));
+        }
+      }
+
+      if (array_key_exists('skills', $jsonNode) && is_array($jsonNode['skills'])) {
+        // Skills are imported gracefully
+        foreach (SkillSetEnum::cases() as $skillSet) {
+          if (!$skillSetValue = $jsonNode['skills'][$this->skillAccessor->propertyName($skillSet)] ?? null) {
+            continue;
+          }
+
+          foreach ($skillSet->getSkills() as $skill) {
+            if (!$value = $skillSetValue[$this->skillAccessor->propertyName($skill)] ?? null) {
+              continue;
+            }
+
+            $this->skillAccessor->setValue($concepts[$key]->getSkills(), $skill, $value);
+          }
         }
       }
 

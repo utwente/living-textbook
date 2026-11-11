@@ -28,7 +28,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use function assert;
 use function stripos;
-use function trim;
 
 #[ORM\Entity(repositoryClass: ExternalResourceRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
