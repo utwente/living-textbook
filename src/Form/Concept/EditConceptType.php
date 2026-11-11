@@ -168,7 +168,7 @@ class EditConceptType extends AbstractType
       ->add('externalResources', EntityType::class, [
         'label'         => 'concept.external-resources',
         'class'         => ExternalResource::class,
-        'choice_label'  => 'title',
+        'choice_label'  => static fn (ExternalResource $externalResource): string => $externalResource->getTitleOrUrl(),
         'required'      => false,
         'multiple'      => true,
         'query_builder' => static fn (ExternalResourceRepository $externalResourceRepository): QueryBuilder => $externalResourceRepository->findForStudyAreaQb($studyArea),

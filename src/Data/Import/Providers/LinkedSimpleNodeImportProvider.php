@@ -234,10 +234,9 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
       }
 
       foreach ($jsonData['externalResources'] as $jsonExternalResource) {
-        if (!array_key_exists('title', $jsonExternalResource)
-          || !array_key_exists('nodes', $jsonExternalResource)) {
+        if (!array_key_exists('nodes', $jsonExternalResource)) {
           throw new DataImportException(
-            sprintf('Missing one ore more required properties "title" or "nodes" from external resource: %s', json_encode($jsonExternalResource)));
+            sprintf('Missing one ore more required property "nodes" from external resource: %s', json_encode($jsonExternalResource)));
         }
 
         if (!is_array($jsonExternalResource['nodes'])) {
@@ -246,9 +245,10 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
         }
 
         // Create the external resource
-        $externalResource = new ExternalResource()
-          ->setTitle($jsonExternalResource['title'])
-          ->setStudyArea($studyArea);
+        $externalResource = new ExternalResource()->setStudyArea($studyArea);
+        if (array_key_exists('title', $jsonExternalResource)) {
+          $externalResource->setTitle($jsonExternalResource['title']);
+        }
         if (array_key_exists('description', $jsonExternalResource)) {
           $externalResource->setDescription($jsonExternalResource['description']);
         }

@@ -22,6 +22,9 @@ data:
 emails:
   invalid-email: 'The email address {{ value }} is invalid.'
 
+external-resource:
+  title-or-url: 'Either title or url must be set, or both.'
+
 learning-outcome:
   number-already-used: 'This number is already used in this study area.'
 

@@ -496,7 +496,7 @@ class DefaultController extends AbstractController
               return strcasecmp($aPath, $bPath);
             }
 
-            return strcasecmp($this->externalResources[$aId]->getTitle(), $this->externalResources[$bId]->getTitle());
+            return strcasecmp($this->externalResources[$aId]->getTitleOrUrl(), $this->externalResources[$bId]->getTitleOrUrl());
           default:
             return -1;
         }

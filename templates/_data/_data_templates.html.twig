@@ -72,9 +72,9 @@
 
 {% macro render_external_resource(resource) %}
   {% if resource.url is not empty %}
-    <a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a>
+    <a href="{{ resource.url }}" target="_blank">{{ resource.titleOrUrl }}</a>
   {% else %}
-    {{ resource.title }}
+    {{ resource.titleOrUrl }}
   {% endif %}
   {% if resource.description is not empty %}
     <br/>{{ resource.description }}

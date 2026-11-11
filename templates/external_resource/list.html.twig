@@ -29,7 +29,7 @@
     <tbody>
     {% for external_resource in externalResources %}
       <tr>
-        <td>{{ external_resource.title }}</td>
+        <td>{{ external_resource.titleOrUrl }}</td>
         <td>
           {% if external_resource.url is not empty %}
             <a href="{{ external_resource.url }}" target="_blank">{{ external_resource.url }}</a>
