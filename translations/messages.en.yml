@@ -221,7 +221,7 @@ data:
     Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
     In order to select an existing area, you need to have write right, and review mode must be disabled.
     You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
-    Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
+    Note that other elements will always be duplicated fully (e.g. contributors, external resources).
   export:
     text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
     title: 'Export'
