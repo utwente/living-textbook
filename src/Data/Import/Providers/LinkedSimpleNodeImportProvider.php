@@ -9,7 +9,6 @@ use App\Entity\Contributor;
 use App\Entity\ExternalResource;
 use App\Entity\LearningOutcome;
 use App\Entity\RelationType;
-use App\Entity\Skills\SkillSetEnum;
 use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Entity\Tag;
@@ -147,19 +146,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
 
       if (array_key_exists('skills', $jsonNode) && is_array($jsonNode['skills'])) {
         // Skills are imported gracefully
-        foreach (SkillSetEnum::cases() as $skillSet) {
-          if (!$skillSetValue = $jsonNode['skills'][$this->skillAccessor->propertyName($skillSet)] ?? null) {
-            continue;
-          }
-
-          foreach ($skillSet->getSkills() as $skill) {
-            if (!$value = $skillSetValue[$this->skillAccessor->propertyName($skill)] ?? null) {
-              continue;
-            }
-
-            $this->skillAccessor->setValue($concepts[$key]->getSkills(), $skill, $value);
-          }
-        }
+        SkillImportProvider::importSkillBlock($this->skillAccessor, $concepts[$key], $jsonNode['skills']);
       }
 
       if (array_key_exists('selfAssessment', $jsonNode) && $jsonNode['selfAssessment'] !== null) {

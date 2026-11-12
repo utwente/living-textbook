@@ -3,6 +3,7 @@
 namespace App\Data\Import\Providers;
 
 use App\Data\Import\ImportProviderInterface;
+use App\Entity\Concept;
 use App\Entity\Skills\SkillSetEnum;
 use App\Entity\StudyArea;
 use App\Exception\DataImportException;
@@ -45,13 +46,19 @@ final readonly class SkillImportProvider implements ImportProviderInterface
         throw new DataImportException('Skill item needs to contain "skills" property.');
       }
 
+      if (!array_key_exists('concept_id', $skillItem) && !array_key_exists('concept', $skillItem)) {
+        throw new DataImportException('Skill item needs to contain either the "concept_id" or "concept" property.');
+      }
+
       // We need either concept id or name
+      $concept = null;
       if (array_key_exists('concept_id', $skillItem)) {
         $concept = $this->conceptRepository->findOneBy(['id' => $skillItem['concept_id'], 'studyArea' => $studyArea]);
-      } elseif (array_key_exists('concept', $skillItem)) {
+      }
+
+      // If not found with concept id, try with concept name if given
+      if (!$concept && array_key_exists('concept', $skillItem)) {
         $concept = $this->conceptRepository->findOneBy(['name' => $skillItem['concept'], 'studyArea' => $studyArea]);
-      } else {
-        throw new DataImportException('Skill item needs to contain either "concept_id" or "concept" property.');
       }
 
       if (!$concept) {
@@ -60,18 +67,24 @@ final readonly class SkillImportProvider implements ImportProviderInterface
       }
 
       // Now we can import the skill information. We do this gracefully
-      foreach (SkillSetEnum::cases() as $skillSet) {
-        if (!$skillSetValue = $skillItem['skills'][$this->skillAccessor->propertyName($skillSet)] ?? null) {
+      self::importSkillBlock($this->skillAccessor, $concept, $skillItem['skills']);
+    }
+  }
+
+  /** @param array<string, mixed> $skillData */
+  public static function importSkillBlock(SkillAccessor $skillAccessor, Concept $concept, array $skillData): void
+  {
+    foreach (SkillSetEnum::cases() as $skillSet) {
+      if (!$skillSetValue = $skillData[$skillAccessor->propertyName($skillSet)] ?? null) {
+        continue;
+      }
+
+      foreach ($skillSet->getSkills() as $skill) {
+        if (!$value = $skillSetValue[$skillAccessor->propertyName($skill)] ?? null) {
           continue;
         }
 
-        foreach ($skillSet->getSkills() as $skill) {
-          if (!$value = $skillSetValue[$this->skillAccessor->propertyName($skill)] ?? null) {
-            continue;
-          }
-
-          $this->skillAccessor->setValue($concept->getSkills(), $skill, $value);
-        }
+        $skillAccessor->setValue($concept->getSkills(), $skill, $value);
       }
     }
   }
