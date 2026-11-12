@@ -2,6 +2,7 @@
 
 namespace App\DuplicationUtils;
 
+use App\Data\Import\Providers\SkillImportProvider;
 use App\Entity\Abbreviation;
 use App\Entity\Concept;
 use App\Entity\ConceptRelation;
@@ -21,6 +22,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\LearningPathRepository;
 use App\Repository\TagRepository;
 use App\Router\LtbRouter;
+use App\Skills\SkillAccessor;
 use App\UrlUtils\Model\Url;
 use App\UrlUtils\Model\UrlContext;
 use App\UrlUtils\UrlScanner;
@@ -43,37 +45,11 @@ use function set_time_limit;
 use function sprintf;
 use function str_replace;
 
-class StudyAreaDuplicator
+final class StudyAreaDuplicator
 {
-  private readonly TagRepository $tagRepository;
   private readonly UrlContext $urlContext;
 
   private readonly string $uploadsPath;
-
-  private readonly EntityManagerInterface $em;
-
-  private readonly UrlScanner $urlScanner;
-
-  private readonly LtbRouter $router;
-
-  private readonly AbbreviationRepository $abbreviationRepo;
-
-  private readonly ConceptRelationRepository $conceptRelationRepo;
-
-  private readonly ContributorRepository $contributorRepo;
-
-  private readonly ExternalResourceRepository $externalResourceRepo;
-
-  private readonly LearningOutcomeRepository $learningOutcomeRepo;
-
-  private readonly LearningPathRepository $learningPathRepo;
-
-  private readonly StudyArea $studyAreaToDuplicate;
-
-  private readonly StudyArea $newStudyArea;
-
-  /** @var Concept[] */
-  private readonly array $concepts;
 
   /** @var LearningPath[] Array of duplicated learning paths ([original id] = new learning path) */
   private array $newLearningPaths = [];
@@ -104,27 +80,24 @@ class StudyAreaDuplicator
    * @param Concept[] $concepts             Concepts to copy
    */
   public function __construct(
-    string $projectDir, EntityManagerInterface $em, UrlScanner $urlScanner, LtbRouter $router,
-    AbbreviationRepository $abbreviationRepo, ConceptRelationRepository $conceptRelationRepo,
-    ContributorRepository $contributorRepository, ExternalResourceRepository $externalResourceRepo,
-    LearningOutcomeRepository $learningOutcomeRepo, LearningPathRepository $learningPathRepository,
-    TagRepository $tagRepository, StudyArea $studyAreaToDuplicate, StudyArea $newStudyArea, array $concepts)
-  {
-    $this->urlContext           = new UrlContext(self::class);
-    $this->uploadsPath          = $projectDir . '/uploads/studyarea';
-    $this->em                   = $em;
-    $this->urlScanner           = $urlScanner;
-    $this->router               = $router;
-    $this->abbreviationRepo     = $abbreviationRepo;
-    $this->conceptRelationRepo  = $conceptRelationRepo;
-    $this->contributorRepo      = $contributorRepository;
-    $this->externalResourceRepo = $externalResourceRepo;
-    $this->learningOutcomeRepo  = $learningOutcomeRepo;
-    $this->learningPathRepo     = $learningPathRepository;
-    $this->tagRepository        = $tagRepository;
-    $this->studyAreaToDuplicate = $studyAreaToDuplicate;
-    $this->newStudyArea         = $newStudyArea;
-    $this->concepts             = $concepts;
+    string $projectDir,
+    private readonly EntityManagerInterface $em,
+    private readonly UrlScanner $urlScanner,
+    private readonly LtbRouter $router,
+    private readonly SkillAccessor $skillAccessor,
+    private readonly AbbreviationRepository $abbreviationRepo,
+    private readonly ConceptRelationRepository $conceptRelationRepo,
+    private readonly ContributorRepository $contributorRepo,
+    private readonly ExternalResourceRepository $externalResourceRepo,
+    private readonly LearningOutcomeRepository $learningOutcomeRepo,
+    private readonly LearningPathRepository $learningPathRepo,
+    private readonly TagRepository $tagRepository,
+    private readonly StudyArea $studyAreaToDuplicate,
+    private readonly StudyArea $newStudyArea,
+    private readonly array $concepts,
+  ) {
+    $this->urlContext  = new UrlContext(self::class);
+    $this->uploadsPath = $projectDir . '/uploads/studyarea';
   }
 
   /**
@@ -338,6 +311,15 @@ class StudyAreaDuplicator
         foreach ($concept->getLearningOutcomes() as $oldLearningOutcome) {
           $newConcept->addLearningOutcome($this->newLearningOutcomes[$oldLearningOutcome->getNonNullId()]);
         }
+      }
+
+      // Set skills
+      if ($this->newStudyArea->isSkillsEnabled()) {
+        SkillImportProvider::importSkillBlock(
+          $this->skillAccessor,
+          $newConcept,
+          $this->skillAccessor->getAsArrayData($concept->getSkills()),
+        );
       }
 
       // Set external resources

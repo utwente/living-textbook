@@ -28,6 +28,7 @@ use App\Repository\TagRepository;
 use App\Request\Wrapper\RequestStudyArea;
 use App\Router\LtbRouter;
 use App\Security\Voters\StudyAreaVoter;
+use App\Skills\SkillAccessor;
 use App\UrlUtils\UrlScanner;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -273,6 +274,7 @@ class DataController extends AbstractController
     EntityManagerInterface $em,
     UrlScanner $urlScanner,
     LtbRouter $router,
+    SkillAccessor $skillAccessor,
     AbbreviationRepository $abbreviationRepo,
     ConceptRelationRepository $conceptRelationRepo,
     ContributorRepository $contributorRepository,
@@ -315,7 +317,7 @@ class DataController extends AbstractController
 
       // Duplicate the data
       $duplicator = new StudyAreaDuplicator(
-        $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router,
+        $this->getParameter('kernel.project_dir'), $em, $urlScanner, $router, $skillAccessor,
         $abbreviationRepo, $conceptRelationRepo, $contributorRepository, $externalResourceRepo, $learningOutcomeRepo,
         $learningPathRepo, $tagRepository, $studyAreaToDuplicate, $targetStudyArea, $concepts->toArray());
       $duplicator->duplicate();
