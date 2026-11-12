@@ -53,7 +53,7 @@
         {{ 'search.result.external-resources'|trans }}
       </a>
     </li>
-    {% if _twigStudyArea.isDeprecatedSkills %}
+    {% if _twigStudyArea.isLearningOutcomesEnabled %}
       <li class="nav-item">
         <a class="nav-link{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
           and learningOutcomeData|length != 0 %} active{% endif %}"
@@ -226,7 +226,7 @@
       {% endif %}
     </div>
 
-    {% if _twigStudyArea.isDeprecatedSkills %}
+    {% if _twigStudyArea.isLearningOutcomesEnabled %}
       <div
           class="tab-pane{% if conceptData|length == 0 and instanceData|length == 0 and abbreviationData|length == 0 and externalResourceData|length == 0
             and learningOutcomeData|length != 0 %} active{% endif %}"

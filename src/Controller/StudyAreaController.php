@@ -221,7 +221,7 @@ class StudyAreaController extends AbstractController
     $studyArea              = $requestStudyArea->getStudyArea();
     $studyAreaConfiguration = $studyArea->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
     $form                   = $this->createForm(FieldConfigurationType::class, $studyAreaConfiguration, [
-      'deprecated_skills' => $studyArea->isDeprecatedSkills(),
+      'study_area' => $studyArea,
     ])->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {

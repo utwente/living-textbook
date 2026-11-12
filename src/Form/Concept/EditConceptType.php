@@ -180,7 +180,7 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ]);
 
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $builder
         ->add('learningOutcomes', EntityType::class, [
           'label'              => $names->learningOutcome->objs(true),
@@ -197,17 +197,21 @@ class EditConceptType extends AbstractType
           'field'               => 'learningOutcomes',
           'pending_change_info' => $pendingChangeObjectInfo,
         ]);
-    } else {
+    }
+
+    if ($studyArea->isSkillsEnabled()) {
       $builder
         ->add('skills', DataSkillsType::class, [
           'label'              => $names->skill->objs(true),
           'translation_domain' => false,
           'disabled'           => in_array('skills', $disabledFields),
-        ])
-        ->add('skills_review', DisplayPendingChangeType::class, [
-          'field'               => 'skills',
-          'pending_change_info' => $pendingChangeObjectInfo,
         ]);
+
+      // No review support for skills as of now
+      // ->add('skills_review', DisplayPendingChangeType::class, [
+      //   'field'               => 'skills',
+      //   'pending_change_info' => $pendingChangeObjectInfo,
+      // ]);
     }
 
     $builder

@@ -30,24 +30,24 @@ final readonly class SkillImportProvider implements ImportProviderInterface
 
   public function isAvailable(StudyArea $studyArea): bool
   {
-    return !$studyArea->isDeprecatedSkills();
+    return $studyArea->isSkillsEnabled();
   }
 
   public function import(StudyArea $studyArea, array $jsonData): void
   {
     // Check structure
     if (!array_is_list($jsonData)) {
-      throw new DataImportException('Skill data needs to be a list.');
+      throw new DataImportException('Classified skill data needs to be a list.');
     }
 
     foreach ($jsonData as $skillItem) {
       // We need the skill data
-      if (!array_key_exists('skills', $skillItem)) {
-        throw new DataImportException('Skill item needs to contain "skills" property.');
+      if (!array_key_exists('classified_skills', $skillItem)) {
+        throw new DataImportException('Classified skill item needs to contain "classified_skills" property.');
       }
 
       if (!array_key_exists('concept_id', $skillItem) && !array_key_exists('concept', $skillItem)) {
-        throw new DataImportException('Skill item needs to contain either the "concept_id" or "concept" property.');
+        throw new DataImportException('Classified skill item needs to contain either the "concept_id" or "concept" property.');
       }
 
       // We need either concept id or name

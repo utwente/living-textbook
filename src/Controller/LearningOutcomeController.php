@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Attribute\DenyOnFrozenStudyArea;
-use App\Attribute\NotFoundWhenModernSkillsEnabled;
+use App\Attribute\NotFoundWhenLearningOutcomesDisabled;
 use App\Entity\LearningOutcome;
 use App\Entity\PendingChange;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
@@ -30,7 +30,7 @@ class LearningOutcomeController extends AbstractController
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
-  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans,
     NamingService $namingService): Response
@@ -73,7 +73,7 @@ class LearningOutcomeController extends AbstractController
   #[Route('/edit/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', subject: 'requestStudyArea', routeParams: ['learningOutcome' => '{learningOutcome}'])]
-  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -129,7 +129,7 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/list')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function list(RequestStudyArea $requestStudyArea, LearningOutcomeRepository $repo): Response
   {
     return $this->render('learning_outcome/list.html.twig', [
@@ -141,7 +141,7 @@ class LearningOutcomeController extends AbstractController
   #[Route('/remove/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', subject: 'requestStudyArea', routeParams: ['learningOutcome' => '{learningOutcome}'])]
-  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -189,7 +189,7 @@ class LearningOutcomeController extends AbstractController
   #[Route('/remove/unused')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
-  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function removeUnused(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcomeRepository $learningOutcomeRepository,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -242,7 +242,7 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/show/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
-  #[NotFoundWhenModernSkillsEnabled(subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function show(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome): Response
   {
     // Check if correct study area

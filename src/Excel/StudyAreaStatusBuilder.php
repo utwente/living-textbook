@@ -132,58 +132,75 @@ final class StudyAreaStatusBuilder
     $column = 1;
     $row    = 1;
 
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'excel.statistics-item', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.general-concept-statistics.total-concepts', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.general-concept-statistics.no-text', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.general-concept-statistics.no-definition', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.general-concept-statistics.no-introduction', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
-    $this->spreadsheetHelper->setCellValue($sheet, $column + 6, $row,
-      $this->translator->trans(
-        'excel.sheet.general-concept-statistics.no-named-item',
-        [
-          '%plural%' => $this->studyArea->isDeprecatedSkills()
-            ? $this->namingService->get()->learningOutcome->objs()
-            : $this->namingService->get()->skill->objs(),
-        ],
-      ),
-      true,
-    );
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.statistics-item', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.total-concepts', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.no-text', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.no-definition', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.no-introduction', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.no-prior-knowledge', true);
+    if ($this->studyArea->isLearningOutcomesEnabled()) {
+      $this->spreadsheetHelper->setCellValue($sheet, $column++, $row,
+        $this->translator->trans(
+          'excel.sheet.general-concept-statistics.no-named-item',
+          ['%plural%' => $this->namingService->get()->learningOutcome->objs()],
+        ),
+        true,
+      );
+    }
+    if ($this->studyArea->isSkillsEnabled()) {
+      $this->spreadsheetHelper->setCellValue($sheet, $column++, $row,
+        $this->translator->trans(
+          'excel.sheet.general-concept-statistics.no-named-item',
+          ['%plural%' => $this->namingService->get()->skill->objs()],
+        ),
+        true,
+      );
+    }
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.no-relations', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.general-concept-statistics.more-relations-5', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.general-concept-statistics.more-relations-10', true);
+
+    $columnCount = $column;
 
     $row++;
 
     $column = 2;
-    $counts = array_fill(0, 9, 0);
+    $counts = array_fill(0, $columnCount - 1, 0);
     $setter = function (Concept $concept, array &$counts, int $index, bool $condition) use (&$sheet, $column, $row): void {
-      if ($condition) {
-        $this->spreadsheetHelper->setCellValue($sheet, $column + $index, $row + 1 + $counts[$index], $concept->getName());
-        $counts[$index]++;
+      if (!$condition) {
+        return;
       }
+
+      $this->spreadsheetHelper->setCellValue($sheet, $column + $index, $row + 1 + $counts[$index], $concept->getName());
+      $counts[$index]++;
     };
     foreach ($this->concepts as $concept) {
-      $setter($concept, $counts, 0, true);
-      $setter($concept, $counts, 1, !$concept->hasTextData());
-      $setter($concept, $counts, 2, $concept->getDefinition() == '');
-      $setter($concept, $counts, 3, !$concept->getIntroduction()->hasData());
-      $setter($concept, $counts, 4, $concept->getPriorKnowledge()->isEmpty());
-      $setter($concept, $counts, 5, $this->studyArea->isDeprecatedSkills() ? $concept->getLearningOutcomes()->isEmpty() : !$concept->getSkills()->hasData());
+      $index = 0;
+      $setter($concept, $counts, $index++, true);
+      $setter($concept, $counts, $index++, !$concept->hasTextData());
+      $setter($concept, $counts, $index++, $concept->getDefinition() == '');
+      $setter($concept, $counts, $index++, !$concept->getIntroduction()->hasData());
+      $setter($concept, $counts, $index++, $concept->getPriorKnowledge()->isEmpty());
+      if ($this->studyArea->isLearningOutcomesEnabled()) {
+        $setter($concept, $counts, $index++, $concept->getLearningOutcomes()->isEmpty());
+      }
+      if ($this->studyArea->isSkillsEnabled()) {
+        $setter($concept, $counts, $index++, !$concept->getSkills()->hasData());
+      }
 
       $relationCount = $concept->getOutgoingRelations()->count() + $concept->getIncomingRelations()->count();
-      $setter($concept, $counts, 6, $relationCount == 0);
-      $setter($concept, $counts, 7, $relationCount > 5);
-      $setter($concept, $counts, 8, $relationCount > 10);
+      $setter($concept, $counts, $index++, $relationCount == 0);
+      $setter($concept, $counts, $index++, $relationCount > 5);
+      $setter($concept, $counts, $index, $relationCount > 10);
     }
 
     $column = 1;
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'excel.count', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.count', true);
     foreach ($counts as $key => $count) {
-      $this->spreadsheetHelper->setCellValue($sheet, $column + 1 + $key, $row, $count);
+      $this->spreadsheetHelper->setCellValue($sheet, $column + $key, $row, $count);
     }
 
-    for ($column = 1; $column <= 10; $column++) {
+    for ($column = 1; $column <= $columnCount; $column++) {
       $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
     }
   }
@@ -303,58 +320,61 @@ final class StudyAreaStatusBuilder
   {
     $sheet = $this->spreadsheetHelper->createSheet($spreadsheet, 'excel.sheet.detailed-concept-overview._tab');
 
-    for ($column = 1; $column <= 13; $column++) {
-      $sheet->getColumnDimensionByColumn($column)->setAutoSize(true);
-    }
-
     $column = 1;
     $row    = 1;
 
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column, $row, 'excel.sheet.detailed-concept-overview.concept-name', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 1, $row, 'excel.sheet.detailed-concept-overview.definition', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 2, $row, 'excel.sheet.detailed-concept-overview.introduction', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 3, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 4, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 5, $row, 'excel.sheet.detailed-concept-overview.examples', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 6, $row,
-      $this->studyArea->isDeprecatedSkills()
-        ? $this->namingService->get()->learningOutcome->objs(true)
-        : $this->namingService->get()->skill->objs(true),
-      true
-    );
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 7, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 8, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 9, $row, 'excel.sheet.detailed-concept-overview.external-links', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 10, $row, 'excel.sheet.detailed-concept-overview.number-of-relations', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 11, $row, 'excel.sheet.detailed-concept-overview.last-edit-time', true);
-    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column + 12, $row, 'excel.sheet.detailed-concept-overview.last-editor', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.concept-name', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.definition', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.introduction', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.explanation', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.prior-knowledge', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.examples', true);
+    if ($this->studyArea->isLearningOutcomesEnabled()) {
+      $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, $this->namingService->get()->learningOutcome->objs(true), true);
+    }
+    if ($this->studyArea->isLearningOutcomesEnabled()) {
+      $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, $this->namingService->get()->skill->objs(true), true);
+    }
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.how-to', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.self-assessment', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.external-links', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.number-of-relations', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.last-edit-time', true);
+    $this->spreadsheetHelper->setCellTranslatedValue($sheet, $column++, $row, 'excel.sheet.detailed-concept-overview.last-editor', true);
 
     foreach ($this->concepts as $concept) {
       $row++;
-      $this->spreadsheetHelper->setCellValue($sheet, $column, $row, $concept->getName());
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 1, $row, $concept->getDefinition() != '');
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 2, $row, $concept->getIntroduction()->hasData());
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 3, $row, $concept->getTheoryExplanation()->hasData());
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 4, $row, !$concept->getPriorKnowledge()->isEmpty());
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 5, $row, $concept->getExamples()->hasData());
-      if ($this->studyArea->isDeprecatedSkills()) {
-        $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 6, $row, !$concept->getLearningOutcomes()->isEmpty());
-      } else {
-        $this->spreadsheetHelper->setCellValue($sheet, $column + 6, $row, $concept->getSkills()->skillCount());
+      $column = 1;
+      $this->spreadsheetHelper->setCellValue($sheet, $column++, $row, $concept->getName());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, $concept->getDefinition() != '');
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, $concept->getIntroduction()->hasData());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, $concept->getTheoryExplanation()->hasData());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, !$concept->getPriorKnowledge()->isEmpty());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, $concept->getExamples()->hasData());
+      if ($this->studyArea->isLearningOutcomesEnabled()) {
+        $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, !$concept->getLearningOutcomes()->isEmpty());
       }
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 7, $row, $concept->getHowTo()->hasData());
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 8, $row, $concept->getSelfAssessment()->hasData());
-      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column + 9, $row, !$concept->getExternalResources()->isEmpty());
-      $this->spreadsheetHelper->setCellValue($sheet, $column + 10, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
+
+      if ($this->studyArea->isSkillsEnabled()) {
+        $this->spreadsheetHelper->setCellValue($sheet, $column++, $row, $concept->getSkills()->skillCount());
+      }
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, $concept->getHowTo()->hasData());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, $concept->getSelfAssessment()->hasData());
+      $this->spreadsheetHelper->setCellBooleanValue($sheet, $column++, $row, !$concept->getExternalResources()->isEmpty());
+      $this->spreadsheetHelper->setCellValue($sheet, $column++, $row, $concept->getIncomingRelations()->count() + $concept->getOutgoingRelations()->count());
 
       $lastEditInfo = $concept->getLastEditInfo();
-      $this->spreadsheetHelper->setCellDateTime($sheet, $column + 11, $row, $lastEditInfo[0]);
-      $this->spreadsheetHelper->setCellValue($sheet, $column + 12, $row, $lastEditInfo[1]);
+      $this->spreadsheetHelper->setCellDateTime($sheet, $column++, $row, $lastEditInfo[0]);
+      $this->spreadsheetHelper->setCellValue($sheet, $column, $row, $lastEditInfo[1]);
+    }
+
+    for ($c = 1; $c <= $column; $c++) {
+      $sheet->getColumnDimensionByColumn($c)->setAutoSize(true);
     }
 
     $sheet->getStyle(new CellRange(
       CellAddress::fromColumnAndRow(1, 1),
-      CellAddress::fromColumnAndRow($column + 12, $row)
+      CellAddress::fromColumnAndRow($column, $row)
     ))->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
   }
 }

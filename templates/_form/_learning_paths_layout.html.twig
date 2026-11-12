@@ -2,10 +2,10 @@
   <div class="form-group row">
     {{ form_label(form) }}
     <div class="col-12">
-      {% if _twigStudyArea.isDeprecatedSkills %}
+      {% if _twigStudyArea.isLearningOutcomesEnabled %}
         {{ 'learning-path.elements-info'|trans({'%learning_outcomes%': naming.get.learningOutcome.objs}) }}
       {% else %}
-        {{ 'learning-path.elements-info-skills'|trans }}
+        {{ 'learning-path.elements-info-no-unclassified-skills'|trans }}
       {% endif %}
     </div>
     <div class="col-12">

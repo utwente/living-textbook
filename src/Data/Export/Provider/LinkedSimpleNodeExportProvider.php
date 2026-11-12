@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use function array_map;
 use function sprintf;
+use function str_replace;
 
 #[Lazy]
 final readonly class LinkedSimpleNodeExportProvider implements ExportProviderInterface
@@ -83,10 +84,10 @@ final readonly class LinkedSimpleNodeExportProvider implements ExportProviderInt
             "selfAssessment": "<concept-self-assessment>",
             "howTo": "<concept-how-to>",
 EOT;
-    if (!$studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isSkillsEnabled()) {
       $preview .= <<<'EOT'
 
-            "skills": {
+            "classifiedSkills": {
 
 EOT;
 
@@ -127,7 +128,7 @@ EOT;
         }
     ],
 EOT;
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $preview .= <<<'EOT'
 
     "learningOutcomes": [
@@ -158,43 +159,52 @@ EOT;
       }
     ],
     "aliases" : [
-      "definition": "%1$s",
-      "explanation": "%2$s",
-      "introduction": "%3$s",
-      "examples": "%4$s",
-      "selfAssessment": "%5$s",
-      "howTo": "%6$s",
+      "definition": "%definition%",
+      "explanation": "%explanation%",
+      "introduction": "%introduction%",
+      "examples": "%examples%",
+      "selfAssessment": "%selfAssessment%",
+      "howTo": "%howTo%",
 EOT;
 
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $preview .= <<<'EOT'
 
-      "learningOutcomes": "%7$s",
+      "learningOutcomes": "%learningOutcomes%",
 EOT;
-    } else {
+    }
+
+    if ($studyArea->isSkillsEnabled()) {
       $preview .= <<<'EOT'
 
-      "skills": "%7$s",
+      "skills": "%skills%",
 EOT;
     }
 
     $preview .= <<<'EOT'
 
-      "priorKnowledge": "%8$s",
+      "priorKnowledge": "%priorKnowledge%",
     ]
 }
 EOT;
 
-    return sprintf($preview,
-      $fieldNames->definition(),
-      $fieldNames->theoryExplanation(),
-      $fieldNames->introduction(),
-      $fieldNames->examples(),
-      $fieldNames->selfAssessment(),
-      $fieldNames->howTo(),
-      $studyArea->isDeprecatedSkills() ? $names->learningOutcome->obj() : $names->skill->obj(),
-      $fieldNames->priorKnowledge(),
-    );
+    $sprintNames = [
+      'definition'       => $fieldNames->definition(),
+      'explanation'      => $fieldNames->theoryExplanation(),
+      'introduction'     => $fieldNames->introduction(),
+      'examples'         => $fieldNames->examples(),
+      'selfAssessment'   => $fieldNames->selfAssessment(),
+      'howTo'            => $fieldNames->howTo(),
+      'learningOutcomes' => $names->learningOutcome->obj(),
+      'skills'           => $names->skill->obj(),
+      'priorKnowledge'   => $fieldNames->priorKnowledge(),
+    ];
+
+    foreach ($sprintNames as $key => $name) {
+      $preview = str_replace("%$key%", $name, $preview);
+    }
+
+    return $preview;
   }
 
   #[Override]
@@ -218,7 +228,7 @@ EOT;
 
     // Create link data
     $mappedLinks = [];
-    foreach ($links as &$link) {
+    foreach ($links as $link) {
       $mappedLinks[] = [
         'target'       => $idMap[$link->getTargetId() ?? throw new IdRequiredException()],
         'source'       => $idMap[$link->getSourceId() ?? throw new IdRequiredException()],
@@ -250,7 +260,7 @@ EOT;
     }
 
     $mappedLearningOutcomes = [];
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       // Create learning outcomes data
       $learningOutcomes = $this->learningOutcomeRepository->findForStudyAreaOrderedByName($studyArea);
       foreach ($learningOutcomes as $learningOutcome) {
@@ -309,8 +319,8 @@ EOT;
             'selfAssessment' => $concept->getSelfAssessment()->getText(),
           ];
 
-          if (!$studyArea->isDeprecatedSkills()) {
-            $nodeData['skills'] = $this->skillAccessor->getAsArrayData($concept->getSkills());
+          if ($studyArea->isSkillsEnabled()) {
+            $nodeData['classifiedSkills'] = $this->skillAccessor->getAsArrayData($concept->getSkills());
           }
 
           return $nodeData;
@@ -334,10 +344,12 @@ EOT;
       ],
     ];
 
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $data['learningOutcomes']            = $mappedLearningOutcomes;
       $data['aliases']['learningOutcomes'] = $names->learningOutcome->obj();
-    } else {
+    }
+
+    if ($studyArea->isSkillsEnabled()) {
       $data['aliases']['skills'] = $names->skill->obj();
     }
 

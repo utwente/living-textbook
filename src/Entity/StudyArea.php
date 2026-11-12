@@ -132,9 +132,13 @@ class StudyArea implements Stringable, IdInterface
   #[ORM\Column(options: ['default' => false])]
   private bool $analyticsDashboardEnabled = false;
 
-  /** Setting this to true will enable the deprecated skills functionality (learning outcomes). */
-  #[ORM\Column(options: ['default' => false])]
-  private bool $deprecatedSkills = false;
+  /** Setting this to false will disable the unclassified skills functionality (learning outcomes). */
+  #[ORM\Column(options: ['default' => true])]
+  private bool $learningOutcomesEnabled = true;
+
+  /** Setting this to false will disable the classified skills functionality (skills). */
+  #[ORM\Column(options: ['default' => true])]
+  private bool $skillsEnabled = true;
 
   /** Whether the review mode has been enabled for this study area. */
   #[ORM\Column(options: ['default' => false])]
@@ -873,14 +877,26 @@ class StudyArea implements Stringable, IdInterface
     return $this;
   }
 
-  public function isDeprecatedSkills(): bool
+  public function isLearningOutcomesEnabled(): bool
   {
-    return $this->deprecatedSkills;
+    return $this->learningOutcomesEnabled;
   }
 
-  public function setDeprecatedSkills(bool $deprecatedSkills): self
+  public function setLearningOutcomesEnabled(bool $learningOutcomesEnabled): self
   {
-    $this->deprecatedSkills = $deprecatedSkills;
+    $this->learningOutcomesEnabled = $learningOutcomesEnabled;
+
+    return $this;
+  }
+
+  public function isSkillsEnabled(): bool
+  {
+    return $this->skillsEnabled;
+  }
+
+  public function setSkillsEnabled(bool $skillsEnabled): self
+  {
+    $this->skillsEnabled = $skillsEnabled;
 
     return $this;
   }

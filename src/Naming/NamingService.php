@@ -60,7 +60,7 @@ class NamingService
   private function getCached(StudyArea $studyArea): ResolvedNames
   {
     /** @noinspection PhpUnhandledExceptionInspection */
-    return $this->cache->get(sprintf('studyarea.%d.naming', $studyArea->getId()),
+    return $this->cache->get(sprintf('studyarea.%d.naming', $studyArea->getNonNullId()),
       function (ItemInterface $item) use ($studyArea): ResolvedNames {
         $conf = $studyArea->getFieldConfiguration() ?: new StudyAreaFieldConfiguration();
 

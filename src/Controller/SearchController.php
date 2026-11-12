@@ -75,7 +75,7 @@ class SearchController extends AbstractController
     $result['instanceData']         = $this->searchData($conceptRepository->findForStudyAreaOrderedByName($studyArea, true, false, true), $search);
     $result['abbreviationData']     = $this->searchData($abbreviationRepository->findForStudyArea($studyArea), $search);
     $result['externalResourceData'] = $this->searchData($externalResourceRepository->findForStudyArea($studyArea), $search);
-    $result['learningOutcomeData']  = $studyArea->isDeprecatedSkills()
+    $result['learningOutcomeData']  = $studyArea->isLearningOutcomesEnabled()
       ? $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search)
       : [];
 

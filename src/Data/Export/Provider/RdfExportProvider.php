@@ -83,7 +83,7 @@ final readonly class RdfExportProvider implements ExportProviderInterface
     },
 EOT;
 
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $preview .= <<<'EOT'
 
     "<learning-outcome-url>": {
@@ -204,7 +204,7 @@ EOT;
       $target       = $outgoingRelation->getTarget() ?? throw new ObjectRequiredException();
       $conceptResource->add('https://ltb.itc.utwente.nl/resource/' . $relationType->getCamelizedName(), ['type' => 'uri', 'value' => $this->generateConceptResourceUrl($target)]);
     }
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       foreach ($concept->getLearningOutcomes() as $learningOutcome) {
         $conceptResource->add('https://ltb.itc.utwente.nl/resource/learningoutcome', ['type' => 'uri', 'value' => $this->generateLearningOutcomeResourceUrl($learningOutcome)]);
       }

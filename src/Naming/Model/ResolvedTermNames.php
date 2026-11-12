@@ -9,7 +9,6 @@ use function Symfony\Component\String\u;
 
 class ResolvedTermNames implements ResolvedNamesInterface
 {
-  public const string DEPRECATED = '(deprecated)';
   private readonly string $obj;
   private string $objs = '';
 
@@ -21,16 +20,7 @@ class ResolvedTermNames implements ResolvedNamesInterface
   #[Override]
   public function resolvePlurals(InflectorInterface $inflector): void
   {
-    $term = u($this->obj);
-    if ($deprecatedTerm = $term->endsWith(self::DEPRECATED)) {
-      $term = $term->trimSuffix(self::DEPRECATED)->trimEnd();
-    }
-
-    $this->objs = $inflector->pluralize($term)[0];
-
-    if ($deprecatedTerm) {
-      $this->objs .= ' ' . self::DEPRECATED;
-    }
+    $this->objs = $inflector->pluralize($this->obj)[0];
   }
 
   public function obj(bool $titleCase = false): string

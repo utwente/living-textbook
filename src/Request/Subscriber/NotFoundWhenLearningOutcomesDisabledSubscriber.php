@@ -2,13 +2,13 @@
 
 namespace App\Request\Subscriber;
 
-use App\Attribute\NotFoundWhenModernSkillsEnabled;
+use App\Attribute\NotFoundWhenLearningOutcomesDisabled;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final readonly class NotFoundWhenModernSkillsEnabledSubscriber
+final readonly class NotFoundWhenLearningOutcomesDisabledSubscriber
 {
   use StudyAreaAwareSubscriberTrait;
 
@@ -16,16 +16,16 @@ final readonly class NotFoundWhenModernSkillsEnabledSubscriber
   #[AsEventListener(event: KernelEvents::CONTROLLER_ARGUMENTS, priority: -50)]
   public function checkSkillConfiguration(ControllerArgumentsEvent $event): void
   {
-    $attributes = $event->getAttributes(NotFoundWhenModernSkillsEnabled::class);
+    $attributes = $event->getAttributes(NotFoundWhenLearningOutcomesDisabled::class);
     if (empty($attributes)) {
       return;
     }
 
     $configuration = $attributes[0];
 
-    // Check whether deprecated skills are enabled
+    // Check whether unclassified skills are enabled
     $studyArea = $this->getStudyArea($event, $configuration->subject);
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       return;
     }
 

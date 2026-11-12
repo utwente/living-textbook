@@ -2,6 +2,7 @@
 
 namespace App\Form\StudyArea;
 
+use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Form\Type\SaveType;
 use Override;
@@ -30,11 +31,9 @@ class FieldConfigurationType extends AbstractType
   public function configureOptions(OptionsResolver $resolver): void
   {
     $resolver
-      ->setDefaults([
-        'deprecated_skills' => false,
-        'data_class'        => StudyAreaFieldConfiguration::class,
-      ])
-      ->setAllowedTypes('deprecated_skills', 'bool');
+      ->setDefault('data_class', StudyAreaFieldConfiguration::class)
+      ->setRequired('study_area')
+      ->setAllowedTypes('study_area', StudyArea::class);
   }
 
   /** @param FormBuilderInterface<StudyAreaFieldConfiguration|null> $builder */
@@ -100,7 +99,10 @@ class FieldConfigurationType extends AbstractType
    */
   private function skillFields(FormBuilderInterface $builder, array $options): void
   {
-    if ($options['deprecated_skills']) {
+    /** @var StudyArea $studyArea */
+    $studyArea = $options['study_area'];
+
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $builder
         ->add('learningOutcomeObjName', null, [
           'form_header' => 'learning-outcome._name',
@@ -110,7 +112,9 @@ class FieldConfigurationType extends AbstractType
             'placeholder' => 'learning-outcome._name',
           ],
         ]);
-    } else {
+    }
+
+    if ($studyArea->isSkillsEnabled()) {
       $builder
         ->add('skillObjName', null, [
           'form_header' => 'skill._name',

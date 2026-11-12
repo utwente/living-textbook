@@ -105,9 +105,14 @@ class EditStudyAreaType extends AbstractType
     }
 
     $builder
-      ->add('deprecatedSkills', CheckboxType::class, [
-        'label'    => 'study-area.deprecated-skills',
-        'help'     => 'study-area.deprecated-skills-help',
+      ->add('learningOutcomesEnabled', CheckboxType::class, [
+        'label'    => 'study-area.unclassified-skills',
+        'help'     => 'study-area.unclassified-skills-help',
+        'required' => false,
+      ])
+      ->add('skillsEnabled', CheckboxType::class, [
+        'label'    => 'study-area.classified-skills',
+        'help'     => 'study-area.classified-skills-help',
         'required' => false,
       ])
       ->add('reviewModeEnabled', CheckboxType::class, [

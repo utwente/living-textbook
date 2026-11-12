@@ -232,7 +232,7 @@ data:
       linked-simple-node: 'Simple linked node'
       rdf: 'RDF (as JSON-LD)'
       relation: 'Relations'
-      skills: 'Skills'
+      skills: 'Classified skills'
   export-url:
     title: 'Export to URL'
     text: 'You can export the current study area to a URL in one of the types shown below. Select the one you will want to export.'
@@ -242,7 +242,7 @@ data:
   import:
     provider:
       linked-simple-node: 'Simple linked node'
-      skills: 'Skills'
+      skills: 'Classified skills'
     json-file: 'JSON data file'
     json-incorrect: 'JSON data incorrect! %message%'
     json-uploaded: 'JSON data successfully imported!'
@@ -422,7 +422,7 @@ help:
   title: "Help"
 
 learning-outcome:
-  _name: 'Skill (deprecated)'
+  _name: 'Unclassified skill'
   add-title: 'Add new %singular%'
   edit-title: 'Edit %singular% "%item%"'
   list-title: '%singular% list'
@@ -453,7 +453,7 @@ learning-path:
   element-errors: 'One or more elements contain errors'
   elements: 'Elements'
   elements-info: 'Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements.'
-  elements-info-skills: 'Select concepts/instances below to add them to the learning path elements.'
+  elements-info-no-unclassified-skills: 'Select concepts/instances below to add them to the learning path elements.'
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
@@ -656,7 +656,7 @@ search:
   search: 'Search'
 
 skill:
-  _name: Skill
+  _name: Classified skill
   _set:
     remember: Remember
     _remember:
@@ -702,12 +702,12 @@ study-area:
     owner to inspect the behavior of the users.
   api-enabled: 'API enabled'
   api-enabled-help: 'When enabled, API access for this study area is enabled. Enabling API access will disable review mode!'
+  classified-skills: 'Classified skills'
+  classified-skills-help: 'Use this toggle to enable/disable the classified skills.'
   current: 'Current'
   current-area: 'Now browsing "%item%"'
   default-tag-filter: 'Default tag filter'
   default-tag-filter-help: 'The selected tag will be used as default filter when the concept browser is loaded for the first time.'
-  deprecated-skills: 'Deprecated skills'
-  deprecated-skills-help: 'When enabled, the deprecated skill mode is enabled.'
   description: 'Description'
   dotron: "Dotron enabled"
   dotron-help: "When enabled, Dotron visualization will be used."
@@ -807,6 +807,8 @@ study-area:
   tracking-disabled-text: 'User tracking has been disabled for this study area. Click %url_start%here%url_end% to edit the tracking settings.'
   tracking-remove-data: 'Are you sure? This will remove all existing tracking data, which cannot be undone!'
   transfer-ownership: 'Transfer ownership'
+  unclassified-skills: 'Unclassified skills'
+  unclassified-skills-help: 'Use this toggle to enable/disable the unclassified skills.'
   unfreeze: 'Unfreeze study area'
   unfreeze-text: 'Are you sure you want to unfreeze the study area "%item%"? This could lead to data loss for users of this study area when data is edited, please use this feature responsibly!'
   unfreeze-succeeded: 'Study area "%item%" has been unfrozen successfully.'

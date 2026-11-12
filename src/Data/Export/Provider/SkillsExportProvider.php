@@ -44,7 +44,7 @@ final readonly class SkillsExportProvider implements ExportProviderInterface
   #[Override]
   public function isAvailable(StudyArea $studyArea): bool
   {
-    return !$studyArea->isDeprecatedSkills();
+    return $studyArea->isSkillsEnabled();
   }
 
   #[Override]
@@ -55,7 +55,7 @@ final readonly class SkillsExportProvider implements ExportProviderInterface
     {
         "concept_id": <concept-id>,
         "concept": "<concept-naam>",
-        "skills": {
+        "classifiedSkills": {
 
 EOT;
 
@@ -79,9 +79,9 @@ EOT;
     $data = [];
     foreach ($concepts as $concept) {
       $data[] = [
-        'concept_id' => $concept->getId(),
-        'concept'    => $concept->getName(),
-        'skills'     => $this->skillAccessor->getAsArrayData($concept->getSkills()),
+        'concept_id'       => $concept->getId(),
+        'concept'          => $concept->getName(),
+        'classifiedSkills' => $this->skillAccessor->getAsArrayData($concept->getSkills()),
       ];
     }
 

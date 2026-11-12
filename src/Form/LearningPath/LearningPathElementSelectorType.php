@@ -47,7 +47,7 @@ class LearningPathElementSelectorType extends AbstractType
         'select2_placeholder' => 'learning-path.select',
       ]);
 
-    if ($studyArea->isDeprecatedSkills()) {
+    if ($studyArea->isLearningOutcomesEnabled()) {
       $builder->add('learningOutcomes', EntityType::class, [
         'label'               => $this->namingService->get()->learningOutcome->objs(true),
         'class'               => LearningOutcome::class,

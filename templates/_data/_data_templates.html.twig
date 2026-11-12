@@ -193,13 +193,15 @@
 {% endmacro %}
 
 {% macro data_skills(data) %}
-  <h2>{{ naming.get.skill.objs(true) }}</h2>
-  {% from _self import render_skill_set %}
-  {% for skill_set in enum_cases('App\\Entity\\Skills\\SkillSetEnum') %}
-    <div class="ltb-text-container">
-      {{ render_skill_set(data, skill_set) }}
-    </div>
-  {% endfor %}
+  {% if data.skillCount > 0 %}
+    <h2>{{ naming.get.skill.objs(true) }}</h2>
+    {% from _self import render_skill_set %}
+    {% for skill_set in enum_cases('App\\Entity\\Skills\\SkillSetEnum') %}
+      <div class="ltb-text-container">
+        {{ render_skill_set(data, skill_set) }}
+      </div>
+    {% endfor %}
+  {% endif %}
 {% endmacro %}
 
 {% macro render_skill_set(data, skill_set) %}

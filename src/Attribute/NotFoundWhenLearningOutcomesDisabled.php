@@ -5,7 +5,7 @@ namespace App\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class NotFoundWhenModernSkillsEnabled
+class NotFoundWhenLearningOutcomesDisabled
 {
   public function __construct(public string $subject)
   {
