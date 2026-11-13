@@ -177,7 +177,7 @@ EOT;
     if ($studyArea->isSkillsEnabled()) {
       $preview .= <<<'EOT'
 
-      "skills": "%skills%",
+      "classifiedSkills": "%classifiedSkills%",
 EOT;
     }
 
@@ -196,7 +196,7 @@ EOT;
       'selfAssessment'   => $fieldNames->selfAssessment(),
       'howTo'            => $fieldNames->howTo(),
       'learningOutcomes' => $names->learningOutcome->obj(),
-      'skills'           => $names->skill->obj(),
+      'classifiedSkills' => $names->skill->obj(),
       'priorKnowledge'   => $fieldNames->priorKnowledge(),
     ];
 
@@ -333,14 +333,14 @@ EOT;
       'tags'              => $mappedTags,
       'priorKnowledge'    => $mappedPriorKnowledge,
       'aliases'           => [
-        'definition'     => $fieldNames->definition(),
-        'explanation'    => $fieldNames->theoryExplanation(),
-        'introduction'   => $fieldNames->introduction(),
-        'examples'       => $fieldNames->examples(),
-        'selfAssessment' => $fieldNames->selfAssessment(),
-        'howTo'          => $fieldNames->howTo(),
-        'skills'         => $names->skill->obj(),
-        'priorKnowledge' => $fieldNames->priorKnowledge(),
+        'definition'       => $fieldNames->definition(),
+        'explanation'      => $fieldNames->theoryExplanation(),
+        'introduction'     => $fieldNames->introduction(),
+        'examples'         => $fieldNames->examples(),
+        'selfAssessment'   => $fieldNames->selfAssessment(),
+        'howTo'            => $fieldNames->howTo(),
+        'classifiedSkills' => $names->skill->obj(),
+        'priorKnowledge'   => $fieldNames->priorKnowledge(),
       ],
     ];
 
@@ -350,7 +350,7 @@ EOT;
     }
 
     if ($studyArea->isSkillsEnabled()) {
-      $data['aliases']['skills'] = $names->skill->obj();
+      $data['aliases']['classifiedSkills'] = $names->skill->obj();
     }
 
     // Return as JSON

@@ -144,9 +144,9 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
         }
       }
 
-      if (array_key_exists('skills', $jsonNode) && is_array($jsonNode['skills'])) {
+      if (array_key_exists('classifiedSkills', $jsonNode) && is_array($jsonNode['classifiedSkills'])) {
         // Skills are imported gracefully
-        SkillImportProvider::importSkillBlock($this->skillAccessor, $concepts[$key], $jsonNode['skills']);
+        SkillImportProvider::importSkillBlock($this->skillAccessor, $concepts[$key], $jsonNode['classifiedSkills']);
       }
 
       if (array_key_exists('selfAssessment', $jsonNode) && $jsonNode['selfAssessment'] !== null) {
@@ -435,8 +435,8 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
         $studyAreaConfiguration->learningOutcomeObjName= $jsonAliases['learningOutcomes'];
       }
 
-      if (array_key_exists('skills', $jsonAliases)) {
-        $studyAreaConfiguration->skillObjName= $jsonAliases['skills'];
+      if (array_key_exists('classifiedSkills', $jsonAliases)) {
+        $studyAreaConfiguration->skillObjName= $jsonAliases['classifiedSkills'];
       }
 
       if (array_key_exists('priorKnowledge', $jsonAliases)) {

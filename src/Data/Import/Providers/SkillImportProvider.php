@@ -67,7 +67,7 @@ final readonly class SkillImportProvider implements ImportProviderInterface
       }
 
       // Now we can import the skill information. We do this gracefully
-      self::importSkillBlock($this->skillAccessor, $concept, $skillItem['skills']);
+      self::importSkillBlock($this->skillAccessor, $concept, $skillItem['classified_skills']);
     }
   }
 
