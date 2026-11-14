@@ -172,7 +172,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
       if (!array_key_exists('target', $jsonLink)
         || !array_key_exists('source', $jsonLink)) {
         throw new DataImportException(
-          sprintf('Missing one ore more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
+          sprintf('Missing one or more required properties "target", "relationName" or "source" from link: %s', json_encode($jsonLink)));
       }
 
       if (!array_key_exists($jsonLink['source'] ?? '', $concepts)) {
@@ -205,7 +205,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
           || !array_key_exists('content', $jsonLearningOutcome)
           || !array_key_exists('nodes', $jsonLearningOutcome)) {
           throw new DataImportException(
-            sprintf('Missing one ore more required properties "name", "content" or "nodes" from learning outcome: %s', json_encode($jsonLearningOutcome)));
+            sprintf('Missing one or more required properties "name", "content" or "nodes" from learning outcome: %s', json_encode($jsonLearningOutcome)));
         }
 
         if (!is_array($jsonLearningOutcome['nodes'])) {
@@ -243,7 +243,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
       foreach ($jsonData['externalResources'] as $jsonExternalResource) {
         if (!array_key_exists('nodes', $jsonExternalResource)) {
           throw new DataImportException(
-            sprintf('Missing one ore more required property "nodes" from external resource: %s', json_encode($jsonExternalResource)));
+            sprintf('Missing required property "nodes" from external resource: %s', json_encode($jsonExternalResource)));
         }
 
         if (!is_array($jsonExternalResource['nodes'])) {
@@ -292,7 +292,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
         if (!array_key_exists('name', $jsonTag)
           || !array_key_exists('nodes', $jsonTag)) {
           throw new DataImportException(
-            sprintf('Missing one ore more required properties "name" or "nodes" from tag: %s', json_encode($jsonTag)));
+            sprintf('Missing one or more required properties "name" or "nodes" from tag: %s', json_encode($jsonTag)));
         }
         if (!is_array($jsonTag['nodes'])) {
           throw new DataImportException(
@@ -336,7 +336,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
       foreach ($jsonData['priorKnowledge'] as $jsonPriorKnowledge) {
         if (!array_key_exists('node', $jsonPriorKnowledge) || !array_key_exists('isPriorKnowledgeOf', $jsonPriorKnowledge)) {
           throw new DataImportException(
-            sprintf('Missing one ore more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
+            sprintf('Missing one or more required properties "node" or "isPriorKnowledgeOf" from prior knowledge: %s', json_encode($jsonPriorKnowledge)));
         }
 
         if (!array_key_exists($jsonPriorKnowledge['node'] ?? '', $concepts)) {
@@ -360,7 +360,7 @@ final readonly class LinkedSimpleNodeImportProvider implements ImportProviderInt
       foreach ($jsonData['contributors'] as $jsonContributor) {
         if (!array_key_exists('name', $jsonContributor) || !array_key_exists('nodes', $jsonContributor)) {
           throw new DataImportException(
-            sprintf('Missing one ore more required properties "nodes" or "name" from contributors: %s', json_encode($jsonContributor)));
+            sprintf('Missing one or more required properties "nodes" or "name" from contributors: %s', json_encode($jsonContributor)));
         }
 
         if (!is_array($jsonContributor['nodes'])) {
