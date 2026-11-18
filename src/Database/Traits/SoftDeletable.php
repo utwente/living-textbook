@@ -9,12 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 trait SoftDeletable
 {
   #[ORM\Column(name: 'deleted_at', type: Types::DATETIME_MUTABLE, nullable: true)]
-  protected ?DateTime $deletedAt;
+  protected ?DateTime $deletedAt = null;
 
   #[ORM\Column(name: 'deleted_by', type: Types::STRING, length: 255, nullable: true)]
-  protected ?string $deletedBy;
+  protected ?string $deletedBy = null;
 
-  public function setDeletedAt(?DateTime $deletedAt = null): self
+  public function setDeletedAt(?DateTime $deletedAt): self
   {
     $this->deletedAt = $deletedAt;
 
@@ -26,7 +26,7 @@ trait SoftDeletable
     return $this->deletedAt;
   }
 
-  public function setDeletedBy(string $deletedBy): self
+  public function setDeletedBy(?string $deletedBy): self
   {
     $this->deletedBy = $deletedBy;
 
