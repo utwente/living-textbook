@@ -15,6 +15,7 @@ use App\Entity\LearningOutcome;
 use App\Entity\Tag;
 use App\Form\Data\BaseDataTextType;
 use App\Form\Review\DisplayPendingChangeType;
+use App\Form\Skills\DataSkillsType;
 use App\Form\Type\HiddenEntityType;
 use App\Form\Type\SaveType;
 use App\Naming\NamingService;
@@ -26,6 +27,7 @@ use App\Repository\LearningOutcomeRepository;
 use App\Repository\TagRepository;
 use App\Review\Model\PendingChangeObjectInfo;
 use Doctrine\ORM\QueryBuilder;
+use Drenso\Shared\Exception\NullGuard\ObjectRequiredException;
 use Override;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,15 +44,15 @@ class EditConceptType extends AbstractType
 {
   public function __construct(
     private readonly TranslatorInterface $translator,
-    private readonly NamingService $namingService)
-  {
+    private readonly NamingService $namingService,
+  ) {
   }
 
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $names      = $this->namingService->get();
-    $fieldNames = $names->concept();
+    $fieldNames = $names->concept;
 
     /** @var PendingChangeObjectInfo $pendingChangeObjectInfo */
     $pendingChangeObjectInfo = $options['pending_change_info'];
@@ -58,7 +60,7 @@ class EditConceptType extends AbstractType
 
     /** @var Concept $concept */
     $concept   = $options['concept'];
-    $studyArea = $concept->getStudyArea();
+    $studyArea = $concept->getStudyArea() ?? throw new ObjectRequiredException();
     $editing   = $concept->getId() !== null;
     $builder
       ->add('name', TextType::class, [
@@ -166,7 +168,7 @@ class EditConceptType extends AbstractType
       ->add('externalResources', EntityType::class, [
         'label'         => 'concept.external-resources',
         'class'         => ExternalResource::class,
-        'choice_label'  => 'title',
+        'choice_label'  => static fn (ExternalResource $externalResource): string => $externalResource->getTitleOrUrl(),
         'required'      => false,
         'multiple'      => true,
         'query_builder' => static fn (ExternalResourceRepository $externalResourceRepository): QueryBuilder => $externalResourceRepository->findForStudyAreaQb($studyArea),
@@ -176,23 +178,43 @@ class EditConceptType extends AbstractType
       ->add('externalResources_review', DisplayPendingChangeType::class, [
         'field'               => 'externalResources',
         'pending_change_info' => $pendingChangeObjectInfo,
-      ])
-      ->add('learningOutcomes', EntityType::class, [
-        'label'              => $names->learningOutcome()->objs(true),
-        'translation_domain' => false,
-        'class'              => LearningOutcome::class,
-        'choice_label'       => 'shortName',
-        'required'           => false,
-        'multiple'           => true,
-        'query_builder'      => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
-        'select2'            => true,
-        'disabled'           => in_array('learningOutcomes', $disabledFields),
-      ])
-      ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
-        'field'               => 'learningOutcomes',
-        'pending_change_info' => $pendingChangeObjectInfo,
-      ])
+      ]);
 
+    if ($studyArea->isLearningOutcomesEnabled()) {
+      $builder
+        ->add('learningOutcomes', EntityType::class, [
+          'label'              => $names->learningOutcome->objs(true),
+          'translation_domain' => false,
+          'class'              => LearningOutcome::class,
+          'choice_label'       => 'shortName',
+          'required'           => false,
+          'multiple'           => true,
+          'query_builder'      => static fn (LearningOutcomeRepository $learningOutcomeRepository): QueryBuilder => $learningOutcomeRepository->findForStudyAreaQb($studyArea),
+          'select2'            => true,
+          'disabled'           => in_array('learningOutcomes', $disabledFields),
+        ])
+        ->add('learningOutcomes_review', DisplayPendingChangeType::class, [
+          'field'               => 'learningOutcomes',
+          'pending_change_info' => $pendingChangeObjectInfo,
+        ]);
+    }
+
+    if ($studyArea->isSkillsEnabled()) {
+      $builder
+        ->add('skills', DataSkillsType::class, [
+          'label'              => $names->skill->objs(true),
+          'translation_domain' => false,
+          'disabled'           => in_array('skills', $disabledFields),
+        ]);
+
+      // No review support for skills as of now
+      // ->add('skills_review', DisplayPendingChangeType::class, [
+      //   'field'               => 'skills',
+      //   'pending_change_info' => $pendingChangeObjectInfo,
+      // ]);
+    }
+
+    $builder
         // This field is also used by the ckeditor plugin for concept selection
       ->add('priorKnowledge', EntityType::class, [
         'label'              => $fieldNames->priorKnowledge(true),
@@ -226,11 +248,12 @@ class EditConceptType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('selfAssessment', BaseDataTextType::class, [
-        'label'      => $fieldNames->selfAssessment(true),
-        'required'   => false,
-        'data_class' => DataSelfAssessment::class,
-        'studyArea'  => $studyArea,
-        'disabled'   => in_array('selfAssessment', $disabledFields),
+        'label'              => $fieldNames->selfAssessment(true),
+        'translation_domain' => false,
+        'required'           => false,
+        'data_class'         => DataSelfAssessment::class,
+        'studyArea'          => $studyArea,
+        'disabled'           => in_array('selfAssessment', $disabledFields),
       ])
       ->add('selfAssessment_review', DisplayPendingChangeType::class, [
         'field'               => 'selfAssessment',

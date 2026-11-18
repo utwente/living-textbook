@@ -2005,6 +2005,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     dsn?: scalar|Param|null, // If this value is not provided, the SDK will try to read it from the SENTRY_DSN environment variable. If that variable also does not exist, the SDK will not send any events.
  *     register_error_listener?: bool|Param, // Default: true
  *     register_error_handler?: bool|Param, // Default: true
+ *     register_monolog_handler?: bool|Param, // EXPERIMENT: automatically push a Sentry handler onto every Monolog channel (requires MonologBundle). // Default: false
  *     logger?: scalar|Param|null, // The service ID of the PSR-3 logger used to log messages coming from the SDK client. Be aware that setting the same logger of the application may create a circular loop when an event fails to be sent. // Default: null
  *     options?: array{
  *         integrations?: mixed, // Default: []
@@ -2403,6 +2404,31 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         allow_discovery_access_token_issuer?: bool|Param, // Allow the non-standard `access_token_issuer` field in the discovery document as the expected issuer for access token validation. // Default: false
  *     }>,
  * }
+ * @psalm-type DrensoDeployerConfig = array{
+ *     base_dir?: scalar|Param|null, // The path where the deployment related files are to be found // Default: "%kernel.project_dir%/deploy"
+ *     controllers_dir?: scalar|Param|null, // The path where the update controllers are to be found // Default: "controllers"
+ *     content_dir?: scalar|Param|null, // The path where the update page contents are to be found // Default: "content"
+ *     script_dir?: scalar|Param|null, // The path where the deployment scripts are to be found // Default: "scripts"
+ *     namespace?: scalar|Param|null, // The namespace of the deployment scripts // Default: "DrensoDeployer"
+ *     generator_enabled?: scalar|Param|null, // Whether the generator command is available // Default: true
+ *     deploy_indicator?: scalar|Param|null, // The file that should exists to indicate deployment is running // Default: ".deploying"
+ *     block_messenger_worker_during_deploy?: scalar|Param|null, // Whether to block messenger worker startup when a deployment is running // Default: true
+ *     update_pages?: bool|array{ // A generator for static update pages
+ *         enabled?: bool|Param, // Default: false
+ *         preview_controller?: bool|Param, // Whether the preview controller needs to be registered. Routes still need to be imported manually. // Default: false
+ *         configurations?: array<string, array{ // Default: []
+ *             response_code?: int|Param, // The response code to use with this page // Default: 503
+ *             page_title?: scalar|Param|null, // Default: "Updating"
+ *             background_color?: scalar|Param|null, // Default: "#244E95"
+ *             svg?: scalar|Param|null, // Default: null
+ *             update_title?: scalar|Param|null, // Default: "Updating"
+ *             update_text?: scalar|Param|null, // Default: "Unfortunately, we are updating the website right now. However, this shouldn't take very long, so please try again in a few minutes!"
+ *             reload_seconds?: int|Param, // Whether to automatically reload the page after x seconds. Can be disabled by setting to 0. // Default: 60
+ *             enable_game?: bool|Param, // Whether to enable the Chromium dino mini game on the update page // Default: true
+ *             game_header?: scalar|Param|null, // Default: "Need to pass some time?"
+ *         }>,
+ *     },
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -2426,6 +2452,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     drenso_shared?: DrensoSharedConfig,
  *     nelmio_cors?: NelmioCorsConfig,
  *     drenso_oidc?: DrensoOidcConfig,
+ *     drenso_deployer?: DrensoDeployerConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -2450,6 +2477,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         drenso_shared?: DrensoSharedConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         drenso_oidc?: DrensoOidcConfig,
+ *         drenso_deployer?: DrensoDeployerConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -2474,6 +2502,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         drenso_shared?: DrensoSharedConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         drenso_oidc?: DrensoOidcConfig,
+ *         drenso_deployer?: DrensoDeployerConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -2499,6 +2528,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         drenso_shared?: DrensoSharedConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         drenso_oidc?: DrensoOidcConfig,
+ *         drenso_deployer?: DrensoDeployerConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

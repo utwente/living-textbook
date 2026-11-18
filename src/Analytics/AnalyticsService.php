@@ -12,14 +12,14 @@ use App\Analytics\Model\LearningPathVisualisationRequest;
 use App\Analytics\Model\LearningPathVisualisationResult;
 use App\Analytics\Model\SynthesizeRequest;
 use App\Console\NullStyle;
+use App\Data\Export\Provider\ConceptIdNameExportProvider;
+use App\Data\Export\Provider\RelationExportProvider;
 use App\Entity\Contracts\StudyAreaFilteredInterface;
 use App\Entity\LearningPath;
 use App\Entity\LearningPathElement;
 use App\Entity\PageLoad;
 use App\Entity\StudyArea;
 use App\Excel\TrackingExportBuilder;
-use App\Export\Provider\ConceptIdNameProvider;
-use App\Export\Provider\RelationProvider;
 use App\Repository\LearningPathRepository;
 use App\Repository\PageLoadRepository;
 use App\Repository\TrackingEventRepository;
@@ -67,14 +67,14 @@ final readonly class AnalyticsService
 
   public function __construct(
     private TrackingExportBuilder $trackingExportBuilder,
-    private ConceptIdNameProvider $conceptIdNameProvider,
+    private ConceptIdNameExportProvider $conceptIdNameProvider,
     private SpreadsheetHelper $spreadsheetHelper,
     string $projectDir,
     string $cacheDir,
     private TrackingEventRepository $trackingEventRepository,
     private PageLoadRepository $pageLoadRepository,
     private LearningPathRepository $learningPathRepository,
-    private RelationProvider $relationProvider,
+    private RelationExportProvider $relationProvider,
     private EntityManagerInterface $entityManager,
     private string $host,
     private bool $isDebug,

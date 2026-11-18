@@ -25,7 +25,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use function assert;
 use function basename;
 use function mb_strtolower;
 use function preg_match;
@@ -117,7 +116,6 @@ class PrintController extends AbstractController
 
     switch (true) {
       case $e instanceof ImageNotFoundException:
-        assert($e instanceof ImageNotFoundException);
         $imageLocation = $e->getImageLocation();
         $isUrl         = $this->isUrl($imageLocation);
 
@@ -130,8 +128,6 @@ class PrintController extends AbstractController
           'studyArea'    => $studyArea,
         ]);
       case $e instanceof LatexException:
-        assert($e instanceof LatexException);
-
         return $this->render('print/latex_error.html.twig', [
           'error' => $e,
         ]);

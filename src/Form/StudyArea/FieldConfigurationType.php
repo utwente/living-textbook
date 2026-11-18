@@ -2,6 +2,7 @@
 
 namespace App\Form\StudyArea;
 
+use App\Entity\StudyArea;
 use App\Entity\StudyAreaFieldConfiguration;
 use App\Form\Type\SaveType;
 use Override;
@@ -9,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/** @extends AbstractType<StudyAreaFieldConfiguration> */
 class FieldConfigurationType extends AbstractType
 {
   #[Override]
@@ -16,7 +18,7 @@ class FieldConfigurationType extends AbstractType
   {
     $this
       ->conceptFields($builder)
-      ->learningOutcomeFields($builder);
+      ->skillFields($builder, $options);
 
     $builder
       ->add('submit', SaveType::class, [
@@ -28,58 +30,60 @@ class FieldConfigurationType extends AbstractType
   #[Override]
   public function configureOptions(OptionsResolver $resolver): void
   {
-    $resolver->setDefaults([
-      'data_class' => StudyAreaFieldConfiguration::class,
-    ]);
+    $resolver
+      ->setDefault('data_class', StudyAreaFieldConfiguration::class)
+      ->setRequired('study_area')
+      ->setAllowedTypes('study_area', StudyArea::class);
   }
 
+  /** @param FormBuilderInterface<StudyAreaFieldConfiguration|null> $builder */
   private function conceptFields(FormBuilderInterface $builder): self
   {
     $builder
-      ->add('concept_definition_name', null, [
+      ->add('conceptDefinitionName', null, [
         'form_header' => 'concept._name',
         'label'       => 'concept.definition',
         'attr'        => [
           'placeholder' => 'concept.definition',
         ],
       ])
-      ->add('concept_introduction_name', null, [
+      ->add('conceptIntroductionName', null, [
         'label' => 'concept.introduction',
         'attr'  => [
           'placeholder' => 'concept.introduction',
         ],
       ])
-      ->add('concept_synonyms_name', null, [
+      ->add('conceptSynonymsName', null, [
         'label' => 'concept.synonyms',
         'attr'  => [
           'placeholder' => 'concept.synonyms',
         ],
       ])
-      ->add('concept_prior_knowledge_name', null, [
+      ->add('conceptPriorKnowledgeName', null, [
         'label' => 'concept.prior-knowledge',
         'attr'  => [
           'placeholder' => 'concept.prior-knowledge',
         ],
       ])
-      ->add('concept_theory_explanation_name', null, [
+      ->add('conceptTheoryExplanationName', null, [
         'label' => 'concept.theory-explanation',
         'attr'  => [
           'placeholder' => 'concept.theory-explanation',
         ],
       ])
-      ->add('concept_how_to_name', null, [
+      ->add('conceptHowtoName', null, [
         'label' => 'concept.how-to',
         'attr'  => [
           'placeholder' => 'concept.how-to',
         ],
       ])
-      ->add('concept_examples_name', null, [
+      ->add('conceptExamplesName', null, [
         'label' => 'concept.examples',
         'attr'  => [
           'placeholder' => 'concept.examples',
         ],
       ])
-      ->add('concept_self_assessment_name', null, [
+      ->add('conceptSelfAssessmentName', null, [
         'label' => 'concept.self-assessment',
         'attr'  => [
           'placeholder' => 'concept.self-assessment',
@@ -89,16 +93,37 @@ class FieldConfigurationType extends AbstractType
     return $this;
   }
 
-  private function learningOutcomeFields(FormBuilderInterface $builder): void
+  /**
+   * @param FormBuilderInterface<StudyAreaFieldConfiguration|null> $builder
+   * @param array<string, mixed>                                   $options
+   */
+  private function skillFields(FormBuilderInterface $builder, array $options): void
   {
-    $builder
-      ->add('learningOutcomeObjName', null, [
-        'form_header' => 'learning-outcome._name',
-        'label'       => 'field-configuration.obj-name',
-        'help'        => 'field-configuration.obj-help',
-        'attr'        => [
-          'placeholder' => 'learning-outcome._name',
-        ],
-      ]);
+    /** @var StudyArea $studyArea */
+    $studyArea = $options['study_area'];
+
+    if ($studyArea->isLearningOutcomesEnabled()) {
+      $builder
+        ->add('learningOutcomeObjName', null, [
+          'form_header' => 'learning-outcome._name',
+          'label'       => 'field-configuration.obj-name',
+          'help'        => 'field-configuration.obj-help',
+          'attr'        => [
+            'placeholder' => 'learning-outcome._name',
+          ],
+        ]);
+    }
+
+    if ($studyArea->isSkillsEnabled()) {
+      $builder
+        ->add('skillObjName', null, [
+          'form_header' => 'skill._name',
+          'label'       => 'field-configuration.obj-name',
+          'help'        => 'field-configuration.obj-help',
+          'attr'        => [
+            'placeholder' => 'skill._name',
+          ],
+        ]);
+    }
   }
 }

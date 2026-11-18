@@ -16,15 +16,13 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function assert;
-
 class LearningPathAnalyticsType extends AbstractType
 {
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyArea $studyArea */
     $studyArea = $options['study_area'];
-    assert($studyArea instanceof StudyArea);
 
     $builder
       ->add('learningPath', EntityType::class, [

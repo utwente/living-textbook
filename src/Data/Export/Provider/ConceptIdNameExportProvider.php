@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Data\Export\Provider;
+
+use App\Data\Export\ExportProviderInterface;
+use App\Entity\Concept;
+use App\Entity\StudyArea;
+use App\Repository\ConceptRepository;
+use Drenso\Shared\Helper\SpreadsheetHelper;
+use Override;
+use PhpOffice\PhpSpreadsheet\Cell\CellAddress;
+use PhpOffice\PhpSpreadsheet\Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Symfony\Component\DependencyInjection\Attribute\Lazy;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+use function sprintf;
+
+#[Lazy]
+final readonly class ConceptIdNameExportProvider implements ExportProviderInterface
+{
+  public function __construct(
+    private ConceptRepository $conceptRepository,
+    private SpreadsheetHelper $spreadsheetHelper)
+  {
+  }
+
+  #[Override]
+  public static function getName(): string
+  {
+    return 'concept-id-name';
+  }
+
+  #[Override]
+  public function isAvailable(StudyArea $studyArea): bool
+  {
+    return true;
+  }
+
+  #[Override]
+  public function getPreview(StudyArea $studyArea): string
+  {
+    return <<<'EOT'
+"<id>";"<concept-name>"
+"<id>";"<concept-name>"
+"<id>";"<concept-name>"
+EOT;
+  }
+
+  /**
+   * Get the export spreadsheet.
+   *
+   * @throws Exception
+   */
+  public function getSpreadSheet(StudyArea $studyArea): Spreadsheet
+  {
+    /** @var Concept[] $concepts */
+    $concepts = $this->conceptRepository
+      ->findForStudyAreaOrderByNameQb($studyArea)
+      ->orderBy('c.id')
+      ->getQuery()->getResult();
+
+    $row         = 1;
+    $spreadSheet = new Spreadsheet();
+    $sheet       = $spreadSheet->getSheet(0);
+    foreach ($concepts as $concept) {
+      $column = 1;
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column++, $row), $concept->getId());
+      $sheet->setCellValue(CellAddress::fromColumnAndRow($column, $row++), $concept->getName());
+    }
+
+    return $spreadSheet;
+  }
+
+  /** @throws Exception */
+  #[Override]
+  public function export(StudyArea $studyArea): StreamedResponse
+  {
+    return $this->spreadsheetHelper->createCsvResponse($this->getSpreadSheet($studyArea),
+      sprintf('%s_concept_id_name_export.csv', $studyArea->getName()));
+  }
+}

@@ -14,15 +14,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function assert;
-
 class StudyAreaGroupType extends AbstractType
 {
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyAreaGroup $studyAreaGroup */
     $studyAreaGroup = $options['study_area_group'];
-    assert($studyAreaGroup instanceof StudyAreaGroup);
 
     $builder
       ->add('name', TextType::class)

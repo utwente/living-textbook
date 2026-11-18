@@ -41,7 +41,7 @@ class ExternalResourceController extends AbstractController
       $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_ADD, $snapshot);
 
       // Return to list
-      $this->addFlash('success', $trans->trans('external-resource.saved', ['%item%' => $externalResource->getTitle()]));
+      $this->addFlash('success', $trans->trans('external-resource.saved', ['%item%' => $externalResource->getTitleOrUrl()]));
 
       // Always return to list as there is no show
       return $this->redirectToRoute('app_externalresource_list');
@@ -91,7 +91,7 @@ class ExternalResourceController extends AbstractController
       $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_EDIT, $snapshot);
 
       // Return to list
-      $this->addFlash('success', $trans->trans('external-resource.updated', ['%item%' => $externalResource->getTitle()]));
+      $this->addFlash('success', $trans->trans('external-resource.updated', ['%item%' => $externalResource->getTitleOrUrl()]));
 
       // Always return to list as there is no show
       return $this->redirectToRoute('app_externalresource_list');
@@ -145,7 +145,7 @@ class ExternalResourceController extends AbstractController
       // Save the data
       $reviewService->storeChange($studyArea, $externalResource, PendingChange::CHANGE_TYPE_REMOVE);
 
-      $this->addFlash('success', $trans->trans('external-resource.removed', ['%item%' => $externalResource->getTitle()]));
+      $this->addFlash('success', $trans->trans('external-resource.removed', ['%item%' => $externalResource->getTitleOrUrl()]));
 
       return $this->redirectToRoute('app_externalresource_list');
     }

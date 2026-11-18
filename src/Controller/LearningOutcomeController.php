@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Attribute\DenyOnFrozenStudyArea;
+use App\Attribute\NotFoundWhenLearningOutcomesDisabled;
 use App\Entity\LearningOutcome;
 use App\Entity\PendingChange;
 use App\Form\LearningOutcome\EditLearningOutcomeType;
@@ -29,6 +30,7 @@ class LearningOutcomeController extends AbstractController
   #[Route('/add')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function add(
     Request $request, RequestStudyArea $requestStudyArea, ReviewService $reviewService, TranslatorInterface $trans,
     NamingService $namingService): Response
@@ -52,7 +54,7 @@ class LearningOutcomeController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.saved', [
         '%item%'     => $learningOutcome->getShortName(),
-        '%singular%' => $namingService->get()->learningOutcome()->obj(true),
+        '%singular%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       if (!$learningOutcome->getId() || SaveType::isListClicked($form)) {
@@ -70,7 +72,8 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/edit/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', subject: 'requestStudyArea', routeParams: ['learningOutcome' => '{learningOutcome}'])]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function edit(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -84,7 +87,7 @@ class LearningOutcomeController extends AbstractController
     // Verify it can be edited
     if (!$reviewService->canObjectBeEdited($studyArea, $learningOutcome)) {
       $this->addFlash('error', $trans->trans('review.edit-not-possible', [
-        '%item%' => $namingService->get()->learningOutcome()->obj(true),
+        '%item%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -108,7 +111,7 @@ class LearningOutcomeController extends AbstractController
       // Return to list
       $this->addFlash('success', $trans->trans('learning-outcome.updated', [
         '%item%'     => $learningOutcome->getShortName(),
-        '%singular%' => $namingService->get()->learningOutcome()->obj(true),
+        '%singular%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       if (SaveType::isListClicked($form)) {
@@ -126,6 +129,7 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/list')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function list(RequestStudyArea $requestStudyArea, LearningOutcomeRepository $repo): Response
   {
     return $this->render('learning_outcome/list.html.twig', [
@@ -136,7 +140,8 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/remove/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
-  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', routeParams: ['learningOutcome' => '{learningOutcome}'], subject: 'requestStudyArea')]
+  #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_show', subject: 'requestStudyArea', routeParams: ['learningOutcome' => '{learningOutcome}'])]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function remove(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -151,7 +156,7 @@ class LearningOutcomeController extends AbstractController
     // Verify it can be deleted
     if (!$reviewService->canObjectBeRemoved($studyArea, $learningOutcome)) {
       $this->addFlash('error', $trans->trans('review.remove-not-possible', [
-        '%item%' => $namingService->get()->learningOutcome()->obj(true),
+        '%item%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -169,7 +174,7 @@ class LearningOutcomeController extends AbstractController
 
       $this->addFlash('success', $trans->trans('learning-outcome.removed', [
         '%item%'     => $learningOutcome->getShortName(),
-        '%singular%' => $namingService->get()->learningOutcome()->obj(true),
+        '%singular%' => $namingService->get()->learningOutcome->obj(true),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -184,6 +189,7 @@ class LearningOutcomeController extends AbstractController
   #[Route('/remove/unused')]
   #[IsGranted(StudyAreaVoter::EDIT, subject: 'requestStudyArea')]
   #[DenyOnFrozenStudyArea(route: 'app_learningoutcome_list', subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function removeUnused(
     Request $request, RequestStudyArea $requestStudyArea, LearningOutcomeRepository $learningOutcomeRepository,
     ReviewService $reviewService, TranslatorInterface $trans, NamingService $namingService): Response
@@ -193,7 +199,7 @@ class LearningOutcomeController extends AbstractController
     $unusedLearningOutcomes = $learningOutcomeRepository->findUnusedInStudyArea($studyArea);
     if (count($unusedLearningOutcomes) === 0) {
       $this->addFlash('info', $trans->trans('learning-outcome.no-unused', [
-        '%plural%' => $namingService->get()->learningOutcome()->objs(),
+        '%plural%' => $namingService->get()->learningOutcome->objs(),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -210,7 +216,7 @@ class LearningOutcomeController extends AbstractController
         if (!$reviewService->canObjectBeRemoved($studyArea, $unusedLearningOutcome)) {
           $this->addFlash('error', $trans->trans('review.remove-not-possible', [
             '%item%' => sprintf('%s "%s"',
-              $namingService->get()->learningOutcome()->obj(true), $unusedLearningOutcome->getName()),
+              $namingService->get()->learningOutcome->obj(true), $unusedLearningOutcome->getName()),
           ]));
 
           // Only add warning, but continue with the others
@@ -222,7 +228,7 @@ class LearningOutcomeController extends AbstractController
       }
 
       $this->addFlash('success', $trans->trans('learning-outcome.unused-removed', [
-        '%plural%' => $namingService->get()->learningOutcome()->objs(),
+        '%plural%' => $namingService->get()->learningOutcome->objs(),
       ]));
 
       return $this->redirectToRoute('app_learningoutcome_list');
@@ -236,6 +242,7 @@ class LearningOutcomeController extends AbstractController
 
   #[Route('/show/{learningOutcome<\d+>}')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
+  #[NotFoundWhenLearningOutcomesDisabled(subject: 'requestStudyArea')]
   public function show(RequestStudyArea $requestStudyArea, LearningOutcome $learningOutcome): Response
   {
     // Check if correct study area

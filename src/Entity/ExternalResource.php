@@ -24,10 +24,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as JMSA;
 use Override;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 use function assert;
 use function stripos;
-use function trim;
 
 #[ORM\Entity(repositoryClass: ExternalResourceRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
@@ -47,12 +47,11 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   #[ORM\JoinColumn(name: 'study_area_id', referencedColumnName: 'id', nullable: false)]
   private ?StudyArea $studyArea = null;
 
-  #[Assert\NotBlank]
   #[Assert\Length(min: 1, max: 512)]
-  #[ORM\Column(name: 'title', length: 512, nullable: false)]
+  #[ORM\Column(name: 'title', length: 512, nullable: true)]
   #[JMSA\Groups(['Default', 'review_change'])]
   #[JMSA\Type('string')]
-  private string $title = '';
+  private ?string $title = null;
 
   #[Assert\Length(max: 1024)]
   #[ORM\Column(name: 'description', type: Types::TEXT, nullable: true)]
@@ -76,6 +75,18 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     $this->concepts = new ArrayCollection();
   }
 
+  #[Assert\Callback]
+  public function validateObject(ExecutionContextInterface $context): void
+  {
+    // Either title or url must be set
+    if (!$this->title && !$this->url) {
+      $context
+        ->buildViolation('external-resource.title-or-url')
+        ->atPath('title')
+        ->addViolation();
+    }
+  }
+
   /** Searches in the external resource on the given search, returns an array with search result metadata. */
   #[Override]
   public function searchIn(string $search): array
@@ -84,7 +95,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     $results = [];
 
     // Search in different parts
-    if (stripos($this->getTitle(), $search) !== false) {
+    if ($this->getTitle() && stripos($this->getTitle(), $search) !== false) {
       $results[] = SearchController::createResult(255, 'title', $this->getTitle());
     }
     if ($this->getDescription() && stripos($this->getDescription(), $search) !== false) {
@@ -96,7 +107,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
 
     return [
       '_data'   => $this,
-      '_title'  => $this->getTitle(),
+      '_title'  => $this->getTitleOrUrl(),
       'results' => $results,
     ];
   }
@@ -108,8 +119,8 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
+    /** @var self $changeObj */
     $changeObj = $this->testChange($change);
-    assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
       match ($changedField) {
@@ -124,7 +135,7 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
   #[Override]
   public function getReviewTitle(): string
   {
-    return $this->getTitle();
+    return $this->getTitleOrUrl();
   }
 
   /** @return Collection<int, Concept> */
@@ -133,14 +144,19 @@ class ExternalResource implements SearchableInterface, StudyAreaFilteredInterfac
     return $this->concepts;
   }
 
-  public function getTitle(): string
+  public function getTitleOrUrl(): string
+  {
+    return $this->title ?? $this->url ?? '<no-title>';
+  }
+
+  public function getTitle(): ?string
   {
     return $this->title;
   }
 
-  public function setTitle(string $title): self
+  public function setTitle(?string $title): self
   {
-    $this->title = trim($title);
+    $this->title = StringHelper::emptyToNull($title);
 
     return $this;
   }

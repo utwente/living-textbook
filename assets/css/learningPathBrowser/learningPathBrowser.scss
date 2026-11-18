@@ -32,7 +32,7 @@ $bottom-row-size-large-screen-breakpoint: 650px;
   background-color: $background-color;
 
   & > div {
-    @include div-center();
+    @include div-center;
     text-align: center;
     font-size: $loader-size - 2rem;
     color: $loader-color;

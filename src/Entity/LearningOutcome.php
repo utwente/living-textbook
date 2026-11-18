@@ -31,6 +31,7 @@ use function sprintf;
 use function stripos;
 use function trim;
 
+/** These are considered to be unclassified skills. */
 #[UniqueEntity(fields: ['studyArea', 'number'], message: 'learning-outcome.number-already-used', errorPath: 'number')]
 #[ORM\Entity(repositoryClass: LearningOutcomeRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt')]
@@ -113,8 +114,8 @@ class LearningOutcome implements SearchableInterface, StudyAreaFilteredInterface
   #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
+    /** @var self $changeObj */
     $changeObj = $this->testChange($change);
-    assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
       match ($changedField) {

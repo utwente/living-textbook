@@ -758,12 +758,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/ContributorController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function array_key_exists\\(\\) with \'relationName\' and non\\-empty\\-array will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/DataController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on class\\-string\\|object\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 1,
@@ -932,27 +926,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Controller/PermissionsController.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Bobv\\\\LatexBundle\\\\Exception\\\\ImageNotFoundException and Bobv\\\\LatexBundle\\\\Exception\\\\ImageNotFoundException will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Controller/PrintController.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between Bobv\\\\LatexBundle\\\\Exception\\\\LatexException and Bobv\\\\LatexBundle\\\\Exception\\\\LatexException will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
 	'path' => __DIR__ . '/src/Controller/PrintController.php',
 ];
 $ignoreErrors[] = [
@@ -1196,12 +1172,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with false will always evaluate to false\\.$#',
-	'identifier' => 'function.impossibleType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Call to method getLastUpdated\\(\\) on an unknown class App\\\\Database\\\\Traits\\\\Blameable\\.$#',
 	'identifier' => 'class.notFound',
 	'count' => 2,
@@ -1216,18 +1186,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Cannot call method getId\\(\\) on App\\\\Entity\\\\RelationType\\|null\\.$#',
 	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\Entity\\\\Data\\\\DataInterface and App\\\\Entity\\\\Data\\\\BaseDataTextObject will always evaluate to false\\.$#',
-	'identifier' => 'instanceof.alwaysFalse',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Concept.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\Entity\\\\Data\\\\DataInterface and trait App\\\\Entity\\\\Data\\\\BaseDataTextObject will always evaluate to false\\.$#',
-	'identifier' => 'instanceof.trait',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/Concept.php',
 ];
@@ -1500,18 +1458,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Entity/LearningPath.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to function assert\\(\\) with true will always evaluate to true\\.$#',
-	'identifier' => 'function.alreadyNarrowedType',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instanceof between App\\\\Repository\\\\UserGroupEmailRepository\\<App\\\\Entity\\\\UserGroupEmail\\> and App\\\\Repository\\\\UserGroupEmailRepository will always evaluate to true\\.$#',
-	'identifier' => 'instanceof.alwaysTrue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Entity/Listener/UserListener.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Entity\\\\PageLoad\\:\\:getOriginContext\\(\\) return type has no value type specified in iterable type array\\.$#',
@@ -2012,45 +1958,15 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/EntityHandler/TagHandler.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getAccessType\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getCreatedAt\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getDisplayName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
 	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getLastEditInfo\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
 	'identifier' => 'method.nonObject',
 	'count' => 2,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getOwner\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
 	'path' => __DIR__ . '/src/Excel/StudyAreaStatusBuilder.php',
 ];
 $ignoreErrors[] = [
@@ -2070,42 +1986,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.iterableValue',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Excel/TrackingExportBuilder.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of function preg_replace expects array\\<float\\|int\\|string\\>\\|string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/ExportService.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getCamelizedName\\(\\) on App\\\\Entity\\\\RelationType\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getFullName\\(\\) on App\\\\Entity\\\\User\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getOwner\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$concept of method App\\\\Export\\\\Provider\\\\RdfProvider\\:\\:generateConceptResourceUrl\\(\\) expects App\\\\Entity\\\\Concept, App\\\\Entity\\\\Concept\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Export/Provider/RdfProvider.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getName\\(\\) on App\\\\Entity\\\\Concept\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 6,
-	'path' => __DIR__ . '/src/Export/Provider/RelationProvider.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Abbreviation\\\\EditAbbreviationType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -2180,44 +2060,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Form/Concept/ConceptRelationsType.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot call method getConcepts\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 2,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot call method getRelationTypes\\(\\) on App\\\\Entity\\\\StudyArea\\|null\\.$#',
-	'identifier' => 'method.nonObject',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\Concept\\\\EditConceptType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
 	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\ContributorRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\ExternalResourceRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\LearningOutcomeRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$studyArea of method App\\\\Repository\\\\TagRepository\\:\\:findForStudyAreaQb\\(\\) expects App\\\\Entity\\\\StudyArea, App\\\\Entity\\\\StudyArea\\|null given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/Concept/EditConceptType.php',
 ];
@@ -2244,12 +2088,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/Data/DuplicateType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Form\\\\Data\\\\JsonUploadType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/Data/JsonUploadType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\ExternalResource\\\\EditExternalResourceType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -2448,24 +2286,6 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Form/StudyArea/EditStudyAreaType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class App\\\\Form\\\\StudyArea\\\\FieldConfigurationType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/StudyArea/FieldConfigurationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Form\\\\StudyArea\\\\FieldConfigurationType\\:\\:conceptFields\\(\\) has parameter \\$builder with generic interface Symfony\\\\Component\\\\Form\\\\FormBuilderInterface but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/StudyArea/FieldConfigurationType.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method App\\\\Form\\\\StudyArea\\\\FieldConfigurationType\\:\\:learningOutcomeFields\\(\\) has parameter \\$builder with generic interface Symfony\\\\Component\\\\Form\\\\FormBuilderInterface but does not specify its types\\: TData$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Form/StudyArea/FieldConfigurationType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Class App\\\\Form\\\\StudyArea\\\\TransferOwnerType extends generic class Symfony\\\\Component\\\\Form\\\\AbstractType but does not specify its types\\: TData$#',
@@ -2902,12 +2722,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method App\\\\Serializer\\\\Handler\\\\LearningPathVisualisationResultHandler\\:\\:getSubscribedEvents\\(\\) return type has no value type specified in iterable type array\\.$#',
 	'identifier' => 'missingType.iterableValue',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Serializer/Handler/LearningPathVisualisationResultHandler.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Negated boolean expression is always false\\.$#',
-	'identifier' => 'booleanNot.alwaysFalse',
 	'count' => 1,
 	'path' => __DIR__ . '/src/Serializer/Handler/LearningPathVisualisationResultHandler.php',
 ];

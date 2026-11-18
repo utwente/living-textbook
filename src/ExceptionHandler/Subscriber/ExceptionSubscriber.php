@@ -3,20 +3,14 @@
 namespace App\ExceptionHandler\Subscriber;
 
 use App\Request\Subscriber\RequestStudyAreaSubscriber;
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class ExceptionSubscriber implements EventSubscriberInterface
+class ExceptionSubscriber
 {
-  #[Override]
-  public static function getSubscribedEvents(): array
-  {
-    return [KernelEvents::EXCEPTION => [['onKernelException', 0]]];
-  }
-
+  #[AsEventListener(event: KernelEvents::EXCEPTION, priority: 0)]
   public function onKernelException(ExceptionEvent $event): void
   {
     $exception = $event->getThrowable();

@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'data.import.upload-json'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'data.import.upload-json-text'|trans }}</p>
+
+  {{ form(form) }}
+{% endblock %}

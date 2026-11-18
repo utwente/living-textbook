@@ -24,7 +24,6 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function assert;
 use function Symfony\Component\String\u;
 
 class EditStudyAreaType extends AbstractType
@@ -38,8 +37,9 @@ class EditStudyAreaType extends AbstractType
   #[Override]
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    /** @var StudyArea $studyArea */
     $studyArea = $options['studyArea'];
-    assert($studyArea instanceof StudyArea);
+
     $editing = $studyArea->getId() !== null;
     $builder
       ->add('name', TextType::class, [
@@ -105,6 +105,16 @@ class EditStudyAreaType extends AbstractType
     }
 
     $builder
+      ->add('learningOutcomesEnabled', CheckboxType::class, [
+        'label'    => 'study-area.unclassified-skills',
+        'help'     => 'study-area.unclassified-skills-help',
+        'required' => false,
+      ])
+      ->add('skillsEnabled', CheckboxType::class, [
+        'label'    => 'study-area.classified-skills',
+        'help'     => 'study-area.classified-skills-help',
+        'required' => false,
+      ])
       ->add('reviewModeEnabled', CheckboxType::class, [
         'label'    => 'study-area.review-mode',
         'help'     => 'study-area.review-mode-help',

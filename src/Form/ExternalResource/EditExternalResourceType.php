@@ -28,6 +28,7 @@ class EditExternalResourceType extends AbstractType
     $builder
       ->add('title', TextType::class, [
         'label'    => 'external-resource.title',
+        'required' => false,
         'disabled' => in_array('title', $disabledFields),
       ])
       ->add('title_review', DisplayPendingChangeType::class, [
@@ -35,10 +36,9 @@ class EditExternalResourceType extends AbstractType
         'pending_change_info' => $pendingChangeObjectInfo,
       ])
       ->add('description', TextType::class, [
-        'empty_data' => '',
-        'label'      => 'external-resource.description',
-        'required'   => false,
-        'disabled'   => in_array('description', $disabledFields),
+        'label'    => 'external-resource.description',
+        'required' => false,
+        'disabled' => in_array('description', $disabledFields),
       ])
       ->add('description_review', DisplayPendingChangeType::class, [
         'field'               => 'description',

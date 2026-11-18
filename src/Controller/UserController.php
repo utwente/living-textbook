@@ -26,10 +26,10 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use function assert;
 use function bin2hex;
 use function random_bytes;
 use function sprintf;
@@ -49,12 +49,11 @@ class UserController extends AbstractController
   #[Route('/api-tokens/generate')]
   #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function apiTokensGenerate(
+    #[CurrentUser] User $user,
     Request $request,
     EntityManagerInterface $em,
-    UserPasswordHasherInterface $passwordHasher): Response
-  {
-    $user = $this->getUser();
-    assert($user instanceof User);
+    UserPasswordHasherInterface $passwordHasher,
+  ): Response {
     $formToken = new UserApiToken($user, '');
     $form      = $this->createForm(GenerateApiTokenType::class, $formToken);
     $form->handleRequest($request);
@@ -99,12 +98,11 @@ class UserController extends AbstractController
   #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function apiTokensRemove(
     Request $request,
+    #[CurrentUser] User $currentUser,
     UserApiToken $userApiToken,
     EntityManagerInterface $em,
-    TranslatorInterface $trans): Response
-  {
-    $currentUser = $this->getUser();
-    assert($currentUser instanceof User);
+    TranslatorInterface $trans,
+  ): Response {
     if ($userApiToken->getUser()->getId() !== $currentUser->getId()) {
       throw $this->createNotFoundException();
     }
@@ -138,8 +136,8 @@ class UserController extends AbstractController
     MailerInterface $mailer,
     UserRepository $userRepository,
     UserProtoRepository $userProtoRepository,
-    UserPasswordHasherInterface $passwordHasher): Response
-  {
+    UserPasswordHasherInterface $passwordHasher,
+  ): Response {
     $form = $this->createForm(AddFallbackUsersType::class);
     $form->handleRequest($request);
 
@@ -198,13 +196,11 @@ class UserController extends AbstractController
   #[IsGranted(AuthenticatedVoter::IS_AUTHENTICATED_FULLY)]
   public function fallbackChangeOwnPassword(
     Request $request,
+    #[CurrentUser] User $user,
     EntityManagerInterface $em,
     UserPasswordHasherInterface $passwordHasher,
-    TranslatorInterface $trans): Response
-  {
-    $user = $this->getUser();
-    assert($user instanceof User);
-
+    TranslatorInterface $trans,
+  ): Response {
     // Check whether user is a fallback user
     if ($user->isOidc()) {
       throw $this->createNotFoundException();
@@ -304,6 +300,7 @@ class UserController extends AbstractController
   #[IsGranted(User::ROLE_SUPER_ADMIN)]
   public function fallbackRemove(
     Request $request,
+    #[CurrentUser] User $secUser,
     User $user,
     EntityManagerInterface $em,
     TranslatorInterface $trans,
@@ -315,8 +312,6 @@ class UserController extends AbstractController
     }
 
     // Check if self
-    $secUser = $this->getUser();
-    assert($secUser instanceof User);
     if ($user->getId() == $secUser->getId()) {
       $this->addFlash('notice', $trans->trans('user.fallback.self-remove'));
 

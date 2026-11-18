@@ -59,6 +59,10 @@ form {
   &.card-collection {
     margin-bottom: 10px;
 
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
     & > .card-body {
       padding: 0.75rem;
 

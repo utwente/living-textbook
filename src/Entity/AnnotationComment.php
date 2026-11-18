@@ -26,7 +26,7 @@ class AnnotationComment implements IdInterface
   use SoftDeletable;
 
   #[Assert\NotNull]
-  #[ORM\ManyToOne(inversedBy: 'annotations')]
+  #[ORM\ManyToOne]
   #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
   private ?User $user = null;
 

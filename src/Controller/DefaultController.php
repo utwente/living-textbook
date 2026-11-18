@@ -40,6 +40,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -50,7 +51,6 @@ use function array_filter;
 use function array_key_exists;
 use function array_map;
 use function array_merge;
-use function assert;
 use function count;
 use function method_exists;
 use function reset;
@@ -81,9 +81,14 @@ class DefaultController extends AbstractController
   #[Route('/page/{pageUrl<.+>}', name: '_home_simple', options: ['no_login_wrap' => true], defaults: ['_studyArea' => null, 'pageUrl' => ''])]
   #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function index(
-    Request $request, RequestStudyArea $requestStudyArea, string $pageUrl, RouterInterface $router,
-    UserBrowserStateRepository $userBrowserStateRepository, ?Profiler $profiler): Response
-  {
+    #[CurrentUser] ?User $user,
+    Request $request,
+    RequestStudyArea $requestStudyArea,
+    string $pageUrl,
+    RouterInterface $router,
+    UserBrowserStateRepository $userBrowserStateRepository,
+    ?Profiler $profiler,
+  ): Response {
     // Disable profiler on the home page
     $profiler?->disable();
 
@@ -102,9 +107,6 @@ class DefaultController extends AbstractController
       return $this->redirectToRoute('app_default_landing');
     }
 
-    $user = $this->getUser();
-    assert($user === null || $user instanceof User);
-
     return $this->render('double_column.html.twig', [
       'studyArea'    => $studyArea,
       'browserState' => $user ? $userBrowserStateRepository->findForUser($user, $studyArea) : null,
@@ -119,12 +121,13 @@ class DefaultController extends AbstractController
   #[Route('', name: 'base_url', options: ['no_login_wrap' => true])]
   #[IsGranted(AuthenticatedVoter::PUBLIC_ACCESS)]
   public function landing(
-    Request $request, FormFactoryInterface $formFactory, TranslatorInterface $translator,
-    StudyAreaRepository $studyAreaRepository): Response
-  {
-    $user    = $this->getUser();
+    #[CurrentUser] ?User $user,
+    Request $request,
+    FormFactoryInterface $formFactory,
+    TranslatorInterface $translator,
+    StudyAreaRepository $studyAreaRepository,
+  ): Response {
     $session = $request->getSession();
-    assert($user === null || $user instanceof User);
 
     // When there is no user, render the login form
     if (!$user) {
@@ -175,16 +178,21 @@ class DefaultController extends AbstractController
   #[Route('/{_studyArea<\d+>}/dashboard', name: 'app_studyarea_list')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function dashboard(
-    RequestStudyArea $requestStudyArea, FormFactoryInterface $formFactory, StudyAreaRepository $studyAreaRepository,
-    ConceptRepository $conceptRepo, ConceptRelationRepository $conceptRelationRepo,
-    ContributorRepository $contributorRepository, AbbreviationRepository $abbreviationRepository,
-    ExternalResourceRepository $externalResourceRepo, LearningOutcomeRepository $learningOutcomeRepo,
-    LearningPathRepository $learningPathRepo, TagRepository $tagRepository,
-    UrlChecker $urlChecker, TranslatorInterface $translator): Response
-  {
-    $user = $this->getUser();
-    assert($user instanceof User);
-
+    #[CurrentUser] User $user,
+    RequestStudyArea $requestStudyArea,
+    FormFactoryInterface $formFactory,
+    StudyAreaRepository $studyAreaRepository,
+    ConceptRepository $conceptRepo,
+    ConceptRelationRepository $conceptRelationRepo,
+    ContributorRepository $contributorRepository,
+    AbbreviationRepository $abbreviationRepository,
+    ExternalResourceRepository $externalResourceRepo,
+    LearningOutcomeRepository $learningOutcomeRepo,
+    LearningPathRepository $learningPathRepo,
+    TagRepository $tagRepository,
+    UrlChecker $urlChecker,
+    TranslatorInterface $translator,
+  ): Response {
     $studyArea  = $requestStudyArea->getStudyArea();
     $studyAreas = $studyAreaRepository->getVisible($user);
 
@@ -488,7 +496,7 @@ class DefaultController extends AbstractController
               return strcasecmp($aPath, $bPath);
             }
 
-            return strcasecmp($this->externalResources[$aId]->getTitle(), $this->externalResources[$bId]->getTitle());
+            return strcasecmp($this->externalResources[$aId]->getTitleOrUrl(), $this->externalResources[$bId]->getTitleOrUrl());
           default:
             return -1;
         }

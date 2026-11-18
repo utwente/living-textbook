@@ -45,8 +45,11 @@ class ConceptRepository extends ServiceEntityRepository
 
   /** @return Concept[] */
   public function findForStudyAreaOrderedByName(
-    StudyArea $studyArea, bool $preLoadData = false, bool $conceptsOnly = false, bool $instancesOnly = false): mixed
-  {
+    StudyArea $studyArea,
+    bool $preLoadData = false,
+    bool $conceptsOnly = false,
+    bool $instancesOnly = false,
+  ): array {
     $qb = $this->findForStudyAreaOrderByNameQb($studyArea, $conceptsOnly, $instancesOnly);
 
     $this->loadRelations($qb, 'c');

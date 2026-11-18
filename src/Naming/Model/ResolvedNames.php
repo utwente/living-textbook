@@ -5,16 +5,13 @@ namespace App\Naming\Model;
 use Override;
 use Symfony\Component\String\Inflector\InflectorInterface;
 
-class ResolvedNames implements ResolvedNamesInterface
+readonly class ResolvedNames implements ResolvedNamesInterface
 {
-  private readonly ResolvedConceptNames $concept;
-
-  private readonly ResolvedLearningOutcomeNames $learningOutcome;
-
-  public function __construct(ResolvedConceptNames $concept, ResolvedLearningOutcomeNames $learningOutcome)
-  {
-    $this->concept         = $concept;
-    $this->learningOutcome = $learningOutcome;
+  public function __construct(
+    public ResolvedConceptNames $concept,
+    public ResolvedTermNames $learningOutcome,
+    public ResolvedTermNames $skill,
+  ) {
   }
 
   #[Override]
@@ -22,15 +19,6 @@ class ResolvedNames implements ResolvedNamesInterface
   {
     $this->concept->resolvePlurals($inflector);
     $this->learningOutcome->resolvePlurals($inflector);
-  }
-
-  public function concept(): ResolvedConceptNames
-  {
-    return $this->concept;
-  }
-
-  public function learningOutcome(): ResolvedLearningOutcomeNames
-  {
-    return $this->learningOutcome;
+    $this->skill->resolvePlurals($inflector);
   }
 }

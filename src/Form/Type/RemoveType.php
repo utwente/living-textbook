@@ -11,8 +11,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function assert;
-
 class RemoveType extends AbstractType
 {
   #[Override]
@@ -37,7 +35,7 @@ class RemoveType extends AbstractType
   /** Check whether the "remove" button is clicked. */
   public static function isRemoveClicked(FormInterface $form): bool
   {
-    assert($form instanceof Form);
+    /** @var Form $form */
     $clickedButton = $form->getClickedButton();
 
     if ($form->isSubmitted()

@@ -8,13 +8,13 @@ use App\Database\Traits\IdTrait;
 use App\Database\Traits\SoftDeletable;
 use App\Entity\Contracts\ReviewableInterface;
 use App\Entity\Contracts\SearchableInterface;
-use App\Entity\Data\BaseDataTextObject;
 use App\Entity\Data\DataExamples;
 use App\Entity\Data\DataHowTo;
-use App\Entity\Data\DataInterface;
 use App\Entity\Data\DataIntroduction;
 use App\Entity\Data\DataSelfAssessment;
+use App\Entity\Data\DataSkills;
 use App\Entity\Data\DataTheoryExplanation;
+use App\Entity\Data\TextDataInterface;
 use App\Entity\Traits\ReviewableTrait;
 use App\Repository\ConceptRepository;
 use App\Review\Exception\IncompatibleChangeException;
@@ -117,6 +117,14 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   #[JMSA\Type('ArrayCollection<App\Entity\LearningOutcome>')]
   #[JMSA\MaxDepth(2)]
   private Collection $learningOutcomes;
+
+  #[Assert\Valid]
+  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\JoinColumn(name: 'skills_id', referencedColumnName: 'id', nullable: false)]
+  #[JMSA\Expose]
+  #[JMSA\Groups(['review_change'])]
+  #[JMSA\Type(DataSkills::class)]
+  private DataSkills $skills;
 
   #[Assert\Valid]
   #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -228,8 +236,9 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $this->priorKnowledge   = new ArrayCollection();
     $this->priorKnowledgeOf = new ArrayCollection();
 
-    // Learning outcome
+    // Skills
     $this->learningOutcomes = new ArrayCollection();
+    $this->skills           = new DataSkills();
 
     // External resources
     $this->externalResources = new ArrayCollection();
@@ -282,8 +291,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   /** @throws Exception */
   private function doFixConceptRelationOrder(Collection $values, string $conceptRetriever, string $positionSetter): void
   {
+    /** @var ArrayIterator<int, ConceptRelation> $iterator */
     $iterator = $values->getIterator();
-    assert($iterator instanceof ArrayIterator);
     $iterator->uasort(static function (ConceptRelation $a, ConceptRelation $b) use ($conceptRetriever): int {
       $val = strcasecmp($a->getRelationName(), $b->getRelationName());
 
@@ -294,8 +303,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
 
     // Set sort order
     $key = 0;
-    foreach (iterator_to_array($iterator) as &$value) {
-      assert($value instanceof ConceptRelation);
+    /** @var ConceptRelation $value */
+    foreach (iterator_to_array($iterator) as $value) {
       $value->$positionSetter($key);
       $key++;
     }
@@ -322,8 +331,9 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
         || $this->getIntroduction()->hasData()
         || $this->getExamples()->hasData()
         || $this->getHowTo()->hasData()
-        || $this->selfAssessment->hasData()
-        || $this->theoryExplanation->hasData();
+        || $this->getSelfAssessment()->hasData()
+        || $this->getTheoryExplanation()->hasData()
+        || $this->getSkills()->hasData();
   }
 
   /** @return array Array with DateTime and username */
@@ -347,6 +357,7 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     $check($this->getIntroduction());
     $check($this->getSelfAssessment());
     $check($this->getTheoryExplanation());
+    $check($this->getSkills());
 
     // Check other data
     foreach ($this->getExternalResources() as $externalResource) {
@@ -405,11 +416,15 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
     ];
   }
 
-  private function filterDataOn(array &$results, DataInterface $data, int $prio, string $property, string $search): void
+  private function filterDataOn(array &$results, TextDataInterface $data, int $prio, string $property, string $search): void
   {
-    assert($data instanceof BaseDataTextObject);
-    if ($data->hasData() && stripos((string)$data->getText(), $search) !== false) {
-      $results[] = SearchController::createResult($prio, $property, $data->getText());
+    if (!$data->hasData()) {
+      return;
+    }
+
+    $text = (string)$data->getText();
+    if (stripos($text, $search) !== false) {
+      $results[] = SearchController::createResult($prio, $property, $text);
     }
   }
 
@@ -421,8 +436,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   #[Override]
   public function applyChanges(PendingChange $change, EntityManagerInterface $em, bool $ignoreEm = false): void
   {
+    /** @var self $changeObj */
     $changeObj = $this->testChange($change);
-    assert($changeObj instanceof self);
 
     foreach ($change->getChangedFields() as $changedField) {
       switch ($changedField) {
@@ -445,8 +460,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getPriorKnowledge()->clear();
 
           foreach ($changeObj->getPriorKnowledge() as $newPriorKnowledge) {
+            /** @var self $newPriorKnowledgeRef */
             $newPriorKnowledgeRef = $em->getReference(self::class, $newPriorKnowledge->getId());
-            assert($newPriorKnowledgeRef instanceof self);
             $this->addPriorKnowledge($newPriorKnowledgeRef);
           }
           break;
@@ -455,8 +470,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getLearningOutcomes()->clear();
 
           foreach ($changeObj->getLearningOutcomes() as $newLearningOutcome) {
+            /** @var LearningOutcome $newLearningOutcomeRef */
             $newLearningOutcomeRef = $em->getReference(LearningOutcome::class, $newLearningOutcome->getId());
-            assert($newLearningOutcomeRef instanceof LearningOutcome);
             $this->addLearningOutcome($newLearningOutcomeRef);
           }
           break;
@@ -474,8 +489,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getExternalResources()->clear();
 
           foreach ($changeObj->getExternalResources() as $newExternalResource) {
+            /** @var ExternalResource $newExternalResourceRef */
             $newExternalResourceRef = $em->getReference(ExternalResource::class, $newExternalResource->getId());
-            assert($newExternalResourceRef instanceof ExternalResource);
             $this->addExternalResource($newExternalResourceRef);
           }
           break;
@@ -484,8 +499,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getContributors()->clear();
 
           foreach ($changeObj->getContributors() as $newContributor) {
+            /** @var Contributor $newContributorRef */
             $newContributorRef = $em->getReference(Contributor::class, $newContributor->getId());
-            assert($newContributorRef instanceof Contributor);
             $this->addContributor($newContributorRef);
           }
           break;
@@ -494,8 +509,8 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
           $this->getTags()->clear();
 
           foreach ($changeObj->getTags() as $newTag) {
+            /** @var Tag $newTagRef */
             $newTagRef = $em->getReference(Tag::class, $newTag->getId());
-            assert($newTagRef instanceof Tag);
             $this->addTag($newTagRef);
           }
           break;
@@ -565,19 +580,19 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   private function fixConceptRelationReferences(ConceptRelation &$conceptRelation, EntityManagerInterface $em): void
   {
     if ($conceptRelation->getSource()) {
+      /** @var self $sourceRef */
       $sourceRef = $em->getReference(self::class, $conceptRelation->getSourceId());
-      assert($sourceRef instanceof self);
       $conceptRelation->setSource($sourceRef);
     }
 
     if ($conceptRelation->getTarget()) {
+      /** @var self $targetRef */
       $targetRef = $em->getReference(self::class, $conceptRelation->getTargetId());
-      assert($targetRef instanceof self);
       $conceptRelation->setTarget($targetRef);
     }
 
+    /** @var RelationType $relationTypeRef */
     $relationTypeRef = $em->getReference(RelationType::class, $conceptRelation->getRelationType()->getId());
-    assert($relationTypeRef instanceof RelationType);
     $conceptRelation->setRelationType($relationTypeRef);
   }
 
@@ -840,6 +855,18 @@ class Concept implements SearchableInterface, ReviewableInterface, IdInterface
   public function removeLearningOutcome(LearningOutcome $learningOutcome): self
   {
     $this->learningOutcomes->removeElement($learningOutcome);
+
+    return $this;
+  }
+
+  public function getSkills(): DataSkills
+  {
+    return $this->skills;
+  }
+
+  public function setSkills(DataSkills $skills): self
+  {
+    $this->skills = $skills;
 
     return $this;
   }

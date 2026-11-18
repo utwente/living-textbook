@@ -4,12 +4,10 @@ namespace App\Entity\Listener;
 
 use App\Entity\User;
 use App\Entity\UserGroupEmail;
-use App\Repository\UserGroupEmailRepository;
 use Doctrine\ORM\Event\PostPersistEventArgs;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping as ORM;
 
-use function assert;
 use function count;
 
 class UserListener
@@ -26,8 +24,7 @@ class UserListener
     $em = $event->getObjectManager();
 
     // Find any UserGroupEmail to upgrade
-    $repo = $em->getRepository(UserGroupEmail::class);
-    assert($repo instanceof UserGroupEmailRepository);
+    $repo            = $em->getRepository(UserGroupEmail::class);
     $userGroupEmails = $repo->findByEmail($user->getUserIdentifier());
     if (count($userGroupEmails) == 0) {
       return;

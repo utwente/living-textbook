@@ -14,8 +14,6 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use function assert;
-
 class SaveType extends AbstractType
 {
   #[Override]
@@ -65,7 +63,7 @@ class SaveType extends AbstractType
   /** Check whether the "save and list" button is clicked. */
   public static function isListClicked(FormInterface $form): bool
   {
-    assert($form instanceof Form);
+    /** @var Form $form */
     $clickedButton = $form->getClickedButton();
     if ($form->isSubmitted()
         && $clickedButton instanceof SubmitButton

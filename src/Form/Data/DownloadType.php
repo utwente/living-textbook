@@ -2,7 +2,8 @@
 
 namespace App\Form\Data;
 
-use App\Dto\DownloadTypeDto;
+use App\Dto\ExportTypeDto;
+use App\Entity\StudyArea;
 use App\Form\Type\SingleSubmitType;
 use Override;
 use Symfony\Component\Form\AbstractType;
@@ -14,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use function array_combine;
 
-/** @extends AbstractType<DownloadTypeDto> */
+/** @extends AbstractType<ExportTypeDto> */
 class DownloadType extends AbstractType
 {
   #[Override]
@@ -31,23 +32,25 @@ class DownloadType extends AbstractType
         ->add('httpMethod', ChoiceType::class, [
           'label'    => 'study-area.export-url-http-method',
           'help'     => 'study-area.export-url-http-method-help',
-          'choices'  => array_combine(DownloadTypeDto::METHODS, DownloadTypeDto::METHODS),
+          'choices'  => array_combine(ExportTypeDto::METHODS, ExportTypeDto::METHODS),
           'required' => true,
         ]);
     }
 
     $builder
       ->add('type', ExportType::class, [
-        'label' => 'data.download.type',
-        'attr'  => [
+        'label'      => 'data.export.type',
+        'study_area' => $options['study_area'],
+        'attr'       => [
           'class' => 'download-type',
         ],
       ])
       ->add('preview', DownloadPreviewType::class, [
-        'mapped' => false,
+        'mapped'     => false,
+        'study_area' => $options['study_area'],
       ])
       ->add('submit', SingleSubmitType::class, [
-        'label' => 'data.download.title',
+        'label' => 'data.export.title',
         'icon'  => 'fa-download',
         'attr'  => [
           'class' => 'btn btn-outline-success',
@@ -64,7 +67,9 @@ class DownloadType extends AbstractType
         'url_export_enabled' => false,
       ])
       ->setAllowedTypes('form_target', 'string')
-      ->setAllowedTypes('url_export_enabled', 'bool');
+      ->setAllowedTypes('url_export_enabled', 'bool')
+      ->setRequired('study_area')
+      ->setAllowedTypes('study_area', [StudyArea::class]);
 
     $resolver->setNormalizer('attr', static function (Options $options, array $attr): array {
       $attr['target'] = $options['form_target'] ?? '_blank';

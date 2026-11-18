@@ -1,0 +1,11 @@
+{% extends 'single_column.html.twig' %}
+
+{% block title %}
+  {{ 'data.export-url.title'|trans }}
+{% endblock %}
+
+{% block content %}
+  <p>{{ 'data.export-url.text'|trans }}</p>
+
+  {{ form(form) }}
+{% endblock %}

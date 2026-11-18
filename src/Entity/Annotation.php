@@ -108,7 +108,7 @@ class Annotation implements SearchableInterface, IdInterface
   /** @var Collection<AnnotationComment> */
   #[Assert\Expression('(this.getText() === null && this.getCommentCount() === 0) || (this.getText() !== null)', message: 'annotation.comments-incorrect')]
   #[Assert\Valid]
-  #[ORM\OneToMany(mappedBy: 'annotation', targetEntity: AnnotationComment::class)]
+  #[ORM\OneToMany(targetEntity: AnnotationComment::class, mappedBy: 'annotation')]
   #[JMSA\Expose]
   private Collection $comments;
 

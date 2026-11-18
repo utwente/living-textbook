@@ -15,6 +15,7 @@ use App\Security\Voters\StudyAreaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -22,7 +23,6 @@ use function array_filter;
 use function array_key_exists;
 use function array_map;
 use function array_reduce;
-use function assert;
 use function count;
 use function is_countable;
 use function ksort;
@@ -39,11 +39,16 @@ class SearchController extends AbstractController
   #[Route('/{s<.*>?}', name: 'search')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function search(
-    ?string $s, RequestStudyArea $requestStudyArea, TranslatorInterface $translator,
-    AbbreviationRepository $abbreviationRepository, ConceptRepository $conceptRepository,
-    ExternalResourceRepository $externalResourceRepository, LearningOutcomeRepository $learningOutcomeRepository,
-    AnnotationRepository $annotationRepository): Response
-  {
+    #[CurrentUser] ?User $user,
+    ?string $s,
+    RequestStudyArea $requestStudyArea,
+    TranslatorInterface $translator,
+    AbbreviationRepository $abbreviationRepository,
+    ConceptRepository $conceptRepository,
+    ExternalResourceRepository $externalResourceRepository,
+    LearningOutcomeRepository $learningOutcomeRepository,
+    AnnotationRepository $annotationRepository,
+  ): Response {
     $result = [];
 
     if (null === $s) {
@@ -70,12 +75,12 @@ class SearchController extends AbstractController
     $result['instanceData']         = $this->searchData($conceptRepository->findForStudyAreaOrderedByName($studyArea, true, false, true), $search);
     $result['abbreviationData']     = $this->searchData($abbreviationRepository->findForStudyArea($studyArea), $search);
     $result['externalResourceData'] = $this->searchData($externalResourceRepository->findForStudyArea($studyArea), $search);
-    $result['learningOutcomeData']  = $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search);
+    $result['learningOutcomeData']  = $studyArea->isLearningOutcomesEnabled()
+      ? $this->searchData($learningOutcomeRepository->findForStudyArea($studyArea), $search)
+      : [];
 
     // Retrieve annotation data, which is easier to do here
-    $user = $this->getUser();
     if ($user) {
-      assert($user instanceof User);
       $userId         = $user->getId();
       $allAnnotations = $annotationRepository->getForUserAndStudyArea($user, $studyArea);
       $ownAnnotations = array_filter($allAnnotations, static fn (Annotation $annotation): bool => $annotation->getUserId() == $userId);
@@ -105,9 +110,9 @@ class SearchController extends AbstractController
     $result = [];
 
     array_map(static function (array $item) use (&$result): void {
+      /** @var Annotation $annotation */
       $annotation = $item['_data'];
-      assert($annotation instanceof Annotation);
-      $concept = $annotation->getConcept();
+      $concept    = $annotation->getConcept();
 
       // Set concept key for sorting purposes
       $conceptKey = $concept->getName() . $concept->getId();

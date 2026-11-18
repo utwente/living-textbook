@@ -11,12 +11,14 @@ twig:
     - "_form/_learning_paths_layout.html.twig"
     - "_form/_custom_types_layout.html.twig"
     - "_form/_review_layout.html.twig"
+    - "_form/_skills_layout.html.twig"
   paths:
     '%kernel.project_dir%/assets/email/img': email_img
     '%kernel.project_dir%/public/email': email_assets
   globals:
     allowed_ckeditor_tags: '%ckeditor_tags%'
     naming: '@App\Naming\NamingService'
+    skill_accessor: '@App\Skills\SkillAccessor'
     sentry_dsn: '%env(SENTRY_JS_DSN)%'
     sentry_release: '%sentry_release%'
 

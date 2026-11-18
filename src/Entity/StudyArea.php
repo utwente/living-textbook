@@ -57,12 +57,12 @@ class StudyArea implements Stringable, IdInterface
   private ?string $description = null;
 
   /** @var Collection<Concept> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Concept::class, cascade: ['persist', 'remove'])]
+  #[ORM\OneToMany(targetEntity: Concept::class, mappedBy: 'studyArea', cascade: ['persist', 'remove'])]
   #[JMSA\Expose]
   private Collection $concepts;
 
   /** @var Collection<UserGroup>&Selectable<UserGroup> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: UserGroup::class, cascade: ['persist', 'remove'])]
+  #[ORM\OneToMany(targetEntity: UserGroup::class, mappedBy: 'studyArea', cascade: ['persist', 'remove'])]
   #[JMSA\Expose]
   private Collection&Selectable $userGroups;
 
@@ -77,31 +77,31 @@ class StudyArea implements Stringable, IdInterface
   private string $accessType = self::ACCESS_PRIVATE;
 
   /** @var Collection<RelationType> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: RelationType::class)]
+  #[ORM\OneToMany(targetEntity: RelationType::class, mappedBy: 'studyArea')]
   private Collection $relationTypes;
 
   /** @var Collection<Abbreviation> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Abbreviation::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: Abbreviation::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $abbreviations;
 
   /** @var Collection<ExternalResource> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: ExternalResource::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: ExternalResource::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $externalResources;
 
   /** @var Collection<Contributor> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Contributor::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: Contributor::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $contributors;
 
   /** @var Collection<LearningOutcome> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LearningOutcome::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: LearningOutcome::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $learningOutcomes;
 
   /** @var Collection<LearningPath> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: LearningPath::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: LearningPath::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $learningPaths;
 
   /** @var Collection<Tag> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: Tag::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $tags;
 
   #[ORM\Column(name: 'frozen_on', nullable: true)]
@@ -131,6 +131,14 @@ class StudyArea implements Stringable, IdInterface
   /** Analytics dashboard enabled. */
   #[ORM\Column(options: ['default' => false])]
   private bool $analyticsDashboardEnabled = false;
+
+  /** Setting this to false will disable the unclassified skills functionality (learning outcomes). */
+  #[ORM\Column(options: ['default' => true])]
+  private bool $learningOutcomesEnabled = true;
+
+  /** Setting this to false will disable the classified skills functionality (skills). */
+  #[ORM\Column(options: ['default' => true])]
+  private bool $skillsEnabled = true;
 
   /** Whether the review mode has been enabled for this study area. */
   #[ORM\Column(options: ['default' => false])]
@@ -165,7 +173,7 @@ class StudyArea implements Stringable, IdInterface
   private ?StylingConfiguration $defaultStylingConfiguration = null;
 
   /** @var Collection<int, StylingConfiguration> */
-  #[ORM\OneToMany(mappedBy: 'studyArea', targetEntity: StylingConfiguration::class, fetch: 'EXTRA_LAZY')]
+  #[ORM\OneToMany(targetEntity: StylingConfiguration::class, mappedBy: 'studyArea', fetch: 'EXTRA_LAZY')]
   private Collection $stylingConfigurations;
 
   /** Setting this to true makes it possible to export studyarea to given URL endpoint. */
@@ -813,9 +821,11 @@ class StudyArea implements Stringable, IdInterface
     return $this->mapWidth;
   }
 
-  public function setMapWidth(int $mapWidth): void
+  public function setMapWidth(int $mapWidth): self
   {
     $this->mapWidth = $mapWidth;
+
+    return $this;
   }
 
   public function getMapHeight(): int
@@ -823,9 +833,11 @@ class StudyArea implements Stringable, IdInterface
     return $this->mapHeight;
   }
 
-  public function setMapHeight(int $mapHeight): void
+  public function setMapHeight(int $mapHeight): self
   {
     $this->mapHeight = $mapHeight;
+
+    return $this;
   }
 
   public function isDotron(): bool
@@ -866,6 +878,30 @@ class StudyArea implements Stringable, IdInterface
   public function setUrlExportEnabled(bool $urlExportEnabled): self
   {
     $this->urlExportEnabled = $urlExportEnabled;
+
+    return $this;
+  }
+
+  public function isLearningOutcomesEnabled(): bool
+  {
+    return $this->learningOutcomesEnabled;
+  }
+
+  public function setLearningOutcomesEnabled(bool $learningOutcomesEnabled): self
+  {
+    $this->learningOutcomesEnabled = $learningOutcomesEnabled;
+
+    return $this;
+  }
+
+  public function isSkillsEnabled(): bool
+  {
+    return $this->skillsEnabled;
+  }
+
+  public function setSkillsEnabled(bool $skillsEnabled): self
+  {
+    $this->skillsEnabled = $skillsEnabled;
 
     return $this;
   }

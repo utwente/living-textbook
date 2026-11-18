@@ -23,7 +23,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use function array_map;
-use function assert;
 
 #[OA\Tag('Concept')]
 #[Route('/concept')]
@@ -142,8 +141,8 @@ class ConceptController extends AbstractApiController
 
     try {
       $concepts = array_map(function (Concept $concept) use ($requestStudyArea, $requestConcepts, $tagRepository): Concept {
+        /** @var ConceptApiModel $requestConcept */
         $requestConcept = $requestConcepts[$concept->getId()];
-        assert($requestConcept instanceof ConceptApiModel);
 
         return $this->updateConcept(
           $requestStudyArea,

@@ -21,7 +21,6 @@ use Symfony\Component\Routing\RouterInterface;
 use function array_filter;
 use function array_key_exists;
 use function array_merge;
-use function assert;
 use function curl_exec;
 use function curl_getinfo;
 use function curl_init;
@@ -283,8 +282,8 @@ class UrlChecker
     $cachekey     = $cacheableUrl->getCachekey();
     if ($oldCache !== null) {
       // Check if cache still valid
+      /** @var CacheableUrl $cachedUrl */
       $cachedUrl = $oldCache->getItem($cachekey)->get();
-      assert($cachedUrl instanceof CacheableUrl);
 
       // Test whether it is expired, always return false if forced from cache
       if ($cachedUrl->getTimestamp() < new DateTime()->modify($modifyTime) && !$fromCache) {

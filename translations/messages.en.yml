@@ -216,7 +216,13 @@ data:
   concepts: 'Concepts'
   concepts-duplicated: 'The study area has been duplicated successfully. Start browsing it directly!'
   concepts-to-duplicate: 'Concepts/instances to duplicate'
-  download:
+  duplicate: 'Duplicate'
+  duplicate-text: >-
+    Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
+    In order to select an existing area, you need to have write right, and review mode must be disabled.
+    You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
+    Note that other elements will always be duplicated fully (e.g. contributors, external resources).
+  export:
     text: 'You can export the current study area in one of the types shown below. Select the one you will want to download.'
     title: 'Export'
     type: 'Export type'
@@ -226,27 +232,26 @@ data:
       linked-simple-node: 'Simple linked node'
       rdf: 'RDF (as JSON-LD)'
       relation: 'Relations'
-  duplicate: 'Duplicate'
-  duplicate-text: >-
-    Here you can duplicate (parts of) the study area "%item%" into a new study area or an existing study area of your choice.
-    In order to select an existing area, you need to have write right, and review mode must be disabled.
-    You can either select a concept/instance subset, or tick "Select all" to duplicate all concepts/instances.
-    Note that other elements will always be duplicated fully (e.g. contributors, external resources).'
-  export:
+      skills: 'Classified skills'
+  export-url:
     title: 'Export to URL'
     text: 'You can export the current study area to a URL in one of the types shown below. Select the one you will want to export.'
     error: 'The system could not export the current study area to'
     success: 'The study area was exported successfully to'
     invalid-export-setting: 'The export to URL is not enabled in the study area settings or the export URL is empty.'
-  json-file: 'JSON data file'
-  json-incorrect: 'JSON data incorrect! %message%'
-  json-uploaded: 'JSON data successfully imported!'
+  import:
+    provider:
+      linked-simple-node: 'Simple linked node'
+      skills: 'Classified skills'
+    json-file: 'JSON data file'
+    json-incorrect: 'JSON data incorrect! %message%'
+    json-uploaded: 'JSON data successfully imported!'
+    upload-json: 'Upload JSON file'
+    upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
+    upload-json-text: 'This upload form can be used to upload an JSON file.'
   select-all: 'Select all'
   select-all-info: 'Note that when you do not select all concepts/instances to be copied, some data (such as learning paths) might be adjusted!'
   study-area: 'Study area'
-  upload-json: 'Upload JSON file'
-  upload-json-disabled-review-mode: 'It is not possible to import data when review mode is enabled!'
-  upload-json-text: 'This upload form can be used to upload an JSON file. Note that this will not import wiki content!'
 
 datatable:
   all: "All"
@@ -334,9 +339,9 @@ excel:
       no-text: "Without any (text) content"
       no-definition: "Without definition"
       no-introduction: "Without introduction"
+      no-named-item: "Without %plural%"
       no-prior-knowledge: "Without prior knowledge"
-      no-learning-outcomes: "Without %plural%"
-      no-relation: "Without relations"
+      no-relations: "Without relations"
       more-relations-5: "More than 5 relations"
       more-relations-10: "More than 10 relations"
       total-concepts: "Total concepts/instances"
@@ -417,7 +422,7 @@ help:
   title: "Help"
 
 learning-outcome:
-  _name: 'Learning outcome'
+  _name: 'Unclassified skill'
   add-title: 'Add new %singular%'
   edit-title: 'Edit %singular% "%item%"'
   list-title: '%singular% list'
@@ -448,6 +453,7 @@ learning-path:
   element-errors: 'One or more elements contain errors'
   elements: 'Elements'
   elements-info: 'Select concepts/instances and/or %learning_outcomes% (which will add the containing concepts/instances) below to add them to the learning path elements.'
+  elements-info-no-unclassified-skills: 'Select concepts/instances below to add them to the learning path elements.'
   introduction: 'Introduction'
   list-title: 'Learning path list'
   name: 'Name'
@@ -649,6 +655,42 @@ search:
   results-for: 'Search results for "%item%"'
   search: 'Search'
 
+skill:
+  _name: Classified skill
+  _set:
+    remember: Remember
+    _remember:
+      recalling: Recalling
+      recognising: Recognising
+    understand: Understand
+    _understand:
+      classifying: Classifying
+      comparing: Comparing
+      exemplifying: Exemplifying
+      explaining: Explaining
+      inferring: Inferring
+      interpreting: Interpreting
+      summarising: Summarising
+    apply: Apply
+    _apply:
+      executing: Executing
+      implementing: Implementing
+    analyse: Analyse
+    _analyse:
+      attributing: Attributing
+      differentiating: Differentiating
+      organising: Organising
+    evaluate: Evaluate
+    _evaluate:
+      checking: Checking
+      critiquing: Critiquing
+    create: Create
+    _create:
+      generating: Generating
+      planning: Planning
+      producing: Producing
+  _level: 'Level %level%: %set%'
+
 study-area:
   access-type: 'Access type'
   access-type-change-note: 'Note that if you change the access type, some of the permissions might be reset!
@@ -660,6 +702,8 @@ study-area:
     owner to inspect the behavior of the users.
   api-enabled: 'API enabled'
   api-enabled-help: 'When enabled, API access for this study area is enabled. Enabling API access will disable review mode!'
+  classified-skills: 'Classified skills'
+  classified-skills-help: 'Use this toggle to enable/disable the classified skills.'
   current: 'Current'
   current-area: 'Now browsing "%item%"'
   default-tag-filter: 'Default tag filter'
@@ -763,6 +807,8 @@ study-area:
   tracking-disabled-text: 'User tracking has been disabled for this study area. Click %url_start%here%url_end% to edit the tracking settings.'
   tracking-remove-data: 'Are you sure? This will remove all existing tracking data, which cannot be undone!'
   transfer-ownership: 'Transfer ownership'
+  unclassified-skills: 'Unclassified skills'
+  unclassified-skills-help: 'Use this toggle to enable/disable the unclassified skills.'
   unfreeze: 'Unfreeze study area'
   unfreeze-text: 'Are you sure you want to unfreeze the study area "%item%"? This could lead to data loss for users of this study area when data is edited, please use this feature responsibly!'
   unfreeze-succeeded: 'Study area "%item%" has been unfrozen successfully.'

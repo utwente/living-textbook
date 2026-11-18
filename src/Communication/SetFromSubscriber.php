@@ -2,29 +2,18 @@
 
 namespace App\Communication;
 
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-class SetFromSubscriber implements EventSubscriberInterface
+readonly class SetFromSubscriber
 {
-  private readonly string $from;
-
-  public function __construct(string $from)
+  public function __construct(private string $from)
   {
-    $this->from = $from;
   }
 
-  #[Override]
-  public static function getSubscribedEvents(): array
-  {
-    return [
-      MessageEvent::class => 'onMessage',
-    ];
-  }
-
+  #[AsEventListener(event: MessageEvent::class)]
   public function onMessage(MessageEvent $messageEvent): void
   {
     $email = $messageEvent->getMessage();

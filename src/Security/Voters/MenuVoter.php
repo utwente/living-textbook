@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-use function assert;
 use function in_array;
 
 /**
@@ -94,12 +93,10 @@ class MenuVoter extends Voter
     }
 
     // Always return false for null values
+    /* @var StudyArea|null $subject */
     if ($subject === null) {
       return false;
     }
-
-    /* @var StudyArea $subject */
-    assert($subject instanceof StudyArea);
 
     return match ($attribute) {
       self::CONCEPTS           => $this->conceptRepository->getCountForStudyArea($subject) > 0,

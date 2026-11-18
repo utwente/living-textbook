@@ -21,4 +21,5 @@ return [
   Drenso\Shared\DrensoSharedBundle::class                           => ['all' => true],
   Nelmio\CorsBundle\NelmioCorsBundle::class                         => ['all' => true],
   Drenso\OidcBundle\DrensoOidcBundle::class                         => ['all' => true],
+  Drenso\DeployerBundle\DrensoDeployerBundle::class                 => ['all' => true],
 ];
