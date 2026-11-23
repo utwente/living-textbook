@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1a58f4efdd4cd2bdd4227d73fa603da",
+    "content-hash": "caddc6483bb4949e226acff22f86aca6",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1611,16 +1611,16 @@
         },
         {
             "name": "drenso/symfony-oidc-bundle",
-            "version": "v4.5.0",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Drenso/symfony-oidc.git",
-                "reference": "2f17ac2b0d07f7ac69b1eb0fa96c685b2e93ecd7"
+                "url": "https://github.com/drenso/symfony-oidc.git",
+                "reference": "81e1bbed557dfa3abd270c0e88581784bb877f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Drenso/symfony-oidc/zipball/2f17ac2b0d07f7ac69b1eb0fa96c685b2e93ecd7",
-                "reference": "2f17ac2b0d07f7ac69b1eb0fa96c685b2e93ecd7",
+                "url": "https://api.github.com/repos/drenso/symfony-oidc/zipball/81e1bbed557dfa3abd270c0e88581784bb877f16",
+                "reference": "81e1bbed557dfa3abd270c0e88581784bb877f16",
                 "shasum": ""
             },
             "require": {
@@ -1629,9 +1629,9 @@
                 "ext-hash": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "lcobucci/jwt": "^5.0",
+                "lcobucci/jwt": "^5.7",
                 "php": ">=8.1",
-                "phpseclib/phpseclib": "^3.0.36",
+                "phpseclib/phpseclib": "^3.0.36 || ^4.0",
                 "psr/clock": "^1.0",
                 "psr/container": "^1.1 || ^2.0",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
@@ -1647,11 +1647,11 @@
                 "symfony/string": "^5.4 || ^6.3 || ^7.0 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.95.2",
+                "friendsofphp/php-cs-fixer": "3.95.30",
                 "phpstan/extension-installer": "1.4.3",
-                "phpstan/phpstan": "2.1.54",
+                "phpstan/phpstan": "2.3.6",
                 "phpstan/phpstan-deprecation-rules": "^2.0",
-                "rector/rector": "2.4.3",
+                "rector/rector": "2.8.5",
                 "symfony/cache": "^5.4 || ^6.3 || ^7.0 || ^8.0",
                 "symfony/translation-contracts": "^2.0 || ^3.0"
             },
@@ -1691,8 +1691,8 @@
                 "symfony"
             ],
             "support": {
-                "issues": "https://github.com/Drenso/symfony-oidc/issues",
-                "source": "https://github.com/Drenso/symfony-oidc/tree/v4.5.0"
+                "issues": "https://github.com/drenso/symfony-oidc/issues",
+                "source": "https://github.com/drenso/symfony-oidc/tree/v4.6.0"
             },
             "funding": [
                 {
@@ -1700,8 +1700,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-22T11:15:07+00:00",
-            "published-time": "2026-05-22T11:18:16+00:00"
+            "time": "2026-11-23T10:35:20+00:00",
+            "published-time": "2026-11-23T10:37:41+00:00"
         },
         {
             "name": "drenso/symfony-shared",
