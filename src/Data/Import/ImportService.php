@@ -9,6 +9,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\Attribute\Lazy;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
+use function ini_set;
+use function set_time_limit;
 use function sprintf;
 
 /** @extends AbstractDataService<ImportProviderInterface> */
@@ -29,6 +31,10 @@ final readonly class ImportService extends AbstractDataService
     if (!$this->providers->has($importProvider)) {
       throw new InvalidArgumentException(sprintf('Requested provider %s is not registered!', $importProvider));
     }
+
+    // Allow for more memory and time usage during import
+    ini_set('memory_limit', '512M');
+    set_time_limit(300);
 
     $this->providers->get($importProvider)->import($studyArea, $jsonData);
   }
