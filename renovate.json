@@ -64,7 +64,7 @@
         },
         {
             "rebaseWhen": "conflicted",
-            "minimumReleaseAge": null,
+            "minimumReleaseAge": "2 hours",
             "matchPackageNames": [
                 "twig/{/,}**"
             ]
@@ -72,7 +72,7 @@
         {
             "groupName": "Symfony packages",
             "groupSlug": "symfony",
-            "minimumReleaseAge": null,
+            "minimumReleaseAge": "2 hours",
             "matchPackageNames": [
                 "symfony/{/,}**",
                 "!/-contracts$/",
@@ -85,7 +85,7 @@
         {
             "groupName": "Symfony contracts",
             "groupSlug": "symfony-contracts",
-            "minimumReleaseAge": null,
+            "minimumReleaseAge": "2 hours",
             "matchPackageNames": [
                 "/^symfony/[\\w+-]+-contracts$/"
             ]
@@ -105,7 +105,7 @@
             ],
             "rebaseWhen": "auto",
             "automerge": true,
-            "minimumReleaseAge": null,
+            "minimumReleaseAge": "2 hours",
             "matchPackageNames": [
                 "@types/{/,}**"
             ]
