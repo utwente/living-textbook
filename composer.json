@@ -104,7 +104,7 @@
         "phpstan/phpstan-phpunit": "2.1.2",
         "phpstan/phpstan-symfony": "2.1.1",
         "phpunit/phpunit": "13.4.7",
-        "rector/rector": "2.8.4",
+        "rector/rector": "2.8.5",
         "symfony/error-handler": "7.4.22",
         "symfony/stopwatch": "7.4.8",
         "symfony/web-profiler-bundle": "7.4.23",
