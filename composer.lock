@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4ea5a888429f5be95cb15af3f0eb11b",
+    "content-hash": "d9e9b17e4bfef8f6687c72d6fa089492",
     "packages": [
         {
             "name": "bobv/latex-bundle",
@@ -1527,16 +1527,16 @@
         },
         {
             "name": "drenso/symfony-deployer-bundle",
-            "version": "2.2.0",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drenso/symfony-deployer.git",
-                "reference": "e6502212af01e58b73281e2a0984411bbef0bc95"
+                "reference": "36c0b555e81239c5bc5ace65184665aa55526105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drenso/symfony-deployer/zipball/e6502212af01e58b73281e2a0984411bbef0bc95",
-                "reference": "e6502212af01e58b73281e2a0984411bbef0bc95",
+                "url": "https://api.github.com/repos/drenso/symfony-deployer/zipball/36c0b555e81239c5bc5ace65184665aa55526105",
+                "reference": "36c0b555e81239c5bc5ace65184665aa55526105",
                 "shasum": ""
             },
             "require": {
@@ -1554,7 +1554,7 @@
                 "symfony/validator": "^5.4 || ^6.4 || ^7.4 || ^8.1"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.95.27",
+                "friendsofphp/php-cs-fixer": "3.95.30",
                 "phpstan/extension-installer": "1.4.3",
                 "phpstan/phpstan": "2.3.5",
                 "phpstan/phpstan-symfony": "2.1.1",
@@ -1598,7 +1598,7 @@
             ],
             "support": {
                 "issues": "https://github.com/drenso/symfony-deployer/issues",
-                "source": "https://github.com/drenso/symfony-deployer/tree/2.2.0"
+                "source": "https://github.com/drenso/symfony-deployer/tree/2.3.2"
             },
             "funding": [
                 {
@@ -1606,8 +1606,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-11T12:13:23+00:00",
-            "published-time": "2026-11-11T12:14:43+00:00"
+            "time": "2026-11-20T11:48:16+00:00",
+            "published-time": "2026-11-20T11:49:43+00:00"
         },
         {
             "name": "drenso/symfony-oidc-bundle",
