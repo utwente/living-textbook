@@ -64,7 +64,7 @@
     "datatables.net-responsive-bs4": "2.5.1",
     "font-awesome": "4.7.0",
     "foundation-emails": "2.5.1",
-    "jquery": "3.7.1",
+    "jquery": "3.8.0",
     "jquery-contextmenu": "2.10.2",
     "jquery-ui": "1.14.2",
     "jquery-ui-dist": "1.13.3",
@@ -81,7 +81,7 @@
   "overrides": {
     "datatables.net": "1.13.11",
     "datatables.net-bs4": "1.13.11",
-    "jquery": "3.7.1",
+    "jquery": "3.8.0",
     "webpack": "<5.110"
   },
   "engines": {
