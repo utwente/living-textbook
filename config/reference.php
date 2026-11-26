@@ -2015,7 +2015,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         prefixes?: list<scalar|Param|null>,
  *         sample_rate?: float|Param, // The sampling factor to apply to events. A value of 0 will deny sending any event, and a value of 1 will send all events.
  *         enable_tracing?: bool|Param,
- *         traces_sample_rate?: float|Param, // The sampling factor to apply to transactions. A value of 0 will deny sending any transaction, and a value of 1 will send all transactions.
+ *         traces_sample_rate?: float|Param, // The sampling factor to apply to transactions. A value of 0 will deny sending any transaction, and a value of 1 will send all transactions. A value of null disables tracing unless "traces_sampler" is set.
  *         traces_sampler?: scalar|Param|null,
  *         profiles_sample_rate?: float|Param, // The sampling factor to apply to profiles. A value of 0 will deny sending any profiles, and a value of 1 will send all profiles. Profiles are sampled in relation to traces_sample_rate
  *         enable_logs?: bool|Param,
@@ -2033,6 +2033,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         server_name?: scalar|Param|null,
  *         ignore_exceptions?: list<scalar|Param|null>,
  *         ignore_transactions?: list<scalar|Param|null>,
+ *         trace_ignore_status_codes?: list<mixed>,
  *         before_send?: scalar|Param|null,
  *         before_send_transaction?: scalar|Param|null,
  *         before_send_check_in?: scalar|Param|null,
