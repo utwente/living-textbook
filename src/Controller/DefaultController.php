@@ -178,7 +178,7 @@ class DefaultController extends AbstractController
   #[Route('/{_studyArea<\d+>}/dashboard', name: 'app_studyarea_list')]
   #[IsGranted(StudyAreaVoter::SHOW, subject: 'requestStudyArea')]
   public function dashboard(
-    #[CurrentUser] User $user,
+    #[CurrentUser] ?User $user,
     RequestStudyArea $requestStudyArea,
     FormFactoryInterface $formFactory,
     StudyAreaRepository $studyAreaRepository,
